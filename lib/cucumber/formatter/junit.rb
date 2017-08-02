@@ -19,7 +19,7 @@ module Cucumber
       end
 
       def initialize(config)
-        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
@@ -36,7 +36,7 @@ module Cucumber
         }}
       end
 
-      def on_test_case_starting(event)
+      def on_test_case_started(event)
         test_case = event.test_case
         unless same_feature_as_previous_test_case?(test_case.feature)
           start_feature(test_case.feature)

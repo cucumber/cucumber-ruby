@@ -1,9 +1,9 @@
-Feature: Test Run Starting Event
+Feature: Test Run Started Event
 
   This event is fired once all test cases have been filtered, just before
   the first one is executed.
 
-  See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestRunStarting) for more information about the data available on this event.
+  See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestRunStarted) for more information about the data available on this event.
 
   Background:
     Given the standard step definitions
@@ -22,8 +22,8 @@ Feature: Test Run Starting Event
     And a file named "features/support/events.rb" with:
       """
       AfterConfiguration do |config|
-        config.on_event :test_run_starting do |event|
-          config.out_stream.puts "test run starting"
+        config.on_event :test_run_started do |event|
+          config.out_stream.puts "test run started"
           config.out_stream.puts event.test_cases.map(&:location)
         end
       end
@@ -34,7 +34,7 @@ Feature: Test Run Starting Event
     When I run `cucumber -q`
     Then it should pass with:
       """
-      test run starting
+      test run started
       features/bar.feature:2
       features/foo.feature:2
       """

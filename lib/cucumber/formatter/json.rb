@@ -14,14 +14,14 @@ module Cucumber
       def initialize(config)
         @io = ensure_io(config.out_stream)
         @feature_hashes = []
-        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
-        config.on_event :test_step_starting, &method(:on_test_step_starting)
+        config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-      def on_test_case_starting(event)
+      def on_test_case_started(event)
         test_case = event.test_case
         builder = Builder.new(test_case)
         unless same_feature_as_previous_test_case?(test_case.feature)
@@ -39,7 +39,7 @@ module Cucumber
         @any_step_failed = false
       end
 
-      def on_test_step_starting(event)
+      def on_test_step_started(event)
         test_step = event.test_step
         return if internal_hook?(test_step)
         hook_query = HookQueryVisitor.new(test_step)

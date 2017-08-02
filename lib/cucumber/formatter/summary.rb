@@ -19,7 +19,7 @@ module Cucumber
         @issues = ConsoleIssues.new(@config)
         @start_time = Time.now
 
-        @config.on_event :test_case_starting do |event|
+        @config.on_event :test_case_started do |event|
           print_feature event.test_case
           print_test_case event.test_case
         end

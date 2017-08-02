@@ -4,8 +4,9 @@
 ### New Features
 ### Bugfixes
 ### Refactoring / Developer Experience
+* Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
 
-## [3.0.0.pre.1](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
+## [3.0.0.pre.2](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
 
 ### Breaking changes
 
@@ -29,7 +30,7 @@
 
 ### Bugfixes
 
-* Fix the profile loader on Windows ([#1133(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1133) @enkessler)
+* Fix the profile loader on Windows ([#1133](https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1133) @enkessler)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @botandrose)
 * Do not apply the hooks to the test case several times when using the retry option ([#1098](https://github.com/cucumber/cucumber-ruby/issues/1098) @brasmusson)

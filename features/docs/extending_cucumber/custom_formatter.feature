@@ -19,7 +19,7 @@ Feature: Custom Formatter
         class Formatter
           def initialize(config)
             @io = config.out_stream
-            config.on_event :test_case_starting do |event|
+            config.on_event :test_case_started do |event|
               print_test_case_name(event.test_case)
             end
           end

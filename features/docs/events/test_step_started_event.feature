@@ -1,11 +1,11 @@
-Feature: Test Step Starting Event
+Feature: Test Step Started Event
 
   This event is fired just before each step in a scenario or scenario outline example 
   (generally named a Test Step) starts to be executed. This event is read-only, so there
   is no way to prevent the test step from running, but you can use it for logging or user
   notification.
 
-  See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestStepStarting) for more information about the data available on this event and the result object.
+  See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestStepStarted) for more information about the data available on this event and the result object.
 
   Background:
     Given the standard step definitions
@@ -21,7 +21,7 @@ Feature: Test Step Starting Event
       stdout = nil
       AfterConfiguration do |config|
         stdout = config.out_stream # make sure all the `puts` calls can write to the same output
-        config.on_event :test_step_starting do |event|
+        config.on_event :test_step_started do |event|
           stdout.puts "before"
         end
         config.on_event :test_step_finished do |event|

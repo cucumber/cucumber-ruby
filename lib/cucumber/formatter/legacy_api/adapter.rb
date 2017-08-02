@@ -16,11 +16,11 @@ module Cucumber
         def initialize(*)
           super
           @matches = collect_matches
-          config.on_event(:test_case_starting) do |event|
+          config.on_event(:test_case_started) do |event|
             formatter.before_test_case(event.test_case)
             printer.before_test_case(event.test_case)
           end
-          config.on_event(:test_step_starting) do |event|
+          config.on_event(:test_step_started) do |event|
             formatter.before_test_step(event.test_step)
             printer.before_test_step(event.test_step)
           end
