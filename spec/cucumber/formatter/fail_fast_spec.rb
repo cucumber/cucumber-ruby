@@ -75,7 +75,7 @@ module Cucumber::Formatter
       end
 
       context 'in strict mode' do
-        let(:configuration) { Cucumber::Configuration.new strict: true }
+        let(:configuration) { Cucumber::Configuration.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
 
         it 'sets Cucumber.wants_to_quit' do
           execute [@gherkin], [StandardStepActions.new], configuration.event_bus

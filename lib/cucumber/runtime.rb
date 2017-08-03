@@ -229,7 +229,7 @@ module Cucumber
       if @configuration.wip?
         summary_report.test_cases.total_passed > 0
       else
-        !summary_report.ok?(@configuration.strict?)
+        !summary_report.ok?(@configuration.strict)
       end
     end
     public :failure?

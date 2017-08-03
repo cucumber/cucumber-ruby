@@ -989,7 +989,7 @@ module Cucumber
 
           def step_exception(step, configuration)
             return filtered_step_exception(step) if @exception
-            return nil unless @status == :undefined && configuration.strict?
+            return nil unless @status == :undefined && configuration.strict.strict?(:undefined)
             @exception = Cucumber::Undefined.from(@result, step.name)
             @exception.backtrace << step.backtrace_line
             filtered_step_exception(step)

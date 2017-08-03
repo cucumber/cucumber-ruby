@@ -3,6 +3,7 @@ require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/glue/registry_and_more'
 require 'cucumber/project_initializer'
+require 'cucumber/core/test/result'
 
 module Cucumber
   module Cli
@@ -119,7 +120,10 @@ module Cucumber
           opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
           opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
-          opts.on('-S', '--strict', 'Fail if there are any undefined or pending steps.') { set_option :strict }
+          opts.on('-S', '--[no-]strict', *strict_msg) { |setting| set_strict(setting) }
+          opts.on('--[no-]strict-undefined', 'Fail if there are any undefined results.') { |setting| set_strict(setting, :undefined) }
+          opts.on('--[no-]strict-pending', 'Fail if there are any pending results.') { |setting| set_strict(setting, :pending) }
+          opts.on('--[no-]strict-flaky', 'Fail if there are any flaky results.') { |setting| set_strict(setting, :flaky) }
           opts.on('-w', '--wip', 'Fail if there are any passing scenarios.') { set_option :wip }
           opts.on('-v', '--verbose', 'Show the files and features loaded.') { set_option :verbose }
           opts.on('-g', '--guess', 'Guess best match for Ambiguous steps.') { set_option :guess }
@@ -251,6 +255,13 @@ TEXT
           'Only execute the feature elements which match part of the given name.',
           'If this option is given more than once, it will match against all the',
           'given names.'
+        ]
+      end
+
+      def strict_msg
+        [
+          'Fail if there are any strict affected results ',
+          '(that is undefined, pending or flaky results).'
         ]
       end
 
@@ -409,6 +420,10 @@ TEXT
         @options[:duration] = false
       end
 
+      def set_strict(setting, type = nil)
+        @options[:strict].set_strict(setting, type)
+      end
+
       def stdout_formats
         @options[:formats].select { |_, _, output| output == @out_stream }
       end
@@ -477,7 +492,7 @@ TEXT
         @options[:source] &= other_options[:source]
         @options[:snippets] &= other_options[:snippets]
         @options[:duration] &= other_options[:duration]
-        @options[:strict] |= other_options[:strict]
+        @options[:strict] = other_options[:strict].merge!(@options[:strict])
         @options[:dry_run] |= other_options[:dry_run]
 
         @profiles += other_options.profiles
@@ -545,7 +560,7 @@ TEXT
 
       def default_options
         {
-          :strict       => false,
+          :strict       => Cucumber::Core::Test::Result::StrictConfiguration.new,
           :require      => [],
           :dry_run      => false,
           :formats      => [],
