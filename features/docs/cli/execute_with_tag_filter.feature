@@ -23,6 +23,7 @@ Feature: Tag logic
 
         @ignore
         Scenario: And yet another Example
+          Given passing
       """
 
   Scenario: ANDing tags
@@ -78,9 +79,10 @@ Feature: Tag logic
 
         @ignore
         Scenario: And yet another Example
+          Given passing
 
-      2 scenarios (1 undefined, 1 passed)
-      1 step (1 undefined)
+      2 scenarios (2 undefined)
+      2 steps (2 undefined)
       """
 
   Scenario: Run with limited tag count, blowing it on scenario

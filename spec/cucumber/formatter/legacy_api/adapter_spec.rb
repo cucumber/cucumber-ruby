@@ -151,66 +151,6 @@ module Cucumber
           ]
         end
 
-        it 'a scenario with no steps' do
-          execute_gherkin do
-            feature do
-              scenario
-            end
-          end
-
-          expect( formatter.legacy_messages ).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                      :after_tags,
-                    :scenario_name,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-        end
-
-        it 'a scenario with no steps coming after another scenario' do
-          execute_gherkin do
-            feature do
-              scenario do
-                step 'passing'
-              end
-              scenario
-            end
-          end
-          expect( formatter.legacy_messages ).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                      :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                  :before_feature_element,
-                    :before_tags,
-                      :after_tags,
-                    :scenario_name,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-        end
-
         it 'a scenario with one step' do
           execute_gherkin do
             feature do
@@ -1953,38 +1893,6 @@ module Cucumber
           end
         end
 
-        context 'with an exception in an after hook but no steps' do
-          it 'prints the exception after the scenario name' do
-            filters = [
-              Filters::ActivateSteps.new(step_match_search, runtime.configuration),
-              Filters::ApplyAfterHooks.new(FailingAfterHook.new),
-              AddBeforeAndAfterHooks.new
-            ]
-            execute_gherkin(filters) do
-              feature do
-                scenario do
-                end
-              end
-            end
-
-            expect( formatter.legacy_messages ).to eq([
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :exception,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-            ])
-          end
-        end
-
         context 'with an exception in an around hook before the test case is run' do
           class FailingAroundHookBeforeRunningTestCase
             def find_around_hooks(test_case)
@@ -2003,6 +1911,7 @@ module Cucumber
             execute_gherkin(filters) do
               feature do
                 scenario do
+                  step 'passing'
                 end
               end
             end

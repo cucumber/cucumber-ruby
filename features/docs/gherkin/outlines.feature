@@ -50,8 +50,6 @@ Feature: Scenario outlines
       """
       Feature: Outline Sample
 
-        Scenario: I have no steps
-
         Scenario Outline: Test state
           Given <state> without a table
           Given <other_state> without a table
@@ -73,7 +71,7 @@ Feature: Scenario outlines
       Failing Scenarios:
       cucumber features/outline_sample.feature:12
 
-      5 scenarios (1 failed, 1 undefined, 3 passed)
+      4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
       """
 
@@ -154,7 +152,7 @@ Feature: Scenario outlines
       Failing Scenarios:
       cucumber features/outline_sample.feature:12
 
-      5 scenarios (1 failed, 1 undefined, 3 passed)
+      4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
 
       """
