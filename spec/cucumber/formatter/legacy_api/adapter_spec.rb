@@ -2126,7 +2126,7 @@ module Cucumber
       end
 
       context 'in strict mode' do
-        let(:runtime) { Runtime.new strict: true }
+        let(:runtime) { Runtime.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
 
         it 'passes an exception to the formatter for undefined steps' do
           expect( formatter ).to receive(:exception) do |exception|

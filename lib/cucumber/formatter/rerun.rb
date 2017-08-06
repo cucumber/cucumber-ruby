@@ -12,7 +12,7 @@ module Cucumber
         @failures = {}
         config.on_event :test_case_finished do |event|
           test_case, result = *event.attributes
-          next if result.ok?(@config.strict?)
+          next if result.ok?(@config.strict)
           @failures[test_case.location.file] ||= []
           @failures[test_case.location.file] << test_case.location.line
         end

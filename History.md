@@ -1,9 +1,12 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master)
 
 ### Breaking changes
+
 ### New Features
+* Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
+
 ### Bugfixes
-* Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113)) @MadameSheema, @enkessler, @brasmusson)
+* Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
 
 ### Refactoring / Developer Experience
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 

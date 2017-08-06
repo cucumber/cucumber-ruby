@@ -3,6 +3,7 @@ require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
 require 'cucumber/core/event_bus'
+require 'cucumber/core/test/result'
 require 'forwardable'
 require 'cucumber'
 
@@ -71,7 +72,7 @@ module Cucumber
       @options[:guess]
     end
 
-    def strict?
+    def strict
       @options[:strict]
     end
 
@@ -243,7 +244,7 @@ module Cucumber
       {
         :autoload_code_paths => ['features/support', 'features/step_definitions'],
         :filters             => [],
-        :strict              => false,
+        :strict              => Cucumber::Core::Test::Result::StrictConfiguration.new,
         :require             => [],
         :dry_run             => false,
         :fail_fast           => false,
