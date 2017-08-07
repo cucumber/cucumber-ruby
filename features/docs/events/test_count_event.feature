@@ -11,19 +11,25 @@ Feature: Test Run Started Event
       """
       Feature: Foo
         Scenario:
-          Given a passing step
+          Given a turtle
       """
     And a file named "features/bar.feature" with:
       """
       Feature: Foo
         Scenario:
-          Given a passing step
+          Given a turtle
+      """
+    And a step definition that looks like this:
+      """ruby
+      Given /a turtle/ do
+        puts "turtle!"
+      end
       """
     And a file named "features/support/events.rb" with:
       """
       AfterConfiguration do |config|
-        config.on_event :test_run_started do |event|
-          config.out_stream.puts "test run started"
+        config.on_event :test_count do |event|
+          config.out_stream.puts "test count"
           config.out_stream.puts event.test_cases.map(&:location)
         end
       end
@@ -31,11 +37,29 @@ Feature: Test Run Started Event
 
   @todo-windows
   Scenario: Run the test case
-    When I run `cucumber -q`
+    When I run `cucumber -q -f progress`
     Then it should pass with:
       """
-      test run started
+      turtle!
+      .
+      turtle!
+      .test count
       features/bar.feature:2
       features/foo.feature:2
+      """
+
+  @todo-windows
+  Scenario: Run the test case with the --count-first option
+    When I run `cucumber --count-first -q -f progress`
+    Then it should pass with:
+      """
+      test count
+      features/bar.feature:2
+      features/foo.feature:2
+
+      turtle!
+      .
+      turtle!
+      .
       """
 

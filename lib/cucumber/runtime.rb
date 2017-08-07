@@ -251,12 +251,12 @@ module Cucumber
         @configuration.filters.each do |filter|
           filters << filter
         end
+        filters << Filters::BroadcastTestCountEvent.new(@configuration)
         unless configuration.dry_run?
           filters << Filters::ApplyAfterStepHooks.new(@support_code)
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
-          filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
           filters << Filters::Quit.new
           filters << Filters::Retry.new(@configuration)
           # need to do this last so it becomes the first test step

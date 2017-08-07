@@ -106,6 +106,10 @@ module Cucumber
         @options[:paths]
       end
 
+      def count_first?
+        @options[:count_first]
+      end
+
       def to_hash
         Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
       end

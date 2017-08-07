@@ -32,7 +32,7 @@ module Cucumber
         StepActivated,
         TestRunFinished,
         GherkinSourceRead,
-        TestRunStarted
+        TestCount
       )
     end
   end
