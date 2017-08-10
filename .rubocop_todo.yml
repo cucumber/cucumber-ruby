@@ -22,11 +22,6 @@ Lint/DeprecatedClassMethods:
     - 'lib/cucumber/project_initializer.rb'
 
 # Offense count: 2
-Lint/DuplicateMethods:
-  Exclude:
-    - 'lib/cucumber/multiline_argument.rb'
-
-# Offense count: 2
 Lint/Eval:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'

@@ -34,7 +34,7 @@ module Cucumber
 
           if argument
             if argument[:type] == :DocString
-              MultilineArgument.doc_string(argument[:content], argument[:content_type], location)
+              MultilineArgument.from(argument[:content], location, argument[:content_type])
             else
               MultilineArgument::DataTable.from(argument[:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
             end

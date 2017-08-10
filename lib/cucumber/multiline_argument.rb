@@ -11,14 +11,14 @@ module Cucumber
         builder.wrap(node)
       end
 
-      def from(argument, location=nil)
+      def from(argument, location=nil, content_type=nil)
         location ||= Core::Ast::Location.of_caller
         case argument
         when String
-          doc_string(argument, 'text/plain', location)
+          builder.doc_string(Core::Ast::DocString.new(argument, content_type, location))
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
-          data_table(argument.map{ |row| row.cells }, location)
+          builder.data_table(argument.map{ |row| row.cells }, location)
         when DataTable, DocString, None
           argument
         when nil
@@ -26,14 +26,6 @@ module Cucumber
         else
           raise ArgumentError, "Don't know how to convert #{argument.class} #{argument.inspect} into a MultilineArgument"
         end
-      end
-
-      def doc_string(argument, content_type, location)
-        builder.doc_string(Core::Ast::DocString.new(argument, content_type, location))
-      end
-
-      def data_table(data, location)
-        builder.data_table(Core::Ast::DataTable.new(data, location))
       end
 
       private
