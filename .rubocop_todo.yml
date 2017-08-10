@@ -6,15 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 8
-Lint/AmbiguousOperator:
-  Exclude:
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/running_test_case.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-    - 'spec/cucumber/formatter/spec_helper.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Lint/DeprecatedClassMethods:
@@ -1050,6 +1041,21 @@ Style/SymbolProc:
 # SupportedStyles: final_newline, final_blank_line
 Style/TrailingBlankLines:
   Enabled: false
+
+# Reviewed Items Below
+# Area for offenses that are false positives or are being kept in by
+# choice.
+# Please make sure to add a Reviewed note to each that is moved here.
+
+# Offense count: 8
+# Reviewed: Decided by team to leave these in place
+Lint/AmbiguousOperator:
+  Exclude:
+    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
+    - 'lib/cucumber/multiline_argument/data_table.rb'
+    - 'lib/cucumber/running_test_case.rb'
+    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
+    - 'spec/cucumber/formatter/spec_helper.rb'
 
 # Offense count: 18
 # Cop supports --auto-correct.
