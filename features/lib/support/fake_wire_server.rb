@@ -65,7 +65,15 @@ class FakeWireServer
         send_response(['fail', serialized_exception ].to_json)
       end
     rescue => e
-      send_response(['fail', { :message => e.message, :backtrace => e.backtrace, :exception => e.class } ].to_json)
+      response = [
+                    'fail',
+                    {
+                      :message => e.message,
+                      :backtrace => e.backtrace,
+                      :exception => e.class
+                    }
+                  ].to_json
+      send_response(response)
     end
 
     def response_to(data)
