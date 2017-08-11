@@ -146,16 +146,6 @@ Style/Alias:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'
 
-# Offense count: 1197
-# Cop supports --auto-correct.
-Style/AlignArray:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/rake/task.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rake/forked_spec.rb'
-
 # Offense count: 20
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
