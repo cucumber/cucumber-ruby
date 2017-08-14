@@ -25,20 +25,21 @@ module Cucumber
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
-        'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
+        'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
-      FORMAT_HELP_MSG = ['Use --format rerun --out rerun.txt to write out failing',
-        'features. You can rerun them with cucumber @rerun.txt.',
-        'FORMAT can also be the fully qualified class name of',
-        "your own custom formatter. If the class isn't loaded,",
-        'Cucumber will attempt to require a file with a relative',
-        'file name that is the underscore name of the class name.',
-        'Example: --format Foo::BarZap -> Cucumber will look for',
-        'foo/bar_zap.rb. You can place the file with this relative',
-        'path underneath your features/support directory or anywhere',
-        "on Ruby's LOAD_PATH, for example in a Ruby gem."
-      ]
+      FORMAT_HELP_MSG = [
+                          'Use --format rerun --out rerun.txt to write out failing',
+                          'features. You can rerun them with cucumber @rerun.txt.',
+                          'FORMAT can also be the fully qualified class name of',
+                          "your own custom formatter. If the class isn't loaded,",
+                          'Cucumber will attempt to require a file with a relative',
+                          'file name that is the underscore name of the class name.',
+                          'Example: --format Foo::BarZap -> Cucumber will look for',
+                          'foo/bar_zap.rb. You can place the file with this relative',
+                          'path underneath your features/support directory or anywhere',
+                          "on Ruby's LOAD_PATH, for example in a Ruby gem."
+                        ]
 
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
@@ -49,11 +50,12 @@ module Cucumber
       NO_PROFILE_LONG_FLAG = '--no-profile'
       FAIL_FAST_FLAG = '--fail-fast'
       RETRY_FLAG = '--retry'
-      OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n-keywords', '-f', '--format', '-o', '--out',
-                                  '-t', '--tags', '-n', '--name', '-e', '--exclude',
-                                  PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG,
-                                  '-l', '--lines', '--port',
-                                  '-I', '--snippet-type']
+      OPTIONS_WITH_ARGS = [
+                            '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
+                            '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
+                            PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
+                            '--lines', '--port', '-I', '--snippet-type'
+                          ]
       ORDER_TYPES = %w{defined random}
       TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
@@ -329,12 +331,13 @@ TEXT
       end
 
       def banner
-        ['Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
-          'Examples:',
-          'cucumber examples/i18n/en/features',
-          'cucumber @rerun.txt (See --format rerun)',
-          'cucumber examples/i18n/it/features/somma.feature:6:98:113',
-          'cucumber -s -i http://rubyurl.com/eeCl', '', ''
+        [
+         'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
+         'Examples:',
+         'cucumber examples/i18n/en/features',
+         'cucumber @rerun.txt (See --format rerun)',
+         'cucumber examples/i18n/it/features/somma.feature:6:98:113',
+         'cucumber -s -i http://rubyurl.com/eeCl', '', ''
         ].join("\n")
       end
 
@@ -521,21 +524,24 @@ TEXT
         require 'gherkin/dialect'
         language = ::Gherkin::Dialect.for(lang)
         data = Cucumber::MultilineArgument::DataTable.from(
-          [['feature', to_keywords_string(language.feature_keywords)],
-          ['background', to_keywords_string(language.background_keywords)],
-          ['scenario', to_keywords_string(language.scenario_keywords)],
-          ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
-          ['examples', to_keywords_string(language.examples_keywords)],
-          ['given', to_keywords_string(language.given_keywords)],
-          ['when', to_keywords_string(language.when_keywords)],
-          ['then', to_keywords_string(language.then_keywords)],
-          ['and', to_keywords_string(language.and_keywords)],
-          ['but', to_keywords_string(language.but_keywords)],
-          ['given (code)', to_code_keywords_string(language.given_keywords)],
-          ['when (code)', to_code_keywords_string(language.when_keywords)],
-          ['then (code)', to_code_keywords_string(language.then_keywords)],
-          ['and (code)', to_code_keywords_string(language.and_keywords)],
-          ['but (code)', to_code_keywords_string(language.but_keywords)]])
+          [
+            ['feature', to_keywords_string(language.feature_keywords)],
+            ['background', to_keywords_string(language.background_keywords)],
+            ['scenario', to_keywords_string(language.scenario_keywords)],
+            ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
+            ['examples', to_keywords_string(language.examples_keywords)],
+            ['given', to_keywords_string(language.given_keywords)],
+            ['when', to_keywords_string(language.when_keywords)],
+            ['then', to_keywords_string(language.then_keywords)],
+            ['and', to_keywords_string(language.and_keywords)],
+            ['but', to_keywords_string(language.but_keywords)],
+            ['given (code)', to_code_keywords_string(language.given_keywords)],
+            ['when (code)', to_code_keywords_string(language.when_keywords)],
+            ['then (code)', to_code_keywords_string(language.then_keywords)],
+            ['and (code)', to_code_keywords_string(language.and_keywords)],
+            ['but (code)', to_code_keywords_string(language.but_keywords)]
+          ]
+        )
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end

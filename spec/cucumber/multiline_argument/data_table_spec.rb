@@ -457,7 +457,7 @@ module Cucumber
           ])
           t2 = DataTable.from([
             %w(name    male   lastname   swedish),
-             ['aslak', true, 'hellesøy', false]
+            ['aslak', true, 'hellesøy', false]
           ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
             expect(error.table.to_s(indent: 14, color: false)).to eq %{
@@ -476,7 +476,7 @@ module Cucumber
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
             %w(name    male),
-             ['aslak', true]
+            ['aslak', true]
           ])
           t1.diff!(t2)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -488,7 +488,7 @@ module Cucumber
         it 'should allow column mapping of argument before diffing' do
           t1 = DataTable.from([
             %w(name    male),
-             ['aslak', true]
+            ['aslak', true]
           ])
           t1.map_column!('male') {
             'true'
@@ -513,7 +513,7 @@ module Cucumber
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
             %w(name    male),
-             ['aslak', true]
+            ['aslak', true]
           ])
           t1.diff!(t2)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -529,7 +529,7 @@ module Cucumber
           ])
           t2 = DataTable.from([
             %w(X  Y),
-              [2, 1]
+            [2, 1]
           ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
             expect(error.table.to_s(indent: 14, color: false)).to eq %{
