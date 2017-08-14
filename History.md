@@ -11,6 +11,7 @@
 ### Refactoring / Developer Experience
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
 * Fix Lint/DeprecatedClassMethods ([#1172(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1172) @jaysonesmith)
+* Fix Lint/DuplicateMethods ([#1173(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1173) @jaysonesmith)
 * Fix Metrics/LineLength - PARTIAL - 02 ([#1175(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1175) @jaysonesmith)
 * Fix Metrics/LineLength - PARTIAL - 03 ([#1176(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1176) @jaysonesmith)
 * Fix Style/AlignArray ([#1177(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1177) @jaysonesmith)
