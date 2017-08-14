@@ -33,11 +33,11 @@ module Cucumber
         STDOUT.flush
         puts(question)
 
-        if(Cucumber::JRUBY)
-          answer = jruby_gets(timeout_seconds)
-        else
-          answer = mri_gets(timeout_seconds)
-        end
+        answer = if(Cucumber::JRUBY)
+                   jruby_gets(timeout_seconds)
+                 else
+                   mri_gets(timeout_seconds)
+                 end
 
         raise("Waited for input for #{timeout_seconds} seconds, then timed out.") unless answer
         puts(answer)

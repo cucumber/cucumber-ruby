@@ -72,7 +72,7 @@ Defined profiles in cucumber.yml:
         end
 
         begin
-          @cucumber_yml = YAML::load(@cucumber_erb)
+          @cucumber_yml = YAML.load(@cucumber_erb)
         rescue StandardError
           raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end

@@ -612,7 +612,7 @@ module Cucumber
 
           def after
             @child.after if @child
-            # TODO - the last step result might not accurately reflect the
+            # TODO: the last step result might not accurately reflect the
             # overall scenario result.
             scenario_outline = last_step_result.scenario_outline(node.name, node.location)
             formatter.after_feature_element(scenario_outline)

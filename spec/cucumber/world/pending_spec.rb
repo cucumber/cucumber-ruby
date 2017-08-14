@@ -40,7 +40,7 @@ module Cucumber
     it 'raises a Pending if a supplied block starts working' do
       expect(-> {
         @world.pending 'TODO' do
-        # success!
+          # success!
         end
       }).to raise_error(Cucumber::Pending, /TODO/)
     end

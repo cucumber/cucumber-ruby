@@ -310,7 +310,7 @@ module Cucumber
               <% $cucumber_yml_read_count += 1 %>
               default: --format pretty
               END
-              )
+                                           )
               options = Options.new(output_stream, error_stream, :default_profile => 'default')
               options.parse!(%w(-f progress))
 
