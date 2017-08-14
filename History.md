@@ -1,4 +1,4 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targetting 3.0.0.pre.3)
 
 ### Breaking changes
 
