@@ -366,7 +366,7 @@ module Cucumber
       def print_messages
         return if @delayed_messages.empty?
 
-        #builder.ol do
+          #builder.ol do
           @delayed_messages.each do |ann|
             builder.li(:class => 'step message') do
               builder << ann

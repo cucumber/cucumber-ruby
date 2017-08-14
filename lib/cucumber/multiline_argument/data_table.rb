@@ -82,7 +82,7 @@ module Cucumber
       # @param header_mappings [Hash] see map_headers!
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
-        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.kind_of? Core::Ast::DataTable
+        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.is_a? Core::Ast::DataTable
         ast_table = data
         # Verify that it's square
         ast_table.transpose

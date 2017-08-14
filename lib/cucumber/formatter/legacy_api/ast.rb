@@ -119,7 +119,7 @@ module Cucumber
           end
 
           def step_result_attributes
-            legacy_multiline_arg = if multiline_arg.kind_of?(Core::Ast::EmptyMultilineArgument)
+            legacy_multiline_arg = if multiline_arg.is_a?(Core::Ast::EmptyMultilineArgument)
                                      nil
                                    else
                                      step.multiline_arg
