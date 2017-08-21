@@ -1,0 +1,32 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text eol=lf
+
+# Explicitly declare text files to always be normalized and converted
+# to native line endings on checkout.
+*.css text eol=lf
+*.feature text eol=lf
+*.gemspec text eol=lf
+*.js text eol=lf
+*.md text eol=lf
+*.rake text eol=lf
+*.rb text eol=lf
+*.sass text eol=lf
+*.tcl text eol=lf
+*.textile text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+Gemfile text eol=lf
+LICENSE text eol=lf
+Rakefile text eol=lf
+.cucumberproignore text eol=lf
+.gitignore text eol=lf
+.rspec text eol=lf
+.ruby-gemset text eol=lf
+.yardopts text eol=lf
+scripts/* text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+# These patterns are here as an example; we have 0 of these.
+*.png binary
+*.jpg binary
