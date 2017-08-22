@@ -10,6 +10,7 @@
 
 ### Refactoring / Developer Experience
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
+* Fix Metrics/LineLength - PARTIAL - 01 ([#1174(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1174) @jaysonesmith)
 
 ## [3.0.0.pre.2](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
 
