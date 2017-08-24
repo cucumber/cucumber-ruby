@@ -14,15 +14,14 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Changed
 
-* As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/pull/1185) [jaysonesmith](https://github.com/jaysonesmith))
+* As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/issues/1185) [jaysonesmith](https://github.com/jaysonesmith))
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson).
-* Fix Lint/DeprecatedClassMethods ([#1172(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1172) @jaysonesmith)
-* Fix Lint/DuplicateMethods ([#1173(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1173) @jaysonesmith)
-* Fix Metrics/LineLength - PARTIAL - 02 ([#1175(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1175) @jaysonesmith)
-* Fix Metrics/LineLength - PARTIAL - 03 ([#1176(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1176) @jaysonesmith)
-* Fix Style/AlignArray ([#1177(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1177) @jaysonesmith)
-* Fix Style/AndOr ([#1178(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1178) @jaysonesmith)
-* Fix Multiple Cops ([#1179(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1179) @jaysonesmith)
+* Fix Lint/DeprecatedClassMethods ([#1172](https://github.com/cucumber/cucumber-ruby/issues/1172) [jaysonesmith](https://github.com/jaysonesmith))
+* Fix Lint/DuplicateMethods ([#1173](https://github.com/cucumber/cucumber-ruby/issues/1173) [jaysonesmith](https://github.com/jaysonesmith))
+* Fix Metrics/LineLength ([#1175](https://github.com/cucumber/cucumber-ruby/issues/1175), [#1175](https://github.com/cucumber/cucumber-ruby/issues/1175), [#1176](https://github.com/cucumber/cucumber-ruby/issues/1176) [jaysonesmith](https://github.com/jaysonesmith))
+* Fix Style/AlignArray ([#1177](https://github.com/cucumber/cucumber-ruby/issues/1177) [jaysonesmith](https://github.com/jaysonesmith))
+* Fix Style/AndOr ([#1178](https://github.com/cucumber/cucumber-ruby/issues/1178) [jaysonesmith](https://github.com/jaysonesmith))
+* Fix Multiple Cops ([#1179](https://github.com/cucumber/cucumber-ruby/issues/1179) [jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.0.0.pre.2](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
 
@@ -48,7 +47,7 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Bugfixes
 
-* Fix the profile loader on Windows ([#1133](https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1133) @enkessler)
+* Fix the profile loader on Windows ([#1133](https://github.com/cucumber/cucumber-ruby/pulls/1133) @enkessler)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @botandrose)
 * Do not apply the hooks to the test case several times when using the retry option ([#1098](https://github.com/cucumber/cucumber-ruby/issues/1098) @brasmusson)
@@ -63,11 +62,11 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Refactoring / Developer Experience
 
-* Spec: Events.registry exercised ([#1126(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1126) @olleolleolle)
-* Remove programming language abstraction ([#1131(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1131) @tooky, @mattwynne)
-* Update cucumber yaml to use new tag syntax ([#1147(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1147) @danascheider)
-* Turn off Windows failures ([#1142(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1142) @enkessler)
-* Add script to update history.md ([#1141(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
+* Spec: Events.registry exercised ([#1126(https://github.com/cucumber/cucumber-ruby/pulls/1126) @olleolleolle)
+* Remove programming language abstraction ([#1131(https://github.com/cucumber/cucumber-ruby/pulls/1131) @tooky, @mattwynne)
+* Update cucumber yaml to use new tag syntax ([#1147(https://github.com/cucumber/cucumber-ruby/pulls/1147) @danascheider)
+* Turn off Windows failures ([#1142(https://github.com/cucumber/cucumber-ruby/pulls/1142) @enkessler)
+* Add script to update history.md ([#1141(https://github.com/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
 * Update Ruby 2.3 and 2.4 in .travis.yml ([#1100](https://github.com/cucumber/cucumber-ruby/pull/1100) @junaruga)
 * Fixes for rubocop violations ([#1095](https://github.com/cucumber/cucumber-ruby/pull/1095) @bv)
 * Fixes for rubocop violations ([#1042](https://github.com/cucumber/cucumber-ruby/pull/1042) @phoebeclarke)
