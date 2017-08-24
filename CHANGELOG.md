@@ -1,14 +1,16 @@
+Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) on how to contribute to Cucumber.
+
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master)
 
 ### Breaking changes
 
-### New Features
+### Added
 * Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
 
-### Bugfixes
+### Fixed
 * Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
 
-### Refactoring / Developer Experience
+### Changed
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
 * Fix Metrics/LineLength - PARTIAL - 01 ([#1174(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1174) @jaysonesmith)
 
