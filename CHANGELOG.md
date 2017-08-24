@@ -14,7 +14,7 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Changed
 
-* As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting.
+* As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/pull/1185) [jaysonesmith](https://github.com/jaysonesmith))
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson).
 * Fix Lint/DeprecatedClassMethods ([#1172(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1172) @jaysonesmith)
 * Fix Lint/DuplicateMethods ([#1173(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1173) @jaysonesmith)
