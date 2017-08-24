@@ -1,15 +1,21 @@
+Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) on how to contribute to Cucumber.
+
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targetting 3.0.0.pre.3)
 
 ### Breaking changes
 
-### New Features
+### Added
+
 * Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
 
-### Bugfixes
+### Fixed
+
 * Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
 
-### Refactoring / Developer Experience
-* Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
+### Changed
+
+* As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/pull/1185) [jaysonesmith](https://github.com/jaysonesmith))
+* Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson).
 * Fix Lint/DeprecatedClassMethods ([#1172(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1172) @jaysonesmith)
 * Fix Lint/DuplicateMethods ([#1173(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1173) @jaysonesmith)
 * Fix Metrics/LineLength - PARTIAL - 02 ([#1175(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1175) @jaysonesmith)
