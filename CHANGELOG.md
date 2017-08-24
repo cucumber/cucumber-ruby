@@ -5,13 +5,17 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 ### Breaking changes
 
 ### Added
+
 * Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
 
 ### Fixed
+
 * Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
 
 ### Changed
-* Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
+
+* As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1184](https://github.com/cucumber/cucumber-ruby/pull/1184) [jaysonesmith](https://github.com/jaysonesmith))
+* Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson).
 * Fix Metrics/LineLength - PARTIAL - 01 ([#1174(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1174) @jaysonesmith)
 
 ## [3.0.0.pre.2](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
