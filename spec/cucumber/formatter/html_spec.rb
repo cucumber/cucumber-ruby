@@ -355,7 +355,7 @@ module Cucumber
 
         describe 'with a step that embeds a text' do
           define_steps do
-            Given(/log/) { embed('log.txt', 'text/plain') }
+            Given(/log/) { embed('log.txt', 'text/plain', 'foo') }
           end
 
           define_feature(<<-FEATURE)
