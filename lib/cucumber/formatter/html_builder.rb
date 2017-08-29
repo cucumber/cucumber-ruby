@@ -5,7 +5,15 @@ require 'pathname'
 module Cucumber
   module Formatter
     class HtmlBuilder < Builder::XmlMarkup
-      class InvalidEmbedTypeError < ::StandardError; end
+      VALID_EMBED_TYPES = [:text, :image].freeze
+
+      class InvalidEmbedTypeError < ::StandardError
+        MESSAGE = 'Invalid embed type. Valid types are :text and :image.'.freeze
+
+        def initialize(message=MESSAGE)
+          super(message)
+        end
+      end
 
       def embed(type: nil, src: nil, label: nil, id: nil)
         prepend_to_span('embed', string_to_embed(type: type, src: src, label: label, id: id))
@@ -43,7 +51,7 @@ module Cucumber
 
       def string_to_embed(type: nil, src: nil, label: nil, id: nil)
         raise ::ArgumentError, 'missing required argument' unless type && src && label && id # for Ruby 2.0 compatibility
-        raise InvalidEmbedTypeError, 'Invalid type. Valid types are :text and :image.' unless [:text, :image].include? type
+        raise InvalidEmbedTypeError unless VALID_EMBED_TYPES.include?(type)
 
         if type == :image
           %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
