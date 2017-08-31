@@ -10,7 +10,7 @@ In general: Please provide as much information as you can to help us solving you
 
 <!--- If you're describing a bug, tell us what should happen -->
 <!--- If you're suggesting a change/improvement, tell us how it should work -->
-<!--- Feel free to use Given / Then / Then if that helps, but please add some plain-language context too -->
+<!--- Feel free to use Given / When / Then if that helps, but please add some plain-language context too -->
 
 ## Current Behavior
 
