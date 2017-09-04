@@ -42,10 +42,9 @@ module Cucumber
       def embed(src, mime_type, label)
         if image?(mime_type)
           src = src_is_file_or_data?(src) ? src : "data:#{standardize_mime_type(mime_type)},#{src}"
-
-          builder.embed_image(src: set_path(src), label: label, id: next_id(:img))
+          builder.embed(type: :image, src: set_path(src), label: label, id: next_id(:img))
         else
-          builder.embed_text(src: src, label: label, id: next_id(:text))
+          builder.embed(type: :text, src: src, label: label, id: next_id(:text))
         end
       end
 

@@ -5,20 +5,18 @@ require 'pathname'
 module Cucumber
   module Formatter
     class HtmlBuilder < Builder::XmlMarkup
-      def embed_text(src: nil, label: nil, id: nil)
-        raise ArgumentError, 'missing required argument' unless src && label && id # for Ruby 2.0 compatibility
+      VALID_EMBED_TYPES = [:text, :image].freeze
 
-        prepend_to_span('embed', %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>})
+      class InvalidEmbedTypeError < ::StandardError
+        MESSAGE = 'Invalid embed type. Valid types are :text and :image.'.freeze
+
+        def initialize(message=MESSAGE)
+          super(message)
+        end
       end
 
-      def embed_image(src: nil, label: nil, id: nil)
-        raise ArgumentError, 'missing required argument' unless src && label && id # for Ruby 2.0 compatibility
-
-        prepend_to_span(
-          'embed',
-          %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
-            <img id="#{id}" style="display: none" src="#{src}"/>}
-        )
+      def embed(type: nil, src: nil, label: nil, id: nil)
+        prepend_to_span('embed', string_to_embed(type: type, src: src, label: label, id: id))
       end
 
       def declare!
@@ -50,6 +48,18 @@ module Cucumber
       end
 
       private
+
+      def string_to_embed(type: nil, src: nil, label: nil, id: nil)
+        raise ::ArgumentError, 'missing required argument' unless type && src && label && id # for Ruby 2.0 compatibility
+        raise InvalidEmbedTypeError unless VALID_EMBED_TYPES.include?(type)
+
+        if type == :image
+          %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
+          <img id="#{id}" style="display: none" src="#{src}"/>}
+        else
+          %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>}
+        end
+      end
 
       def summary_div
         div(id: 'summary') do
