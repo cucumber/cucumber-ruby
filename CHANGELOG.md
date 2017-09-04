@@ -62,7 +62,6 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Refactoring / Developer Experience
 
-* Extract HTMLBuilder#string_to_embed method to DRY up code ([#1187](https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1187) [@danascheider](https://github.com/danascheider))
 * Spec: Events.registry exercised ([#1126(https://github.com/cucumber/cucumber-ruby/pulls/1126) @olleolleolle)
 * Remove programming language abstraction ([#1131(https://github.com/cucumber/cucumber-ruby/pulls/1131) @tooky, @mattwynne)
 * Update cucumber yaml to use new tag syntax ([#1147(https://github.com/cucumber/cucumber-ruby/pulls/1147) @danascheider)
