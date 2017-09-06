@@ -11,8 +11,10 @@ class PullRequest
 
   def entry
     pr = gh.pull_request('cucumber/cucumber-ruby', num)
-    login = pr['user']['login']
-    "#{pr['title']} ([##{num}](#{pr['url']}) [@#{login}](https://github.com/#{login}))"
+    username = pr['user']['login']
+    url = pr['html_url']
+    title = pr['title']
+    "#{title} ([##{num}](#{url}) [@#{username}](https://github.com/#{username}))"
   end
 
   def labels
