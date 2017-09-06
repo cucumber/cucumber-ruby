@@ -14,7 +14,7 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Changed
 
-* Refactor: Extract HTMLBuilder#string_to_embed method to DRY up code ([#1187](https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1187) [@danascheider](https://github.com/danascheider))
+* Refactor: Extract HTMLBuilder#string_to_embed method to DRY up code ([#1187](https://github.com/cucumber/cucumber-ruby/pulls/1187) [@danascheider](https://github.com/danascheider))
 * As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/issues/1185) [jaysonesmith](https://github.com/jaysonesmith))
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson).
 * Fix Lint/DeprecatedClassMethods ([#1172](https://github.com/cucumber/cucumber-ruby/issues/1172) [jaysonesmith](https://github.com/jaysonesmith))
