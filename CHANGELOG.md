@@ -1,4 +1,14 @@
-Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) on how to contribute to Cucumber.
+# CHANGE LOG
+
+All notable changes to this project will be documented in this file.
+
+This project adheres to [Semantic Versioning](http://semver.org).
+
+This document is formatted according to the principles of [Keep A CHANGELOG](http://keepachangelog.com).
+
+Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
+
+----
 
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targetting 3.0.0.pre.3)
 
@@ -6,11 +16,11 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Added
 
-* Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
+* Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [#1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
 
 ### Fixed
 
-* Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
+* Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [#1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
 
 ### Changed
 
@@ -49,7 +59,6 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 ### Bugfixes
 
 * Fix the profile loader on Windows ([#1133](https://github.com/cucumber/cucumber-ruby/pulls/1133) @enkessler)
-* Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @botandrose)
 * Do not apply the hooks to the test case several times when using the retry option ([#1098](https://github.com/cucumber/cucumber-ruby/issues/1098) @brasmusson)
 * Fix bug in comparing empty data tables ([#1097](https://github.com/cucumber/cucumber-ruby/pulls/1097), resolves [#1096](https://github.com/cucumber/cucumber-ruby/issues/1096))
@@ -63,11 +72,11 @@ Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CO
 
 ### Refactoring / Developer Experience
 
-* Spec: Events.registry exercised ([#1126(https://github.com/cucumber/cucumber-ruby/pulls/1126) @olleolleolle)
-* Remove programming language abstraction ([#1131(https://github.com/cucumber/cucumber-ruby/pulls/1131) @tooky, @mattwynne)
-* Update cucumber yaml to use new tag syntax ([#1147(https://github.com/cucumber/cucumber-ruby/pulls/1147) @danascheider)
-* Turn off Windows failures ([#1142(https://github.com/cucumber/cucumber-ruby/pulls/1142) @enkessler)
-* Add script to update history.md ([#1141(https://github.com/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
+* Spec: Events.registry exercised ([#1126](https://github.com/cucumber/cucumber-ruby/pulls/1126) @olleolleolle)
+* Remove programming language abstraction ([#1131](https://github.com/cucumber/cucumber-ruby/pulls/1131) @tooky, @mattwynne)
+* Update cucumber yaml to use new tag syntax ([#1147](https://github.com/cucumber/cucumber-ruby/pulls/1147) @danascheider)
+* Turn off Windows failures ([#1142](https://github.com/cucumber/cucumber-ruby/pulls/1142) @enkessler)
+* Add script to update history.md ([#1141](https://github.com/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
 * Update Ruby 2.3 and 2.4 in .travis.yml ([#1100](https://github.com/cucumber/cucumber-ruby/pull/1100) @junaruga)
 * Fixes for rubocop violations ([#1095](https://github.com/cucumber/cucumber-ruby/pull/1095) @bv)
 * Fixes for rubocop violations ([#1042](https://github.com/cucumber/cucumber-ruby/pull/1042) @phoebeclarke)
