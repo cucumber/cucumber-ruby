@@ -129,7 +129,7 @@ module Cucumber
         when :after_step
           return after_step_hooks
         else
-          fail 'Unkown hook type ' + hook_query.type.to_s
+          fail 'Unknown hook type ' + hook_query.type.to_s
         end
       end
 
