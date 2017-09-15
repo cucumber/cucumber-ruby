@@ -31,3 +31,4 @@ tags
 .project
 Gemfile.local
 .envrc
+.travis
