@@ -95,7 +95,7 @@ module Cucumber
         Cucumber.deprecate(
           'Use ParameterType(...) instead',
           'Transform',
-          '2.6.0'
+          '3.0'
         )
         parameter_type = CucumberExpressions::ParameterType.new(
           regexp.to_s,
