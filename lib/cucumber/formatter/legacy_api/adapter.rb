@@ -53,10 +53,17 @@ module Cucumber
         private
 
         def emit_deprecation_warning
-          parent_name = formatter.class.name =~ /::[^:]+\Z/ ? $`.freeze : nil
-          return if parent_name == "Cucumber::Formatter"
+          parent_name = formatter_class_name =~ /::[^:]+\Z/ ? $`.freeze : nil
+          return if parent_name == 'Cucumber::Formatter'
+          return if !config.out_stream # some unit tests don't set it
           config.out_stream.puts "WARNING: The formatter #{formatter.class.name} is using the deprecated formatter API which will be removed in v4.0 of Cucumber."
           config.out_stream.puts
+        end
+
+        def formatter_class_name
+          formatter.class.name
+        rescue NoMethodError # when we use the Fanout, things get gnarly
+          formatter.class[0].class.name
         end
 
         def printer
