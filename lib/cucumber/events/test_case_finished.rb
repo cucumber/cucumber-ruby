@@ -9,7 +9,7 @@ module Cucumber
       # @return [Cucumber::Core::Test::Case] that was executed
       attr_reader :test_case
 
-      # @return [Cucumber::Core::Test::Result] the result of running the {Cucumber::Core::Test::Step}
+      # @return [Cucumber::Core::Test::Result] the result of running the {Cucumber::Core::Test::Case}
       attr_reader :result
 
     end
