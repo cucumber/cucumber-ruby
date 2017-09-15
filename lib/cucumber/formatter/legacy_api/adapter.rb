@@ -15,6 +15,8 @@ module Cucumber
 
         def initialize(*)
           super
+          emit_deprecation_warning
+
           @matches = collect_matches
           config.on_event(:test_case_started) do |event|
             formatter.before_test_case(event.test_case)
@@ -49,6 +51,13 @@ module Cucumber
         end
 
         private
+
+        def emit_deprecation_warning
+          parent_name = formatter.class.name =~ /::[^:]+\Z/ ? $`.freeze : nil
+          return if parent_name == "Cucumber::Formatter"
+          config.out_stream.puts "WARNING: The formatter #{formatter.class.name} is using the deprecated formatter API which will be removed in v4.0 of Cucumber."
+          config.out_stream.puts
+        end
 
         def printer
           @printer ||= FeaturesPrinter.new(formatter, results, config, @matches).before
