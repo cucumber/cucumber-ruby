@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'spec_helper'
+
 require 'cucumber/formatter/interceptor'
 
 module Cucumber::Formatter
