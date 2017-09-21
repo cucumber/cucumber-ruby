@@ -10,11 +10,6 @@ module Cucumber
     # make sense in your domain. For more on that, see {Cucumber::Glue::Dsl#World}
     module ProtoWorld
 
-      # Call a Transform with a string from another Transform definition
-      def Transform(arg)
-        super
-      end
-
       # Run a single Gherkin step
       # @example Call another step
       #   step "I am logged in"

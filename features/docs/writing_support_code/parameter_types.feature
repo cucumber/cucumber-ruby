@@ -51,20 +51,3 @@ Feature: Parameter Types
       """
     When I run `cucumber features/foo.feature`
     Then it should pass
-
-  Scenario: Parameter type defined with legacy Transform method
-    This is for backwards compatibility - works with regular expressions,
-    but not with Cucumber Expressions, because no name is specified for the
-    parameter type.
-
-    Given a file named "features/support/transforms.rb" with:
-      """
-      Transform(/[A-Z]\w+/) do |name|
-        Person.new(name)
-      end
-      """
-    When I run `cucumber features/foo.feature`
-    Then it should fail with:
-      """
-      Undefined parameter type {person}
-      """
