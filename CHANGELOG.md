@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targetting 3.0.0.pre.3)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targeting 3.0.0.pre.3)
 
 ### Breaking changes
 
@@ -19,6 +19,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [#1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)
 
 ### Fixed
+
+* Fix bug in DataTable#symbolic_hashes ([#1200](https://github.com/cucumber/cucumber-ruby/pull/1200) @Ben-Behar)
 
 * Fix typo in JSON formatter ([#1196](https://github.com/cucumber/cucumber-ruby/pull/1196) @alb-i986)
 
