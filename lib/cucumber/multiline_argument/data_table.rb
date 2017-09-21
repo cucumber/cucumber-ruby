@@ -159,8 +159,10 @@ module Cucumber
       #   [{:foo => '2', :bar => '3', :foo_bar => '5'}, {:foo => '7', :bar => '9', :foo_bar => '16'}]
       #
       def symbolic_hashes
-        @header_conversion_proc = lambda { |h| symbolize_key(h) }
-        @symbolic_hashes ||= build_hashes
+        @symbolic_hashes ||=
+          self.hashes.map do |string_hash|
+            Hash[string_hash.map{ |a,b| [symbolize_key(a), b] }]
+          end
       end
 
       # Converts this table into a Hash where the first column is
