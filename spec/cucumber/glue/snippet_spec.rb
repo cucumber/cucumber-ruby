@@ -148,7 +148,7 @@ module Cucumber
                                             'veg',
                                             /(cuke|banana)s?/,
                                             Object,
-                                            ->(s) { s},
+                                            ->(s) { s },
                                             true,
                                             false
           ))
@@ -156,7 +156,7 @@ module Cucumber
                                             'cucumis',
                                             /(bella|cuke)s?/,
                                             Object,
-                                            ->(s) { s},
+                                            ->(s) { s },
                                             true,
                                             false
           ))

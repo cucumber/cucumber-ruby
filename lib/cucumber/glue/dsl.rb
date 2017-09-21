@@ -95,7 +95,7 @@ module Cucumber
         Cucumber.deprecate(
           'Use ParameterType(...) instead',
           'Transform',
-          '2.6.0'
+          '3.0'
         )
         parameter_type = CucumberExpressions::ParameterType.new(
           regexp.to_s,
@@ -109,13 +109,17 @@ module Cucumber
       end
 
       def ParameterType(options)
+        type = options[:type] || Object
+        use_for_snippets = true if options[:use_for_snippets].nil?
+        prefer_for_regexp_match = false if options[:prefer_for_regexp_match].nil?
+
         parameter_type = CucumberExpressions::ParameterType.new(
           options[:name],
           options[:regexp],
-          options[:type],
+          type,
           options[:transformer],
-          options[:use_for_snippets],
-          options[:prefer_for_regexp_match]
+          use_for_snippets,
+          prefer_for_regexp_match
         )
         Dsl.define_parameter_type(parameter_type)
       end

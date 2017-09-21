@@ -14,6 +14,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Breaking changes
 
+None so far...
+
 ### Added
 
 * Handle selective strict options. ([#1169](https://github.com/cucumber/cucumber-ruby/pull/1169), [#1160](https://github.com/cucumber/cucumber-ruby/issues/1160) @brasmusson)

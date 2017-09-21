@@ -46,12 +46,7 @@ Feature: Parameter Types
       ParameterType(
         name: 'person',
         regexp: /[A-Z]\w+/,
-        type: Person,
-        transformer: lambda do |name|
-          Person.new(name)
-        end,
-        use_for_snippets: true,
-        prefer_for_regexp_match: false
+        transformer: -> (name) { Person.new(name) }
       )
       """
     When I run `cucumber features/foo.feature`
