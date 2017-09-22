@@ -22,6 +22,8 @@ None so far...
 
 ### Fixed
 
+* Use absolute path in IO formatter to prevent `chdir` issues. ([#1111](https://github.com/cucumber/cucumber-ruby/pull/1111/files) @akostadinov)
+
 * Fix bug in DataTable#symbolic_hashes ([#1200](https://github.com/cucumber/cucumber-ruby/pull/1200) @Ben-Behar)
 
 * Fix typo in JSON formatter ([#1196](https://github.com/cucumber/cucumber-ruby/pull/1196) @alb-i986)
