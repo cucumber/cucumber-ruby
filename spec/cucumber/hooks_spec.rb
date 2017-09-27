@@ -2,8 +2,8 @@
 require 'cucumber/hooks'
 module Cucumber::Hooks
   shared_examples_for 'a source node' do
-    it 'responds to name' do
-      expect( subject.name ).to be_a(String)
+    it 'responds to text' do
+      expect( subject.text ).to be_a(String)
     end
 
     it 'responds to location' do
