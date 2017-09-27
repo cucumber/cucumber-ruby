@@ -43,7 +43,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec.feature:4"},
                       "result": {"status": "undefined"}}]}]}]})
@@ -79,7 +79,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:62"},
                       "result": {"status": "passed",
@@ -116,7 +116,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:99"},
                       "result": {"status": "failed",
@@ -154,7 +154,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:137"},
                       "result": {"status": "pending",
@@ -196,7 +196,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 8,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:179"},
                       "result": {"status": "passed",
@@ -250,7 +250,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 6,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:227"},
                       "result": {"status": "passed",
@@ -269,7 +269,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 15,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:227"},
                       "result": {"status": "passed",
@@ -343,7 +343,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Then ",
-                      "text": "the monkey eats bananas",
+                      "name": "the monkey eats bananas",
                       "line": 11,
                       "comments": [{"value": "#step comment1",
                                     "line": 10}],
@@ -359,7 +359,7 @@ module Cucumber
                    "type": "background",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 6,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:307"},
                       "result": {"status": "passed",
@@ -378,7 +378,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Then ",
-                      "text": "the monkey eats bananas",
+                      "name": "the monkey eats bananas",
                       "line": 22,
                       "comments": [{"value": "#step comment2",
                                     "line": 15}],
@@ -420,7 +420,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "doc_string": {"value": "the doc string",
                                      "content_type": "",
@@ -460,7 +460,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "output": ["from step"],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:443"},
@@ -499,7 +499,7 @@ module Cucumber
                    "type": "background",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec.feature:4"},
                       "result": {"status": "undefined"}}]},
@@ -511,7 +511,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Then ",
-                      "text": "the monkey eats bananas",
+                      "name": "the monkey eats bananas",
                       "line": 7,
                       "match": {"location": "spec.feature:7"},
                       "result": {"status": "undefined"}}]},
@@ -522,7 +522,7 @@ module Cucumber
                    "type": "background",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec.feature:4"},
                       "result": {"status": "undefined"}}]},
@@ -534,7 +534,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Then ",
-                      "text": "the monkey eats more bananas",
+                      "name": "the monkey eats more bananas",
                       "line": 10,
                       "match": {"location": "spec.feature:10"},
                       "result": {"status": "undefined"}}]}]}]})
@@ -571,7 +571,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "embeddings": [{"mime_type": "mime-type",
                                       "data": "YWJj"}],
@@ -616,7 +616,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "embeddings": [{"mime_type": "image/png",
                                       "data": "Zm9v"}],
@@ -669,7 +669,7 @@ module Cucumber
                                  "duration": 1}}],
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:645"},
                       "result": {"status": "passed",
@@ -721,7 +721,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Given ",
-                      "text": "there are bananas",
+                      "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:704"},
                       "result": {"status": "passed",
@@ -765,7 +765,7 @@ module Cucumber
                    "type": "scenario",
                    "steps":
                      [{"keyword": "Given ",
-                       "text": "there are bananas",
+                       "name": "there are bananas",
                        "line": 4,
                        "rows":
                          [{"cells": ["aa", "bb"]},
