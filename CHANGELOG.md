@@ -12,7 +12,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targeting 3.0.0)
 
-### Breaking changes
+### Changed
 
 * `Transform` has been removed and replaced with `ParameterType`. See [upgrading instructions](https://cucumber.io/blog/2017/09/21/upgrading-to-cucumber-3). ([#1190](https://github.com/cucumber/cucumber-ruby/issues/1190) @aslakhellesoy)
 * Nested capture groups are not counted as parameters. See [upgrading instructions](https://cucumber.io/blog/2017/09/21/upgrading-to-cucumber-3). (@aslakhellesoy)
@@ -31,7 +31,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 * Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [#1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
 
-### Changed
+### Improved
 
 * Refactor: Extract HTMLBuilder#string_to_embed method to DRY up code ([#1187](https://github.com/cucumber/cucumber-ruby/pulls/1187) [@danascheider](https://github.com/danascheider))
 * As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/issues/1185) [jaysonesmith](https://github.com/jaysonesmith))
