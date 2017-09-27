@@ -155,6 +155,10 @@ module Cucumber
             self
           end
 
+          def to_s
+            step.text
+          end
+
           private
 
           def source_indent

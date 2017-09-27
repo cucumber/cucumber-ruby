@@ -930,11 +930,7 @@ module Cucumber
           def of(node)
             # The length of the instantiated steps in --expand mode are currently
             # not included in the calculation of max => make sure to return >= 1
-            if node.respond_to?(:name)
-              [1, max - node.name.length - node.keyword.length].max
-            else
-              [1, max - node.text.length - node.keyword.length].max
-            end
+            [1, max - node.to_s.length - node.keyword.length].max
           end
 
           def record_width_of(node)
