@@ -86,28 +86,6 @@ module Cucumber
         Dsl.register_rb_hook('after_step', tag_expressions, proc)
       end
 
-      # Registers a proc that will be called with a step definition argument if it
-      # matches the pattern passed as the first argument to Transform. Alternatively, if
-      # the pattern contains captures then they will be yielded as arguments to the
-      # provided proc. The return value of the proc is consequently yielded to the
-      # step definition.
-      def Transform(regexp, &proc)
-        Cucumber.deprecate(
-          'Use ParameterType(...) instead',
-          'Transform',
-          '3.0'
-        )
-        parameter_type = CucumberExpressions::ParameterType.new(
-          regexp.to_s,
-          regexp,
-          Object,
-          proc,
-          false,
-          true
-        )
-        Dsl.define_parameter_type(parameter_type)
-      end
-
       def ParameterType(options)
         type = options[:type] || Object
         use_for_snippets = true if options[:use_for_snippets].nil?
