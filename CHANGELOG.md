@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targeting 3.0.0.pre.3)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master) (targeting 3.0.0)
 
 ### Breaking changes
 
