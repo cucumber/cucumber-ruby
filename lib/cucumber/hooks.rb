@@ -43,7 +43,7 @@ module Cucumber
         @location = location
       end
 
-      def name
+      def text
         'After hook'
       end
 
@@ -63,7 +63,7 @@ module Cucumber
         @location = location
       end
 
-      def name
+      def text
         'Before hook'
       end
 
@@ -83,7 +83,7 @@ module Cucumber
         @location = location
       end
 
-      def name
+      def text
         'AfterStep hook'
       end
 
