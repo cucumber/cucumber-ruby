@@ -105,7 +105,7 @@ module Cucumber
         return output if result.ok?(@config.strict)
         if test_case.keyword == 'Scenario'
           output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
-          output += "#{@failing_step_source.name}\n"
+          output += "#{@failing_step_source}\n"
         else
           output += "Example row: #{row_name}\n"
         end
@@ -113,7 +113,7 @@ module Cucumber
       end
 
       def hook?(step)
-        ['Before hook', 'After hook', 'AfterStep hook'].include? step.name
+        ['Before hook', 'After hook', 'AfterStep hook'].include? step.text
       end
 
       def build_testcase(result, scenario_designation, output)

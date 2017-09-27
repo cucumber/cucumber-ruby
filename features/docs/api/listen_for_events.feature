@@ -21,7 +21,7 @@ Feature: Listen for events
         io = config.out_stream
         config.on_event :step_activated do |event|
           io.puts "Success!"
-          io.puts "Step name:       #{event.test_step.name}"
+          io.puts "Step text:       #{event.test_step}"
           io.puts "Source location: #{event.step_match.location}"
         end
       end

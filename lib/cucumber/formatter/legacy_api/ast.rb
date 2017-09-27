@@ -103,7 +103,7 @@ module Cucumber
                                     :embeddings) do
           extend Forwardable
 
-          def_delegators :step, :keyword, :name, :multiline_arg, :location
+          def_delegators :step, :keyword, :text, :multiline_arg, :location
 
           def accept(formatter)
             formatter.before_step(self)
@@ -153,6 +153,10 @@ module Cucumber
 
           def step_invocation
             self
+          end
+
+          def to_s
+            text
           end
 
           private
@@ -238,6 +242,10 @@ module Cucumber
         ExampleTableRow = Struct.new(:exception, :status, :cells, :location, :language) do
           def name
             '| ' + cells.join(' | ') + ' |'
+          end
+
+          def to_s
+            name
           end
 
           def failed?

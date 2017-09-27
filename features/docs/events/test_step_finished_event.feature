@@ -24,7 +24,7 @@ Feature: Test Step Finished Event
       """
       AfterConfiguration do |config|
         config.on_event :test_step_finished do |event|
-          config.out_stream.puts "Test step: #{event.test_step.name}"
+          config.out_stream.puts "Test step: #{event.test_step}"
           config.out_stream.puts "The result is: #{event.result}"
         end
       end

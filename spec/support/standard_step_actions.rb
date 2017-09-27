@@ -3,7 +3,7 @@
 class StandardStepActions < Cucumber::Core::Filter.new
   def test_case(test_case)
     test_steps = test_case.test_steps.map do |step|
-      case step.name
+      case step.text
       when /fail/
         step.with_action { raise Failure }
       when /pass/
