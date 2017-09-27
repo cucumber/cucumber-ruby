@@ -156,7 +156,7 @@ module Cucumber
           end
 
           def to_s
-            step.text
+            text
           end
 
           private
