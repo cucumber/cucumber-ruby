@@ -83,6 +83,11 @@ module Cucumber
       # provided proc. The return value of the proc is consequently yielded to the
       # step definition.
       def Transform(regexp, &proc)
+        Cucumber.deprecate(
+          "\n         Please follow the upgrade instructions at https://cucumber.io/blog/2017/09/21/upgrading-to-cucumber-3",
+          "Transform",
+          "3.0.0"
+        )
         RbDsl.register_rb_transform(regexp, proc)
       end
 
