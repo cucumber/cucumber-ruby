@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'spec_helper'
+
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/json'
 require 'cucumber/cli/options'

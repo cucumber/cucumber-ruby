@@ -6,7 +6,7 @@ require 'cucumber/runtime/step_hooks'
 require 'cucumber/runtime/before_hooks'
 require 'cucumber/runtime/after_hooks'
 require 'cucumber/filters'
-require 'spec_helper'
+
 
 module Cucumber
   module Formatter::LegacyApi

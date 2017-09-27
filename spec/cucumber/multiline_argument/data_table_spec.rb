@@ -1,6 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
-require 'spec_helper'
+
 require 'cucumber/multiline_argument/data_table'
 
 module Cucumber

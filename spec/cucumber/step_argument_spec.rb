@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'spec_helper'
+
 require 'cucumber/step_argument'
 
 module Cucumber
