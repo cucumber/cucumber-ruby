@@ -920,7 +920,7 @@ module Cucumber
 
           [:step, :outline_step].each do |node_name|
             define_method(node_name) do |node|
-              record_width_of_step node
+              record_width_of node
             end
           end
 
@@ -934,16 +934,11 @@ module Cucumber
               [1, max - node.name.length - node.keyword.length].max
             else
               [1, max - node.text.length - node.keyword.length].max
-            end  
-            
+            end
           end
 
           def record_width_of(node)
             @widths << node.keyword.length + node.to_s.length + 1
-          end
-          
-          def record_width_of_step(node)
-            @widths << node.keyword.length + node.text.length + 1
           end
 
           private
