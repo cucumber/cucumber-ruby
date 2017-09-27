@@ -30,7 +30,7 @@ Feature: Listen for events
     Then it should pass with:
       """
       Success!
-      Step name:       matching
+      Step text:       matching
       Source location: features/step_definitions/steps.rb:1
       """
 
