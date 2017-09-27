@@ -240,6 +240,10 @@ module Cucumber
             '| ' + cells.join(' | ') + ' |'
           end
 
+          def to_s
+            name
+          end
+
           def failed?
             status == :failed
           end

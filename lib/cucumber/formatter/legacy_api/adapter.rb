@@ -939,7 +939,7 @@ module Cucumber
           end
 
           def record_width_of(node)
-            @widths << node.keyword.length + node.name.length + 1
+            @widths << node.keyword.length + node.to_s.length + 1
           end
           
           def record_width_of_step(node)
