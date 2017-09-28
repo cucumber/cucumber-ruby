@@ -22,7 +22,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* Gemspec has `required_ruby_version = '>= 2.1'`
 
 ### Improved
 

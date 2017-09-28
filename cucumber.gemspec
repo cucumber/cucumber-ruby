@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.homepage    = 'https://cucumber.io/'
   s.platform    = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.1' # Keep in sync with .travis.yml
   s.add_dependency 'cucumber-core', '~> 3.0.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '~> 1.3'

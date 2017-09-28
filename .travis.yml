@@ -1,5 +1,6 @@
 sudo: false
 
+# Keep in sync with cucumber.gemspec's required_ruby_version
 matrix:
   include:
     - rvm: ruby-head
