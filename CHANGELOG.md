@@ -32,6 +32,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Regexp capture groups with `(\d+)` are automatically converted to `Integer`
 * Rename `Step#name` to `#text` ([#1130](https://github.com/cucumber/cucumber-ruby/pull/1130) [@olleolleolle](https://github.com/olleolleolle))
 * `Transform` has been removed and replaced with `ParameterType`. See [upgrading instructions](https://cucumber.io/blog/2017/09/21/upgrading-to-cucumber-3). ([#1190](https://github.com/cucumber/cucumber-ruby/issues/1190) @aslakhellesoy)
 * Nested capture groups are not counted as parameters. See [upgrading instructions](https://cucumber.io/blog/2017/09/21/upgrading-to-cucumber-3). (@aslakhellesoy)
