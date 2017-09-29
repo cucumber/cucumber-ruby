@@ -1,4 +1,5 @@
 [![Join the chat at https://gitter.im/cucumber/cucumber-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber-ruby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CircleCI](https://circleci.com/gh/cucumber/cucumber-ruby.svg?style=svg)](https://circleci.com/gh/cucumber/cucumber-ruby)
 [![Build Status](https://travis-ci.org/cucumber/cucumber-ruby.svg?branch=master)](https://travis-ci.org/cucumber/cucumber-ruby)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/ncqhcevrv93hhu5j?svg=true)](https://ci.appveyor.com/project/cucumberbdd/cucumber-ruby)
 
@@ -9,7 +10,7 @@
 # Cucumber
 
 Cucumber is a tool for running automated tests written in plain language. Because they're
-written in plain language, they can be read by anyone on your team. Because they can be 
+written in plain language, they can be read by anyone on your team. Because they can be
 read by anyone, you can use them to help improve communication, collaboration and trust on
 your team.
 
