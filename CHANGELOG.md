@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...master) (targeting 3.1.0)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...master) (Not released)
 
 ### Changed
 
@@ -22,12 +22,18 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* `ParameterType` can now override `use_for_snippets` and `prefer_for_regexp_match` without throwing an error. ([@aslakhellesoy](https://github.com/aslakhellesoy))
-* Gemspec has `required_ruby_version = '>= 2.1'` ([@aslakhellesoy](https://github.com/aslakhellesoy))
+* N/A
 
 ### Improved
 
 * N/A
+
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...3.0.1) (2017-09-29)
+
+### Fixed
+
+* `ParameterType` can now override `use_for_snippets` and `prefer_for_regexp_match` without throwing an error. ([@aslakhellesoy](https://github.com/aslakhellesoy))
+* Gemspec has `required_ruby_version = '>= 2.1'` ([@aslakhellesoy](https://github.com/aslakhellesoy))
 
 ## [3.0.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...v3.0.0) (2017-09-27)
 
