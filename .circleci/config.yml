@@ -11,11 +11,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
       - run:
           name: install dependencies
@@ -38,11 +36,59 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Run RSpec
+          command: bundle exec rake spec
+      - run:
+          name: Run Cucumber
+          command: bundle exec rake cucumber
+
+  "ruby-2.2.8":
+    docker:
+       - image: circleci/ruby:2.2.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Run RSpec
+          command: bundle exec rake spec
+      - run:
+          name: Run Cucumber
+          command: bundle exec rake cucumber
+
+  "jruby-9.1.13.0":
+    docker:
+       - image: jruby:9.1.13.0-jdk-alpine
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
           - v1-dependencies-
       - run:
           name: install dependencies
@@ -65,3 +111,5 @@ workflows:
     jobs:
       - "ruby-2.4.1"
       - "ruby-2.3.5"
+      - "ruby-2.2.8"
+      - "jruby-9.1.13.0"
