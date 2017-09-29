@@ -22,7 +22,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* Gemspec has `required_ruby_version = '>= 2.1'`
+* `ParameterType` can now override `use_for_snippets` and `prefer_for_regexp_match` without throwing an error. ([@aslakhellesoy](https://github.com/aslakhellesoy))
+* Gemspec has `required_ruby_version = '>= 2.1'` ([@aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Improved
 

@@ -88,8 +88,8 @@ module Cucumber
 
       def ParameterType(options)
         type = options[:type] || Object
-        use_for_snippets = true if options[:use_for_snippets].nil?
-        prefer_for_regexp_match = false if options[:prefer_for_regexp_match].nil?
+        use_for_snippets = if_nil(options[:use_for_snippets], true)
+        prefer_for_regexp_match = if_nil(options[:prefer_for_regexp_match], false)
 
         parameter_type = CucumberExpressions::ParameterType.new(
           options[:name],
@@ -100,6 +100,10 @@ module Cucumber
           prefer_for_regexp_match
         )
         Dsl.define_parameter_type(parameter_type)
+      end
+
+      def if_nil(value, default)
+        value.nil? ? default : value
       end
 
       # Registers a proc that will run after Cucumber is configured. You can register as

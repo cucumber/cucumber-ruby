@@ -51,3 +51,19 @@ Feature: Parameter Types
       """
     When I run `cucumber features/foo.feature`
     Then it should pass
+
+    Scenario: Parameter type defined with ParameterType method
+      If your parameter type's `regexp` is very general, you can tell
+      Cucumber not to suggest its use in snippets:
+
+    Given a file named "features/support/parameter_types.rb" with:
+      """
+      ParameterType(
+        name: 'person',
+        regexp: /[A-Z]\w+/,
+        transformer: -> (name) { Person.new(name) },
+        use_for_snippets: false
+      )
+      """
+    When I run `cucumber features/foo.feature`
+    Then it should pass
