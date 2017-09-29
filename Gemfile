@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 gemspec
 
-if ENV['CUCUMBER_RUBY_WIRE']
-  gem 'cucumber-core', :path => ENV['CUCUMBER_RUBY_WIRE']
+if ENV['CUCUMBER_RUBY_CORE']
+  gem 'cucumber-core', :path => ENV['CUCUMBER_RUBY_CORE']
 else
   gem 'cucumber-core', :git => 'https://github.com/cucumber/cucumber-ruby-core.git'
 end
