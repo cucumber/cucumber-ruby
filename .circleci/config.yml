@@ -2,7 +2,8 @@
 #
 # Check https://circleci.com/docs/2.0/language-ruby/ for more details
 #
-version: 2
+version: 2.0
+
 jobs:
   "ruby-2.4.1":
     docker:
@@ -24,38 +25,9 @@ jobs:
           paths:
             - ./vendor/bundle
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
-      - type: shell
-          name: Run RSpec
-          command: |
-            bundle exec rake
-
-  "ruby-2.3.5":
-    docker:
-       - image: circleci/ruby:2.3.5
-    working_directory: ~/repo
-    steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
       - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
-      - type: shell
-          name: Run RSpec
-          command: |
-            bundle exec rake
-
+          name: Run Rake
+          command: bundle exec rake
 
 workflows:
   version: 2
