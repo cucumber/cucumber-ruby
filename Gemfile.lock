@@ -130,6 +130,7 @@ PLATFORMS
 DEPENDENCIES
   aruba (~> 0.6.1)
   bcat (~> 0.6.2)
+  bundler (~> 1.15.4)
   capybara (>= 2.1)
   coveralls (~> 0.7)
   cucumber!
