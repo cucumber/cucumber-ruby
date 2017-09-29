@@ -13,8 +13,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          - v1-dependencies-
+          - bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: install dependencies
           command: |
@@ -22,7 +21,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: Run RSpec
           command: bundle exec rake spec
@@ -38,8 +37,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          - v1-dependencies-
+          - bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: install dependencies
           command: |
@@ -47,7 +45,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: Run RSpec
           command: bundle exec rake spec
@@ -63,8 +61,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          - v1-dependencies-
+          - bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: install dependencies
           command: |
@@ -72,7 +69,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: Run RSpec
           command: bundle exec rake spec
@@ -88,8 +85,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          - v1-dependencies-
+          - bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: install dependencies
           command: |
@@ -97,7 +93,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: Run RSpec
           command: bundle exec rake spec
