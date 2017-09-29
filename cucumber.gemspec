@@ -51,7 +51,7 @@ Gem::Specification.new do |s|
     'LICENSE',
     'lib/**/*'
   ]
-  s.executables      = ['bin/cucumber']
+  s.executables      = ['cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
 end
