@@ -44,11 +44,14 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sinatra', '>= 1.3.2'
 
   s.rubygems_version = '>= 1.6.1'
-  s.files            = `git ls-files`.split("\n").reject do |path|
-    path =~ /\.gitignore$/ || path =~ /Gemfile\.lock/
-  end
-  s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
-  s.executables      = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files            = Dir[
+    'CHANGELOG.md',
+    'CONTRIBUTING.md',
+    'README.md',
+    'LICENSE',
+    'lib/**/*'
+  ]
+  s.executables      = ['bin/cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
 end
