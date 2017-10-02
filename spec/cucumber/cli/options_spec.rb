@@ -335,6 +335,26 @@ module Cucumber
 
             expect(options[:duration]).to be false
           end
+
+          context '--retry ATTEMPTS' do
+            context '--retry option not defined on the command line' do
+              it 'uses the --retry option from the profile' do
+                given_cucumber_yml_defined_as('foo' => '--retry 2')
+                options.parse!(%w[-p foo])
+
+                expect(options[:retry]).to be 2
+              end
+            end
+
+            context '--retry option defined on the command line' do
+              it 'ignores the --retry option from the profile' do
+                given_cucumber_yml_defined_as('foo' => '--retry 2')
+                options.parse!(%w[--retry 1 -p foo])
+
+                expect(options[:retry]).to be 1
+              end
+            end
+          end
         end
 
         context '-P or --no-profile' do

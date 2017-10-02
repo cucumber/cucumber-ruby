@@ -22,7 +22,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* Handle the `--retry` option in profiles ([#1050](https://github.com/cucumber/cucumber-ruby/issues/1050) [@brasmusson](https://github.com/brasmusson))
 
 ### Improved
 
