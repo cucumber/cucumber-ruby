@@ -1,5 +1,5 @@
-[![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](#backers) 
-[![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](#sponsors)
+[![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](https://opencollective.com/cucumber) 
+[![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
 
 [![Build Status](https://travis-ci.org/cucumber/cucumber-ruby.svg?branch=master)](https://travis-ci.org/cucumber/cucumber-ruby)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/ncqhcevrv93hhu5j?svg=true)](https://ci.appveyor.com/project/cucumberbdd/cucumber-ruby)
