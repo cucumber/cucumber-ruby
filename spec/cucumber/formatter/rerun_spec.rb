@@ -71,7 +71,7 @@ module Cucumber
           execute [foo, bar], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
 
-          expect(io.string).to eq 'foo.feature:3:6\nbar.feature:3'
+          expect(io.string).to eq "foo.feature:3:6\nbar.feature:3"
         end
       end
 
