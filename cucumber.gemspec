@@ -19,11 +19,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-wire', '~> 0.0.1'
   s.add_dependency 'cucumber-expressions', '~> 4.0.3'
 
+  s.add_development_dependency 'bundler', '~> 1.15.4'
   s.add_development_dependency 'aruba', '~> 0.6.1'
   s.add_development_dependency 'json', '~> 1.8.6'
-  s.add_development_dependency 'nokogiri', '~> 1.5'
+  s.add_development_dependency 'nokogiri', '~> 1.8.1'
   s.add_development_dependency 'rake', '>= 0.9.2'
-  s.add_development_dependency 'rspec', '>= 3.0'
+  s.add_development_dependency 'rspec', '>= 3.6'
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'coveralls', '~> 0.7'
   s.add_development_dependency 'syntax', '>= 1.0.0'
@@ -44,9 +45,14 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sinatra', '>= 1.3.2'
 
   s.rubygems_version = '>= 1.6.1'
-  s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
-  s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
-  s.executables      = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files            = Dir[
+    'CHANGELOG.md',
+    'CONTRIBUTING.md',
+    'README.md',
+    'LICENSE',
+    'lib/**/*'
+  ]
+  s.executables      = ['cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
 end
