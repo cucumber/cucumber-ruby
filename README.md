@@ -1,4 +1,5 @@
-[![Join the chat at https://gitter.im/cucumber/cucumber-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber-ruby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](https://opencollective.com/cucumber)
+[![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
 
 [![CircleCI](https://circleci.com/gh/cucumber/cucumber-ruby.svg?style=svg)](https://circleci.com/gh/cucumber/cucumber-ruby)
 [![Build Status](https://travis-ci.org/cucumber/cucumber-ruby.svg?branch=master)](https://travis-ci.org/cucumber/cucumber-ruby)
