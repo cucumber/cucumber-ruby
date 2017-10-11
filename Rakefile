@@ -14,7 +14,7 @@ Cucumber::Rake::Task.new do |t|
   t.profile = 'ruby' if Cucumber::RUBY
 end
 
-default_tasks = [:spec, :rubocop, :cucumber]
+default_tasks = [:spec, :cucumber]
 
 task :default => default_tasks
 

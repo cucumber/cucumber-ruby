@@ -23,11 +23,8 @@ jobs:
             - ./vendor/bundle
           key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
-          name: Run RSpec
-          command: bundle exec rake spec
-      - run:
-          name: Run Cucumber
-          command: bundle exec rake cucumber
+          name: Run Rake
+          command: bundle exec rake
 
   "ruby-2.3.5":
     docker:
@@ -47,11 +44,8 @@ jobs:
             - ./vendor/bundle
           key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
-          name: Run RSpec
-          command: bundle exec rake spec
-      - run:
-          name: Run Cucumber
-          command: bundle exec rake cucumber
+          name: Run Rake
+          command: bundle exec rake
 
   "ruby-2.2.8":
     docker:
@@ -71,11 +65,8 @@ jobs:
             - ./vendor/bundle
           key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
-          name: Run RSpec
-          command: bundle exec rake spec
-      - run:
-          name: Run Cucumber
-          command: bundle exec rake cucumber
+          name: Run Rake
+          command: bundle exec rake
 
   "jruby-9.1.13.0":
     docker:
@@ -95,11 +86,8 @@ jobs:
             - ./vendor/bundle
           key: bundle-{{ checksum "Gemfile.lock" }}
       - run:
-          name: Run RSpec
-          command: bundle exec rake spec
-      - run:
-          name: Run Cucumber
-          command: bundle exec rake cucumber
+          name: Run Rake
+          command: bundle exec rake
 
 workflows:
   version: 2
