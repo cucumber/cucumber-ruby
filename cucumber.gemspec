@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-wire', '~> 0.0.1'
   s.add_dependency 'cucumber-expressions', '~> 4.0.3'
 
-  s.add_development_dependency 'bundler', '~> 1.15.4'
+  s.add_development_dependency 'bundler', '~> 1.15.1'
   s.add_development_dependency 'aruba', '~> 0.6.1'
   s.add_development_dependency 'json', '~> 1.8.6'
   s.add_development_dependency 'nokogiri', '~> 1.8.1'
