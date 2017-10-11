@@ -290,7 +290,7 @@ END_OF_MESSAGE
     it 'associates --out to previous --format' do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
 
-      expect(config.formats).to eq [['progress', {}, 'file1'], ['profile', {}, 'file2']]
+      expect(config.formats).to match_array([['progress', {}, 'file1'], ['profile', {}, 'file2']])
     end
 
     it 'accepts same --format options with same --out streams and keep only one' do
@@ -302,7 +302,7 @@ END_OF_MESSAGE
     it 'accepts same --format options with different --out streams' do
       config.parse!(%w{--format html --out file1 --format html --out file2})
 
-      expect(config.formats).to eq [['html', {}, 'file1'], ['html', {}, 'file2']]
+      expect(config.formats).to match_array([['html', {}, 'file1'], ['html', {}, 'file2']])
     end
 
     it 'accepts --color option' do
