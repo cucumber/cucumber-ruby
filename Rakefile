@@ -16,16 +16,6 @@ end
 
 default_tasks = [:spec, :rubocop, :cucumber]
 
-if ENV['TRAVIS']
-  ENV['SIMPLECOV']  = 'ci'
-  ENV['JRUBY_OPTS'] = [ENV['JRUBY_OPTS'], '--debug'].compact.join(' ')
-
-  require 'coveralls/rake/task'
-  Coveralls::RakeTask.new
-
-  default_tasks << 'coveralls:push'
-end
-
 task :default => default_tasks
 
 require 'rake/clean'

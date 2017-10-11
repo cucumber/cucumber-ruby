@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.homepage    = 'https://cucumber.io/'
   s.platform    = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.1' # Keep in sync with .travis.yml
+  s.required_ruby_version = '>= 2.2' # Keep in sync with .circleci/config.yml
   s.add_dependency 'cucumber-core', '~> 3.0.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '~> 1.3'
@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '>= 0.9.2'
   s.add_development_dependency 'rspec', '>= 3.6'
   s.add_development_dependency 'simplecov', '>= 0.6.2'
-  s.add_development_dependency 'coveralls', '~> 0.7'
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rubocop', '~> 0.40.0'
