@@ -1,4 +1,5 @@
 # encoding: utf-8
+# rubocop:disable VariableName
 
 Агар(/(\d+) сонини киритсам/) do |сон|
   calc.push сон.to_i
@@ -17,3 +18,5 @@ end
   Агар %{ундан сунг #{кушилувчи2} сонини киритсам}
   Агар %{"+"ни боссам}
 end
+
+# rubocop:enable VariableName

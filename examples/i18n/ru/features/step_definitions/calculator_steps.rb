@@ -1,4 +1,5 @@
 # encoding: utf-8
+# rubocop:disable VariableName
 
 Допустим(/ввожу число (\d+)/) do |число|
   calc.push число.to_i
@@ -17,3 +18,5 @@ end
   Допустим %{затем ввожу число #{слагаемое2}}
   Допустим %{я нажимаю "+"}
 end
+
+# rubocop:enable VariableName
