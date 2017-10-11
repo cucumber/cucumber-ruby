@@ -34,6 +34,7 @@ module Cucumber
           end
         end
 
+        # rubocop:disable TrailingWhitespace
         describe 'with a background' do
           define_feature <<-FEATURE
             Feature: Banana party
@@ -49,6 +50,7 @@ module Cucumber
             expect(@out.string).to include "UU\n"
           end
         end
+        # rubocop:enable TrailingWhitespace
 
         describe 'with a scenario outline' do
           define_feature <<-FEATURE

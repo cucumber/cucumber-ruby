@@ -39,6 +39,7 @@ module Cucumber
             end
           end
 
+          # rubocop:disable TrailingWhitespace
           describe 'with a background' do
             define_feature <<-FEATURE
 Feature: Banana party
@@ -62,6 +63,7 @@ Feature: Banana party
               expect(@out.string).to include 'Given there are bananas'
             end
           end
+          # rubocop:enable TrailingWhitespace
 
           describe 'with a scenario outline' do
             define_feature <<-FEATURE
@@ -293,6 +295,7 @@ OUTPUT
               Given('this step passes') {}
             end
 
+            # rubocop:disable TrailingWhitespace
             it 'displays hook output appropriately ' do
               expect( @out.string ).to include <<OUTPUT
 Feature: 
@@ -315,6 +318,7 @@ Feature:
 OUTPUT
             end
           end
+          # rubocop:enable TrailingWhitespace
 
           describe 'with background and output from hooks' do
             define_feature <<-FEATURE
@@ -338,6 +342,7 @@ OUTPUT
               Given('this step passes') {}
             end
 
+            # rubocop:disable TrailingWhitespace
             it 'displays hook output appropriately ' do
               expect( @out.string ).to include <<OUTPUT
 Feature: 
@@ -357,6 +362,7 @@ Feature:
 OUTPUT
             end
           end
+          # rubocop:enable TrailingWhitespace
 
           describe 'with tags on all levels' do
             define_feature <<-FEATURE
@@ -374,7 +380,7 @@ OUTPUT
               | dummy |
             FEATURE
 
-
+            # rubocop:disable TrailingWhitespace
             it 'includes the tags in the output ' do
               expect( @out.string ).to include <<OUTPUT
 @tag1
@@ -395,6 +401,7 @@ Feature:
 OUTPUT
             end
           end
+          # rubocop:enable TrailingWhitespace
 
           describe 'with comments on all levels' do
             define_feature <<-FEATURE
@@ -422,7 +429,7 @@ OUTPUT
                 | dummy |
             FEATURE
 
-
+            # rubocop:disable TrailingWhitespace
             it 'includes the all comments except for data table rows in the output ' do
               expect( @out.string ).to include <<OUTPUT
 #comment1
@@ -455,6 +462,7 @@ OUTPUT
           end
         end
       end
+      # rubocop:enable TrailingWhitespace
 
       context 'With --no-multiline passed as an option' do
         before(:each) do
