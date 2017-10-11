@@ -950,15 +950,15 @@ Style/StructInheritance:
 # IgnoredMethods: respond_to, define_method
 Style/SymbolProc:
   Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/formatter/json.rb'
-    - 'lib/cucumber/multiline_argument.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/step_definitions.rb'
-    - 'lib/cucumber/step_match.rb'
-    - 'lib/cucumber/step_match_search.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
+    # - 'lib/cucumber/cli/options.rb'
+    # - 'lib/cucumber/errors.rb'
+    # - 'lib/cucumber/formatter/json.rb'
+    # - 'lib/cucumber/multiline_argument.rb'
+    # - 'lib/cucumber/multiline_argument/data_table.rb'
+    # - 'lib/cucumber/step_definitions.rb'
+    # - 'lib/cucumber/step_match.rb'
+    # - 'lib/cucumber/step_match_search.rb'
+    # - 'spec/cucumber/multiline_argument/data_table_spec.rb'
 
 # Offense count: 69
 # Cop supports --auto-correct.

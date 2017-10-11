@@ -195,14 +195,12 @@ module Cucumber
       #
       def raw
         cell_matrix.map do |row|
-          row.map do |cell|
-            cell.value
-          end
+          row.map(&:value)
         end
       end
 
       def column_names #:nodoc:
-        @col_names ||= cell_matrix[0].map { |cell| cell.value }
+        @col_names ||= cell_matrix[0].map(&:value)
       end
 
       def rows
@@ -443,9 +441,7 @@ module Cucumber
       def build_hashes
         convert_headers!
         convert_columns!
-        cells_rows[1..-1].map do |row|
-          row.to_hash
-        end
+        cells_rows[1..-1].map(&:to_hash)
       end
 
       def create_cell_matrix(ast_table) #:nodoc:
@@ -475,14 +471,14 @@ module Cucumber
         header_cells = cell_matrix[0]
 
         if @header_conversion_proc
-          header_values = header_cells.map { |cell| cell.value } - @header_mappings.keys
+          header_values = header_cells.map(&:value) - @header_mappings.keys
           @header_mappings = @header_mappings.merge(Hash[*header_values.zip(header_values.map(&@header_conversion_proc)).flatten])
         end
 
         @header_mappings.each_pair do |pre, post|
           mapped_cells = header_cells.select { |cell| pre === cell.value }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
-          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map { |c| c.value }.inspect}" if mapped_cells.length > 1
+          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
           mapped_cells[0].value = post
           if @conversion_procs.key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
@@ -524,7 +520,7 @@ module Cucumber
 
         # For testing only
         def to_sexp #:nodoc:
-          [:row, line, *@cells.map{|cell| cell.to_sexp}]
+          [:row, line, *@cells.map(&:to_sexp)]
         end
 
         def to_hash #:nodoc:
