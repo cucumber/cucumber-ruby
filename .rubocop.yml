@@ -15,3 +15,23 @@ AllCops:
 # Please review PR-1022 for details on why this cop is disabled: https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:
   Enabled: False
+
+# Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,
+#           as the trailing spaces are in multiline string literals
+Style/TrailingWhitespace:
+  Exclude:
+    - 'spec/cucumber/formatter/pretty_spec.rb'
+    - 'spec/cucumber/formatter/progress_spec.rb'
+
+# Reviewed: these offenses look false as the variables are in cyrillic
+Style/VariableName:
+  Exclude:
+    - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
+    - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
+    - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
+
+# Reviewed: causes one spec to fail when fixed
+# ./spec/cucumber/rb_support/rb_world_spec.rb:37
+Style/UnneededInterpolation:
+  Exclude:
+   - 'lib/cucumber/glue/proto_world.rb'
