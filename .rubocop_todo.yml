@@ -944,21 +944,21 @@ Style/StructInheritance:
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
     - 'lib/cucumber/formatter/legacy_api/runtime_facade.rb'
 
-# Offense count: 35
+# Offense count: 69
 # Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-# IgnoredMethods: respond_to, define_method
-Style/SymbolProc:
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+# SupportedStyles: final_newline, final_blank_line
+Style/TrailingBlankLines:
+  Enabled: false
+
+# Offense count: 18
+# Cop supports --auto-correct.
+# Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,
+#           as the trailing spaces are in multiline string literals
+Style/TrailingWhitespace:
   Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/formatter/json.rb'
-    - 'lib/cucumber/multiline_argument.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/step_definitions.rb'
-    - 'lib/cucumber/step_match.rb'
-    - 'lib/cucumber/step_match_search.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
+    - 'spec/cucumber/formatter/pretty_spec.rb'
+    - 'spec/cucumber/formatter/progress_spec.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

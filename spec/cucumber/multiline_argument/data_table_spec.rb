@@ -14,11 +14,11 @@ module Cucumber
       end
 
       it 'should have rows' do
-        expect( @table.cells_rows[0].map{|cell| cell.value} ).to eq %w{one four seven}
+        expect( @table.cells_rows[0].map(&:value) ).to eq %w{one four seven}
       end
 
       it 'should have columns' do
-        expect( @table.columns[1].map{|cell| cell.value} ).to eq %w{four 55555}
+        expect( @table.columns[1].map(&:value) ).to eq %w{four 55555}
       end
 
       it 'should have same cell objects in rows and columns' do
@@ -62,7 +62,7 @@ module Cucumber
 
       describe '#map_column!' do
         it 'should allow mapping columns' do
-          @table.map_column!('one') { |v| v.to_i }
+          @table.map_column!('one', &:to_i)
           expect( @table.hashes.first['one'] ).to eq 4444
         end
 
@@ -77,38 +77,38 @@ module Cucumber
         end
 
         it 'should allow mapping columns and take a symbol as the column name' do
-          @table.map_column!(:one) { |v| v.to_i }
+          @table.map_column!(:one, &:to_i)
           expect( @table.hashes.first['one'] ).to eq 4444
         end
 
         it 'should allow mapping columns and modify the rows as well' do
-          @table.map_column!(:one) { |v| v.to_i }
+          @table.map_column!(:one, &:to_i)
           expect( @table.rows.first ).to include(4444)
           expect( @table.rows.first ).to_not include('4444')
         end
 
         it 'should pass silently if a mapped column does not exist in non-strict mode' do
           expect {
-            @table.map_column!('two', false) { |v| v.to_i }
+            @table.map_column!('two', false, &:to_i)
             @table.hashes
           }.not_to raise_error
         end
 
         it 'should fail if a mapped column does not exist in strict mode' do
           expect {
-            @table.map_column!('two', true) { |v| v.to_i }
+            @table.map_column!('two', true, &:to_i)
             @table.hashes
           }.to raise_error('The column named "two" does not exist')
         end
 
         it 'should return the table' do
-          expect( (@table.map_column!(:one) { |v| v.to_i }) ).to eq @table
+          expect( @table.map_column!(:one, &:to_i) ).to eq @table
         end
       end
 
       describe '#map_column' do
         it 'should allow mapping columns' do
-          new_table = @table.map_column('one') { |v| v.to_i }
+          new_table = @table.map_column('one', &:to_i)
           expect( new_table.hashes.first['one'] ).to eq 4444
         end
 
@@ -123,32 +123,32 @@ module Cucumber
         end
 
         it 'should allow mapping columns and take a symbol as the column name' do
-          new_table = @table.map_column(:one) { |v| v.to_i }
+          new_table = @table.map_column(:one, &:to_i)
           expect( new_table.hashes.first['one'] ).to eq 4444
         end
 
         it 'should allow mapping columns and modify the rows as well' do
-          new_table = @table.map_column(:one) { |v| v.to_i }
+          new_table = @table.map_column(:one, &:to_i)
           expect( new_table.rows.first ).to include(4444)
           expect( new_table.rows.first ).to_not include('4444')
         end
 
         it 'should pass silently if a mapped column does not exist in non-strict mode' do
           expect {
-            new_table = @table.map_column('two', false) { |v| v.to_i }
+            new_table = @table.map_column('two', false, &:to_i)
             new_table.hashes
           }.not_to raise_error
         end
 
         it 'should fail if a mapped column does not exist in strict mode' do
           expect {
-            new_table = @table.map_column('two', true) { |v| v.to_i }
+            new_table = @table.map_column('two', true, &:to_i)
             new_table.hashes
           }.to raise_error('The column named "two" does not exist')
         end
 
         it 'should return a new table' do
-          expect( (@table.map_column(:one) { |v| v.to_i }) ).to_not eq @table
+          expect( @table.map_column(:one, &:to_i) ).to_not eq @table
         end
       end
 
@@ -209,8 +209,8 @@ module Cucumber
             %w{one 1111},
             %w{two 22222}
           ])
-          t2 = table.map_headers({ 'two' => 'Two' }) { |header| header.upcase }.
-                     map_column('two', false) { |val| val.to_i }
+          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase).
+                     map_column('two', false, &:to_i)
           expect( t2.rows_hash ).to eq( 'ONE' => '1111', 'Two' => 22222 )
         end
       end
@@ -234,22 +234,18 @@ module Cucumber
         end
 
         it 'copies column mappings' do
-          @table.map_column!('one') { |v| v.to_i }
+          @table.map_column!('one', &:to_i)
           @table.map_headers!('one' => 'three')
           expect( @table.hashes.first['three'] ).to eq 4444
         end
 
         it 'takes a block and operates on all the headers with it' do
-          table.map_headers! do |header|
-            header.downcase
-          end
+          table.map_headers!(&:downcase)
           expect( table.hashes.first.keys ).to match %w[hello world]
         end
 
         it 'treats the mappings in the provided hash as overrides when used with a block' do
-          table.map_headers!('WORLD' => 'foo') do |header|
-            header.downcase
-          end
+          table.map_headers!('WORLD' => 'foo', &:downcase)
 
           expect( table.hashes.first.keys ).to match %w[hello foo]
         end
@@ -274,23 +270,19 @@ module Cucumber
         end
 
         it 'copies column mappings' do
-          @table.map_column!('one') { |v| v.to_i }
+          @table.map_column!('one', &:to_i)
           table2 = @table.map_headers('one' => 'three')
           expect( table2.hashes.first['three'] ).to eq 4444
         end
 
         it 'takes a block and operates on all the headers with it' do
-          table2 = table.map_headers do |header|
-            header.downcase
-          end
+          table2 = table.map_headers(&:downcase)
 
           expect( table2.hashes.first.keys ).to match %w[hello world]
         end
 
         it 'treats the mappings in the provided hash as overrides when used with a block' do
-          table2 = table.map_headers('WORLD' => 'foo') do |header|
-            header.downcase
-          end
+          table2 = table.map_headers('WORLD' => 'foo', &:downcase)
 
           expect( table2.hashes.first.keys ).to match %w[hello foo]
         end

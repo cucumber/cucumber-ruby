@@ -13,7 +13,7 @@ module Cucumber
     end
 
     def args
-      @step_arguments.map{|g| g.value }
+      @step_arguments.map(&:value)
     end
 
     def activate(test_step)

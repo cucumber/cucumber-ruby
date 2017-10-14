@@ -18,7 +18,7 @@ module Cucumber
           builder.doc_string(Core::Ast::DocString.new(argument, content_type, location))
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
-          builder.data_table(argument.map{ |row| row.cells }, location)
+          builder.data_table(argument.map(&:cells), location)
         when DataTable, DocString, None
           argument
         when nil
