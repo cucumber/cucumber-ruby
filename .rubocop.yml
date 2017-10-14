@@ -11,3 +11,4 @@ AllCops:
   DisplayStyleGuide: true
   Exclude:
     - 'tmp/**/*'
+    - 'vendor/**/*'

@@ -14,17 +14,7 @@ Cucumber::Rake::Task.new do |t|
   t.profile = 'ruby' if Cucumber::RUBY
 end
 
-default_tasks = [:spec, :rubocop, :cucumber]
-
-if ENV['TRAVIS']
-  ENV['SIMPLECOV']  = 'ci'
-  ENV['JRUBY_OPTS'] = [ENV['JRUBY_OPTS'], '--debug'].compact.join(' ')
-
-  require 'coveralls/rake/task'
-  Coveralls::RakeTask.new
-
-  default_tasks << 'coveralls:push'
-end
+default_tasks = [:spec, :cucumber]
 
 task :default => default_tasks
 
