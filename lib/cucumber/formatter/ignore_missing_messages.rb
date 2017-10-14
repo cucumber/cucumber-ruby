@@ -18,4 +18,3 @@ module Cucumber
 
   end
 end
-

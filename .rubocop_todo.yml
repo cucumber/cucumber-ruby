@@ -950,10 +950,17 @@ Style/SymbolProc:
     - 'lib/cucumber/step_match.rb'
     - 'lib/cucumber/step_match_search.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-
-# Offense count: 69
+    
+# Offense count: 1
 # Cop supports --auto-correct.
+# Reviewed: when the offense is fixed there is one spec failing (./spec/cucumber/rb_support/rb_world_spec.rb:37)
+Style/UnneededInterpolation:
+  Exclude:
+    - 'lib/cucumber/glue/proto_world.rb'
+
+# Offense count: 15
 # Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: final_newline, final_blank_line
-Style/TrailingBlankLines:
+# SupportedStyles: snake_case, camelCase
+# Reviewed: these offenses look false as the variables are in cyrillic
+Style/VariableName:
   Enabled: false

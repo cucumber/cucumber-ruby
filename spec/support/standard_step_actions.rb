@@ -16,4 +16,3 @@ class StandardStepActions < Cucumber::Core::Filter.new
     test_case.with_steps(test_steps).describe_to(receiver)
   end
 end
-

@@ -11,6 +11,7 @@ AllCops:
   DisplayStyleGuide: true
   Exclude:
     - 'tmp/**/*'
+    - 'vendor/**/*'
 
 # Please review PR-1022 for details on why this cop is disabled: https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:

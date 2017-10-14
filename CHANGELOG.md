@@ -12,22 +12,26 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...master) (Not released)
 
+### Added
+
+* N/A
+
 ### Changed
 
 * N/A
 
-### Added
+### Deprecated
 
 * N/A
+
+### Removed
+
+* Cucumber is no longer tested on Ruby 2.1 and below.
 
 ### Fixed
 
 * Fix the printing of newlines in the rerun formatter - a problem introduced in [#1162](https://github.com/cucumber/cucumber-ruby/issues/1162) ([#1207](https://github.com/cucumber/cucumber-ruby/issues/1207) [@brasmusson](https://github.com/brasmusson))
 * Handle the `--retry` option in profiles ([#1050](https://github.com/cucumber/cucumber-ruby/issues/1050) [@brasmusson](https://github.com/brasmusson))
-
-### Improved
-
-* N/A
 
 ## [3.0.1](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...3.0.1) (2017-09-29)
 

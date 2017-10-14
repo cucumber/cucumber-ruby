@@ -25,7 +25,6 @@ rerun.txt
 .sass-cache
 doc/
 *.tgz
-Gemfile.lock
 tags
 .ruby-version
 .project
