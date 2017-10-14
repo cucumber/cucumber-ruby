@@ -960,22 +960,6 @@ Style/SymbolProc:
     - 'lib/cucumber/step_match_search.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
 
-# Offense count: 69
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: final_newline, final_blank_line
-Style/TrailingBlankLines:
-  Enabled: false
-
-# Offense count: 18
-# Cop supports --auto-correct.
-# Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,
-#           as the trailing spaces are in multiline string literals
-Style/TrailingWhitespace:
-  Exclude:
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-    - 'spec/cucumber/formatter/progress_spec.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Reviewed: when the offense is fixed there is one spec failing (./spec/cucumber/rb_support/rb_world_spec.rb:37)
