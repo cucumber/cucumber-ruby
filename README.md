@@ -39,4 +39,4 @@ Everyone interacting in this codebase and issue tracker is expected to follow th
 
 ## Copyright
 
-Copyright (c) Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) Cucumber Ltd. and Contributors. See LICENSE for details.
