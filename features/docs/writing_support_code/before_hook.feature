@@ -30,6 +30,7 @@ Feature: Before Hook
 
       """
 
+  @todo-windows
   Scenario: Examine names of scenario outline and feature
     Given a file named "features/foo.feature" with:
       """
