@@ -82,7 +82,7 @@ module Cucumber
 
       def embed(src, mime_type, _label)
         if File.file?(src)
-          content = File.open(src, 'rb') { |f| f.read }
+          content = File.open(src, 'rb', &:read)
           data = encode64(content)
         else
           if mime_type =~ /;base64$/
