@@ -18,6 +18,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Fix SymbolProc issues ([#1212](https://github.com/cucumber/cucumber-ruby/pull/1212) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix TrailingBlankLines ([#1211](https://github.com/cucumber/cucumber-ruby/pull/1211) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
@@ -30,6 +32,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* Change test expectation to handle Ruby's unstable sorting ([#1210](https://github.com/cucumber/cucumber-ruby/pull/1210) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix the printing of newlines in the rerun formatter - a problem introduced in [#1162](https://github.com/cucumber/cucumber-ruby/issues/1162) ([#1207](https://github.com/cucumber/cucumber-ruby/issues/1207) [@brasmusson](https://github.com/brasmusson))
 * Handle the `--retry` option in profiles ([#1050](https://github.com/cucumber/cucumber-ruby/issues/1050) [@brasmusson](https://github.com/brasmusson))
 
