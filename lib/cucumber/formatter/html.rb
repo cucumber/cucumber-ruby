@@ -399,7 +399,7 @@ module Cucumber
       def next_id(type)
         @indices ||= Hash.new { 0 }
         @indices[type] += 1
-        "#{type}_#{@indices[:type]}"
+        "#{type}_#{@indices[type]}"
       end
 
       def build_exception_detail(exception)
