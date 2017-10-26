@@ -934,10 +934,3 @@ Style/StructInheritance:
   Exclude:
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
     - 'lib/cucumber/formatter/legacy_api/runtime_facade.rb'
-
-# Offense count: 69
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: final_newline, final_blank_line
-Style/TrailingBlankLines:
-  Enabled: false
