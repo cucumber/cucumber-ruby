@@ -6,15 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 8
-Lint/AmbiguousOperator:
-  Exclude:
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/running_test_case.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-    - 'spec/cucumber/formatter/spec_helper.rb'
-
 # Offense count: 2
 Lint/Eval:
   Exclude:
@@ -949,27 +940,4 @@ Style/StructInheritance:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: final_newline, final_blank_line
 Style/TrailingBlankLines:
-  Enabled: false
-
-# Offense count: 18
-# Cop supports --auto-correct.
-# Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,
-#           as the trailing spaces are in multiline string literals
-Style/TrailingWhitespace:
-  Exclude:
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-    - 'spec/cucumber/formatter/progress_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Reviewed: when the offense is fixed there is one spec failing (./spec/cucumber/rb_support/rb_world_spec.rb:37)
-Style/UnneededInterpolation:
-  Exclude:
-    - 'lib/cucumber/glue/proto_world.rb'
-
-# Offense count: 15
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: snake_case, camelCase
-# Reviewed: these offenses look false as the variables are in cyrillic
-Style/VariableName:
   Enabled: false
