@@ -31,6 +31,7 @@ Style/VariableName:
     - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
     - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
 
+# Reviewed: Formatters put trailing spaces after things like 'Feature: '
 Style/TrailingWhitespace:
   Exclude:
     - 'spec/cucumber/formatter/pretty_spec.rb'
