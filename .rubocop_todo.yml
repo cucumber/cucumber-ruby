@@ -98,13 +98,6 @@ Metrics/PerceivedComplexity:
 
 # Offense count: 3
 # Cop supports --auto-correct.
-Performance/RedundantBlockCall:
-  Exclude:
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/step_match.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
 Performance/RedundantMatch:
   Exclude:
     - 'lib/cucumber/deprecate.rb'

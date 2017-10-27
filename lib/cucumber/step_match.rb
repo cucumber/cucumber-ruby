@@ -63,7 +63,7 @@ module Cucumber
       @step_definition.expression.source.to_s.unpack('U*').length
     end
 
-    def replace_arguments(string, step_arguments, format, &proc)
+    def replace_arguments(string, step_arguments, format, *)
       s = string.dup
       offset = past_offset = 0
       step_arguments.each do |step_argument|
@@ -71,7 +71,7 @@ module Cucumber
         next if group.value.nil? || group.start < past_offset
 
         replacement = if block_given?
-                        proc.call(group.value)
+                        yield(group.value)
                       elsif Proc === format
                         format.call(group.value)
                       else
