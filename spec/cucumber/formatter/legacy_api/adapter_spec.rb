@@ -106,11 +106,12 @@ module Cucumber
                   step 'passing'
                 end
               end
-            end,
+            end
           ]
           runner = Core::Test::Runner.new(events)
           compile gherkin_docs, runner, default_filters
           events.test_run_finished
+          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -147,68 +148,9 @@ module Cucumber
                   :after_steps,
                 :after_feature_element,
               :after_feature,
-            :after_features,
+            :after_features
           ]
-        end
-
-        it 'a scenario with no steps' do
-          execute_gherkin do
-            feature do
-              scenario
-            end
-          end
-
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
-                  :before_tags,
-                    :after_tags,
-                  :scenario_name,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
-        end
-
-        it 'a scenario with no steps coming after another scenario' do
-          execute_gherkin do
-            feature do
-              scenario do
-                step 'passing'
-              end
-              scenario
-            end
-          end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
-                  :before_tags,
-                    :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                      :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                    :after_tags,
-                  :scenario_name,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
+          # rubocop:enable AlignArray
         end
 
         it 'a scenario with one step' do
@@ -219,27 +161,30 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
                     :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                      :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                        :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a scenario with two steps, one of them failing' do
@@ -251,32 +196,33 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-            :before_feature,
-            :before_tags,
-            :after_tags,
-            :feature_name,
-            :before_feature_element,
-            :before_tags,
-            :after_tags,
-            :scenario_name,
-            :before_steps,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :after_step_result,
-            :after_step,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :exception,
-            :after_step_result,
-            :after_step,
-            :after_steps,
-            :after_feature_element,
-            :after_feature,
-            :after_features,
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+              :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+              :before_tags,
+              :after_tags,
+              :scenario_name,
+              :before_steps,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :after_step_result,
+              :after_step,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :exception,
+              :after_step_result,
+              :after_step,
+              :after_steps,
+              :after_feature_element,
+              :after_feature,
+              :after_features
           ]
         end
 
@@ -291,39 +237,42 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and an empty scenario' do
@@ -335,6 +284,8 @@ module Cucumber
               scenario
             end
           end
+
+          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -357,8 +308,9 @@ module Cucumber
                   :scenario_name,
                 :after_feature_element,
               :after_feature,
-            :after_features,
+            :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and two scenarios' do
@@ -375,49 +327,52 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario and one scenario outline' do
@@ -438,68 +393,71 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline and one scenario' do
@@ -520,68 +478,71 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and two scenario outlines' do
@@ -606,87 +567,90 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline with two rows' do
@@ -705,61 +669,64 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline with two examples tables' do
@@ -781,73 +748,76 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background with two steps' do
@@ -862,42 +832,45 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background' do
@@ -912,35 +885,35 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
-            :before_feature,
-            :before_tags,
-            :after_tags,
-            :feature_name,
-            :before_background,
-            :background_name,
-            :before_steps,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :after_step_result,
-            :after_step,
-            :after_steps,
-            :after_background,
-            :before_feature_element,
-            :before_tags,
-            :after_tags,
-            :scenario_name,
-            :before_steps,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :after_step_result,
-            :after_step,
-            :after_steps,
-            :after_feature_element,
-            :after_feature,
-            :after_features,
+              :before_features,
+              :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_background,
+              :background_name,
+              :before_steps,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :after_step_result,
+              :after_step,
+              :after_steps,
+              :after_background,
+              :before_feature_element,
+              :before_tags,
+              :after_tags,
+              :scenario_name,
+              :before_steps,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :after_step_result,
+              :after_step,
+              :after_steps,
+              :after_feature_element,
+              :after_feature,
+              :after_features
           ]
         end
 
@@ -956,46 +929,49 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'scenario outline after scenario' do
@@ -1013,58 +989,61 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
           ]
+          # rubocop:enable AlignArray
         end
 
         it 'scenario outline before scenario' do
@@ -1082,58 +1061,61 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+          # rubocop:enable AlignArray
         end
 
         it 'scenario outline two rows' do
@@ -1149,51 +1131,54 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+          # rubocop:enable AlignArray
         end
 
         it 'scenario outline two examples tables' do
@@ -1212,63 +1197,66 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+          # rubocop:enable AlignArray
         end
 
         it 'two scenario outline' do
@@ -1290,77 +1278,80 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
                   :before_tags,
                   :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+          # rubocop:enable AlignArray
         end
 
         it 'failing scenario outline' do
@@ -1375,126 +1366,9 @@ module Cucumber
               end
             end
           end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                  :before_examples_array,
-                    :before_examples,
-                      :before_tags,
-                      :after_tags,
-                      :examples_name,
-                      :before_outline_table,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                        :before_table_row,
-                          :before_table_cell,
-                            :table_cell_value,
-                          :after_table_cell,
-                        :after_table_row,
-                      :after_outline_table,
-                    :after_examples,
-                  :after_examples_array,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
-        end
 
-        it 'a feature with a failing background and two scenarios' do
-          execute_gherkin do
-            feature do
-              background do
-                step 'failing'
-              end
-              scenario do
-                step 'passing'
-              end
-              scenario do
-                step 'passing'
-              end
-            end
-          end
-          expect(formatter.legacy_messages).to eq [
-            :before_features,
-              :before_feature,
-                :before_tags,
-                :after_tags,
-                :feature_name,
-                :before_background,
-                  :background_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                        :exception,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_background,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-                :before_feature_element,
-                  :before_tags,
-                  :after_tags,
-                  :scenario_name,
-                  :before_steps,
-                    :before_step,
-                      :before_step_result,
-                        :step_name,
-                      :after_step_result,
-                    :after_step,
-                  :after_steps,
-                :after_feature_element,
-              :after_feature,
-            :after_features,
-          ]
-        end
-
-        context 'in expand mode' do
-          let(:runtime) { Runtime.new expand: true }
-          let(:formatter) { MessageSpy.new }
-
-          it 'scenario outline two rows' do
-            execute_gherkin do
-              feature do
-                scenario_outline do
-                  step '<result>ing'
-                  examples do
-                    row 'result'
-                    row 'pass'
-                    row 'pass'
-                  end
-                end
-              end
-            end
-            expect(formatter.legacy_messages).to eq [
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
                   :before_tags,
@@ -1534,8 +1408,136 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
+          # rubocop:enable AlignArray
+        end
+
+        it 'a feature with a failing background and two scenarios' do
+          execute_gherkin do
+            feature do
+              background do
+                step 'failing'
+              end
+              scenario do
+                step 'passing'
+              end
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          # rubocop:disable AlignArray
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_background,
+                    :background_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                          :exception,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_background,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+          # rubocop:enable AlignArray
+        end
+
+        context 'in expand mode' do
+          let(:runtime) { Runtime.new expand: true }
+          let(:formatter) { MessageSpy.new }
+
+          it 'scenario outline two rows' do
+            execute_gherkin do
+              feature do
+                scenario_outline do
+                  step '<result>ing'
+                  examples do
+                    row 'result'
+                    row 'pass'
+                    row 'pass'
+                  end
+                end
+              end
+            end
+
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq [
+                :before_features,
+                  :before_feature,
+                    :before_tags,
+                    :after_tags,
+                    :feature_name,
+                    :before_feature_element,
+                      :before_tags,
+                      :after_tags,
+                      :scenario_name,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                            :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_steps,
+                      :before_examples_array,
+                        :before_examples,
+                          :before_tags,
+                          :after_tags,
+                          :examples_name,
+                          :before_outline_table,
+                            :scenario_name,
+                            :before_step,
+                              :before_step_result,
+                                :step_name,
+                              :after_step_result,
+                            :after_step,
+                            :scenario_name,
+                            :before_step,
+                              :before_step_result,
+                                :step_name,
+                              :after_step_result,
+                            :after_step,
+                          :after_outline_table,
+                        :after_examples,
+                      :after_examples_array,
+                    :after_feature_element,
+                  :after_feature,
+                :after_features
+              ]
+            # rubocop:enable AlignArray
           end
         end
 
@@ -1561,28 +1563,31 @@ module Cucumber
                 end
               end
             end
-            expect( formatter.legacy_messages ).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
+
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
+                :before_features,
+                  :before_feature,
                     :before_tags,
                     :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                      :exception,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
-            ]
+                    :feature_name,
+                    :before_feature_element,
+                      :before_tags,
+                      :after_tags,
+                      :scenario_name,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                          :step_name,
+                          :after_step_result,
+                        :after_step,
+                        :exception,
+                      :after_steps,
+                    :after_feature_element,
+                  :after_feature,
+                :after_features
+              ])
+            # rubocop:enable AlignArray
           end
         end
 
@@ -1608,28 +1613,30 @@ module Cucumber
               end
             end
 
-            expect( formatter.legacy_messages ).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
+                :before_features,
+                  :before_feature,
                     :before_tags,
                     :after_tags,
-                    :scenario_name,
-                    :exception,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
-            ]
+                    :feature_name,
+                    :before_feature_element,
+                      :before_tags,
+                      :after_tags,
+                      :scenario_name,
+                      :exception,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                          :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_steps,
+                    :after_feature_element,
+                  :after_feature,
+                :after_features
+              ])
+            # rubocop:enable AlignArray
           end
 
           it 'prints the exception after the background name' do
@@ -1649,38 +1656,40 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_background,
-                    :background_name,
-                    :exception,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_background,
-                  :before_feature_element,
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
+                :before_features,
+                  :before_feature,
                     :before_tags,
                     :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
-            ]
+                    :feature_name,
+                    :before_background,
+                      :background_name,
+                      :exception,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                            :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_steps,
+                    :after_background,
+                    :before_feature_element,
+                      :before_tags,
+                      :after_tags,
+                      :scenario_name,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                          :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_steps,
+                    :after_feature_element,
+                  :after_feature,
+                :after_features
+              ])
+            # rubocop:enable AlignArray
           end
 
 
@@ -1702,47 +1711,49 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
+                :before_features,
+                  :before_feature,
                     :before_tags,
                     :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :exception,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
-            ]
+                    :feature_name,
+                    :before_feature_element,
+                      :before_tags,
+                      :after_tags,
+                      :scenario_name,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                            :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_steps,
+                      :before_examples_array,
+                        :before_examples,
+                          :before_tags,
+                          :after_tags,
+                          :examples_name,
+                          :before_outline_table,
+                            :before_table_row,
+                              :before_table_cell,
+                                :table_cell_value,
+                              :after_table_cell,
+                            :after_table_row,
+                            :exception,
+                            :before_table_row,
+                              :before_table_cell,
+                                :table_cell_value,
+                              :after_table_cell,
+                            :after_table_row,
+                          :after_outline_table,
+                        :after_examples,
+                      :after_examples_array,
+                    :after_feature_element,
+                  :after_feature,
+                :after_features
+              ])
+            # rubocop:enable AlignArray
           end
         end
 
@@ -1771,28 +1782,30 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
+                :before_features,
+                  :before_feature,
                     :before_tags,
                     :after_tags,
-                    :scenario_name,
-                    :exception,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
-            ]
+                    :feature_name,
+                    :before_feature_element,
+                      :before_tags,
+                      :after_tags,
+                      :scenario_name,
+                      :exception,
+                      :before_steps,
+                        :before_step,
+                          :before_step_result,
+                          :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_steps,
+                    :after_feature_element,
+                  :after_feature,
+                :after_features
+              ])
+            # rubocop:enable AlignArray
           end
         end
 
@@ -1819,7 +1832,8 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
                   :before_tags,
@@ -1839,8 +1853,9 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
-            ]
+              :after_features
+            ])
+            # rubocop:enable AlignArray
           end
 
           it 'prints the exception after the examples table row' do
@@ -1861,7 +1876,8 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
                   :before_tags,
@@ -1900,8 +1916,9 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
-            ]
+              :after_features
+            ])
+            # rubocop:enable AlignArray
           end
         end
 
@@ -1928,7 +1945,8 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
                   :before_tags,
@@ -1948,40 +1966,9 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
-            ]
-          end
-        end
-
-        context 'with an exception in an after hook but no steps' do
-          it 'prints the exception after the scenario name' do
-            filters = [
-              Filters::ActivateSteps.new(step_match_search, runtime.configuration),
-              Filters::ApplyAfterHooks.new(FailingAfterHook.new),
-              AddBeforeAndAfterHooks.new
-            ]
-            execute_gherkin(filters) do
-              feature do
-                scenario do
-                end
-              end
-            end
-
-            expect(formatter.legacy_messages).to eq [
-              :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :exception,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
-            ]
+              :after_features
+            ])
+            # rubocop:enable AlignArray
           end
         end
 
@@ -2003,11 +1990,13 @@ module Cucumber
             execute_gherkin(filters) do
               feature do
                 scenario do
+                  step 'passing'
                 end
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
                   :before_tags,
@@ -2020,8 +2009,9 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
-            ]
+              :after_features
+            ])
+            # rubocop:enable AlignArray
           end
         end
 
@@ -2048,7 +2038,8 @@ module Cucumber
               end
             end
 
-            expect(formatter.legacy_messages).to eq [
+            # rubocop:disable AlignArray
+            expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
                   :before_tags,
@@ -2068,8 +2059,9 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
-            ]
+              :after_features
+            ])
+            # rubocop:enable AlignArray
           end
         end
       end
@@ -2126,7 +2118,7 @@ module Cucumber
       end
 
       context 'in strict mode' do
-        let(:runtime) { Runtime.new strict: true }
+        let(:runtime) { Runtime.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
 
         it 'passes an exception to the formatter for undefined steps' do
           expect( formatter ).to receive(:exception) do |exception|

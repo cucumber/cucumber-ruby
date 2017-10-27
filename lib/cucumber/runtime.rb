@@ -30,8 +30,14 @@ module Cucumber
   class FileNotFoundException < FileException
   end
 
-  class FeatureFolderNotFoundException < FileException
-    include FixRuby21Bug9285 if Cucumber::RUBY_2_1 || Cucumber::RUBY_2_2 || Cucumber::RUBY_2_3
+  class FeatureFolderNotFoundException < Exception
+    def initialize(path)
+      @path = path
+    end
+
+    def message
+      "No such file or directory - #{@path}"
+    end
   end
 
   require 'cucumber/core'
@@ -58,11 +64,10 @@ module Cucumber
 
     require 'cucumber/wire/plugin'
     def run!
-      install_wire_plugin
-      load_support_files
-      fire_after_configuration_hook
-      formatters
       load_step_definitions
+      install_wire_plugin
+      fire_after_configuration_hook
+      # TODO: can we remove this state?
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
@@ -90,8 +95,8 @@ module Cucumber
       @support_code.unmatched_step_definitions
     end
 
-    def begin_scenario(scenario)
-      @support_code.fire_hook(:begin_scenario, scenario)
+    def begin_scenario(test_case)
+      @support_code.fire_hook(:begin_scenario, test_case)
     end
 
     def end_scenario(_scenario)
@@ -115,6 +120,7 @@ module Cucumber
     def features
       @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
+        @configuration.notify :gherkin_source_read, path, source
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
@@ -141,8 +147,8 @@ module Cucumber
           set_encoding
         rescue Errno::EACCES => e
           raise FileNotFoundException.new(e, File.expand_path(path))
-        rescue Errno::ENOENT => e
-          raise FeatureFolderNotFoundException.new(e, path)
+        rescue Errno::ENOENT
+          raise FeatureFolderNotFoundException.new(path)
         end
       end
 
@@ -186,34 +192,44 @@ module Cucumber
     end
 
     def formatters
-      @formatters ||= @configuration.formatter_factories { |factory, path_or_io, options|
-        create_formatter(factory, path_or_io, options)
-      }
+      @formatters ||=
+        @configuration.formatter_factories do |factory, formatter_options, path_or_io, options|
+          create_formatter(factory, formatter_options, path_or_io, options)
+        end
     end
 
-    def create_formatter(factory, path_or_io, options)
+    def create_formatter(factory, formatter_options, path_or_io, cli_options)
       if !legacy_formatter?(factory)
-        return factory.new(@configuration) if path_or_io.nil?
-        return factory.new(@configuration.with_options(out_stream: path_or_io))
+        if accept_options?(factory)
+          return factory.new(@configuration, formatter_options) if path_or_io.nil?
+          return factory.new(@configuration.with_options(out_stream: path_or_io),
+                             formatter_options)
+        else
+          return factory.new(@configuration) if path_or_io.nil?
+          return factory.new(@configuration.with_options(out_stream: path_or_io))
+        end
       end
       results = Formatter::LegacyApi::Results.new
       runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-      formatter = factory.new(runtime_facade, path_or_io, options)
+      formatter = factory.new(runtime_facade, path_or_io, cli_options)
       Formatter::LegacyApi::Adapter.new(
         Formatter::IgnoreMissingMessages.new(formatter),
         results, @configuration)
     end
 
-    def legacy_formatter?(factory)
+    def accept_options?(factory)
       factory.instance_method(:initialize).arity > 1
+    end
+
+    def legacy_formatter?(factory)
+      factory.instance_method(:initialize).arity > 2
     end
 
     def failure?
       if @configuration.wip?
         summary_report.test_cases.total_passed > 0
       else
-        summary_report.test_cases.total_failed > 0 || summary_report.test_steps.total_failed > 0 ||
-          (@configuration.strict? && (summary_report.test_steps.total_undefined > 0 || summary_report.test_steps.total_pending > 0))
+        !summary_report.ok?(@configuration.strict)
       end
     end
     public :failure?
@@ -229,10 +245,8 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
-        filters << Filters::Quit.new
-        filters << Filters::Retry.new(@configuration)
-        # TODO: can we just use RbLanguages's step definitions directly?
-        step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
+        # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
+        step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
         @configuration.filters.each do |filter|
           filters << filter
@@ -242,19 +256,17 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
+          filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
+          filters << Filters::Quit.new
+          filters << Filters::Retry.new(@configuration)
           # need to do this last so it becomes the first test step
           filters << Filters::PrepareWorld.new(self)
         end
       end
     end
 
-    def load_support_files
-      files = @configuration.support_to_load
-      @support_code.load_files!(files)
-    end
-
     def load_step_definitions
-      files = @configuration.step_defs_to_load
+      files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
     end
 

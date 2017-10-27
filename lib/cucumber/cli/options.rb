@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/registry_and_more'
 require 'cucumber/project_initializer'
+require 'cucumber/core/test/result'
 
 module Cucumber
   module Cli
@@ -24,20 +25,21 @@ module Cucumber
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
-        'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
+        'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }
-      max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
-      FORMAT_HELP_MSG = ['Use --format rerun --out rerun.txt to write out failing',
-        'features. You can rerun them with cucumber @rerun.txt.',
-        'FORMAT can also be the fully qualified class name of',
-        "your own custom formatter. If the class isn't loaded,",
-        'Cucumber will attempt to require a file with a relative',
-        'file name that is the underscore name of the class name.',
-        'Example: --format Foo::BarZap -> Cucumber will look for',
-        'foo/bar_zap.rb. You can place the file with this relative',
-        'path underneath your features/support directory or anywhere',
-        "on Ruby's LOAD_PATH, for example in a Ruby gem."
-      ]
+      max = BUILTIN_FORMATS.keys.map(&:length).max
+      FORMAT_HELP_MSG = [
+                          'Use --format rerun --out rerun.txt to write out failing',
+                          'features. You can rerun them with cucumber @rerun.txt.',
+                          'FORMAT can also be the fully qualified class name of',
+                          "your own custom formatter. If the class isn't loaded,",
+                          'Cucumber will attempt to require a file with a relative',
+                          'file name that is the underscore name of the class name.',
+                          'Example: --format Foo::BarZap -> Cucumber will look for',
+                          'foo/bar_zap.rb. You can place the file with this relative',
+                          'path underneath your features/support directory or anywhere',
+                          "on Ruby's LOAD_PATH, for example in a Ruby gem."
+                        ]
 
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
@@ -48,12 +50,14 @@ module Cucumber
       NO_PROFILE_LONG_FLAG = '--no-profile'
       FAIL_FAST_FLAG = '--fail-fast'
       RETRY_FLAG = '--retry'
-      OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
-                                  '-t', '--tags', '-n', '--name', '-e', '--exclude',
-                                  PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG,
-                                  '-l', '--lines', '--port',
-                                  '-I', '--snippet-type']
+      OPTIONS_WITH_ARGS = [
+                            '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
+                            '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
+                            PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
+                            '--lines', '--port', '-I', '--snippet-type'
+                          ]
       ORDER_TYPES = %w{defined random}
+      TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
       def self.parse(args, out_stream, error_stream, options = {})
         new(out_stream, error_stream, options).parse!(args)
@@ -81,7 +85,7 @@ module Cucumber
         @options[key] = value
       end
 
-      def parse!(args)
+      def parse!(args) # rubocop:disable Metrics/AbcSize
         @args = args
         @expanded_args = @args.dup
 
@@ -96,12 +100,15 @@ module Cucumber
           end
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
-          opts.on('--i18n LANG', *i18n_msg) {|lang| set_language lang }
+          opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
+          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| set_language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
-          opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) {|v| add_option :formats, [v, @out_stream] }
+          opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
+            add_option :formats, [*parse_formats(v), @out_stream]
+          end
           opts.on('--init', *init_msg) {|v| initialize_project }
           opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| set_out_stream v }
-          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_option :tag_expressions, v }
+          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_tag v }
           opts.on('-n NAME', '--name NAME', *name_msg) {|v| add_option :name_regexps, /#{v}/ }
           opts.on('-e', '--exclude PATTERN', *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
           opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
@@ -115,7 +122,10 @@ module Cucumber
           opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
           opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
-          opts.on('-S', '--strict', 'Fail if there are any undefined or pending steps.') { set_option :strict }
+          opts.on('-S', '--[no-]strict', *strict_msg) { |setting| set_strict(setting) }
+          opts.on('--[no-]strict-undefined', 'Fail if there are any undefined results.') { |setting| set_strict(setting, :undefined) }
+          opts.on('--[no-]strict-pending', 'Fail if there are any pending results.') { |setting| set_strict(setting, :pending) }
+          opts.on('--[no-]strict-flaky', 'Fail if there are any flaky results.') { |setting| set_strict(setting, :flaky) }
           opts.on('-w', '--wip', 'Fail if there are any passing scenarios.') { set_option :wip }
           opts.on('-v', '--verbose', 'Show the files and features loaded.') { set_option :verbose }
           opts.on('-g', '--guess', 'Guess best match for Ambiguous steps.') { set_option :guess }
@@ -160,7 +170,7 @@ TEXT
       end
 
       def check_formatter_stream_conflicts()
-        streams = @options[:formats].uniq.map { |(_, stream)| stream }
+        streams = @options[:formats].uniq.map { |(_, _, stream)| stream }
         return if streams == streams.uniq
         raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
       end
@@ -198,7 +208,13 @@ TEXT
         [ 'How to format features (Default: pretty). Available formats:' ]
       end
 
-      def i18n_msg
+      def i18n_languages_msg
+        [
+          'List all available languages'
+        ]
+      end
+
+      def i18n_keywords_msg
         [
           'List keywords for in a particular language',
           %{Run with "--i18n help" to see all languages}
@@ -244,26 +260,42 @@ TEXT
         ]
       end
 
+      def strict_msg
+        [
+          'Fail if there are any strict affected results ',
+          '(that is undefined, pending or flaky results).'
+        ]
+      end
+
+      def parse_formats(v)
+        formatter, *formatter_options = v.split(',')
+        options_hash = Hash[formatter_options.map { |s| s.split('=') }]
+        [formatter, options_hash]
+      end
+
       def set_out_stream(v)
-        @options[:formats] << ['pretty', nil] if @options[:formats].empty?
-        @options[:formats][-1][1] = v
+        @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
+        @options[:formats][-1][2] = v
       end
 
       def tags_msg
         [
           'Only execute the features or scenarios with tags matching TAG_EXPRESSION.',
           'Scenarios inherit tags declared on the Feature level. The simplest',
-          'TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag',
-          'expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.',
-          'A tag expression can have several tags separated by a comma, which represents',
-          'logical OR. Example: --tags @dev,@wip. The --tags option can be specified',
-          'several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.',
-          'This represents the boolean expression (@foo || !@bar) && @zap.',
+          'TAG_EXPRESSION is simply a tag. Example: --tags @dev. To represent',
+          "boolean NOT preceed the tag with 'not '. Example: --tags 'not @dev'.",
+          'A tag expression can have several tags separated by an or which represents',
+          "logical OR. Example: --tags '@dev or @wip'. The --tags option can be specified",
+          'A tag expression can have several tags separated by an and which represents',
+          "logical AND. Example: --tags '@dev and @wip'. The --tags option can be specified",
+          'several times, and this also represents logical AND.',
+          "Example: --tags '@foo or not @bar' --tags @zap. This represents the boolean",
+          'expression (@foo || !@bar) && @zap.',
           "\n",
           'Beware that if you want to use several negative tags to exclude several tags',
-          'you have to use logical AND: --tags ~@fixme --tags ~@buggy.',
+          "you have to use logical AND: --tags 'not @fixme and not @buggy'.",
           "\n",
-          'Positive tags can be given a threshold to limit the number of occurrences.',
+          'Tags can be given a threshold to limit the number of occurrences.',
           'Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.',
           'This can be practical if you are practicing Kanban or CONWIP.'
         ]
@@ -293,18 +325,19 @@ TEXT
 
       def snippet_type_msg
         [
-          'Use different snippet type (Default: regexp). Available types:',
-          Cucumber::RbSupport::RbLanguage.cli_snippet_type_options
+          'Use different snippet type (Default: cucumber_expression). Available types:',
+          Cucumber::Glue::RegistryAndMore.cli_snippet_type_options
         ].flatten
       end
 
       def banner
-        ['Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
-          'Examples:',
-          'cucumber examples/i18n/en/features',
-          'cucumber @rerun.txt (See --format rerun)',
-          'cucumber examples/i18n/it/features/somma.feature:6:98:113',
-          'cucumber -s -i http://rubyurl.com/eeCl', '', '',
+        [
+         'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
+         'Examples:',
+         'cucumber examples/i18n/en/features',
+         'cucumber @rerun.txt (See --format rerun)',
+         'cucumber examples/i18n/it/features/somma.feature:6:98:113',
+         'cucumber -s -i http://rubyurl.com/eeCl', '', ''
         ].join("\n")
       end
 
@@ -322,13 +355,8 @@ TEXT
       def set_language(lang)
         require 'gherkin/dialect'
 
-        if lang == 'help'
-          list_languages_and_exit
-        elsif !::Gherkin::DIALECTS.keys.include? lang
-          indicate_invalid_language_and_exit(lang)
-        else
-          list_keywords_and_exit(lang)
-        end
+        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.keys.include? lang
+        list_keywords_and_exit(lang)
       end
 
       def disable_profile_loading
@@ -336,11 +364,31 @@ TEXT
       end
 
       def non_stdout_formats
-        @options[:formats].select {|format, output| output != @out_stream }
+        @options[:formats].select { |_, _, output| output != @out_stream }
       end
 
       def add_option(option, value)
         @options[option] << value
+      end
+
+      def add_tag(value)
+        warn("Deprecated: Found tags option '#{value}'. Support for '~@tag' will be removed from the next release of Cucumber. Please use 'not @tag' instead.") if value.include?('~')
+        warn("Deprecated: Found tags option '#{value}'. Support for '@tag1,@tag2' will be removed from the next release of Cucumber. Please use '@tag or @tag2' instead.") if value.include?(',')
+        @options[:tag_expressions] << value.gsub(/(@\w+)(:\d+)?/, '\1')
+        add_tag_limits(value)
+      end
+
+      def add_tag_limits(value)
+        value.split(/[, ]/).map { |part| TAG_LIMIT_MATCHER.match(part) }.compact.each do |matchdata|
+          add_tag_limit(@options[:tag_limits], matchdata[:tag_name], matchdata[:limit].to_i)
+        end
+      end
+
+      def add_tag_limit(tag_limits, tag_name, limit)
+        if tag_limits[tag_name] && tag_limits[tag_name] != limit
+          raise "Inconsistent tag limits for #{tag_name}: #{tag_limits[tag_name]} and #{limit}"
+        end
+        tag_limits[tag_name] = limit
       end
 
       def set_color(color)
@@ -375,8 +423,12 @@ TEXT
         @options[:duration] = false
       end
 
+      def set_strict(setting, type = nil)
+        @options[:strict].set_strict(setting, type)
+      end
+
       def stdout_formats
-        @options[:formats].select {|format, output| output == @out_stream }
+        @options[:formats].select { |_, _, output| output == @out_stream }
       end
 
       def extract_environment_variables
@@ -433,6 +485,7 @@ TEXT
         @options[:excludes] += other_options[:excludes]
         @options[:name_regexps] += other_options[:name_regexps]
         @options[:tag_expressions] += other_options[:tag_expressions]
+        merge_tag_limits(@options[:tag_limits], other_options[:tag_limits])
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -442,7 +495,7 @@ TEXT
         @options[:source] &= other_options[:source]
         @options[:snippets] &= other_options[:snippets]
         @options[:duration] &= other_options[:duration]
-        @options[:strict] |= other_options[:strict]
+        @options[:strict] = other_options[:strict].merge!(@options[:strict])
         @options[:dry_run] |= other_options[:dry_run]
 
         @profiles += other_options.profiles
@@ -455,7 +508,13 @@ TEXT
           @options[:formats] = stdout_formats[0..0] + non_stdout_formats
         end
 
+        @options[:retry] = other_options[:retry] if @options[:retry] == 0
+
         self
+      end
+
+      def merge_tag_limits(option_limits, other_limits)
+        other_limits.each { |key, value| add_tag_limit(option_limits, key, value) }
       end
 
       def indicate_invalid_language_and_exit(lang)
@@ -467,21 +526,24 @@ TEXT
         require 'gherkin/dialect'
         language = ::Gherkin::Dialect.for(lang)
         data = Cucumber::MultilineArgument::DataTable.from(
-          [['feature', to_keywords_string(language.feature_keywords)],
-          ['background', to_keywords_string(language.background_keywords)],
-          ['scenario', to_keywords_string(language.scenario_keywords)],
-          ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
-          ['examples', to_keywords_string(language.examples_keywords)],
-          ['given', to_keywords_string(language.given_keywords)],
-          ['when', to_keywords_string(language.when_keywords)],
-          ['then', to_keywords_string(language.then_keywords)],
-          ['and', to_keywords_string(language.and_keywords)],
-          ['but', to_keywords_string(language.but_keywords)],
-          ['given (code)', to_code_keywords_string(language.given_keywords)],
-          ['when (code)', to_code_keywords_string(language.when_keywords)],
-          ['then (code)', to_code_keywords_string(language.then_keywords)],
-          ['and (code)', to_code_keywords_string(language.and_keywords)],
-          ['but (code)', to_code_keywords_string(language.but_keywords)]])
+          [
+            ['feature', to_keywords_string(language.feature_keywords)],
+            ['background', to_keywords_string(language.background_keywords)],
+            ['scenario', to_keywords_string(language.scenario_keywords)],
+            ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
+            ['examples', to_keywords_string(language.examples_keywords)],
+            ['given', to_keywords_string(language.given_keywords)],
+            ['when', to_keywords_string(language.when_keywords)],
+            ['then', to_keywords_string(language.then_keywords)],
+            ['and', to_keywords_string(language.and_keywords)],
+            ['but', to_keywords_string(language.but_keywords)],
+            ['given (code)', to_code_keywords_string(language.given_keywords)],
+            ['when (code)', to_code_keywords_string(language.when_keywords)],
+            ['then (code)', to_code_keywords_string(language.then_keywords)],
+            ['and (code)', to_code_keywords_string(language.and_keywords)],
+            ['but (code)', to_code_keywords_string(language.but_keywords)]
+          ]
+        )
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end
@@ -506,12 +568,13 @@ TEXT
 
       def default_options
         {
-          :strict       => false,
+          :strict       => Cucumber::Core::Test::Result::StrictConfiguration.new,
           :require      => [],
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
           :tag_expressions  => [],
+          :tag_limits   => {},
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true,

@@ -14,14 +14,15 @@ module Cucumber
       def initialize(config)
         @io = ensure_io(config.out_stream)
         @feature_hashes = []
-        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        @step_or_hook_hash = {}
+        config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
-        config.on_event :test_step_starting, &method(:on_test_step_starting)
+        config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-      def on_test_case_starting(event)
+      def on_test_case_started(event)
         test_case = event.test_case
         builder = Builder.new(test_case)
         unless same_feature_as_previous_test_case?(test_case.feature)
@@ -39,7 +40,7 @@ module Cucumber
         @any_step_failed = false
       end
 
-      def on_test_step_starting(event)
+      def on_test_step_started(event)
         test_step = event.test_step
         return if internal_hook?(test_step)
         hook_query = HookQueryVisitor.new(test_step)
@@ -81,7 +82,7 @@ module Cucumber
 
       def embed(src, mime_type, _label)
         if File.file?(src)
-          content = File.open(src, 'rb') { |f| f.read }
+          content = File.open(src, 'rb', &:read)
           data = encode64(content)
         else
           if mime_type =~ /;base64$/
@@ -101,7 +102,7 @@ module Cucumber
       end
 
       def first_step_after_background?(test_step)
-        test_step.source[1].name != @element_hash[:name]
+        test_step.source[1].to_s != @element_hash[:name]
       end
 
       def internal_hook?(test_step)
@@ -129,7 +130,7 @@ module Cucumber
         when :after_step
           return after_step_hooks
         else
-          fail 'Unkown hook type ' + hook_query.type.to_s
+          fail 'Unknown hook type ' + hook_query.type.to_s
         end
       end
 
@@ -160,7 +161,7 @@ module Cucumber
       def create_step_hash(step_source)
         step_hash = {
           keyword: step_source.keyword,
-          name: step_source.name,
+          name: step_source.to_s,
           line: step_source.location.line
         }
         step_hash[:comments] = Formatter.create_comments_array(step_source.comments) unless step_source.comments.empty?
@@ -239,7 +240,7 @@ module Cucumber
             uri: feature.file,
             id: create_id(feature),
             keyword: feature.keyword,
-            name: feature.name,
+            name: feature.to_s,
             description: feature.description,
             line: feature.location.line
           }
@@ -258,7 +259,7 @@ module Cucumber
         def background(background)
           @background_hash = {
             keyword: background.keyword,
-            name: background.name,
+            name: background.to_s,
             description: background.description,
             line: background.location.line,
             type: 'background'
@@ -270,7 +271,7 @@ module Cucumber
           @test_case_hash = {
             id: create_id(scenario),
             keyword: scenario.keyword,
-            name: scenario.name,
+            name: scenario.to_s,
             description: scenario.description,
             line: scenario.location.line,
             type: 'scenario'
@@ -283,7 +284,7 @@ module Cucumber
           @test_case_hash = {
             id: create_id(scenario) + ';' + @example_id,
             keyword: scenario.keyword,
-            name: scenario.name,
+            name: scenario.to_s,
             description: scenario.description,
             line: @row.location.line,
             type: 'scenario'
@@ -316,7 +317,7 @@ module Cucumber
         private
 
         def create_id(element)
-          element.name.downcase.tr(' ', '-')
+          element.to_s.downcase.tr(' ', '-')
         end
 
         def create_tags_array(tags)

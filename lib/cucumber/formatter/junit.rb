@@ -19,7 +19,7 @@ module Cucumber
       end
 
       def initialize(config)
-        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
@@ -36,7 +36,7 @@ module Cucumber
         }}
       end
 
-      def on_test_case_starting(event)
+      def on_test_case_started(event)
         test_case = event.test_case
         unless same_feature_as_previous_test_case?(test_case.feature)
           start_feature(test_case.feature)
@@ -52,7 +52,7 @@ module Cucumber
         test_step, result = *event.attributes
         return if @failing_step_source
 
-        @failing_step_source = test_step.source.last unless result.ok?(@config.strict?)
+        @failing_step_source = test_step.source.last unless result.ok?(@config.strict)
       end
 
       def on_test_case_finished(event)
@@ -102,10 +102,10 @@ module Cucumber
 
       def create_output_string(test_case, scenario, result, row_name)
         output = "#{test_case.keyword}: #{scenario}\n\n"
-        return output if result.ok?(@config.strict?)
+        return output if result.ok?(@config.strict)
         if test_case.keyword == 'Scenario'
-          output += "#{@failing_step_source.keyword}" unless hook?(@failing_step_source)
-          output += "#{@failing_step_source.name}\n"
+          output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
+          output += "#{@failing_step_source}\n"
         else
           output += "Example row: #{row_name}\n"
         end
@@ -113,7 +113,7 @@ module Cucumber
       end
 
       def hook?(step)
-        ['Before hook', 'After hook', 'AfterStep hook'].include? step.name
+        ['Before hook', 'After hook', 'AfterStep hook'].include? step.text
       end
 
       def build_testcase(result, scenario_designation, output)
@@ -123,7 +123,7 @@ module Cucumber
         name = scenario_designation
 
         @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => format('%.6f', duration)) do
-          if !result.passed? && result.ok?(@config.strict?)
+          if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
           elsif !result.passed?

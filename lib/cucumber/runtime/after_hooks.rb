@@ -19,7 +19,7 @@ module Cucumber
         @hooks.map do |hook|
           action = ->(result) { hook.invoke('After', @scenario.with_result(result)) }
           Hooks.after_hook(source, hook.location, &action)
-        end          
+        end
       end
     end
   end

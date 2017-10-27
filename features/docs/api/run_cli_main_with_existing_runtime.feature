@@ -5,6 +5,7 @@ Feature: Run Cli::Main with existing Runtime
   When the process forks, Spork them passes the runtime to Cli::Main to
   run it.
 
+    @todo-windows
     Scenario: Run a single feature
       Given the standard step definitions
       Given a file named "features/success.feature" with:

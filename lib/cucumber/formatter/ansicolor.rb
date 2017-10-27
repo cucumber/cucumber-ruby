@@ -60,6 +60,7 @@ module Cucumber
       end.merge({
         'undefined' => 'yellow',
         'pending'   => 'yellow',
+        'flaky'     => 'yellow',
         'failed'    => 'red',
         'passed'    => 'green',
         'outline'   => 'cyan',

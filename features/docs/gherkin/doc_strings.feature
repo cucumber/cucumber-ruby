@@ -29,6 +29,7 @@ Feature: Doc strings
   You can read the content type from the argument passed into your step definition, as shown
   in the example below.
 
+  @todo-windows
   Scenario: Plain text Docstring
     Given a scenario with a step that looks like this:
       """gherkin
@@ -53,6 +54,7 @@ Feature: Doc strings
       Three
       """
 
+  @todo-windows
   Scenario: DocString passed as String
     Given a scenario with a step that looks like this:
       """gherkin

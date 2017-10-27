@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+require 'octokit'
+
+class PullRequest
+  attr_reader :gh, :num
+
+  def initialize(gh, num)
+    @gh = gh
+    @num = num
+  end
+
+  def entry
+    pr = gh.pull_request('cucumber/cucumber-ruby', num)
+    username = pr['user']['login']
+    url = pr['html_url']
+    title = pr['title']
+    "#{title} ([##{num}](#{url}) [@#{username}](https://github.com/#{username}))"
+  end
+
+  def labels
+    gh.labels_for_issue('cucumber/cucumber-ruby', num).map { |label| label['name'] }
+  end
+
+  def type_label
+    types = labels.select { |label| label =~ /^type: / }
+    if types.empty?
+      raise('This pull request does not have a \'type\' label on it. Please add one.')
+    end
+
+    if types.length > 1
+      raise('This pull request has more than one \'type\' label on it. Please choose just one.')
+    end
+
+    types.first
+  end
+end
+
+class Changelog
+  def self.open(path, &block)
+    full_path = File.expand_path(File.dirname(__FILE__) + '/' + path + '/CHANGELOG.md')
+    log = new(File.read(full_path))
+    log.instance_exec(&block)
+    File.write(full_path, log.body)
+  end
+
+  attr_reader :lines
+
+  def initialize(body)
+    @lines = body.lines
+  end
+
+  def insert(label, entry)
+    section_index = lines.index { |line| line.strip == heading_for(label) }
+    unless section_index
+      raise("Unable to find matching heading in CHANGELOG.md for '#{label}' (#{heading_for(label)})")
+    end
+    lines.insert(section_index + 2, "* #{entry}\n")
+  end
+
+  def heading_for(label)
+    text = {
+      'type: new feature' => 'Added',
+      'type: bug' => 'Fixed',
+      'type: refactoring / developer experience' => 'Changed'
+    }.fetch(label)
+    "### #{text}"
+  end
+
+  def body
+    lines.join
+  end
+end
+
+begin
+  token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
+  num = (ARGV[0] || raise("syntax: #{$0} <PULL-REQUEST-NUMBER>")).to_i
+
+  gh = Octokit::Client.new(access_token: token)
+  pr = PullRequest.new(gh, num)
+
+  Changelog.open('..') do
+    insert(pr.type_label, pr.entry)
+  end
+rescue StandardError => error
+  abort error.message
+end

@@ -1,4 +1,8 @@
-begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
+begin
+  require 'rspec/expectations'
+rescue LoadError
+  require 'spec/expectations'
+end
 
 browser = nil
 

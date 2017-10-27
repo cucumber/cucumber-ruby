@@ -11,9 +11,7 @@ module Cucumber
     LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
     RAILS         = defined?(Rails)
     RUBY_BINARY   = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
-    RUBY_2_2      = RUBY_VERSION =~ /^2\.2/
-    RUBY_2_1      = RUBY_VERSION =~ /^2\.1/
-    RUBY_2_3      = RUBY_VERSION =~ /^2\.3/
+    RUBY          = defined? RUBY_VERSION
 
     class << self
       attr_accessor :use_full_backtrace

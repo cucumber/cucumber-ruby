@@ -30,18 +30,18 @@ module Cucumber
         @passed_test_cases = []
         @counts = ConsoleCounts.new(config)
         @issues = ConsoleIssues.new(config)
-        config.on_event :step_match, &method(:on_step_match)
-        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        config.on_event :step_activated, &method(:on_step_activated)
+        config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-      def on_step_match(event)
+      def on_step_activated(event)
         @matches[event.test_step.source] = event.step_match
       end
 
-      def on_test_case_starting(_event)
+      def on_test_case_started(_event)
         unless @profile_information_printed
           do_print_profile_information(config.profiles) unless config.skip_profile_information? || config.profiles.nil? || config.profiles.empty?
           @profile_information_printed = true

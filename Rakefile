@@ -9,17 +9,14 @@ Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
-task :default => [:spec, :rubocop, :cucumber]
-
-if ENV['TRAVIS']
-  ENV['SIMPLECOV']  = 'ci'
-  ENV['JRUBY_OPTS'] = [ENV['JRUBY_OPTS'], '--debug'].compact.join(' ')
-
-  require 'coveralls/rake/task'
-  Coveralls::RakeTask.new
-
-  task :default => [:spec, :rubocop, :cucumber, 'coveralls:push']
+require 'cucumber/rake/task'
+Cucumber::Rake::Task.new do |t|
+  t.profile = 'ruby' if Cucumber::RUBY
 end
+
+default_tasks = [:spec, :cucumber]
+
+task :default => default_tasks
 
 require 'rake/clean'
 CLEAN.include %w(**/*.{log,pyc,rbc,tgz} doc)

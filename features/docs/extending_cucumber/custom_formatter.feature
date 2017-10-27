@@ -19,7 +19,7 @@ Feature: Custom Formatter
         class Formatter
           def initialize(config)
             @io = config.out_stream
-            config.on_event :test_case_starting do |event|
+            config.on_event :test_case_started do |event|
               print_test_case_name(event.test_case)
             end
           end
@@ -40,6 +40,26 @@ Feature: Custom Formatter
         JUST PRINT ME
 
       """
+
+  Scenario: Pass custom config to your formatter from the CLI
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options)
+            @io = config.out_stream
+            config.on_event :test_run_finished do |event|
+              @io.print options.inspect
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two`
+    Then it should pass with exactly:
+    """
+    {"foo"=>"bar", "one"=>"two"}
+    """
 
   Scenario: Use the legacy API
     This is deprecated and should no longer be used.
@@ -65,38 +85,10 @@ Feature: Custom Formatter
     When I run `cucumber features/f.feature --format MyCustom::LegacyFormatter`
     Then it should pass with exactly:
       """
+      WARNING: The formatter MyCustom::LegacyFormatter is using the deprecated formatter API which will be removed in v4.0 of Cucumber.
+
       I'LL USE MY OWN
         JUST PRINT ME
 
       """
 
-  Scenario: Use both old and new
-    You can both APIs at once, for now
-
-    Given a file named "features/support/custom_mixed_formatter.rb" with:
-      """
-      module MyCustom
-        class MixedFormatter
-
-          def initialize(runtime, io, options)
-            @io = io
-          end
-
-          def before_test_case(test_case)
-            feature = test_case.source.first
-            @io.puts feature.short_name.upcase
-          end
-
-          def scenario_name(keyword, name, file_colon_line, source_indent)
-            @io.puts "  #{name.upcase}"
-          end
-        end
-      end
-      """
-    When I run `cucumber features/f.feature --format MyCustom::MixedFormatter`
-    Then it should pass with exactly:
-      """
-      I'LL USE MY OWN
-        JUST PRINT ME
-
-      """

@@ -19,7 +19,7 @@ module Cucumber
       end
 
       def after_step_hook(source, location, &block)
-        raise ArgumentError unless source.last.kind_of?(Core::Ast::Step)
+        raise ArgumentError unless source.last.is_a?(Core::Ast::Step)
         build_hook_step(source, location, block, AfterStepHook, Core::Test::Action)
       end
 
@@ -43,7 +43,7 @@ module Cucumber
         @location = location
       end
 
-      def name
+      def text
         'After hook'
       end
 
@@ -63,7 +63,7 @@ module Cucumber
         @location = location
       end
 
-      def name
+      def text
         'Before hook'
       end
 
@@ -83,7 +83,7 @@ module Cucumber
         @location = location
       end
 
-      def name
+      def text
         'AfterStep hook'
       end
 

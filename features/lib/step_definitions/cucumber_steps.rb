@@ -1,23 +1,23 @@
 # frozen_string_literal: true
-Given(/^a directory without standard Cucumber project directory structure$/) do
+Given('a directory without standard Cucumber project directory structure') do
   in_current_dir do
     FileUtils.rm_rf 'features' if File.directory?('features')
   end
 end
 
-Given(/^a scenario with a step that looks like this:$/) do |string|
+Given('a scenario with a step that looks like this:') do |string|
   create_feature do
     create_scenario { string }
   end
 end
 
-Given(/^a scenario with a step that looks like this in japanese:$/) do |string|
+Given('a scenario with a step that looks like this in japanese:') do |string|
   create_feature_ja do
     create_scenario_ja { string }
   end
 end
 
-Given(/^the standard step definitions$/) do
+Given('the standard step definitions') do
   write_file 'features/step_definitions/steps.rb',
 
   <<-STEPS
@@ -29,11 +29,11 @@ Given(/^the standard step definitions$/) do
   STEPS
 end
 
-Given(/^a step definition that looks like this:$/) do |string|
+Given('a step definition that looks like this:') do |string|
   create_step_definition { string }
 end
 
-Given(/^a scenario "([^\"]*)" that passes$/) do |name|
+Given('a scenario {string} that passes') do |name|
   write_file "features/#{name}.feature",
   <<-FEATURE
   Feature: #{name}
@@ -47,7 +47,7 @@ Given(/^a scenario "([^\"]*)" that passes$/) do |name|
   STEPS
 end
 
-Given(/^a scenario "([^\"]*)" that fails$/) do |name|
+Given('a scenario {string} that fails') do |name|
   write_file "features/#{name}.feature",
   <<-FEATURE
   Feature: #{name}
@@ -64,10 +64,6 @@ end
 When(/^I run the feature with the (\w+) formatter$/) do |formatter|
   expect(features.length).to eq 1
   run_feature features.first, formatter
-end
-
-Then(/^the stderr should contain a warning message$/) do
-  expect(all_stderr).to include('[warning]')
 end
 
 module CucumberHelper

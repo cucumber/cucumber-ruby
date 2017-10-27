@@ -16,7 +16,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
       let(:locations) do
         [
           double(:location, to_s: 'path/to/some.feature:3'),
-          double(:location, to_s: 'path/to/some/other.feature:8'),
+          double(:location, to_s: 'path/to/some/other.feature:8')
         ]
       end
 

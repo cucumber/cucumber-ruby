@@ -57,7 +57,7 @@ Feature: Randomize
     When I run `cucumber`
     Then it should pass
 
-  @spawn
+  @spawn @todo-windows
   Scenario: Run scenarios randomized
     When I run `cucumber --order random:41544 -q`
     Then it should fail
@@ -101,7 +101,7 @@ Feature: Randomize
 
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: Run scenarios randomized with some skipped
     When I run `cucumber --tags ~@skipme --order random:41544 -q`
     Then it should fail

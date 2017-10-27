@@ -3,8 +3,8 @@ require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
 require 'cucumber/core/event_bus'
+require 'cucumber/core/test/result'
 require 'forwardable'
-require 'cucumber/core/gherkin/tag_expression'
 require 'cucumber'
 
 module Cucumber
@@ -72,7 +72,7 @@ module Cucumber
       @options[:guess]
     end
 
-    def strict?
+    def strict
       @options[:strict]
     end
 
@@ -130,13 +130,8 @@ module Cucumber
       with_default_features_path(dirs)
     end
 
-    # todo: remove
-    def tag_expression
-      Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
-    end
-
     def tag_limits
-      tag_expression.limits.to_hash
+      @options[:tag_limits]
     end
 
     def tag_expressions
@@ -195,12 +190,13 @@ module Cucumber
     end
 
     def formatter_factories
-      @options[:formats].map do |format_and_out|
-        format = format_and_out[0]
-        path_or_io = format_and_out[1]
+      formats.map do |format, formatter_options, path_or_io|
         begin
           factory = formatter_class(format)
-          yield factory, path_or_io, Cli::Options.new(STDOUT, STDERR, @options)
+          yield factory,
+                formatter_options,
+                path_or_io,
+                Cli::Options.new(STDOUT, STDERR, @options)
         rescue Exception => e
           raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
         end
@@ -208,7 +204,7 @@ module Cucumber
     end
 
     def formatter_class(format)
-      if(builtin = Cli::Options::BUILTIN_FORMATS[format])
+      if (builtin = Cli::Options::BUILTIN_FORMATS[format])
         constantize(builtin[0])
       else
         constantize(format)
@@ -248,7 +244,7 @@ module Cucumber
       {
         :autoload_code_paths => ['features/support', 'features/step_definitions'],
         :filters             => [],
-        :strict              => false,
+        :strict              => Cucumber::Core::Test::Result::StrictConfiguration.new,
         :require             => [],
         :dry_run             => false,
         :fail_fast           => false,
@@ -261,7 +257,7 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Core::EventBus.new(Core::Events.registry.merge(Cucumber::Events.registry))
+        :event_bus           => Cucumber::Events.make_event_bus
       }
     end
 

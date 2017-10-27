@@ -15,7 +15,7 @@ module Cucumber
         @stepdef_to_match = Hash.new { |h, stepdef_key| h[stepdef_key] = [] }
         @total_duration = 0
         @matches = {}
-        config.on_event :step_match do |event|
+        config.on_event :step_activated do |event|
           test_step, step_match = *event.attributes
           @matches[test_step.source] = step_match
         end
@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def on_step_definition_registered(event)
-        stepdef_key = StepDefKey.new(event.step_definition.regexp_source, event.step_definition.location)
+        stepdef_key = StepDefKey.new(event.step_definition.expression.to_s, event.step_definition.location)
         @stepdef_to_match[stepdef_key] = []
       end
 
@@ -39,7 +39,7 @@ module Cucumber
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         step_match = @matches[test_step.source]
         step_definition = step_match.step_definition
-        stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.location)
+        stepdef_key = StepDefKey.new(step_definition.expression.to_s, step_definition.location)
         unless @stepdef_to_match[stepdef_key].map { |key| key[:location] }.include? test_step.location
           duration = DurationExtractor.new(result).result_duration
 

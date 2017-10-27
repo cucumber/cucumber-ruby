@@ -3,6 +3,7 @@ require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/core/ast/describes_itself'
+require 'cucumber/multiline_argument/data_table/diff_matrices'
 
 module Cucumber
   module MultilineArgument
@@ -26,35 +27,7 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      class Different < StandardError
-        def initialize(table)
-          super("Tables were not identical:\n#{table}")
-        end
-      end
-
-      class Builder
-        attr_reader :rows
-
-        def initialize
-          @rows = []
-        end
-
-        def row(row)
-          @rows << row
-        end
-
-        def eof
-        end
-      end
-
-      include Enumerable
       include Core::Ast::DescribesItself
-      extend Forwardable
-
-      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
-
-      attr_accessor :file
-      def_delegator :@ast_table, :location
 
       def self.default_arg_name #:nodoc:
         'table'
@@ -73,6 +46,7 @@ module Cucumber
         end
 
         private
+
         def parse(text, location = Core::Ast::Location.of_caller)
           builder = Builder.new
           parser = Cucumber::Gherkin::DataTableParser.new(builder)
@@ -85,13 +59,30 @@ module Cucumber
         end
       end
 
+      class Builder
+        attr_reader :rows
+
+        def initialize
+          @rows = []
+        end
+
+        def row(row)
+          @rows << row
+        end
+
+        def eof
+        end
+      end
+
+
+      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
       # @param data [Core::Ast::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_columns!
       # @param header_mappings [Hash] see map_headers!
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
-        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.kind_of? Core::Ast::DataTable
+        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.is_a? Core::Ast::DataTable
         ast_table = data
         # Verify that it's square
         ast_table.transpose
@@ -108,6 +99,12 @@ module Cucumber
 
       def to_step_definition_arg
         dup
+      end
+
+      attr_accessor :file
+
+      def location
+        @ast_table.location
       end
 
       # Creates a copy of this table, inheriting any column and header mappings
@@ -162,8 +159,10 @@ module Cucumber
       #   [{:foo => '2', :bar => '3', :foo_bar => '5'}, {:foo => '7', :bar => '9', :foo_bar => '16'}]
       #
       def symbolic_hashes
-        @header_conversion_proc = lambda { |h| symbolize_key(h) }
-        @symbolic_hashes ||= build_hashes
+        @symbolic_hashes ||=
+          self.hashes.map do |string_hash|
+            Hash[string_hash.map{ |a,b| [symbolize_key(a), b] }]
+          end
       end
 
       # Converts this table into a Hash where the first column is
@@ -196,14 +195,12 @@ module Cucumber
       #
       def raw
         cell_matrix.map do |row|
-          row.map do |cell|
-            cell.value
-          end
+          row.map(&:value)
         end
       end
 
       def column_names #:nodoc:
-        @col_names ||= cell_matrix[0].map { |cell| cell.value }
+        @col_names ||= cell_matrix[0].map(&:value)
       end
 
       def rows
@@ -337,80 +334,22 @@ module Cucumber
       # a Table argument, if you want to compare that table to some actual values.
       #
       def diff!(other_table, options={})
-        options = {
-          :missing_row   => true,
-          :surplus_row   => true,
-          :missing_col   => true,
-          :surplus_col   => false,
-          :misplaced_col => false
-        }.merge(options)
-
         other_table = ensure_table(other_table)
         other_table.convert_headers!
         other_table.convert_columns!
-        ensure_green!
 
         convert_headers!
         convert_columns!
 
-        original_width = cell_matrix[0].length
-        @cell_matrix, other_table_cell_matrix = pad_and_match(@cell_matrix, other_table.cell_matrix)
-        padded_width = cell_matrix[0].length
+        DiffMatrices.new(cell_matrix, other_table.cell_matrix, options).call
+      end
 
-        missing_col = cell_matrix[0].detect{|cell| cell.status == :undefined}
-        surplus_col = padded_width > original_width
-        misplaced_col = cell_matrix[0] != other_table.cell_matrix[0]
-
-        require_diff_lcs
-        cell_matrix.extend(Diff::LCS)
-        changes = cell_matrix.diff(other_table_cell_matrix).flatten
-
-        inserted = 0
-        missing  = 0
-
-        row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
-
-        last_change = nil
-        missing_row_pos = nil
-        insert_row_pos  = nil
-
-        changes.each do |change|
-          if(change.action == '-')
-            missing_row_pos = change.position + inserted
-            cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
-            row_indices.insert(missing_row_pos, nil)
-            missing += 1
-          else # '+'
-            insert_row_pos = change.position + missing
-            inserted_row = change.element
-            inserted_row.each{|cell| cell.status = :comment}
-            cell_matrix.insert(insert_row_pos, inserted_row)
-            row_indices[insert_row_pos] = nil
-            inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change && last_change.action == '-'
-            inserted += 1
-          end
-          last_change = change
+      class Different < StandardError
+        attr_reader :table
+        def initialize(table)
+          @table = table
+          super("Tables were not identical:\n#{table}")
         end
-
-        other_table_cell_matrix.each_with_index do |other_row, i|
-          row_index = row_indices.index(i)
-          row = cell_matrix[row_index] if row_index
-          if row
-            (original_width..padded_width).each do |col_index|
-              surplus_cell = other_row[col_index]
-              row[col_index].value = surplus_cell.value if row[col_index]
-            end
-          end
-        end
-
-        clear_cache!
-        should_raise =
-          missing_row_pos && options[:missing_row] ||
-          insert_row_pos  && options[:surplus_row] ||
-          missing_col     && options[:missing_col] ||
-          surplus_col     && options[:surplus_col] ||
-          misplaced_col   && options[:misplaced_col]
-        raise Different.new(self) if should_raise
       end
 
       def to_hash(cells) #:nodoc:
@@ -453,9 +392,7 @@ module Cucumber
         cells_rows[0][col]
       end
 
-      def cell_matrix #:nodoc:
-        @cell_matrix
-      end
+      attr_reader :cell_matrix
 
       def col_width(col) #:nodoc:
         columns[col].__send__(:width)
@@ -504,19 +441,7 @@ module Cucumber
       def build_hashes
         convert_headers!
         convert_columns!
-        cells_rows[1..-1].map do |row|
-          row.to_hash
-        end
-      end
-
-      def inspect_rows(missing_row, inserted_row) #:nodoc:
-        missing_row.each_with_index do |missing_cell, col|
-          inserted_cell = inserted_row[col]
-          if(missing_cell.value != inserted_cell.value && (missing_cell.value.to_s == inserted_cell.value.to_s))
-            missing_cell.inspect!
-            inserted_cell.inspect!
-          end
-        end
+        cells_rows[1..-1].map(&:to_hash)
       end
 
       def create_cell_matrix(ast_table) #:nodoc:
@@ -546,14 +471,14 @@ module Cucumber
         header_cells = cell_matrix[0]
 
         if @header_conversion_proc
-          header_values = header_cells.map { |cell| cell.value } - @header_mappings.keys
+          header_values = header_cells.map(&:value) - @header_mappings.keys
           @header_mappings = @header_mappings.merge(Hash[*header_values.zip(header_values.map(&@header_conversion_proc)).flatten])
         end
 
         @header_mappings.each_pair do |pre, post|
           mapped_cells = header_cells.select { |cell| pre === cell.value }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
-          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map { |c| c.value }.inspect}" if mapped_cells.length > 1
+          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
           mapped_cells[0].value = post
           if @conversion_procs.key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
@@ -561,77 +486,13 @@ module Cucumber
         end
       end
 
-      def require_diff_lcs #:nodoc:
-        begin
-          require 'diff/lcs'
-        rescue LoadError => e
-          e.message << "\n Please gem install diff-lcs\n"
-          raise e
-        end
-      end
-
       def clear_cache! #:nodoc:
         @hashes = @rows_hash = @col_names = @rows = @columns = nil
-      end
-
-      # Pads two cell matrices to same column width and matches columns according to header value.
-      # The first cell matrix is the reference matrix with the second matrix matched against it.
-      def pad_and_match(a_cell_matrix, other_cell_matrix) #:nodoc:
-        clear_cache!
-        cols = a_cell_matrix.transpose
-        unmatched_cols = other_cell_matrix.transpose
-
-
-        header_values = cols.map(&:first)
-        matched_cols = []
-
-        header_values.each_with_index do |v, i|
-          mapped_index = unmatched_cols.index{|unmapped_col| unmapped_col.first == v}
-          if (mapped_index)
-            matched_cols << unmatched_cols.delete_at(mapped_index)
-          else
-            mark_as_missing(cols[i])
-            empty_col = other_cell_matrix.collect {SurplusCell.new(nil, self, -1)}
-            empty_col.first.value = v
-            matched_cols << empty_col
-          end
-        end
-
-
-        empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
-        unmatched_cols.each do
-          cols << empty_col
-        end
-
-        return cols.transpose, (matched_cols + unmatched_cols).transpose
       end
 
       def ensure_table(table_or_array) #:nodoc:
         return table_or_array if DataTable === table_or_array
         DataTable.from(table_or_array)
-      end
-
-      def ensure_array_of_array(array)
-        Hash === array[0] ? hashes_to_array(array) : array
-      end
-
-      def hashes_to_array(hashes) #:nodoc:
-        header = hashes[0].keys.sort
-        [header] + hashes.map{|hash| header.map{|key| hash[key]}}
-      end
-
-      def ensure_green! #:nodoc:
-        each_cell{|cell| cell.status = :passed}
-      end
-
-      def each_cell(&proc) #:nodoc:
-        cell_matrix.each{|row| row.each(&proc)}
-      end
-
-      def mark_as_missing(col) #:nodoc:
-        col.each do |cell|
-          cell.status = :undefined
-        end
       end
 
       def symbolize_key(key)
@@ -659,7 +520,7 @@ module Cucumber
 
         # For testing only
         def to_sexp #:nodoc:
-          [:row, line, *@cells.map{|cell| cell.to_sexp}]
+          [:row, line, *@cells.map(&:to_sexp)]
         end
 
         def to_hash #:nodoc:

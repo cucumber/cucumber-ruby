@@ -15,12 +15,14 @@ module Cucumber
 
         def initialize(*)
           super
+          emit_deprecation_warning
+
           @matches = collect_matches
-          config.on_event(:test_case_starting) do |event|
+          config.on_event(:test_case_started) do |event|
             formatter.before_test_case(event.test_case)
             printer.before_test_case(event.test_case)
           end
-          config.on_event(:test_step_starting) do |event|
+          config.on_event(:test_step_started) do |event|
             formatter.before_test_step(event.test_step)
             printer.before_test_step(event.test_step)
           end
@@ -50,6 +52,20 @@ module Cucumber
 
         private
 
+        def emit_deprecation_warning
+          parent_name = formatter_class_name =~ /::[^:]+\Z/ ? $`.freeze : nil
+          return if parent_name == 'Cucumber::Formatter'
+          return if !config.out_stream # some unit tests don't set it
+          config.out_stream.puts "WARNING: The formatter #{formatter.class.name} is using the deprecated formatter API which will be removed in v4.0 of Cucumber."
+          config.out_stream.puts
+        end
+
+        def formatter_class_name
+          formatter.class.name
+        rescue NoMethodError # when we use the Fanout, things get gnarly
+          formatter.class[0].class.name
+        end
+
         def printer
           @printer ||= FeaturesPrinter.new(formatter, results, config, @matches).before
         end
@@ -61,7 +77,7 @@ module Cucumber
 
         def collect_matches
           result = {}
-          config.on_event(:step_match) do |event|
+          config.on_event(:step_activated) do |event|
             test_step, step_match = *event.attributes
             result[test_step.source.last] = step_match
           end
@@ -185,7 +201,7 @@ module Cucumber
           class StepSource < OpenStruct
             def build_step_invocation(indent, matches, config, messages, embeddings)
               step_result.step_invocation(
-                matches.fetch(step) { NoStepMatch.new(step, step.name) },
+                matches.fetch(step) { NoStepMatch.new(step, step.text) },
                 step,
                 indent,
                 background,
@@ -330,7 +346,7 @@ module Cucumber
             elsif source.scenario
               ScenarioPrinter.new(formatter, source.scenario, before_hook_results)
             elsif source.scenario_outline
-              if same_scenario_outline_as_previous_test_case?(source) and @previous_outline_child
+              if same_scenario_outline_as_previous_test_case?(source) && @previous_outline_child
                 @previous_outline_child
               else
                 ScenarioOutlinePrinter.new(formatter, config, source.scenario_outline)
@@ -388,19 +404,19 @@ module Cucumber
                   @previous_outline_child.after unless same_scenario_outline_as_previous_test_case?(source)
                 end
               end
-              unless from_scenario_outline_to_hidden_backgroud(@child, child)
+              if from_scenario_outline_to_hidden_background(@child, child)
+                @previous_outline_child = @child
+              else
                 @child.after
                 @previous_outline_child = nil
-              else
-                @previous_outline_child = @child
               end
             end
-            child.before unless to_scenario_outline(child) and same_scenario_outline_as_previous_test_case?(source)
+            child.before unless to_scenario_outline(child) && same_scenario_outline_as_previous_test_case?(source)
             @child = child
           end
 
-          def from_scenario_outline_to_hidden_backgroud(from, to)
-            from.class.name == ScenarioOutlinePrinter.name and
+          def from_scenario_outline_to_hidden_background(from, to)
+            from.class.name == ScenarioOutlinePrinter.name &&
             to.class.name == HiddenBackgroundPrinter.name
           end
 
@@ -612,7 +628,7 @@ module Cucumber
 
           def after
             @child.after if @child
-            # TODO - the last step result might not accurately reflect the
+            # TODO: the last step result might not accurately reflect the
             # overall scenario result.
             scenario_outline = last_step_result.scenario_outline(node.name, node.location)
             formatter.after_feature_element(scenario_outline)
@@ -641,7 +657,7 @@ module Cucumber
           end
 
           def outline_step(step)
-            step_match = NoStepMatch.new(step, step.name)
+            step_match = NoStepMatch.new(step, step.text)
             step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
               step_invocation(step_match, step, indent, nil, configuration, [], [])
             steps_printer.step_invocation step_invocation
@@ -914,11 +930,11 @@ module Cucumber
           def of(node)
             # The length of the instantiated steps in --expand mode are currently
             # not included in the calculation of max => make sure to return >= 1
-            [1, max - node.name.length - node.keyword.length].max
+            [1, max - node.to_s.length - node.keyword.length].max
           end
 
           def record_width_of(node)
-            @widths << node.keyword.length + node.name.length + 1
+            @widths << node.keyword.length + node.to_s.length + 1
           end
 
           private
@@ -989,8 +1005,8 @@ module Cucumber
 
           def step_exception(step, configuration)
             return filtered_step_exception(step) if @exception
-            return nil unless @status == :undefined && configuration.strict?
-            @exception = Cucumber::Undefined.from(@result, step.name)
+            return nil unless @status == :undefined && configuration.strict.strict?(:undefined)
+            @exception = Cucumber::Undefined.from(@result, step.text)
             @exception.backtrace << step.backtrace_line
             filtered_step_exception(step)
           end

@@ -19,9 +19,9 @@ Feature: Listen for events
       """
       AfterConfiguration do |config|
         io = config.out_stream
-        config.on_event :step_match do |event|
+        config.on_event :step_activated do |event|
           io.puts "Success!"
-          io.puts "Step name:       #{event.test_step.name}"
+          io.puts "Step text:       #{event.test_step}"
           io.puts "Source location: #{event.step_match.location}"
         end
       end
@@ -30,7 +30,7 @@ Feature: Listen for events
     Then it should pass with:
       """
       Success!
-      Step name:       matching
+      Step text:       matching
       Source location: features/step_definitions/steps.rb:1
       """
 

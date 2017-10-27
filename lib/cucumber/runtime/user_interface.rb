@@ -7,10 +7,6 @@ module Cucumber
     module UserInterface
       attr_writer :visitor
 
-      def visitor=(visitor)
-        @visitor = visitor
-      end
-
       # Output +messages+ alongside the formatted output.
       # This is an alternative to using Kernel#puts - it will display
       # nicer, and in all outputs (in case you use several formatters)
@@ -37,11 +33,11 @@ module Cucumber
         STDOUT.flush
         puts(question)
 
-        if(Cucumber::JRUBY)
-          answer = jruby_gets(timeout_seconds)
-        else
-          answer = mri_gets(timeout_seconds)
-        end
+        answer = if(Cucumber::JRUBY)
+                   jruby_gets(timeout_seconds)
+                 else
+                   mri_gets(timeout_seconds)
+                 end
 
         raise("Waited for input for #{timeout_seconds} seconds, then timed out.") unless answer
         puts(answer)

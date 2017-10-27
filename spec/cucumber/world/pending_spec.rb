@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/registry_and_more'
 require 'cucumber/configuration'
 
 module Cucumber
   describe 'Pending' do
     before(:each) do
-      l = RbSupport::RbLanguage.new(Runtime.new, Configuration.new)
-      l.begin_rb_scenario(double('scenario').as_null_object)
-      @world = l.current_world
+      registry = Glue::RegistryAndMore.new(Runtime.new, Configuration.new)
+      registry.begin_scenario(double('scenario').as_null_object)
+      @world = registry.current_world
     end
 
     it 'raises a Pending if no block is supplied' do
@@ -34,13 +34,13 @@ module Cucumber
         end
       end.to raise_error(Cucumber::Pending, /TODO/)
       # The teardown is needed so that the message expectation does not bubble up.
-      RSpec::Mocks.teardown 
+      RSpec::Mocks.teardown
     end
 
     it 'raises a Pending if a supplied block starts working' do
       expect(-> {
         @world.pending 'TODO' do
-        # success!
+          # success!
         end
       }).to raise_error(Cucumber::Pending, /TODO/)
     end

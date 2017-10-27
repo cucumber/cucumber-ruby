@@ -33,6 +33,19 @@ describe Cucumber::Filters::Retry do
     end
   end
 
+  context 'when performing retry' do
+    let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
+
+    it 'describes the same test case object each time' do
+      allow(receiver).to receive(:test_case) {|tc|
+        expect(tc).to equal(test_case)
+        configuration.notify :test_case_finished, tc.with_steps(tc.test_steps), result
+      }
+
+      filter.test_case(test_case)
+    end
+  end
+
   context 'consistently failing test case' do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 

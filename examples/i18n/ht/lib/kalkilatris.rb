@@ -3,7 +3,7 @@ class Kalkilatris
     @args ||= []
     @args << n
   end
-  
+
   def ajoute
     @args.inject(0){|n,sum| sum + n}
   end

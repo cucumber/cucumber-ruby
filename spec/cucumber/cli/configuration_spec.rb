@@ -54,7 +54,7 @@ module Cli
 
         config.parse!(%w{--format progress --profile bongo})
 
-        expect(config.options[:formats]).to eq [['progress', out]]
+        expect(config.options[:formats]).to eq [['progress', {}, out]]
         expect(config.options[:require]).to eq ['from/yml']
       end
 
@@ -71,7 +71,19 @@ module Cli
 
         config.parse!(%w{--profile bongo})
 
-        expect(config.options[:strict]).to be true
+        expect(config.options[:strict].strict?(:undefined)).to be true
+        expect(config.options[:strict].strict?(:pending)).to be true
+        expect(config.options[:strict].strict?(:flaky)).to be true
+      end
+
+      it 'allows --strict from a profile to be selectively overridden' do
+        given_cucumber_yml_defined_as({'bongo' => '--strict'})
+
+        config.parse!(%w{--profile bongo --no-strict-flaky})
+
+        expect(config.options[:strict].strict?(:undefined)).to be true
+        expect(config.options[:strict].strict?(:pending)).to be true
+        expect(config.options[:strict].strict?(:flaky)).to be false
       end
 
       it 'parses ERB syntax in the cucumber.yml file' do
@@ -112,14 +124,14 @@ END_OF_MESSAGE
 
         config.parse!(%w{--profile foo})
 
-        expect(config.options[:formats]).to eq [['progress', out]]
+        expect(config.options[:formats]).to eq [['progress', {}, out]]
       end
 
       it 'disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)' do
         given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
         config.parse!(%w{--format progress --profile foo})
 
-        expect(config.options[:formats]).to eq [['progress', out]]
+        expect(config.options[:formats]).to eq [['progress', {}, out]]
       end
 
       ['--no-profile', '-P'].each do |flag|
@@ -194,10 +206,10 @@ END_OF_MESSAGE
 
       expect(config.options[:dry_run]).to be true
     end
-    
+
     it 'implies --no-duration with --dry-run option' do
       config.parse!(%w{--dry-run})
-      
+
       expect(config.options[:duration]).to be false
     end
 
@@ -220,10 +232,10 @@ END_OF_MESSAGE
       expect(config.options[:source]).to be false
       expect(config.options[:duration]).to be false
     end
-    
+
     it 'sets duration to false with --no-duration' do
       config.parse!(%w{--no-duration})
-      
+
       expect(config.options[:duration]).to be false
     end
 
@@ -236,19 +248,19 @@ END_OF_MESSAGE
     it 'accepts --out option' do
       config.parse!(%w{--out jalla.txt})
 
-      expect(config.formats).to eq [['pretty', 'jalla.txt']]
+      expect(config.formats).to eq [['pretty', {}, 'jalla.txt']]
     end
 
     it 'accepts multiple --out options' do
       config.parse!(%w{--format progress --out file1 --out file2})
 
-      expect(config.formats).to eq [['progress', 'file2']]
+      expect(config.formats).to eq [['progress', {}, 'file2']]
     end
 
     it 'accepts multiple --format options and put the STDOUT one first so progress is seen' do
       config.parse!(%w{--format pretty --out pretty.txt --format progress})
 
-      expect(config.formats).to eq [['progress', out], ['pretty', 'pretty.txt']]
+      expect(config.formats).to eq [['progress', {}, out], ['pretty', {}, 'pretty.txt']]
     end
 
     it 'does not accept multiple --format options when both use implicit STDOUT' do
@@ -263,7 +275,7 @@ END_OF_MESSAGE
     it 'accepts same --format options with implicit STDOUT, and keep only one' do
       config.parse!(%w{--format pretty --format pretty})
 
-      expect(config.formats).to eq [['pretty', out]]
+      expect(config.formats).to eq [['pretty', {}, out]]
     end
 
     it 'does not accept multiple --out streams pointing to the same place' do
@@ -278,19 +290,19 @@ END_OF_MESSAGE
     it 'associates --out to previous --format' do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
 
-      expect(config.formats).to eq [['progress', 'file1'], ['profile' ,'file2']]
+      expect(config.formats).to match_array([['progress', {}, 'file1'], ['profile', {}, 'file2']])
     end
 
     it 'accepts same --format options with same --out streams and keep only one' do
       config.parse!(%w{--format html --out file --format pretty --format html --out file})
 
-      expect(config.formats).to eq [['pretty', out], ['html', 'file']]
+      expect(config.formats).to eq [['pretty', {}, out], ['html', {}, 'file']]
     end
 
     it 'accepts same --format options with different --out streams' do
       config.parse!(%w{--format html --out file1 --format html --out file2})
 
-      expect(config.formats).to eq [['html', 'file1'], ['html', 'file2']]
+      expect(config.formats).to match_array([['html', {}, 'file1'], ['html', {}, 'file2']])
     end
 
     it 'accepts --color option' do
@@ -354,19 +366,17 @@ END_OF_MESSAGE
       expect(config.paths).not_to include('RAILS_ENV=selenium')
     end
 
-    describe '#tag_expression' do
-      include RSpec::WorkInProgress
-
+    describe '#tag_expressions' do
       it 'returns an empty expression when no tags are specified' do
         config.parse!([])
 
-        expect(config.tag_expression).to be_empty
+        expect(config.tag_expressions).to be_empty
       end
 
       it 'returns an expression when tags are specified' do
         config.parse!(['--tags','@foo'])
 
-        expect(config.tag_expression).not_to be_empty
+        expect(config.tag_expressions).not_to be_empty
       end
     end
 
@@ -421,12 +431,12 @@ END_OF_MESSAGE
       it 'returns the default snippet type if it was not set' do
         config.parse!([])
 
-        expect(config.snippet_type).to eq :regexp
+        expect(config.snippet_type).to eq :cucumber_expression
       end
     end
 
-    describe '#retry_attempts' do 
-      it 'returns the specified number of retries' do 
+    describe '#retry_attempts' do
+      it 'returns the specified number of retries' do
         config.parse!(['--retry=3'])
         expect(config.retry_attempts).to eql 3
       end

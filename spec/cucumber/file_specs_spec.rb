@@ -15,7 +15,7 @@ module Cucumber
         Cucumber::Core::Ast::Location.new('features/foo.feature', 3),
         Cucumber::Core::Ast::Location.new('features/bar.feature', 4),
         Cucumber::Core::Ast::Location.new('features/bar.feature', 5),
-        Cucumber::Core::Ast::Location.new('features/bar.feature', 6),
+        Cucumber::Core::Ast::Location.new('features/bar.feature', 6)
       ]
     end
 
@@ -23,7 +23,7 @@ module Cucumber
       expect(files.length).to eq 2
       expect(files).to eq [
         'features/foo.feature',
-        'features/bar.feature',
+        'features/bar.feature'
       ]
     end
 
@@ -42,7 +42,7 @@ module Cucumber
       it 'returns a wildcard location for that file' do
         expect(locations).to eq [
           Cucumber::Core::Ast::Location.new('features/foo.feature'),
-          Cucumber::Core::Ast::Location.new('features/bar.feature', 34),
+          Cucumber::Core::Ast::Location.new('features/bar.feature', 34)
         ]
       end
     end
@@ -53,7 +53,7 @@ module Cucumber
       it 'returns locations in the order specified' do
         expect(locations).to eq [
           Cucumber::Core::Ast::Location.new('features/foo.feature', 10),
-          Cucumber::Core::Ast::Location.new('features/foo.feature', 1),
+          Cucumber::Core::Ast::Location.new('features/foo.feature', 1)
         ]
       end
     end

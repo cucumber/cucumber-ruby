@@ -10,7 +10,7 @@ module Cucumber
 
       #_The step definition that was just registered.
       #
-      # @return [Cucumber::Core::Test::Case]
+      # @return [RbSupport::RbStepDefinition]
       attr_reader :step_definition
 
       #_@private

@@ -1,7 +1,12 @@
 # encoding: utf-8
-begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
+begin
+  require 'rspec/expectations'
+rescue LoadError
+  require 'spec/expectations'
+end
+
 require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib') 
+$:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
 Before do
@@ -22,4 +27,3 @@ end
 Akkor(/^eredményül (.*)\-(?:e|a|ö|á|)t kell kapnom$/) do |result|
   @result.should == result.to_f
 end
-

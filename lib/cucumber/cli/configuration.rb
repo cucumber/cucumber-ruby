@@ -3,7 +3,6 @@ require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/constantize'
-require 'cucumber/core/gherkin/tag_expression'
 require 'cucumber'
 
 module Cucumber
@@ -27,9 +26,7 @@ module Cucumber
         @args = args
         @options.parse!(args)
         arrange_formats
-        raise("You can't use both --strict and --wip") if strict? && wip?
-        # todo: remove
-        @options[:tag_expression] = Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
+        raise("You can't use both --strict and --wip") if strict.strict? && wip?
         set_environment_variables
       end
 
@@ -45,7 +42,7 @@ module Cucumber
         Integer(@options[:seed] || rand(0xFFFF))
       end
 
-      def strict?
+      def strict
         @options[:strict]
       end
 
@@ -74,7 +71,7 @@ module Cucumber
       end
 
       def snippet_type
-        @options[:snippet_type] || :regexp
+        @options[:snippet_type] || :cucumber_expression
       end
 
       def log
@@ -85,13 +82,8 @@ module Cucumber
         logger
       end
 
-      # todo: remove
-      def tag_expression
-        Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
-      end
-
       def tag_limits
-        tag_expression.limits.to_hash
+        @options[:tag_limits]
       end
 
       def tag_expressions
@@ -133,8 +125,10 @@ module Cucumber
       end
 
       def arrange_formats
-        @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
-        @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
+        @options[:formats] << ['pretty', {}, @out_stream] if @options[:formats].empty?
+        @options[:formats] = @options[:formats].sort_by do |f|
+          f[2] == @out_stream ? -1 : 1
+        end
         @options[:formats].uniq!
         @options.check_formatter_stream_conflicts()
       end

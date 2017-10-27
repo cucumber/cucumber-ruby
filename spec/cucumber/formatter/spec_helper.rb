@@ -25,7 +25,7 @@ module Cucumber
         receiver = Test::Runner.new(event_bus)
         filters = [
           Filters::ActivateSteps.new(
-            StepMatchSearch.new(actual_runtime.support_code.ruby.method(:step_matches), actual_runtime.configuration),
+            StepMatchSearch.new(actual_runtime.support_code.registry.method(:step_matches), actual_runtime.configuration),
             actual_runtime.configuration
           ),
           Filters::ApplyAfterStepHooks.new(actual_runtime.support_code),
@@ -68,10 +68,11 @@ module Cucumber
       end
 
       def define_steps
-        return unless step_defs = self.class.step_defs
-        runtime.support_code.ruby
+        step_defs = self.class.step_defs
+
+        return unless step_defs
         dsl = Object.new
-        dsl.extend RbSupport::RbDsl
+        dsl.extend Glue::Dsl
         dsl.instance_exec &step_defs
       end
 

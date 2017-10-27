@@ -30,6 +30,7 @@ Feature: Usage formatter
       Given(/D/) { }
       """
 
+  @todo-windows
   Scenario: Run with --format usage
     When I run `cucumber -f usage --dry-run`
     Then it should pass with exactly:
@@ -55,6 +56,7 @@ Feature: Usage formatter
 
       """
 
+  @todo-windows
   Scenario: Run with --expand --format usage
     When I run `cucumber -x -f usage --dry-run`
     Then it should pass with exactly:
@@ -80,6 +82,7 @@ Feature: Usage formatter
 
       """
 
+    @todo-windows
     Scenario: Run with --format stepdefs
       When I run `cucumber -f stepdefs --dry-run`
       Then it should pass with exactly:

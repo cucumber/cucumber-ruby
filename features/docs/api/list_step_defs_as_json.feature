@@ -8,6 +8,7 @@ Feature: List step defs as json
   Background:
     Given a directory named "features"
 
+  @todo-windows
   Scenario: Two Ruby step definitions, in the same file
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -18,16 +19,23 @@ Feature: List step defs as json
       """
       require 'cucumber'
       puts Cucumber::StepDefinitions.new.to_json
-      
+
       """
     Then it should pass with JSON:
       """
       [
-        {"source": "foo", "flags": "i"},
-        {"source": "b.r", "flags": "mx"}
+        {
+          "source": {"expression": "foo", "type": "regular expression"},
+          "regexp": {"source": "foo", "flags": "i"}
+        },
+        {
+          "source": {"expression": "b.r", "type": "regular expression"},
+          "regexp": {"source": "b.r", "flags": "mx"}
+        }
       ]
       """
 
+  @todo-windows
   Scenario: Non-default directory structure
     Given a file named "my_weird/place/steps.rb" with:
       """
@@ -38,13 +46,19 @@ Feature: List step defs as json
       """
       require 'cucumber'
       puts Cucumber::StepDefinitions.new(:autoload_code_paths => ['my_weird']).to_json
-      
+
       """
     Then it should pass with JSON:
       """
       [
-        {"source": "foo", "flags": ""},
-        {"source": "b.r", "flags": "x"}
+        {
+          "source": {"expression": "foo", "type": "regular expression"},
+          "regexp": {"source": "foo", "flags": ""}
+        },
+        {
+          "source": {"expression": "b.r", "type": "regular expression"},
+          "regexp": {"source": "b.r", "flags": "x"}
+        }
       ]
-      
+
       """

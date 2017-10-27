@@ -18,7 +18,8 @@ class Calculator
   end
 
   def /
-    divisor, dividend = [@stack.pop, @stack.pop] # Hm, @stack.pop(2) doesn't work
+    divisor, dividend = [@stack.pop, @stack.pop]
+    # Hm, @stack.pop(2) doesn't work
     @stack.push dividend / divisor
   end
 end

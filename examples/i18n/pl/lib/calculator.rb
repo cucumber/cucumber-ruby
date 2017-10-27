@@ -3,7 +3,7 @@ class Calculator
     @args ||= []
     @args << n
   end
-  
+
   def dodaj
     @args.inject(0){|n,sum| sum + n}
   end

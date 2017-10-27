@@ -33,7 +33,7 @@ module Cucumber
         [ :on_blue      ,  44 ],
         [ :on_magenta   ,  45 ],
         [ :on_cyan      ,  46 ],
-        [ :on_white     ,  47 ],
+        [ :on_white     ,  47 ]
       ]
 
       ATTRIBUTE_NAMES = ATTRIBUTES.transpose.first

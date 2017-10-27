@@ -14,13 +14,14 @@ Feature: Retry failing tests
     Given a scenario "Fails-once" that fails once, then passes
     And a scenario "Fails-twice" that fails twice, then passes
     And a scenario "Solid" that passes
-    And a scenario "Fails-forever" that fails
 
+  @todo-windows
   Scenario: Retry once, so Fails-once starts to pass
+    Given a scenario "Fails-forever" that fails
     When I run `cucumber -q --retry 1 --format summary`
     Then it should fail with:
       """
-      7 scenarios (5 failed, 2 passed)
+      4 scenarios (2 failed, 1 flaky, 1 passed)
       """
     And it should fail with:
       """
@@ -40,11 +41,13 @@ Feature: Retry failing tests
         Fails-twice ✗
       """
 
+  @todo-windows
   Scenario: Retry twice, so Fails-twice starts to pass too
+    Given a scenario "Fails-forever" that fails
     When I run `cucumber -q --retry 2 --format summary`
     Then it should fail with:
       """
-      9 scenarios (6 failed, 3 passed)
+      4 scenarios (1 failed, 2 flaky, 1 passed)
       """
     And it should fail with:
       """
@@ -64,4 +67,26 @@ Feature: Retry failing tests
         Fails-twice ✗
         Fails-twice ✗
         Fails-twice ✓
+      """
+
+  @todo-windows
+  Scenario: Flaky scenarios gives exit code zero in non-strict mode
+    When I run `cucumber -q --retry 2 --format summary`
+    Then it should pass with:
+      """
+
+
+      3 scenarios (2 flaky, 1 passed)
+      """
+
+  @todo-windows
+  Scenario: Flaky scenarios gives non-zero exit code in strict mode
+    When I run `cucumber -q --retry 2 --format summary --strict`
+    Then it should fail with:
+      """
+      Flaky Scenarios:
+      cucumber features/fails_once.feature:2
+      cucumber features/fails_twice.feature:2
+
+      3 scenarios (2 flaky, 1 passed)
       """

@@ -235,7 +235,7 @@ module Cucumber
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
-        names[1..-1].each {|s| @io.puts "#{s}"}
+        names[1..-1].each {|s| @io.puts s.to_s}
         @io.flush
       end
 

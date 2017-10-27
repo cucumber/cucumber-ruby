@@ -135,7 +135,7 @@ module Cucumber
 
       def do_print_snippets(snippet_text_proc)
         snippets = @snippets_input.map do |data|
-          snippet_text_proc.call(data.actual_keyword, data.step.name, data.step.multiline_arg)
+          snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
         end.uniq
 
         text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"

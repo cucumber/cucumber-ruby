@@ -56,40 +56,42 @@ module Cucumber
           end
         end
 
-        context '--i18n' do
-          context "with LANG specified as 'help'" do
-            include RSpec::WorkInProgress
+        context '--i18n-languages' do
+          include RSpec::WorkInProgress
 
-            it 'lists all known languages' do
-              when_parsing '--i18n help' do
-                expect(Kernel).to receive(:exit)
+          it 'lists all known languages' do
+            after_parsing '--i18n-languages' do
+              ::Gherkin::DIALECTS.keys.map do |key|
+                expect(@output_stream.string).to include(key.to_s);
               end
-            end
-
-            it 'exits the program' do
-              when_parsing('--i18n help') { expect(Kernel).to receive(:exit) }
             end
           end
 
-          context 'with invalid LANG' do 
+          it 'exits the program' do
+            when_parsing('--i18n-languages') { expect(Kernel).to receive(:exit) }
+          end
+        end
+
+        context '--i18n-keywords' do
+          context 'with invalid LANG' do
             include RSpec::WorkInProgress
 
-            it 'exits' do 
-              when_parsing '--i18n foo' do 
+            it 'exits' do
+              when_parsing '--i18n-keywords foo' do
                 expect(Kernel).to receive(:exit)
               end
             end
 
-            it 'says the language was invalid' do 
-              after_parsing '--i18n foo' do 
+            it 'says the language was invalid' do
+              after_parsing '--i18n-keywords foo' do
                 expect(@output_stream.string).to include("Invalid language 'foo'. Available languages are:")
               end
             end
 
-            it 'displays the language table' do 
-              after_parsing '--i18n foo' do 
+            it 'displays the language table' do
+              after_parsing '--i18n-keywords foo' do
                 ::Gherkin::DIALECTS.keys.map do |key|
-                  expect(@output_stream.string).to include("#{key}");
+                  expect(@output_stream.string).to include(key.to_s);
                 end
               end
             end
@@ -98,17 +100,23 @@ module Cucumber
 
         context '-f FORMAT or --format FORMAT' do
           it 'defaults the output for the formatter to the output stream (STDOUT)' do
-            after_parsing('-f pretty') { expect(options[:formats]).to eq [['pretty', output_stream]] }
+            after_parsing('-f pretty') { expect(options[:formats]).to eq [['pretty', {}, output_stream]] }
+          end
+
+          it 'extracts per-formatter options' do
+            after_parsing('-f pretty,foo=bar,foo2=bar2') do
+              expect(options[:formats]).to eq [['pretty', { 'foo' => 'bar', 'foo2' => 'bar2' }, output_stream]]
+            end
           end
         end
 
         context '-o [FILE|DIR] or --out [FILE|DIR]' do
           it "defaults the formatter to 'pretty' when not specified earlier" do
-            after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', 'file.txt']] }
+            after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', {}, 'file.txt']] }
           end
           it 'sets the output for the formatter defined immediatly before it' do
             after_parsing('-f profile --out file.txt -f pretty -o file2.txt') do
-              expect(options[:formats]).to eq [['profile', 'file.txt'], ['pretty', 'file2.txt']]
+              expect(options[:formats]).to eq [['profile', {}, 'file.txt'], ['pretty', {}, 'file2.txt']]
             end
           end
         end
@@ -137,18 +145,31 @@ module Cucumber
             options = Options.new(output_stream, error_stream, :default_profile => 'default')
 
             options.parse!(%w{-f pretty})
-            
-            expect(options[:formats]).to eq [['pretty', output_stream], ['junit', 'result.xml']]
+
+            expect(options[:formats]).to eq [['pretty', {}, output_stream], ['junit', {}, 'result.xml']]
           end
         end
 
         context '-t TAGS --tags TAGS' do
-          it 'designates tags prefixed with ~ as tags to be excluded' do
-            after_parsing('--tags ~@foo,@bar') { expect(options[:tag_expressions]).to eq ['~@foo,@bar'] }
+          it 'handles tag expressions as argument' do
+            after_parsing(['--tags', 'not @foo or @bar']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
           end
 
           it 'stores tags passed with different --tags seperately' do
             after_parsing('--tags @foo --tags @bar') { expect(options[:tag_expressions]).to eq ['@foo', '@bar'] }
+          end
+
+          it 'strips tag limits from the tag expressions stored' do
+            after_parsing(['--tags', 'not @foo:2 or @bar:3']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
+          end
+
+          it 'stores tag limits separately' do
+            after_parsing(['--tags', 'not @foo:2 or @bar:3']) { expect(options[:tag_limits]).to eq Hash('@foo' => 2, '@bar' => 3) }
+          end
+
+          it 'raise exception for inconsistent tag limits' do
+            expect{ after_parsing('--tags @foo:2 --tags @foo:3') }.to raise_error(RuntimeError, 'Inconsistent tag limits for @foo: 2 and 3')
+
           end
         end
 
@@ -211,6 +232,19 @@ module Cucumber
             expect(options[:tag_expressions]).to eq ['@foo', '@bar']
           end
 
+          it 'combines the tag limits of both' do
+            given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
+            options.parse!(%w[--tags @foo:3 -p baz])
+
+            expect(options[:tag_limits]).to eq Hash('@foo' => 3, '@bar' => 2)
+          end
+
+          it 'raise exceptions for inconsistent tag limits' do
+            given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
+
+            expect{ options.parse!(%w[--tags @bar:3 -p baz]) }.to raise_error(RuntimeError, 'Inconsistent tag limits for @bar: 3 and 2')
+          end
+
           it 'only takes the paths from the original options, and disgregards the profiles' do
             given_cucumber_yml_defined_as('baz' => %w[features])
             options.parse!(%w[my.feature -p baz])
@@ -236,35 +270,35 @@ module Cucumber
             given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
             options.parse!(%w{--format progress --profile foo})
 
-            expect(options[:formats]).to eq [['progress', output_stream]]
+            expect(options[:formats]).to eq [['progress', {}, output_stream]]
           end
 
           it 'includes any non-STDOUT formatters from the profile' do
             given_cucumber_yml_defined_as({'html' => %w[--format html -o features.html]})
             options.parse!(%w{--format progress --profile html})
 
-            expect(options[:formats]).to eq [['progress', output_stream], ['html', 'features.html']]
+            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
           end
 
           it 'does not include STDOUT formatters from the profile if there is a STDOUT formatter in command line' do
             given_cucumber_yml_defined_as({'html' => %w[--format html -o features.html --format pretty]})
             options.parse!(%w{--format progress --profile html})
 
-            expect(options[:formats]).to eq [['progress', output_stream], ['html', 'features.html']]
+            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
           end
 
           it 'includes any STDOUT formatters from the profile if no STDOUT formatter was specified in command line' do
             given_cucumber_yml_defined_as({'html' => %w[--format html]})
             options.parse!(%w{--format rerun -o rerun.txt --profile html})
 
-            expect(options[:formats]).to eq [['html', output_stream], ['rerun', 'rerun.txt']]
+            expect(options[:formats]).to eq [['html', {}, output_stream], ['rerun', {}, 'rerun.txt']]
           end
 
           it 'assumes all of the formatters defined in the profile when none are specified on cmd line' do
             given_cucumber_yml_defined_as({'html' => %w[--format progress --format html -o features.html]})
             options.parse!(%w{--profile html})
 
-            expect(options[:formats]).to eq [['progress', output_stream], ['html', 'features.html']]
+            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
           end
 
           it 'only reads cucumber.yml once' do
@@ -276,7 +310,7 @@ module Cucumber
               <% $cucumber_yml_read_count += 1 %>
               default: --format pretty
               END
-              )
+                                           )
               options = Options.new(output_stream, error_stream, :default_profile => 'default')
               options.parse!(%w(-f progress))
 
@@ -294,12 +328,32 @@ module Cucumber
             expect(options[:source]).to be false
             expect(options[:duration]).to be false
           end
-          
+
           it 'uses --no-duration when defined in the profile' do
             given_cucumber_yml_defined_as('foo' => '--no-duration')
             options.parse!(%w[-p foo])
 
             expect(options[:duration]).to be false
+          end
+
+          context '--retry ATTEMPTS' do
+            context '--retry option not defined on the command line' do
+              it 'uses the --retry option from the profile' do
+                given_cucumber_yml_defined_as('foo' => '--retry 2')
+                options.parse!(%w[-p foo])
+
+                expect(options[:retry]).to be 2
+              end
+            end
+
+            context '--retry option defined on the command line' do
+              it 'ignores the --retry option from the profile' do
+                given_cucumber_yml_defined_as('foo' => '--retry 2')
+                options.parse!(%w[--retry 1 -p foo])
+
+                expect(options[:retry]).to be 1
+              end
+            end
           end
         end
 
@@ -350,14 +404,14 @@ module Cucumber
         end
 
         context '--retry ATTEMPTS' do
-          it 'is 0 by default' do 
-            after_parsing('') do 
+          it 'is 0 by default' do
+            after_parsing('') do
               expect(options[:retry]).to eql 0
             end
           end
 
-          it 'sets the options[:retry] value' do 
-            after_parsing('--retry 4') do 
+          it 'sets the options[:retry] value' do
+            after_parsing('--retry 4') do
               expect(options[:retry]).to eql 4
             end
           end
