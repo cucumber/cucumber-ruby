@@ -164,7 +164,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -198,31 +198,31 @@ module Cucumber
           end
 
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
-              :before_feature,
-              :before_tags,
-              :after_tags,
-              :feature_name,
-              :before_feature_element,
-              :before_tags,
-              :after_tags,
-              :scenario_name,
-              :before_steps,
-              :before_step,
-              :before_step_result,
-              :step_name,
-              :after_step_result,
-              :after_step,
-              :before_step,
-              :before_step_result,
-              :step_name,
-              :exception,
-              :after_step_result,
-              :after_step,
-              :after_steps,
-              :after_feature_element,
-              :after_feature,
-              :after_features
+            :before_features,
+            :before_feature,
+            :before_tags,
+            :after_tags,
+            :feature_name,
+            :before_feature_element,
+            :before_tags,
+            :after_tags,
+            :scenario_name,
+            :before_steps,
+            :before_step,
+            :before_step_result,
+            :step_name,
+            :after_step_result,
+            :after_step,
+            :before_step,
+            :before_step_result,
+            :step_name,
+            :exception,
+            :after_step_result,
+            :after_step,
+            :after_steps,
+            :after_feature_element,
+            :after_feature,
+            :after_features
           ]
         end
 
@@ -240,7 +240,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -330,7 +330,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -396,7 +396,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -481,7 +481,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -570,7 +570,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -672,7 +672,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -751,7 +751,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -835,7 +835,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -885,35 +885,35 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
-              :before_feature,
-              :before_tags,
-              :after_tags,
-              :feature_name,
-              :before_background,
-              :background_name,
-              :before_steps,
-              :before_step,
-              :before_step_result,
-              :step_name,
-              :after_step_result,
-              :after_step,
-              :after_steps,
-              :after_background,
-              :before_feature_element,
-              :before_tags,
-              :after_tags,
-              :scenario_name,
-              :before_steps,
-              :before_step,
-              :before_step_result,
-              :step_name,
-              :after_step_result,
-              :after_step,
-              :after_steps,
-              :after_feature_element,
-              :after_feature,
-              :after_features
+            :before_features,
+            :before_feature,
+            :before_tags,
+            :after_tags,
+            :feature_name,
+            :before_background,
+            :background_name,
+            :before_steps,
+            :before_step,
+            :before_step_result,
+            :step_name,
+            :after_step_result,
+            :after_step,
+            :after_steps,
+            :after_background,
+            :before_feature_element,
+            :before_tags,
+            :after_tags,
+            :scenario_name,
+            :before_steps,
+            :before_step,
+            :before_step_result,
+            :step_name,
+            :after_step_result,
+            :after_step,
+            :after_steps,
+            :after_feature_element,
+            :after_feature,
+            :after_features
           ]
         end
 
@@ -932,7 +932,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -992,7 +992,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1064,7 +1064,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1114,7 +1114,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ]
+          ]
           # rubocop:enable AlignArray
         end
 
@@ -1134,7 +1134,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1177,7 +1177,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ]
+          ]
           # rubocop:enable AlignArray
         end
 
@@ -1200,7 +1200,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1255,7 +1255,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ]
+          ]
           # rubocop:enable AlignArray
         end
 
@@ -1281,7 +1281,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1350,7 +1350,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ]
+          ]
           # rubocop:enable AlignArray
         end
 
@@ -1391,25 +1391,23 @@ module Cucumber
                         :after_tags,
                         :examples_name,
                         :before_outline_table,
-                          :scenario_name,
-                          :before_step,
-                            :before_step_result,
-                              :step_name,
-                            :after_step_result,
-                          :after_step,
-                          :scenario_name,
-                          :before_step,
-                            :before_step_result,
-                              :step_name,
-                            :after_step_result,
-                          :after_step,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
                         :after_outline_table,
                       :after_examples,
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ]
+          ]
           # rubocop:enable AlignArray
         end
 
@@ -1430,7 +1428,7 @@ module Cucumber
 
           # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1472,7 +1470,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ]
+          ]
           # rubocop:enable AlignArray
         end
 
@@ -1496,7 +1494,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq [
-                :before_features,
+              :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1536,7 +1534,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-              ]
+            ]
             # rubocop:enable AlignArray
           end
         end
@@ -1566,7 +1564,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1586,7 +1584,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-              ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
@@ -1615,7 +1613,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1635,7 +1633,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-              ])
+                                                      ])
             # rubocop:enable AlignArray
           end
 
@@ -1658,7 +1656,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1688,7 +1686,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-              ])
+                                                      ])
             # rubocop:enable AlignArray
           end
 
@@ -1713,7 +1711,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1752,7 +1750,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-              ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
@@ -1784,7 +1782,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1804,7 +1802,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-              ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
@@ -1834,7 +1832,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1854,7 +1852,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ])
+                                                      ])
             # rubocop:enable AlignArray
           end
 
@@ -1878,7 +1876,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1917,7 +1915,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
@@ -1947,7 +1945,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1967,7 +1965,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
@@ -1997,7 +1995,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -2010,7 +2008,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
@@ -2040,7 +2038,7 @@ module Cucumber
 
             # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -2060,7 +2058,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-            ])
+                                                      ])
             # rubocop:enable AlignArray
           end
         end
