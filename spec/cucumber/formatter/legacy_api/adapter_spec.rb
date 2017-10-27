@@ -75,7 +75,7 @@ module Cucumber
         private
 
         def before_hooks(source)
-          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
+          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
           # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
           hook = proc {}
           [ Hooks.before_hook(source, hook.source_location, &hook) ]
@@ -111,7 +111,6 @@ module Cucumber
           runner = Core::Test::Runner.new(events)
           compile gherkin_docs, runner, default_filters
           events.test_run_finished
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -150,7 +149,6 @@ module Cucumber
               :after_feature,
             :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a scenario with one step' do
@@ -162,16 +160,15 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
                   :feature_name,
                   :before_feature_element,
                     :before_tags,
-                    :after_tags,
+                      :after_tags,
                     :scenario_name,
                     :before_steps,
                       :before_step,
@@ -184,7 +181,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a scenario with two steps, one of them failing' do
@@ -196,33 +192,32 @@ module Cucumber
               end
             end
           end
-
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
-            :before_feature,
-            :before_tags,
-            :after_tags,
-            :feature_name,
-            :before_feature_element,
-            :before_tags,
-            :after_tags,
-            :scenario_name,
-            :before_steps,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :after_step_result,
-            :after_step,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :exception,
-            :after_step_result,
-            :after_step,
-            :after_steps,
-            :after_feature_element,
-            :after_feature,
-            :after_features
+              :before_features,
+              :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+              :before_tags,
+              :after_tags,
+              :scenario_name,
+              :before_steps,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :after_step_result,
+              :after_step,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :exception,
+              :after_step_result,
+              :after_step,
+              :after_steps,
+              :after_feature_element,
+              :after_feature,
+              :after_features
           ]
         end
 
@@ -238,9 +233,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -272,7 +266,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and an empty scenario' do
@@ -285,7 +278,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -310,7 +302,6 @@ module Cucumber
               :after_feature,
             :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and two scenarios' do
@@ -328,9 +319,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -372,7 +362,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario and one scenario outline' do
@@ -394,9 +383,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -457,7 +445,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline and one scenario' do
@@ -479,9 +466,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -542,7 +528,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and two scenario outlines' do
@@ -568,9 +553,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -650,7 +634,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline with two rows' do
@@ -670,9 +653,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -726,7 +708,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline with two examples tables' do
@@ -749,9 +730,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -817,7 +797,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background with two steps' do
@@ -833,9 +812,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -870,7 +848,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background' do
@@ -885,35 +862,35 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
-            :before_feature,
-            :before_tags,
-            :after_tags,
-            :feature_name,
-            :before_background,
-            :background_name,
-            :before_steps,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :after_step_result,
-            :after_step,
-            :after_steps,
-            :after_background,
-            :before_feature_element,
-            :before_tags,
-            :after_tags,
-            :scenario_name,
-            :before_steps,
-            :before_step,
-            :before_step_result,
-            :step_name,
-            :after_step_result,
-            :after_step,
-            :after_steps,
-            :after_feature_element,
-            :after_feature,
-            :after_features
+              :before_features,
+              :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_background,
+              :background_name,
+              :before_steps,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :after_step_result,
+              :after_step,
+              :after_steps,
+              :after_background,
+              :before_feature_element,
+              :before_tags,
+              :after_tags,
+              :scenario_name,
+              :before_steps,
+              :before_step,
+              :before_step_result,
+              :step_name,
+              :after_step_result,
+              :after_step,
+              :after_steps,
+              :after_feature_element,
+              :after_feature,
+              :after_features
           ]
         end
 
@@ -930,444 +907,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
-          expect( formatter.legacy_messages ).to eq [
-            :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-          # rubocop:enable AlignArray
-        end
-
-        it 'scenario outline after scenario' do
-          execute_gherkin do
-            feature do
-              scenario do
-                step 'passing'
-              end
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'pass'
-                end
-              end
-            end
-          end
-
-          # rubocop:disable AlignArray
-          expect( formatter.legacy_messages ).to eq [
-            :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-          # rubocop:enable AlignArray
-        end
-
-        it 'scenario outline before scenario' do
-          execute_gherkin do
-            feature do
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'pass'
-                end
-              end
-              scenario do
-                step 'passing'
-              end
-            end
-          end
-
-          # rubocop:disable AlignArray
-          expect( formatter.legacy_messages ).to eq [
-            :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-          # rubocop:enable AlignArray
-        end
-
-        it 'scenario outline two rows' do
-          execute_gherkin do
-            feature do
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'pass'
-                  row 'pass'
-                end
-              end
-            end
-          end
-
-          # rubocop:disable AlignArray
-          expect( formatter.legacy_messages ).to eq [
-            :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-          # rubocop:enable AlignArray
-        end
-
-        it 'scenario outline two examples tables' do
-          execute_gherkin do
-            feature do
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'pass'
-                end
-                examples do
-                  row 'result'
-                  row 'pass'
-                end
-              end
-            end
-          end
-
-          # rubocop:disable AlignArray
-          expect( formatter.legacy_messages ).to eq [
-            :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-          # rubocop:enable AlignArray
-        end
-
-        it 'two scenario outline' do
-          execute_gherkin do
-            feature do
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'pass'
-                end
-              end
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'pass'
-                end
-              end
-            end
-          end
-
-          # rubocop:disable AlignArray
-          expect( formatter.legacy_messages ).to eq [
-            :before_features,
-                :before_feature,
-                  :before_tags,
-                  :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                          :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                    :before_examples_array,
-                      :before_examples,
-                        :before_tags,
-                        :after_tags,
-                        :examples_name,
-                        :before_outline_table,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                          :before_table_row,
-                            :before_table_cell,
-                              :table_cell_value,
-                            :after_table_cell,
-                          :after_table_row,
-                        :after_outline_table,
-                      :after_examples,
-                    :after_examples_array,
-                  :after_feature_element,
-                :after_feature,
-              :after_features
-          ]
-          # rubocop:enable AlignArray
-        end
-
-        it 'failing scenario outline' do
-          execute_gherkin do
-            feature do
-              scenario_outline do
-                step '<result>ing'
-                examples do
-                  row 'result'
-                  row 'fail'
-                end
-              end
-            end
-          end
-
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1408,7 +947,431 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
+        end
+
+        it 'scenario outline after scenario' do
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                end
+              end
+            end
+          end
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+          ]
+        end
+
+        it 'scenario outline before scenario' do
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                end
+              end
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+        end
+
+        it 'scenario outline two rows' do
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                  row 'pass'
+                end
+              end
+            end
+          end
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+        end
+
+        it 'scenario outline two examples tables' do
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                end
+                examples do
+                  row 'result'
+                  row 'pass'
+                end
+              end
+            end
+          end
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+        end
+
+        it 'two scenario outline' do
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                end
+              end
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                end
+              end
+            end
+          end
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
+        end
+
+        it 'failing scenario outline' do
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'fail'
+                end
+              end
+            end
+          end
+
+          expect( formatter.legacy_messages ).to eq [
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                      :before_step,
+                        :before_step_result,
+                          :step_name,
+                        :after_step_result,
+                      :after_step,
+                    :after_steps,
+                    :before_examples_array,
+                      :before_examples,
+                        :before_tags,
+                        :after_tags,
+                        :examples_name,
+                        :before_outline_table,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                          :before_table_row,
+                            :before_table_cell,
+                              :table_cell_value,
+                            :after_table_cell,
+                          :after_table_row,
+                        :after_outline_table,
+                      :after_examples,
+                    :after_examples_array,
+                  :after_feature_element,
+                :after_feature,
+              :after_features
+            ]
         end
 
         it 'a feature with a failing background and two scenarios' do
@@ -1426,9 +1389,8 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
-            :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1470,8 +1432,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-          ]
-          # rubocop:enable AlignArray
+            ]
         end
 
         context 'in expand mode' do
@@ -1492,9 +1453,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq [
-              :before_features,
+                :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1534,8 +1494,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-            ]
-            # rubocop:enable AlignArray
+              ]
           end
         end
 
@@ -1562,9 +1521,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+                :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1584,8 +1542,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+              ])
           end
         end
 
@@ -1611,9 +1568,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+                :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1633,8 +1589,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+              ])
           end
 
           it 'prints the exception after the background name' do
@@ -1654,9 +1609,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+                :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1686,8 +1640,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+              ])
           end
 
 
@@ -1709,9 +1662,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+                :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1750,13 +1702,12 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+              ])
           end
         end
 
         context 'with exception in the first of several before hooks' do
-          # This proves that the second before hook's result doesn't overwrite
+          # This proves that the second before hook's result doesn't overwrite
           # the result of the first one.
           class FailingAndPassingBeforeHooks
             def apply_before_hooks(test_case)
@@ -1780,9 +1731,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+                :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1802,8 +1752,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+              ])
           end
         end
 
@@ -1830,9 +1779,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1852,8 +1800,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+            ])
           end
 
           it 'prints the exception after the examples table row' do
@@ -1874,9 +1821,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1915,8 +1861,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+            ])
           end
         end
 
@@ -1943,9 +1888,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1965,8 +1909,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+            ])
           end
         end
 
@@ -1993,9 +1936,8 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -2008,8 +1950,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+            ])
           end
         end
 
@@ -2035,10 +1976,8 @@ module Cucumber
                 end
               end
             end
-
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
-                                                        :before_features,
+              :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -2058,8 +1997,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features
-                                                      ])
-            # rubocop:enable AlignArray
+            ])
           end
         end
       end
