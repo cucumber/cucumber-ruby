@@ -137,20 +137,6 @@ Style/AlignParameters:
     - 'lib/cucumber/cli/options.rb'
     - 'lib/cucumber/runtime/for_programming_languages.rb'
 
-# Offense count: 19
-Style/AsciiComments:
-  Exclude:
-    - 'lib/cucumber/encoding.rb'
-    - 'lib/cucumber/events/*'
-    - 'lib/cucumber/filters/randomizer.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/glue/step_definition.rb'
-    - 'lib/cucumber/running_test_case.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-    - 'spec/cucumber/step_match_search_spec.rb'
-
 # Offense count: 73
 Style/AsciiIdentifiers:
   Exclude:
