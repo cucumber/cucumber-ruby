@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 * Review and handle excluded/ignored cops ([#1208](https://github.com/cucumber/cucumber-ruby/pull/1208) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix SymbolProc issues ([#1212](https://github.com/cucumber/cucumber-ruby/pull/1212) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix TrailingBlankLines ([#1211](https://github.com/cucumber/cucumber-ruby/pull/1211) [@jaysonesmith](https://github.com/jaysonesmith))
