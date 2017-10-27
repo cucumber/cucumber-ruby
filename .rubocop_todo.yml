@@ -151,20 +151,6 @@ Style/AsciiComments:
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
     - 'spec/cucumber/step_match_search_spec.rb'
 
-# Offense count: 73
-Style/AsciiIdentifiers:
-  Exclude:
-    - 'examples/i18n/ar/lib/calculator.rb'
-    - 'examples/i18n/bg/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/el/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/ja/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/sr-Cyrl/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
-    - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/Attr:
