@@ -77,7 +77,7 @@ Metrics/CyclomaticComplexity:
 Metrics/LineLength:
   Max: 309
 
-# Offense count: 77
+# Offense count: 75
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 63
@@ -427,13 +427,6 @@ Style/IfUnlessModifier:
     - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
     - 'lib/cucumber/rake/task.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-
-# Offense count: 89
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Style/IndentArray:
-  Enabled: false
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -902,7 +895,7 @@ Style/SpaceInsideBrackets:
 Style/SpaceInsideHashLiteralBraces:
   Enabled: false
 
-# Offense count: 203
+# Offense count: 143
 # Cop supports --auto-correct.
 Style/SpaceInsideParens:
   Exclude:

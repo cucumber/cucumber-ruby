@@ -75,7 +75,7 @@ module Cucumber
         private
 
         def before_hooks(source)
-          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
+          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
           # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
           hook = proc {}
           [ Hooks.before_hook(source, hook.source_location, &hook) ]
@@ -111,7 +111,6 @@ module Cucumber
           runner = Core::Test::Runner.new(events)
           compile gherkin_docs, runner, default_filters
           events.test_run_finished
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -150,7 +149,6 @@ module Cucumber
               :after_feature,
             :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a scenario with one step' do
@@ -162,7 +160,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -184,7 +181,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a scenario with two steps, one of them failing' do
@@ -237,7 +233,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -271,7 +266,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and an empty scenario' do
@@ -284,7 +278,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -309,7 +302,6 @@ module Cucumber
               :after_feature,
             :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and two scenarios' do
@@ -327,7 +319,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -371,7 +362,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario and one scenario outline' do
@@ -393,7 +383,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -456,7 +445,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline and one scenario' do
@@ -478,7 +466,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -541,7 +528,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and two scenario outlines' do
@@ -567,7 +553,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -649,7 +634,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline with two rows' do
@@ -669,7 +653,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -725,7 +708,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background and one scenario outline with two examples tables' do
@@ -748,7 +730,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -816,7 +797,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background with two steps' do
@@ -832,7 +812,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -869,7 +848,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a background' do
@@ -929,7 +907,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -970,7 +947,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'scenario outline after scenario' do
@@ -989,7 +965,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1042,7 +1017,6 @@ module Cucumber
                 :after_feature,
               :after_features
           ]
-          # rubocop:enable AlignArray
         end
 
         it 'scenario outline before scenario' do
@@ -1061,7 +1035,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1114,7 +1087,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ]
-          # rubocop:enable AlignArray
         end
 
         it 'scenario outline two rows' do
@@ -1131,7 +1103,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1177,7 +1148,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ]
-          # rubocop:enable AlignArray
         end
 
         it 'scenario outline two examples tables' do
@@ -1197,7 +1167,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1255,7 +1224,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ]
-          # rubocop:enable AlignArray
         end
 
         it 'two scenario outline' do
@@ -1278,7 +1246,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1350,7 +1317,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ]
-          # rubocop:enable AlignArray
         end
 
         it 'failing scenario outline' do
@@ -1366,7 +1332,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1407,7 +1372,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ]
-          # rubocop:enable AlignArray
         end
 
         it 'a feature with a failing background and two scenarios' do
@@ -1425,7 +1389,6 @@ module Cucumber
             end
           end
 
-          # rubocop:disable AlignArray
           expect( formatter.legacy_messages ).to eq [
               :before_features,
                 :before_feature,
@@ -1470,7 +1433,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ]
-          # rubocop:enable AlignArray
         end
 
         context 'in expand mode' do
@@ -1491,7 +1453,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq [
                 :before_features,
                   :before_feature,
@@ -1534,7 +1495,6 @@ module Cucumber
                   :after_feature,
                 :after_features
               ]
-            # rubocop:enable AlignArray
           end
         end
 
@@ -1561,7 +1521,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
                 :before_features,
                   :before_feature,
@@ -1584,7 +1543,6 @@ module Cucumber
                   :after_feature,
                 :after_features
               ])
-            # rubocop:enable AlignArray
           end
         end
 
@@ -1610,7 +1568,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
                 :before_features,
                   :before_feature,
@@ -1633,7 +1590,6 @@ module Cucumber
                   :after_feature,
                 :after_features
               ])
-            # rubocop:enable AlignArray
           end
 
           it 'prints the exception after the background name' do
@@ -1653,7 +1609,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
                 :before_features,
                   :before_feature,
@@ -1686,7 +1641,6 @@ module Cucumber
                   :after_feature,
                 :after_features
               ])
-            # rubocop:enable AlignArray
           end
 
 
@@ -1708,7 +1662,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
                 :before_features,
                   :before_feature,
@@ -1750,12 +1703,11 @@ module Cucumber
                   :after_feature,
                 :after_features
               ])
-            # rubocop:enable AlignArray
           end
         end
 
         context 'with exception in the first of several before hooks' do
-          # This proves that the second before hook's result doesn't overwrite
+          # This proves that the second before hook's result doesn't overwrite
           # the result of the first one.
           class FailingAndPassingBeforeHooks
             def apply_before_hooks(test_case)
@@ -1779,7 +1731,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
                 :before_features,
                   :before_feature,
@@ -1802,7 +1753,6 @@ module Cucumber
                   :after_feature,
                 :after_features
               ])
-            # rubocop:enable AlignArray
           end
         end
 
@@ -1829,7 +1779,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
@@ -1852,7 +1801,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ])
-            # rubocop:enable AlignArray
           end
 
           it 'prints the exception after the examples table row' do
@@ -1873,7 +1821,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
@@ -1915,7 +1862,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ])
-            # rubocop:enable AlignArray
           end
         end
 
@@ -1942,7 +1888,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
@@ -1965,7 +1910,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ])
-            # rubocop:enable AlignArray
           end
         end
 
@@ -1992,7 +1936,6 @@ module Cucumber
               end
             end
 
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
@@ -2008,7 +1951,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ])
-            # rubocop:enable AlignArray
           end
         end
 
@@ -2034,7 +1976,6 @@ module Cucumber
                 end
               end
             end
-            # rubocop:disable AlignArray
             expect( formatter.legacy_messages ).to eq([
               :before_features,
                 :before_feature,
@@ -2057,7 +1998,6 @@ module Cucumber
                 :after_feature,
               :after_features
             ])
-            # rubocop:enable AlignArray
           end
         end
       end
