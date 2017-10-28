@@ -12,8 +12,8 @@ AllCops:
   Exclude:
     - 'tmp/**/*'
     - 'vendor/**/*'
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
+    - 'lib/cucumber/formatter/legacy_api/*'
+    - 'spec/cucumber/formatter/legacy_api/*'
 
 # Reviewed: please see PR-1022 for details on why this cop is disabled: https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:
