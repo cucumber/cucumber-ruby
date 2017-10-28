@@ -81,6 +81,8 @@ module Cucumber
           new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
         end
 
+        private_class_method :example
+
       end
 
       class CucumberExpression < BaseSnippet

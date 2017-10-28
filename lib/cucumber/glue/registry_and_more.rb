@@ -155,6 +155,14 @@ module Cucumber
         raise ArgumentError.new('Expression must be a String or Regexp')
       end
 
+      def self.cli_snippet_type_options
+        registry = CucumberExpressions::ParameterTypeRegistry.new
+        cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
+        Snippet::SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
+          Snippet::SNIPPET_TYPES[type].cli_option_string(type, cucumber_expression_generator)
+        end
+      end
+
       private
 
       def available_step_definition_hash
@@ -167,14 +175,6 @@ module Cucumber
 
       def hooks
         @hooks ||= Hash.new{|h,k| h[k] = []}
-      end
-
-      def self.cli_snippet_type_options
-        registry = CucumberExpressions::ParameterTypeRegistry.new
-        cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
-        Snippet::SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
-          Snippet::SNIPPET_TYPES[type].cli_option_string(type, cucumber_expression_generator)
-        end
       end
     end
 
