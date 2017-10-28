@@ -13,12 +13,6 @@ Lint/Eval:
     - 'lib/cucumber/term/ansicolor.rb'
 
 # Offense count: 2
-Lint/HandleExceptions:
-  Exclude:
-    - 'features/lib/step_definitions/wire_steps.rb'
-    - 'lib/cucumber/rake/task.rb'
-
-# Offense count: 2
 Lint/IneffectiveAccessModifier:
   Exclude:
     - 'lib/cucumber/glue/registry_and_more.rb'
