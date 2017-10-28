@@ -12,11 +12,6 @@ Lint/Eval:
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    - 'lib/cucumber/rake/task.rb'
-
 # Offense count: 2
 Lint/IneffectiveAccessModifier:
   Exclude:
