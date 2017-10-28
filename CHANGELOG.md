@@ -18,9 +18,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* Review and handle excluded/ignored cops ([#1208](https://github.com/cucumber/cucumber-ruby/pull/1208) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix SymbolProc issues ([#1212](https://github.com/cucumber/cucumber-ruby/pull/1212) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix TrailingBlankLines ([#1211](https://github.com/cucumber/cucumber-ruby/pull/1211) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
@@ -36,6 +33,13 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Change test expectation to handle Ruby's unstable sorting ([#1210](https://github.com/cucumber/cucumber-ruby/pull/1210) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix the printing of newlines in the rerun formatter - a problem introduced in [#1162](https://github.com/cucumber/cucumber-ruby/issues/1162) ([#1207](https://github.com/cucumber/cucumber-ruby/issues/1207) [@brasmusson](https://github.com/brasmusson))
 * Handle the `--retry` option in profiles ([#1050](https://github.com/cucumber/cucumber-ruby/issues/1050) [@brasmusson](https://github.com/brasmusson))
+
+### Improved
+
+* Exclude the legacy_api from rubocop, regenerate Rubocop Todo ([@jaysonesmith](https://github.com/jaysonesmith), [@brasmusson](https://github.com/brasmusson))
+* Review and handle excluded/ignored cops ([#1208](https://github.com/cucumber/cucumber-ruby/pull/1208) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix SymbolProc issues ([#1212](https://github.com/cucumber/cucumber-ruby/pull/1212) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix TrailingBlankLines ([#1211](https://github.com/cucumber/cucumber-ruby/pull/1211) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.0.1](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...3.0.1) (2017-09-29)
 
