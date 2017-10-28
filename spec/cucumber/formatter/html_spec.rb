@@ -25,9 +25,9 @@ module Cucumber
       end
 
       it 'does not raise an error when visiting a blank feature name' do
-        expect(-> {
+        expect(-> do
           @formatter.feature_name('Feature', '')
-        }).not_to raise_error
+        end).not_to raise_error
       end
 
       describe 'when writing the report to a file' do
@@ -43,10 +43,10 @@ module Cucumber
           end
 
           define_steps do
-            Given(/snap/) {
+            Given(/snap/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
               embed('out/snapshot.jpeg', 'image/jpeg')
-            }
+            end
           end
 
           define_feature(<<-FEATURE)
@@ -68,10 +68,10 @@ module Cucumber
           end
 
           define_steps do
-            Given(/snap/) {
+            Given(/snap/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
               embed('out/snapshot.jpeg', 'image/jpeg')
-            }
+            end
           end
 
           define_feature(<<-FEATURE)
@@ -368,10 +368,10 @@ module Cucumber
 
         describe 'with a step that embeds a snapshot' do
           define_steps do
-            Given(/snap/) {
+            Given(/snap/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
               embed('snapshot.jpeg', 'image/jpeg')
-            }
+            end
           end
 
           define_feature(<<-FEATURE)

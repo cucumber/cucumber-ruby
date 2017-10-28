@@ -25,7 +25,7 @@ module Cucumber
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         @reportdir = ensure_dir(config.out_stream, 'junit')
         @config = config
-        @features_data = Hash.new { |h,k| h[k] = {
+        @features_data = Hash.new do |h,k| h[k] = {
           feature: nil,
           failures: 0,
           errors: 0,
@@ -33,7 +33,8 @@ module Cucumber
           skipped: 0,
           time: 0,
           builder: Builder::XmlMarkup.new(:indent => 2)
-        }}
+        }
+        end
       end
 
       def on_test_case_started(event)

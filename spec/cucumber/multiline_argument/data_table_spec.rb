@@ -88,17 +88,17 @@ module Cucumber
         end
 
         it 'should pass silently if a mapped column does not exist in non-strict mode' do
-          expect {
+          expect do
             @table.map_column!('two', false, &:to_i)
             @table.hashes
-          }.not_to raise_error
+          end.not_to raise_error
         end
 
         it 'should fail if a mapped column does not exist in strict mode' do
-          expect {
+          expect do
             @table.map_column!('two', true, &:to_i)
             @table.hashes
-          }.to raise_error('The column named "two" does not exist')
+          end.to raise_error('The column named "two" does not exist')
         end
 
         it 'should return the table' do
@@ -134,17 +134,17 @@ module Cucumber
         end
 
         it 'should pass silently if a mapped column does not exist in non-strict mode' do
-          expect {
+          expect do
             new_table = @table.map_column('two', false, &:to_i)
             new_table.hashes
-          }.not_to raise_error
+          end.not_to raise_error
         end
 
         it 'should fail if a mapped column does not exist in strict mode' do
-          expect {
+          expect do
             new_table = @table.map_column('two', true, &:to_i)
             new_table.hashes
-          }.to raise_error('The column named "two" does not exist')
+          end.to raise_error('The column named "two" does not exist')
         end
 
         it 'should return a new table' do
@@ -199,9 +199,9 @@ module Cucumber
             %w{one 1111 abc},
             %w{two 22222 def}
           ])
-          expect {
+          expect do
             faulty_table.rows_hash
-          }.to raise_error('The table must have exactly 2 columns')
+          end.to raise_error('The table must have exactly 2 columns')
         end
 
         it 'should support header and column mapping' do
@@ -487,9 +487,9 @@ module Cucumber
             %w(name    male),
             ['aslak', true]
           ])
-          t1.map_column!('male') {
+          t1.map_column!('male') do
             'true'
-          }
+          end
           t2 = DataTable.from([
             %w(name  male),
             %w(aslak true)

@@ -100,9 +100,9 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 }
           dsl.World { Hash.new }
 
-          expect(-> {
+          expect(-> do
             dsl.World { Array.new }
-          }).to raise_error(Glue::MultipleWorld, /#{expected_error}/)
+          end).to raise_error(Glue::MultipleWorld, /#{expected_error}/)
         end
       end
 

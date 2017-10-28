@@ -47,9 +47,9 @@ You can run again with --guess to make Cucumber be more smart about it
         dsl.Given(/Three (.*) mice/) {|disability|}
         dsl.Given(/Three blind (.*)/) {|animal|}
 
-        expect(-> {
+        expect(-> do
           search.call('Three blind mice').first
-        }).to raise_error(Ambiguous, /#{expected_error}/)
+        end).to raise_error(Ambiguous, /#{expected_error}/)
       end
 
       describe 'when --guess is used' do
@@ -65,18 +65,18 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three cute (.*)/) {|animal|}
 
-          expect(-> {
+          expect(-> do
             search.call('Three cute mice').first
-          }).to raise_error(Ambiguous, /#{expected_error}/)
+          end).to raise_error(Ambiguous, /#{expected_error}/)
         end
 
         it 'does not raise Ambiguous error when multiple step definitions match' do
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three (.*)/) {|animal|}
 
-          expect(-> {
+          expect(-> do
             search.call('Three blind mice').first
-          }).not_to raise_error
+          end).not_to raise_error
         end
 
         it 'picks right step definition when an equal number of capture groups' do
@@ -95,8 +95,8 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
 
         it 'picks most specific step definition when an unequal number of capture groups' do
           _general      = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-          _specific     = dsl.Given(/Three blind mice ran far/) do; end
-          more_specific = dsl.Given(/^Three blind mice ran far$/) do; end
+          _specific     = dsl.Given(/Three blind mice ran far/) {; }
+          more_specific = dsl.Given(/^Three blind mice ran far$/) {; }
 
           expect(search.call('Three blind mice ran far').first.step_definition).to eq more_specific
         end
