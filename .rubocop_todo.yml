@@ -110,14 +110,6 @@ Performance/RedundantMatch:
     - 'lib/cucumber/deprecate.rb'
     - 'spec/cucumber/formatter/junit_spec.rb'
 
-# Offense count: 6
-Style/AccessorMethodName:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

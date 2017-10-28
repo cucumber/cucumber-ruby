@@ -26,7 +26,7 @@ module Autotest::CucumberMixin
 
     loop do # ^c handler
       begin
-        get_to_green
+        to_green
         if self.tainted then
           rerun_all_tests
           rerun_all_features if all_good
@@ -50,7 +50,7 @@ module Autotest::CucumberMixin
     features_to_run == ''
   end
 
-  def get_to_green
+  def to_green
     begin
       super
       run_features
