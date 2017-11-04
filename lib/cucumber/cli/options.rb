@@ -131,7 +131,6 @@ module Cucumber
           opts.on('-g', '--guess', 'Guess best match for Ambiguous steps.') { set_option :guess }
           opts.on('-l', '--lines LINES', *lines_msg) {|lines| set_option :lines, lines }
           opts.on('-x', '--expand', 'Expand Scenario Outline Tables in output.') { set_option :expand }
-          opts.on('--count-first', 'Do not start the execution of scenarios before the test count event has been issued') { set_option :count_first }
 
           opts.on('--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
             *<<-TEXT.split("\n")) do |order|

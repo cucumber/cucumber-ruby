@@ -251,7 +251,7 @@ module Cucumber
         @configuration.filters.each do |filter|
           filters << filter
         end
-        filters << Filters::BroadcastTestCountEvent.new(@configuration)
+        filters << Filters::BroadcastTestCaseCountEvent.new(@configuration)
         unless configuration.dry_run?
           filters << Filters::ApplyAfterStepHooks.new(@support_code)
           filters << Filters::ApplyBeforeHooks.new(@support_code)

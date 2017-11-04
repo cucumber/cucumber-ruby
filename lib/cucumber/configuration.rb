@@ -146,10 +146,6 @@ module Cucumber
       @options[:filters]
     end
 
-    def count_first?
-      @options[:count_first]
-    end
-
     def feature_files
       potential_feature_files = with_default_features_path(paths).map do |path|
         path = path.tr('\\', '/') # In case we're on windows. Globs don't work with backslashes.
