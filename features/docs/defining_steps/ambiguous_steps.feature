@@ -41,14 +41,14 @@ Feature: Ambiguous Steps
           features/step_definitions.rb:5:in `/^an ambiguous step$/'
           
           You can run again with --guess to make Cucumber be more smart about it
-           (Cucumber::Ambiguous)
+           (Cucumber::Core::Test::Result::Ambiguous)
           features/ambiguous.feature:5:in `Then an ambiguous step'
 
-    Failing Scenarios:
+    Ambiguous Scenarios:
     cucumber features/ambiguous.feature:3 # Scenario: 
 
-    1 scenario (1 failed)
-    2 steps (1 failed, 1 passed)
+    1 scenario (1 ambiguous)
+    2 steps (1 ambiguous, 1 passed)
     0m0.012s
 
     """
