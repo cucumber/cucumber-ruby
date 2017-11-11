@@ -120,7 +120,7 @@ PLATFORMS
 DEPENDENCIES
   aruba (~> 0.6.1)
   bcat (~> 0.6.2)
-  bundler (~> 1.15.1)
+  bundler (~> 1.16.0)
   capybara (>= 2.1)
   cucumber!
   json (~> 1.8.6)
@@ -138,4 +138,4 @@ DEPENDENCIES
   yard (~> 0.8.0)
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
