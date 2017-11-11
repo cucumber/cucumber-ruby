@@ -30,6 +30,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* Fix html reporter with more than one embedded screenshot ([#1216](https://github.com/cucumber/cucumber-ruby/pull/1216) [@nonkor](https://github.com/nonkor))
 * Change test expectation to handle Ruby's unstable sorting ([#1210](https://github.com/cucumber/cucumber-ruby/pull/1210) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix the printing of newlines in the rerun formatter - a problem introduced in [#1162](https://github.com/cucumber/cucumber-ruby/issues/1162) ([#1207](https://github.com/cucumber/cucumber-ruby/issues/1207) [@brasmusson](https://github.com/brasmusson))
 * Handle the `--retry` option in profiles ([#1050](https://github.com/cucumber/cucumber-ruby/issues/1050) [@brasmusson](https://github.com/brasmusson))
