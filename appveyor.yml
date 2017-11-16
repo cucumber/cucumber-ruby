@@ -8,6 +8,7 @@ environment:
 
 install:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+  - gem install bundler
   - bundle install
 
 build: off
