@@ -153,6 +153,30 @@ module Cucumber
             it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
 
+          describe 'with a scenario and failing after hook' do
+            define_steps do
+              Around do |_scenario, block|
+                block.call
+                raise 'Around hook made a boo-boo'
+              end
+              Given(/.*/) {  }
+            end
+
+            define_feature <<-FEATURE
+              Feature: One passing scenario, one failing scenario
+
+                Scenario: Passing
+                  Given a passing scenario
+            FEATURE
+
+            it { expect(@doc.to_s).to match(/One passing scenario, one failing scenario/) }
+            it do
+              expect(@doc.at_css('testsuite').attr('failures')).to eq '1'
+              expect(@doc.at_css('testsuite').attr('errors')).to eq '0'
+            end
+            it { expect(@doc.to_s).to include('Around hook made a boo-boo (RuntimeError)') }
+          end
+
           describe 'scenario with skipped test in junit report' do
             define_feature <<-FEATURE
               Feature: junit report with skipped test
