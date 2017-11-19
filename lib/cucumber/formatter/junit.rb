@@ -103,7 +103,7 @@ module Cucumber
       def create_output_string(test_case, scenario, result, row_name)
         output = "#{test_case.keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
-        if test_case.keyword == 'Scenario'
+        if test_case.keyword == 'Scenario' && @failing_step_source
           output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
           output += "#{@failing_step_source}\n"
         else
