@@ -247,6 +247,25 @@ module Cucumber
 
               it { expect(@doc.to_s).to match(%r{AfterStep hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
+
+            describe 'with a failing around hook' do
+              define_steps do
+                Around do |_scenario, block|
+                  block.call
+                  raise 'Around hook failed'
+                end
+                Given(/a passing step/) do
+                end
+              end
+              define_feature <<-FEATURE
+              Feature: One passing scenario
+
+                Scenario: Passing
+                  Given a passing step
+            FEATURE
+
+              it { expect(@doc.to_s).to match(/Around hook\n\nMessage:/) }
+            end
           end
         end
       end

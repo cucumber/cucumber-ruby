@@ -30,7 +30,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-*  N/A
+*  Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 
 ### Improved
 
