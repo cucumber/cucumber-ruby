@@ -223,7 +223,7 @@ Feature: Around hooks
         Scenario Outline: using hook # features/f.feature:2
           Then the hook is called    # features/f.feature:3
 
-          Examples: 
+          Examples:
             | Number |
             | one    |
             | two    |
@@ -264,3 +264,30 @@ Feature: Around hooks
       """
     When I run `cucumber features/f.feature`
     Then it should pass
+
+  @todo-windows
+  Scenario: Around hooks knows about scenario failure
+    Given a file named "features/step_definitions/steps.rb" with:
+      """
+      When /^scenario fails$/ do
+        raise "Something went wrong within the scenario"
+      end
+      """
+    And a file named "features/support/hooks.rb" with:
+      """
+      Around do |scenario, block|
+        block.call
+        puts "Around hook knows about failure" if scenario.failed?
+      end
+      """
+    And a file named "features/f.feature" with:
+      """
+      Feature: Around hooks
+        Scenario: scenario is failed in hook
+          When scenario fails
+      """
+    When I run `cucumber features/f.feature`
+    Then it should fail with:
+      """
+            Around hook knows about failure
+      """
