@@ -374,7 +374,6 @@ OUTPUT
               | dummy |
             FEATURE
 
-
             it 'includes the tags in the output ' do
               expect( @out.string ).to include <<OUTPUT
 @tag1
@@ -421,7 +420,6 @@ OUTPUT
                 #comment11
                 | dummy |
             FEATURE
-
 
             it 'includes the all comments except for data table rows in the output ' do
               expect( @out.string ).to include <<OUTPUT

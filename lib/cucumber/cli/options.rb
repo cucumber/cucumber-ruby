@@ -27,7 +27,7 @@ module Cucumber
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }
-      max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
+      max = BUILTIN_FORMATS.keys.map(&:length).max
       FORMAT_HELP_MSG = [
                           'Use --format rerun --out rerun.txt to write out failing',
                           'features. You can rerun them with cucumber @rerun.txt.',

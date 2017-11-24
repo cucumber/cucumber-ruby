@@ -2,8 +2,6 @@
 [![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
 
 [![CircleCI](https://circleci.com/gh/cucumber/cucumber-ruby.svg?style=svg)](https://circleci.com/gh/cucumber/cucumber-ruby)
-[![Build Status](https://travis-ci.org/cucumber/cucumber-ruby.svg?branch=master)](https://travis-ci.org/cucumber/cucumber-ruby)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/ncqhcevrv93hhu5j?svg=true)](https://ci.appveyor.com/project/cucumberbdd/cucumber-ruby)
 
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master)
@@ -40,4 +38,4 @@ Everyone interacting in this codebase and issue tracker is expected to follow th
 
 ## Copyright
 
-Copyright (c) Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) Cucumber Ltd. and Contributors. See LICENSE for details.
