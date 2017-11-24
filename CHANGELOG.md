@@ -18,7 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
+* N/A
 
 ### Deprecated
 
@@ -34,7 +34,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
-* N/A
+* Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.0.2](https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...v3.0.2) (2017-11-11)
 
