@@ -47,6 +47,10 @@ module Cucumber
         'After hook'
       end
 
+      def to_s
+        "#{text} at #{location}"
+      end
+
       def match_locations?(queried_locations)
         queried_locations.any? { |other_location| other_location.match?(location) }
       end
@@ -67,6 +71,10 @@ module Cucumber
         'Before hook'
       end
 
+      def to_s
+        "#{text} at #{location}"
+      end
+
       def match_locations?(queried_locations)
         queried_locations.any? { |other_location| other_location.match?(location) }
       end
@@ -85,6 +93,10 @@ module Cucumber
 
       def text
         'AfterStep hook'
+      end
+
+      def to_s
+        "#{text} at #{location}"
       end
 
       def match_locations?(queried_locations)
