@@ -105,8 +105,12 @@ module Cucumber
         output = "#{test_case.keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
         if test_case.keyword == 'Scenario'
-          output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
-          output += "#{@failing_step_source}\n"
+          if @failing_step_source
+            output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
+            output += "#{@failing_step_source}\n"
+          else # An Around hook has failed
+            output += "Around hook\n"
+          end
         else
           output += "Example row: #{row_name}\n"
         end
