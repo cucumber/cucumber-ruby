@@ -14,7 +14,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
-* N/A
+* ParameterType transformer runs in World
+  ([#1213](https://github.com/cucumber/cucumber-ruby/pull/1213)
+   [@aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Changed
 
