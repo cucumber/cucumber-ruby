@@ -59,7 +59,7 @@ help us to correct style violations reported here:
 
 ## Release Process
 
-* Bump the version number in `lib/cucumber/platform.rb`.
+* Bump the version number in `lib/cucumber/version`.
 * Make sure `CHANGELOG.md` is updated with the upcoming version number, and has entries for all fixes.
 
 Now release it
