@@ -10,13 +10,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...master) (Not released)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...master) (Not released)
 
 ### Added
 
-* ParameterType transformer runs in World
-  ([#1213](https://github.com/cucumber/cucumber-ruby/pull/1213)
-   [@aslakhellesoy](https://github.com/aslakhellesoy))
+* N/A
 
 ### Changed
 
@@ -32,11 +30,25 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-*  Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
-
-### Improved
-
 * N/A
+
+## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
+
+### Added
+
+* ParameterType transformer runs in World
+  ([#1213](https://github.com/cucumber/cucumber-ruby/pull/1213)
+   [@aslakhellesoy](https://github.com/aslakhellesoy))
+
+### Changed
+
+* Upgraded to `cucumber-expressions` 5.0.4
+* Upgraded to `cucumber-tag_expressions` 1.1.0
+* Upgraded to `gherkin` 5.0.0
+
+### Fixed
+
+*  Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 
 ## [3.0.2](https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...v3.0.2) (2017-11-11)
 
