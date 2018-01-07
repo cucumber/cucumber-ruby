@@ -19,8 +19,7 @@ end
 
 Given('the standard step definitions') do
   write_file 'features/step_definitions/steps.rb',
-
-  <<-STEPS
+             <<-STEPS
   Given(/^this step passes$/)          { }
   Given(/^this step raises an error$/) { raise 'error' }
   Given(/^this step is pending$/)      { pending }
@@ -35,28 +34,28 @@ end
 
 Given('a scenario {string} that passes') do |name|
   write_file "features/#{name}.feature",
-  <<-FEATURE
+             <<-FEATURE
   Feature: #{name}
     Scenario: #{name}
       Given it passes
   FEATURE
 
   write_file "features/step_definitions/#{name}_steps.rb",
-  <<-STEPS
+             <<-STEPS
   Given(/^it passes$/) { expect(true).to be true }
   STEPS
 end
 
 Given('a scenario {string} that fails') do |name|
   write_file "features/#{name}.feature",
-  <<-FEATURE
+             <<-FEATURE
   Feature: #{name}
     Scenario: #{name}
       Given it fails
   FEATURE
 
   write_file "features/step_definitions/#{name}_steps.rb",
-  <<-STEPS
+             <<-STEPS
   Given(/^it fails$/) { expect(false).to be true }
   STEPS
 end
