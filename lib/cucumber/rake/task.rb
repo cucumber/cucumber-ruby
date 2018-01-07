@@ -3,8 +3,10 @@ require 'cucumber/platform'
 require 'cucumber/gherkin/formatter/ansi_escapes'
 begin
   # Support Rake > 0.8.7
-rescue LoadError
   require 'rake/dsl_definition'
+  # rubocop:disable Lint/HandleExceptions
+rescue LoadError
+  # rubocop:enable Lint/HandleExceptions
 end
 
 module Cucumber
