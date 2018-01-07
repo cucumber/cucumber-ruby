@@ -66,7 +66,7 @@ module Cucumber
       @step_definition.expression.source.to_s.unpack('U*').length
     end
 
-    def replace_arguments(string, step_arguments, format, *)
+    def replace_arguments(string, step_arguments, format)
       s = string.dup
       offset = past_offset = 0
       step_arguments.each do |step_argument|
