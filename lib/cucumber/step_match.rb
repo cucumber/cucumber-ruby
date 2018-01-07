@@ -13,7 +13,10 @@ module Cucumber
     end
 
     def args
-      @step_arguments.map(&:value)
+      current_world = @step_definition.registry.current_world
+      @step_arguments.map do |arg|
+        arg.value(current_world)
+      end
     end
 
     def activate(test_step)
