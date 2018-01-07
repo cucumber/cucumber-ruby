@@ -35,6 +35,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Improved
 
 * Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
 
