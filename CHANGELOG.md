@@ -34,6 +34,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Fix Lint/HandleExceptions ([#1226](https://github.com/cucumber/cucumber-ruby/pull/1226) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 * Exclude Style/AsciiIdentifiers ([#1223](https://github.com/cucumber/cucumber-ruby/pull/1223) [@jaysonesmith](https://github.com/jaysonesmith))
