@@ -88,12 +88,6 @@ Metrics/PerceivedComplexity:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Performance/RedundantBlockCall:
-  Exclude:
-    - 'lib/cucumber/step_match.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
 Performance/RedundantMatch:
   Exclude:
     - 'lib/cucumber/deprecate.rb'
@@ -113,17 +107,6 @@ Style/AccessorMethodName:
 Style/Alias:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'
-
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: with_first_parameter, with_fixed_indentation
-Style/AlignParameters:
-  Exclude:
-    - 'features/lib/step_definitions/cucumber_steps.rb'
-    - 'features/lib/step_definitions/retry_steps.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/runtime/for_programming_languages.rb'
 
 # Offense count: 23
 Style/AsciiComments:
