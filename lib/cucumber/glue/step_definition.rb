@@ -63,7 +63,7 @@ module Cucumber
         end
       end
 
-      attr_reader :expression
+      attr_reader :expression, :registry
 
       def initialize(registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
