@@ -71,7 +71,7 @@ module Cucumber
         # @registry.available_step_definition(regexp_source, location)
       end
 
-      # @api private
+      # @api private
       def to_hash
         type = expression.is_a?(CucumberExpressions::RegularExpression) ? 'regular expression' : 'cucumber expression'
         regexp = expression.regexp
@@ -91,19 +91,19 @@ module Cucumber
         }
       end
 
-      # @api private
+      # @api private
       def ==(step_definition)
         expression.source == step_definition.expression.source
       end
 
-      # @api private
+      # @api private
       def arguments_from(step_name)
         args = @expression.match(step_name)
         # @registry.invoked_step_definition(regexp_source, location) if args
         args
       end
 
-      # @api private
+      # @api private
       # TODO: inline this and step definition just be a value object
       def invoke(args)
         begin
@@ -114,12 +114,12 @@ module Cucumber
         end
       end
 
-      # @api private
+      # @api private
       def backtrace_line
         "#{location}:in `#{@expression}'"
       end
 
-      # @api private
+      # @api private
       def file_colon_line
         case @proc
         when Proc
@@ -129,12 +129,12 @@ module Cucumber
         end
       end
 
-      # The source location where the step defintion can be found
+      # The source location where the step definition can be found
       def location
         @location ||= Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
       end
 
-      # @api private
+      # @api private
       def file
         @file ||= location.file
       end
