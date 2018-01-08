@@ -36,8 +36,9 @@ module Cucumber
       context 'when running without bundler' do
         let(:bundler) { false }
 
-        subject do Task::ForkedCucumberRunner.new(
-            libs, binary, cucumber_opts, bundler, feature_files) end
+        subject do
+          Task::ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
+        end
 
         it 'does not use bundler if bundler is set to false' do
           expect(subject.use_bundler).to be false

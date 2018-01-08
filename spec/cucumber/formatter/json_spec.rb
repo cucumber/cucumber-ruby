@@ -550,8 +550,8 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) do data = 'YWJj'
-              embed data, 'mime-type;base64' end
+            Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64') }
+
           end
 
           it 'includes the data from the step in the json data' do

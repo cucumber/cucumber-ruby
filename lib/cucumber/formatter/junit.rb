@@ -25,7 +25,7 @@ module Cucumber
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         @reportdir = ensure_dir(config.out_stream, 'junit')
         @config = config
-        @features_data = Hash.new do |h,k| h[k] = {
+        @features_data = Hash.new do |h, k| h[k] = {
           feature: nil,
           failures: 0,
           errors: 0,

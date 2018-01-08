@@ -49,9 +49,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
       end
 
       it 'does not raise an error' do
-        expect do
-          verifier.verify!(test_case_index)
-        end.to_not raise_error
+        expect { verifier.verify!(test_case_index) }.to_not raise_error
       end
     end
   end
