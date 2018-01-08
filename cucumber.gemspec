@@ -10,14 +10,14 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://cucumber.io/'
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.2' # Keep in sync with .circleci/config.yml
-  s.add_dependency 'cucumber-core', '~> 3.0.0'
+  s.add_dependency 'cucumber-core', '~> 3.1.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '~> 1.3'
-  s.add_dependency 'gherkin', '~> 4.0'
+  s.add_dependency 'gherkin', '~> 5.0'
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.2'
   s.add_dependency 'cucumber-wire', '~> 0.0.1'
-  s.add_dependency 'cucumber-expressions', '~> 4.0.3'
+  s.add_dependency 'cucumber-expressions', '~> 5.0.4'
 
   s.add_development_dependency 'bundler', '~> 1.16.0'
   s.add_development_dependency 'aruba', '~> 0.6.1'
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'pry'
-  s.add_development_dependency 'rubocop', '~> 0.40.0'
+  s.add_development_dependency 'rubocop', '~> 0.49.0'
 
   # For maintainer scripts
   s.add_development_dependency 'octokit'

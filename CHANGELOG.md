@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...master) (Not released)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...master) (Not released)
 
 ### Added
 
@@ -34,7 +34,31 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Style/AsciiComments ([#1222](https://github.com/cucumber/cucumber-ruby/pull/1222) [@jaysonesmith](https://github.com/jaysonesmith))
+* Exclude Style/AsciiIdentifiers ([#1223](https://github.com/cucumber/cucumber-ruby/pull/1223) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Lint/HandleExceptions ([#1226](https://github.com/cucumber/cucumber-ruby/pull/1226) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AccessorMethodName ([#1228](https://github.com/cucumber/cucumber-ruby/pull/1228) [@jaysonesmith](https://github.com/jaysonesmith))
+
+## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
+
+### Added
+
+* ParameterType transformer runs in World
+  ([#1213](https://github.com/cucumber/cucumber-ruby/pull/1213)
+   [@aslakhellesoy](https://github.com/aslakhellesoy))
+
+### Changed
+
+* Upgraded to `cucumber-expressions` 5.0.4
+* Upgraded to `cucumber-tag_expressions` 1.1.0
+* Upgraded to `gherkin` 5.0.0
+
+### Fixed
+
+*  Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
+>>>>>>> master
 
 ## [3.0.2](https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...v3.0.2) (2017-11-11)
 
