@@ -4,7 +4,7 @@ require 'cucumber/core/events'
 module Cucumber
   module Events
 
-    # Event fired once all test cases have been filtered before
+    # Event fired once all test cases have been filtered before
     # the first one is executed.
     class TestRunStarted < Core::Event.new(:test_cases)
 
