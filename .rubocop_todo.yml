@@ -13,11 +13,6 @@ Lint/Eval:
     - 'lib/cucumber/term/ansicolor.rb'
 
 # Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    - 'lib/cucumber/rake/task.rb'
-
-# Offense count: 1
 Lint/Loop:
   Exclude:
     - 'lib/autotest/cucumber_mixin.rb'
@@ -87,18 +82,12 @@ Metrics/PerceivedComplexity:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Performance/RedundantBlockCall:
-  Exclude:
-    - 'lib/cucumber/step_match.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
 Performance/RedundantMatch:
   Exclude:
     - 'lib/cucumber/deprecate.rb'
     - 'spec/cucumber/formatter/junit_spec.rb'
 
-# Offense count: 6
+# Offense count: 7
 Style/AccessorMethodName:
   Exclude:
     - 'lib/autotest/cucumber_mixin.rb'
@@ -112,48 +101,6 @@ Style/AccessorMethodName:
 Style/Alias:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'
-
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: with_first_parameter, with_fixed_indentation
-Style/AlignParameters:
-  Exclude:
-    - 'features/lib/step_definitions/cucumber_steps.rb'
-    - 'features/lib/step_definitions/retry_steps.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/runtime/for_programming_languages.rb'
-
-# Offense count: 23
-Style/AsciiComments:
-  Exclude:
-    - 'lib/cucumber/encoding.rb'
-    - 'lib/cucumber/events/gherkin_source_read.rb'
-    - 'lib/cucumber/events/step_activated.rb'
-    - 'lib/cucumber/events/step_definition_registered.rb'
-    - 'lib/cucumber/events/test_run_finished.rb'
-    - 'lib/cucumber/events/test_run_started.rb'
-    - 'lib/cucumber/events/test_step_started.rb'
-    - 'lib/cucumber/filters/randomizer.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/glue/step_definition.rb'
-    - 'lib/cucumber/running_test_case.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'spec/cucumber/step_match_search_spec.rb'
-
-# Offense count: 73
-Style/AsciiIdentifiers:
-  Exclude:
-    - 'examples/i18n/ar/lib/calculator.rb'
-    - 'examples/i18n/bg/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/el/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/ja/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/sr-Cyrl/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
-    - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -517,7 +464,7 @@ Style/MultilineMethodCallBraceLayout:
     - 'spec/cucumber/formatter/spec_helper.rb'
     - 'spec/cucumber/rake/forked_spec.rb'
 
-# Offense count: 2
+# Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
 # SupportedStyles: aligned, indented
@@ -712,7 +659,7 @@ Style/RescueModifier:
     - 'gem_tasks/contributors.rake'
     - 'lib/cucumber/multiline_argument/data_table.rb'
 
-# Offense count: 3
+# Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAsExpressionSeparator.
 Style/Semicolon:
@@ -807,6 +754,7 @@ Style/SpaceBeforeComma:
     - 'lib/cucumber/term/ansicolor.rb'
 
 # Offense count: 208
+
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
 # SupportedStyles: space, no_space
