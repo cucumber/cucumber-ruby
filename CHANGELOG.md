@@ -58,7 +58,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 
 *  Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
->>>>>>> master
 
 ## [3.0.2](https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...v3.0.2) (2017-11-11)
 
