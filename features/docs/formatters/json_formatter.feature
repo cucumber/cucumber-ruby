@@ -420,7 +420,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 8,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -442,7 +442,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step fails",
-                "line": 9,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:4"
                 },
@@ -465,7 +465,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 13,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -566,7 +566,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 8,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -588,7 +588,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step fails",
-                "line": 9,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:4"
                 },
@@ -611,7 +611,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 13,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -680,7 +680,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "I embed data directly",
-                "line": 11,
+                "line": 7,
                 "embeddings": [
                   {
                     "mime_type": "mime-type",
@@ -708,7 +708,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "I embed data directly",
-                "line": 12,
+                "line": 7,
                 "embeddings": [
                   {
                     "mime_type": "mime-type",

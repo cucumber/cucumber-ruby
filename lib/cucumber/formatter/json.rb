@@ -163,7 +163,7 @@ module Cucumber
         step_hash = {
           keyword: step_source.keyword,
           name: step_source.to_s,
-          line: step_source.location.line
+          line: step_source.original_location.line
         }
         step_hash[:comments] = Formatter.create_comments_array(step_source.comments) unless step_source.comments.empty?
         step_hash[:doc_string] = create_doc_string_hash(step_source.multiline_arg) if step_source.multiline_arg.doc_string?
