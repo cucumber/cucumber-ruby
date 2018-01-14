@@ -66,6 +66,29 @@ module Cucumber
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
 
+        describe 'is able to handle multiple encodings in pipe' do
+          before(:each) do
+            run_defined_feature
+            @doc = Nokogiri.XML(@formatter.written_files.values.first)
+          end
+
+          define_steps do
+            Given(/a passing ctrl scenario/) do
+              Kernel.puts "encoding"
+              Kernel.puts "pickle".encode("UTF-16")
+            end
+          end
+
+          define_feature "
+              Feature: One passing scenario, one failing scenario
+
+                Scenario: Passing
+                  Given a passing ctrl scenario
+            "
+
+          it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+encoding\npickle\s+/) }
+        end
+
         describe 'a feature with no name' do
           define_feature <<-FEATURE
             Feature:
