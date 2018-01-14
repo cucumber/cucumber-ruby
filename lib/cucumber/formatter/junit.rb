@@ -140,10 +140,10 @@ module Cucumber
             @current_feature_data[:failures] += 1
           end
           @current_feature_data[:builder].tag!('system-out') do
-            @current_feature_data[:builder].cdata! strip_control_chars(@interceptedout.buffer.join)
+            @current_feature_data[:builder].cdata! strip_control_chars(@interceptedout.buffer_string)
           end
           @current_feature_data[:builder].tag!('system-err') do
-            @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer.join)
+            @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer_string)
           end
         end
         @current_feature_data[:tests] += 1
