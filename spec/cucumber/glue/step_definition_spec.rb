@@ -97,9 +97,7 @@ module Cucumber
           step 'Inside'
         end
 
-        expect(-> do
-          run_step 'Outside'
-        end).to raise_error(Cucumber::UndefinedDynamicStep)
+        expect(-> { run_step 'Outside' } ).to raise_error(Cucumber::UndefinedDynamicStep)
       end
 
       it 'raises UndefinedDynamicStep when an undefined step is parsed dynamically' do
@@ -109,9 +107,7 @@ module Cucumber
           }
         end
 
-        expect(-> do
-          run_step 'Outside'
-        end).to raise_error(Cucumber::UndefinedDynamicStep)
+        expect(-> { run_step 'Outside' } ).to raise_error(Cucumber::UndefinedDynamicStep)
       end
 
       it 'raises UndefinedDynamicStep when an undefined step with doc string is parsed dynamically' do
@@ -124,9 +120,7 @@ module Cucumber
           }
         end
 
-        expect(-> do
-          run_step 'Outside'
-        end).to raise_error(Cucumber::UndefinedDynamicStep)
+        expect(-> { run_step 'Outside' } ).to raise_error(Cucumber::UndefinedDynamicStep)
       end
 
       it 'raises UndefinedDynamicStep when an undefined step with data table is parsed dynamically' do
@@ -138,9 +132,7 @@ module Cucumber
           }
         end
 
-        expect(-> do
-          run_step 'Outside'
-        end).to raise_error(Cucumber::UndefinedDynamicStep)
+        expect(-> { run_step 'Outside' } ).to raise_error(Cucumber::UndefinedDynamicStep)
       end
 
       it 'allows forced pending' do
@@ -148,18 +140,14 @@ module Cucumber
           pending('Do me!')
         end
 
-        expect(-> do
-          run_step 'Outside'
-        end).to raise_error(Cucumber::Pending, 'Do me!')
+        expect(-> { run_step 'Outside' } ).to raise_error(Cucumber::Pending, 'Do me!')
       end
 
       it 'raises ArityMismatchError when the number of capture groups differs from the number of step arguments' do
         dsl.Given(/No group: \w+/) do |arg|
         end
 
-        expect(-> do
-          run_step 'No group: arg'
-        end).to raise_error(Cucumber::Glue::ArityMismatchError)
+        expect(-> { run_step 'No group: arg' } ).to raise_error(Cucumber::Glue::ArityMismatchError)
       end
 
       it 'does not modify the step_match arg when arg is modified in a step' do
@@ -170,9 +158,7 @@ module Cucumber
         step_name = 'My car is white'
         step_args = step_match(step_name).args
 
-        expect(-> do
-          run_step step_name
-        end).not_to change{ step_args.first }
+        expect(-> { run_step step_name } ).not_to change{ step_args.first }
       end
 
       it 'allows puts' do

@@ -25,9 +25,7 @@ module Cucumber
       end
 
       it 'does not raise an error when visiting a blank feature name' do
-        expect(-> do
-          @formatter.feature_name('Feature', '')
-        end).not_to raise_error
+        expect(->{ @formatter.feature_name('Feature', '') }).not_to raise_error
       end
 
       describe 'when writing the report to a file' do

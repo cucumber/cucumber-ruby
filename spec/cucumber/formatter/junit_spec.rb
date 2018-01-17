@@ -69,9 +69,7 @@ module Cucumber
           FEATURE
 
           it 'raises an exception' do
-            expect(-> do
-              run_defined_feature
-            end).to raise_error(Junit::UnNamedFeatureError)
+            expect(->{ run_defined_feature }).to raise_error(Junit::UnNamedFeatureError)
           end
         end
 
@@ -319,7 +317,6 @@ module Cucumber
             it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
         end
-
       end
     end
   end

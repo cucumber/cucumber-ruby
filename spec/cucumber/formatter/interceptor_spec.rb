@@ -14,9 +14,7 @@ module Cucumber::Formatter
 
     describe '#wrap!' do
       it 'raises an ArgumentError if its not passed :stderr/:stdout' do
-        expect do
-          Interceptor::Pipe.wrap(:nonsense)
-        end.to raise_error(ArgumentError)
+        expect { Interceptor::Pipe.wrap(:nonsense) }.to raise_error(ArgumentError)
       end
 
       context 'when passed :stderr' do
@@ -61,9 +59,7 @@ module Cucumber::Formatter
       end
 
       it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
-        expect do
-          Interceptor::Pipe.unwrap!(:nonsense)
-        end.to raise_error(ArgumentError)
+        expect { Interceptor::Pipe.unwrap!(:nonsense) }.to raise_error(ArgumentError)
       end
 
       it 'resets $stdout when #unwrap! is called' do
