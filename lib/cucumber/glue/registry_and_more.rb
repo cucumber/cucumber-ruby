@@ -62,12 +62,12 @@ module Cucumber
       end
 
       def step_matches(name_to_match)
-        @step_definitions.reduce([]) { |result, step_definition|
+        @step_definitions.reduce([]) do |result, step_definition|
           if (arguments = step_definition.arguments_from(name_to_match))
             result << StepMatch.new(step_definition, name_to_match, arguments)
           end
           result
-        }
+        end
       end
 
       def register_rb_hook(phase, tag_expressions, proc)
