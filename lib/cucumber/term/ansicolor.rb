@@ -56,7 +56,7 @@ module Cucumber
       ATTRIBUTES.each do |c, v|
         eval %Q{
             def #{c}(string = nil)
-              result = ''
+              result = String.new
               result << "\e[#{v}m" if Cucumber::Term::ANSIColor.coloring?
               if block_given?
                 result << yield

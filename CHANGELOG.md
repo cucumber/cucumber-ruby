@@ -34,6 +34,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Fix Style/BlockDelimiters ([#1224](https://github.com/cucumber/cucumber-ruby/pull/1224) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AsciiComments ([#1222](https://github.com/cucumber/cucumber-ruby/pull/1222) [@jaysonesmith](https://github.com/jaysonesmith))

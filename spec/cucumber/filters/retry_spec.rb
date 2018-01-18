@@ -61,12 +61,12 @@ describe Cucumber::Filters::Retry do
   context 'flaky test cases' do
 
     context 'a little flaky' do
-      let(:results) {
+      let(:results) do
         [
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
           Cucumber::Core::Test::Result::Passed.new(0)
         ]
-      }
+      end
 
       it 'describes the test case twice' do
         expect(receiver).to receive(:test_case) {|test_case|
@@ -78,13 +78,13 @@ describe Cucumber::Filters::Retry do
     end
 
     context 'really flaky' do
-      let(:results) {
+      let(:results) do
         [
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
           Cucumber::Core::Test::Result::Passed.new(0)
         ]
-      }
+      end
 
       it 'describes the test case 3 times' do
         expect(receiver).to receive(:test_case) {|test_case|

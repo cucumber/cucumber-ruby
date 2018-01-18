@@ -550,8 +550,8 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { data = 'YWJj'
-              embed data, 'mime-type;base64' }
+            Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64') }
+
           end
 
           it 'includes the data from the step in the json data' do
@@ -590,13 +590,13 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) {
+            Given(/^there are bananas$/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
               f1 = RSpec::Mocks::Double.new
               RSpec::Mocks.allow_message(File, :open)  { |&block| block.call(f1) }
               RSpec::Mocks.allow_message(f1, :read)  { 'foo' }
               embed('out/snapshot.jpeg', 'image/png')
-            }
+            end
           end
 
           it 'includes the file content in the json data' do

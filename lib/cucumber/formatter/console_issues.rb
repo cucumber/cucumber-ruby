@@ -34,10 +34,10 @@ module Cucumber
 
       def scenario_listing(type, test_cases)
         return [] if test_cases.empty?
-        [ format_string("#{type_heading(type)} Scenarios:", type) ] + test_cases.map { |test_case|
+        [ format_string("#{type_heading(type)} Scenarios:", type) ] + test_cases.map do |test_case|
           source = @config.source? ? format_string(" # #{test_case.keyword}: #{test_case.name}", :comment) : ''
           format_string("cucumber #{profiles_string}" + test_case.location, type) + source
-        }
+        end
       end
 
       def type_heading(type)

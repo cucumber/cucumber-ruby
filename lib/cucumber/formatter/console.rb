@@ -127,9 +127,9 @@ module Cucumber
         return unless options[:snippets]
         return if runtime.steps(:undefined).empty?
 
-        snippet_text_proc = lambda { |step_keyword, step_name, multiline_arg|
+        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
           runtime.snippet_text(step_keyword, step_name, multiline_arg)
-        }
+        end
         do_print_snippets(snippet_text_proc)
       end
 
@@ -241,9 +241,9 @@ module Cucumber
 
       def snippet_text(step_keyword, step_name, multiline_arg)
         keyword = Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip
-        config.snippet_generators.map { |generator|
+        config.snippet_generators.map do |generator|
           generator.call(keyword, step_name, multiline_arg, config.snippet_type)
-        }.join("\n")
+        end.join("\n")
       end
 
       class SnippetData

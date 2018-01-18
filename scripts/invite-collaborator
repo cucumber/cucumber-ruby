@@ -31,9 +31,9 @@ begin
   [
     Team.new(gh, 'cucumber-ruby'),
     Team.new(gh, 'collaborators')
-  ].each { |team|
+  ].each do |team|
     team.add_member(login)
-  }
+  end
 
 rescue StandardError => error
   abort error.message

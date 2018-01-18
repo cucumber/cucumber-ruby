@@ -14,6 +14,24 @@ module Cucumber
       class TestDoubleJunitFormatter < Junit
         attr_reader :written_files
 
+        def initialize(config)
+          super
+          config.on_event :test_step_started, &method(:on_test_step_started)
+        end
+
+        def on_test_step_started(event)
+          Interceptor::Pipe.unwrap! :stdout
+          @fake_io = $stdout = StringIO.new
+          $stdout.sync = true
+          @interceptedout = Interceptor::Pipe.wrap(:stdout)
+        end
+
+        def on_test_step_finished(event)
+          super
+          $stdout = STDOUT
+          @fake_io.close
+        end
+
         def write_file(feature_filename, data)
           @written_files ||= {}
           @written_files[feature_filename] = data
@@ -26,37 +44,24 @@ module Cucumber
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
         end
 
-        after(:each) do
-          $stdout = STDOUT
-        end
-
         describe 'is able to strip control chars from cdata' do
           before(:each) do
             run_defined_feature
             @doc = Nokogiri.XML(@formatter.written_files.values.first)
           end
+
+          define_steps do
+            Given(/a passing ctrl scenario/) do
+              Kernel.puts "boo\b\cx\e\a\f boo "
+            end
+          end
+
           define_feature "
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing ctrl scenario
             "
-          class Junit
-            def before_step(step)
-              return unless step.text.match('a passing ctrl scenario')
-              Interceptor::Pipe.unwrap! :stdout
-              @fake_io = $stdout = StringIO.new
-              $stdout.sync = true
-              @interceptedout = Interceptor::Pipe.wrap(:stdout)
-            end
-
-            def after_step(step)
-              return unless step.text.match('a passing ctrl scenario')
-              @interceptedout.write("boo\b\cx\e\a\f boo ")
-              $stdout = STDOUT
-              @fake_io.close
-            end
-          end
 
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
@@ -69,9 +74,7 @@ module Cucumber
           FEATURE
 
           it 'raises an exception' do
-            expect(-> {
-              run_defined_feature
-            }).to raise_error(Junit::UnNamedFeatureError)
+            expect(->{ run_defined_feature }).to raise_error(Junit::UnNamedFeatureError)
           end
         end
 
@@ -277,10 +280,6 @@ module Cucumber
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', :expand => true))
         end
 
-        after(:each) do
-          $stdout = STDOUT
-        end
-
         describe 'given a single feature' do
           before(:each) do
             run_defined_feature
@@ -319,7 +318,6 @@ module Cucumber
             it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
         end
-
       end
     end
   end
