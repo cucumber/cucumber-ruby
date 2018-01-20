@@ -80,9 +80,9 @@ module Cucumber
         print_elements(@pending_step_matches, :pending, 'steps')
         print_elements(@failed_results, :failed, 'steps')
         print_statistics(@total_duration, @config, @counts, @issues)
-        snippet_text_proc = lambda { |step_keyword, step_name, multiline_arg|
+        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
           snippet_text(step_keyword, step_name, multiline_arg)
-        }
+        end
         do_print_snippets(snippet_text_proc) if config.snippets? && summary.test_steps.total(:undefined) > 0
         return unless config.wip?
         messages = @passed_test_cases.map do |test_case|

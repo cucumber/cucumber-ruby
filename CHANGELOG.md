@@ -34,12 +34,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Update Rubocop version to 0.52.1 and redo rubocop_todo.yml ([#1246](https://github.com/cucumber/cucumber-ruby/pull/1246) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Style/BlockDelimiters ([#1224](https://github.com/cucumber/cucumber-ruby/pull/1224) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AsciiComments ([#1222](https://github.com/cucumber/cucumber-ruby/pull/1222) [@jaysonesmith](https://github.com/jaysonesmith))
 * Exclude Style/AsciiIdentifiers ([#1223](https://github.com/cucumber/cucumber-ruby/pull/1223) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Lint/HandleExceptions ([#1226](https://github.com/cucumber/cucumber-ruby/pull/1226) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AccessorMethodName ([#1228](https://github.com/cucumber/cucumber-ruby/pull/1228) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Lint/IneffectiveAccessModifier ([#1227](https://github.com/cucumber/cucumber-ruby/pull/1227) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
 

@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run: git remote add cucumber-pro git@git.cucumber.pro:cucumber-ruby.git
-      - run: git push cucumber-pro $CIRCLE_BRANCH
+      - run: git push --force cucumber-pro $CIRCLE_BRANCH
   "ruby-2.4.1":
     docker:
        - image: circleci/ruby:2.4.1

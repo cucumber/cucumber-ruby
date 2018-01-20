@@ -28,15 +28,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'pry'
-  s.add_development_dependency 'rubocop', '~> 0.49.0'
+  s.add_development_dependency 'rubocop', '~> 0.52.1'
 
   # For maintainer scripts
   s.add_development_dependency 'octokit'
-
-  # For Documentation:
-  s.add_development_dependency 'bcat', '~> 0.6.2'
-  s.add_development_dependency 'kramdown', '~> 0.14'
-  s.add_development_dependency 'yard', '~> 0.8.0'
 
   # Needed for examples (rake examples)
   s.add_development_dependency 'capybara', '>= 2.1'
