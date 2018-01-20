@@ -34,6 +34,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Update Rubocop version to 0.52.1 and redo rubocop_todo.yml ([#1246](https://github.com/cucumber/cucumber-ruby/pull/1246) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/BlockDelimiters ([#1224](https://github.com/cucumber/cucumber-ruby/pull/1224) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))

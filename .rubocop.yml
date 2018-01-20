@@ -19,27 +19,22 @@ AllCops:
 Lint/AmbiguousOperator:
   Enabled: false
 
-# Rubocop doesn't like method names in other languages but as Cucumber supports 
-# languages, this cop needs to be disabled.
-Style/AsciiIdentifiers:
-  Enabled: false
-
-# Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,
+# Reviewed: Formatters put trailing spaces after things like 'Feature: '
+#           In pretty_spec.rb, progress_spec.rb offences look false,
 #           as the trailing spaces are in multiline string literals
-Style/TrailingWhitespace:
+Layout/TrailingWhitespace:
   Exclude:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
 
+# Rubocop doesn't like method names in other languages but as Cucumber supports 
+# languages, this cop needs to be disabled.
+Naming/AsciiIdentifiers:
+  Enabled: false
+
 # Reviewed: these offenses look false as the variables are in cyrillic
-Style/VariableName:
+Naming/VariableName:
   Exclude:
     - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
     - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
     - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
-
-# Reviewed: Formatters put trailing spaces after things like 'Feature: '
-Style/TrailingWhitespace:
-  Exclude:
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-    - 'spec/cucumber/formatter/progress_spec.rb'
