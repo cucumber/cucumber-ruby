@@ -42,13 +42,13 @@ module Cucumber
       def embed(src, mime_type, label)
         if image?(mime_type)
           src = src_is_file_or_data?(src) ? src : "data:#{standardize_mime_type(mime_type)},#{src}"
-          builder.embed(type: :image, src: set_path(src), label: label, id: next_id(:img))
+          builder.embed(type: :image, src: path(src), label: label, id: next_id(:img))
         else
           builder.embed(type: :text, src: src, label: label, id: next_id(:text))
         end
       end
 
-      def set_path(src)
+      def path(src)
         if @io.respond_to?(:path) && File.file?(src)
           out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
           src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
@@ -251,7 +251,7 @@ module Cucumber
         end
         @status = status
         return if @hide_this_step
-        set_scenario_color(status)
+        scenario_color(status)
         builder << "<li id='#{@step_id}' class='step #{status}'>"
       end
 
@@ -353,7 +353,7 @@ module Cucumber
         attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'step'}
         attributes[:class] += " #{status}" if status
         build_cell(@cell_type, value, attributes)
-        set_scenario_color(status) if @inside_outline
+        scenario_color(status) if @inside_outline
         @col_index += 1
       end
 
@@ -436,7 +436,7 @@ module Cucumber
         builder << extra unless extra == ''
       end
 
-      def set_scenario_color(status)
+      def scenario_color(status)
         if status.nil? || status == :undefined || status == :pending
           set_scenario_color_pending
         end

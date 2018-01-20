@@ -101,19 +101,19 @@ module Cucumber
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
           opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
-          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| set_language lang }
+          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
           opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
             add_option :formats, [*parse_formats(v), @out_stream]
           end
           opts.on('--init', *init_msg) {|v| initialize_project }
-          opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| set_out_stream v }
+          opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| out_stream v }
           opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_tag v }
           opts.on('-n NAME', '--name NAME', *name_msg) {|v| add_option :name_regexps, /#{v}/ }
           opts.on('-e', '--exclude PATTERN', *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
           opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| disable_profile_loading }
-          opts.on('-c', '--[no-]color', *color_msg) {|v| set_color v }
+          opts.on('-c', '--[no-]color', *color_msg) {|v| color v }
           opts.on('-d', '--dry-run', *dry_run_msg) { set_dry_run_and_duration }
           opts.on('-m', '--no-multiline', "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
           opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
@@ -273,7 +273,7 @@ TEXT
         [formatter, options_hash]
       end
 
-      def set_out_stream(v)
+      def out_stream(v)
         @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
         @options[:formats][-1][2] = v
       end
@@ -352,7 +352,7 @@ TEXT
         Dir["#{jars}/**/*.jar"].each {|jar| require jar}
       end
 
-      def set_language(lang)
+      def language(lang)
         require 'gherkin/dialect'
 
         return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.keys.include? lang
@@ -391,7 +391,7 @@ TEXT
         tag_limits[tag_name] = limit
       end
 
-      def set_color(color)
+      def color(color)
         Cucumber::Term::ANSIColor.coloring = color
       end
 

@@ -30,7 +30,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 
 ### Improved
 
@@ -41,6 +41,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Fix Style/AsciiComments ([#1222](https://github.com/cucumber/cucumber-ruby/pull/1222) [@jaysonesmith](https://github.com/jaysonesmith))
 * Exclude Style/AsciiIdentifiers ([#1223](https://github.com/cucumber/cucumber-ruby/pull/1223) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Lint/HandleExceptions ([#1226](https://github.com/cucumber/cucumber-ruby/pull/1226) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Style/AccessorMethodName ([#1228](https://github.com/cucumber/cucumber-ruby/pull/1228) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Lint/IneffectiveAccessModifier ([#1227](https://github.com/cucumber/cucumber-ruby/pull/1227) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
