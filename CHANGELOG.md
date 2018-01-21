@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Fix Layout/EmptyLineBetweenDefs ([#1257](https://github.com/cucumber/cucumber-ruby/pull/1257) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
