@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Add Rubocop to default Rake task ([#1256](https://github.com/cucumber/cucumber-ruby/pull/1256) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
