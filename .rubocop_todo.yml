@@ -29,12 +29,6 @@ Gemspec/RequiredRubyVersion:
   Exclude:
     - 'cucumber.gemspec'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Layout/BlockEndNewline:
-  Exclude:
-    - 'spec/cucumber/step_match_search_spec.rb'
-
 # Offense count: 8
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

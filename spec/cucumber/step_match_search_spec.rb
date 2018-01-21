@@ -63,16 +63,14 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three cute (.*)/) {|animal|}
 
-          expect(-> {
-            search.call('Three cute mice').first } ).to raise_error(Ambiguous, /#{expected_error}/)
+          expect(-> { search.call('Three cute mice').first } ).to raise_error(Ambiguous, /#{expected_error}/)
         end
 
         it 'does not raise Ambiguous error when multiple step definitions match' do
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three (.*)/) {|animal|}
 
-          expect(-> {
-            search.call('Three blind mice').first } ).not_to raise_error
+          expect(-> { search.call('Three blind mice').first } ).not_to raise_error
         end
 
         it 'picks right step definition when an equal number of capture groups' do
