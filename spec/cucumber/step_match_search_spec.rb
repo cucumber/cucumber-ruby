@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/step_match_search'
 require 'cucumber/glue/dsl'
 require 'cucumber/glue/registry_and_more'

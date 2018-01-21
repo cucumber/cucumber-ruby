@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'

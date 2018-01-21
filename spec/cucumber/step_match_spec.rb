@@ -1,5 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/glue/step_definition'
 require 'cucumber/glue/registry_and_more'

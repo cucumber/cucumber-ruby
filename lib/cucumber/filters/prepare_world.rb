@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/core/filter'
 require 'cucumber/core/ast/location'
 require 'cucumber/running_test_case'

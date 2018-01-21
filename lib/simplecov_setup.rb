@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 if ENV['SIMPLECOV']
   begin
     # Suppress warnings in order not to pollute stdout which tests expectations rely on

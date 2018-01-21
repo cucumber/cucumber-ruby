@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/constantize'
 require 'cucumber/runtime/for_programming_languages'
 require 'cucumber/runtime/step_hooks'

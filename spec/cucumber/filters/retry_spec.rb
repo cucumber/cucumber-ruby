@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber'
 require 'cucumber/filters/retry'
 require 'cucumber/core/gherkin/writer'

@@ -46,11 +46,6 @@ Layout/DotPosition:
     - 'scripts/invite-collaborator'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
 
-# Offense count: 217
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterMagicComment:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.

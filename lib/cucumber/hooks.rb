@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'pathname'
 require 'cucumber/core/ast/location'
 require 'cucumber/core/test/around_hook'
