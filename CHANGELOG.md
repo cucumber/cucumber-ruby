@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Fix Gemspec/RequiredRubyVersion ([#1252](https://github.com/cucumber/cucumber-ruby/pull/1252) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
