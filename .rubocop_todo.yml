@@ -51,13 +51,6 @@ Layout/DotPosition:
 Layout/EmptyLineAfterMagicComment:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'lib/cucumber/multiline_argument/data_table/diff_matrices.rb'
-
 # Offense count: 9
 # Cop supports --auto-correct.
 Layout/EmptyLines:

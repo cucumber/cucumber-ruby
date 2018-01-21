@@ -68,7 +68,6 @@ module Cucumber
           array[0].is_a?(Array) ? array : [array]
         end
 
-
         def perform_diff
           inserted    = 0
           missing     = 0
@@ -109,7 +108,6 @@ module Cucumber
           end
         end
 
-
         def fill_in_missing_values
           other_table_cell_matrix.each_with_index do |other_row, i|
             row_index = row_indices.index(i)
@@ -133,7 +131,6 @@ module Cucumber
         def misplaced_col
           cell_matrix[0] != original_header
         end
-
 
         def raise_error
           table = DataTable.from([[]])
