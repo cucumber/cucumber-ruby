@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
