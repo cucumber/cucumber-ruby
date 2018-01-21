@@ -22,13 +22,6 @@ Gemspec/OrderedDependencies:
   Exclude:
     - 'cucumber.gemspec'
 
-# Offense count: 1
-# Configuration parameters: Include.
-# Include: **/*.gemspec
-Gemspec/RequiredRubyVersion:
-  Exclude:
-    - 'cucumber.gemspec'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Layout/BlockEndNewline:
