@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
 * N/A
 
 ### Deprecated
