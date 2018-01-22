@@ -209,8 +209,8 @@ module Cucumber
             %w{one 1111},
             %w{two 22222}
           ])
-          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase).
-                     map_column('two', false, &:to_i)
+          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase)
+                    .map_column('two', false, &:to_i)
           expect( t2.rows_hash ).to eq( 'ONE' => '1111', 'Two' => 22222 )
         end
       end
