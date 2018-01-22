@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # frozen_string_literal: true
+
 require 'fileutils'
 require 'multi_json'
 require 'cucumber/configuration'

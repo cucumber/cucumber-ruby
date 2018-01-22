@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Given('a scenario {string} that fails once, then passes') do |full_name|
   name = snake_case(full_name)
   write_file "features/#{name}.feature",

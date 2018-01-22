@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # frozen_string_literal: true
+
 module FeatureFactory
   def create_feature(name = generate_feature_name)
     gherkin = <<-GHERKIN

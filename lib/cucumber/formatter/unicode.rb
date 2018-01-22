@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Require this file if you need Unicode support.
 # Tips for improvement - esp. ruby 1.9: http://www.ruby-forum.com/topic/184730
 require 'cucumber/platform'

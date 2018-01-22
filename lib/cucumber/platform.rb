@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Detect the platform we're running on so we can tweak behaviour
 # in various places.
 require 'rbconfig'

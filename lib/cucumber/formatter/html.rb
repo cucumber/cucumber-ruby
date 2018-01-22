@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'erb'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/io'

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   module StepMatchSearch
     def self.new(search, configuration)

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class String #:nodoc:
   def indent(n)
     if n >= 0

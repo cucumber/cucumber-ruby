@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # override aruba to filter out some stuff
 module NormaliseArubaOutput
   def all_stdout

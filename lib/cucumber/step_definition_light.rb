@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   # TODO: pointless, ancient, kill with fire.
   # Only used for keeping track of available and invoked step definitions

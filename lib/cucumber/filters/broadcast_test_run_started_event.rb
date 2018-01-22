@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   module Filters
     # Added at the end of the filter chain to broadcast a list of
