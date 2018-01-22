@@ -22,6 +22,10 @@ AllCops:
 Lint/AmbiguousOperator:
   Enabled: false
 
+# Disabling for appveyor
+Layout/EndOfLine:
+  Enabled: false
+
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
 #           In pretty_spec.rb, progress_spec.rb offences look false,
 #           as the trailing spaces are in multiline string literals
