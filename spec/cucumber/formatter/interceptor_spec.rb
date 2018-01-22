@@ -110,6 +110,7 @@ module Cucumber::Formatter
 
         expect(pi.buffer).not_to be_empty
         expect(pi.buffer.first).to eq buffer
+        expect(pi.buffer_string).to eq buffer
       end
     end
 
