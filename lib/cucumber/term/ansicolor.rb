@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   module Term
     # The ANSIColor module can be used for namespacing and mixed into your own

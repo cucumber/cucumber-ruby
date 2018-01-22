@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'builder'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'

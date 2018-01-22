@@ -1,4 +1,5 @@
 # encoding: UTF-8
+
 Before do
   @calc = Calculator.new
 end

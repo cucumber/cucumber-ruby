@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format steps</tt>

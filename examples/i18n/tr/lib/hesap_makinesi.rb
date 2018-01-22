@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 class HesapMakinesi
   def push(n)
     @args ||= []

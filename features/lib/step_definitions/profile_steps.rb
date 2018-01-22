@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Given('the following profile(s) are/is defined:') do |profiles|
   write_file 'cucumber.yml', profiles
 end

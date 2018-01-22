@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
 
   # Generates generic file structure for a cucumber project

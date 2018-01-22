@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 Soit(/^une calculatrice$/) do
   @calc = Calculatrice.new
 end
