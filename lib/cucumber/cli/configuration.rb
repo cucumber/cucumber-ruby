@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/cli/rerun_file'

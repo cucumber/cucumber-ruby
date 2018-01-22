@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'multi_json'
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'

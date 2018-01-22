@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/filters/tag_limits'
 
 describe Cucumber::Filters::TagLimits::Verifier do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/filters/activate_steps'
 require 'cucumber/filters/apply_after_step_hooks'
 require 'cucumber/filters/apply_before_hooks'

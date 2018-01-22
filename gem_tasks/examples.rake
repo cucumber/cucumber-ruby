@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 desc 'Run all exmples'
 task :examples do
   Dir['examples/*'].each do |example_dir|

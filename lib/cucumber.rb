@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'yaml'
 require 'cucumber/encoding'
 require 'cucumber/platform'

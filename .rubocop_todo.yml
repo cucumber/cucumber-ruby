@@ -6,22 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: leading, trailing
-Layout/DotPosition:
-  Exclude:
-    - 'lib/cucumber/constantize.rb'
-    - 'lib/cucumber/filters/randomizer.rb'
-    - 'scripts/invite-collaborator'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-
-# Offense count: 217
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterMagicComment:
-  Enabled: false
-
 # Offense count: 9
 # Cop supports --auto-correct.
 Layout/EmptyLines:
