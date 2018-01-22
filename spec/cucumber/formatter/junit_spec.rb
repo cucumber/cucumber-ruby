@@ -74,8 +74,8 @@ module Cucumber
 
           define_steps do
             Given(/a passing ctrl scenario/) do
-              Kernel.puts "encoding"
-              Kernel.puts "pickle".encode("UTF-16")
+              Kernel.puts 'encoding'
+              Kernel.puts 'pickle'.encode('UTF-16')
             end
           end
 

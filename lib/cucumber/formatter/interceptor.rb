@@ -24,7 +24,8 @@ module Cucumber
           Cucumber.deprecate(
             'Use Cucumber::Formatter::Interceptor::Pipe#buffer_string instead',
             'Cucumber::Formatter::Interceptor::Pipe#buffer',
-            '3.99')
+            '3.99'
+          )
           lock.synchronize do
             return @buffer.string.lines
           end
