@@ -7,14 +7,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Include, TreatCommentsAsGroupSeparators.
-# Include: **/Gemfile, **/gems.rb
-Bundler/OrderedGems:
-  Exclude:
-    - 'examples/test_unit/Gemfile'
-
-# Offense count: 1
 # Configuration parameters: Include.
 # Include: **/*.gemspec
 Gemspec/RequiredRubyVersion:
@@ -42,13 +34,6 @@ Layout/DotPosition:
 # Cop supports --auto-correct.
 Layout/EmptyLineAfterMagicComment:
   Enabled: false
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'lib/cucumber/multiline_argument/data_table/diff_matrices.rb'
 
 # Offense count: 9
 # Cop supports --auto-correct.
