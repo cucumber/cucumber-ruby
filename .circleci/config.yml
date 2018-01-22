@@ -99,7 +99,7 @@ workflows:
   version: 2
   build:
     jobs:
-      # Keep lowest ruby-* version in sync with .cucumber.gemspec
+      # Keep lowest ruby-* version in sync with .cucumber.gemspec & .rubocop.yml
       - "ruby-2.4.1"
       - "ruby-2.3.5"
       - "ruby-2.2.8"
