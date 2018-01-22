@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'thread'
-
 module Cucumber
   module Formatter
     module Interceptor
@@ -9,7 +7,7 @@ module Cucumber
         attr_reader :pipe
         def initialize(pipe)
           @pipe = pipe
-          @buffer = []
+          @buffer = StringIO.new
           @wrapped = true
         end
 
@@ -20,9 +18,21 @@ module Cucumber
           end
         end
 
+        # @deprecated use #buffer_string
         def buffer
+          require 'cucumber/deprecate.rb'
+          Cucumber.deprecate(
+            'Use Cucumber::Formatter::Interceptor::Pipe#buffer_string instead',
+            'Cucumber::Formatter::Interceptor::Pipe#buffer',
+            '3.99')
           lock.synchronize do
-            return @buffer.dup
+            return @buffer.string.lines
+          end
+        end
+
+        def buffer_string
+          lock.synchronize do
+            return @buffer.string.dup
           end
         end
 
