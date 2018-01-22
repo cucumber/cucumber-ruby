@@ -9,7 +9,9 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.homepage    = 'https://cucumber.io/'
   s.platform    = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.2' # Keep in sync with .circleci/config.yml
+  # Keep in sync with .circleci/config.yml & .rubocop.yml
+  s.required_ruby_version = '>= 2.2'
+  s.add_dependency 'cucumber-core', '~> 3.1.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'cucumber-core', '~> 3.1.0'
   s.add_dependency 'cucumber-expressions', '~> 5.0.4'

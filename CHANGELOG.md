@@ -19,7 +19,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 * Fix Ordered/Dependencies ([#1251](https://github.com/cucumber/cucumber-ruby/pull/1251) [@jaysonesmith](https://github.com/jaysonesmith))
-* N/A
+* Fix Gemspec/RequiredRubyVersion ([#1252](https://github.com/cucumber/cucumber-ruby/pull/1252) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ### Deprecated
 
