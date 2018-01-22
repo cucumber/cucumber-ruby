@@ -18,11 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Ordered/Dependencies ([#1251](https://github.com/cucumber/cucumber-ruby/pull/1251) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Gemspec/RequiredRubyVersion ([#1252](https://github.com/cucumber/cucumber-ruby/pull/1252) [@jaysonesmith](https://github.com/jaysonesmith))
+* N/A
 
 ### Deprecated
 
@@ -34,11 +30,16 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* Fix incompatible encodings error in JUnit formatter ([#1244](https://github.com/cucumber/cucumber-ruby/pull/1244) [@NickAb](https://github.com/NickAb))
+* Fix incompatible encodings error in JUnit formatter ([#1244](https://github.com/cucumber/cucumber-ruby/pull/1244) [@NickAb](https://github.com/NickAb)) (except on JRuby, see [#1259](https://github.com/cucumber/cucumber-ruby/pull/1259))
 * Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 
 ### Improved
 
+* Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Ordered/Dependencies ([#1251](https://github.com/cucumber/cucumber-ruby/pull/1251) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Gemspec/RequiredRubyVersion ([#1252](https://github.com/cucumber/cucumber-ruby/pull/1252) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/EmptyLineBetweenDefs ([#1257](https://github.com/cucumber/cucumber-ruby/pull/1257) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Bundler/OrderedGems ([#1250](https://github.com/cucumber/cucumber-ruby/pull/1250) [@jaysonesmith](https://github.com/jaysonesmith))
 * Update Rubocop version to 0.52.1 and redo rubocop_todo.yml ([#1246](https://github.com/cucumber/cucumber-ruby/pull/1246) [@jaysonesmith](https://github.com/jaysonesmith))

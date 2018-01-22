@@ -1,7 +1,7 @@
 <%
 cucumber_pro_opts = ENV['ENABLE_CUCUMBER_PRO'] ? "--format Cucumber::Pro --out /dev/null" : ""
 std_opts = "--format progress features -r features --strict #{cucumber_pro_opts}".dup
-std_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
+std_opts << " --tags 'not @wip-jruby'" if defined?(JRUBY_VERSION)
 
 wip_opts = "--color -r features".dup
 wip_opts << " --tags @wip" if !defined?(JRUBY_VERSION)

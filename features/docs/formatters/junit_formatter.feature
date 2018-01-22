@@ -58,6 +58,20 @@ Feature: JUnit output formatter
             | is pending   |
             | is undefined |
       """
+    And a file named "features/encoding_output.feature" with:
+      """
+      Feature: One passing scenario, one failing scenario
+
+        Scenario: Passing
+          Given a passing ctrl scenario
+      """
+    And a file named "features/step_definitions/junit_steps.rb" with:
+      """
+      Given /^Given a passing ctrl scenario/ do
+        Kernel.puts "encoding"
+        Kernel.puts "pickle".encode("UTF-16")
+      end
+      """
 
   @spawn @todo-windows
   Scenario: one feature, one passing scenario, one failing scenario
@@ -453,3 +467,8 @@ You *must* specify --out DIR for the junit formatter
 
       """
     And a file named "tmp/TEST-features-pending.xml" should exist
+
+  @wip-jruby
+  Scenario: mixed encoding outputs are handled across all supported ruby versions, failing on jruby currently
+    When I run `cucumber --format junit --out tmp/ features/encoding_output.feature`
+    Then it should pass
