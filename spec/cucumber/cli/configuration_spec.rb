@@ -107,7 +107,7 @@ ERB_YML
       end
 
       it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
-        given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
+        given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' => '--format html'})
 
         expected_message = <<-END_OF_MESSAGE
 Could not find profile: 'i_do_not_exist'

@@ -52,17 +52,6 @@ Layout/EmptyLinesAroundExceptionHandlingKeywords:
 Layout/EmptyLinesAroundModuleBody:
   Enabled: false
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'lib/cucumber/formatter/json.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/formatter/html_spec.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
-
 # Offense count: 49
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.
@@ -115,23 +104,6 @@ Layout/IndentationWidth:
     - 'spec/cucumber/cli/configuration_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
     - 'spec/cucumber/step_match_search_spec.rb'
-
-# Offense count: 18
-# Cop supports --auto-correct.
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'examples/i18n/da/lib/lommeregner.rb'
-    - 'examples/i18n/it/lib/calcolatrice.rb'
-    - 'examples/i18n/no/lib/kalkulator.rb'
-    - 'examples/i18n/ro/lib/calculator.rb'
-    - 'examples/i18n/sv/lib/kalkulator.rb'
-    - 'features/lib/support/normalise_output.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/events/step_definition_registered.rb'
-    - 'lib/cucumber/filters/prepare_world.rb'
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
