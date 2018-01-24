@@ -19,7 +19,7 @@ class Team
 
   def team
     @team ||= gh.organization_teams('cucumber')
-      .find { |team| team['name'] == name } || raise("Unable to find a team named #{name}")
+                .find { |team| team['name'] == name } || raise("Unable to find a team named #{name}")
   end
 end
 

@@ -121,7 +121,8 @@ module Cucumber
         allow(IO).to receive(:read).and_return(
           "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
           "domain folder/different cuke.feature:134 domain folder/cuke.feature:1\n"\
-          'domain folder/different cuke.feature:4:5 bar.feature')
+          'domain folder/different cuke.feature:4:5 bar.feature'
+        )
 
         configuration = Configuration.new(paths: %w{@rerun.txt})
 
@@ -132,7 +133,8 @@ module Cucumber
           'domain folder/different cuke.feature:134',
           'domain folder/cuke.feature:1',
           'domain folder/different cuke.feature:4:5',
-          'bar.feature']
+          'bar.feature'
+        ]
       end
     end
 

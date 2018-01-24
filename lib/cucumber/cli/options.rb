@@ -11,6 +11,7 @@ module Cucumber
 
     class Options
       INDENT = ' ' * 53
+      # rubocop:disable Layout/MultilineOperationIndentation
       BUILTIN_FORMATS = {
         'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
@@ -28,6 +29,7 @@ module Cucumber
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }
+      # rubocop:enable Layout/MultilineOperationIndentation
       max = BUILTIN_FORMATS.keys.map(&:length).max
       FORMAT_HELP_MSG = [
                           'Use --format rerun --out rerun.txt to write out failing',
@@ -554,7 +556,8 @@ TEXT
         data = Cucumber::MultilineArgument::DataTable.from(
           ::Gherkin::DIALECTS.keys.map do |key|
             [key, ::Gherkin::DIALECTS[key].fetch('name'), ::Gherkin::DIALECTS[key].fetch('native')]
-          end)
+          end
+        )
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end
