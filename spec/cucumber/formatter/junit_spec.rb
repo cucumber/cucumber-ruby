@@ -127,7 +127,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) {  }
+              Given(/.*/) { }
             end
 
             define_feature <<-FEATURE
@@ -176,7 +176,7 @@ module Cucumber
           describe 'with a regular data table scenario' do
             define_steps do
               Given(/the following items on a shortlist/) { |table| }
-              When(/I go.*/) {  }
+              When(/I go.*/) { }
               Then(/I should have visited at least/) { |table| }
             end
 
@@ -275,7 +275,7 @@ module Cucumber
       end
 
       context 'In --expand mode' do
-        let(:runtime)   { Runtime.new({:expand => true}) }
+        let(:runtime) { Runtime.new({:expand => true}) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', :expand => true))
@@ -289,7 +289,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) {  }
+              Given(/.*/) { }
             end
 
             define_feature <<-FEATURE
