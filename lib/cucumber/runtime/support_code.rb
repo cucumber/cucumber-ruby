@@ -11,12 +11,9 @@ require 'cucumber/step_match_search'
 module Cucumber
 
   class Runtime
-
     class SupportCode
-
       require 'forwardable'
       class StepInvoker
-
         def initialize(support_code)
           @support_code = support_code
         end
@@ -151,7 +148,6 @@ module Cucumber
       def log
         Cucumber.logger
       end
-
     end
   end
 end

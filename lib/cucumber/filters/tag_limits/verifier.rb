@@ -3,7 +3,6 @@
 module Cucumber
   module Filters
     class TagLimits
-
       class Verifier
         def initialize(tag_limits)
           @tag_limits = tag_limits
@@ -54,7 +53,6 @@ module Cucumber
           attr_reader :limit
           attr_reader :locations
         end
-
       end
     end
   end
