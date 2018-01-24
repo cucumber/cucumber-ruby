@@ -6,7 +6,6 @@ require 'cucumber/gherkin/i18n'
 
 module Cucumber
   module Formatter
-
     # This module contains helper methods that are used by formatters that
     # print output to the terminal.
     #
@@ -253,7 +252,6 @@ module Cucumber
           @actual_keyword, @step = actual_keyword, step
         end
       end
-
     end
   end
 end

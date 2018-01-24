@@ -8,7 +8,6 @@ require 'cucumber/core/test/result'
 
 module Cucumber
   module Cli
-
     class Options
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
@@ -586,6 +585,5 @@ TEXT
         }
       end
     end
-
   end
 end

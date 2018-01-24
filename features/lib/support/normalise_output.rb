@@ -47,7 +47,6 @@ module NormaliseArubaOutput
     expect(step_or_hook['result']['duration']).to be >= 0
     step_or_hook['result']['duration'] = 1
   end
-
 end
 
 World(NormaliseArubaOutput)

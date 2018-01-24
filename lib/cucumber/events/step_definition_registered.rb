@@ -4,7 +4,6 @@ require 'cucumber/core/events'
 
 module Cucumber
   module Events
-
     # Event fired after each step definition has been registered
     class StepDefinitionRegistered < Core::Event.new(:step_definition)
 
@@ -20,6 +19,5 @@ module Cucumber
       end
 
     end
-
   end
 end

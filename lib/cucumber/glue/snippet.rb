@@ -3,7 +3,6 @@
 module Cucumber
   module Glue
     module Snippet
-
       ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
 
       class Generator
@@ -151,7 +150,6 @@ module Cucumber
       }
 
       module MultilineArgumentSnippet
-
         def self.new(multiline_argument)
           builder = Builder.new
           multiline_argument.describe_to(builder)

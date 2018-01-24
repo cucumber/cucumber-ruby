@@ -52,13 +52,6 @@ Layout/EmptyLinesAroundExceptionHandlingKeywords:
   Exclude:
     - 'scripts/invite-collaborator'
 
-# Offense count: 60
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundModuleBody:
-  Enabled: false
-
 # Offense count: 8
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.

@@ -241,6 +241,5 @@ module Cucumber
         duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10**9.0 }
       end
     end
-
   end
 end

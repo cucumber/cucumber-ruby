@@ -50,6 +50,5 @@ module Cucumber
         @exception
       end
     end
-
   end
 end
