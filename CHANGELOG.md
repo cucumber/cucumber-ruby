@@ -35,6 +35,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Fix Multiline Violations: Braces, Blocks, Method call work, etc. ([#1271](https://github.com/cucumber/cucumber-ruby/pull/1271) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))
