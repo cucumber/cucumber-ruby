@@ -18,13 +18,26 @@ AllCops:
     - 'lib/cucumber/formatter/legacy_api/*'
     - 'spec/cucumber/formatter/legacy_api/*'
 
-# Reviewed: please see PR-1022 for details on why this cop is disabled: https://github.com/cucumber/cucumber-ruby/pull/1022
+# Reviewed: please see PR-1022 for details on why this cop is disabled:
+# https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:
   Enabled: false
 
 # Disabling for appveyor
 Layout/EndOfLine:
   Enabled: false
+
+# Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
+# heredocs '<<~' were introduced them. The files below are the current ones
+# with offenses
+Layout/IndentHeredoc:
+  Exclude:
+    - 'features/lib/support/feature_factory.rb'
+    - 'lib/cucumber/cli/options.rb'
+    - 'lib/cucumber/cli/profile_loader.rb'
+    - 'spec/cucumber/cli/configuration_spec.rb'
+    - 'spec/cucumber/cli/profile_loader_spec.rb'
+    - 'spec/cucumber/formatter/pretty_spec.rb'
 
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
 #           In pretty_spec.rb, progress_spec.rb offences look false,

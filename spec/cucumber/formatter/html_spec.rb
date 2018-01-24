@@ -539,9 +539,9 @@ module Cucumber
               | undefined |
             FEATURE
 
-            define_steps do
-              Given(/^this step passes$/) {}
-            end
+          define_steps do
+            Given(/^this step passes$/) {}
+          end
 
           it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq %w(Given Given) }
         end

@@ -366,12 +366,12 @@ module Cucumber
       def print_messages
         return if @delayed_messages.empty?
 
-          #builder.ol do
-          @delayed_messages.each do |ann|
-            builder.li(:class => 'step message') do
-              builder << ann
-            end
+        #builder.ol do
+        @delayed_messages.each do |ann|
+          builder.li(:class => 'step message') do
+            builder << ann
           end
+        end
         #end
         empty_messages
       end
@@ -590,7 +590,7 @@ module Cucumber
           rescue ArgumentError
             return "# Couldn't get snippet for #{file}"
           end
-          min = [0, line-3].max
+            min = [0, line-3].max
             max = [line+1, lines.length-1].min
             selected_lines = []
             selected_lines.join("\n")
