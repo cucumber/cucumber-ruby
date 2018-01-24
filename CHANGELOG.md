@@ -35,6 +35,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Fix Layout/EmptyLinesAroundModuleBody ([#1266](https://github.com/cucumber/cucumber-ruby/pull/1266) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))
