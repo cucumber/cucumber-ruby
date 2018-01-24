@@ -59,17 +59,6 @@ Layout/EmptyLinesAroundExceptionHandlingKeywords:
 Layout/EmptyLinesAroundModuleBody:
   Enabled: false
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'lib/cucumber/formatter/json.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/formatter/html_spec.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
-
 # Offense count: 49
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.

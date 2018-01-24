@@ -520,7 +520,7 @@ module Cucumber
         end
       end
       context 'in --expand mode' do
-        let(:options)   { { expand: true } }
+        let(:options) { { expand: true } }
         before(:each) do
           @out = StringIO.new
           @formatter = Html.new(runtime, @out, {:expand => true})
