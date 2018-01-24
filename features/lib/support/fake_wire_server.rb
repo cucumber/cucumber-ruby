@@ -67,13 +67,13 @@ class FakeWireServer
       end
     rescue => e
       response = [
-                    'fail',
-                    {
-                      :message => e.message,
-                      :backtrace => e.backtrace,
-                      :exception => e.class
-                    }
-                  ].to_json
+        'fail',
+        {
+          :message => e.message,
+          :backtrace => e.backtrace,
+          :exception => e.class
+        }
+      ].to_json
       send_response(response)
     end
 
