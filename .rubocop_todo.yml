@@ -32,13 +32,6 @@ Layout/EmptyLinesAroundArguments:
   Exclude:
     - 'spec/cucumber/formatter/junit_spec.rb'
 
-# Offense count: 33
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: false
-
 # Offense count: 52
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
