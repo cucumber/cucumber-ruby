@@ -22,7 +22,6 @@ module Cucumber
       def respond_to_missing?(name, include_private = false)
         recipients.any? { |recipient| recipient.respond_to?(name, include_private) }
       end
-
     end
 
   end

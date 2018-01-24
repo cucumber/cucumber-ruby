@@ -4,7 +4,6 @@ module Cucumber
   module Formatter
     # The formatter used for <tt>--format steps</tt>
     class Steps
-
       def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io)
         @options = options

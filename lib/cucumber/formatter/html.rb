@@ -9,7 +9,6 @@ require 'pathname'
 module Cucumber
   module Formatter
     class Html
-
       # TODO: remove coupling to types
       AST_CLASSES = {
         Cucumber::Core::Ast::Scenario        => 'scenario',
@@ -609,7 +608,6 @@ module Cucumber
           end
           new_lines.join("\n")
         end
-
       end
     end
   end

@@ -39,13 +39,6 @@ Layout/EmptyLinesAroundArguments:
 Layout/EmptyLinesAroundBlockBody:
   Enabled: false
 
-# Offense count: 52
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Layout/EmptyLinesAroundExceptionHandlingKeywords:

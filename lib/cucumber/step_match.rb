@@ -146,7 +146,6 @@ module Cucumber
   end
 
   class AmbiguousStepMatch
-
     def initialize(error)
       @error = error
     end
@@ -154,7 +153,6 @@ module Cucumber
     def activate(test_step)
       return test_step.with_action { raise @error }
     end
-
   end
 
 end

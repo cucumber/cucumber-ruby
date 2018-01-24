@@ -5,7 +5,6 @@ module Cucumber
 
     # Fired after we've read in the contents of a feature file
     class GherkinSourceRead < Core::Event.new(:path, :body)
-
       # The path to the file
       attr_reader :path
 
