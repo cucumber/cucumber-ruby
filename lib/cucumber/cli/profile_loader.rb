@@ -6,7 +6,6 @@ module Cucumber
   module Cli
 
     class ProfileLoader
-
       def initialize
         @cucumber_yml = nil
       end
@@ -91,7 +90,6 @@ Defined profiles in cucumber.yml:
       def cucumber_file
         @cucumber_file ||= Dir.glob('{,.config/,config/}cucumber{.yml,.yaml}').first
       end
-
     end
   end
 end
