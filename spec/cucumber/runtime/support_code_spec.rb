@@ -13,6 +13,5 @@ module Cucumber
       Object.new.extend(RbSupport::RbDsl)
     end
 
-
   end
 end

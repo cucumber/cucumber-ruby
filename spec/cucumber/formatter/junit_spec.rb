@@ -57,12 +57,12 @@ module Cucumber
             end
           end
 
-          define_feature "
+          define_feature <<-FEATURE
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing ctrl scenario
-            "
+            FEATURE
 
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
@@ -113,12 +113,14 @@ module Cucumber
           end
 
           describe 'with a scenario in a subdirectory' do
+            # rubocop:disable Layout/EmptyLinesAroundArguments
             define_feature %{
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing scenario
             }, File.join('features', 'some', 'path', 'spec.feature')
+            # rubocop:enable Layout/EmptyLinesAroundArguments
 
             it 'writes the filename with absolute path' do
               expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')

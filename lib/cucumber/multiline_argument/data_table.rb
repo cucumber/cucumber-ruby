@@ -75,7 +75,6 @@ module Cucumber
         end
       end
 
-
       NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
       # @param data [Core::Ast::DataTable] the data for the table
