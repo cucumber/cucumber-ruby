@@ -14,7 +14,7 @@ module Cucumber
         end
       end
 
-      def initialize(args, _=nil, out=STDOUT, err=STDERR, kernel=Kernel)
+      def initialize(args, _ = nil, out = STDOUT, err = STDERR, kernel = Kernel)
         @args   = args
         @out    = out
         @err    = err

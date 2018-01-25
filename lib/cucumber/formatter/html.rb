@@ -548,7 +548,7 @@ module Cucumber
         return " (#{counts.join(', ')})" if counts.any?
       end
 
-      def dump_count(count, what, state=nil)
+      def dump_count(count, what, state = nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(' ')
       end
 
