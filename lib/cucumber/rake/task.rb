@@ -85,7 +85,7 @@ module Cucumber
         def cmd
           if use_bundler
             [
-              Cucumber::RUBY_BINARY,'-S', 'bundle', 'exec', 'cucumber',
+              Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber',
               @cucumber_opts, @feature_files
             ].flatten
           else

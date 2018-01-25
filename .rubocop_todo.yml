@@ -109,11 +109,6 @@ Layout/MultilineOperationIndentation:
   Exclude:
     - 'lib/cucumber/cli/options.rb'
 
-# Offense count: 89
-# Cop supports --auto-correct.
-Layout/SpaceAfterComma:
-  Enabled: false
-
 # Offense count: 32
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -996,4 +991,4 @@ Style/TernaryParentheses:
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 309
+  Max: 310

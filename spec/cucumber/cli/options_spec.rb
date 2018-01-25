@@ -173,13 +173,13 @@ module Cucumber
 
         context '-n NAME or --name NAME' do
           it 'stores the provided names as regular expressions' do
-            after_parsing('-n foo --name bar') { expect(options[:name_regexps]).to eq [/foo/,/bar/] }
+            after_parsing('-n foo --name bar') { expect(options[:name_regexps]).to eq [/foo/, /bar/] }
           end
         end
 
         context '-e PATTERN or --exclude PATTERN' do
           it 'stores the provided exclusions as regular expressions' do
-            after_parsing('-e foo --exclude bar') { expect(options[:excludes]).to eq [/foo/,/bar/] }
+            after_parsing('-e foo --exclude bar') { expect(options[:excludes]).to eq [/foo/, /bar/] }
           end
         end
 
