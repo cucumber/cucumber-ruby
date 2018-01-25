@@ -46,7 +46,7 @@ module Cucumber
           @pipe.send(method, *args, &blk)
         end
 
-        def respond_to?(method, include_private=false)
+        def respond_to?(method, include_private = false)
           super || @pipe.respond_to?(method, include_private)
         end
 
