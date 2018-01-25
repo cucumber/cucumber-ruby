@@ -582,10 +582,10 @@ module Cucumber
         def lines_around(file, line)
           if File.file?(file)
             begin
-            lines = File.open(file).read.split("\n")
-          rescue ArgumentError
-            return "# Couldn't get snippet for #{file}"
-          end
+              lines = File.open(file).read.split("\n")
+            rescue ArgumentError
+              return "# Couldn't get snippet for #{file}"
+            end
             min = [0, line-3].max
             max = [line+1, lines.length-1].min
             selected_lines = []
