@@ -212,7 +212,6 @@ module Cucumber
           def stringify_namespaced_modules
             @__namespaced_modules.map { |k, v| "#{v.join(',')} (as #{k})" }.join('+')
           end
-
         end
       end
 

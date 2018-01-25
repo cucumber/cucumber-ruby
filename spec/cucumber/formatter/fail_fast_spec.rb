@@ -84,6 +84,5 @@ module Cucumber::Formatter
         end
       end
     end
-
   end
 end

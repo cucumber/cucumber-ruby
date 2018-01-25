@@ -42,7 +42,6 @@ module Cucumber
       end
 
       describe '#symbolic_hashes' do
-
         it 'should covert data table to an array of hashes with symbols as keys' do
           ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w{1 22 333}], nil)
           data_table = DataTable.new(ast_table)
@@ -58,7 +57,6 @@ module Cucumber
           @table.symbolic_hashes
           expect{@table.hashes}.to_not raise_error
         end
-
       end
 
       describe '#map_column!' do
@@ -186,7 +184,6 @@ module Cucumber
       end
 
       describe '#rows_hash' do
-
         it 'should return a hash of the rows' do
           table = DataTable.from([
                                    %w{one 1111},

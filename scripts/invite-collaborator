@@ -34,7 +34,6 @@ begin
   ].each do |team|
     team.add_member(login)
   end
-
 rescue StandardError => error
   abort error.message
 end

@@ -23,7 +23,6 @@ module Cucumber
     end
 
     context 'selecting files to load' do
-
       def given_the_following_files(*files)
         allow(File).to receive(:directory?) { true }
         allow(File).to receive(:file?) { true }
@@ -62,7 +61,6 @@ module Cucumber
       end
 
       describe '--exclude' do
-
         it 'excludes a ruby file from requiring when the name matches exactly' do
           given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
 
@@ -86,11 +84,9 @@ module Cucumber
           ]
         end
       end
-
     end
 
     context 'selecting feature files' do
-
       it 'preserves the order of the feature files' do
         configuration = Configuration.new(paths: %w{b.feature c.feature a.feature})
 
@@ -144,6 +140,5 @@ module Cucumber
         expect(config.out_stream).to eq new_out_stream
       end
     end
-
   end
 end

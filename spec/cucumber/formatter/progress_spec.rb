@@ -79,11 +79,9 @@ module Cucumber
           it 'has 4 undefined steps' do
             expect(@out.string).to include '4 steps (4 undefined)'
           end
-
         end
 
         describe 'with hooks' do
-
           describe 'all hook passes' do
             define_feature <<-FEATURE
           Feature:
