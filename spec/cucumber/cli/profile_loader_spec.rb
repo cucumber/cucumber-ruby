@@ -21,7 +21,7 @@ module Cucumber
 
       it 'treats backslashes as literals in rerun.txt when on Windows (JRuby or MRI)' do
         given_cucumber_yml_defined_as('default' => '--format "pretty" features\sync_imap_mailbox.feature:16:22')
-        if(Cucumber::WINDOWS)
+        if Cucumber::WINDOWS
           expect(loader.args_from('default')).to eq ['--format','pretty','features\sync_imap_mailbox.feature:16:22']
         else
           expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22']
@@ -46,7 +46,7 @@ default: <%= x %>
 
       it 'correctly parses a profile that uses tag expressions (with double quotes)' do
         given_cucumber_yml_defined_as('default' => '--format "pretty" features\sync_imap_mailbox.feature:16:22 --tags "not @jruby"')
-        if(Cucumber::WINDOWS)
+        if Cucumber::WINDOWS
           expect(loader.args_from('default')).to eq ['--format','pretty','features\sync_imap_mailbox.feature:16:22','--tags','not @jruby']
         else
           expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22','--tags','not @jruby']
@@ -55,7 +55,7 @@ default: <%= x %>
 
       it 'correctly parses a profile that uses tag expressions (with single quotes)' do
         given_cucumber_yml_defined_as('default' => "--format 'pretty' features\\sync_imap_mailbox.feature:16:22 --tags 'not @jruby'")
-        if(Cucumber::WINDOWS)
+        if Cucumber::WINDOWS
           expect(loader.args_from('default')).to eq ['--format','pretty','features\sync_imap_mailbox.feature:16:22','--tags','not @jruby']
         else
           expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22','--tags','not @jruby']

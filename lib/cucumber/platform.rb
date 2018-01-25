@@ -18,7 +18,7 @@ module Cucumber
       attr_accessor :use_full_backtrace
 
       # @private
-      def file_mode(m, encoding='UTF-8')
+      def file_mode(m, encoding = 'UTF-8')
         "#{m}:#{encoding}"
       end
     end

@@ -95,7 +95,7 @@ module Cucumber
           opts.banner = banner
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) {|lib| require_files(lib) }
 
-          if(Cucumber::JRUBY)
+          if Cucumber::JRUBY
             opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
           end
 
@@ -403,7 +403,7 @@ TEXT
         @profiles << p
       end
 
-      def set_option(option, value=nil)
+      def set_option(option, value = nil)
         @options[option] = value.nil? ? true : value
       end
 
