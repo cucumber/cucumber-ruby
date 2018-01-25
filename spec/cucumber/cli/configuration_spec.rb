@@ -107,7 +107,7 @@ ERB_YML
         end
 
         it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
-          given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
+          given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' => '--format html'})
 
           expected_message = <<-END_OF_MESSAGE
 Could not find profile: 'i_do_not_exist'
@@ -121,7 +121,7 @@ END_OF_MESSAGE
         end
 
         it 'allows profiles to be defined in arrays' do
-          given_cucumber_yml_defined_as({'foo' => ['-f','progress']})
+          given_cucumber_yml_defined_as({'foo' => ['-f', 'progress']})
 
           config.parse!(%w{--profile foo})
 
@@ -178,7 +178,9 @@ END_OF_MESSAGE
 
           ['', 'sfsadfs', "--- \n- an\n- array\n", '---dddfd'].each do |bad_input|
             given_cucumber_yml_defined_as(bad_input)
+
             expect(-> { config.parse!([]) }).to raise_error(expected_error_message)
+
             reset_config
           end
         end
@@ -282,7 +284,7 @@ END_OF_MESSAGE
       end
 
       it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
-        given_cucumber_yml_defined_as({'default' => ['-f','progress', '--out', 'file1']})
+        given_cucumber_yml_defined_as({'default' => ['-f', 'progress', '--out', 'file1']})
         expect(-> { config.parse!(%w{--format pretty --out file1}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
@@ -373,7 +375,7 @@ END_OF_MESSAGE
         end
 
         it 'returns an expression when tags are specified' do
-          config.parse!(['--tags','@foo'])
+          config.parse!(['--tags', '@foo'])
 
           expect(config.tag_expressions).not_to be_empty
         end
@@ -387,7 +389,11 @@ END_OF_MESSAGE
         end
 
         it 'returns a hash of limits when limits are specified' do
-          config.parse!(['--tags','@foo:1'])
+          config.parse!(['--tags', '@foo:1'])
+
+          expect(config.tag_limits).to eq({ '@foo' => 1 })
+        end
+      end
 
       describe '#dry_run?' do
         it 'returns true when --dry-run was specified on in the arguments' do
