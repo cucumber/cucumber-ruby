@@ -54,21 +54,21 @@ module Cucumber
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
-      ALIASES = Hash.new do |h,k|
+      ALIASES = Hash.new do |h, k|
         if k.to_s =~ /(.*)_param/
           h[$1] + ',bold'
         end
       end.merge({
-        'undefined' => 'yellow',
-        'pending'   => 'yellow',
-        'flaky'     => 'yellow',
-        'failed'    => 'red',
-        'passed'    => 'green',
-        'outline'   => 'cyan',
-        'skipped'   => 'cyan',
-        'comment'   => 'grey',
-        'tag'       => 'cyan'
-      })
+                  'undefined' => 'yellow',
+                  'pending'   => 'yellow',
+                  'flaky'     => 'yellow',
+                  'failed'    => 'red',
+                  'passed'    => 'green',
+                  'outline'   => 'cyan',
+                  'skipped'   => 'cyan',
+                  'comment'   => 'grey',
+                  'tag'       => 'cyan'
+                })
 
       if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
         ENV['CUCUMBER_COLORS'].split(':').each do |pair|

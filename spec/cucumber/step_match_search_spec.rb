@@ -7,7 +7,6 @@ require 'cucumber/configuration'
 
 module Cucumber
   describe StepMatchSearch do
-
     let(:search) { StepMatchSearch.new(registry.method(:step_matches), configuration) }
     let(:registry) { Glue::RegistryAndMore.new(runtime, configuration) }
     let(:runtime) do
@@ -36,7 +35,6 @@ module Cucumber
     end
 
     describe 'resolving step defintion matches' do
-
       it 'raises Ambiguous error with guess hint when multiple step definitions match' do
         expected_error = %{Ambiguous match of "Three blind mice":
 
@@ -100,8 +98,8 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
       # TODO: remove this - it's ... redundant
       # http://railsforum.com/viewtopic.php?pid=93881
       it "does not raise Redundant unless it's really redundant" do
-        dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
-        dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
+        dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a, b, c|}
+        dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a, b|}
       end
     end
   end

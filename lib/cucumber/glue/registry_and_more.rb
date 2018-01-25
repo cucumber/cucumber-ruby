@@ -175,7 +175,7 @@ module Cucumber
       end
 
       def hooks
-        @hooks ||= Hash.new{|h,k| h[k] = []}
+        @hooks ||= Hash.new{|h, k| h[k] = []}
       end
     end
 

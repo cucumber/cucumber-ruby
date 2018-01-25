@@ -4,10 +4,8 @@ require 'cucumber/core/events'
 
 module Cucumber
   module Events
-
     # Event fired when a step is activated
     class StepActivated < Core::Event.new(:test_step, :step_match)
-
       # The test step that was matched.
       #
       # @return [Cucumber::Core::Test::Step]

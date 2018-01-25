@@ -75,7 +75,6 @@ module Cucumber
         end
       end
 
-
       NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
       # @param data [Core::Ast::DataTable] the data for the table
@@ -162,7 +161,7 @@ module Cucumber
       def symbolic_hashes
         @symbolic_hashes ||=
           self.hashes.map do |string_hash|
-            Hash[string_hash.map{ |a,b| [symbolize_key(a), b] }]
+            Hash[string_hash.map{ |a, b| [symbolize_key(a), b] }]
           end
       end
 
@@ -261,7 +260,7 @@ module Cucumber
       #   table.hashes.keys
       #   # => ['phone number', 'ADDRESS']
       #
-      def map_headers!(mappings={}, &block)
+      def map_headers!(mappings = {}, &block)
         # TODO: Remove this method for 2.0
         clear_cache!
         @header_mappings = mappings
@@ -269,7 +268,7 @@ module Cucumber
       end
 
       # Returns a new Table where the headers are redefined. See #map_headers!
-      def map_headers(mappings={}, &block)
+      def map_headers(mappings = {}, &block)
         self.class.new(Core::Ast::DataTable.new(raw, location), @conversion_procs.dup, mappings, block)
       end
 
@@ -285,14 +284,14 @@ module Cucumber
       #     end
       #   end
       #
-      def map_column!(column_name, strict=true, &conversion_proc)
+      def map_column!(column_name, strict = true, &conversion_proc)
         # TODO: Remove this method for 2.0
         @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
         self
       end
 
       # Returns a new Table with an additional column mapping. See #map_column!
-      def map_column(column_name, strict=true, &conversion_proc)
+      def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
         conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
         self.class.new(Core::Ast::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
@@ -334,7 +333,7 @@ module Cucumber
       # Calling this method is particularly useful in <tt>Then</tt> steps that take
       # a Table argument, if you want to compare that table to some actual values.
       #
-      def diff!(other_table, options={})
+      def diff!(other_table, options = {})
         other_table = ensure_table(other_table)
         other_table.convert_headers!
         other_table.convert_columns!

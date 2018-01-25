@@ -7,7 +7,6 @@ require 'cucumber/cli/options'
 module Cucumber
   module Cli
     describe Options do
-
       def given_cucumber_yml_defined_as(hash_or_string)
         allow(File).to receive(:exist?) { true }
 
@@ -38,7 +37,6 @@ module Cucumber
       end
 
       describe 'parsing' do
-
         def when_parsing(args)
           yield
           options.parse!(prepare_args(args))
@@ -170,19 +168,18 @@ module Cucumber
 
           it 'raise exception for inconsistent tag limits' do
             expect{ after_parsing('--tags @foo:2 --tags @foo:3') }.to raise_error(RuntimeError, 'Inconsistent tag limits for @foo: 2 and 3')
-
           end
         end
 
         context '-n NAME or --name NAME' do
           it 'stores the provided names as regular expressions' do
-            after_parsing('-n foo --name bar') { expect(options[:name_regexps]).to eq [/foo/,/bar/] }
+            after_parsing('-n foo --name bar') { expect(options[:name_regexps]).to eq [/foo/, /bar/] }
           end
         end
 
         context '-e PATTERN or --exclude PATTERN' do
           it 'stores the provided exclusions as regular expressions' do
-            after_parsing('-e foo --exclude bar') { expect(options[:excludes]).to eq [/foo/,/bar/] }
+            after_parsing('-e foo --exclude bar') { expect(options[:excludes]).to eq [/foo/, /bar/] }
           end
         end
 

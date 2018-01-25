@@ -49,7 +49,6 @@ module Cucumber
           top_groups
         end
       end
-
     end
 
     require 'delegate'
@@ -63,6 +62,5 @@ module Cucumber
         @match_cache[step_name] = super(step_name)
       end
     end
-
   end
 end

@@ -3,7 +3,6 @@
 require 'cucumber/multiline_argument'
 
 module Cucumber
-
   # Represents the match found between a Test Step and its activation
   class StepMatch #:nodoc:
     attr_reader :step_definition, :step_arguments
@@ -94,6 +93,7 @@ module Cucumber
     end
 
     private
+
     def deep_clone_args
       Marshal.load( Marshal.dump( args ) )
     end
@@ -146,7 +146,6 @@ module Cucumber
   end
 
   class AmbiguousStepMatch
-
     def initialize(error)
       @error = error
     end
@@ -154,7 +153,5 @@ module Cucumber
     def activate(test_step)
       return test_step.with_action { raise @error }
     end
-
   end
-
 end

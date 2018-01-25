@@ -36,6 +36,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Improved
 
 * Fix Layout/IndentHeredoc, Consistency, IndentationWidth, and new violations ([#1269](https://github.com/cucumber/cucumber-ruby/pull/1269) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/EmptyLinesAroundClassBody ([#1264](https://github.com/cucumber/cucumber-ruby/pull/1264) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/SpaceAfterComma ([#1272](https://github.com/cucumber/cucumber-ruby/pull/1272) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/SpaceAroundEqualsInParameterDefault & Layout/SpaceAroundKeyword ([#1273](https://github.com/cucumber/cucumber-ruby/pull/1273) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/IndentArray & Layout/IndentHash ([#1268](https://github.com/cucumber/cucumber-ruby/pull/1268) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/EmptyLinesAroundModuleBody ([#1266](https://github.com/cucumber/cucumber-ruby/pull/1266) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/EmptyLinesAroundBlockBody ([#1263](https://github.com/cucumber/cucumber-ruby/pull/1263) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix: Layout/EmptyLines, ...AroundAccessModifier, ...AroundArguments, ...AroundExceptionHandlingKeywords ([#1262](https://github.com/cucumber/cucumber-ruby/pull/1262) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/LeadingCommentSpace auto ([#1270](https://github.com/cucumber/cucumber-ruby/pull/1270) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/ExtraSpacing ([#1267](https://github.com/cucumber/cucumber-ruby/pull/1267) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))

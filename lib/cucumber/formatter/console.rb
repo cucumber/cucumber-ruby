@@ -6,7 +6,6 @@ require 'cucumber/gherkin/i18n'
 
 module Cucumber
   module Formatter
-
     # This module contains helper methods that are used by formatters that
     # print output to the terminal.
     #
@@ -112,7 +111,7 @@ module Cucumber
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
       def linebreaks(s, max)
         return s unless max && max > 0
-        s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
+        s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n")}.rstrip
       end
 
       def collect_snippet_data(test_step, result)
@@ -166,8 +165,8 @@ module Cucumber
         # no-op
       end
 
-      #define @delayed_messages = [] in your Formatter if you want to
-      #activate this feature
+      # define @delayed_messages = [] in your Formatter if you want to
+      # activate this feature
       def puts(*messages)
         if @delayed_messages
           @delayed_messages += messages
@@ -253,7 +252,6 @@ module Cucumber
           @actual_keyword, @step = actual_keyword, step
         end
       end
-
     end
   end
 end

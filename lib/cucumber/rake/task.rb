@@ -85,7 +85,7 @@ module Cucumber
         def cmd
           if use_bundler
             [
-              Cucumber::RUBY_BINARY,'-S', 'bundle', 'exec', 'cucumber',
+              Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber',
               @cucumber_opts, @feature_files
             ].flatten
           else
@@ -154,7 +154,7 @@ module Cucumber
 
       def runner(_task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
-        if(@fork)
+        if @fork
           return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
         end
         InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)

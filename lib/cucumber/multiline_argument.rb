@@ -6,13 +6,12 @@ require 'cucumber/multiline_argument/doc_string'
 
 module Cucumber
   module MultilineArgument
-
     class << self
       def from_core(node)
         builder.wrap(node)
       end
 
-      def from(argument, location=nil, content_type=nil)
+      def from(argument, location = nil, content_type = nil)
         location ||= Core::Ast::Location.of_caller
         case argument
         when String

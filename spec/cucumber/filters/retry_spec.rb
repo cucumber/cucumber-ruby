@@ -60,7 +60,6 @@ describe Cucumber::Filters::Retry do
   end
 
   context 'flaky test cases' do
-
     context 'a little flaky' do
       let(:results) do
         [

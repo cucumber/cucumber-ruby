@@ -362,7 +362,6 @@ module Cucumber
             it { expect(@doc).not_to have_css_node('.feature .scenario .step.failed', //) }
             it { expect(@doc).to have_css_node('.feature .scenario .step.skipped', /yay/) }
           end
-
         end
 
         describe 'with a step that embeds a snapshot' do
@@ -520,7 +519,7 @@ module Cucumber
         end
       end
       context 'in --expand mode' do
-        let(:options)   { { expand: true } }
+        let(:options) { { expand: true } }
         before(:each) do
           @out = StringIO.new
           @formatter = Html.new(runtime, @out, {:expand => true})

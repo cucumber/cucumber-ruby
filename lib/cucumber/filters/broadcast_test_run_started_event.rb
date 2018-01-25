@@ -5,7 +5,7 @@ module Cucumber
     # Added at the end of the filter chain to broadcast a list of
     # all of the test cases that have made it through the filters.
     class BroadcastTestRunStartedEvent < Core::Filter.new(:config)
-      def initialize(config, receiver=nil)
+      def initialize(config, receiver = nil)
         super
         @test_cases = []
       end

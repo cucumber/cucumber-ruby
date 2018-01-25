@@ -10,7 +10,6 @@ module Cucumber
     # You can, and probably should, extend this API with your own methods that
     # make sense in your domain. For more on that, see {Cucumber::Glue::Dsl#World}
     module ProtoWorld
-
       # Run a single Gherkin step
       # @example Call another step
       #   step "I am logged in"
@@ -26,7 +25,7 @@ module Cucumber
       #   step "the email should contain:", "Dear sir,\nYou've won a prize!\n"
       # @param [String] name The name of the step
       # @param [String,Cucumber::Ast::DocString,Cucumber::Ast::Table] multiline_argument
-      def step(name, raw_multiline_arg=nil)
+      def step(name, raw_multiline_arg = nil)
         super
       end
 
@@ -68,7 +67,7 @@ module Cucumber
       #     %w{ CUC-101 Peeler      22     }
       #   ])
       #
-      def table(text_or_table, file=nil, line=0)
+      def table(text_or_table, file = nil, line = 0)
         location = !file ? Core::Ast::Location.of_caller : Core::Ast::Location.new(file, line)
         MultilineArgument::DataTable.from(text_or_table, location)
       end
@@ -85,12 +84,12 @@ module Cucumber
       end
 
       # Pause the tests and ask the operator for input
-      def ask(question, timeout_seconds=60)
+      def ask(question, timeout_seconds = 60)
         super
       end
 
       # Embed an image in the output
-      def embed(file, mime_type, label='Screenshot')
+      def embed(file, mime_type, label = 'Screenshot')
         super
       end
 
@@ -139,7 +138,7 @@ module Cucumber
             add_namespaced_modules!(namespaced_world_modules)
           end
 
-          define_method(:step) do |name, raw_multiline_arg=nil|
+          define_method(:step) do |name, raw_multiline_arg = nil|
             location = Core::Ast::Location.of_caller
             runtime.invoke_dynamic_step(name, MultilineArgument.from(raw_multiline_arg, location))
           end
@@ -160,11 +159,11 @@ module Cucumber
           end
           # rubocop:enable UnneededInterpolation
 
-          define_method(:ask) do |question, timeout_seconds=60|
+          define_method(:ask) do |question, timeout_seconds = 60|
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:embed) do |file, mime_type, label='Screenshot'|
+          define_method(:embed) do |file, mime_type, label = 'Screenshot'|
             runtime.embed(file, mime_type, label)
           end
 
@@ -212,7 +211,6 @@ module Cucumber
           def stringify_namespaced_modules
             @__namespaced_modules.map { |k, v| "#{v.join(',')} (as #{k})" }.join('+')
           end
-
         end
       end
 

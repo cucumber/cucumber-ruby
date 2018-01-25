@@ -10,7 +10,6 @@ module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
-
       include Io
 
       class UnNamedFeatureError < StandardError
@@ -181,7 +180,6 @@ module Cucumber
       def strip_control_chars(cdata)
         cdata.scan(/[[:print:]\t\n\r]/).join
       end
-
     end
 
     class NameBuilder
@@ -241,6 +239,5 @@ module Cucumber
         duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10**9.0 }
       end
     end
-
   end
 end
