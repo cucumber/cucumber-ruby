@@ -2,7 +2,6 @@
 
 module Cucumber
   module Filters
-
     class Quit
       def initialize(receiver=nil)
         @receiver = receiver
@@ -24,6 +23,5 @@ module Cucumber
         self.class.new(receiver)
       end
     end
-
   end
 end
