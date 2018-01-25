@@ -9,7 +9,6 @@ require 'cucumber/gherkin/steps_parser'
 require 'cucumber/step_match_search'
 
 module Cucumber
-
   class Runtime
     class SupportCode
       require 'forwardable'

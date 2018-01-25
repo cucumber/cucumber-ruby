@@ -5,7 +5,6 @@ require 'cucumber/formatter/console'
 
 module Cucumber
   module Formatter
-
     class FailFast
       def initialize(configuration)
         configuration.on_event :test_case_finished do |event|
@@ -14,6 +13,5 @@ module Cucumber
         end
       end
     end
-
   end
 end

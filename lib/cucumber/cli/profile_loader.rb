@@ -4,7 +4,6 @@ require 'yaml'
 
 module Cucumber
   module Cli
-
     class ProfileLoader
       def initialize
         @cucumber_yml = nil

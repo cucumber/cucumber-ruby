@@ -2,7 +2,6 @@
 
 module Cucumber
   module Formatter
-
     # Forwards any messages sent to this object to all recipients
     # that respond to that message.
     class Fanout < BasicObject
@@ -23,6 +22,5 @@ module Cucumber
         recipients.any? { |recipient| recipient.respond_to?(name, include_private) }
       end
     end
-
   end
 end

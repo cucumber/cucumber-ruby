@@ -7,7 +7,6 @@ require 'cucumber/formatter/pretty'
 module Cucumber
   module Glue
     describe ProtoWorld do
-
       let(:runtime) { double('runtime') }
       let(:language) { double('language') }
       let(:world) { Object.new.extend(ProtoWorld.for(runtime, language)) }

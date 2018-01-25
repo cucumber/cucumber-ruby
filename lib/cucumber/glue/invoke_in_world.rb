@@ -66,6 +66,5 @@ module Cucumber
     # is different from the number of Proc arguments.
     class ArityMismatchError < StandardError
     end
-
   end
 end

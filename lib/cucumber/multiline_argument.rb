@@ -6,7 +6,6 @@ require 'cucumber/multiline_argument/doc_string'
 
 module Cucumber
   module MultilineArgument
-
     class << self
       def from_core(node)
         builder.wrap(node)

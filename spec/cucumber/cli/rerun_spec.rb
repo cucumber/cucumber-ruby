@@ -5,7 +5,6 @@ require 'spec_helper'
 module Cucumber
   module Cli
     describe RerunFile do
-
       let(:rerun_file) { RerunFile.new('@rerun.txt') }
 
       it 'expects rerun files to have a leading @' do

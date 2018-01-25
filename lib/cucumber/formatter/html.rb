@@ -70,7 +70,7 @@ module Cucumber
       end
 
       def before_features(features)
-        @step_count = features && features.step_count || 0 #TODO: Make this work with core!
+        @step_count = features && features.step_count || 0 # TODO: Make this work with core!
 
         builder.build_document!
         builder.format_features! features
@@ -359,19 +359,19 @@ module Cucumber
 
       def puts(message)
         @delayed_messages << message
-        #builder.pre(message, :class => 'message')
+        # builder.pre(message, :class => 'message')
       end
 
       def print_messages
         return if @delayed_messages.empty?
 
-          #builder.ol do
+          # builder.ol do
           @delayed_messages.each do |ann|
             builder.li(:class => 'step message') do
               builder << ann
             end
           end
-        #end
+        # end
         empty_messages
       end
 

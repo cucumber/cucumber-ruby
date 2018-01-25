@@ -57,12 +57,12 @@ module Cucumber
             end
           end
 
-          define_feature "
+          define_feature <<-FEATURE
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing ctrl scenario
-            "
+            FEATURE
 
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
@@ -113,12 +113,14 @@ module Cucumber
           end
 
           describe 'with a scenario in a subdirectory' do
+            # rubocop:disable Layout/EmptyLinesAroundArguments
             define_feature %{
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing scenario
             }, File.join('features', 'some', 'path', 'spec.feature')
+            # rubocop:enable Layout/EmptyLinesAroundArguments
 
             it 'writes the filename with absolute path' do
               expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')
@@ -127,7 +129,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) {  }
+              Given(/.*/) { }
             end
 
             define_feature <<-FEATURE
@@ -176,7 +178,7 @@ module Cucumber
           describe 'with a regular data table scenario' do
             define_steps do
               Given(/the following items on a shortlist/) { |table| }
-              When(/I go.*/) {  }
+              When(/I go.*/) { }
               Then(/I should have visited at least/) { |table| }
             end
 
@@ -275,7 +277,7 @@ module Cucumber
       end
 
       context 'In --expand mode' do
-        let(:runtime)   { Runtime.new({:expand => true}) }
+        let(:runtime) { Runtime.new({:expand => true}) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', :expand => true))
@@ -289,7 +291,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) {  }
+              Given(/.*/) { }
             end
 
             define_feature <<-FEATURE

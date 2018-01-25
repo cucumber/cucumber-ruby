@@ -279,5 +279,4 @@ module Cucumber
       Cucumber.logger
     end
   end
-
 end
