@@ -10,12 +10,9 @@ require 'cucumber/step_match_search'
 
 module Cucumber
   class Runtime
-
     class SupportCode
-
       require 'forwardable'
       class StepInvoker
-
         def initialize(support_code)
           @support_code = support_code
         end
@@ -48,7 +45,7 @@ module Cucumber
 
       attr_reader :registry
 
-      def initialize(user_interface, configuration=Configuration.default)
+      def initialize(user_interface, configuration = Configuration.default)
         @configuration = configuration
         # TODO: needs a better name, or inlining its methods
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
@@ -76,7 +73,7 @@ module Cucumber
       # steps which are compiled into test steps before execution.
       #
       # These are commonly called nested steps.
-      def invoke_dynamic_step(step_name, multiline_argument, _location=nil)
+      def invoke_dynamic_step(step_name, multiline_argument, _location = nil)
         matches = step_matches(step_name)
         raise UndefinedDynamicStep, step_name if matches.empty?
         matches.first.invoke(multiline_argument)
@@ -150,7 +147,6 @@ module Cucumber
       def log
         Cucumber.logger
       end
-
     end
   end
 end

@@ -6,31 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 52
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false
-
-# Offense count: 49
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/IndentArray:
-  Exclude:
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rake/forked_spec.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_braces
-Layout/IndentHash:
-  EnforcedStyle: consistent
-
 # Offense count: 12
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -66,41 +41,48 @@ Layout/IndentationWidth:
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
     - 'spec/cucumber/step_match_search_spec.rb'
 
-# Offense count: 89
-# Cop supports --auto-correct.
-Layout/SpaceAfterComma:
-  Enabled: false
-
-# Offense count: 32
+# Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceAroundEqualsInParameterDefault:
+# SupportedStyles: symmetrical, new_line, same_line
+Layout/MultilineArrayBraceLayout:
   Exclude:
-    - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/filters/broadcast_test_run_started_event.rb'
-    - 'lib/cucumber/filters/quit.rb'
-    - 'lib/cucumber/filters/randomizer.rb'
-    - 'lib/cucumber/filters/tag_limits.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/html_builder.rb'
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/glue/proto_world.rb'
-    - 'lib/cucumber/multiline_argument.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/platform.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'lib/cucumber/runtime/support_code.rb'
+    - 'spec/cucumber/configuration_spec.rb'
 
-# Offense count: 6
+# Offense count: 1
 # Cop supports --auto-correct.
-Layout/SpaceAroundKeyword:
+Layout/MultilineBlockLayout:
+  Exclude:
+    - 'lib/cucumber/formatter/junit.rb'
+
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle.
+# SupportedStyles: symmetrical, new_line, same_line
+Layout/MultilineMethodCallBraceLayout:
   Exclude:
     - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/rake/task.rb'
-    - 'lib/cucumber/runtime/user_interface.rb'
-    - 'spec/cucumber/cli/profile_loader_spec.rb'
+    - 'lib/cucumber/formatter/junit.rb'
+    - 'lib/cucumber/runtime.rb'
+    - 'spec/cucumber/configuration_spec.rb'
+    - 'spec/cucumber/formatter/spec_helper.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, IndentationWidth.
+# SupportedStyles: aligned, indented, indented_relative_to_receiver
+Layout/MultilineMethodCallIndentation:
+  Exclude:
+    - 'scripts/invite-collaborator'
+    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
+
+# Offense count: 5
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, IndentationWidth.
+# SupportedStyles: aligned, indented
+Layout/MultilineOperationIndentation:
+  Exclude:
+    - 'lib/cucumber/cli/options.rb'
 
 # Offense count: 24
 # Cop supports --auto-correct.
@@ -953,4 +935,4 @@ Style/TernaryParentheses:
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 309
+  Max: 310

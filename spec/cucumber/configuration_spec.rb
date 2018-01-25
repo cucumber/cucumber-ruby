@@ -31,7 +31,7 @@ module Cucumber
 
       it 'requires env.rb files first' do
         configuration = Configuration.new
-        given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
+        given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
         expect(configuration.support_to_load).to eq [
           '/features/support/env.rb',
@@ -41,7 +41,7 @@ module Cucumber
 
       it 'does not require env.rb files when dry run' do
         configuration = Configuration.new(dry_run: true)
-        given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
+        given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
         expect(configuration.support_to_load).to eq [
           '/features/support/a_file.rb'
@@ -62,7 +62,7 @@ module Cucumber
 
       describe '--exclude' do
         it 'excludes a ruby file from requiring when the name matches exactly' do
-          given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
+          given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
           configuration = Configuration.new(excludes: [/a_file.rb/])
 
@@ -72,8 +72,8 @@ module Cucumber
         end
 
         it 'excludes all ruby files that match the provided patterns from requiring' do
-          given_the_following_files('/features/support/foof.rb','/features/support/bar.rb',
-                                    '/features/support/food.rb','/features/blah.rb',
+          given_the_following_files('/features/support/foof.rb', '/features/support/bar.rb',
+                                    '/features/support/food.rb', '/features/blah.rb',
                                     '/features/support/fooz.rb')
 
           configuration = Configuration.new(excludes: [/foo[df]/, /blah/])

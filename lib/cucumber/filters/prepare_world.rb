@@ -7,7 +7,6 @@ require 'cucumber/running_test_case'
 module Cucumber
   module Filters
     class PrepareWorld < Core::Filter.new(:runtime)
-
       def test_case(test_case)
         CaseFilter.new(runtime, test_case).test_case.describe_to receiver
       end
@@ -39,7 +38,6 @@ module Cucumber
           @scenario ||= RunningTestCase.new(test_case)
         end
       end
-
     end
   end
 end
