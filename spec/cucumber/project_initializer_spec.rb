@@ -13,7 +13,6 @@ module Cucumber
 
     context 'no files created' do
       around(:example) do |example|
-
         dir = Dir.mktmpdir
         original_dir = Dir.pwd
         begin
@@ -44,7 +43,6 @@ module Cucumber
         expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/support/env.rb$)
         command_line_config.run
       end
-
     end
 
     context 'files created' do
@@ -83,7 +81,6 @@ module Cucumber
         expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/support/env.rb$)
         command_line_config.run
       end
-
     end
   end
 end

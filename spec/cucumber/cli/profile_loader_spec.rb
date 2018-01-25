@@ -61,7 +61,6 @@ default: <%= x %>
           expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22','--tags','not @jruby']
         end
       end
-
     end
   end
 end

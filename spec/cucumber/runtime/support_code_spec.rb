@@ -12,6 +12,5 @@ module Cucumber
       @rb = subject.ruby
       Object.new.extend(RbSupport::RbDsl)
     end
-
   end
 end

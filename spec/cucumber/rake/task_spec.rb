@@ -7,7 +7,6 @@ require 'rake'
 module Cucumber
   module Rake
     describe Task do
-
       describe '#cucumber_opts' do
         before { subject.cucumber_opts = opts }
 

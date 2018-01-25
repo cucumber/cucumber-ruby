@@ -149,5 +149,4 @@ describe Cucumber::Filters::ActivateSteps do
       compile [doc], receiver, [filter]
     end
   end
-
 end
