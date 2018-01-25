@@ -18,7 +18,6 @@ module Cucumber
     #   end
     #
     class StepDefinition
-
       class MissingProc < StandardError
         def message
           'Step definitions must always have a proc or symbol'

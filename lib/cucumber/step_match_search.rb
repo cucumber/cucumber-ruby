@@ -49,7 +49,6 @@ module Cucumber
           top_groups
         end
       end
-
     end
 
     require 'delegate'

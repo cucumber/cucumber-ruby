@@ -25,7 +25,6 @@ module Cucumber
       end
 
       class BaseSnippet
-
         def initialize(cucumber_expression_generator, code_keyword, step_name, multiline_argument)
           @number_of_arguments = 0
           @code_keyword = code_keyword
@@ -79,7 +78,6 @@ module Cucumber
         def self.example(cucumber_expression_generator)
           new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
         end
-
       end
 
       class CucumberExpression < BaseSnippet

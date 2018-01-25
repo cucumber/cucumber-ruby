@@ -4,7 +4,6 @@ require 'timeout'
 
 module Cucumber
   class Runtime
-
     module UserInterface
       attr_writer :visitor
 
@@ -75,6 +74,5 @@ module Cucumber
         answer
       end
     end
-
   end
 end

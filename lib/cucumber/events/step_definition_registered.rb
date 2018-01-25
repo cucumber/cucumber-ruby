@@ -6,7 +6,6 @@ module Cucumber
   module Events
     # Event fired after each step definition has been registered
     class StepDefinitionRegistered < Core::Event.new(:step_definition)
-
       # The step definition that was just registered.
       #
       # @return [RbSupport::RbStepDefinition]
@@ -16,7 +15,6 @@ module Cucumber
       def initialize(step_definition)
         @step_definition = step_definition
       end
-
     end
   end
 end
