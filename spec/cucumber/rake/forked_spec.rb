@@ -23,13 +23,13 @@ module Cucumber
 
         it 'uses bundle exec to find cucumber and libraries' do
           expect(subject.cmd).to eq [
-              Cucumber::RUBY_BINARY,
-              '-S',
-              'bundle',
-              'exec',
-              'cucumber',
-              '--cuke-option'
-            ] + feature_files
+            Cucumber::RUBY_BINARY,
+            '-S',
+            'bundle',
+            'exec',
+            'cucumber',
+            '--cuke-option'
+          ] + feature_files
         end
       end
 
@@ -44,12 +44,12 @@ module Cucumber
 
         it 'uses well known cucumber location and specified libraries' do
           expect(subject.cmd).to eq [
-              Cucumber::RUBY_BINARY,
-              '-I',
-              '"lib"',
-              "\"#{Cucumber::BINARY}\"",
-              '--cuke-option'
-            ] + feature_files
+            Cucumber::RUBY_BINARY,
+            '-I',
+            '"lib"',
+            "\"#{Cucumber::BINARY}\"",
+            '--cuke-option'
+          ] + feature_files
         end
       end
     end
