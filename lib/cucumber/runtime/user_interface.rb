@@ -33,7 +33,7 @@ module Cucumber
         STDOUT.flush
         puts(question)
 
-        answer = if(Cucumber::JRUBY)
+        answer = if Cucumber::JRUBY
                    jruby_gets(timeout_seconds)
                  else
                    mri_gets(timeout_seconds)

@@ -121,7 +121,7 @@ END_OF_MESSAGE
       end
 
       it 'allows profiles to be defined in arrays' do
-        given_cucumber_yml_defined_as({'foo' => ['-f','progress']})
+        given_cucumber_yml_defined_as({'foo' => ['-f', 'progress']})
 
         config.parse!(%w{--profile foo})
 
@@ -284,7 +284,7 @@ END_OF_MESSAGE
     end
 
     it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
-      given_cucumber_yml_defined_as({'default' => ['-f','progress', '--out', 'file1']})
+      given_cucumber_yml_defined_as({'default' => ['-f', 'progress', '--out', 'file1']})
       expect(-> { config.parse!(%w{--format pretty --out file1}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
     end
 
@@ -375,7 +375,7 @@ END_OF_MESSAGE
       end
 
       it 'returns an expression when tags are specified' do
-        config.parse!(['--tags','@foo'])
+        config.parse!(['--tags', '@foo'])
 
         expect(config.tag_expressions).not_to be_empty
       end
@@ -389,7 +389,7 @@ END_OF_MESSAGE
       end
 
       it 'returns a hash of limits when limits are specified' do
-        config.parse!(['--tags','@foo:1'])
+        config.parse!(['--tags', '@foo:1'])
 
         expect(config.tag_limits).to eq({ '@foo' => 1 })
       end

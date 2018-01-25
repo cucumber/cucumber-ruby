@@ -29,17 +29,17 @@ module Cucumber
       }
       max = BUILTIN_FORMATS.keys.map(&:length).max
       FORMAT_HELP_MSG = [
-                          'Use --format rerun --out rerun.txt to write out failing',
-                          'features. You can rerun them with cucumber @rerun.txt.',
-                          'FORMAT can also be the fully qualified class name of',
-                          "your own custom formatter. If the class isn't loaded,",
-                          'Cucumber will attempt to require a file with a relative',
-                          'file name that is the underscore name of the class name.',
-                          'Example: --format Foo::BarZap -> Cucumber will look for',
-                          'foo/bar_zap.rb. You can place the file with this relative',
-                          'path underneath your features/support directory or anywhere',
-                          "on Ruby's LOAD_PATH, for example in a Ruby gem."
-                        ]
+        'Use --format rerun --out rerun.txt to write out failing',
+        'features. You can rerun them with cucumber @rerun.txt.',
+        'FORMAT can also be the fully qualified class name of',
+        "your own custom formatter. If the class isn't loaded,",
+        'Cucumber will attempt to require a file with a relative',
+        'file name that is the underscore name of the class name.',
+        'Example: --format Foo::BarZap -> Cucumber will look for',
+        'foo/bar_zap.rb. You can place the file with this relative',
+        'path underneath your features/support directory or anywhere',
+        "on Ruby's LOAD_PATH, for example in a Ruby gem."
+      ]
 
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
@@ -51,11 +51,11 @@ module Cucumber
       FAIL_FAST_FLAG = '--fail-fast'
       RETRY_FLAG = '--retry'
       OPTIONS_WITH_ARGS = [
-                            '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
-                            '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
-                            PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
-                            '--lines', '--port', '-I', '--snippet-type'
-                          ]
+        '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
+        '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
+        PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
+        '--lines', '--port', '-I', '--snippet-type'
+      ]
       ORDER_TYPES = %w{defined random}
       TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
@@ -95,7 +95,7 @@ module Cucumber
           opts.banner = banner
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) {|lib| require_files(lib) }
 
-          if(Cucumber::JRUBY)
+          if Cucumber::JRUBY
             opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
           end
 
@@ -332,12 +332,12 @@ TEXT
 
       def banner
         [
-         'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
-         'Examples:',
-         'cucumber examples/i18n/en/features',
-         'cucumber @rerun.txt (See --format rerun)',
-         'cucumber examples/i18n/it/features/somma.feature:6:98:113',
-         'cucumber -s -i http://rubyurl.com/eeCl', '', ''
+          'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
+          'Examples:',
+          'cucumber examples/i18n/en/features',
+          'cucumber @rerun.txt (See --format rerun)',
+          'cucumber examples/i18n/it/features/somma.feature:6:98:113',
+          'cucumber -s -i http://rubyurl.com/eeCl', '', ''
         ].join("\n")
       end
 
@@ -403,7 +403,7 @@ TEXT
         @profiles << p
       end
 
-      def set_option(option, value=nil)
+      def set_option(option, value = nil)
         @options[option] = value.nil? ? true : value
       end
 

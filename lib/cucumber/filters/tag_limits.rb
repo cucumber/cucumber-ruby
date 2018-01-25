@@ -13,7 +13,7 @@ module Cucumber
     end
 
     class TagLimits
-      def initialize(tag_limits, receiver=nil)
+      def initialize(tag_limits, receiver = nil)
         @tag_limits = tag_limits
         @gated_receiver = GatedReceiver.new(receiver)
         @test_case_index = TestCaseIndex.new

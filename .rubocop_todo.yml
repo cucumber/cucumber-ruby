@@ -6,24 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 49
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/IndentArray:
-  Exclude:
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rake/forked_spec.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_braces
-Layout/IndentHash:
-  EnforcedStyle: consistent
-
 # Offense count: 12
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -101,42 +83,6 @@ Layout/MultilineMethodCallIndentation:
 Layout/MultilineOperationIndentation:
   Exclude:
     - 'lib/cucumber/cli/options.rb'
-
-# Offense count: 89
-# Cop supports --auto-correct.
-Layout/SpaceAfterComma:
-  Enabled: false
-
-# Offense count: 32
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceAroundEqualsInParameterDefault:
-  Exclude:
-    - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/filters/broadcast_test_run_started_event.rb'
-    - 'lib/cucumber/filters/quit.rb'
-    - 'lib/cucumber/filters/randomizer.rb'
-    - 'lib/cucumber/filters/tag_limits.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/html_builder.rb'
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/glue/proto_world.rb'
-    - 'lib/cucumber/multiline_argument.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/platform.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'lib/cucumber/runtime/support_code.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-Layout/SpaceAroundKeyword:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/rake/task.rb'
-    - 'lib/cucumber/runtime/user_interface.rb'
-    - 'spec/cucumber/cli/profile_loader_spec.rb'
 
 # Offense count: 24
 # Cop supports --auto-correct.
@@ -989,4 +935,4 @@ Style/TernaryParentheses:
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 309
+  Max: 310

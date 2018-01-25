@@ -266,7 +266,7 @@ module Cucumber
           builder.pre do |pre|
             # TODO: snippet text should be an event sent to the formatter so we don't
             # have this couping to the runtime.
-            pre << @runtime.snippet_text(keyword,step_match.instance_variable_get('@name') || '', @step.multiline_arg)
+            pre << @runtime.snippet_text(keyword, step_match.instance_variable_get('@name') || '', @step.multiline_arg)
           end
         end
         builder << '</li>'
@@ -492,7 +492,7 @@ module Cucumber
       def build_cell(cell_type, value, attributes)
         builder.__send__(cell_type, attributes) do
           builder.div do
-            builder.span(value,:class => 'step param')
+            builder.span(value, :class => 'step param')
           end
         end
       end
@@ -547,7 +547,7 @@ module Cucumber
         return " (#{counts.join(', ')})" if counts.any?
       end
 
-      def dump_count(count, what, state=nil)
+      def dump_count(count, what, state = nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(' ')
       end
 

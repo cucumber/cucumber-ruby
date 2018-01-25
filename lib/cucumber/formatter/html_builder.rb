@@ -11,7 +11,7 @@ module Cucumber
       class InvalidEmbedTypeError < ::StandardError
         MESSAGE = 'Invalid embed type. Valid types are :text and :image.'.freeze
 
-        def initialize(message=MESSAGE)
+        def initialize(message = MESSAGE)
           super(message)
         end
       end
