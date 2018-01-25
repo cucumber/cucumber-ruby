@@ -298,7 +298,7 @@ module Cucumber
           comments += Formatter.create_comments_array(scenario.comments) unless scenario.comments.empty?
           comments += @examples_table_comments if @examples_table_comments
           comments += @row_comments if @row_comments
-          @test_case_hash[:comments] =  comments unless comments.empty?
+          @test_case_hash[:comments] = comments unless comments.empty?
         end
 
         def examples_table(examples_table)

@@ -594,8 +594,8 @@ module Cucumber
             Given(/^there are bananas$/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
               f1 = RSpec::Mocks::Double.new
-              RSpec::Mocks.allow_message(File, :open)  { |&block| block.call(f1) }
-              RSpec::Mocks.allow_message(f1, :read)  { 'foo' }
+              RSpec::Mocks.allow_message(File, :open) { |&block| block.call(f1) }
+              RSpec::Mocks.allow_message(f1, :read) { 'foo' }
               embed('out/snapshot.jpeg', 'image/png')
             end
           end
@@ -783,8 +783,8 @@ module Cucumber
       end
 
       def normalise_json(json)
-        #make sure duration was captured (should be >= 0)
-        #then set it to what is "expected" since duration is dynamic
+        # make sure duration was captured (should be >= 0)
+        # then set it to what is "expected" since duration is dynamic
         json.each do |feature|
           elements = feature.fetch('elements') { [] }
           elements.each do |scenario|
