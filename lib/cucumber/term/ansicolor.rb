@@ -78,7 +78,6 @@ module Cucumber
       # uncoloring strings.
       COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?m/
 
-
       def self.included(klass)
         if klass == String
           ATTRIBUTES.delete(:clear)

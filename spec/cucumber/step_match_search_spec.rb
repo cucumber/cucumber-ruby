@@ -7,7 +7,6 @@ require 'cucumber/configuration'
 
 module Cucumber
   describe StepMatchSearch do
-
     let(:search) { StepMatchSearch.new(registry.method(:step_matches), configuration) }
     let(:registry) { Glue::RegistryAndMore.new(runtime, configuration) }
     let(:runtime) do
@@ -36,7 +35,6 @@ module Cucumber
     end
 
     describe 'resolving step defintion matches' do
-
       it 'raises Ambiguous error with guess hint when multiple step definitions match' do
         expected_error = %{Ambiguous match of "Three blind mice":
 

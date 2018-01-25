@@ -93,6 +93,7 @@ module Cucumber
     end
 
     private
+
     def deep_clone_args
       Marshal.load( Marshal.dump( args ) )
     end
