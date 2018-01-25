@@ -27,5 +27,4 @@ module Cucumber
   def self.deprecate(*args)
     Deprecate::STRATEGY.call(*args)
   end
-
 end

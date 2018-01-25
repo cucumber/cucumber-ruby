@@ -2,7 +2,6 @@ require 'cucumber/core/events'
 
 module Cucumber
   module Events
-
     # Signals that a {Cucumber::Core::Test::Case} has finished executing
     class TestCaseFinished < Core::Events::TestCaseFinished
 
@@ -13,6 +12,5 @@ module Cucumber
       attr_reader :result
 
     end
-
   end
 end

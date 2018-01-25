@@ -2,7 +2,6 @@ require 'cucumber/core/events'
 
 module Cucumber
   module Events
-
     # Signals that a {Cucumber::Core::Test::Step} is about to be executed
     class TestStepStarted < Core::Events::TestStepStarted
 
@@ -10,6 +9,5 @@ module Cucumber
       attr_reader :test_step
 
     end
-
   end
 end

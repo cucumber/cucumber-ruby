@@ -8,7 +8,6 @@ require 'cucumber/core/test/result'
 
 module Cucumber
   module Formatter
-
     # Summary formatter, outputting only feature / scenario titles
     class Summary
       include Io

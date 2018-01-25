@@ -5,7 +5,6 @@ require 'cucumber/formatter/console'
 
 module Cucumber
   module Formatter
-
     class FailFast
 
       def initialize(configuration)
@@ -16,6 +15,5 @@ module Cucumber
       end
 
     end
-
   end
 end

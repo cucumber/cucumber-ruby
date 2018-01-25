@@ -6,7 +6,6 @@ require 'cucumber/running_test_case'
 
 module Cucumber
   module Filters
-
     class PrepareWorld < Core::Filter.new(:runtime)
 
       def test_case(test_case)
@@ -42,6 +41,5 @@ module Cucumber
       end
 
     end
-
   end
 end

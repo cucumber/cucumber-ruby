@@ -2,7 +2,6 @@
 
 module Cucumber
   module Formatter
-
     class IgnoreMissingMessages < BasicObject
       def initialize(receiver)
         @receiver = receiver
@@ -16,6 +15,5 @@ module Cucumber
         @receiver.respond_to?(name, include_private)
       end
     end
-
   end
 end
