@@ -2,7 +2,6 @@
 
 require 'cucumber/platform'
 
-
 module Cucumber
   module Formatter
     @backtrace_filters = %w(
@@ -50,6 +49,5 @@ module Cucumber
         @exception
       end
     end
-
   end
 end

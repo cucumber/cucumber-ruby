@@ -25,7 +25,6 @@ if Cucumber::WINDOWS
     module WindowsOutput
       def self.extended(o)
         o.instance_eval do
-
           def cucumber_preprocess_output(*a)
             begin
               a.map{|arg| arg.to_s.encode(Encoding.default_external)}

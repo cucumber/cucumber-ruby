@@ -19,8 +19,8 @@ module NormaliseArubaOutput
   end
 
   def normalise_json(json)
-    #make sure duration was captured (should be >= 0)
-    #then set it to what is "expected" since duration is dynamic
+    # make sure duration was captured (should be >= 0)
+    # then set it to what is "expected" since duration is dynamic
     json.each do |feature|
       elements = feature.fetch('elements') { [] }
       elements.each do |scenario|
@@ -47,7 +47,6 @@ module NormaliseArubaOutput
     expect(step_or_hook['result']['duration']).to be >= 0
     step_or_hook['result']['duration'] = 1
   end
-
 end
 
 World(NormaliseArubaOutput)

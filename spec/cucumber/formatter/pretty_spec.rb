@@ -796,7 +796,6 @@ OUTPUT
       end
 
       context 'snippets contain relevant keyword replacements' do
-
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new

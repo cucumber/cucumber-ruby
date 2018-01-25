@@ -5,11 +5,9 @@ require 'cucumber/core/ast/location'
 require 'cucumber/core/test/around_hook'
 
 module Cucumber
-
   # Hooks quack enough like `Cucumber::Core::Ast` source nodes that we can use them as
   # source for test steps
   module Hooks
-
     class << self
       def before_hook(source, location, &block)
         build_hook_step(source, location, block, BeforeHook, Core::Test::UnskippableAction)
@@ -108,6 +106,5 @@ module Cucumber
         visitor.after_step_hook(self, *args)
       end
     end
-
   end
 end

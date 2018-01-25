@@ -8,7 +8,6 @@ require 'cucumber/core/test/result'
 
 module Cucumber
   module Cli
-
     class Options
       INDENT = ' ' * 53
       # rubocop:disable Layout/MultilineOperationIndentation
@@ -155,7 +154,7 @@ TEXT
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 
         extract_environment_variables
-        @options[:paths] = @args.dup #whatver is left over
+        @options[:paths] = @args.dup # whatver is left over
 
         check_formatter_stream_conflicts()
 
@@ -589,6 +588,5 @@ TEXT
         }
       end
     end
-
   end
 end

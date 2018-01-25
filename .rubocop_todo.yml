@@ -6,69 +6,12 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 9
-# Cop supports --auto-correct.
-Layout/EmptyLines:
-  Exclude:
-    - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/events/step_definition_registered.rb'
-    - 'lib/cucumber/formatter/backtrace_filter.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/multiline_argument/data_table/diff_matrices.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-    - 'spec/cucumber/runtime/support_code_spec.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundAccessModifier:
-  Exclude:
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/runtime/step_hooks.rb'
-    - 'lib/cucumber/step_match.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundArguments:
-  Exclude:
-    - 'spec/cucumber/formatter/junit_spec.rb'
-
-# Offense count: 33
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: false
-
 # Offense count: 52
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundExceptionHandlingKeywords:
-  Exclude:
-    - 'scripts/invite-collaborator'
-
-# Offense count: 60
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundModuleBody:
-  Enabled: false
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'lib/cucumber/formatter/json.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/formatter/html_spec.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
 
 # Offense count: 49
 # Cop supports --auto-correct.
@@ -122,23 +65,6 @@ Layout/IndentationWidth:
     - 'spec/cucumber/cli/configuration_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
     - 'spec/cucumber/step_match_search_spec.rb'
-
-# Offense count: 18
-# Cop supports --auto-correct.
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'examples/i18n/da/lib/lommeregner.rb'
-    - 'examples/i18n/it/lib/calcolatrice.rb'
-    - 'examples/i18n/no/lib/kalkulator.rb'
-    - 'examples/i18n/ro/lib/calculator.rb'
-    - 'examples/i18n/sv/lib/kalkulator.rb'
-    - 'features/lib/support/normalise_output.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/events/step_definition_registered.rb'
-    - 'lib/cucumber/filters/prepare_world.rb'
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
 
 # Offense count: 89
 # Cop supports --auto-correct.

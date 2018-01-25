@@ -10,7 +10,6 @@ module Cucumber
     # You can, and probably should, extend this API with your own methods that
     # make sense in your domain. For more on that, see {Cucumber::Glue::Dsl#World}
     module ProtoWorld
-
       # Run a single Gherkin step
       # @example Call another step
       #   step "I am logged in"
@@ -212,7 +211,6 @@ module Cucumber
           def stringify_namespaced_modules
             @__namespaced_modules.map { |k, v| "#{v.join(',')} (as #{k})" }.join('+')
           end
-
         end
       end
 

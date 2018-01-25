@@ -36,6 +36,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Improved
 
 * Fix Multiline Violations: Braces, Blocks, Method call work, etc. ([#1271](https://github.com/cucumber/cucumber-ruby/pull/1271) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/EmptyLinesAroundModuleBody ([#1266](https://github.com/cucumber/cucumber-ruby/pull/1266) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/EmptyLinesAroundBlockBody ([#1263](https://github.com/cucumber/cucumber-ruby/pull/1263) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix: Layout/EmptyLines, ...AroundAccessModifier, ...AroundArguments, ...AroundExceptionHandlingKeywords ([#1262](https://github.com/cucumber/cucumber-ruby/pull/1262) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/LeadingCommentSpace auto ([#1270](https://github.com/cucumber/cucumber-ruby/pull/1270) [@jaysonesmith](https://github.com/jaysonesmith))
+* Fix Layout/ExtraSpacing ([#1267](https://github.com/cucumber/cucumber-ruby/pull/1267) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))

@@ -4,7 +4,6 @@ require 'digest/sha2'
 
 module Cucumber
   module Filters
-
     # Batches up all test cases, randomizes them, and then sends them on
     class Randomizer
       def initialize(seed, receiver=nil)
@@ -42,6 +41,5 @@ module Cucumber
       attr_reader :seed
       private :seed
     end
-
   end
 end

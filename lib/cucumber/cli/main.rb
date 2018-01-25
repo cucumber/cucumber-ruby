@@ -71,7 +71,6 @@ module Cucumber
 
       private
 
-
       def exit_ok
         @kernel.exit 0
       end

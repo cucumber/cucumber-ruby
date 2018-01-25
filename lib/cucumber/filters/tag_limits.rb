@@ -42,6 +42,5 @@ module Cucumber
       attr_reader :test_case_index
       attr_reader :verifier
     end
-
   end
 end

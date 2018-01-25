@@ -63,6 +63,5 @@ module Cucumber
         @match_cache[step_name] = super(step_name)
       end
     end
-
   end
 end

@@ -2,7 +2,6 @@
 
 module Cucumber
   module Formatter
-
     # Forwards any messages sent to this object to all recipients
     # that respond to that message.
     class Fanout < BasicObject
@@ -24,6 +23,5 @@ module Cucumber
       end
 
     end
-
   end
 end

@@ -2,7 +2,6 @@
 
 module Cucumber
   module Filters
-
     class GatedReceiver
       def initialize(receiver)
         @receiver = receiver
@@ -22,6 +21,5 @@ module Cucumber
         self
       end
     end
-
   end
 end

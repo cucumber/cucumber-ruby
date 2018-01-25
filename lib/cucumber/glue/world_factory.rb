@@ -1,6 +1,5 @@
 module Cucumber
   module Glue
-
     class WorldFactory
       def initialize(proc)
         @proc = proc || -> { Object.new }
@@ -18,6 +17,5 @@ module Cucumber
         raise e
       end
     end
-
   end
 end
