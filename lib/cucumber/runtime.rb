@@ -215,7 +215,8 @@ module Cucumber
       formatter = factory.new(runtime_facade, path_or_io, cli_options)
       Formatter::LegacyApi::Adapter.new(
         Formatter::IgnoreMissingMessages.new(formatter),
-        results, @configuration)
+        results, @configuration
+      )
     end
 
     def accept_options?(factory)

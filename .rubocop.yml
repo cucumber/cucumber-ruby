@@ -47,6 +47,10 @@ Layout/TrailingWhitespace:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
 
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/cucumber/cli/options.rb'
+
 # Rubocop doesn't like method names in other languages but as Cucumber supports 
 # languages, this cop needs to be disabled.
 Naming/AsciiIdentifiers:

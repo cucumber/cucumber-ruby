@@ -25,15 +25,16 @@ module Cucumber
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         @reportdir = ensure_dir(config.out_stream, 'junit')
         @config = config
-        @features_data = Hash.new do |h, k| h[k] = {
-          feature: nil,
-          failures: 0,
-          errors: 0,
-          tests: 0,
-          skipped: 0,
-          time: 0,
-          builder: Builder::XmlMarkup.new(:indent => 2)
-        }
+        @features_data = Hash.new do |h, k|
+          h[k] = {
+            feature: nil,
+            failures: 0,
+            errors: 0,
+            tests: 0,
+            skipped: 0,
+            time: 0,
+            builder: Builder::XmlMarkup.new(:indent => 2)
+          }
         end
       end
 
@@ -94,7 +95,8 @@ module Cucumber
           :skipped => feature_data[:skipped],
           :tests => feature_data[:tests],
           :time => format('%.6f', feature_data[:time]),
-          :name => feature_data[:feature].name ) do
+          :name => feature_data[:feature].name
+        ) do
           @testsuite << feature_data[:builder].target!
         end
 

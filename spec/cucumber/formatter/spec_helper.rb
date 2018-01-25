@@ -44,7 +44,8 @@ module Cucumber
         @report ||= LegacyApi::Adapter.new(
           Fanout.new([@formatter]),
           actual_runtime.results,
-          actual_runtime.configuration)
+          actual_runtime.configuration
+        )
       end
 
       require 'cucumber/core/gherkin/document'
