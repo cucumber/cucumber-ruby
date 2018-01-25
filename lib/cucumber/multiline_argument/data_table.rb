@@ -161,7 +161,7 @@ module Cucumber
       def symbolic_hashes
         @symbolic_hashes ||=
           self.hashes.map do |string_hash|
-            Hash[string_hash.map{ |a,b| [symbolize_key(a), b] }]
+            Hash[string_hash.map{ |a, b| [symbolize_key(a), b] }]
           end
       end
 

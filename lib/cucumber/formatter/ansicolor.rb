@@ -54,7 +54,7 @@ module Cucumber
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
-      ALIASES = Hash.new do |h,k|
+      ALIASES = Hash.new do |h, k|
         if k.to_s =~ /(.*)_param/
           h[$1] + ',bold'
         end

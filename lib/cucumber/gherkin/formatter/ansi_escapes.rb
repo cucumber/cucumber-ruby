@@ -53,7 +53,7 @@ module Gherkin
         'bold'    => "\e[1m"
       }
 
-      ALIASES = Hash.new do |h,k|
+      ALIASES = Hash.new do |h, k|
         if k.to_s =~ /(.*)_arg/
           h[$1] + ',bold'
         end

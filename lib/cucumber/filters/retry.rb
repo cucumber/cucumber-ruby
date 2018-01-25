@@ -26,7 +26,7 @@ module Cucumber
       end
 
       def test_case_counts
-        @test_case_counts ||= Hash.new {|h,k| h[k] = 0 }
+        @test_case_counts ||= Hash.new {|h, k| h[k] = 0 }
       end
     end
   end

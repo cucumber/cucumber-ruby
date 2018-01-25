@@ -60,7 +60,7 @@ Defined profiles in cucumber.yml:
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless cucumber_yml_defined?
-          raise(ProfilesNotDefinedError,"cucumber.yml was not found.  Current directory is #{Dir.pwd}.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+          raise(ProfilesNotDefinedError, "cucumber.yml was not found.  Current directory is #{Dir.pwd}.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
         end
 
         require 'erb'
@@ -68,17 +68,17 @@ Defined profiles in cucumber.yml:
         begin
           @cucumber_erb = ERB.new(IO.read(cucumber_file), nil, '%').result(binding)
         rescue StandardError
-          raise(YmlLoadError,"cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$!.inspect}")
+          raise(YmlLoadError, "cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$!.inspect}")
         end
 
         begin
           @cucumber_yml = YAML.load(@cucumber_erb)
         rescue StandardError
-          raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
+          raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
         if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
-          raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n")
+          raise(YmlLoadError, "cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
         return @cucumber_yml
