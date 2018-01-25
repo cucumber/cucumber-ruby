@@ -179,15 +179,20 @@ module Cucumber
       end
 
       it 'has a JSON representation of the signature' do
-        expect(StepDefinition.new(registry, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash).to eq({
-          source: {
-            type: 'regular expression',
-            expression: 'I CAN HAZ (\\d+) CUKES'
-          },
-          regexp: {
-            source: 'I CAN HAZ (\\d+) CUKES', flags: 'i'
-          }
-        })
+        expect(StepDefinition.new(
+          registry,
+          /I CAN HAZ (\d+) CUKES/i,
+          lambda{},
+          {}
+        ).to_hash).to eq({
+                           source: {
+                             type: 'regular expression',
+                             expression: 'I CAN HAZ (\\d+) CUKES'
+                           },
+                           regexp: {
+                             source: 'I CAN HAZ (\\d+) CUKES', flags: 'i'
+                           }
+                         })
       end
     end
   end

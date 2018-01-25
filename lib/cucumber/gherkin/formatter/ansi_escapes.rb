@@ -58,16 +58,16 @@ module Gherkin
           h[$1] + ',bold'
         end
       end.merge({
-        'undefined' => 'yellow',
-        'pending'   => 'yellow',
-        'executing' => 'grey',
-        'failed'    => 'red',
-        'passed'    => 'green',
-        'outline'   => 'cyan',
-        'skipped'   => 'cyan',
-        'comments'  => 'grey',
-        'tag'       => 'cyan'
-      })
+                  'undefined' => 'yellow',
+                  'pending'   => 'yellow',
+                  'executing' => 'grey',
+                  'failed'    => 'red',
+                  'passed'    => 'green',
+                  'outline'   => 'cyan',
+                  'skipped'   => 'cyan',
+                  'comments'  => 'grey',
+                  'tag'       => 'cyan'
+                })
 
       if ENV['GHERKIN_COLORS'] # Example: export GHERKIN_COLORS="passed=red:failed=yellow"
         ENV['GHERKIN_COLORS'].split(':').each do |pair|
