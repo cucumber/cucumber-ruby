@@ -70,35 +70,6 @@ Layout/SpaceAroundOperators:
 Layout/SpaceBeforeBlockBraces:
   Enabled: false
 
-# Offense count: 27
-# Cop supports --auto-correct.
-Layout/SpaceBeforeComma:
-  Exclude:
-    - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: require_no_space, require_space
-Layout/SpaceInLambdaLiteral:
-  Exclude:
-    - 'features/lib/support/parameter_types.rb'
-
-# Offense count: 73
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Exclude:
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/file_specs.rb'
-    - 'lib/cucumber/formatter/console_issues.rb'
-    - 'lib/cucumber/formatter/steps.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-
 # Offense count: 12
 # Cop supports --auto-correct.
 Layout/SpaceInsideArrayPercentLiteral:
