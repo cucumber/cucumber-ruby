@@ -89,7 +89,7 @@ module Cucumber
 
         it 'has the correct location' do
           dsl.Given(/With symbol/, :with_symbol)
-          expect(step_match('With symbol').file_colon_line).to eq "spec/cucumber/glue/step_definition_spec.rb:#{__LINE__-1}"
+          expect(step_match('With symbol').file_colon_line).to eq "spec/cucumber/glue/step_definition_spec.rb:#{__LINE__ - 1}"
         end
       end
 
@@ -159,7 +159,7 @@ module Cucumber
         step_name = 'My car is white'
         step_args = step_match(step_name).args
 
-        expect(-> { run_step step_name } ).not_to change{ step_args.first }
+        expect(-> { run_step step_name } ).not_to change { step_args.first }
       end
 
       it 'allows puts' do
@@ -182,7 +182,7 @@ module Cucumber
         expect(StepDefinition.new(
           registry,
           /I CAN HAZ (\d+) CUKES/i,
-          lambda{},
+          lambda {},
           {}
         ).to_hash).to eq({
                            source: {

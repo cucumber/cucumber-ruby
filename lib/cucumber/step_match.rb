@@ -46,7 +46,7 @@ module Cucumber
     #
     #   lambda { |param| "[#{param}]" }
     #
-    def format_args(format = lambda{|a| a}, &proc)
+    def format_args(format = lambda {|a| a}, &proc)
       replace_arguments(@name_to_match, @step_arguments, format, &proc)
     end
 

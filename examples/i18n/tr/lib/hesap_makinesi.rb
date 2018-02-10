@@ -7,7 +7,7 @@ class HesapMakinesi
   end
 
   def topla
-    @args.inject(0){|n, sum| sum + n}
+    @args.inject(0) {|n, sum| sum + n}
   end
 
   def böl

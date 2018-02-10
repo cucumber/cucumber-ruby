@@ -6,7 +6,7 @@ describe Cucumber::Filters::GatedReceiver do
   subject(:gated_receiver) { Cucumber::Filters::GatedReceiver.new(receiver) }
 
   let(:receiver) { double(:receiver) }
-  let(:test_cases){ [double(:test_case), double(:test_case)] }
+  let(:test_cases) { [double(:test_case), double(:test_case)] }
 
   describe '#test_case' do
     it 'does not immediately describe the test case to the receiver' do

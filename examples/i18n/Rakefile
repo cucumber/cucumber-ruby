@@ -3,7 +3,7 @@ task :cucumber do
   dir = File.dirname(__FILE__)
   Dir["#{dir}/*"].each do |f|
     if File.directory?(f)
-      lang = f[dir.length+1..-1]
+      lang = f[dir.length + 1..-1]
       if examples_working?(lang)
         Dir.chdir(f) do
           puts "DIR: #{f}"
