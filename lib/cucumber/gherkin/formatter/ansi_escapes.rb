@@ -76,18 +76,13 @@ module Cucumber
           end
         end
 
-        ALIASES.keys.each do |key|
-          define_method(key) do
-            ALIASES[key].split(',').map {|color| COLORS[color]}.join('')
-          end
-
-          define_method("#{key}_arg") do
-            ALIASES["#{key}_arg"].split(',').map {|color| COLORS[color]}.join('')
-          end
+      ALIASES.keys.each do |key|
+        define_method(key) do
+          ALIASES[key].split(',').map{ |color| COLORS[color] }.join('')
         end
 
-        def reset
-          "\e[0m"
+        define_method("#{key}_arg") do
+          ALIASES["#{key}_arg"].split(',').map{ |color| COLORS[color] }.join('')
         end
 
         def up(n)

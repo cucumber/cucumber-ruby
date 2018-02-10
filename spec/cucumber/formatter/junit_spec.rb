@@ -129,7 +129,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) { }
+              Given(/.*/) {}
             end
 
             define_feature <<-FEATURE
@@ -156,7 +156,7 @@ module Cucumber
             it { expect(@doc.to_s).to match(/Big Mac/) }
             it { expect(@doc.to_s).not_to match(/Things/) }
             it { expect(@doc.to_s).not_to match(/Good|Evil/) }
-            it { expect(@doc.to_s).not_to match(/type="skipped"/)}
+            it { expect(@doc.to_s).not_to match(/type="skipped"/) }
           end
 
           describe 'scenario with skipped test in junit report' do
@@ -172,13 +172,13 @@ module Cucumber
                   | still undefined  |
             FEATURE
 
-            it { expect(@doc.to_s).to match(/skipped="2"/)}
+            it { expect(@doc.to_s).to match(/skipped="2"/) }
           end
 
           describe 'with a regular data table scenario' do
             define_steps do
               Given(/the following items on a shortlist/) { |table| }
-              When(/I go.*/) { }
+              When(/I go.*/) {}
               Then(/I should have visited at least/) { |table| }
             end
 
@@ -291,7 +291,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) { }
+              Given(/.*/) {}
             end
 
             define_feature <<-FEATURE
@@ -318,7 +318,7 @@ module Cucumber
             it { expect(@doc.to_s).to match(/Big Mac/) }
             it { expect(@doc.to_s).not_to match(/Things/) }
             it { expect(@doc.to_s).not_to match(/Good|Evil/) }
-            it { expect(@doc.to_s).not_to match(/type="skipped"/)}
+            it { expect(@doc.to_s).not_to match(/type="skipped"/) }
           end
         end
       end

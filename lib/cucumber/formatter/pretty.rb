@@ -164,7 +164,7 @@ module Cucumber
       def doc_string(string)
         return if @options[:no_multiline] || @hide_this_step
         s = %{"""\n#{string}\n"""}.indent(@indent)
-        s = s.split("\n").map {|l| l =~ /^\s+$/ ? '' : l}.join("\n")
+        s = s.split("\n").map{ |l| l =~ /^\s+$/ ? '' : l }.join("\n")
         @io.puts(format_string(s, @current_step.status))
         @io.flush
       end
@@ -236,7 +236,7 @@ module Cucumber
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
-        names[1..-1].each {|s| @io.puts s.to_s}
+        names[1..-1].each { |s| @io.puts s.to_s }
         @io.flush
       end
 

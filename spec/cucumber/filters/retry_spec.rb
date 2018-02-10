@@ -38,7 +38,7 @@ describe Cucumber::Filters::Retry do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
     it 'describes the same test case object each time' do
-      allow(receiver).to receive(:test_case) {|tc|
+      allow(receiver).to receive(:test_case) { |tc|
         expect(tc).to equal(test_case)
         configuration.notify :test_case_finished, tc.with_steps(tc.test_steps), result
       }
@@ -51,7 +51,7 @@ describe Cucumber::Filters::Retry do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
     it 'describes the test case the specified number of times' do
-      expect(receiver).to receive(:test_case) {|test_case|
+      expect(receiver).to receive(:test_case) { |test_case|
         configuration.notify :test_case_finished, test_case, result
       }.exactly(3).times
 
@@ -69,7 +69,7 @@ describe Cucumber::Filters::Retry do
       end
 
       it 'describes the test case twice' do
-        expect(receiver).to receive(:test_case) {|test_case|
+        expect(receiver).to receive(:test_case) { |test_case|
           configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(2).times
 
@@ -87,7 +87,7 @@ describe Cucumber::Filters::Retry do
       end
 
       it 'describes the test case 3 times' do
-        expect(receiver).to receive(:test_case) {|test_case|
+        expect(receiver).to receive(:test_case) { |test_case|
           configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(3).times
 
