@@ -35,6 +35,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Fix Layout/Space cops: around operators and before block braces ([#1276](https://github.com/cucumber/cucumber-ruby/pull/1276) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Multiline Violations: Braces, Blocks, Method call work, etc. ([#1271](https://github.com/cucumber/cucumber-ruby/pull/1271) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/EmptyLinesAroundClassBody ([#1264](https://github.com/cucumber/cucumber-ruby/pull/1264) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Layout/SpaceAfterComma ([#1272](https://github.com/cucumber/cucumber-ruby/pull/1272) [@jaysonesmith](https://github.com/jaysonesmith))
