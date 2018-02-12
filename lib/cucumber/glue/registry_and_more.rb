@@ -135,7 +135,7 @@ module Cucumber
       end
 
       def hooks_for(phase, scenario) #:nodoc:
-        hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
+        hooks[phase.to_sym].select {|hook| scenario.accept_hook?(hook)}
       end
 
       def unmatched_step_definitions
@@ -175,7 +175,7 @@ module Cucumber
       end
 
       def hooks
-        @hooks ||= Hash.new{|h, k| h[k] = []}
+        @hooks ||= Hash.new {|h, k| h[k] = []}
       end
     end
 

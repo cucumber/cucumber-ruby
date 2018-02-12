@@ -96,7 +96,7 @@ module Cucumber
           end
           # This resets the colour to the non-param colour
           def #{method_name}_param(string=nil, &proc)
-            #{ALIASES[method_name+'_param'].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method_name+'_param'].split(",").length} + #{ALIASES[method_name].split(",").join(' + ')}
+            #{ALIASES[method_name + '_param'].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method_name + '_param'].split(",").length} + #{ALIASES[method_name].split(",").join(' + ')}
           end
           EOF
           eval(code)

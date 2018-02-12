@@ -111,7 +111,7 @@ module Cucumber
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
       def linebreaks(s, max)
         return s unless max && max > 0
-        s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n")}.rstrip
+        s.gsub(/.{1,#{max}}(?:\s|\Z)/) {($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n")}.rstrip
       end
 
       def collect_snippet_data(test_step, result)
@@ -211,12 +211,12 @@ module Cucumber
         profiles_sentence = profiles.size == 1 ? profiles.first :
           "#{profiles[0...-1].join(', ')} and #{profiles.last}"
 
-        @io.puts "Using the #{profiles_sentence} profile#{'s' if profiles.size> 1}..."
+        @io.puts "Using the #{profiles_sentence} profile#{'s' if profiles.size > 1}..."
       end
 
       private
 
-      FORMATS = Hash.new{ |hash, format| hash[format] = method(format).to_proc }
+      FORMATS = Hash.new { |hash, format| hash[format] = method(format).to_proc }
 
       def format_for(*keys)
         key = keys.join('_').to_sym

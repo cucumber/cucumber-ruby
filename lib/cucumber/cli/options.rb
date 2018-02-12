@@ -576,7 +576,7 @@ TEXT
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :tag_expressions  => [],
+          :tag_expressions => [],
           :tag_limits   => {},
           :name_regexps => [],
           :env_vars     => {},

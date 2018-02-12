@@ -18,7 +18,7 @@ module Cucumber
           depth = backtrace.count { |line| line == instance_exec_invocation_line }
           end_pos = depth > 1 ? instance_exec_pos : -1
 
-          backtrace[replacement_line+1..end_pos] = nil
+          backtrace[replacement_line + 1..end_pos] = nil
           backtrace.compact!
         end
       end
@@ -28,7 +28,7 @@ module Cucumber
           if check_arity && !cucumber_compatible_arity?(args, block)
             world.instance_exec do
               ari = block.arity
-              ari = ari < 0 ? (ari.abs-1).to_s+'+' : ari
+              ari = ari < 0 ? (ari.abs - 1).to_s + '+' : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
               raise ArityMismatchError.new(

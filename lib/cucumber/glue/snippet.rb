@@ -70,7 +70,7 @@ module Cucumber
         end
 
         def parameters
-          block_args = (0...number_of_arguments).map { |n| "arg#{n+1}" }
+          block_args = (0...number_of_arguments).map { |n| "arg#{n + 1}" }
           multiline_argument.append_block_parameter_to(block_args)
           block_args.empty? ? '' : " |#{block_args.join(", ")}|"
         end

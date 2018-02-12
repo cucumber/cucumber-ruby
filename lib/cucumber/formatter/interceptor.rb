@@ -86,7 +86,7 @@ module Cucumber
         private
 
         def lock
-          @lock||=Mutex.new
+          @lock ||= Mutex.new
         end
       end
     end

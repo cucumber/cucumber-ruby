@@ -153,7 +153,7 @@ module Cucumber
       end
 
       def before_feature_element(feature_element)
-        @scenario_number+=1
+        @scenario_number += 1
         @scenario_red = false
         css_class = AST_CLASSES[feature_element.class]
         builder << "<div class='#{css_class}'>"
@@ -359,19 +359,16 @@ module Cucumber
 
       def puts(message)
         @delayed_messages << message
-        # builder.pre(message, :class => 'message')
       end
 
       def print_messages
         return if @delayed_messages.empty?
 
-          # builder.ol do
-          @delayed_messages.each do |ann|
-            builder.li(:class => 'step message') do
-              builder << ann
-            end
+        @delayed_messages.each do |ann|
+          builder.li(:class => 'step message') do
+            builder << ann
           end
-        # end
+        end
         empty_messages
       end
 
@@ -467,7 +464,7 @@ module Cucumber
       end
 
       def build_step(keyword, step_match, _status)
-        step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
+        step_name = step_match.format_args(lambda {|param| %{<span class="param">#{param}</span>}})
         builder.div(:class => 'step_name') do |div|
           builder.span(keyword, :class => 'keyword')
           builder.span(:class => 'step val') do |name|
@@ -531,11 +528,11 @@ module Cucumber
       def print_stat_string(_features)
         string = String.new
         string << dump_count(@runtime.scenarios.length, 'scenario')
-        scenario_count = print_status_counts{|status| @runtime.scenarios(status)}
+        scenario_count = print_status_counts {|status| @runtime.scenarios(status)}
         string << scenario_count if scenario_count
         string << '<br />'
         string << dump_count(@runtime.steps.length, 'step')
-        step_count = print_status_counts{|status| @runtime.steps(status)}
+        step_count = print_status_counts {|status| @runtime.steps(status)}
         string << step_count if step_count
       end
 
@@ -585,12 +582,12 @@ module Cucumber
         def lines_around(file, line)
           if File.file?(file)
             begin
-            lines = File.open(file).read.split("\n")
-          rescue ArgumentError
-            return "# Couldn't get snippet for #{file}"
-          end
-          min = [0, line-3].max
-            max = [line+1, lines.length-1].min
+              lines = File.open(file).read.split("\n")
+            rescue ArgumentError
+              return "# Couldn't get snippet for #{file}"
+            end
+            min = [0, line - 3].max
+            max = [line + 1, lines.length - 1].min
             selected_lines = []
             selected_lines.join("\n")
             lines[min..max].join("\n")
@@ -602,7 +599,7 @@ module Cucumber
         def post_process(highlighted, offending_line)
           new_lines = []
           highlighted.split("\n").each_with_index do |line, i|
-            new_line = "<span class=\"linenum\">#{offending_line+i-2}</span>#{line}"
+            new_line = "<span class=\"linenum\">#{offending_line + i - 2}</span>#{line}"
             new_line = "<span class=\"offending\">#{new_line}</span>" if i == 2
             new_lines << new_line
           end

@@ -108,7 +108,7 @@ module Cucumber
       end
 
       def max_stepdef_length
-        @stepdef_to_match.keys.flatten.map{|key| key.regexp_source.unpack('U*').length}.max
+        @stepdef_to_match.keys.flatten.map {|key| key.regexp_source.unpack('U*').length}.max
       end
 
       def max_step_length
@@ -123,7 +123,7 @@ module Cucumber
             key.status = :skipped
             key.mean_duration = 0
           else
-            key.status = worst_status(steps.map{ |step| step[:status] })
+            key.status = worst_status(steps.map { |step| step[:status] })
             total_duration = steps.inject(0) {|sum, step| step[:duration] + sum}
             key.mean_duration = total_duration / steps.length
           end

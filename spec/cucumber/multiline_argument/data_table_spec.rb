@@ -50,12 +50,12 @@ module Cucumber
 
         it 'should be able to be accessed multiple times' do
           @table.symbolic_hashes
-          expect{@table.symbolic_hashes}.to_not raise_error
+          expect {@table.symbolic_hashes}.to_not raise_error
         end
 
         it 'should not interfere with use of #hashes' do
           @table.symbolic_hashes
-          expect{@table.hashes}.to_not raise_error
+          expect {@table.hashes}.to_not raise_error
         end
       end
 
@@ -70,7 +70,7 @@ module Cucumber
           rows = ['value']
           table = DataTable.from [headers, rows]
           count = 0
-          table.map_column!('header') { |value| count +=1 }
+          table.map_column!('header') { |value| count += 1 }
           table.rows
           expect( count ).to eq rows.size
         end
@@ -116,7 +116,7 @@ module Cucumber
           rows = ['value']
           table = DataTable.from [headers, rows]
           count = 0
-          new_table = table.map_column('header') { |value| count +=1 }
+          new_table = table.map_column('header') { |value| count += 1 }
           new_table.rows
           expect( count ).to eq rows.size
         end
@@ -251,10 +251,10 @@ module Cucumber
 
       describe '#map_headers' do
         let(:table) do
-           DataTable.from([
-                            %w{HELLO WORLD},
-                            %w{4444 55555}
-                          ])
+          DataTable.from([
+                           %w{HELLO WORLD},
+                           %w{4444 55555}
+                         ])
         end
 
         it 'renames the columns to the specified values in the provided hash' do
@@ -332,7 +332,7 @@ module Cucumber
           it 'should allow diffing empty tables' do
             t1 = DataTable.from([[]])
             t2 = DataTable.from([[]])
-            expect{ t1.diff!(t2) }.not_to raise_error
+            expect { t1.diff!(t2) }.not_to raise_error
           end
 
           it 'should be able to diff when the right table is empty' do
@@ -394,7 +394,7 @@ module Cucumber
             |d|oops|f|
             |g|h|i|
                                 })
-            expect{ t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
+            expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a |     a    |     c |
                 | (-) d | (-) e    | (-) f |
@@ -415,7 +415,7 @@ module Cucumber
             |d|e|f|
             |g|h|i|
                                 })
-            expect{ t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
+            expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a | (-) a |     b |     c |
                 |     d | (-) d |     e |     f |
@@ -435,7 +435,7 @@ module Cucumber
             |d|e|d|f|
             |g|h|g|i|
                                 })
-            expect{ t1.diff!(t2, :surplus_col => true) }.to raise_error(DataTable::Different) do |error|
+            expect { t1.diff!(t2, :surplus_col => true) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a |     b |     c | (+) a |
                 |     d |     e |     f | (+) d |

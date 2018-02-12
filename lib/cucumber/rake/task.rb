@@ -39,7 +39,7 @@ module Cucumber
 
         def initialize(libs, cucumber_opts, feature_files)
           raise 'libs must be an Array when running in-process' unless Array === libs
-          libs.reverse.each{|lib| $LOAD_PATH.unshift(lib)}
+          libs.reverse.each {|lib| $LOAD_PATH.unshift(lib)}
           @args = (
             cucumber_opts +
             feature_files
@@ -169,7 +169,7 @@ module Cucumber
       end
 
       def make_command_line_safe(list)
-        list.map{|string| string.gsub(' ', '\ ')}
+        list.map {|string| string.gsub(' ', '\ ')}
       end
     end
   end

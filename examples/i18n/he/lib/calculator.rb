@@ -7,7 +7,7 @@ class Calculator
   end
 
   def חבר
-    @args.inject(0){|n, sum| sum + n}
+    @args.inject(0) {|n, sum| sum + n}
   end
 
   def חלק

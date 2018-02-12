@@ -16,7 +16,7 @@ module Cucumber
       RSpec::Matchers.define :have_css_node do |css, regexp|
         match do |doc|
           nodes = doc.css(css)
-          nodes.detect{ |node| node.text =~ regexp }
+          nodes.detect { |node| node.text =~ regexp }
         end
       end
 
@@ -26,7 +26,7 @@ module Cucumber
       end
 
       it 'does not raise an error when visiting a blank feature name' do
-        expect(->{ @formatter.feature_name('Feature', '') }).not_to raise_error
+        expect(-> { @formatter.feature_name('Feature', '') }).not_to raise_error
       end
 
       describe 'when writing the report to a file' do
@@ -538,9 +538,9 @@ module Cucumber
               | undefined |
             FEATURE
 
-            define_steps do
-              Given(/^this step passes$/) {}
-            end
+          define_steps do
+            Given(/^this step passes$/) {}
+          end
 
           it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq %w(Given Given) }
         end

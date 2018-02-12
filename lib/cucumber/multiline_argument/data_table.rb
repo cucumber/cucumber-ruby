@@ -75,7 +75,7 @@ module Cucumber
         end
       end
 
-      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
+      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda { |cell_value| cell_value } }).freeze
 
       # @param data [Core::Ast::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_columns!
@@ -161,7 +161,7 @@ module Cucumber
       def symbolic_hashes
         @symbolic_hashes ||=
           self.hashes.map do |string_hash|
-            Hash[string_hash.map{ |a, b| [symbolize_key(a), b] }]
+            Hash[string_hash.map { |a, b| [symbolize_key(a), b] }]
           end
       end
 
@@ -375,7 +375,7 @@ module Cucumber
       end
 
       def has_text?(text) #:nodoc:
-        raw.flatten.compact.detect{|cell_value| cell_value.index(text)}
+        raw.flatten.compact.detect {|cell_value| cell_value.index(text)}
       end
 
       def cells_rows #:nodoc:
@@ -554,7 +554,7 @@ module Cucumber
         end
 
         def width
-          map{|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
+          map {|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
         end
       end
 
