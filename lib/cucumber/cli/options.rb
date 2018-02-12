@@ -203,11 +203,11 @@ TEXT
       end
 
       def exclude_msg
-        [ "Don't run feature files or require ruby files matching PATTERN" ]
+        ["Don't run feature files or require ruby files matching PATTERN"]
       end
 
       def format_msg
-        [ 'How to format features (Default: pretty). Available formats:' ]
+        ['How to format features (Default: pretty). Available formats:']
       end
 
       def i18n_languages_msg
@@ -231,7 +231,7 @@ TEXT
       end
 
       def lines_msg
-        [ 'Run given line numbers. Equivalent to FILE:LINE syntax' ]
+        ['Run given line numbers. Equivalent to FILE:LINE syntax']
       end
 
       def no_profile_short_flag_msg
@@ -251,7 +251,7 @@ TEXT
       end
 
       def retry_msg
-        [ 'Specify the number of times to retry failing tests (default: 0)' ]
+        ['Specify the number of times to retry failing tests (default: 0)']
       end
 
       def name_msg

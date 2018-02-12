@@ -623,7 +623,7 @@ module Cucumber
             | b | a |
             | d | c |
           })
-          other = [ %w{b a}, %w{d c} ]
+          other = [%w{b a}, %w{d c}]
 
           expect { t.diff!(other) }.not_to raise_error
         end
