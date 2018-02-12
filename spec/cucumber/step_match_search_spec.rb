@@ -53,7 +53,7 @@ You can run again with --guess to make Cucumber be more smart about it
         let(:options) { {:guess => true} }
 
         it 'does not show --guess hint' do
-        expected_error = %{Ambiguous match of "Three cute mice":
+          expected_error = %{Ambiguous match of "Three cute mice":
 
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three (.*) mice/'
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'

@@ -359,19 +359,16 @@ module Cucumber
 
       def puts(message)
         @delayed_messages << message
-        # builder.pre(message, :class => 'message')
       end
 
       def print_messages
         return if @delayed_messages.empty?
 
-          # builder.ol do
-          @delayed_messages.each do |ann|
-            builder.li(:class => 'step message') do
-              builder << ann
-            end
+        @delayed_messages.each do |ann|
+          builder.li(:class => 'step message') do
+            builder << ann
           end
-        # end
+        end
         empty_messages
       end
 
@@ -585,11 +582,11 @@ module Cucumber
         def lines_around(file, line)
           if File.file?(file)
             begin
-            lines = File.open(file).read.split("\n")
-          rescue ArgumentError
-            return "# Couldn't get snippet for #{file}"
-          end
-          min = [0, line - 3].max
+              lines = File.open(file).read.split("\n")
+            rescue ArgumentError
+              return "# Couldn't get snippet for #{file}"
+            end
+            min = [0, line - 3].max
             max = [line + 1, lines.length - 1].min
             selected_lines = []
             selected_lines.join("\n")

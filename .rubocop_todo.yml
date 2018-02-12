@@ -6,41 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: auto_detection, squiggly, active_support, powerpack, unindent
-Layout/IndentHeredoc:
-  Exclude:
-    - 'features/lib/support/feature_factory.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/cli/profile_loader.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/profile_loader_spec.rb'
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: normal, rails
-Layout/IndentationConsistency:
-  Exclude:
-    - 'lib/cucumber/formatter/html.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/formatter/html_spec.rb'
-    - 'spec/cucumber/step_match_search_spec.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: Width, IgnoredPatterns.
-Layout/IndentationWidth:
-  Exclude:
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/gherkin/formatter/escaping.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/step_match_search_spec.rb'
-
 # Offense count: 27
 # Cop supports --auto-correct.
 Layout/SpaceBeforeComma:

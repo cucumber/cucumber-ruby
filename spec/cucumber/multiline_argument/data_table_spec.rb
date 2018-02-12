@@ -251,10 +251,10 @@ module Cucumber
 
       describe '#map_headers' do
         let(:table) do
-           DataTable.from([
-                            %w{HELLO WORLD},
-                            %w{4444 55555}
-                          ])
+          DataTable.from([
+                           %w{HELLO WORLD},
+                           %w{4444 55555}
+                         ])
         end
 
         it 'renames the columns to the specified values in the provided hash' do
