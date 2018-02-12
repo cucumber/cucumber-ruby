@@ -6,35 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 24
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment.
-Layout/SpaceAroundOperators:
-  Exclude:
-    - 'examples/i18n/Rakefile'
-    - 'examples/i18n/pt/lib/calculadora.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/formatter/json.rb'
-    - 'lib/cucumber/formatter/pretty.rb'
-    - 'lib/cucumber/glue/invoke_in_world.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-    - 'lib/cucumber/step_definition_light.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/glue/step_definition_spec.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-
-# Offense count: 80
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceBeforeBlockBraces:
-  Enabled: false
-
 # Offense count: 27
 # Cop supports --auto-correct.
 Layout/SpaceBeforeComma:

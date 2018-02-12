@@ -38,7 +38,7 @@ module Cucumber
           matched_cols = []
 
           header_values.each_with_index do |v, i|
-            mapped_index = unmatched_cols.index{|unmapped_col| unmapped_col.first == v}
+            mapped_index = unmatched_cols.index {|unmapped_col| unmapped_col.first == v}
             if mapped_index
               matched_cols << unmatched_cols.delete_at(mapped_index)
             else
@@ -76,13 +76,13 @@ module Cucumber
           changes.each do |change|
             if change.action == '-'
               @missing_row_pos = change.position + inserted
-              cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
+              cell_matrix[missing_row_pos].each {|cell| cell.status = :undefined}
               row_indices.insert(missing_row_pos, nil)
               missing += 1
             else # '+'
               @insert_row_pos = change.position + missing
               inserted_row = change.element
-              inserted_row.each{|cell| cell.status = :comment}
+              inserted_row.each {|cell| cell.status = :comment}
               cell_matrix.insert(insert_row_pos, inserted_row)
               row_indices[insert_row_pos] = nil
               inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change == '-'
@@ -121,7 +121,7 @@ module Cucumber
         end
 
         def missing_col
-          cell_matrix[0].find{|cell| cell.status == :undefined}
+          cell_matrix[0].find {|cell| cell.status == :undefined}
         end
 
         def surplus_col

@@ -17,7 +17,7 @@ module Cucumber
     end
 
     def hash
-      regexp_source.hash + 31*location.to_s.hash
+      regexp_source.hash + 31 * location.to_s.hash
     end
   end
 end

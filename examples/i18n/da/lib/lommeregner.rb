@@ -6,6 +6,6 @@ class Lommeregner
 
   def add
     # @args[0] + @args[1]
-    @args.inject(0){|n, sum| sum + n}
+    @args.inject(0) {|n, sum| sum + n}
   end
 end

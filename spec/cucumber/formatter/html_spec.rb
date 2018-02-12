@@ -16,7 +16,7 @@ module Cucumber
       RSpec::Matchers.define :have_css_node do |css, regexp|
         match do |doc|
           nodes = doc.css(css)
-          nodes.detect{ |node| node.text =~ regexp }
+          nodes.detect { |node| node.text =~ regexp }
         end
       end
 
@@ -26,7 +26,7 @@ module Cucumber
       end
 
       it 'does not raise an error when visiting a blank feature name' do
-        expect(->{ @formatter.feature_name('Feature', '') }).not_to raise_error
+        expect(-> { @formatter.feature_name('Feature', '') }).not_to raise_error
       end
 
       describe 'when writing the report to a file' do

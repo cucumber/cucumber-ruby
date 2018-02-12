@@ -27,7 +27,7 @@ if Cucumber::WINDOWS
         o.instance_eval do
           def cucumber_preprocess_output(*a)
             begin
-              a.map{|arg| arg.to_s.encode(Encoding.default_external)}
+              a.map {|arg| arg.to_s.encode(Encoding.default_external)}
             rescue Encoding::UndefinedConversionError => e
               STDERR.cucumber_puts("WARNING: #{e.message}")
               a

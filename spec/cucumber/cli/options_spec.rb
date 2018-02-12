@@ -122,21 +122,21 @@ module Cucumber
 
         context 'handling multiple formatters' do
           it 'catches multiple command line formatters using the same stream' do
-            expect{ options.parse!(prepare_args('-f pretty -f progress')) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+            expect { options.parse!(prepare_args('-f pretty -f progress')) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'catches multiple profile formatters using the same stream' do
             given_cucumber_yml_defined_as({'default' => '-f progress -f pretty'})
             options = Options.new(output_stream, error_stream, :default_profile => 'default')
 
-            expect{ options.parse!(%w{}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+            expect { options.parse!(%w{}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'profiles does not affect the catching of multiple command line formatters using the same stream' do
             given_cucumber_yml_defined_as({'default' => '-q'})
             options = Options.new(output_stream, error_stream, :default_profile => 'default')
 
-            expect{ options.parse!(%w{-f progress -f pretty}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+            expect { options.parse!(%w{-f progress -f pretty}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'merges profile formatters and command line formatters' do
@@ -167,7 +167,7 @@ module Cucumber
           end
 
           it 'raise exception for inconsistent tag limits' do
-            expect{ after_parsing('--tags @foo:2 --tags @foo:3') }.to raise_error(RuntimeError, 'Inconsistent tag limits for @foo: 2 and 3')
+            expect { after_parsing('--tags @foo:2 --tags @foo:3') }.to raise_error(RuntimeError, 'Inconsistent tag limits for @foo: 2 and 3')
           end
         end
 
@@ -240,7 +240,7 @@ module Cucumber
           it 'raise exceptions for inconsistent tag limits' do
             given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
 
-            expect{ options.parse!(%w[--tags @bar:3 -p baz]) }.to raise_error(RuntimeError, 'Inconsistent tag limits for @bar: 3 and 2')
+            expect { options.parse!(%w[--tags @bar:3 -p baz]) }.to raise_error(RuntimeError, 'Inconsistent tag limits for @bar: 3 and 2')
           end
 
           it 'only takes the paths from the original options, and disgregards the profiles' do

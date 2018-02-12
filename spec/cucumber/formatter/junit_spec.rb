@@ -75,7 +75,7 @@ module Cucumber
           FEATURE
 
           it 'raises an exception' do
-            expect(->{ run_defined_feature }).to raise_error(Junit::UnNamedFeatureError)
+            expect(-> { run_defined_feature }).to raise_error(Junit::UnNamedFeatureError)
           end
         end
 

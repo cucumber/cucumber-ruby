@@ -183,8 +183,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
       describe 'hooks' do
         it 'finds before hooks' do
-          fish = dsl.Before('@fish'){}
-          meat = dsl.Before('@meat'){}
+          fish = dsl.Before('@fish') {}
+          meat = dsl.Before('@meat') {}
 
           scenario = double('Scenario')
 
