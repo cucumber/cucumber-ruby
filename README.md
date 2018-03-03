@@ -31,6 +31,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 * Ruby 2.2
 * JRuby 9.1
 
+For Ruby 2.1 support, please lock `cucumber-ruby` to version `3.0.1` in your gemfile.
+
 ## Code of Conduct
 
 Everyone interacting in this codebase and issue tracker is expected to follow the Cucumber [code of conduct](https://github.com/cucumber/cucumber/blob/master/CODE_OF_CONDUCT.md).
