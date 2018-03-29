@@ -99,3 +99,25 @@ Feature: Usage formatter
         11 steps (11 skipped)
 
         """
+    
+    Scenario: Run with --format stepdefs when some steps are undefined
+      Given a file named "features/calculator.feature" with:
+      """
+      Feature: Calculator
+        Scenario: Adding numbers
+          When I add 4 and 5
+          Then I should get 9
+      """
+      When I run `cucumber -f stepdefs features/calculator.feature`
+      Then it should pass with:
+      """
+      You can implement step definitions for undefined steps with these snippets:
+
+      When("I add {int} and {int}") do |int, int2|
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+
+      Then("I should get {int}") do |int|
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+      """

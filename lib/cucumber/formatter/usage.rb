@@ -38,6 +38,8 @@ module Cucumber
         test_step = event.test_step
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         step_match = @matches[test_step.source]
+
+        unless step_match.nil?
         step_definition = step_match.step_definition
         stepdef_key = StepDefKey.new(step_definition.expression.to_s, step_definition.location)
         unless @stepdef_to_match[stepdef_key].map { |key| key[:location] }.include? test_step.location
@@ -51,6 +53,8 @@ module Cucumber
             duration: duration
           }
         end
+        end
+
         super
       end
 
