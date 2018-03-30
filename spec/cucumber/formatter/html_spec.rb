@@ -571,20 +571,20 @@ module Cucumber
     describe Html::SnippetExtractor do
         describe '#snippet' do
           let(:instance) { Html::SnippetExtractor.new }
-      
+
           context 'when the error string is frozen' do
             before { Html::SnippetExtractor.class_variable_set(:@@converter, Html::SnippetExtractor::NullConverter.new) }
 
             context 'the error line doesnt end with a colon and a line number' do
               let(:error_line) { 'path/to/file'.freeze }
               let(:error) { [error_line, nil] }
-      
+
               it do
                 expect { instance.snippet(error) }.not_to raise_error
               end
             end
           end
         end
-      end
+    end
   end
 end
