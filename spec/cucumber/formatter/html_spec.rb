@@ -571,7 +571,7 @@ module Cucumber
     describe Html::SnippetExtractor do
       describe '#snippet' do
         let(:instance) { Html::SnippetExtractor.new }
-        
+
         context 'when the error string is frozen' do
           before { Html::SnippetExtractor.class_variable_set(:@@converter, Html::SnippetExtractor::NullConverter.new) }
 
