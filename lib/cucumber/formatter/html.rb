@@ -567,7 +567,7 @@ module Cucumber
           highlighted = @@converter.convert(raw_code, false)
 
           if @@converter.is_a? NullConverter
-            highlighted = String.new(highlighted) # Ensure that a "can't modify frozen String" RuntimeError isn't raised when frozen_string_literal is enabled.
+            highlighted = String.new(highlighted) if highlighted.frozen? # Ensure that a "can't modify frozen String" RuntimeError isn't raised when frozen_string_literal is enabled.
             highlighted << "\n<span class=\"comment\"># gem install syntax to get syntax highlighting</span>"
           end
 
