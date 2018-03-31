@@ -579,7 +579,7 @@ module Cucumber
             let(:error_line) { 'path/to/file'.freeze }
             let(:error) { [error_line, nil] }
 
-            it do
+            it 'doesn\'t raise an error' do
               expect { instance.snippet(error) }.not_to raise_error
             end
           end
