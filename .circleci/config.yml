@@ -11,9 +11,9 @@ jobs:
       - checkout
       - run: git remote add cucumber-pro git@git.cucumber.pro:cucumber-ruby.git
       - run: git push --force cucumber-pro $CIRCLE_BRANCH
-  "ruby-2.4.1":
+  "ruby-2.5.0":
     docker:
-       - image: circleci/ruby:2.4.1
+       - image: circleci/ruby:2.5.0
     working_directory: ~/repo
     steps:
       - checkout
@@ -32,9 +32,9 @@ jobs:
           name: Run Rake
           command: bundle exec rake
 
-  "ruby-2.3.5":
+  "ruby-2.4.3":
     docker:
-       - image: circleci/ruby:2.3.5
+       - image: circleci/ruby:2.4.3
     working_directory: ~/repo
     steps:
       - checkout
@@ -53,9 +53,9 @@ jobs:
           name: Run Rake
           command: bundle exec rake
 
-  "ruby-2.2.8":
+  "ruby-2.3.6":
     docker:
-       - image: circleci/ruby:2.2.8
+       - image: circleci/ruby:2.3.6
     working_directory: ~/repo
     steps:
       - checkout
@@ -74,9 +74,30 @@ jobs:
           name: Run Rake
           command: bundle exec rake
 
-  "jruby-9.1.13.0":
+  "ruby-2.2.9":
     docker:
-       - image: jruby:9.1.13.0-jdk-alpine
+       - image: circleci/ruby:2.2.9
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Run Rake
+          command: bundle exec rake
+
+  "jruby-9.1.16.0":
+    docker:
+       - image: jruby:9.1.16.0-jdk-alpine
     working_directory: ~/repo
     steps:
       - checkout
@@ -100,8 +121,9 @@ workflows:
   build:
     jobs:
       # Keep lowest ruby-* version in sync with .cucumber.gemspec & .rubocop.yml
-      - "ruby-2.4.1"
-      - "ruby-2.3.5"
-      - "ruby-2.2.8"
-      - "jruby-9.1.13.0"
+      - "ruby-2.5.0"
+      - "ruby-2.4.3"
+      - "ruby-2.3.6"
+      - "ruby-2.2.9"
+      - "jruby-9.1.16.0"
       - publish
