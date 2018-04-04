@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_test', '>= 0.1.2'
 
   s.add_development_dependency 'aruba', '~> 0.6.1'
-  s.add_development_dependency 'bundler', '~> 1.16.0'
   s.add_development_dependency 'json', '~> 1.8.6'
   s.add_development_dependency 'nokogiri', '~> 1.8.1'
   s.add_development_dependency 'pry'
