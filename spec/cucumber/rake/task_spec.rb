@@ -7,6 +7,15 @@ require 'rake'
 module Cucumber
   module Rake
     describe Task do
+      describe '@task_name' do
+        context 'has read access to task name' do
+          it { expect(subject.respond_to? :task_name).to be true }
+        end
+        context 'has no write access to task name' do
+          it { expect(subject.respond_to? "#{:task_name}=").to be false }
+        end
+      end
+
       describe '#cucumber_opts' do
         before { subject.cucumber_opts = opts }
 
