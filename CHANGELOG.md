@@ -10,7 +10,33 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...master) (Not released)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...master) (Not released)
+
+### Added
+
+* N/A
+
+### Changed
+
+* N/A
+
+### Deprecated
+
+* N/A
+
+### Removed
+
+* N/A
+
+### Fixed
+
+* N/A
+
+### Improved
+
+* N/A
+
+## [3.1.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...v3.1.1) (2018-05-11)
 
 ### Added
 
@@ -68,7 +94,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Fix Style/AccessorMethodName ([#1228](https://github.com/cucumber/cucumber-ruby/pull/1228) [@jaysonesmith](https://github.com/jaysonesmith))
 * Fix Lint/IneffectiveAccessModifier ([#1227](https://github.com/cucumber/cucumber-ruby/pull/1227) [@jaysonesmith](https://github.com/jaysonesmith))
 
-## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
+## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...v3.1.0) (2017-11-28)
 
 ### Added
 
