@@ -35,6 +35,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 * Fixed lengthy stacktrace when running `cucumber -f stepdefs` when steps aren't defined. ([#1286](https://github.com/cucumber/cucumber-ruby/pull/1286) [@xtrasimplicity](https://github.com/xtrasimplicity))
 * Fixed an error with HTML snippet generation when `frozen_string_literal` is enabled and the `Syntax` gem is not installed. ([#1287](https://github.com/cucumber/cucumber-ruby/pull/1287) [@xtrasimplicity](https://github.com/xtrasimplicity))
+* Make --fail-fast play nice with --retry ([#1283](https://github.com/cucumber/cucumber-ruby/pull/1283) [@yrral86](https://github.com/yrral86))
 
 ### Improved
 
