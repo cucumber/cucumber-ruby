@@ -25,7 +25,7 @@ Where to get more info:
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
 ## Supported platforms
-
+* Ruby 2.5
 * Ruby 2.4
 * Ruby 2.3
 * Ruby 2.2
