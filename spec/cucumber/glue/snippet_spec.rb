@@ -163,8 +163,8 @@ module Cucumber
           ))
 
           expect(snippet.to_s).to eq unindented(%{
-          Given("I have {float} {cucumis} in my belly") do |float, cucumis|
-          # Given("I have {float} {veg} in my belly") do |float, veg|
+          Given('I have {float} {cucumis} in my belly') do |float, cucumis|
+          # Given('I have {float} {veg} in my belly') do |float, veg|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
