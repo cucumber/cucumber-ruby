@@ -31,7 +31,7 @@ Feature: Using star notation instead of Given/When/Then
       """
       You can implement step definitions for undefined steps with these snippets:
 
-      Given("I have some cukes") do
+      Given('I have some cukes') do
         pending # Write code here that turns the phrase above into concrete actions
       end
       """

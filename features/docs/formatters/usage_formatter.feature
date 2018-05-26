@@ -113,11 +113,11 @@ Feature: Usage formatter
       """
       You can implement step definitions for undefined steps with these snippets:
 
-      When("I add {int} and {int}") do |int, int2|
+      When('I add {int} and {int}') do |int, int2|
         pending # Write code here that turns the phrase above into concrete actions
       end
 
-      Then("I should get {int}") do |int|
+      Then('I should get {int}') do |int|
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
