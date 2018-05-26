@@ -20,19 +20,19 @@ Feature: Snippets
     When I run `cucumber features/undefined_steps.feature -s`
     Then the output should contain:
       """
-      Given("a Doc String") do |string|
+      Given('a Doc String') do |string|
         pending # Write code here that turns the phrase above into concrete actions
       end
 
-      When("{int} simple when step") do |int|
+      When('{int} simple when step') do |int|
         pending # Write code here that turns the phrase above into concrete actions
       end
 
-      When("another {string} step") do |string|
+      When('another {string} step') do |string|
         pending # Write code here that turns the phrase above into concrete actions
       end
 
-      Then("a simple then step") do
+      Then('a simple then step') do
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
@@ -49,8 +49,31 @@ Feature: Snippets
     When I run `cucumber features/undefined_steps.feature -s`
     Then the output should contain:
       """
-      Given("a table") do |table|
+      Given('a table') do |table|
         # table is a Cucumber::MultilineArgument::DataTable
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+      """
+
+  Scenario: Escaped characters
+    Given a file named "features/snippets.feature" with:
+      """
+      Feature: Snippets
+
+        Scenario: So many snippets
+          Given a step with (parentheses)
+          And another step with {brackets}
+      """
+    When I run `cucumber features/snippets.feature`
+    Then it should pass with:
+      """
+      You can implement step definitions for undefined steps with these snippets:
+
+      Given('a step with \(parentheses)') do
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+
+      Given('another step with \{brackets}') do
         pending # Write code here that turns the phrase above into concrete actions
       end
       """

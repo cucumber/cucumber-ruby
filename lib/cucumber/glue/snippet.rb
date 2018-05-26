@@ -88,7 +88,7 @@ module Cucumber
         def to_s
           header = generated_expressions.each_with_index.map do |expr, i|
             prefix = i == 0 ? '' : '# '
-            "#{prefix}#{code_keyword}(\"#{expr.source}\") do#{parameters(expr)}"
+            "#{prefix}#{code_keyword}('#{expr.source}') do#{parameters(expr)}"
           end.join("\n")
 
           body = String.new
