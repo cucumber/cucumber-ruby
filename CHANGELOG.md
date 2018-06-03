@@ -10,7 +10,33 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...master) (Not released)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...master) (Not released)
+
+### Added
+
+* N/A
+
+### Changed
+
+* N/A
+
+### Deprecated
+
+* N/A
+
+### Removed
+
+* N/A
+
+### Fixed
+
+* N/A
+
+### Improved
+
+* N/A
+
+## [3.1.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...v3.1.1) (2018-05-11)
 
 ### Added
 
@@ -32,7 +58,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* Make --fail-fast play nice with --retry ([#1283](https://github.com/cucumber/cucumber-ruby/pull/1283) [@yrral86](https://github.com/yrral86))
+* Make `--fail-fast` play nice with `--retry` ([#1283](https://github.com/cucumber/cucumber-ruby/pull/1283) [@yrral86](https://github.com/yrral86))
 * Fix incompatible encodings error in JUnit formatter ([#1244](https://github.com/cucumber/cucumber-ruby/pull/1244) [@NickAb](https://github.com/NickAb)) (except on JRuby, see [#1259](https://github.com/cucumber/cucumber-ruby/pull/1259))
 * Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 * Fixed lengthy stacktrace when running `cucumber -f stepdefs` when steps aren't defined. ([#1286](https://github.com/cucumber/cucumber-ruby/pull/1286) [@xtrasimplicity](https://github.com/xtrasimplicity))
@@ -42,7 +68,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 * N/A
 
-## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
+## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...v3.1.0) (2017-11-28)
 
 ### Added
 
