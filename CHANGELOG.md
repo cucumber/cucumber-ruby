@@ -45,6 +45,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 * Add Rubocop to default Rake task ([#1256](https://github.com/cucumber/cucumber-ruby/pull/1256) [@jaysonesmith](https://github.com/jaysonesmith))
+* Upgraded `cucumber-expressions` dependency to ~> 6.0.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
+* Upgraded to `gherkin` 5.1.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Deprecated
 
@@ -64,35 +66,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
-* Fix Spacing before comma, in lambda, and array literal brackets ([#1277](https://github.com/cucumber/cucumber-ruby/pull/1277) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/Space cops: around operators and before block braces ([#1276](https://github.com/cucumber/cucumber-ruby/pull/1276) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/IndentHeredoc, Consistency, IndentationWidth, and new violations ([#1269](https://github.com/cucumber/cucumber-ruby/pull/1269) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Multiline Violations: Braces, Blocks, Method call work, etc. ([#1271](https://github.com/cucumber/cucumber-ruby/pull/1271) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/EmptyLinesAroundClassBody ([#1264](https://github.com/cucumber/cucumber-ruby/pull/1264) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/SpaceAfterComma ([#1272](https://github.com/cucumber/cucumber-ruby/pull/1272) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/SpaceAroundEqualsInParameterDefault & Layout/SpaceAroundKeyword ([#1273](https://github.com/cucumber/cucumber-ruby/pull/1273) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/IndentArray & Layout/IndentHash ([#1268](https://github.com/cucumber/cucumber-ruby/pull/1268) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/EmptyLinesAroundModuleBody ([#1266](https://github.com/cucumber/cucumber-ruby/pull/1266) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/EmptyLinesAroundBlockBody ([#1263](https://github.com/cucumber/cucumber-ruby/pull/1263) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix: Layout/EmptyLines, ...AroundAccessModifier, ...AroundArguments, ...AroundExceptionHandlingKeywords ([#1262](https://github.com/cucumber/cucumber-ruby/pull/1262) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/LeadingCommentSpace auto ([#1270](https://github.com/cucumber/cucumber-ruby/pull/1270) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/ExtraSpacing ([#1267](https://github.com/cucumber/cucumber-ruby/pull/1267) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/EmptyLineAfterMagicComment ([#1255](https://github.com/cucumber/cucumber-ruby/pull/1255) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/DotPosition ([#1254](https://github.com/cucumber/cucumber-ruby/pull/1254) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/BlockEndNewline ([#1253](https://github.com/cucumber/cucumber-ruby/pull/1253) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Ordered/Dependencies ([#1251](https://github.com/cucumber/cucumber-ruby/pull/1251) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Gemspec/RequiredRubyVersion ([#1252](https://github.com/cucumber/cucumber-ruby/pull/1252) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Layout/EmptyLineBetweenDefs ([#1257](https://github.com/cucumber/cucumber-ruby/pull/1257) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Bundler/OrderedGems ([#1250](https://github.com/cucumber/cucumber-ruby/pull/1250) [@jaysonesmith](https://github.com/jaysonesmith))
-* Update Rubocop version to 0.52.1 and redo rubocop_todo.yml ([#1246](https://github.com/cucumber/cucumber-ruby/pull/1246) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Style/BlockDelimiters ([#1224](https://github.com/cucumber/cucumber-ruby/pull/1224) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Performance/RedundantBlockCall ([#1220](https://github.com/cucumber/cucumber-ruby/pull/1220) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Style/AlignParameters ([#1221](https://github.com/cucumber/cucumber-ruby/pull/1221) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Style/AsciiComments ([#1222](https://github.com/cucumber/cucumber-ruby/pull/1222) [@jaysonesmith](https://github.com/jaysonesmith))
-* Exclude Style/AsciiIdentifiers ([#1223](https://github.com/cucumber/cucumber-ruby/pull/1223) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Lint/HandleExceptions ([#1226](https://github.com/cucumber/cucumber-ruby/pull/1226) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Style/AccessorMethodName ([#1228](https://github.com/cucumber/cucumber-ruby/pull/1228) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix Lint/IneffectiveAccessModifier ([#1227](https://github.com/cucumber/cucumber-ruby/pull/1227) [@jaysonesmith](https://github.com/jaysonesmith))
+* N/A
 
 ## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...v3.1.0) (2017-11-28)
 
