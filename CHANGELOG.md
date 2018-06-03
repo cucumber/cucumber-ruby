@@ -19,6 +19,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 * Add Rubocop to default Rake task ([#1256](https://github.com/cucumber/cucumber-ruby/pull/1256) [@jaysonesmith](https://github.com/jaysonesmith))
+* Upgraded `cucumber-expressions` dependency to ~> 6.0.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
+* Upgraded to `gherkin` 5.1.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Deprecated
 
