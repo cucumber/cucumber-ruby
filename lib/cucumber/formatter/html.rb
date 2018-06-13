@@ -464,7 +464,7 @@ module Cucumber
       end
 
       def build_step(keyword, step_match, _status)
-        step_name = step_match.format_args(lambda{ |param| %{<span class="param">#{param}</span>} })
+        step_name = step_match.format_args(lambda { |param| %{<span class="param">#{param}</span>} })
         builder.div(:class => 'step_name') do |div|
           builder.span(keyword, :class => 'keyword')
           builder.span(:class => 'step val') do |name|
@@ -528,11 +528,11 @@ module Cucumber
       def print_stat_string(_features)
         string = String.new
         string << dump_count(@runtime.scenarios.length, 'scenario')
-        scenario_count = print_status_counts{ |status| @runtime.scenarios(status) }
+        scenario_count = print_status_counts { |status| @runtime.scenarios(status) }
         string << scenario_count if scenario_count
         string << '<br />'
         string << dump_count(@runtime.steps.length, 'step')
-        step_count = print_status_counts{ |status| @runtime.steps(status) }
+        step_count = print_status_counts { |status| @runtime.steps(status) }
         string << step_count if step_count
       end
 

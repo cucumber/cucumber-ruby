@@ -50,12 +50,12 @@ module Cucumber
 
         it 'should be able to be accessed multiple times' do
           @table.symbolic_hashes
-          expect{ @table.symbolic_hashes }.to_not raise_error
+          expect { @table.symbolic_hashes }.to_not raise_error
         end
 
         it 'should not interfere with use of #hashes' do
           @table.symbolic_hashes
-          expect{ @table.hashes }.to_not raise_error
+          expect { @table.hashes }.to_not raise_error
         end
       end
 
