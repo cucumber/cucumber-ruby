@@ -30,7 +30,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* Support ParameterType with empty capture group.
+  ([#404](https://github.com/cucumber/cucumber/issues/404)
+   [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Improved
 

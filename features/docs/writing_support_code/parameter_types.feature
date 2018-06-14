@@ -73,3 +73,40 @@ Feature: Parameter Types
       """
     When I run `cucumber features/foo.feature`
     Then it should pass
+
+  Scenario: Parameter type with group nested in optional group
+    Given a file named "features/support/parameter_types.rb" with:
+      """
+      ParameterType(
+        name: "Employer",
+        regexp: /Employer(?: "([^"]*)")?/,
+        transformer: -> (name = nil) do
+          name || 'Unnamed'
+        end
+      )
+      
+      ParameterType(
+        name: 'person',
+        regexp: /[A-Z]\w+/,
+        transformer: -> (name) { Person.new(name) }
+      )
+      """
+    And a file named "features/employees.feature" with:
+      """
+      Feature: Employees
+        Scenario: Unnamed
+          Given the Employer
+          Then the name should be "Unnamed"
+      """
+    And a file named "features/step_definitions/employee_steps.rb" with:
+      """
+      Given "the {Employer}" do |name|
+        @name = name
+      end
+
+      Given "the name should be {string}" do |name|
+        expect(name).to eq(@name)
+      end
+      """
+    When I run `cucumber features/employees.feature --strict`
+    Then it should pass
