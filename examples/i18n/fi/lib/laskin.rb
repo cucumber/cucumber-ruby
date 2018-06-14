@@ -5,7 +5,7 @@ class Laskin
   end
 
   def summaa
-    @args.inject(0) {|n, sum| sum + n}
+    @args.inject(0) { |n, sum| sum + n }
   end
 
   def jaa

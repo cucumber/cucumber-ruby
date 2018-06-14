@@ -95,32 +95,32 @@ module Cucumber
 
         @args.options do |opts|
           opts.banner = banner
-          opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) {|lib| require_files(lib) }
+          opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
           if Cucumber::JRUBY
-            opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
+            opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) }
           end
 
-          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
+          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) { |v| set_option :retry, v.to_i }
           opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
-          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| language lang }
+          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) { |lang| language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
           opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
             add_option :formats, [*parse_formats(v), @out_stream]
           end
-          opts.on('--init', *init_msg) {|v| initialize_project }
-          opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| out_stream v }
-          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_tag v }
-          opts.on('-n NAME', '--name NAME', *name_msg) {|v| add_option :name_regexps, /#{v}/ }
-          opts.on('-e', '--exclude PATTERN', *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
-          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
-          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| disable_profile_loading }
-          opts.on('-c', '--[no-]color', *color_msg) {|v| color v }
+          opts.on('--init', *init_msg) { |v| initialize_project }
+          opts.on('-o', '--out [FILE|DIR]', *out_msg) { |v| out_stream v }
+          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) { |v| add_tag v }
+          opts.on('-n NAME', '--name NAME', *name_msg) { |v| add_option :name_regexps, /#{v}/ }
+          opts.on('-e', '--exclude PATTERN', *exclude_msg) { |v| add_option :excludes, Regexp.new(v) }
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) { |v| add_profile v }
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) { |v| disable_profile_loading }
+          opts.on('-c', '--[no-]color', *color_msg) { |v| color v }
           opts.on('-d', '--dry-run', *dry_run_msg) { set_dry_run_and_duration }
           opts.on('-m', '--no-multiline', "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
           opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
           opts.on('-i', '--no-snippets', "Don't print snippets for pending steps.") { set_option :snippets, false }
-          opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) {|v| set_option :snippet_type, v.to_sym }
+          opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) { |v| set_option :snippet_type, v.to_sym }
           opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
           opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
@@ -131,7 +131,7 @@ module Cucumber
           opts.on('-w', '--wip', 'Fail if there are any passing scenarios.') { set_option :wip }
           opts.on('-v', '--verbose', 'Show the files and features loaded.') { set_option :verbose }
           opts.on('-g', '--guess', 'Guess best match for Ambiguous steps.') { set_option :guess }
-          opts.on('-l', '--lines LINES', *lines_msg) {|lines| set_option :lines, lines }
+          opts.on('-l', '--lines LINES', *lines_msg) { |lines| set_option :lines, lines }
           opts.on('-x', '--expand', 'Expand Scenario Outline Tables in output.') { set_option :expand }
 
           opts.on('--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
@@ -351,7 +351,7 @@ TEXT
       end
 
       def require_jars(jars)
-        Dir["#{jars}/**/*.jar"].each {|jar| require jar}
+        Dir["#{jars}/**/*.jar"].each { |jar| require jar }
       end
 
       def language(lang)

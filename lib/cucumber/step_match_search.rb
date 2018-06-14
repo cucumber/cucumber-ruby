@@ -35,16 +35,16 @@ module Cucumber
       private
 
       def best_matches(_step_name, step_matches) #:nodoc:
-        no_groups      = step_matches.select {|step_match| step_match.args.empty?}
-        max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
-        top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
+        no_groups      = step_matches.select { |step_match| step_match.args.empty? }
+        max_arg_length = step_matches.map { |step_match| step_match.args.length }.max
+        top_groups     = step_matches.select { |step_match| step_match.args.length == max_arg_length }
 
         if no_groups.any?
           longest_regexp_length = no_groups.map(&:text_length).max
-          no_groups.select {|step_match| step_match.text_length == longest_regexp_length }
+          no_groups.select { |step_match| step_match.text_length == longest_regexp_length }
         elsif top_groups.any?
-          shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } }.min
-          top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } == shortest_capture_length }
+          shortest_capture_length = top_groups.map { |step_match| step_match.args.inject(0) { |sum, c| sum + c.to_s.length } }.min
+          top_groups.select { |step_match| step_match.args.inject(0) { |sum, c| sum + c.to_s.length } == shortest_capture_length }
         else
           top_groups
         end

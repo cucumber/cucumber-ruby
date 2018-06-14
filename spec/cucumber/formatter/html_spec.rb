@@ -208,7 +208,7 @@ module Cucumber
 
           it { expect(@doc).to have_css_node('.feature .scenario.outline h4', /Fruit/) }
           it { expect(@doc).to have_css_node('.feature .scenario.outline h4', /Vegetables/) }
-          it { expect(@doc.css('.feature .scenario.outline h4').length).to eq 2}
+          it { expect(@doc.css('.feature .scenario.outline h4').length).to eq 2 }
           it { expect(@doc).to have_css_node('.feature .scenario.outline table', //) }
           it { expect(@doc).to have_css_node('.feature .scenario.outline table td', /carrots/) }
         end

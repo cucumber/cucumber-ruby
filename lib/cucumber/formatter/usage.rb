@@ -64,9 +64,9 @@ module Cucumber
         aggregate_info
 
         keys = if config.dry_run?
-                 @stepdef_to_match.keys.sort {|a, b| a.regexp_source <=> b.regexp_source}
+                 @stepdef_to_match.keys.sort { |a, b| a.regexp_source <=> b.regexp_source }
                else
-                 @stepdef_to_match.keys.sort {|a, b| a.mean_duration <=> b.mean_duration}.reverse
+                 @stepdef_to_match.keys.sort { |a, b| a.mean_duration <=> b.mean_duration }.reverse
                end
 
         keys.each do |stepdef_key|
@@ -112,7 +112,7 @@ module Cucumber
       end
 
       def max_stepdef_length
-        @stepdef_to_match.keys.flatten.map {|key| key.regexp_source.unpack('U*').length}.max
+        @stepdef_to_match.keys.flatten.map { |key| key.regexp_source.unpack('U*').length }.max
       end
 
       def max_step_length
@@ -128,7 +128,7 @@ module Cucumber
             key.mean_duration = 0
           else
             key.status = worst_status(steps.map { |step| step[:status] })
-            total_duration = steps.inject(0) {|sum, step| step[:duration] + sum}
+            total_duration = steps.inject(0) { |sum, step| step[:duration] + sum }
             key.mean_duration = total_duration / steps.length
           end
         end

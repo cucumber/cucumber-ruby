@@ -167,8 +167,8 @@ module Cucumber
     end
 
     def support_to_load
-      support_files = all_files_to_load.select {|f| f =~ %r{/support/} }
-      env_files = support_files.select {|f| f =~ %r{/support/env\..*} }
+      support_files = all_files_to_load.select { |f| f =~ %r{/support/} }
+      env_files = support_files.select { |f| f =~ %r{/support/env\..*} }
       other_files = support_files - env_files
       @options[:dry_run] ? other_files : env_files + other_files
     end
@@ -180,14 +180,14 @@ module Cucumber
         File.directory?(path) ? Dir["#{path}/**/*"] : path
       end.flatten.uniq
       remove_excluded_files_from(files)
-      files.reject! {|f| !File.file?(f)}
-      files.reject! {|f| File.extname(f) == '.feature' }
-      files.reject! {|f| f =~ /^http/}
+      files.reject! { |f| !File.file?(f) }
+      files.reject! { |f| File.extname(f) == '.feature' }
+      files.reject! { |f| f =~ /^http/ }
       files.sort
     end
 
     def step_defs_to_load
-      all_files_to_load.reject {|f| f =~ %r{/support/} }
+      all_files_to_load.reject { |f| f =~ %r{/support/} }
     end
 
     def formatter_factories
@@ -272,7 +272,7 @@ module Cucumber
     end
 
     def remove_excluded_files_from(files)
-      files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
+      files.reject! { |path| @options[:excludes].detect { |pattern| path =~ pattern } }
     end
 
     def require_dirs

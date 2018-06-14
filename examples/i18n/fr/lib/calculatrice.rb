@@ -5,6 +5,6 @@ class Calculatrice
   end
 
   def additionner
-    @args.inject(0) {|n, sum| sum + n}
+    @args.inject(0) { |n, sum| sum + n }
   end
 end

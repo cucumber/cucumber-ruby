@@ -39,7 +39,7 @@ module Cucumber
 
         def initialize(libs, cucumber_opts, feature_files)
           raise 'libs must be an Array when running in-process' unless Array === libs
-          libs.reverse.each {|lib| $LOAD_PATH.unshift(lib)}
+          libs.reverse.each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
             cucumber_opts +
             feature_files
@@ -161,7 +161,7 @@ module Cucumber
       end
 
       def cucumber_opts_with_profile #:nodoc:
-        Array(cucumber_opts).concat Array(@profile).flat_map {|p| ['--profile', p] }
+        Array(cucumber_opts).concat Array(@profile).flat_map { |p| ['--profile', p] }
       end
 
       def feature_files #:nodoc:
@@ -169,7 +169,7 @@ module Cucumber
       end
 
       def make_command_line_safe(list)
-        list.map {|string| string.gsub(' ', '\ ')}
+        list.map { |string| string.gsub(' ', '\ ') }
       end
     end
   end

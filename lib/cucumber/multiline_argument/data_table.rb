@@ -375,7 +375,7 @@ module Cucumber
       end
 
       def has_text?(text) #:nodoc:
-        raw.flatten.compact.detect {|cell_value| cell_value.index(text)}
+        raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 
       def cells_rows #:nodoc:
@@ -554,7 +554,7 @@ module Cucumber
         end
 
         def width
-          map {|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
+          map { |cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0 }.max
         end
       end
 

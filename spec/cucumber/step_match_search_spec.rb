@@ -43,8 +43,8 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 }
-        dsl.Given(/Three (.*) mice/) {|disability|}
-        dsl.Given(/Three blind (.*)/) {|animal|}
+        dsl.Given(/Three (.*) mice/) { |disability| }
+        dsl.Given(/Three blind (.*)/) { |animal| }
 
         expect(-> { search.call('Three blind mice').first } ).to raise_error(Ambiguous, /#{expected_error}/)
       end
@@ -59,37 +59,37 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three (.*) mice/'
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
 
 }
-          dsl.Given(/Three (.*) mice/) {|disability|}
-          dsl.Given(/Three cute (.*)/) {|animal|}
+          dsl.Given(/Three (.*) mice/) { |disability| }
+          dsl.Given(/Three cute (.*)/) { |animal| }
 
           expect(-> { search.call('Three cute mice').first } ).to raise_error(Ambiguous, /#{expected_error}/)
         end
 
         it 'does not raise Ambiguous error when multiple step definitions match' do
-          dsl.Given(/Three (.*) mice/) {|disability|}
-          dsl.Given(/Three (.*)/) {|animal|}
+          dsl.Given(/Three (.*) mice/) { |disability| }
+          dsl.Given(/Three (.*)/) { |animal| }
 
           expect(-> { search.call('Three blind mice').first } ).not_to raise_error
         end
 
         it 'picks right step definition when an equal number of capture groups' do
-          right  = dsl.Given(/Three (.*) mice/) {|disability|}
-          _wrong = dsl.Given(/Three (.*)/) {|animal|}
+          right  = dsl.Given(/Three (.*) mice/) { |disability| }
+          _wrong = dsl.Given(/Three (.*)/) { |animal| }
 
           expect(search.call('Three blind mice').first.step_definition).to eq right
         end
 
         it 'picks right step definition when an unequal number of capture groups' do
-          right  = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-          _wrong = dsl.Given(/Three (.*)/) {|animal|}
+          right  = dsl.Given(/Three (.*) mice ran (.*)/) { |disability| }
+          _wrong = dsl.Given(/Three (.*)/) { |animal| }
 
           expect(search.call('Three blind mice ran far').first.step_definition).to eq right
         end
 
         it 'picks most specific step definition when an unequal number of capture groups' do
-          _general      = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-          _specific     = dsl.Given(/Three blind mice ran far/) {; }
-          more_specific = dsl.Given(/^Three blind mice ran far$/) {; }
+          _general      = dsl.Given(/Three (.*) mice ran (.*)/) { |disability| }
+          _specific     = dsl.Given(/Three blind mice ran far/) { ; }
+          more_specific = dsl.Given(/^Three blind mice ran far$/) { ; }
 
           expect(search.call('Three blind mice ran far').first.step_definition).to eq more_specific
         end
@@ -98,8 +98,8 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
       # TODO: remove this - it's ... redundant
       # http://railsforum.com/viewtopic.php?pid=93881
       it "does not raise Redundant unless it's really redundant" do
-        dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a, b, c|}
-        dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a, b|}
+        dsl.Given(/^(.*) (.*) user named '(.*)'$/) { |a, b, c| }
+        dsl.Given(/^there is no (.*) user named '(.*)'$/) { |a, b| }
       end
     end
   end

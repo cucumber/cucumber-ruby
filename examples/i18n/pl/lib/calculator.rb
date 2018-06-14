@@ -5,7 +5,7 @@ class Calculator
   end
 
   def dodaj
-    @args.inject(0) {|n, sum| sum + n}
+    @args.inject(0) { |n, sum| sum + n }
   end
 
   def podziel

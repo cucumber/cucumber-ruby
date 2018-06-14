@@ -50,12 +50,12 @@ module Cucumber
 
         it 'should be able to be accessed multiple times' do
           @table.symbolic_hashes
-          expect {@table.symbolic_hashes}.to_not raise_error
+          expect { @table.symbolic_hashes }.to_not raise_error
         end
 
         it 'should not interfere with use of #hashes' do
           @table.symbolic_hashes
-          expect {@table.hashes}.to_not raise_error
+          expect { @table.hashes }.to_not raise_error
         end
       end
 
@@ -447,11 +447,11 @@ module Cucumber
 
         it 'should inspect missing and surplus cells' do
           t1 = DataTable.from([
-                                %w(name  male lastname swedish),
+                                %w(name male lastname swedish),
                                 %w(aslak true hellesøy false)
                               ])
           t2 = DataTable.from([
-                                %w(name    male   lastname   swedish),
+                                %w(name male lastname swedish),
                                 ['aslak', true, 'hellesøy', false]
                               ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
@@ -465,12 +465,12 @@ module Cucumber
 
         it 'should allow column mapping of target before diffing' do
           t1 = DataTable.from([
-                                %w(name  male),
+                                %w(name male),
                                 %w(aslak true)
                               ])
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
-                                %w(name    male),
+                                %w(name male),
                                 ['aslak', true]
                               ])
           t1.diff!(t2)
@@ -482,14 +482,14 @@ module Cucumber
 
         it 'should allow column mapping of argument before diffing' do
           t1 = DataTable.from([
-                                %w(name    male),
+                                %w(name male),
                                 ['aslak', true]
                               ])
           t1.map_column!('male') do
             'true'
           end
           t2 = DataTable.from([
-                                %w(name  male),
+                                %w(name male),
                                 %w(aslak true)
                               ])
           t2.diff!(t1)
@@ -501,13 +501,13 @@ module Cucumber
 
         it 'should allow header mapping before diffing' do
           t1 = DataTable.from([
-                                %w(Name  Male),
+                                %w(Name Male),
                                 %w(aslak true)
                               ])
           t1.map_headers!('Name' => 'name', 'Male' => 'male')
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
-                                %w(name    male),
+                                %w(name male),
                                 ['aslak', true]
                               ])
           t1.diff!(t2)
@@ -523,7 +523,7 @@ module Cucumber
                                 %w(2 1)
                               ])
           t2 = DataTable.from([
-                                %w(X  Y),
+                                %w(X Y),
                                 [2, 1]
                               ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
@@ -538,7 +538,7 @@ module Cucumber
         it 'should not allow mappings that match more than 1 column' do
           t1 = DataTable.from([
                                 %w(Cuke Duke),
-                                %w(Foo  Bar)
+                                %w(Foo Bar)
                               ])
           expect do
             t1.map_headers!(/uk/ => 'u')

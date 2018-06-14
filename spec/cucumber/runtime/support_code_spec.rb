@@ -7,7 +7,7 @@ module Cucumber
     let(:user_interface) { double('user interface') }
     subject { Runtime::SupportCode.new(user_interface, configuration) }
     let(:configuration) { Configuration.new(options) }
-    let(:options) { {}}
+    let(:options) { {} }
     let(:dsl) do
       @rb = subject.ruby
       Object.new.extend(RbSupport::RbDsl)
