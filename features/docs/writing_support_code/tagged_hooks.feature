@@ -22,8 +22,8 @@ Feature: Tagged hooks
           Given this step passes
 
           Examples:
-          | Value       |
-          | Irrelevant  |
+          | Value      |
+          | Irrelevant |
 
           @no-boom
           Examples:

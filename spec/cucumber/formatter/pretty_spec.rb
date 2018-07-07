@@ -278,7 +278,7 @@ OUTPUT
               Given this step <status>
               Examples:
               | status |
-              | passes  |
+              | passes |
             FEATURE
 
             define_steps do
