@@ -196,8 +196,7 @@ module Cucumber
           factory = formatter_class(format)
           yield factory,
                 formatter_options,
-                path_or_io,
-                Cli::Options.new(STDOUT, STDERR, @options)
+                path_or_io
         rescue Exception => e
           raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
         end

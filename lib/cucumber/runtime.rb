@@ -54,7 +54,6 @@ module Cucumber
     def initialize(configuration = Configuration.default)
       @configuration = Configuration.new(configuration)
       @support_code = SupportCode.new(self, @configuration)
-      @results = Formatter::LegacyApi::Results.new
     end
 
     # Allows you to take an existing runtime and change its configuration
@@ -82,14 +81,6 @@ module Cucumber
 
     def dry_run?
       @configuration.dry_run?
-    end
-
-    def scenarios(status = nil)
-      @results.scenarios(status)
-    end
-
-    def steps(status = nil)
-      @results.steps(status)
     end
 
     def unmatched_step_definitions
@@ -171,9 +162,6 @@ module Cucumber
       end
     end
 
-    require 'cucumber/formatter/legacy_api/adapter'
-    require 'cucumber/formatter/legacy_api/runtime_facade'
-    require 'cucumber/formatter/legacy_api/results'
     require 'cucumber/formatter/ignore_missing_messages'
     require 'cucumber/formatter/fail_fast'
     require 'cucumber/core/report/summary'
@@ -194,37 +182,24 @@ module Cucumber
 
     def formatters
       @formatters ||=
-        @configuration.formatter_factories do |factory, formatter_options, path_or_io, options|
-          create_formatter(factory, formatter_options, path_or_io, options)
+        @configuration.formatter_factories do |factory, formatter_options, path_or_io|
+          create_formatter(factory, formatter_options, path_or_io)
         end
     end
 
-    def create_formatter(factory, formatter_options, path_or_io, cli_options)
-      if !legacy_formatter?(factory)
-        if accept_options?(factory)
-          return factory.new(@configuration, formatter_options) if path_or_io.nil?
-          return factory.new(@configuration.with_options(out_stream: path_or_io),
-                             formatter_options)
-        else
-          return factory.new(@configuration) if path_or_io.nil?
-          return factory.new(@configuration.with_options(out_stream: path_or_io))
-        end
+    def create_formatter(factory, formatter_options, path_or_io)
+      if accept_options?(factory)
+        return factory.new(@configuration, formatter_options) if path_or_io.nil?
+        factory.new(@configuration.with_options(out_stream: path_or_io),
+                    formatter_options)
+      else
+        return factory.new(@configuration) if path_or_io.nil?
+        factory.new(@configuration.with_options(out_stream: path_or_io))
       end
-      results = Formatter::LegacyApi::Results.new
-      runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-      formatter = factory.new(runtime_facade, path_or_io, cli_options)
-      Formatter::LegacyApi::Adapter.new(
-        Formatter::IgnoreMissingMessages.new(formatter),
-        results, @configuration
-      )
     end
 
     def accept_options?(factory)
       factory.instance_method(:initialize).arity > 1
-    end
-
-    def legacy_formatter?(factory)
-      factory.instance_method(:initialize).arity > 2
     end
 
     def failure?

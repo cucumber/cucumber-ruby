@@ -21,7 +21,7 @@ module Cucumber
 
       def run_defined_feature
         define_steps
-        actual_runtime.visitor = report
+        actual_runtime.visitor = Fanout.new([@formatter])
 
         receiver = Test::Runner.new(event_bus)
         filters = [
@@ -39,15 +39,6 @@ module Cucumber
         event_bus.test_run_finished
       end
 
-      require 'cucumber/formatter/legacy_api/adapter'
-      def report
-        @report ||= LegacyApi::Adapter.new(
-          Fanout.new([@formatter]),
-          actual_runtime.results,
-          actual_runtime.configuration
-        )
-      end
-
       require 'cucumber/core/gherkin/document'
       def gherkin_doc
         Core::Gherkin::Document.new(self.class.feature_filename, gherkin)
@@ -55,10 +46,6 @@ module Cucumber
 
       def gherkin
         self.class.feature_content || raise('No feature content defined!')
-      end
-
-      def runtime
-        @runtime_facade ||= LegacyApi::RuntimeFacade.new(actual_runtime.results, actual_runtime.support_code, actual_runtime.configuration)
       end
 
       def actual_runtime
