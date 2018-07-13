@@ -10,11 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...master) (Not released)
-
-### Added
-
-* N/A
+## [3.1.2](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...v3.1.2) (2018-07-13)
 
 ### Changed
 
@@ -24,23 +20,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
    [#1108](https://github.com/cucumber/cucumber-ruby/issues/1108)
    [brasmusson](https://github.com/brasmusson))
 
-### Deprecated
-
-* N/A
-
-### Removed
-
-* N/A
-
 ### Fixed
 
 * Support ParameterType with empty capture group.
   ([#404](https://github.com/cucumber/cucumber/issues/404)
    [aslakhellesoy](https://github.com/aslakhellesoy))
-
-### Improved
-
-* N/A
 
 ## [3.1.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...v3.1.1) (2018-06-03)
 
