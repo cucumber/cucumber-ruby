@@ -198,7 +198,7 @@ module Cucumber
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
-                      "line": 8,
+                      "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:180"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]})
@@ -271,7 +271,7 @@ module Cucumber
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
-                      "line": 15,
+                      "line": 10,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:228"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]})
@@ -380,7 +380,7 @@ module Cucumber
                    "steps":
                     [{"keyword": "Then ",
                       "name": "the monkey eats bananas",
-                      "line": 22,
+                      "line": 16,
                       "comments": [{"value": "#step comment2",
                                     "line": 15}],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:309"},

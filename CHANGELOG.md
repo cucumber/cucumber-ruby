@@ -18,7 +18,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* N/A
+* Upgraded to `cucumber-core` 3.2.0
+* Change to use the gherkin step location in the Json formatter.
+  ([#1243](https://github.com/cucumber/cucumber-ruby/pull/1243),
+   [#1108](https://github.com/cucumber/cucumber-ruby/issues/1108)
+   [brasmusson](https://github.com/brasmusson))
 
 ### Deprecated
 
