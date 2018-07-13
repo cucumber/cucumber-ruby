@@ -107,14 +107,14 @@ ERB_YML
         end
 
         it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
-          given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' => '--format html'})
+          given_cucumber_yml_defined_as({'default' => '--require from/yml', 'json_report' => '--format json'})
 
           expected_message = <<-END_OF_MESSAGE
 Could not find profile: 'i_do_not_exist'
 
 Defined profiles in cucumber.yml:
   * default
-  * html_report
+  * json_report
 END_OF_MESSAGE
 
           expect(-> { config.parse!(%w{--profile i_do_not_exist}) }).to raise_error(ProfileNotFound, expected_message)
@@ -295,15 +295,15 @@ END_OF_MESSAGE
       end
 
       it 'accepts same --format options with same --out streams and keep only one' do
-        config.parse!(%w{--format html --out file --format pretty --format html --out file})
+        config.parse!(%w{--format json --out file --format pretty --format json --out file})
 
-        expect(config.formats).to eq [['pretty', {}, out], ['html', {}, 'file']]
+        expect(config.formats).to eq [['pretty', {}, out], ['json', {}, 'file']]
       end
 
       it 'accepts same --format options with different --out streams' do
-        config.parse!(%w{--format html --out file1 --format html --out file2})
+        config.parse!(%w{--format json --out file1 --format json --out file2})
 
-        expect(config.formats).to match_array([['html', {}, 'file1'], ['html', {}, 'file2']])
+        expect(config.formats).to match_array([['json', {}, 'file1'], ['json', {}, 'file2']])
       end
 
       it 'accepts --color option' do

@@ -12,7 +12,6 @@ module Cucumber
       INDENT = ' ' * 53
       # rubocop:disable Layout/MultilineOperationIndentation
       BUILTIN_FORMATS = {
-        'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
