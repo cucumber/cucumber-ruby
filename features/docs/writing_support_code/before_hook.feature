@@ -24,9 +24,9 @@ Feature: Before Hook
     When I run `cucumber`
     Then the output should contain:
       """
-        NAMES:
-        Feature name
-        Scenario name
+            NAMES:
+            Feature name
+            Scenario name
 
       """
 

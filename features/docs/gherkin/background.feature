@@ -368,9 +368,6 @@ Feature: Background
 
       Background: 
         Given this step is pending
-          TODO (Cucumber::Pending)
-          ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-          features/pending_background.feature:4:in `Given this step is pending'
 
       Scenario: pending background
         Then I should have '10' cukes

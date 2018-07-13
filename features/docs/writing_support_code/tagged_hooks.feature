@@ -38,8 +38,8 @@ Feature: Tagged hooks
       Feature: With and without hooks
       
         Scenario: using hook     # features/f.feature:2
-        boom (RuntimeError)
-        ./features/support/hooks.rb:2:in `Before'
+            boom (RuntimeError)
+            ./features/support/hooks.rb:2:in `Before'
           Given this step passes # features/step_definitions/steps.rb:1
       
       Failing Scenarios:
@@ -77,9 +77,9 @@ Feature: Tagged hooks
 
             Examples: 
               | Value      |
+              | Irrelevant |
               boom (RuntimeError)
               ./features/support/hooks.rb:2:in `Before'
-              | Irrelevant |
 
         Failing Scenarios:
         cucumber features/f.feature:14 # Scenario Outline: omitting hook on specified examples, Examples (#1)

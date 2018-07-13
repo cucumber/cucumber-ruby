@@ -34,8 +34,8 @@ Feature: Exceptions in Around Hooks
       Feature: 
 
         Scenario: 
-        this should be reported (RuntimeError)
-        ./features/support/env.rb:2:in `Around'
+            this should be reported (RuntimeError)
+            ./features/support/env.rb:2:in `Around'
       
       Failing Scenarios:
       cucumber features/test.feature:2

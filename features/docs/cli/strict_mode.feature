@@ -25,7 +25,7 @@ Feature: Strict mode
 
         Scenario: Missing
           Given this step passes
-            Undefined step: "this step passes" (Cucumber::Undefined)
+            Undefined step: "this step passes" (Cucumber::Core::Test::Result::Undefined)
             features/missing.feature:3:in `Given this step passes'
 
       Undefined Scenarios:
