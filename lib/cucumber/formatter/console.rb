@@ -110,13 +110,10 @@ module Cucumber
         msg.gsub(/.{1,#{max}}(?:\s|\Z)/) { ($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }.rstrip
       end
 
-      def collect_snippet_data(test_step, result)
+      def collect_snippet_data(test_step, ast_lookup)
         # collect snippet data for undefined steps
-        return if hook?(test_step)
-        keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
-        @previous_step_keyword = keyword
-        return unless result.undefined?
-        @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
+        keyword = ast_lookup.snippet_step_keyword(test_step)
+        @snippets_input << Console::SnippetData.new(keyword, test_step)
       end
 
       def print_snippets(options)
@@ -142,10 +139,12 @@ module Cucumber
         @io.flush
       end
 
-      def print_passing_wip(config, passed_test_cases)
+      def print_passing_wip(config, passed_test_cases, ast_lookup)
         return unless config.wip?
         messages = passed_test_cases.map do |test_case|
-          linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.keyword}: #{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+          scenario_source = ast_lookup.scenario_source(test_case)
+          keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+          linebreaks("#{test_case.location.on_line(test_case.location.lines.max)}:in `#{keyword}: #{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
         end
         do_print_passing_wip(messages)
       end
@@ -196,10 +195,6 @@ module Cucumber
         fmt = FORMATS[key]
         raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
         fmt
-      end
-
-      def hook?(test_step)
-        !test_step.source.last.respond_to?(:actual_keyword)
       end
 
       def element_messages(elements, status)

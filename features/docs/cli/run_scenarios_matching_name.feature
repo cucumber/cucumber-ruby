@@ -33,23 +33,6 @@ Feature: Run feature elements matching a name with --name/-n
             | b    |
       """
 
-  @todo-windows
-  Scenario: Matching Feature names
-    When I run `cucumber -q --name feature`
-    Then it should pass with:
-      """
-      Feature: first feature
-
-        Scenario: foo first
-          Given missing
-
-        Scenario: bar first
-          Given missing
-
-      2 scenarios (2 undefined)
-      2 steps (2 undefined)
-      """
-
   Scenario: Matching Scenario names
     When I run `cucumber -q --name foo`
     Then it should pass with:
@@ -86,20 +69,3 @@ Feature: Run feature elements matching a name with --name/-n
       2 steps (2 undefined)
       """
 
-  Scenario: Matching Example block names
-    When I run `cucumber -q --name quux`
-    Then it should pass with:
-      """
-      Feature: outline
-
-        Scenario Outline: baz outline
-          Given outline step <name>
-
-          Examples: quux example
-            | name |
-            | a    |
-            | b    |
-
-      2 scenarios (2 undefined)
-      2 steps (2 undefined)
-      """

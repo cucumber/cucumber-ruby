@@ -42,7 +42,7 @@ Feature: Ambiguous Steps
           
           You can run again with --guess to make Cucumber be more smart about it
            (Cucumber::Ambiguous)
-          features/ambiguous.feature:5:in `Then an ambiguous step'
+          features/ambiguous.feature:5:in `an ambiguous step'
 
     Failing Scenarios:
     cucumber features/ambiguous.feature:3 # Scenario: 

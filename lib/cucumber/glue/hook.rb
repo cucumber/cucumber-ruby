@@ -12,7 +12,7 @@ module Cucumber
         @registry = registry
         @tag_expressions = tag_expressions
         @proc = proc
-        @location = Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
+        @location = Cucumber::Core::Test::Location.from_source_location(*@proc.source_location)
         warn_for_old_style_tag_expressions(tag_expressions)
       end
 

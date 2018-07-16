@@ -6,7 +6,7 @@ require 'cucumber/formatter/console_counts'
 require 'cucumber/formatter/console_issues'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/duration_extractor'
-require 'cucumber/formatter/hook_query_visitor'
+require 'cucumber/formatter/ast_lookup'
 
 module Cucumber
   module Formatter
@@ -14,21 +14,23 @@ module Cucumber
     class Progress
       include Console
       include Io
-      attr_reader :runtime
-      attr_reader :config
+      attr_reader :config, :current_feature_uri
+      private :config, :current_feature_uri
 
       def initialize(config)
         @config = config
         @io = ensure_io(config.out_stream)
-        @previous_step_keyword = nil
         @snippets_input = []
         @total_duration = 0
         @matches = {}
         @pending_step_matches = []
         @failed_results = []
         @passed_test_cases = []
+        @current_feature_uri = ''
+        @gherkin_documents = {}
+        @ast_lookup = AstLookup.new(config)
         @counts = ConsoleCounts.new(config)
-        @issues = ConsoleIssues.new(config)
+        @issues = ConsoleIssues.new(config, @ast_lookup)
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
@@ -37,25 +39,25 @@ module Cucumber
       end
 
       def on_step_activated(event)
-        @matches[event.test_step.source] = event.step_match
+        @matches[event.test_step.to_s] = event.step_match
       end
 
-      def on_test_case_started(_event)
+      def on_test_case_started(event)
         unless @profile_information_printed
           do_print_profile_information(config.profiles) unless config.skip_profile_information? || config.profiles.nil? || config.profiles.empty?
           @profile_information_printed = true
         end
-        @previous_step_keyword = nil
+        @current_feature_uri = event.test_case.location.file
       end
 
       def on_test_step_finished(event)
         test_step = event.test_step
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        progress(result.to_sym) if !HookQueryVisitor.new(test_step).hook? || result.failed?
+        progress(result.to_sym) if !test_step.hook? || result.failed?
 
-        return if HookQueryVisitor.new(test_step).hook?
-        collect_snippet_data(test_step, result)
-        @pending_step_matches << @matches[test_step.source] if result.pending?
+        return if test_step.hook?
+        collect_snippet_data(test_step, @ast_lookup) if result.undefined?
+        @pending_step_matches << @matches[test_step.to_s] if result.pending?
         @failed_results << result if result.failed?
       end
 
@@ -74,12 +76,16 @@ module Cucumber
 
       private
 
+      def gherkin_document
+        @ast_lookup.gherkin_document(current_feature_uri)
+      end
+
       def print_summary
         print_elements(@pending_step_matches, :pending, 'steps')
         print_elements(@failed_results, :failed, 'steps')
         print_statistics(@total_duration, @config, @counts, @issues)
         print_snippets(config.to_hash)
-        print_passing_wip(config, @passed_test_cases)
+        print_passing_wip(config, @passed_test_cases, @ast_lookup)
       end
 
       CHARS = {

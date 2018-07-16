@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'cucumber/core/filter'
-require 'cucumber/core/ast/location'
+require 'cucumber/core/test/location'
 require 'cucumber/running_test_case'
 
 module Cucumber
@@ -18,7 +18,7 @@ module Cucumber
         end
 
         def test_case
-          init_scenario = Cucumber::Hooks.around_hook(@original_test_case.source) do |continue|
+          init_scenario = Cucumber::Hooks.around_hook do |continue|
             @runtime.begin_scenario(scenario)
             continue.call
             @runtime.end_scenario(scenario)

@@ -15,7 +15,7 @@ module Cucumber
           test_case, result = *event.attributes
           next if result.ok?(@config.strict)
           @failures[test_case.location.file] ||= []
-          @failures[test_case.location.file] << test_case.location.line
+          @failures[test_case.location.file] << test_case.location.lines.max
         end
         config.on_event :test_run_finished do
           next if @failures.empty?

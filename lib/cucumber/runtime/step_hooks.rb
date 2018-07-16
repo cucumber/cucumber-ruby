@@ -18,7 +18,7 @@ module Cucumber
       def after_step_hooks(test_step)
         @hooks.map do |hook|
           action = ->(*args) { hook.invoke('AfterStep', [args, test_step]) }
-          Hooks.after_step_hook(test_step.source, hook.location, &action)
+          Hooks.after_step_hook(test_step, hook.location, &action)
         end
       end
     end
