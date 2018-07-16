@@ -24,7 +24,6 @@ module Cucumber
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
-        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }
       # rubocop:enable Layout/MultilineOperationIndentation
