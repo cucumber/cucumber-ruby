@@ -19,7 +19,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 * Let the Pretty Formatter use events.
-  ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305),
+  ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305)
    [brasmusson](https://github.com/brasmusson))
 
 ### Deprecated
@@ -28,10 +28,14 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
+* Remove the Legacy API for Formatters.
+  ([#1230](https://github.com/cucumber/cucumber-ruby/pull/1230),
+   [#839](https://github.com/cucumber/cucumber-ruby/issues/839)
+   [brasmusson](https://github.com/brasmusson))
 * Remove the JSON Pretty Formatter (which was the same as the JSON formatter).
   ([brasmusson](https://github.com/brasmusson))
 * Remove the HTML Formatter.
-  ([#1306](https://github.com/cucumber/cucumber-ruby/pull/1306),
+  ([#1306](https://github.com/cucumber/cucumber-ruby/pull/1306)
    [brasmusson](https://github.com/brasmusson))
 
 ### Fixed

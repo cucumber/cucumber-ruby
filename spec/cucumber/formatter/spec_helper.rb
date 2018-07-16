@@ -49,10 +49,6 @@ module Cucumber
         self.class.feature_content || raise('No feature content defined!')
       end
 
-      def runtime
-        @runtime_facade ||= LegacyApi::RuntimeFacade.new(actual_runtime.results, actual_runtime.support_code, actual_runtime.configuration)
-      end
-
       def actual_runtime
         @runtime ||= Runtime.new(options)
       end

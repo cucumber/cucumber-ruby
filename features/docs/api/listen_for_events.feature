@@ -39,7 +39,7 @@ Feature: Listen for events
       """
       Feature:
         Scenario:
-          Given passing
+          Given this step passes
       """
     And the standard step definitions
     And a file named "features/support/my_listener.rb" with:
