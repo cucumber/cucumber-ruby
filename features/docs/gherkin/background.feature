@@ -35,14 +35,14 @@ Feature: Background
         Scenario Outline: passing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
 
         Scenario Outline: another passing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
       """
     And a file named "features/background_tagged_before_on_outline.feature" with:
       """
@@ -83,14 +83,14 @@ Feature: Background
         Scenario Outline: failing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
 
         Scenario Outline: another failing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
       """
     And a file named "features/pending_background.feature" with:
       """
@@ -148,8 +148,8 @@ Feature: Background
 
         Background:
           Given table
-            |a|b|
-            |c|d|
+            | a | b |
+            | c | d |
           And multiline string
             \"\"\"
             I'm a cucumber and I'm okay. 
@@ -158,8 +158,8 @@ Feature: Background
 
         Scenario: passing background
           Then the table should be
-            |a|b|
-            |c|d|
+            | a | b |
+            | c | d |
           Then the multiline string should be
             \"\"\"
             I'm a cucumber and I'm okay. 
@@ -168,8 +168,8 @@ Feature: Background
 
         Scenario: another passing background
           Then the table should be
-            |a|b|
-            |c|d|
+            | a | b |
+            | c | d |
           Then the multiline string should be
             \"\"\"
             I'm a cucumber and I'm okay. 
@@ -368,9 +368,6 @@ Feature: Background
 
       Background: 
         Given this step is pending
-          TODO (Cucumber::Pending)
-          ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-          features/pending_background.feature:4:in `Given this step is pending'
 
       Scenario: pending background
         Then I should have '10' cukes

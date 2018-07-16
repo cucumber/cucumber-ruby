@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/report/summary'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/console_counts'
@@ -16,18 +15,16 @@ module Cucumber
       include Console
       include Io
       attr_reader :runtime
-      attr_reader :config, :summary
+      attr_reader :config
 
       def initialize(config)
         @config, @io = config, ensure_io(config.out_stream)
         @previous_step_keyword = nil
         @snippets_input = []
         @total_duration = 0
-        @summary = Cucumber::Core::Report::Summary.new(config.event_bus)
         @matches = {}
         @pending_step_matches = []
         @failed_results = []
-        @failed_test_cases = []
         @passed_test_cases = []
         @counts = ConsoleCounts.new(config)
         @issues = ConsoleIssues.new(config)
@@ -64,7 +61,6 @@ module Cucumber
       def on_test_case_finished(event)
         test_case = event.test_case
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        @failed_test_cases << test_case if result.failed?
         @passed_test_cases << test_case if result.passed?
         @total_duration += DurationExtractor.new(result).result_duration
       end
@@ -81,15 +77,8 @@ module Cucumber
         print_elements(@pending_step_matches, :pending, 'steps')
         print_elements(@failed_results, :failed, 'steps')
         print_statistics(@total_duration, @config, @counts, @issues)
-        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
-          snippet_text(step_keyword, step_name, multiline_arg)
-        end
-        do_print_snippets(snippet_text_proc) if config.snippets? && summary.test_steps.total(:undefined) > 0
-        return unless config.wip?
-        messages = @passed_test_cases.map do |test_case|
-          linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
-        end
-        do_print_passing_wip(messages)
+        print_snippets(config.to_hash)
+        print_passing_wip(config, @passed_test_cases)
       end
 
       CHARS = {

@@ -29,13 +29,13 @@ Feature: Scenario outlines
           Given <state> without a table
           Given <other_state> without a table
         Examples: Rainbow colours
-          | state    | other_state |
-          | missing  | passing     |
-          | passing  | passing     |
-          | failing  | passing     |
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
       Examples:Only passing
-          | state    | other_state |
-          | passing  | passing     |
+          | state   | other_state |
+          | passing | passing     |
       """
     And a file named "features/step_definitions/steps.rb" with:
       """

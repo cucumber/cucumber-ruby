@@ -94,9 +94,6 @@ Feature: Cucumber --work-in-progress switch
         @pending
         Scenario: Pending
           Given this step is pending
-            TODO (Cucumber::Pending)
-            ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-            features/wip.feature:12:in `Given this step is pending'
 
       1 scenario (1 pending)
       1 step (1 pending)

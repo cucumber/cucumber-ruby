@@ -54,10 +54,6 @@ module Cucumber
         end.join("\n")
       end
 
-      def print_steps(status)
-        print_elements(runtime.steps(status), status, 'steps')
-      end
-
       def print_elements(elements, status, kind)
         return if elements.empty?
 
@@ -125,10 +121,10 @@ module Cucumber
 
       def print_snippets(options)
         return unless options[:snippets]
-        return if runtime.steps(:undefined).empty?
+        return if @snippets_input.empty?
 
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
-          runtime.snippet_text(step_keyword, step_name, multiline_arg)
+          snippet_text(step_keyword, step_name, multiline_arg)
         end
         do_print_snippets(snippet_text_proc)
       end
@@ -146,10 +142,12 @@ module Cucumber
         @io.flush
       end
 
-      def print_passing_wip(options)
-        return unless options[:wip]
-        passed_messages = element_messages(runtime.scenarios(:passed), :passed)
-        do_print_passing_wip(passed_messages)
+      def print_passing_wip(config, passed_test_cases)
+        return unless config.wip?
+        messages = passed_test_cases.map do |test_case|
+          linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.keyword}: #{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+        end
+        do_print_passing_wip(messages)
       end
 
       def do_print_passing_wip(passed_messages)
@@ -165,41 +163,13 @@ module Cucumber
         # no-op
       end
 
-      # define @delayed_messages = [] in your Formatter if you want to
-      # activate this feature
       def puts(*messages)
-        if @delayed_messages
-          @delayed_messages += messages
-        else
-          if @io
-            @io.puts
-            messages.each do |message|
-              @io.puts(format_string(message, :tag))
-            end
-            @io.flush
-          end
+        return unless @io
+        @io.puts
+        messages.each do |message|
+          @io.puts(format_string(message, :tag))
         end
-      end
-
-      def print_messages
-        @delayed_messages.each { |message| print_message(message) }
-        empty_messages
-      end
-
-      def print_table_row_messages
-        return if @delayed_messages.empty?
-        @io.print(format_string(@delayed_messages.join(', '), :tag).indent(2))
         @io.flush
-        empty_messages
-      end
-
-      def print_message(message)
-        @io.puts(format_string(message, :tag).indent(@indent))
-        @io.flush
-      end
-
-      def empty_messages
-        @delayed_messages = []
       end
 
       def print_profile_information

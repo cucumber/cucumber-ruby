@@ -399,22 +399,48 @@ module Cucumber
       end
 
       def to_s(options = {}) #:nodoc:
-        # TODO: factor out this code so we don't depend on such a big lump of old cruft
-        require 'cucumber/formatter/pretty'
-        require 'cucumber/formatter/legacy_api/adapter'
-        options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
-        io = StringIO.new
+        indentation = options.key?(:indent) ? options[:indent] : 2
+        prefixes = options.key?(:prefixes) ? options[:prefixes] : TO_S_PREFIXES
+        DataTablePrinter.new(self, indentation, prefixes).to_s
+      end
 
-        c = Cucumber::Term::ANSIColor.coloring?
-        Cucumber::Term::ANSIColor.coloring = options[:color]
-        runtime = Struct.new(:configuration).new(Configuration.new)
-        formatter = Formatter::Pretty.new(runtime, io, options)
-        formatter.instance_variable_set('@indent', options[:indent])
-        Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::Fanout.new([formatter]))
-        Cucumber::Term::ANSIColor.coloring = c
-        io.rewind
-        s = "\n" + io.read + (' ' * (options[:indent] - 2))
-        s
+      class DataTablePrinter #:nodoc:
+        include Cucumber::Gherkin::Formatter::Escaping
+        attr_reader :data_table, :indentation, :prefixes
+        private :data_table, :indentation, :prefixes
+
+        def initialize(data_table, indentation, prefixes)
+          @data_table = data_table
+          @indentation = indentation
+          @prefixes = prefixes
+        end
+
+        def to_s
+          leading_row = "\n"
+          end_indentation = indentation - 2
+          trailing_row = "\n" + (' ' * end_indentation)
+          table_rows = data_table.cell_matrix.map { |row| format_row(row) }
+          leading_row + table_rows.join("\n") + trailing_row
+        end
+
+        private
+
+        def format_row(row)
+          row_start = (' ' * indentation) + '| '
+          row_end = '|'
+          cells = row.map.with_index do |cell, i|
+            format_cell(cell, data_table.col_width(i))
+          end
+          row_start + cells.join('| ') + row_end
+        end
+
+        def format_cell(cell, col_width)
+          cell_text = escape_cell(cell.value.to_s)
+          cell_text_width = cell_text.unpack('U*').length
+          padded_text = cell_text + (' ' * (col_width - cell_text_width))
+          prefix = prefixes[cell.status]
+          "#{prefix}#{padded_text} "
+        end
       end
 
       def description_for_visitors

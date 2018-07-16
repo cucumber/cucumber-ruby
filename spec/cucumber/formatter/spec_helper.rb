@@ -21,7 +21,7 @@ module Cucumber
 
       def run_defined_feature
         define_steps
-        actual_runtime.visitor = report
+        actual_runtime.visitor = Fanout.new([@formatter])
 
         receiver = Test::Runner.new(event_bus)
         filters = [
@@ -35,17 +35,9 @@ module Cucumber
           Filters::ApplyAroundHooks.new(actual_runtime.support_code),
           Filters::PrepareWorld.new(actual_runtime)
         ]
-        compile [gherkin_doc], receiver, filters
+        event_bus.gherkin_source_read(gherkin_doc.uri, gherkin_doc.body)
+        compile [gherkin_doc], receiver, filters, event_bus
         event_bus.test_run_finished
-      end
-
-      require 'cucumber/formatter/legacy_api/adapter'
-      def report
-        @report ||= LegacyApi::Adapter.new(
-          Fanout.new([@formatter]),
-          actual_runtime.results,
-          actual_runtime.configuration
-        )
       end
 
       require 'cucumber/core/gherkin/document'
