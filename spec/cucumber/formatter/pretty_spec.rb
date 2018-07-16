@@ -15,7 +15,7 @@ module Cucumber
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
         end
 
         describe 'given a single feature' do
@@ -278,7 +278,7 @@ OUTPUT
               Given this step <status>
               Examples:
               | status |
-              | passes  |
+              | passes |
             FEATURE
 
             define_steps do
@@ -420,27 +420,29 @@ OUTPUT
                 | dummy |
                 #comment11
                 | dummy |
+                #comment12
             FEATURE
 
-            it 'includes the all comments except for data table rows in the output ' do
+            it 'includes the all comments in the output' do
               expect( @out.string ).to include <<OUTPUT
 #comment1
 Feature: 
 
   #comment2
   Background: 
-      #comment3
+    #comment3
     Given this step passes
 
   #comment4
   Scenario: 
-      #comment5
+    #comment5
     Given this step passes
+      #comment6
       | dummy |
 
   #comment7
   Scenario Outline: 
-      #comment8
+    #comment8
     Given this step passes
 
     #comment9
@@ -449,6 +451,7 @@ Feature:
       | dummy |
       #comment11
       | dummy |
+#comment12
 OUTPUT
             end
           end
@@ -459,7 +462,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {:no_multiline => true})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false, :no_multiline => true))
         end
 
         describe 'given a single feature' do
@@ -633,7 +636,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out))
         end
 
         describe 'given a single feature' do
@@ -722,7 +725,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {:source => true})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, :source => true))
         end
 
         describe 'given a single feature' do
@@ -752,15 +755,15 @@ OUTPUT
               Scenario Outline: Monkey eats a balanced diet # spec.feature:3
                 Given there are <Things>                    # spec.feature:4
                 Examples: Fruit
-                  Scenario: | apples |                          # spec.feature:8
-                    Given there are apples                      # spec.feature:8
-                  Scenario: | bananas |                         # spec.feature:9
-                    Given there are bananas                     # spec.feature:9
+                  Scenario: | apples |     # spec.feature:8
+                    Given there are apples # spec.feature:8
+                  Scenario: | bananas |     # spec.feature:9
+                    Given there are bananas # spec.feature:9
                 Examples: Vegetables
-                  Scenario: | broccoli |                        # spec.feature:12
-                    Given there are broccoli                    # spec.feature:12
-                  Scenario: | carrots |                         # spec.feature:13
-                    Given there are carrots                     # spec.feature:13
+                  Scenario: | broccoli |     # spec.feature:12
+                    Given there are broccoli # spec.feature:12
+                  Scenario: | carrots |     # spec.feature:13
+                    Given there are carrots # spec.feature:13
               OUTPUT
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
@@ -799,7 +802,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {snippets: true})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, snippets: true))
           run_defined_feature
         end
 

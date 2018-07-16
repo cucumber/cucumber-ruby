@@ -42,7 +42,6 @@ Feature: Exception in AfterStep Block
           Given this step does something naughty # features/step_definitions/naughty_steps.rb:1
             This step has been very very naughty (NaughtyStepException)
             ./features/support/env.rb:4:in `AfterStep'
-            features/naughty_step_in_scenario.feature:4:in `Given this step does something naughty'
 
         Scenario: Success        # features/naughty_step_in_scenario.feature:6
           Given this step passes # features/step_definitions/steps.rb:1
@@ -88,8 +87,6 @@ Feature: Exception in AfterStep Block
             | does something naughty |
             This step has been very very naughty (NaughtyStepException)
             ./features/support/env.rb:4:in `AfterStep'
-            features/naughty_step_in_scenario_outline.feature:9:in `Given this step does something naughty'
-            features/naughty_step_in_scenario_outline.feature:4:in `Given this step <Might Work>'
             | passes                 |
 
         Scenario: Success        # features/naughty_step_in_scenario_outline.feature:12

@@ -28,7 +28,7 @@ module Cucumber
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Cucumber::Formatter::Pretty.new(runtime, @out, {})
+          @formatter = Cucumber::Formatter::Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
           run_defined_feature
         end
 

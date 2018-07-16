@@ -29,8 +29,8 @@ Feature: Exception in Before Block
       Feature: Sample
 
         Scenario: Run a good step # features/naughty_step_in_scenario.feature:3
-        I cannot even start this scenario (SomeSetupException)
-        ./features/support/env.rb:4:in `Before'
+            I cannot even start this scenario (SomeSetupException)
+            ./features/support/env.rb:4:in `Before'
           Given this step passes  # features/step_definitions/steps.rb:1
 
       Failing Scenarios:
@@ -59,8 +59,8 @@ Feature: Exception in Before Block
       Feature: Sample
       
         Background:              # features/naughty_step_in_before.feature:3
-        I cannot even start this scenario (SomeSetupException)
-        ./features/support/env.rb:4:in `Before'
+            I cannot even start this scenario (SomeSetupException)
+            ./features/support/env.rb:4:in `Before'
           Given this step passes # features/step_definitions/steps.rb:1
       
         Scenario: Run a good step # features/naughty_step_in_before.feature:6
