@@ -245,7 +245,7 @@ module Cucumber
     end
 
     def install_wire_plugin
-      Cucumber::Wire::Plugin.new(@configuration).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
     end
 
     def log

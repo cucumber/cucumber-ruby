@@ -125,7 +125,6 @@ Style/GuardClause:
     - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/glue/proto_world.rb'
     - 'lib/cucumber/rspec/disable_option_parser.rb'
-    - 'lib/cucumber/step_argument.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
 # Offense count: 2
