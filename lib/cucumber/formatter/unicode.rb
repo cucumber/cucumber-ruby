@@ -26,12 +26,10 @@ if Cucumber::WINDOWS
       def self.extended(o)
         o.instance_eval do
           def cucumber_preprocess_output(*a)
-            begin
-              a.map { |arg| arg.to_s.encode(Encoding.default_external) }
-            rescue Encoding::UndefinedConversionError => e
-              STDERR.cucumber_puts("WARNING: #{e.message}")
-              a
-            end
+            a.map { |arg| arg.to_s.encode(Encoding.default_external) }
+          rescue Encoding::UndefinedConversionError => e
+            STDERR.cucumber_puts("WARNING: #{e.message}")
+            a
           end
 
           alias cucumber_print print

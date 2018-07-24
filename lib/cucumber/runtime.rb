@@ -133,14 +133,12 @@ module Cucumber
       end
 
       def initialize(path)
-        begin
-          @file = File.new(path)
-          set_encoding
-        rescue Errno::EACCES => e
-          raise FileNotFoundException.new(e, File.expand_path(path))
-        rescue Errno::ENOENT
-          raise FeatureFolderNotFoundException, path
-        end
+        @file = File.new(path)
+        set_encoding
+      rescue Errno::EACCES => e
+        raise FileNotFoundException.new(e, File.expand_path(path))
+      rescue Errno::ENOENT
+        raise FeatureFolderNotFoundException, path
       end
 
       def read

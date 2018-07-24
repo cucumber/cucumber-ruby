@@ -55,13 +55,11 @@ module Cucumber
       private
 
       def mri_gets(timeout_seconds)
-        begin
-          Timeout.timeout(timeout_seconds) do
-            STDIN.gets
-          end
-        rescue Timeout::Error
-          nil
+        Timeout.timeout(timeout_seconds) do
+          STDIN.gets
         end
+      rescue Timeout::Error
+        nil
       end
 
       def jruby_gets(timeout_seconds)

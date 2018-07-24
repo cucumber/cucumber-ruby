@@ -222,18 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/formatter/unicode.rb'
-    - 'lib/cucumber/glue/invoke_in_world.rb'
-    - 'lib/cucumber/glue/step_definition.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'lib/cucumber/runtime/user_interface.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/RedundantException:

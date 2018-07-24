@@ -108,12 +108,10 @@ module Cucumber
       # @api private
       # TODO: inline this and step definition just be a value object
       def invoke(args)
-        begin
-          InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
-        rescue ArityMismatchError => e
-          e.backtrace.unshift(self.backtrace_line)
-          raise e
-        end
+        InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
+      rescue ArityMismatchError => e
+        e.backtrace.unshift(self.backtrace_line)
+        raise e
       end
 
       # @api private

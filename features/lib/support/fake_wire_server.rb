@@ -26,12 +26,10 @@ class FakeWireServer
   end
 
   def open_session_on(socket, io)
-    begin
-      on_message = ->(message) { io.puts message }
-      SocketSession.new(socket, @protocol_table, @delays, on_message).start
-    ensure
-      socket.close
-    end
+    on_message = ->(message) { io.puts message }
+    SocketSession.new(socket, @protocol_table, @delays, on_message).start
+  ensure
+    socket.close
   end
 
   class SocketSession
