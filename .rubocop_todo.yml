@@ -7,15 +7,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideReferenceBrackets:
-  Exclude:
-    - 'lib/cucumber/rake/task.rb'
-
-# Offense count: 2
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'lib/cucumber/rake/task.rb'

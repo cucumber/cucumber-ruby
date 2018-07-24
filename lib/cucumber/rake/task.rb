@@ -165,7 +165,7 @@ module Cucumber
       end
 
       def feature_files #:nodoc:
-        make_command_line_safe(FileList[ ENV['FEATURE'] || [] ])
+        make_command_line_safe(FileList[ENV['FEATURE'] || []])
       end
 
       def make_command_line_safe(list)
