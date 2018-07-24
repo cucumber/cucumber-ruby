@@ -28,7 +28,7 @@ module Autotest::CucumberMixin
     loop do # ^c handler
       begin
         get_to_green
-        if self.tainted then
+        if self.tainted
           rerun_all_tests
           rerun_all_features if all_good
         else
@@ -83,14 +83,14 @@ module Autotest::CucumberMixin
         open("| #{cmd}", 'r') do |f|
           until f.eof?
             c = f.getc || break
-            if RUBY_VERSION >= '1.9' then
+            if RUBY_VERSION >= '1.9'
               print c
             else
               putc c
             end
             line << c
             next unless c == "\n"
-            self.results << if RUBY_VERSION >= '1.9' then
+            self.results << if RUBY_VERSION >= '1.9'
                               line.join
                             else
                               line.pack 'c*'

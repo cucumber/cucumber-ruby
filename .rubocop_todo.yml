@@ -217,12 +217,6 @@ Style/MultilineBlockChain:
   Exclude:
     - 'lib/cucumber/formatter/console_counts.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/MultilineIfThen:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-
 # Offense count: 1
 Style/MultilineTernaryOperator:
   Exclude:
