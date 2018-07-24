@@ -79,7 +79,7 @@ module Cucumber
         logger = Logger.new(@out_stream)
         logger.formatter = LogFormatter.new
         logger.level = Logger::INFO
-        logger.level = Logger::DEBUG if self.verbose?
+        logger.level = Logger::DEBUG if verbose?
         logger
       end
 

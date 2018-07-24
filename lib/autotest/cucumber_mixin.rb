@@ -28,7 +28,7 @@ module Autotest::CucumberMixin
     loop do # ^c handler
       begin
         get_to_green
-        if self.tainted
+        if tainted
           rerun_all_tests
           rerun_all_features if all_good
         else
@@ -39,7 +39,7 @@ module Autotest::CucumberMixin
         # time a file is changed to see if anything breaks.
         reset_features
       rescue Interrupt
-        break if self.wants_to_quit
+        break if wants_to_quit
         reset
         reset_features
       end
@@ -72,7 +72,7 @@ module Autotest::CucumberMixin
   def run_features
     hook :run_features
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
-      cmd = self.make_cucumber_cmd(self.features_to_run, dirty_features_file.path)
+      cmd = make_cucumber_cmd(features_to_run, dirty_features_file.path)
       break if cmd.empty?
       puts cmd unless $q
       old_sync = $stdout.sync
@@ -90,11 +90,11 @@ module Autotest::CucumberMixin
             end
             line << c
             next unless c == "\n"
-            self.results << if RUBY_VERSION >= '1.9'
-                              line.join
-                            else
-                              line.pack 'c*'
-                            end
+            results << if RUBY_VERSION >= '1.9'
+                         line.join
+                       else
+                         line.pack 'c*'
+                       end
             line.clear
           end
         end
@@ -102,7 +102,7 @@ module Autotest::CucumberMixin
         $stdout.sync = old_sync
       end
       self.features_to_run = dirty_features_file.read.strip
-      self.tainted = true unless self.features_to_run == ''
+      self.tainted = true unless features_to_run == ''
     end
     hook :ran_features
   end

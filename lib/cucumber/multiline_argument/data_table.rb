@@ -159,7 +159,7 @@ module Cucumber
       #
       def symbolic_hashes
         @symbolic_hashes ||=
-          self.hashes.map do |string_hash|
+          hashes.map do |string_hash|
             Hash[string_hash.map { |a, b| [symbolize_key(a), b] }]
           end
       end
@@ -179,7 +179,7 @@ module Cucumber
       def rows_hash
         return @rows_hash if @rows_hash
         verify_table_width(2)
-        @rows_hash = self.transpose.hashes[0]
+        @rows_hash = transpose.hashes[0]
       end
 
       # Gets the raw data of this table. For example, a Table built from

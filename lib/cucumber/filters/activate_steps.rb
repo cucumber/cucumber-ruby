@@ -26,7 +26,7 @@ module Cucumber
         private
 
         def new_test_steps
-          @original_test_case.test_steps.map(&self.method(:attempt_to_activate))
+          @original_test_case.test_steps.map(&method(:attempt_to_activate))
         end
 
         def attempt_to_activate(test_step)

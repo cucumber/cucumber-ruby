@@ -66,7 +66,7 @@ module Cucumber
       let(:exception) { StandardError.new }
 
       before do
-        self.wrapped_test_case = self.wrapped_test_case.with_result(Core::Test::Result::Failed.new(0, exception))
+        self.wrapped_test_case = wrapped_test_case.with_result(Core::Test::Result::Failed.new(0, exception))
       end
 
       it 'is failed?' do
@@ -90,7 +90,7 @@ module Cucumber
       end
 
       before do
-        self.wrapped_test_case = self.wrapped_test_case.with_result(Core::Test::Result::Passed.new(0))
+        self.wrapped_test_case = wrapped_test_case.with_result(Core::Test::Result::Passed.new(0))
       end
 
       it 'is not failed?' do

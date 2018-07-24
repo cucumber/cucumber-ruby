@@ -228,21 +228,6 @@ Style/RedundantException:
   Exclude:
     - 'spec/cucumber/formatter/json_spec.rb'
 
-# Offense count: 19
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'lib/cucumber/cli/configuration.rb'
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/filters/activate_steps.rb'
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/glue/proto_world.rb'
-    - 'lib/cucumber/glue/step_definition.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/multiline_argument/doc_string.rb'
-    - 'spec/cucumber/running_test_case_spec.rb'
-
 # Offense count: 9
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowInnerSlashes.

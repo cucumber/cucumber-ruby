@@ -56,7 +56,7 @@ module Cucumber
           when Proc
             target
           when Symbol
-            -> { self.send(target) }
+            -> { send(target) }
           else
             -> { raise ArgumentError, 'Target must be a symbol or a proc' }
           end
@@ -110,7 +110,7 @@ module Cucumber
       def invoke(args)
         InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
       rescue ArityMismatchError => e
-        e.backtrace.unshift(self.backtrace_line)
+        e.backtrace.unshift(backtrace_line)
         raise e
       end
 

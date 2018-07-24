@@ -174,7 +174,7 @@ module Cucumber
               modules += included_modules
             end
             modules << stringify_namespaced_modules
-            format('#<%s:0x%x>', modules.join('+'), self.object_id)
+            format('#<%s:0x%x>', modules.join('+'), object_id)
           end
 
           private
