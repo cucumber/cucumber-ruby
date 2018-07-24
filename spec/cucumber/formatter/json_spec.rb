@@ -25,7 +25,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
@@ -57,7 +57,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
@@ -94,7 +94,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { raise 'no bananas' }
@@ -132,7 +132,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { pending }
@@ -174,7 +174,7 @@ module Cucumber
               Examples: Fruit Table
               |  fruit  |
               | bananas |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
@@ -222,7 +222,7 @@ module Cucumber
               Examples: Fruit Table
               |  fruit  |
               | bananas |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
@@ -302,7 +302,7 @@ module Cucumber
               |  fruit  |
               #examples table row comment
               | bananas |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
@@ -398,7 +398,7 @@ module Cucumber
                 """
                 the doc string
                 """
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { |s| s }
@@ -438,7 +438,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { puts 'from step' }
@@ -482,7 +482,7 @@ module Cucumber
 
             Scenario: Monkey eats more bananas
               Then the monkey eats more bananas
-            FEATURE
+          FEATURE
 
           it 'includes the background in the json data each time it is executed' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
@@ -548,7 +548,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64') }
@@ -587,7 +587,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) do
@@ -632,7 +632,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Before() {}
@@ -697,7 +697,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Around() { |scenario, block| block.call; raise RuntimeError, 'error' }
@@ -742,7 +742,7 @@ module Cucumber
               Given there are bananas
                 | aa | bb |
                 | cc | dd |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { |s| s }

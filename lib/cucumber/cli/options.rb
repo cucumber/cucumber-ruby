@@ -138,7 +138,7 @@ module Cucumber
   [random]      Shuffle scenarios before running.
 Specify SEED to reproduce the shuffling from a previous run.
   e.g. --order random:5738
-TEXT
+                  TEXT
             @options[:order], @options[:seed] = *order.split(':')
             unless ORDER_TYPES.include?(@options[:order])
               fail "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}."

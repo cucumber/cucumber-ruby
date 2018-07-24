@@ -62,7 +62,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing ctrl scenario
-            FEATURE
+          FEATURE
 
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
@@ -213,7 +213,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(%r{Before hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
@@ -231,7 +231,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(%r{After hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
@@ -249,7 +249,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(%r{AfterStep hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
@@ -268,7 +268,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(/Around hook\n\nMessage:/) }
             end

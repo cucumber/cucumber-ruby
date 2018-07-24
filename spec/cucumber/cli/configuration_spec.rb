@@ -115,7 +115,7 @@ Could not find profile: 'i_do_not_exist'
 Defined profiles in cucumber.yml:
   * default
   * json_report
-END_OF_MESSAGE
+          END_OF_MESSAGE
 
           expect(-> { config.parse!(%w{--profile i_do_not_exist}) }).to raise_error(ProfileNotFound, expected_message)
         end

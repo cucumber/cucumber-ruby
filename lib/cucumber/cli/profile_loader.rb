@@ -16,7 +16,7 @@ Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
   * #{cucumber_yml.keys.sort.join("\n  * ")}
-        END_OF_ERROR
+          END_OF_ERROR
         end
 
         args_from_yml = cucumber_yml[profile] || ''

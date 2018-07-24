@@ -6,18 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 28
-# Cop supports --auto-correct.
-Layout/ClosingHeredocIndentation:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/cli/profile_loader.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-    - 'spec/cucumber/formatter/progress_spec.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Layout/ClosingParenthesisIndentation:

@@ -87,7 +87,7 @@ module Cucumber
           Feature:
             Scenario:
               Given this step passes
-          FEATURE
+            FEATURE
 
             define_steps do
               Before do
@@ -116,7 +116,7 @@ module Cucumber
           Feature:
             Scenario:
               Given this step passes
-          FEATURE
+            FEATURE
 
             define_steps do
               Before do
@@ -142,7 +142,7 @@ module Cucumber
           Feature:
             Scenario:
               Given this step passes
-          FEATURE
+            FEATURE
 
             define_steps do
               After do

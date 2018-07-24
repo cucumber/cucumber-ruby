@@ -817,7 +817,7 @@ OUTPUT
               And the other monkeys eat all the apples
               Then bananas remain
               But there are no apples left
-            FEATURE
+          FEATURE
 
           it "containes snippets with 'And' or 'But' replaced by previous step name" do
             expect(@out.string).to include('Given("there are bananas and apples")')
@@ -897,7 +897,7 @@ OUTPUT
             MISHUN: CUCUMBR
               I CAN HAZ IN TEH BEGINNIN CUCUMBRZ
               AN I EAT CUCUMBRZ
-            FEATURE
+          FEATURE
           it 'uses actual keyword of the previous passing step for the undefined step' do
             expect(@out.string).to include('ICANHAZ("I EAT CUCUMBRZ")')
           end
