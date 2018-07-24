@@ -55,9 +55,7 @@ module Cucumber
       include Cucumber::Term::ANSIColor
 
       ALIASES = Hash.new do |h, k|
-        if k.to_s =~ /(.*)_param/
-          h[$1] + ',bold'
-        end
+        h[$1] + ',bold' if k.to_s =~ /(.*)_param/
       end.merge(
         'undefined' => 'yellow',
         'pending'   => 'yellow',

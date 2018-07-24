@@ -295,9 +295,7 @@ module Cucumber
 
       def print_language_comment(feature_line)
         gherkin_source.split("\n")[0..feature_line].each do |line|
-          if /# *language *:/ =~ line
-            @io.puts(format_string(line, :comment))
-          end
+          @io.puts(format_string(line, :comment)) if /# *language *:/ =~ line
         end
       end
 
@@ -433,12 +431,8 @@ module Cucumber
           end
           @io.puts
           next if options[:no_multiline]
-          if step[:argument] && step[:argument][:type] == :DocString
-            print_doc_string(step[:argument][:content], :skipped, 6)
-          end
-          if step[:argument] && step[:argument][:type] == :DataTable
-            print_data_table(step[:argument], :skipped, 6)
-          end
+          print_doc_string(step[:argument][:content], :skipped, 6) if step[:argument] && step[:argument][:type] == :DocString
+          print_data_table(step[:argument], :skipped, 6) if step[:argument] && step[:argument][:type] == :DataTable
         end
         @io.flush
       end

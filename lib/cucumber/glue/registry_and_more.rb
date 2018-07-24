@@ -95,9 +95,7 @@ module Cucumber
 
         @namespaced_world_modules ||= Hash.new { |h, k| h[k] = [] }
         namespaced_world_modules.each do |namespace, world_module|
-          unless @namespaced_world_modules[namespace].include?(world_module)
-            @namespaced_world_modules[namespace] << world_module
-          end
+          @namespaced_world_modules[namespace] << world_module unless @namespaced_world_modules[namespace].include?(world_module)
         end
       end
 

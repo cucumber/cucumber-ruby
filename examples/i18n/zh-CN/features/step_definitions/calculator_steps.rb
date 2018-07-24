@@ -20,9 +20,7 @@ Given(/在计算器上输入(\d+)/) do |n|
 end
 
 When(/按(.*)键/) do |op|
-  if op == '加号'
-    @result = @calc.send 'add'
-  end
+  @result = @calc.send 'add' if op == '加号'
 end
 
 Then(/屏幕上显示的结果应该是是(.*)/) do |result|

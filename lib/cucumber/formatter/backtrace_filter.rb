@@ -17,9 +17,7 @@ module Cucumber
       bin/bundle
     )
 
-    if ::Cucumber::JRUBY
-      @backtrace_filters << 'org/jruby/'
-    end
+    @backtrace_filters << 'org/jruby/' if ::Cucumber::JRUBY
 
     BACKTRACE_FILTER_PATTERNS = Regexp.new(@backtrace_filters.join('|'))
 

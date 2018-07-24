@@ -98,9 +98,7 @@ module Cucumber
 
         def run
           sh cmd.join(' ') do |ok, res|
-            if !ok
-              exit res.exitstatus
-            end
+            exit res.exitstatus if !ok
           end
         end
       end
@@ -154,9 +152,7 @@ module Cucumber
 
       def runner(_task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
-        if @fork
-          return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
-        end
+        return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) if @fork
         InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
       end
 

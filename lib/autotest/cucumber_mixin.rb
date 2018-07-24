@@ -127,9 +127,7 @@ module Autotest::CucumberMixin
     args << (features_to_run == :all ? '' : features_to_run)
 
     # Unless I do this, all the steps turn up undefined during the rerun...
-    unless features_to_run == :all
-      args << 'features/step_definitions' << 'features/support'
-    end
+    args << 'features/step_definitions' << 'features/support' unless features_to_run == :all
 
     args = args.join(' ')
 

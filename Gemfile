@@ -1,14 +1,8 @@
 source 'https://rubygems.org'
 gemspec
 
-if ENV['CUCUMBER_RUBY_CORE']
-  gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
-end
+gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE'] if ENV['CUCUMBER_RUBY_CORE']
 
-if ENV['CUCUMBER_RUBY_WIRE']
-  gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE']
-end
+gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE'] if ENV['CUCUMBER_RUBY_WIRE']
 
-if ENV['CUCUMBER_EXPRESSIONS_RUBY']
-  gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY']
-end
+gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUMBER_EXPRESSIONS_RUBY']

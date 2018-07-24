@@ -76,9 +76,7 @@ Defined profiles in cucumber.yml:
           raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
-        if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
-          raise(YmlLoadError, "cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n")
-        end
+        raise(YmlLoadError, "cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n") if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
 
         return @cucumber_yml
       end

@@ -40,9 +40,7 @@ module Cucumber
 
       def on_test_case_started(event)
         test_case = event.test_case
-        unless same_feature_as_previous_test_case?(test_case.feature)
-          start_feature(test_case.feature)
-        end
+        start_feature(test_case.feature) unless same_feature_as_previous_test_case?(test_case.feature)
         @failing_step_source = nil
         # In order to fill out <system-err/> and <system-out/>, we need to
         # intercept the $stderr and $stdout

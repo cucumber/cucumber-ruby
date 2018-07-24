@@ -95,9 +95,7 @@ module Cucumber
           opts.banner = banner
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
-          if Cucumber::JRUBY
-            opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) }
-          end
+          opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) } if Cucumber::JRUBY
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) { |v| set_option :retry, v.to_i }
           opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
@@ -140,9 +138,7 @@ Specify SEED to reproduce the shuffling from a previous run.
   e.g. --order random:5738
                   TEXT
             @options[:order], @options[:seed] = *order.split(':')
-            unless ORDER_TYPES.include?(@options[:order])
-              fail "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}."
-            end
+            fail "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}." unless ORDER_TYPES.include?(@options[:order])
           end
 
           opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
@@ -385,9 +381,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def add_tag_limit(tag_limits, tag_name, limit)
-        if tag_limits[tag_name] && tag_limits[tag_name] != limit
-          raise "Inconsistent tag limits for #{tag_name}: #{tag_limits[tag_name]} and #{limit}"
-        end
+        raise "Inconsistent tag limits for #{tag_name}: #{tag_limits[tag_name]} and #{limit}" if tag_limits[tag_name] && tag_limits[tag_name] != limit
         tag_limits[tag_name] = limit
       end
 

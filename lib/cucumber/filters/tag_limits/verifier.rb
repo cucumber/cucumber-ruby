@@ -18,9 +18,7 @@ module Cucumber
         def collect_breaches(test_case_index)
           tag_limits.reduce([]) do |breaches, (tag_name, limit)|
             breaches.tap do |breach|
-              if test_case_index.count_by_tag_name(tag_name) > limit
-                breach << Breach.new(tag_name, limit, test_case_index.locations_of_tag_name(tag_name))
-              end
+              breach << Breach.new(tag_name, limit, test_case_index.locations_of_tag_name(tag_name)) if test_case_index.count_by_tag_name(tag_name) > limit
             end
           end
         end

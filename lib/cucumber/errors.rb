@@ -6,9 +6,7 @@ module Cucumber
   # Raised when there is no matching StepDefinition for a step.
   class Undefined < Core::Test::Result::Undefined
     def self.from(result, step_name)
-      if result.is_a?(self)
-        return result.with_message(with_prefix(result.message))
-      end
+      return result.with_message(with_prefix(result.message)) if result.is_a?(self)
 
       begin
         raise self.new(with_prefix(step_name))

@@ -201,8 +201,8 @@ Style/IfInsideElse:
 
 # Offense count: 30
 # Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Enabled: false
+# Style/IfUnlessModifier:
+#   Enabled: false
 
 # Offense count: 2
 # Cop supports --auto-correct.
