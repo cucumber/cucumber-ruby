@@ -89,14 +89,13 @@ module Autotest::CucumberMixin
               putc c
             end
             line << c
-            if c == "\n" then
-              self.results << if RUBY_VERSION >= '1.9' then
-                                line.join
-                              else
-                                line.pack 'c*'
-                              end
-              line.clear
-            end
+            next unless c == "\n"
+            self.results << if RUBY_VERSION >= '1.9' then
+                              line.join
+                            else
+                              line.pack 'c*'
+                            end
+            line.clear
           end
         end
       ensure

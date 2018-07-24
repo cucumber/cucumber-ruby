@@ -26,14 +26,12 @@ module NormaliseArubaOutput
       elements.each do |scenario|
         scenario['steps'].each do |_step|
           %w(steps before after).each do |type|
-            if scenario[type]
-              scenario[type].each do |step_or_hook|
-                normalise_json_step_or_hook(step_or_hook)
-                if step_or_hook['after']
-                  step_or_hook['after'].each do |hook|
-                    normalise_json_step_or_hook(hook)
-                  end
-                end
+            next unless scenario[type]
+            scenario[type].each do |step_or_hook|
+              normalise_json_step_or_hook(step_or_hook)
+              next unless step_or_hook['after']
+              step_or_hook['after'].each do |hook|
+                normalise_json_step_or_hook(hook)
               end
             end
           end

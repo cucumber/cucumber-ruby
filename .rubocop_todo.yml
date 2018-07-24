@@ -234,18 +234,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, MinBodyLength.
-# SupportedStyles: skip_modifier_ifs, always
-Style/Next:
-  Exclude:
-    - 'examples/i18n/Rakefile'
-    - 'features/lib/support/normalise_output.rb'
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/Not:
