@@ -156,15 +156,6 @@ Style/DoubleNegation:
   Exclude:
     - 'lib/cucumber/cli/configuration.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/EmptyLiteral:
-  Exclude:
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/glue/registry_and_more.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-    - 'spec/cucumber/glue/registry_and_more_spec.rb'
-
 # Offense count: 11
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

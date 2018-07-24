@@ -99,9 +99,9 @@ Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#Worl
 or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
 }
-          dsl.World { Hash.new }
+          dsl.World { Hash.new } # rubocop:disable Style/EmptyLiteral
 
-          expect(-> { dsl.World { Array.new } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/)
+          expect(-> { dsl.World { Array.new } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/) # rubocop:disable Style/EmptyLiteral
         end
       end
 
