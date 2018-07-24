@@ -9,7 +9,7 @@ if Cucumber::WINDOWS
   if ENV['CUCUMBER_OUTPUT_ENCODING']
     Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
   elsif `cmd /c chcp` =~ /(\d+)/
-    if [65000, 65001].include? $1.to_i
+    if [65_000, 65_001].include? $1.to_i
       Cucumber::CODEPAGE = 'UTF-8'.freeze
       ENV['ANSICON_API'] = 'ruby'
     else
