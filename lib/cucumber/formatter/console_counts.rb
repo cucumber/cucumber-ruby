@@ -32,7 +32,7 @@ module Cucumber
         counts = Core::Test::Result::TYPES.map do |status|
           count = summary.total(status)
           [status, count]
-        end.select do |status, count|
+        end.select do |_status, count|
           count > 0
         end.map do |status, count|
           format_string("#{count} #{status}", status)

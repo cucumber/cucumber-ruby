@@ -113,7 +113,7 @@ module Cucumber
 
       # Extra options to pass to the cucumber binary. Can be overridden by the CUCUMBER_OPTS environment variable.
       # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
-      attr_accessor :cucumber_opts
+      attr_reader :cucumber_opts
       def cucumber_opts=(opts) #:nodoc:
         @cucumber_opts = String === opts ? opts.split(' ') : opts
       end
@@ -161,7 +161,7 @@ module Cucumber
       end
 
       def cucumber_opts_with_profile #:nodoc:
-        Array(cucumber_opts).concat Array(@profile).flat_map { |p| ['--profile', p] }
+        Array(cucumber_opts).concat(Array(@profile).flat_map { |p| ['--profile', p] })
       end
 
       def feature_files #:nodoc:

@@ -43,7 +43,7 @@ module Cucumber
       end
 
       def source_indent(sources)
-        sources.map { |file_colon_line, regexp| regexp.size }.max + 1
+        sources.map { |_file_colon_line, regexp| regexp.size }.max + 1
       end
     end
   end

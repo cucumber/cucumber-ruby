@@ -19,7 +19,7 @@ module Cucumber
     end
   end
 
-  class FileException < Exception
+  class FileException < RuntimeError
     attr :path
 
     def initialize(original_exception, path)
@@ -31,7 +31,7 @@ module Cucumber
   class FileNotFoundException < FileException
   end
 
-  class FeatureFolderNotFoundException < Exception
+  class FeatureFolderNotFoundException < RuntimeError
     def initialize(path)
       @path = path
     end

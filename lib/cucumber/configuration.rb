@@ -197,7 +197,7 @@ module Cucumber
           yield factory,
                 formatter_options,
                 path_or_io
-        rescue Exception => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
         end
       end

@@ -159,7 +159,7 @@ module Cucumber
         step_name = 'My car is white'
         step_args = step_match(step_name).args
 
-        expect(-> { run_step step_name }).not_to change { step_args.first }
+        expect(-> { run_step step_name }).not_to change { step_args.first } # rubocop:disable Lint/AmbiguousBlockAssociation
       end
 
       it 'allows puts' do

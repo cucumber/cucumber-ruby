@@ -26,7 +26,7 @@ Layout/EndOfLine:
   Enabled: false
 
 # Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
-# heredocs '<<~' were introduced them. The files below are the current ones
+# heredocs '<<~' were introduced then. The files below are the current ones
 # with offenses
 Layout/IndentHeredoc:
   Exclude:

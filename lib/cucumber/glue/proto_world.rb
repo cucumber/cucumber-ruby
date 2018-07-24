@@ -98,7 +98,7 @@ module Cucumber
         if block_given?
           begin
             yield
-          rescue Exception
+          rescue Exception # rubocop:disable Lint/RescueException
             raise Pending, message
           end
           raise Pending, "Expected pending '#{message}' to fail. No Error was raised. No longer pending?"

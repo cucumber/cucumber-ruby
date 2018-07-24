@@ -353,8 +353,8 @@ module Cucumber
       end
 
       def to_hash(cells) #:nodoc:
-        hash = Hash.new do |hash, key|
-          hash[key.to_s] if key.is_a?(Symbol)
+        hash = Hash.new do |hash_inner, key|
+          hash_inner[key.to_s] if key.is_a?(Symbol)
         end
         column_names.each_with_index do |column_name, column_index|
           hash[column_name] = cells.value(column_index)

@@ -75,8 +75,12 @@ module Cucumber
           block_args.empty? ? '' : " |#{block_args.join(", ")}|"
         end
 
-        def self.example(cucumber_expression_generator)
-          new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
+        class << self
+          private
+
+          def example(cucumber_expression_generator)
+            new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
+          end
         end
       end
 

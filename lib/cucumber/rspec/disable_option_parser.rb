@@ -14,7 +14,7 @@ module Spec #:nodoc:
       def self.method_added(m)
         unless @__neutering_rspec
           @__neutering_rspec = true
-          define_method(m) do |*a|
+          define_method(m) do |*_a|
             NEUTERED_RSPEC
           end
           @__neutering_rspec = false

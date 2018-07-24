@@ -114,11 +114,11 @@ module Cucumber
             ::Cucumber::Term::ANSIColor.coloring = false
             alias grey white
           when 2..8
-            alias grey white
+            alias grey white # rubocop:disable Lint/DuplicateMethods
           else
             define_real_grey
           end
-        rescue Exception => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           if e.class.name == 'TermInfo::TermInfoError'
             STDERR.puts '*** WARNING ***'
             STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."

@@ -136,7 +136,7 @@ Defined profiles in cucumber.yml:
         end
 
         ['--no-profile', '-P'].each do |flag|
-          context 'when none is specified with #{flag}' do
+          context 'when none is specified with #{flag}' do # rubocop:disable Lint/InterpolationCheck
             it 'disables profiles' do
               given_cucumber_yml_defined_as({ 'default' => '-v --require file_specified_in_default_profile.rb' })
 

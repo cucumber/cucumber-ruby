@@ -641,7 +641,7 @@ module Cucumber
             After() {}
             AfterStep() {}
             AfterStep() {}
-            Around() { |scenario, block| block.call }
+            Around() { |_scenario, block| block.call }
             Given(/^there are bananas$/) {}
           end
 
@@ -700,7 +700,7 @@ module Cucumber
           FEATURE
 
           define_steps do
-            Around() { |scenario, block| block.call; raise RuntimeError, 'error' }
+            Around() { |_scenario, block| block.call; raise RuntimeError, 'error' }
             Given(/^there are bananas$/) {}
           end
 

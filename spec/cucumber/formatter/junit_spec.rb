@@ -20,7 +20,7 @@ module Cucumber
           config.on_event :test_step_started, &method(:on_test_step_started)
         end
 
-        def on_test_step_started(event)
+        def on_test_step_started(_event)
           Interceptor::Pipe.unwrap! :stdout
           @fake_io = $stdout = StringIO.new
           $stdout.sync = true
@@ -113,14 +113,12 @@ module Cucumber
           end
 
           describe 'with a scenario in a subdirectory' do
-            # rubocop:disable Layout/EmptyLinesAroundArguments
             define_feature %{
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing scenario
             }, File.join('features', 'some', 'path', 'spec.feature')
-            # rubocop:enable Layout/EmptyLinesAroundArguments
 
             it 'writes the filename with absolute path' do
               expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')
