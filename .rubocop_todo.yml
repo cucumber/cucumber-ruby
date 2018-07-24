@@ -234,27 +234,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# # Offense count: 19
-# # Cop supports --auto-correct.
-# Style/MutableConstant:
-#   Exclude:
-#     - 'lib/cucumber/cli/options.rb'
-#     - 'lib/cucumber/formatter/progress.rb'
-#     - 'lib/cucumber/formatter/unicode.rb'
-#     - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-#     - 'lib/cucumber/glue/snippet.rb'
-#     - 'lib/cucumber/term/ansicolor.rb'
-#     - 'spec/cucumber/step_match_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: both, prefix, postfix
-Style/NegatedIf:
-  Exclude:
-    - 'lib/cucumber/formatter/io.rb'
-    - 'lib/cucumber/rake/task.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: Whitelist.

@@ -98,7 +98,7 @@ module Cucumber
 
         def run
           sh cmd.join(' ') do |ok, res|
-            exit res.exitstatus if !ok
+            exit res.exitstatus unless ok
           end
         end
       end
