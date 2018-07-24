@@ -63,11 +63,10 @@ module Cucumber
       end
 
       def step_matches(name_to_match)
-        @step_definitions.reduce([]) do |result, step_definition|
+        @step_definitions.each_with_object([]) do |step_definition, result|
           if (arguments = step_definition.arguments_from(name_to_match))
             result << StepMatch.new(step_definition, name_to_match, arguments)
           end
-          result
         end
       end
 

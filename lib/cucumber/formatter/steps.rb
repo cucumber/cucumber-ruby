@@ -35,10 +35,9 @@ module Cucumber
       end
 
       def collect_steps(runtime)
-        runtime.step_definitions.inject({}) do |step_definitions, step_definition|
+        runtime.step_definitions.each_with_object({}) do |step_definition, step_definitions|
           step_definitions[step_definition.file] ||= []
           step_definitions[step_definition.file] << [step_definition.file_colon_line, step_definition.regexp_source]
-          step_definitions
         end
       end
 

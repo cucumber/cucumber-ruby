@@ -55,7 +55,7 @@ module Cucumber
       self.coloring = true
 
       ATTRIBUTES.each do |c, v|
-        eval %Q{
+        eval %{
             def #{c}(string = nil)
               result = String.new
               result << "\e[#{v}m" if Cucumber::Term::ANSIColor.coloring?

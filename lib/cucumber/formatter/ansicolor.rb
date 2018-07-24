@@ -58,17 +58,17 @@ module Cucumber
         if k.to_s =~ /(.*)_param/
           h[$1] + ',bold'
         end
-      end.merge({
-                  'undefined' => 'yellow',
-                  'pending'   => 'yellow',
-                  'flaky'     => 'yellow',
-                  'failed'    => 'red',
-                  'passed'    => 'green',
-                  'outline'   => 'cyan',
-                  'skipped'   => 'cyan',
-                  'comment'   => 'grey',
-                  'tag'       => 'cyan'
-                })
+      end.merge(
+        'undefined' => 'yellow',
+        'pending'   => 'yellow',
+        'flaky'     => 'yellow',
+        'failed'    => 'red',
+        'passed'    => 'green',
+        'outline'   => 'cyan',
+        'skipped'   => 'cyan',
+        'comment'   => 'grey',
+        'tag'       => 'cyan'
+      )
 
       if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
         ENV['CUCUMBER_COLORS'].split(':').each do |pair|
@@ -112,9 +112,9 @@ module Cucumber
             raise "Your terminal doesn't support colours."
           when 1
             ::Cucumber::Term::ANSIColor.coloring = false
-            alias grey white
+            alias_method :grey, :white
           when 2..8
-            alias grey white # rubocop:disable Lint/DuplicateMethods
+            alias_method :grey, :white # rubocop:disable Lint/DuplicateMethods
           else
             define_real_grey
           end
@@ -124,7 +124,7 @@ module Cucumber
             STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
             STDERR.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
             STDERR.puts "\n"
-            alias grey white
+            alias_method :grey, :white
           else
             define_real_grey
           end

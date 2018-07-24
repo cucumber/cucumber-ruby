@@ -60,3 +60,6 @@ Naming/VariableName:
     - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
     - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
     - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
+
+Style/ClassAndModuleChildren:
+  Enabled: false

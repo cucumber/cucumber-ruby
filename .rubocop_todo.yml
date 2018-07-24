@@ -132,43 +132,6 @@ Style/AccessModifierDeclarations:
     - 'lib/cucumber/load_path.rb'
     - 'lib/cucumber/runtime.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: prefer_alias, prefer_alias_method
-Style/Alias:
-  Exclude:
-    - 'lib/cucumber/formatter/ansicolor.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Attr:
-  Exclude:
-    - 'lib/cucumber/runtime.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: percent_q, bare_percent
-Style/BarePercentLiterals:
-  Exclude:
-    - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 39
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: braces, no_braces, context_dependent
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
-    - 'spec/cucumber/glue/step_definition_spec.rb'
-
 # Offense count: 9
 Style/CaseEquality:
   Exclude:
@@ -178,40 +141,11 @@ Style/CaseEquality:
     - 'lib/cucumber/rake/task.rb'
     - 'lib/cucumber/step_match.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/CharacterLiteral:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'lib/autotest/cucumber.rb'
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'lib/autotest/cucumber_rails.rb'
-    - 'lib/autotest/cucumber_rails_rspec.rb'
-    - 'lib/autotest/cucumber_rails_rspec2.rb'
-    - 'lib/autotest/cucumber_rspec.rb'
-    - 'lib/autotest/cucumber_rspec2.rb'
-    - 'spec/cucumber/formatter/fail_fast_spec.rb'
-    - 'spec/cucumber/formatter/interceptor_spec.rb'
-    - 'spec/cucumber/hooks_spec.rb'
-
 # Offense count: 2
 Style/CommentedKeyword:
   Exclude:
     - 'lib/cucumber/runtime.rb'
     - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/DefWithParentheses:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
 
 # Offense count: 167
 Style/Documentation:
@@ -221,13 +155,6 @@ Style/Documentation:
 Style/DoubleNegation:
   Exclude:
     - 'lib/cucumber/cli/configuration.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/EachWithObject:
-  Exclude:
-    - 'lib/cucumber/formatter/steps.rb'
-    - 'lib/cucumber/glue/registry_and_more.rb'
 
 # Offense count: 6
 # Cop supports --auto-correct.

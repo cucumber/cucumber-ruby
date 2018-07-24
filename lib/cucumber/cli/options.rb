@@ -169,7 +169,7 @@ Specify SEED to reproduce the shuffling from a previous run.
         @options[:filters] ||= []
       end
 
-      def check_formatter_stream_conflicts()
+      def check_formatter_stream_conflicts
         streams = @options[:formats].uniq.map { |(_, _, stream)| stream }
         return if streams == streams.uniq
         raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
@@ -544,7 +544,7 @@ Specify SEED to reproduce the shuffling from a previous run.
             ['but (code)', to_code_keywords_string(language.but_keywords)]
           ]
         )
-        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
+        @out_stream.write(data.to_s(color: false, prefixes: Hash.new('')))
         Kernel.exit(0)
       end
 
@@ -555,7 +555,7 @@ Specify SEED to reproduce the shuffling from a previous run.
             [key, ::Gherkin::DIALECTS[key].fetch('name'), ::Gherkin::DIALECTS[key].fetch('native')]
           end
         )
-        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
+        @out_stream.write(data.to_s(color: false, prefixes: Hash.new('')))
         Kernel.exit(0)
       end
 

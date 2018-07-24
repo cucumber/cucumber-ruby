@@ -20,7 +20,7 @@ module Cucumber
   end
 
   class FileException < RuntimeError
-    attr :path
+    attr_reader :path
 
     def initialize(original_exception, path)
       super(original_exception)

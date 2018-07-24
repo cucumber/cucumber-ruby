@@ -184,15 +184,15 @@ module Cucumber
           /I CAN HAZ (\d+) CUKES/i,
           lambda {},
           {}
-        ).to_hash).to eq({
-                           source: {
-                             type: 'regular expression',
-                             expression: 'I CAN HAZ (\\d+) CUKES'
-                           },
-                           regexp: {
-                             source: 'I CAN HAZ (\\d+) CUKES', flags: 'i'
-                           }
-                         })
+        ).to_hash).to eq(
+          source: {
+            type: 'regular expression',
+            expression: 'I CAN HAZ (\\d+) CUKES'
+          },
+          regexp: {
+            source: 'I CAN HAZ (\\d+) CUKES', flags: 'i'
+          }
+        )
       end
     end
   end
