@@ -39,7 +39,7 @@ module Cucumber
 
         def initialize(libs, cucumber_opts, feature_files)
           raise 'libs must be an Array when running in-process' unless Array === libs
-          libs.reverse.each { |lib| $LOAD_PATH.unshift(lib) }
+          libs.reverse_each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
             cucumber_opts +
             feature_files

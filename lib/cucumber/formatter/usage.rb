@@ -64,9 +64,9 @@ module Cucumber
         aggregate_info
 
         keys = if config.dry_run?
-                 @stepdef_to_match.keys.sort { |a, b| a.regexp_source <=> b.regexp_source }
+                 @stepdef_to_match.keys.sort_by(&:regexp_source)
                else
-                 @stepdef_to_match.keys.sort { |a, b| a.mean_duration <=> b.mean_duration }.reverse
+                 @stepdef_to_match.keys.sort_by(&:mean_duration).reverse
                end
 
         keys.each do |stepdef_key|

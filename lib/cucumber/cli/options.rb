@@ -355,7 +355,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def language(lang)
         require 'gherkin/dialect'
 
-        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.keys.include? lang
+        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.key?(lang)
         list_keywords_and_exit(lang)
       end
 

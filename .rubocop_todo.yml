@@ -106,30 +106,6 @@ Performance/Caller:
     - 'lib/cucumber/deprecate.rb'
 
 # Offense count: 2
-# Cop supports --auto-correct.
-Performance/CompareWithBlock:
-  Exclude:
-    - 'lib/cucumber/formatter/usage.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/InefficientHashSearch:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/RedundantMatch:
-  Exclude:
-    - 'lib/cucumber/deprecate.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/ReverseEach:
-  Exclude:
-    - 'lib/cucumber/rake/task.rb'
-
-# Offense count: 2
 Security/Eval:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'
