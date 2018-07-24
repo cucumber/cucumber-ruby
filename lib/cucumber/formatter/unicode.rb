@@ -9,11 +9,11 @@ if Cucumber::WINDOWS
   if ENV['CUCUMBER_OUTPUT_ENCODING']
     Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
   elsif `cmd /c chcp` =~ /(\d+)/
-    if [65_000, 65_001].include? $1.to_i
+    if [65_000, 65_001].include? Regexp.last_match(1).to_i
       Cucumber::CODEPAGE = 'UTF-8'.freeze
       ENV['ANSICON_API'] = 'ruby'
     else
-      Cucumber::CODEPAGE = "cp#{$1.to_i}".freeze
+      Cucumber::CODEPAGE = "cp#{Regexp.last_match(1).to_i}".freeze
     end
   else
     Cucumber::CODEPAGE = 'cp1252'.freeze

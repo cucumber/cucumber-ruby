@@ -152,7 +152,7 @@ module Cucumber
       def set_encoding
         @file.each do |line|
           if ENCODING_PATTERN =~ line
-            @file.set_encoding $1
+            @file.set_encoding Regexp.last_match(1)
             break
           end
           break unless COMMENT_OR_EMPTY_LINE_PATTERN =~ line

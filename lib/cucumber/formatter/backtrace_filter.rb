@@ -39,7 +39,7 @@ module Cucumber
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
           # Strip off file locations
           filtered = filtered.map do |line|
-            line =~ /(.*):in `/ ? $1 : line
+            line =~ /(.*):in `/ ? Regexp.last_match(1) : line
           end
         end
 

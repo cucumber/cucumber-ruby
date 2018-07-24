@@ -426,7 +426,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def extract_environment_variables
         @args.delete_if do |arg|
           if arg =~ /^(\w+)=(.*)$/
-            @options[:env_vars][$1] = $2
+            @options[:env_vars][Regexp.last_match(1)] = Regexp.last_match(2)
             true
           end
         end

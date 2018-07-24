@@ -245,17 +245,6 @@ Style/ParallelAssignment:
 Style/PercentLiteralDelimiters:
   Enabled: false
 
-# Offense count: 8
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/formatter/backtrace_filter.rb'
-    - 'lib/cucumber/formatter/unicode.rb'
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/runtime.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/Proc:
