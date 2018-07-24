@@ -500,7 +500,7 @@ Specify SEED to reproduce the shuffling from a previous run.
           @options[:formats] = stdout_formats[0..0] + non_stdout_formats
         end
 
-        @options[:retry] = other_options[:retry] if @options[:retry] == 0
+        @options[:retry] = other_options[:retry] if @options[:retry].zero?
 
         self
       end

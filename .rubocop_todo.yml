@@ -234,16 +234,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-
 # Offense count: 21
 # Cop supports --auto-correct.
 Style/ParallelAssignment:
