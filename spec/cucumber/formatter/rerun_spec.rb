@@ -38,7 +38,7 @@ module Cucumber
           execute [gherkin], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
 
-          expect( io.string ).to eq 'foo.feature:3:6'
+          expect(io.string).to eq 'foo.feature:3:6'
         end
       end
 

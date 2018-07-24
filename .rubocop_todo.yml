@@ -6,22 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 120
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceInsideParens:
-  Exclude:
-    - 'lib/cucumber/step_match.rb'
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-    - 'spec/cucumber/formatter/rerun_spec.rb'
-    - 'spec/cucumber/glue/registry_and_more_spec.rb'
-    - 'spec/cucumber/glue/step_definition_spec.rb'
-    - 'spec/cucumber/hooks_spec.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/step_match_search_spec.rb'
-    - 'spec/cucumber/world/pending_spec.rb'
-
 # Offense count: 18
 # Cop supports --auto-correct.
 Layout/SpaceInsidePercentLiteralDelimiters:

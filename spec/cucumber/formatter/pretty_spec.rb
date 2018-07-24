@@ -295,7 +295,7 @@ OUTPUT
             end
 
             it 'displays hook output appropriately ' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 Feature: 
 
   Scenario: 
@@ -340,7 +340,7 @@ OUTPUT
             end
 
             it 'displays hook output appropriately ' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 Feature: 
 
   Background: 
@@ -376,7 +376,7 @@ OUTPUT
             FEATURE
 
             it 'includes the tags in the output ' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 @tag1
 Feature: 
 
@@ -424,7 +424,7 @@ OUTPUT
             FEATURE
 
             it 'includes the all comments in the output' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 #comment1
 Feature: 
 
