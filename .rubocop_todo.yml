@@ -116,12 +116,6 @@ Security/Open:
   Exclude:
     - 'lib/autotest/cucumber_mixin.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Security/YAMLLoad:
-  Exclude:
-    - 'lib/cucumber/cli/profile_loader.rb'
-
 # Offense count: 4
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: inline, group
