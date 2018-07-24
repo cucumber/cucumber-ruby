@@ -31,9 +31,7 @@ module Cucumber
               ari = ari < 0 ? (ari.abs - 1).to_s + '+' : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
-              raise ArityMismatchError.new(
-                "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
-              )
+              raise ArityMismatchError, "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
             end
           else
             world.instance_exec(*args, &block)

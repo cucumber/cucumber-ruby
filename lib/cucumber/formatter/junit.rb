@@ -79,7 +79,7 @@ module Cucumber
       end
 
       def start_feature(feature)
-        raise UnNamedFeatureError.new(feature.file) if feature.name.empty?
+        raise UnNamedFeatureError, feature.file if feature.name.empty?
         @current_feature_data = @features_data[feature.file]
         @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
       end

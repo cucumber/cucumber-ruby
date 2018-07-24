@@ -135,7 +135,7 @@ module Cucumber
         def raise_error
           table = DataTable.from([[]])
           table.instance_variable_set :@cell_matrix, cell_matrix
-          raise Different.new(table) if should_raise?
+          raise Different, table if should_raise?
         end
 
         def should_raise?

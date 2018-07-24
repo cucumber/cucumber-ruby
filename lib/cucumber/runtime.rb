@@ -139,7 +139,7 @@ module Cucumber
         rescue Errno::EACCES => e
           raise FileNotFoundException.new(e, File.expand_path(path))
         rescue Errno::ENOENT
-          raise FeatureFolderNotFoundException.new(path)
+          raise FeatureFolderNotFoundException, path
         end
       end
 

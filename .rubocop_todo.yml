@@ -222,21 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, exploded
-Style/RaiseArgs:
-  Exclude:
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/glue/invoke_in_world.rb'
-    - 'lib/cucumber/glue/registry_and_more.rb'
-    - 'lib/cucumber/glue/world_factory.rb'
-    - 'lib/cucumber/multiline_argument/data_table/diff_matrices.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'lib/cucumber/step_match.rb'
-
 # Offense count: 7
 # Cop supports --auto-correct.
 Style/RedundantBegin:

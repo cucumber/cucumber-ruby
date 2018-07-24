@@ -151,7 +151,7 @@ module Cucumber
       def create_expression(string_or_regexp)
         return CucumberExpressions::CucumberExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(String)
         return CucumberExpressions::RegularExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(Regexp)
-        raise ArgumentError.new('Expression must be a String or Regexp')
+        raise ArgumentError, 'Expression must be a String or Regexp'
       end
 
       def self.cli_snippet_type_options
