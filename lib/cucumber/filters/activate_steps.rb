@@ -39,7 +39,9 @@ module Cucumber
 
         class FindMatch
           def initialize(step_match_search, configuration, test_step)
-            @step_match_search, @configuration, @test_step = step_match_search, configuration, test_step
+            @step_match_search = step_match_search
+            @configuration = configuration
+            @test_step = test_step
           end
 
           def result

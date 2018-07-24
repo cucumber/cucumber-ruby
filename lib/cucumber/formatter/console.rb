@@ -219,7 +219,8 @@ module Cucumber
       class SnippetData
         attr_reader :actual_keyword, :step
         def initialize(actual_keyword, step)
-          @actual_keyword, @step = actual_keyword, step
+          @actual_keyword = actual_keyword
+          @step = step
         end
       end
     end

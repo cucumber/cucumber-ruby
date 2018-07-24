@@ -14,7 +14,8 @@ module Cucumber
       include Console
 
       def initialize(config)
-        @config, @io = config, ensure_io(config.out_stream)
+        @config = config
+        @io = ensure_io(config.out_stream)
         @counts = ConsoleCounts.new(@config)
         @issues = ConsoleIssues.new(@config)
         @start_time = Time.now

@@ -53,7 +53,8 @@ module Cucumber
       end
 
       def initialize(runtime, configuration)
-        @runtime, @configuration = runtime, configuration
+        @runtime = runtime
+        @configuration = configuration
         @step_definitions = []
         Glue::Dsl.rb_language = self
         @world_proc = @world_modules = nil

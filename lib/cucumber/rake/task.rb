@@ -134,7 +134,8 @@ module Cucumber
 
       # Define Cucumber Rake task
       def initialize(task_name = 'cucumber', desc = 'Run Cucumber features')
-        @task_name, @desc = task_name, desc
+        @task_name = task_name
+        @desc = desc
         @fork = true
         @libs = ['lib']
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}

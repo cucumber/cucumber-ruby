@@ -13,7 +13,8 @@ module Cucumber
 
     class AssertUnambiguousMatch
       def initialize(search, configuration)
-        @search, @configuration = search, configuration
+        @search = search
+        @configuration = configuration
       end
 
       def call(step_name)

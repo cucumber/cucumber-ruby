@@ -19,7 +19,8 @@ module Cucumber
     attr_reader :offset, :val
 
     def initialize(offset, val)
-      @offset, @val = offset, val
+      @offset = offset
+      @val = val
     end
   end
 end

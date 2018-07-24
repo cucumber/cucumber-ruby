@@ -67,7 +67,9 @@ module Cucumber
 
       def initialize(registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
-        @registry, @expression, @proc = registry, expression, proc
+        @registry = registry
+        @expression = expression
+        @proc = proc
         # @registry.available_step_definition(regexp_source, location)
       end
 

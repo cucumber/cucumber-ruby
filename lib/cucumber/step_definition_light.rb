@@ -9,7 +9,8 @@ module Cucumber
     attr_reader :regexp_source, :location
 
     def initialize(regexp_source, location)
-      @regexp_source, @location = regexp_source, location
+      @regexp_source = regexp_source
+      @location = location
     end
 
     def eql?(o)

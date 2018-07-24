@@ -530,7 +530,8 @@ module Cucumber
         attr_reader :exception
 
         def initialize(table, cells)
-          @table, @cells = table, cells
+          @table = table
+          @cells = cells
         end
 
         def accept(visitor)
@@ -586,7 +587,9 @@ module Cucumber
         attr_accessor :status, :value
 
         def initialize(value, table, line)
-          @value, @table, @line = value, table, line
+          @value = value
+          @table = table
+          @line = line
         end
 
         def inspect!

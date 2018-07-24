@@ -15,7 +15,8 @@ module Cucumber
       attr_reader :support_code
 
       def initialize(support_code, user_interface)
-        @support_code, @user_interface = support_code, user_interface
+        @support_code = support_code
+        @user_interface = user_interface
       end
 
       def_delegators :@user_interface,

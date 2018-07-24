@@ -5,7 +5,8 @@ require 'socket'
 
 class FakeWireServer
   def initialize(port, protocol_table)
-    @port, @protocol_table = port, protocol_table
+    @port = port
+    @protocol_table = protocol_table
     @delays = {}
   end
 
