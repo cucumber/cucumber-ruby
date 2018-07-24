@@ -152,7 +152,7 @@ module Cucumber
                                             ->(s) { s },
                                             true,
                                             false
-          ))
+                                          ))
           @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
                                             'cucumis',
                                             /(bella|cuke)s?/,
@@ -160,7 +160,7 @@ module Cucumber
                                             ->(s) { s },
                                             true,
                                             false
-          ))
+                                          ))
 
           expect(snippet.to_s).to eq unindented(%{
           Given("I have {float} {cucumis} in my belly") do |float, cucumis|
