@@ -30,8 +30,7 @@ module Cucumber
         test_case.describe_source_to(self)
       end
 
-      def feature(feature)
-      end
+      def feature(feature); end
 
       def scenario(_scenario)
         @factory = Scenario
@@ -41,11 +40,9 @@ module Cucumber
         @factory = ScenarioOutlineExample
       end
 
-      def examples_table(examples_table)
-      end
+      def examples_table(examples_table); end
 
-      def examples_table_row(row)
-      end
+      def examples_table_row(row); end
 
       def running_test_case
         @factory.new(@test_case)

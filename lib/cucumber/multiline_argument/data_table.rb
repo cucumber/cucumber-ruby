@@ -71,8 +71,7 @@ module Cucumber
           @rows << row
         end
 
-        def eof
-        end
+        def eof; end
       end
 
       NULL_CONVERSIONS = Hash.new(:strict => false, :proc => lambda { |cell_value| cell_value }).freeze

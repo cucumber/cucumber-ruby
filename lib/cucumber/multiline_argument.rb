@@ -52,11 +52,9 @@ module Cucumber
     end
 
     class None
-      def append_to(array)
-      end
+      def append_to(array); end
 
-      def describe_to(visitor)
-      end
+      def describe_to(visitor); end
     end
   end
 end

@@ -15,8 +15,7 @@ module Cucumber
         @hook
       end
 
-      def step(*)
-      end
+      def step(*); end
 
       def before_hook(*)
         @hook = true

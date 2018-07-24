@@ -156,19 +156,6 @@ Style/DoubleNegation:
   Exclude:
     - 'lib/cucumber/cli/configuration.rb'
 
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Exclude:
-    - 'lib/cucumber/formatter/hook_query_visitor.rb'
-    - 'lib/cucumber/formatter/stepdefs.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-    - 'lib/cucumber/multiline_argument.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/running_test_case.rb'
-
 # Offense count: 68
 # Cop supports --auto-correct.
 Style/Encoding:

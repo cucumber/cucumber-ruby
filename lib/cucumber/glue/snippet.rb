@@ -177,8 +177,7 @@ module Cucumber
             array << 'string'
           end
 
-          def append_comment_to(string)
-          end
+          def append_comment_to(string); end
         end
 
         class DataTable
@@ -196,11 +195,9 @@ module Cucumber
         end
 
         class None
-          def append_block_parameter_to(array)
-          end
+          def append_block_parameter_to(array); end
 
-          def append_comment_to(string)
-          end
+          def append_comment_to(string); end
         end
       end
     end
