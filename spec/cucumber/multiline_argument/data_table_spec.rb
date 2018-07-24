@@ -29,7 +29,7 @@ module Cucumber
 
       it 'should be convertible to an array of hashes' do
         expect( @table.hashes ).to eq [
-          {'one' => '4444', 'four' => '55555', 'seven' => '666666'}
+          { 'one' => '4444', 'four' => '55555', 'seven' => '666666' }
         ]
       end
 
@@ -45,7 +45,7 @@ module Cucumber
         it 'should covert data table to an array of hashes with symbols as keys' do
           ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w{1 22 333}], nil)
           data_table = DataTable.new(ast_table)
-          expect(data_table.symbolic_hashes).to eq([{:foo => '1', :bar => '22', :foo_bar => '333'}])
+          expect(data_table.symbolic_hashes).to eq([{ :foo => '1', :bar => '22', :foo_bar => '333' }])
         end
 
         it 'should be able to be accessed multiple times' do
@@ -631,7 +631,7 @@ module Cucumber
 
       describe '#from' do
         it 'should allow Array of Hash' do
-          t1 = DataTable.from([{'name' => 'aslak', 'male' => 'true'}])
+          t1 = DataTable.from([{ 'name' => 'aslak', 'male' => 'true' }])
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     male |     name  |
             |     true |     aslak |

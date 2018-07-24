@@ -40,7 +40,7 @@ module Cucumber
       attr_reader :out, :error
 
       it 'uses the default profile when no profile is defined' do
-        given_cucumber_yml_defined_as({'default' => '--require some_file'})
+        given_cucumber_yml_defined_as({ 'default' => '--require some_file' })
 
         config.parse!(%w{--format progress})
 
@@ -51,7 +51,7 @@ module Cucumber
         include RSpec::WorkInProgress
 
         it 'expands args from profiles in the cucumber.yml file' do
-          given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
+          given_cucumber_yml_defined_as({ 'bongo' => '--require from/yml' })
 
           config.parse!(%w{--format progress --profile bongo})
 
@@ -60,7 +60,7 @@ module Cucumber
         end
 
         it 'expands args from the default profile when no flags are provided' do
-          given_cucumber_yml_defined_as({'default' => '--require from/yml'})
+          given_cucumber_yml_defined_as({ 'default' => '--require from/yml' })
 
           config.parse!([])
 
@@ -68,7 +68,7 @@ module Cucumber
         end
 
         it 'allows --strict to be set by a profile' do
-          given_cucumber_yml_defined_as({'bongo' => '--strict'})
+          given_cucumber_yml_defined_as({ 'bongo' => '--strict' })
 
           config.parse!(%w{--profile bongo})
 
@@ -78,7 +78,7 @@ module Cucumber
         end
 
         it 'allows --strict from a profile to be selectively overridden' do
-          given_cucumber_yml_defined_as({'bongo' => '--strict'})
+          given_cucumber_yml_defined_as({ 'bongo' => '--strict' })
 
           config.parse!(%w{--profile bongo --no-strict-flaky})
 
@@ -107,7 +107,7 @@ ERB_YML
         end
 
         it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
-          given_cucumber_yml_defined_as({'default' => '--require from/yml', 'json_report' => '--format json'})
+          given_cucumber_yml_defined_as({ 'default' => '--require from/yml', 'json_report' => '--format json' })
 
           expected_message = <<-END_OF_MESSAGE
 Could not find profile: 'i_do_not_exist'
@@ -121,7 +121,7 @@ Defined profiles in cucumber.yml:
         end
 
         it 'allows profiles to be defined in arrays' do
-          given_cucumber_yml_defined_as({'foo' => ['-f', 'progress']})
+          given_cucumber_yml_defined_as({ 'foo' => ['-f', 'progress'] })
 
           config.parse!(%w{--profile foo})
 
@@ -129,7 +129,7 @@ Defined profiles in cucumber.yml:
         end
 
         it 'disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)' do
-          given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
+          given_cucumber_yml_defined_as({ 'foo' => %w[--format pretty] })
           config.parse!(%w{--format progress --profile foo})
 
           expect(config.options[:formats]).to eq [['progress', {}, out]]
@@ -138,7 +138,7 @@ Defined profiles in cucumber.yml:
         ['--no-profile', '-P'].each do |flag|
           context 'when none is specified with #{flag}' do
             it 'disables profiles' do
-              given_cucumber_yml_defined_as({'default' => '-v --require file_specified_in_default_profile.rb'})
+              given_cucumber_yml_defined_as({ 'default' => '-v --require file_specified_in_default_profile.rb' })
 
               config.parse!("#{flag} --require some_file.rb".split(' '))
 
@@ -146,7 +146,7 @@ Defined profiles in cucumber.yml:
             end
 
             it 'notifies the user that the profiles are being disabled' do
-              given_cucumber_yml_defined_as({'default' => '-v'})
+              given_cucumber_yml_defined_as({ 'default' => '-v' })
 
               config.parse!("#{flag} --require some_file.rb".split(' '))
 
@@ -157,7 +157,7 @@ Defined profiles in cucumber.yml:
 
         it 'issues a helpful error message when a specified profile exists but is nil or blank' do
           [nil, '   '].each do |bad_input|
-            given_cucumber_yml_defined_as({'foo' => bad_input})
+            given_cucumber_yml_defined_as({ 'foo' => bad_input })
 
             expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
 
@@ -269,7 +269,7 @@ Defined profiles in cucumber.yml:
       end
 
       it 'does not accept multiple --format options when both use implicit STDOUT (using profile with no formatters)' do
-        given_cucumber_yml_defined_as({'default' => ['-q']})
+        given_cucumber_yml_defined_as({ 'default' => ['-q'] })
         expect(-> { config.parse!(%w{--format pretty --format progress}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
@@ -284,7 +284,7 @@ Defined profiles in cucumber.yml:
       end
 
       it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
-        given_cucumber_yml_defined_as({'default' => ['-f', 'progress', '--out', 'file1']})
+        given_cucumber_yml_defined_as({ 'default' => ['-f', 'progress', '--out', 'file1'] })
         expect(-> { config.parse!(%w{--format pretty --out file1}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
@@ -360,7 +360,7 @@ Defined profiles in cucumber.yml:
       end
 
       it 'allows specifying environment variables in profiles' do
-        given_cucumber_yml_defined_as({'selenium' => 'RAILS_ENV=selenium'})
+        given_cucumber_yml_defined_as({ 'selenium' => 'RAILS_ENV=selenium' })
         config.parse!(['--profile', 'selenium'])
 
         expect(ENV['RAILS_ENV']).to eq 'selenium'
@@ -385,7 +385,7 @@ Defined profiles in cucumber.yml:
         it 'returns an empty hash when no limits are specified' do
           config.parse!([])
 
-          expect(config.tag_limits).to eq({ })
+          expect(config.tag_limits).to eq({})
         end
 
         it 'returns a hash of limits when limits are specified' do
@@ -403,7 +403,7 @@ Defined profiles in cucumber.yml:
         end
 
         it 'returns true when --dry-run was specified in yaml file' do
-          given_cucumber_yml_defined_as({'default' => '--dry-run'})
+          given_cucumber_yml_defined_as({ 'default' => '--dry-run' })
           config.parse!([])
 
           expect(config.dry_run?).to be true

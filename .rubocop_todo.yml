@@ -6,21 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-
-# Offense count: 70
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
-    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/runtime_spec.rb'
-    - 'spec/cucumber/step_match_search_spec.rb'
-
 # Offense count: 120
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

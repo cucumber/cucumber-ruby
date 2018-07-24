@@ -50,7 +50,7 @@ You can run again with --guess to make Cucumber be more smart about it
       end
 
       describe 'when --guess is used' do
-        let(:options) { {:guess => true} }
+        let(:options) { { :guess => true } }
 
         it 'does not show --guess hint' do
           expected_error = %{Ambiguous match of "Three cute mice":
