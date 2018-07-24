@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
-  s.version     = File.read(File.expand_path('../lib/cucumber/version', __FILE__))
+  s.version     = File.read(File.expand_path('lib/cucumber/version', __dir__))
   s.authors     = ["Aslak Hellesøy", 'Matt Wynne', 'Steve Tooke']
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"

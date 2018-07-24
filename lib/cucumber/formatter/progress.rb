@@ -82,11 +82,11 @@ module Cucumber
       end
 
       CHARS = {
-        :passed    => '.',
-        :failed    => 'F',
-        :undefined => 'U',
-        :pending   => 'P',
-        :skipped   => '-'
+        passed: '.',
+        failed: 'F',
+        undefined: 'U',
+        pending: 'P',
+        skipped: '-'
       }
 
       def progress(status)

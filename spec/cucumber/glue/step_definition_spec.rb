@@ -68,7 +68,7 @@ module Cucumber
 
           allow(registry.current_world).to receive(:target) { target }
 
-          dsl.Given(/With symbol on block/, :with_symbol, :on => lambda { target })
+          dsl.Given(/With symbol on block/, :with_symbol, on: lambda { target })
 
           expect(target).to receive(:with_symbol)
 
@@ -80,7 +80,7 @@ module Cucumber
 
           allow(registry.current_world).to receive(:target) { target }
 
-          dsl.Given(/With symbol on symbol/, :with_symbol, :on => :target)
+          dsl.Given(/With symbol on symbol/, :with_symbol, on: :target)
 
           expect(target).to receive(:with_symbol)
 

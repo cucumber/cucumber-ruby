@@ -44,7 +44,7 @@ module Cucumber
         it 'should covert data table to an array of hashes with symbols as keys' do
           ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w{1 22 333}], nil)
           data_table = DataTable.new(ast_table)
-          expect(data_table.symbolic_hashes).to eq([{ :foo => '1', :bar => '22', :foo_bar => '333' }])
+          expect(data_table.symbolic_hashes).to eq([{ foo: '1', bar: '22', foo_bar: '333' }])
         end
 
         it 'should be able to be accessed multiple times' do
@@ -320,7 +320,7 @@ module Cucumber
             |g|h|i|
           })
           t.diff!(t.dup)
-          expect(t.to_s(:indent => 12, :color => false)).to eq %{
+          expect(t.to_s(indent: 12, color: false)).to eq %{
             |     a |     b |     c |
             |     d |     e |     f |
             |     g |     h |     i |
@@ -375,7 +375,7 @@ module Cucumber
             |g|h|i|
                                })
             t.diff!(t.dup)
-            expect(t.to_s(:indent => 12, :color => false)).to eq %{
+            expect(t.to_s(indent: 12, color: false)).to eq %{
             |     a |     a |     c |
             |     d |     e |     f |
             |     g |     h |     i |
@@ -434,7 +434,7 @@ module Cucumber
             |d|e|d|f|
             |g|h|g|i|
                                 })
-            expect { t1.diff!(t2, :surplus_col => true) }.to raise_error(DataTable::Different) do |error|
+            expect { t1.diff!(t2, surplus_col: true) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a |     b |     c | (+) a |
                 |     d |     e |     f | (+) d |
@@ -473,7 +473,7 @@ module Cucumber
                                 ['aslak', true]
                               ])
           t1.diff!(t2)
-          expect(t1.to_s(:indent => 12, :color => false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %{
             |     name  |     male |
             |     aslak |     true |
           }
@@ -492,7 +492,7 @@ module Cucumber
                                 %w(aslak true)
                               ])
           t2.diff!(t1)
-          expect(t1.to_s(:indent => 12, :color => false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %{
             |     name  |     male |
             |     aslak |     true |
           }
@@ -510,7 +510,7 @@ module Cucumber
                                 ['aslak', true]
                               ])
           t1.diff!(t2)
-          expect(t1.to_s(:indent => 12, :color => false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %{
             |     name  |     male |
             |     aslak |     true |
           }
@@ -559,7 +559,7 @@ module Cucumber
               | a | b |
             })
             expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
-            expect { @t.dup.diff!(t, :missing_row => false) }.not_to raise_error
+            expect { @t.dup.diff!(t, missing_row: false) }.not_to raise_error
           end
 
           it 'should not raise on surplus rows when surplus is at the end' do
@@ -569,7 +569,7 @@ module Cucumber
               | e | f |
             })
             expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
-            expect { @t.dup.diff!(t, :surplus_row => false) }.not_to raise_error
+            expect { @t.dup.diff!(t, surplus_row: false) }.not_to raise_error
           end
 
           it 'should not raise on surplus rows when surplus is interleaved' do
@@ -586,7 +586,7 @@ module Cucumber
               | five  | 5     |
             })
             expect { t1.dup.diff!(t2) }.to raise_error(DataTable::Different)
-            expect { t1.dup.diff!(t2, :surplus_row => false) }.not_to raise_error
+            expect { t1.dup.diff!(t2, surplus_row: false) }.not_to raise_error
           end
 
           it 'should raise on missing columns' do
@@ -595,7 +595,7 @@ module Cucumber
               | c |
             })
             expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
-            expect { @t.dup.diff!(t, :missing_col => false) }.not_to raise_error
+            expect { @t.dup.diff!(t, missing_col: false) }.not_to raise_error
           end
 
           it 'should not raise on surplus columns' do
@@ -604,7 +604,7 @@ module Cucumber
               | c | d | y |
             })
             expect { @t.dup.diff!(t) }.not_to raise_error
-            expect { @t.dup.diff!(t, :surplus_col => true) }.to raise_error(DataTable::Different)
+            expect { @t.dup.diff!(t, surplus_col: true) }.to raise_error(DataTable::Different)
           end
 
           it 'should not raise on misplaced columns' do
@@ -613,7 +613,7 @@ module Cucumber
               | d | c |
             })
             expect { @t.dup.diff!(t) }.not_to raise_error
-            expect { @t.dup.diff!(t, :misplaced_col => true) }.to raise_error(DataTable::Different)
+            expect { @t.dup.diff!(t, misplaced_col: true) }.to raise_error(DataTable::Different)
           end
         end
 
@@ -631,7 +631,7 @@ module Cucumber
       describe '#from' do
         it 'should allow Array of Hash' do
           t1 = DataTable.from([{ 'name' => 'aslak', 'male' => 'true' }])
-          expect(t1.to_s(:indent => 12, :color => false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %{
             |     male |     name  |
             |     true |     aslak |
           }

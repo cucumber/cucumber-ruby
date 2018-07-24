@@ -161,13 +161,6 @@ Style/EvalWithLocation:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'cucumber.gemspec'
-    - 'lib/cucumber/platform.rb'
-
 # Offense count: 5
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: annotated, template, unannotated
@@ -199,13 +192,6 @@ Style/GuardClause:
     - 'lib/cucumber/rspec/disable_option_parser.rb'
     - 'lib/cucumber/step_argument.rb'
     - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 112
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-Style/HashSyntax:
-  Enabled: false
 
 # Offense count: 2
 Style/IfInsideElse:

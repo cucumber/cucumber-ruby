@@ -275,10 +275,10 @@ module Cucumber
       end
 
       context 'In --expand mode' do
-        let(:runtime) { Runtime.new(:expand => true) }
+        let(:runtime) { Runtime.new(expand: true) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
-          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', :expand => true))
+          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', expand: true))
         end
 
         describe 'given a single feature' do

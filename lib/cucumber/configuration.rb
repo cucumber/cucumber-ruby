@@ -242,22 +242,22 @@ module Cucumber
 
     def default_options
       {
-        :autoload_code_paths => ['features/support', 'features/step_definitions'],
-        :filters             => [],
-        :strict              => Cucumber::Core::Test::Result::StrictConfiguration.new,
-        :require             => [],
-        :dry_run             => false,
-        :fail_fast           => false,
-        :formats             => [],
-        :excludes            => [],
-        :tag_expressions     => [],
-        :name_regexps        => [],
-        :env_vars            => {},
-        :diff_enabled        => true,
-        :snippets            => true,
-        :source              => true,
-        :duration            => true,
-        :event_bus           => Cucumber::Events.make_event_bus
+        autoload_code_paths: ['features/support', 'features/step_definitions'],
+        filters: [],
+        strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
+        require: [],
+        dry_run: false,
+        fail_fast: false,
+        formats: [],
+        excludes: [],
+        tag_expressions: [],
+        name_regexps: [],
+        env_vars: {},
+        diff_enabled: true,
+        snippets: true,
+        source: true,
+        duration: true,
+        event_bus: Cucumber::Events.make_event_bus
       }
     end
 

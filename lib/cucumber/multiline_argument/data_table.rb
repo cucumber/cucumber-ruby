@@ -74,7 +74,7 @@ module Cucumber
         def eof; end
       end
 
-      NULL_CONVERSIONS = Hash.new(:strict => false, :proc => lambda { |cell_value| cell_value }).freeze
+      NULL_CONVERSIONS = Hash.new(strict: false, proc: lambda { |cell_value| cell_value }).freeze
 
       # @param data [Core::Ast::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_columns!
@@ -285,14 +285,14 @@ module Cucumber
       #
       def map_column!(column_name, strict = true, &conversion_proc)
         # TODO: Remove this method for 2.0
-        @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
+        @conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self
       end
 
       # Returns a new Table with an additional column mapping. See #map_column!
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
-        conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
+        conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self.class.new(Core::Ast::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
 

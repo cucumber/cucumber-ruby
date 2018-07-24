@@ -7,7 +7,7 @@ require 'cucumber/core/platform'
 
 module Cucumber
   unless defined?(Cucumber::VERSION)
-    VERSION       = File.read(File.expand_path('../version', __FILE__))
+    VERSION       = File.read(File.expand_path('version', __dir__))
     BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
     LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
     RAILS         = defined?(Rails)

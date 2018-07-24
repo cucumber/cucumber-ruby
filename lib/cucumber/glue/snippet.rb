@@ -145,10 +145,10 @@ module Cucumber
       end
 
       SNIPPET_TYPES = {
-        :cucumber_expression => CucumberExpression,
-        :regexp => Regexp,
-        :classic => Classic,
-        :percent => Percent
+        cucumber_expression: CucumberExpression,
+        regexp: Regexp,
+        classic: Classic,
+        percent: Percent
       }
 
       module MultilineArgumentSnippet

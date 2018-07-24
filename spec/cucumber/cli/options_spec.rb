@@ -127,21 +127,21 @@ module Cucumber
 
           it 'catches multiple profile formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-f progress -f pretty')
-            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+            options = Options.new(output_stream, error_stream, default_profile: 'default')
 
             expect { options.parse!(%w{}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'profiles does not affect the catching of multiple command line formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-q')
-            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+            options = Options.new(output_stream, error_stream, default_profile: 'default')
 
             expect { options.parse!(%w{-f progress -f pretty}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'merges profile formatters and command line formatters' do
             given_cucumber_yml_defined_as('default' => '-f junit -o result.xml')
-            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+            options = Options.new(output_stream, error_stream, default_profile: 'default')
 
             options.parse!(%w{-f pretty})
 
@@ -195,7 +195,7 @@ module Cucumber
           it 'uses the default profile passed in during initialization if none are specified by the user' do
             given_cucumber_yml_defined_as('default' => '--require some_file')
 
-            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+            options = Options.new(output_stream, error_stream, default_profile: 'default')
             options.parse!(%w{--format progress})
 
             expect(options[:require]).to include('some_file')
@@ -309,7 +309,7 @@ module Cucumber
               default: --format pretty
               END
                                            )
-              options = Options.new(output_stream, error_stream, :default_profile => 'default')
+              options = Options.new(output_stream, error_stream, default_profile: 'default')
               options.parse!(%w(-f progress))
 
               expect($cucumber_yml_read_count).to eq 1
