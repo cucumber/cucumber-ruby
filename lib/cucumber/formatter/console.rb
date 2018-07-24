@@ -196,7 +196,7 @@ module Cucumber
       end
 
       def hook?(test_step)
-        not test_step.source.last.respond_to?(:actual_keyword)
+        !test_step.source.last.respond_to?(:actual_keyword)
       end
 
       def element_messages(elements, status)
