@@ -78,7 +78,7 @@ Defined profiles in cucumber.yml:
 
         raise(YmlLoadError, "cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n") if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
 
-        return @cucumber_yml
+        @cucumber_yml
       end
 
       # Locates cucumber.yml file. The file can end in .yml or .yaml,

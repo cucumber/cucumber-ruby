@@ -228,17 +228,6 @@ Style/RedundantException:
   Exclude:
     - 'spec/cucumber/formatter/json_spec.rb'
 
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'lib/cucumber/cli/profile_loader.rb'
-    - 'lib/cucumber/formatter/json.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/step_match.rb'
-
 # Offense count: 19
 # Cop supports --auto-correct.
 Style/RedundantSelf:

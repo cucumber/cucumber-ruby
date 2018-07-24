@@ -103,7 +103,7 @@ module Cucumber
 
   class SkippingStepMatch
     def activate(test_step)
-      return test_step.with_action { raise Core::Test::Result::Skipped }
+      test_step.with_action { raise Core::Test::Result::Skipped }
     end
   end
 
@@ -143,7 +143,7 @@ module Cucumber
 
     def activate(test_step)
       # noop
-      return test_step
+      test_step
     end
   end
 
@@ -153,7 +153,7 @@ module Cucumber
     end
 
     def activate(test_step)
-      return test_step.with_action { raise @error }
+      test_step.with_action { raise @error }
     end
   end
 end

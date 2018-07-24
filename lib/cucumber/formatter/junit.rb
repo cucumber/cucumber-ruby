@@ -152,11 +152,9 @@ module Cucumber
 
       def get_backtrace_object(result)
         if result.failed?
-          return result.exception
+          result.exception
         elsif result.backtrace
-          return result
-        else
-          return nil
+          result
         end
       end
 

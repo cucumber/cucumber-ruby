@@ -130,6 +130,6 @@ module Autotest::CucumberMixin
 
     args = args.join(' ')
 
-    return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args}"
+    "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args}"
   end
 end

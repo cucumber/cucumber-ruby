@@ -125,11 +125,11 @@ module Cucumber
       def hooks_of_type(hook_query)
         case hook_query.type
         when :before
-          return before_hooks
+          before_hooks
         when :after
-          return after_hooks
+          after_hooks
         when :after_step
-          return after_step_hooks
+          after_step_hooks
         else
           fail 'Unknown hook type ' + hook_query.type.to_s
         end
