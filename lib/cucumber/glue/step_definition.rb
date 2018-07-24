@@ -50,15 +50,15 @@ module Cucumber
         end
 
         def parse_target_proc_from(options)
-          return lambda { self } unless options.key?(:on)
+          return -> { self } unless options.key?(:on)
           target = options[:on]
           case target
           when Proc
             target
           when Symbol
-            lambda { self.send(target) }
+            -> { self.send(target) }
           else
-            lambda { raise ArgumentError, 'Target must be a symbol or a proc' }
+            -> { raise ArgumentError, 'Target must be a symbol or a proc' }
           end
         end
       end

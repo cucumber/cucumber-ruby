@@ -10,23 +10,21 @@ module Cucumber
   module Cli
     class Options
       INDENT = ' ' * 53
-      # rubocop:disable Layout/MultilineOperationIndentation
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
-        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
-                                                              "#{INDENT}The slowest step definitions (with duration) are\n" +
-                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" +
-                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" +
+        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" \
+                                                              "#{INDENT}The slowest step definitions (with duration) are\n" \
+                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" \
+                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" \
                                                               "#{INDENT}filename instead."],
-        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" +
+        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" \
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
-      }
-      # rubocop:enable Layout/MultilineOperationIndentation
+      }.freeze
       max = BUILTIN_FORMATS.keys.map(&:length).max
       FORMAT_HELP_MSG = [
         'Use --format rerun --out rerun.txt to write out failing',
@@ -39,24 +37,24 @@ module Cucumber
         'foo/bar_zap.rb. You can place the file with this relative',
         'path underneath your features/support directory or anywhere',
         "on Ruby's LOAD_PATH, for example in a Ruby gem."
-      ]
+      ].freeze
 
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
       end) + FORMAT_HELP_MSG
-      PROFILE_SHORT_FLAG = '-p'
-      NO_PROFILE_SHORT_FLAG = '-P'
-      PROFILE_LONG_FLAG = '--profile'
-      NO_PROFILE_LONG_FLAG = '--no-profile'
-      FAIL_FAST_FLAG = '--fail-fast'
-      RETRY_FLAG = '--retry'
+      PROFILE_SHORT_FLAG = '-p'.freeze
+      NO_PROFILE_SHORT_FLAG = '-P'.freeze
+      PROFILE_LONG_FLAG = '--profile'.freeze
+      NO_PROFILE_LONG_FLAG = '--no-profile'.freeze
+      FAIL_FAST_FLAG = '--fail-fast'.freeze
+      RETRY_FLAG = '--retry'.freeze
       OPTIONS_WITH_ARGS = [
         '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
         '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
         PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
         '--lines', '--port', '-I', '--snippet-type'
-      ]
-      ORDER_TYPES = %w{defined random}
+      ].freeze
+      ORDER_TYPES = %w{defined random}.freeze
       TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
       def self.parse(args, out_stream, error_stream, options = {})
@@ -150,7 +148,7 @@ Specify SEED to reproduce the shuffling from a previous run.
         extract_environment_variables
         @options[:paths] = @args.dup # whatver is left over
 
-        check_formatter_stream_conflicts()
+        check_formatter_stream_conflicts
 
         merge_profiles
 
@@ -360,7 +358,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def non_stdout_formats
-        @options[:formats].select { |_, _, output| output != @out_stream }
+        @options[:formats].reject { |_, _, output| output == @out_stream }
       end
 
       def add_option(option, value)

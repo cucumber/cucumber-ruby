@@ -6,14 +6,14 @@ require 'cucumber/glue/registry_and_more'
 
 module Cucumber
   describe StepMatch do
-    WORD = '[[:word:]]'
+    WORD = '[[:word:]]'.freeze
 
     before do
       @registry = Glue::RegistryAndMore.new(nil, Configuration.new)
     end
 
     def stepdef(string_or_regexp)
-      Glue::StepDefinition.new(@registry, string_or_regexp, lambda {}, {})
+      Glue::StepDefinition.new(@registry, string_or_regexp, -> {}, {})
     end
 
     def step_match(regexp, name)
@@ -62,13 +62,13 @@ module Cucumber
     it 'formats groups with block' do
       m = step_match(/I (#{WORD}+) (\d+) (#{WORD}+) this (#{WORD}+)/, 'I ate 1 egg this morning')
 
-      expect(m.format_args(&lambda { |msg| "<span>#{msg}</span>" })).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
+      expect(m.format_args(&->(msg) { "<span>#{msg}</span>" })).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
     end
 
     it 'formats groups with proc object' do
       m = step_match(/I (#{WORD}+) (\d+) (#{WORD}+) this (#{WORD}+)/, 'I ate 1 egg this morning')
 
-      expect(m.format_args(lambda { |msg| "<span>#{msg}</span>" })).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
+      expect(m.format_args(->(msg) { "<span>#{msg}</span>" })).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
     end
 
     it 'formats groups even when first group is optional and not matched' do

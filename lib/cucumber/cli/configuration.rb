@@ -131,7 +131,7 @@ module Cucumber
           f[2] == @out_stream ? -1 : 1
         end
         @options[:formats].uniq!
-        @options.check_formatter_stream_conflicts()
+        @options.check_formatter_stream_conflicts
       end
     end
   end

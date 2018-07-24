@@ -199,48 +199,6 @@ Style/IfInsideElse:
     - 'lib/cucumber/cli/main.rb'
     - 'lib/cucumber/formatter/json.rb'
 
-# Offense count: 30
-# Cop supports --auto-correct.
-# Style/IfUnlessModifier:
-#   Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: InverseMethods, InverseBlocks.
-Style/InverseMethods:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/configuration.rb'
-
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: line_count_dependent, lambda, literal
-Style/Lambda:
-  Exclude:
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/glue/step_definition.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/step_match.rb'
-    - 'spec/cucumber/glue/step_definition_spec.rb'
-    - 'spec/cucumber/step_match_spec.rb'
-    - 'spec/cucumber/world/pending_spec.rb'
-
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/LineEndConcatenation:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'spec/cucumber/filters/tag_limits/verifier_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-Style/MethodCallWithoutArgsParentheses:
-  Exclude:
-    - 'lib/cucumber/cli/configuration.rb'
-    - 'lib/cucumber/cli/options.rb'
-
 # Offense count: 4
 Style/MethodMissingSuper:
   Exclude:
@@ -261,15 +219,6 @@ Style/MixinUsage:
     - 'lib/cucumber/glue/dsl.rb'
 
 # Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: module_function, extend_self
-Style/ModuleFunction:
-  Exclude:
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 2
 Style/MultilineBlockChain:
   Exclude:
     - 'lib/cucumber/formatter/console_counts.rb'
@@ -285,17 +234,17 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 19
-# Cop supports --auto-correct.
-Style/MutableConstant:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/progress.rb'
-    - 'lib/cucumber/formatter/unicode.rb'
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-    - 'spec/cucumber/step_match_spec.rb'
+# # Offense count: 19
+# # Cop supports --auto-correct.
+# Style/MutableConstant:
+#   Exclude:
+#     - 'lib/cucumber/cli/options.rb'
+#     - 'lib/cucumber/formatter/progress.rb'
+#     - 'lib/cucumber/formatter/unicode.rb'
+#     - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
+#     - 'lib/cucumber/glue/snippet.rb'
+#     - 'lib/cucumber/term/ansicolor.rb'
+#     - 'spec/cucumber/step_match_spec.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.

@@ -68,7 +68,7 @@ module Cucumber
 
           allow(registry.current_world).to receive(:target) { target }
 
-          dsl.Given(/With symbol on block/, :with_symbol, on: lambda { target })
+          dsl.Given(/With symbol on block/, :with_symbol, on: -> { target })
 
           expect(target).to receive(:with_symbol)
 
@@ -182,7 +182,7 @@ module Cucumber
         expect(StepDefinition.new(
           registry,
           /I CAN HAZ (\d+) CUKES/i,
-          lambda {},
+          -> {},
           {}
         ).to_hash).to eq(
           source: {

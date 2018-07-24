@@ -3,7 +3,7 @@
 module Cucumber
   module Glue
     module Snippet
-      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
+      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)'].freeze
 
       class Generator
         def self.register_on(configuration)
@@ -149,7 +149,7 @@ module Cucumber
         regexp: Regexp,
         classic: Classic,
         percent: Percent
-      }
+      }.freeze
 
       module MultilineArgumentSnippet
         def self.new(multiline_argument)

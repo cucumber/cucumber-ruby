@@ -180,7 +180,7 @@ module Cucumber
         File.directory?(path) ? Dir["#{path}/**/*"] : path
       end.flatten.uniq
       remove_excluded_files_from(files)
-      files.reject! { |f| !File.file?(f) }
+      files.select! { |f| File.file?(f) }
       files.reject! { |f| File.extname(f) == '.feature' }
       files.reject! { |f| f =~ /^http/ }
       files.sort

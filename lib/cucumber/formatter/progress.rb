@@ -87,7 +87,7 @@ module Cucumber
         undefined: 'U',
         pending: 'P',
         skipped: '-'
-      }
+      }.freeze
 
       def progress(status)
         char = CHARS[status]

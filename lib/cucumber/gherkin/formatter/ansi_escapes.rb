@@ -51,7 +51,7 @@ module Cucumber
           'white'   => "\e[37m",
           'grey'    => "\e[90m",
           'bold'    => "\e[1m"
-        }
+        }.freeze
 
         ALIASES = Hash.new do |h, k|
           h[$1] + ',bold' if k.to_s =~ /(.*)_arg/
@@ -91,8 +91,6 @@ module Cucumber
         def up(n)
           "\e[#{n}A"
         end
-
-        extend self
       end
     end
   end

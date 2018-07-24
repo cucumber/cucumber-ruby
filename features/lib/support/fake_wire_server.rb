@@ -26,7 +26,7 @@ class FakeWireServer
 
   def open_session_on(socket, io)
     begin
-      on_message = lambda { |message| io.puts message }
+      on_message = ->(message) { io.puts message }
       SocketSession.new(socket, @protocol_table, @delays, on_message).start
     ensure
       socket.close
