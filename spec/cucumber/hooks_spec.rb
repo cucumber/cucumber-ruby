@@ -12,8 +12,8 @@ module Cucumber::Hooks
     end
 
     it 'responds to match_locations?' do
-      expect(subject.match_locations? [location]).to be_truthy
-      expect(subject.match_locations? []).to be_falsey
+      expect(subject.match_locations?([location])).to be_truthy
+      expect(subject.match_locations?([])).to be_falsey
     end
   end
 
