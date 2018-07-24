@@ -222,12 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/Proc:
-  Exclude:
-    - 'spec/cucumber/filters/activate_steps_spec.rb'
-
 # Offense count: 8
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
