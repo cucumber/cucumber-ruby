@@ -89,7 +89,7 @@ module Cucumber
         end
 
         it 'raises error when we try to register more than one World proc' do
-          expected_error = %{You can only pass a proc to #World once, but it's happening
+          expected_error = %(You can only pass a proc to #World once, but it's happening
 in 2 places:
 
 spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
@@ -98,7 +98,7 @@ spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
 Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc
 or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
-}
+)
           dsl.World { Hash.new } # rubocop:disable Style/EmptyLiteral
 
           expect(-> { dsl.World { Array.new } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/) # rubocop:disable Style/EmptyLiteral

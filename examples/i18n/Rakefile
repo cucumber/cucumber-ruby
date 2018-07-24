@@ -24,7 +24,7 @@ end
 task default: :cucumber
 
 def examples_working?(lang)
-  !%w{}.index(lang)
+  !%w[].index(lang)
 end
 
 def rake(args)

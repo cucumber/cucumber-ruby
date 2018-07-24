@@ -28,7 +28,7 @@ module Cucumber
           FEATURE
 
           it 'outputs the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -47,7 +47,7 @@ module Cucumber
                       "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec.feature:4"},
-                      "result": {"status": "undefined"}}]}]}]})
+                      "result": {"status": "undefined"}}]}]}]))
           end
         end
 
@@ -64,7 +64,7 @@ module Cucumber
           end
 
           it 'outputs the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -84,7 +84,7 @@ module Cucumber
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:63"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -181,7 +181,7 @@ module Cucumber
           end
 
           it 'outputs the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -201,7 +201,7 @@ module Cucumber
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:180"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -229,7 +229,7 @@ module Cucumber
           end
 
           it 'the tags are included in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -274,7 +274,7 @@ module Cucumber
                       "line": 10,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:228"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -310,7 +310,7 @@ module Cucumber
           end
 
           it 'the comments are included in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -385,7 +385,7 @@ module Cucumber
                                     "line": 15}],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:309"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -405,7 +405,7 @@ module Cucumber
           end
 
           it 'includes the doc string in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -428,7 +428,7 @@ module Cucumber
                                      "line": 5},
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:404"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -445,7 +445,7 @@ module Cucumber
           end
 
           it 'includes the output from the step in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -466,7 +466,7 @@ module Cucumber
                       "output": ["from step"],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:444"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -485,7 +485,7 @@ module Cucumber
           FEATURE
 
           it 'includes the background in the json data each time it is executed' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -538,7 +538,7 @@ module Cucumber
                       "name": "the monkey eats more bananas",
                       "line": 10,
                       "match": {"location": "spec.feature:10"},
-                      "result": {"status": "undefined"}}]}]}]})
+                      "result": {"status": "undefined"}}]}]}]))
           end
         end
 
@@ -555,7 +555,7 @@ module Cucumber
           end
 
           it 'includes the data from the step in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -577,7 +577,7 @@ module Cucumber
                                       "data": "YWJj"}],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:554"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -600,7 +600,7 @@ module Cucumber
           end
 
           it 'includes the file content in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -622,7 +622,7 @@ module Cucumber
                                       "data": "Zm9v"}],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:593"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -646,7 +646,7 @@ module Cucumber
           end
 
           it 'includes all hooks except the around hook in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -687,7 +687,7 @@ module Cucumber
                                  "duration": 1}},
                      {"match": {"location": "spec/cucumber/formatter/json_spec.rb:640"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -749,7 +749,7 @@ module Cucumber
           end
 
           it 'includes the doc string in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -772,7 +772,7 @@ module Cucumber
                           {"cells": ["cc", "dd"]}],
                        "match": {"location": "spec/cucumber/formatter/json_spec.rb:748"},
                        "result": {"status": "passed",
-                                  "duration": 1}}]}]}]})
+                                  "duration": 1}}]}]}]))
           end
         end
       end
@@ -787,7 +787,7 @@ module Cucumber
         json.each do |feature|
           elements = feature.fetch('elements') { [] }
           elements.each do |scenario|
-            %w(steps before after around).each do |type|
+            %w[steps before after around].each do |type|
               next unless scenario[type]
               scenario[type].each do |step_or_hook|
                 normalise_json_step_or_hook(step_or_hook)

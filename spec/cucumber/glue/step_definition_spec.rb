@@ -103,9 +103,9 @@ module Cucumber
 
       it 'raises UndefinedDynamicStep when an undefined step is parsed dynamically' do
         dsl.Given(/Outside/) do
-          steps %{
+          steps %(
             Given Inside
-          }
+          )
         end
 
         expect(-> { run_step 'Outside' }).to raise_error(Cucumber::UndefinedDynamicStep)
@@ -113,12 +113,12 @@ module Cucumber
 
       it 'raises UndefinedDynamicStep when an undefined step with doc string is parsed dynamically' do
         dsl.Given(/Outside/) do
-          steps %{
+          steps %(
             Given Inside
             """
             abc
             """
-          }
+          )
         end
 
         expect(-> { run_step 'Outside' }).to raise_error(Cucumber::UndefinedDynamicStep)
@@ -126,11 +126,11 @@ module Cucumber
 
       it 'raises UndefinedDynamicStep when an undefined step with data table is parsed dynamically' do
         dsl.Given(/Outside/) do
-          steps %{
+          steps %(
             Given Inside
              | a |
              | 1 |
-          }
+          )
         end
 
         expect(-> { run_step 'Outside' }).to raise_error(Cucumber::UndefinedDynamicStep)

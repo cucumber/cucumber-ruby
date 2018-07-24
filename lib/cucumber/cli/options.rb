@@ -54,7 +54,7 @@ module Cucumber
         PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
         '--lines', '--port', '-I', '--snippet-type'
       ].freeze
-      ORDER_TYPES = %w{defined random}.freeze
+      ORDER_TYPES = %w[defined random].freeze
       TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
       def self.parse(args, out_stream, error_stream, options = {})
@@ -211,7 +211,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def i18n_keywords_msg
         [
           'List keywords for in a particular language',
-          %{Run with "--i18n help" to see all languages}
+          %(Run with "--i18n help" to see all languages)
         ]
       end
 

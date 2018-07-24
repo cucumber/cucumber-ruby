@@ -28,7 +28,7 @@ module Cucumber
         end
 
         it 'produces an array containing a single feature file path' do
-          expect(rerun_file.features).to eq %w(cucumber.feature)
+          expect(rerun_file.features).to eq %w[cucumber.feature]
         end
       end
 
@@ -38,7 +38,7 @@ module Cucumber
         end
 
         it 'produces an array containing multiple feature file paths' do
-          expect(rerun_file.features).to eq %w(cucumber.feature foo.feature)
+          expect(rerun_file.features).to eq %w[cucumber.feature foo.feature]
         end
       end
 
@@ -48,7 +48,7 @@ module Cucumber
         end
 
         it 'produces an array containing multiple feature file paths' do
-          expect(rerun_file.features).to eq %w(cucumber.feature foo.feature)
+          expect(rerun_file.features).to eq %w[cucumber.feature foo.feature]
         end
       end
 
@@ -58,7 +58,7 @@ module Cucumber
         end
 
         it 'produces an array containing multiple feature file paths with scenario lines' do
-          expect(rerun_file.features).to eq %w(cucumber.feature:8 foo.feature:8:16)
+          expect(rerun_file.features).to eq %w[cucumber.feature:8 foo.feature:8:16]
         end
       end
 

@@ -438,7 +438,7 @@ module Cucumber
       end
 
       def print_doc_string(content, status, indent)
-        s = %{"""\n#{content}\n"""}.indent(indent)
+        s = %("""\n#{content}\n""").indent(indent)
         s = s.split("\n").map { |l| l =~ /^\s+$/ ? '' : l }.join("\n")
         @io.puts(format_string(s, status))
       end

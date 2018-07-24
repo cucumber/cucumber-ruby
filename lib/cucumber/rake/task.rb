@@ -138,7 +138,7 @@ module Cucumber
         @desc = desc
         @fork = true
         @libs = ['lib']
-        @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
+        @rcov_opts = %w[--rails --exclude osx\/objc,gems\/]
         yield self if block_given?
         @binary = binary.nil? ? Cucumber::BINARY : File.expand_path(binary)
         define_task

@@ -113,12 +113,12 @@ module Cucumber
           end
 
           describe 'with a scenario in a subdirectory' do
-            define_feature %{
+            define_feature %(
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing scenario
-            }, File.join('features', 'some', 'path', 'spec.feature')
+            ), File.join('features', 'some', 'path', 'spec.feature')
 
             it 'writes the filename with absolute path' do
               expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')

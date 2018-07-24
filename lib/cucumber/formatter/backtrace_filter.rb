@@ -4,7 +4,7 @@ require 'cucumber/platform'
 
 module Cucumber
   module Formatter
-    @backtrace_filters = %w(
+    @backtrace_filters = %w[
       /vendor/rails
       lib/cucumber
       bin/cucumber:
@@ -15,7 +15,7 @@ module Cucumber
       .gem/ruby
       lib/ruby/
       bin/bundle
-    )
+    ]
 
     @backtrace_filters << 'org/jruby/' if ::Cucumber::JRUBY
 

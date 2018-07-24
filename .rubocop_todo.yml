@@ -222,12 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 215
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/Proc:

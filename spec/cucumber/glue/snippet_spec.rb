@@ -120,11 +120,11 @@ module Cucumber
         let(:snippet_class) { Snippet::Classic }
 
         it 'renders snippet as unwrapped regular expression' do
-          expect(snippet.to_s).to eq unindented(%{
+          expect(snippet.to_s).to eq unindented(%(
           Given /^we have a missing step$/ do
             pending # Write code here that turns the phrase above into concrete actions
           end
-          })
+          ))
         end
       end
 
@@ -132,11 +132,11 @@ module Cucumber
         let(:snippet_class) { Snippet::Percent }
 
         it 'renders snippet as percent-style regular expression' do
-          expect(snippet.to_s).to eq unindented(%{
+          expect(snippet.to_s).to eq unindented(%(
           Given %r{^we have a missing step$} do
             pending # Write code here that turns the phrase above into concrete actions
           end
-          })
+          ))
         end
       end
 

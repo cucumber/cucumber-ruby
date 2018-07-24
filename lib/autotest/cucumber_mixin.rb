@@ -119,10 +119,10 @@ module Autotest::CucumberMixin
     args = if profile
              ['--profile', profile]
            else
-             %w{--format} << (features_to_run == :all ? 'progress' : 'pretty')
+             %w[--format] << (features_to_run == :all ? 'progress' : 'pretty')
            end
     # No --color option as some IDEs (Netbeans) don't output them very well ([31m1 failed step[0m)
-    args += %w{--format rerun --out} << dirty_features_filename
+    args += %w[--format rerun --out] << dirty_features_filename
     args << (features_to_run == :all ? '' : features_to_run)
 
     # Unless I do this, all the steps turn up undefined during the rerun...

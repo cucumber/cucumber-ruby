@@ -88,7 +88,7 @@ module Cucumber
 
     context 'selecting feature files' do
       it 'preserves the order of the feature files' do
-        configuration = Configuration.new(paths: %w{b.feature c.feature a.feature})
+        configuration = Configuration.new(paths: %w[b.feature c.feature a.feature])
 
         expect(configuration.feature_files).to eq ['b.feature', 'c.feature', 'a.feature']
       end
@@ -97,7 +97,7 @@ module Cucumber
         allow(File).to receive(:directory?) { true }
         allow(Dir).to receive(:[]).with('feature_directory/**/*.feature') { ['cucumber.feature'] }
 
-        configuration = Configuration.new(paths: %w{feature_directory/})
+        configuration = Configuration.new(paths: %w[feature_directory/])
 
         expect(configuration.feature_files).to eq ['cucumber.feature']
       end
@@ -120,7 +120,7 @@ module Cucumber
           'domain folder/different cuke.feature:4:5 bar.feature'
         )
 
-        configuration = Configuration.new(paths: %w{@rerun.txt})
+        configuration = Configuration.new(paths: %w[@rerun.txt])
 
         expect(configuration.feature_files).to eq [
           'cucumber.feature:1:3',

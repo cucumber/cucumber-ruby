@@ -8,17 +8,17 @@ module Cucumber
     describe DataTable do
       before do
         @table = DataTable.from([
-                                  %w{one four seven},
-                                  %w{4444 55555 666666}
+                                  %w[one four seven],
+                                  %w[4444 55555 666666]
                                 ])
       end
 
       it 'should have rows' do
-        expect(@table.cells_rows[0].map(&:value)).to eq %w{one four seven}
+        expect(@table.cells_rows[0].map(&:value)).to eq %w[one four seven]
       end
 
       it 'should have columns' do
-        expect(@table.columns[1].map(&:value)).to eq %w{four 55555}
+        expect(@table.columns[1].map(&:value)).to eq %w[four 55555]
       end
 
       it 'should have same cell objects in rows and columns' do
@@ -37,12 +37,12 @@ module Cucumber
       end
 
       it 'should return the row values in order' do
-        expect(@table.rows.first).to eq %w{4444 55555 666666}
+        expect(@table.rows.first).to eq %w[4444 55555 666666]
       end
 
       describe '#symbolic_hashes' do
         it 'should covert data table to an array of hashes with symbols as keys' do
-          ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w{1 22 333}], nil)
+          ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w[1 22 333]], nil)
           data_table = DataTable.new(ast_table)
           expect(data_table.symbolic_hashes).to eq([{ foo: '1', bar: '22', foo_bar: '333' }])
         end
@@ -153,8 +153,8 @@ module Cucumber
       describe '#match' do
         before(:each) do
           @table = DataTable.from([
-                                    %w{one four seven},
-                                    %w{4444 55555 666666}
+                                    %w[one four seven],
+                                    %w[4444 55555 666666]
                                   ])
         end
 
@@ -172,8 +172,8 @@ module Cucumber
       describe '#transpose' do
         before(:each) do
           @table = DataTable.from([
-                                    %w{one 1111},
-                                    %w{two 22222}
+                                    %w[one 1111],
+                                    %w[two 22222]
                                   ])
         end
 
@@ -185,16 +185,16 @@ module Cucumber
       describe '#rows_hash' do
         it 'should return a hash of the rows' do
           table = DataTable.from([
-                                   %w{one 1111},
-                                   %w{two 22222}
+                                   %w[one 1111],
+                                   %w[two 22222]
                                  ])
           expect(table.rows_hash).to eq('one' => '1111', 'two' => '22222')
         end
 
         it "should fail if the table doesn't have two columns" do
           faulty_table = DataTable.from([
-                                          %w{one 1111 abc},
-                                          %w{two 22222 def}
+                                          %w[one 1111 abc],
+                                          %w[two 22222 def]
                                         ])
           expect do
             faulty_table.rows_hash
@@ -203,8 +203,8 @@ module Cucumber
 
         it 'should support header and column mapping' do
           table = DataTable.from([
-                                   %w{one 1111},
-                                   %w{two 22222}
+                                   %w[one 1111],
+                                   %w[two 22222]
                                  ])
           t2 = table.map_headers({ 'two' => 'Two' }, &:upcase)
                     .map_column('two', false, &:to_i)
@@ -215,8 +215,8 @@ module Cucumber
       describe '#map_headers!' do
         let(:table) do
           DataTable.from([
-                           %w{HELLO WORLD},
-                           %w{4444 55555}
+                           %w[HELLO WORLD],
+                           %w[4444 55555]
                          ])
         end
 
@@ -251,8 +251,8 @@ module Cucumber
       describe '#map_headers' do
         let(:table) do
           DataTable.from([
-                           %w{HELLO WORLD},
-                           %w{4444 55555}
+                           %w[HELLO WORLD],
+                           %w[4444 55555]
                          ])
         end
 
@@ -287,20 +287,20 @@ module Cucumber
 
       describe 'diff!' do
         it 'should detect a complex diff' do
-          t1 = DataTable.from(%{
+          t1 = DataTable.from(%(
             | 1         | 22          | 333         | 4444         |
             | 55555     | 666666      | 7777777     | 88888888     |
             | 999999999 | 0000000000  | 01010101010 | 121212121212 |
             | 4000      | ABC         | DEF         | 50000        |
-          })
+          ))
 
-          t2 = DataTable.from(%{
+          t2 = DataTable.from(%(
             | a     | 4444     | 1         |
             | bb    | 88888888 | 55555     |
             | ccc   | xxxxxxxx | 999999999 |
             | dddd  | 4000     | 300       |
             | e     | 50000    | 4000      |
-          })
+          ))
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
             expect(error.table.to_s(indent: 14, color: false)).to eq %{
               |     1         | (-) 22         | (-) 333         |     4444         | (+) a    |
@@ -314,17 +314,17 @@ module Cucumber
         end
 
         it 'should not change table when diffed with identical' do
-          t = DataTable.from(%{
+          t = DataTable.from(%(
             |a|b|c|
             |d|e|f|
             |g|h|i|
-          })
+          ))
           t.diff!(t.dup)
-          expect(t.to_s(indent: 12, color: false)).to eq %{
+          expect(t.to_s(indent: 12, color: false)).to eq %(
             |     a |     b |     c |
             |     d |     e |     f |
             |     g |     h |     i |
-          }
+          )
         end
 
         context 'with empty tables' do
@@ -335,11 +335,11 @@ module Cucumber
           end
 
           it 'should be able to diff when the right table is empty' do
-            t1 = DataTable.from(%{
+            t1 = DataTable.from(%(
               |a|b|c|
               |d|e|f|
               |g|h|i|
-            })
+            ))
             t2 = DataTable.from([[]])
             expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
@@ -352,11 +352,11 @@ module Cucumber
 
           it 'should be able to diff when the left table is empty' do
             t1 = DataTable.from([[]])
-            t2 = DataTable.from(%{
+            t2 = DataTable.from(%(
               |a|b|c|
               |d|e|f|
               |g|h|i|
-            })
+            ))
             expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 | (+) a | (+) b | (+) c |
@@ -369,30 +369,30 @@ module Cucumber
 
         context 'in case of duplicate header values' do
           it 'raises no error for two identical tables' do
-            t = DataTable.from(%{
+            t = DataTable.from(%(
             |a|a|c|
             |d|e|f|
             |g|h|i|
-                               })
+                               ))
             t.diff!(t.dup)
-            expect(t.to_s(indent: 12, color: false)).to eq %{
+            expect(t.to_s(indent: 12, color: false)).to eq %(
             |     a |     a |     c |
             |     d |     e |     f |
             |     g |     h |     i |
-          }
+          )
           end
 
           it 'detects a diff in one cell' do
-            t1 = DataTable.from(%{
+            t1 = DataTable.from(%(
             |a|a|c|
             |d|e|f|
             |g|h|i|
-                                })
-            t2 = DataTable.from(%{
+                                ))
+            t2 = DataTable.from(%(
             |a|a|c|
             |d|oops|f|
             |g|h|i|
-                                })
+                                ))
             expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a |     a    |     c |
@@ -404,16 +404,16 @@ module Cucumber
           end
 
           it 'detects missing columns' do
-            t1 = DataTable.from(%{
+            t1 = DataTable.from(%(
             |a|a|b|c|
             |d|d|e|f|
             |g|g|h|i|
-                                })
-            t2 = DataTable.from(%{
+                                ))
+            t2 = DataTable.from(%(
             |a|b|c|
             |d|e|f|
             |g|h|i|
-                                })
+                                ))
             expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a | (-) a |     b |     c |
@@ -424,16 +424,16 @@ module Cucumber
           end
 
           it 'detects surplus columns' do
-            t1 = DataTable.from(%{
+            t1 = DataTable.from(%(
             |a|b|c|
             |d|e|f|
             |g|h|i|
-                                })
-            t2 = DataTable.from(%{
+                                ))
+            t2 = DataTable.from(%(
             |a|b|a|c|
             |d|e|d|f|
             |g|h|g|i|
-                                })
+                                ))
             expect { t1.diff!(t2, surplus_col: true) }.to raise_error(DataTable::Different) do |error|
               expect(error.table.to_s(indent: 16, color: false)).to eq %{
                 |     a |     b |     c | (+) a |
@@ -446,11 +446,11 @@ module Cucumber
 
         it 'should inspect missing and surplus cells' do
           t1 = DataTable.from([
-                                %w(name male lastname swedish),
-                                %w(aslak true hellesøy false)
+                                %w[name male lastname swedish],
+                                %w[aslak true hellesøy false]
                               ])
           t2 = DataTable.from([
-                                %w(name male lastname swedish),
+                                %w[name male lastname swedish],
                                 ['aslak', true, 'hellesøy', false]
                               ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
@@ -464,65 +464,65 @@ module Cucumber
 
         it 'should allow column mapping of target before diffing' do
           t1 = DataTable.from([
-                                %w(name male),
-                                %w(aslak true)
+                                %w[name male],
+                                %w[aslak true]
                               ])
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
-                                %w(name male),
+                                %w[name male],
                                 ['aslak', true]
                               ])
           t1.diff!(t2)
-          expect(t1.to_s(indent: 12, color: false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     name  |     male |
             |     aslak |     true |
-          }
+          )
         end
 
         it 'should allow column mapping of argument before diffing' do
           t1 = DataTable.from([
-                                %w(name male),
+                                %w[name male],
                                 ['aslak', true]
                               ])
           t1.map_column!('male') do
             'true'
           end
           t2 = DataTable.from([
-                                %w(name male),
-                                %w(aslak true)
+                                %w[name male],
+                                %w[aslak true]
                               ])
           t2.diff!(t1)
-          expect(t1.to_s(indent: 12, color: false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     name  |     male |
             |     aslak |     true |
-          }
+          )
         end
 
         it 'should allow header mapping before diffing' do
           t1 = DataTable.from([
-                                %w(Name Male),
-                                %w(aslak true)
+                                %w[Name Male],
+                                %w[aslak true]
                               ])
           t1.map_headers!('Name' => 'name', 'Male' => 'male')
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
-                                %w(name male),
+                                %w[name male],
                                 ['aslak', true]
                               ])
           t1.diff!(t2)
-          expect(t1.to_s(indent: 12, color: false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     name  |     male |
             |     aslak |     true |
-          }
+          )
         end
 
         it 'should detect seemingly identical tables as different' do
           t1 = DataTable.from([
-                                %w(X Y),
-                                %w(2 1)
+                                %w[X Y],
+                                %w[2 1]
                               ])
           t2 = DataTable.from([
-                                %w(X Y),
+                                %w[X Y],
                                 [2, 1]
                               ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
@@ -536,93 +536,93 @@ module Cucumber
 
         it 'should not allow mappings that match more than 1 column' do
           t1 = DataTable.from([
-                                %w(Cuke Duke),
-                                %w(Foo Bar)
+                                %w[Cuke Duke],
+                                %w[Foo Bar]
                               ])
           expect do
             t1.map_headers!(/uk/ => 'u')
             t1.hashes
-          end.to raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
+          end.to raise_error(%(2 headers matched /uk/: ["Cuke", "Duke"]))
         end
 
         describe 'raising' do
           before do
-            @t = DataTable.from(%{
+            @t = DataTable.from(%(
               | a | b |
               | c | d |
-            })
+            ))
             expect(@t).not_to eq nil
           end
 
           it 'should raise on missing rows' do
-            t = DataTable.from(%{
+            t = DataTable.from(%(
               | a | b |
-            })
+            ))
             expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
             expect { @t.dup.diff!(t, missing_row: false) }.not_to raise_error
           end
 
           it 'should not raise on surplus rows when surplus is at the end' do
-            t = DataTable.from(%{
+            t = DataTable.from(%(
               | a | b |
               | c | d |
               | e | f |
-            })
+            ))
             expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
             expect { @t.dup.diff!(t, surplus_row: false) }.not_to raise_error
           end
 
           it 'should not raise on surplus rows when surplus is interleaved' do
-            t1 = DataTable.from(%{
+            t1 = DataTable.from(%(
               | row_1 | row_2 |
               | four  | 4     |
-            })
-            t2 = DataTable.from(%{
+            ))
+            t2 = DataTable.from(%(
               | row_1 | row_2 |
               | one   | 1     |
               | two   | 2     |
               | three | 3     |
               | four  | 4     |
               | five  | 5     |
-            })
+            ))
             expect { t1.dup.diff!(t2) }.to raise_error(DataTable::Different)
             expect { t1.dup.diff!(t2, surplus_row: false) }.not_to raise_error
           end
 
           it 'should raise on missing columns' do
-            t = DataTable.from(%{
+            t = DataTable.from(%(
               | a |
               | c |
-            })
+            ))
             expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
             expect { @t.dup.diff!(t, missing_col: false) }.not_to raise_error
           end
 
           it 'should not raise on surplus columns' do
-            t = DataTable.from(%{
+            t = DataTable.from(%(
               | a | b | x |
               | c | d | y |
-            })
+            ))
             expect { @t.dup.diff!(t) }.not_to raise_error
             expect { @t.dup.diff!(t, surplus_col: true) }.to raise_error(DataTable::Different)
           end
 
           it 'should not raise on misplaced columns' do
-            t = DataTable.from(%{
+            t = DataTable.from(%(
               | b | a |
               | d | c |
-            })
+            ))
             expect { @t.dup.diff!(t) }.not_to raise_error
             expect { @t.dup.diff!(t, misplaced_col: true) }.to raise_error(DataTable::Different)
           end
         end
 
         it 'can compare to an Array' do
-          t = DataTable.from(%{
+          t = DataTable.from(%(
             | b | a |
             | d | c |
-          })
-          other = [%w{b a}, %w{d c}]
+          ))
+          other = [%w[b a], %w[d c]]
 
           expect { t.diff!(other) }.not_to raise_error
         end
@@ -631,10 +631,10 @@ module Cucumber
       describe '#from' do
         it 'should allow Array of Hash' do
           t1 = DataTable.from([{ 'name' => 'aslak', 'male' => 'true' }])
-          expect(t1.to_s(indent: 12, color: false)).to eq %{
+          expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     male |     name  |
             |     true |     aslak |
-          }
+          )
         end
       end
     end

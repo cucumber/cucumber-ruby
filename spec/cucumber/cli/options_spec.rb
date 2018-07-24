@@ -129,21 +129,21 @@ module Cucumber
             given_cucumber_yml_defined_as('default' => '-f progress -f pretty')
             options = Options.new(output_stream, error_stream, default_profile: 'default')
 
-            expect { options.parse!(%w{}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+            expect { options.parse!(%w[]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'profiles does not affect the catching of multiple command line formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-q')
             options = Options.new(output_stream, error_stream, default_profile: 'default')
 
-            expect { options.parse!(%w{-f progress -f pretty}) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+            expect { options.parse!(%w[-f progress -f pretty]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'merges profile formatters and command line formatters' do
             given_cucumber_yml_defined_as('default' => '-f junit -o result.xml')
             options = Options.new(output_stream, error_stream, default_profile: 'default')
 
-            options.parse!(%w{-f pretty})
+            options.parse!(%w[-f pretty])
 
             expect(options[:formats]).to eq [['pretty', {}, output_stream], ['junit', {}, 'result.xml']]
           end
@@ -185,7 +185,7 @@ module Cucumber
 
         context '-l LINES or --lines LINES' do
           it 'adds line numbers to args' do
-            options.parse!(%w{-l24 FILE})
+            options.parse!(%w[-l24 FILE])
 
             expect(options.instance_variable_get(:@args)).to eq ['FILE:24']
           end
@@ -196,7 +196,7 @@ module Cucumber
             given_cucumber_yml_defined_as('default' => '--require some_file')
 
             options = Options.new(output_stream, error_stream, default_profile: 'default')
-            options.parse!(%w{--format progress})
+            options.parse!(%w[--format progress])
 
             expect(options[:require]).to include('some_file')
           end
@@ -266,35 +266,35 @@ module Cucumber
 
           it 'disregards STDOUT formatter defined in profile when another is passed in (via cmd line)' do
             given_cucumber_yml_defined_as('foo' => %w[--format pretty])
-            options.parse!(%w{--format progress --profile foo})
+            options.parse!(%w[--format progress --profile foo])
 
             expect(options[:formats]).to eq [['progress', {}, output_stream]]
           end
 
           it 'includes any non-STDOUT formatters from the profile' do
             given_cucumber_yml_defined_as('json' => %w[--format json -o features.json])
-            options.parse!(%w{--format progress --profile json})
+            options.parse!(%w[--format progress --profile json])
 
             expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
           end
 
           it 'does not include STDOUT formatters from the profile if there is a STDOUT formatter in command line' do
             given_cucumber_yml_defined_as('json' => %w[--format json -o features.json --format pretty])
-            options.parse!(%w{--format progress --profile json})
+            options.parse!(%w[--format progress --profile json])
 
             expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
           end
 
           it 'includes any STDOUT formatters from the profile if no STDOUT formatter was specified in command line' do
             given_cucumber_yml_defined_as('json' => %w[--format json])
-            options.parse!(%w{--format rerun -o rerun.txt --profile json})
+            options.parse!(%w[--format rerun -o rerun.txt --profile json])
 
             expect(options[:formats]).to eq [['json', {}, output_stream], ['rerun', {}, 'rerun.txt']]
           end
 
           it 'assumes all of the formatters defined in the profile when none are specified on cmd line' do
             given_cucumber_yml_defined_as('json' => %w[--format progress --format json -o features.json])
-            options.parse!(%w{--profile json})
+            options.parse!(%w[--profile json])
 
             expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
           end
@@ -310,7 +310,7 @@ module Cucumber
               END
                                            )
               options = Options.new(output_stream, error_stream, default_profile: 'default')
-              options.parse!(%w(-f progress))
+              options.parse!(%w[-f progress])
 
               expect($cucumber_yml_read_count).to eq 1
             ensure
@@ -439,21 +439,21 @@ module Cucumber
       describe 'dry-run' do
         it 'has the default value for snippets' do
           given_cucumber_yml_defined_as('foo' => %w[--dry-run])
-          options.parse!(%w{--dry-run})
+          options.parse!(%w[--dry-run])
 
           expect(options[:snippets]).to be true
         end
 
         it 'sets snippets to false when no-snippets provided after dry-run' do
           given_cucumber_yml_defined_as('foo' => %w[--dry-run --no-snippets])
-          options.parse!(%w{--dry-run --no-snippets})
+          options.parse!(%w[--dry-run --no-snippets])
 
           expect(options[:snippets]).to be false
         end
 
         it 'sets snippets to false when no-snippets provided before dry-run' do
           given_cucumber_yml_defined_as('foo' => %w[--no-snippet --dry-run])
-          options.parse!(%w{--no-snippets --dry-run})
+          options.parse!(%w[--no-snippets --dry-run])
 
           expect(options[:snippets]).to be false
         end

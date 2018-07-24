@@ -42,7 +42,7 @@ module Cucumber
       it 'uses the default profile when no profile is defined' do
         given_cucumber_yml_defined_as('default' => '--require some_file')
 
-        config.parse!(%w{--format progress})
+        config.parse!(%w[--format progress])
 
         expect(config.options[:require]).to include('some_file')
       end
@@ -53,7 +53,7 @@ module Cucumber
         it 'expands args from profiles in the cucumber.yml file' do
           given_cucumber_yml_defined_as('bongo' => '--require from/yml')
 
-          config.parse!(%w{--format progress --profile bongo})
+          config.parse!(%w[--format progress --profile bongo])
 
           expect(config.options[:formats]).to eq [['progress', {}, out]]
           expect(config.options[:require]).to eq ['from/yml']
@@ -70,7 +70,7 @@ module Cucumber
         it 'allows --strict to be set by a profile' do
           given_cucumber_yml_defined_as('bongo' => '--strict')
 
-          config.parse!(%w{--profile bongo})
+          config.parse!(%w[--profile bongo])
 
           expect(config.options[:strict].strict?(:undefined)).to be true
           expect(config.options[:strict].strict?(:pending)).to be true
@@ -80,7 +80,7 @@ module Cucumber
         it 'allows --strict from a profile to be selectively overridden' do
           given_cucumber_yml_defined_as('bongo' => '--strict')
 
-          config.parse!(%w{--profile bongo --no-strict-flaky})
+          config.parse!(%w[--profile bongo --no-strict-flaky])
 
           expect(config.options[:strict].strict?(:undefined)).to be true
           expect(config.options[:strict].strict?(:pending)).to be true
@@ -101,7 +101,7 @@ module Cucumber
 <%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
 ERB_YML
 
-          config.parse!(%w(-p standard))
+          config.parse!(%w[-p standard])
 
           expect(config.options[:require]).to include('some_file')
         end
@@ -117,20 +117,20 @@ Defined profiles in cucumber.yml:
   * json_report
           END_OF_MESSAGE
 
-          expect(-> { config.parse!(%w{--profile i_do_not_exist}) }).to raise_error(ProfileNotFound, expected_message)
+          expect(-> { config.parse!(%w[--profile i_do_not_exist]) }).to raise_error(ProfileNotFound, expected_message)
         end
 
         it 'allows profiles to be defined in arrays' do
           given_cucumber_yml_defined_as('foo' => ['-f', 'progress'])
 
-          config.parse!(%w{--profile foo})
+          config.parse!(%w[--profile foo])
 
           expect(config.options[:formats]).to eq [['progress', {}, out]]
         end
 
         it 'disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)' do
           given_cucumber_yml_defined_as('foo' => %w[--format pretty])
-          config.parse!(%w{--format progress --profile foo})
+          config.parse!(%w[--format progress --profile foo])
 
           expect(config.options[:formats]).to eq [['progress', {}, out]]
         end
@@ -161,7 +161,7 @@ Defined profiles in cucumber.yml:
 
             expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
 
-            expect(-> { config.parse!(%w{--profile foo}) }).to raise_error(expected_error)
+            expect(-> { config.parse!(%w[--profile foo]) }).to raise_error(expected_error)
           end
         end
 
@@ -170,7 +170,7 @@ Defined profiles in cucumber.yml:
 
           expected_error = /cucumber\.yml was not found/
 
-          expect(-> { config.parse!(%w{--profile i_do_not_exist}) }).to raise_error(expected_error)
+          expect(-> { config.parse!(%w[--profile i_do_not_exist]) }).to raise_error(expected_error)
         end
 
         it 'issues a helpful error message when cucumber.yml is blank or malformed' do
@@ -203,31 +203,31 @@ Defined profiles in cucumber.yml:
       end
 
       it 'accepts --dry-run option' do
-        config.parse!(%w{--dry-run})
+        config.parse!(%w[--dry-run])
 
         expect(config.options[:dry_run]).to be true
       end
 
       it 'implies --no-duration with --dry-run option' do
-        config.parse!(%w{--dry-run})
+        config.parse!(%w[--dry-run])
 
         expect(config.options[:duration]).to be false
       end
 
       it 'accepts --no-source option' do
-        config.parse!(%w{--no-source})
+        config.parse!(%w[--no-source])
 
         expect(config.options[:source]).to be false
       end
 
       it 'accepts --no-snippets option' do
-        config.parse!(%w{--no-snippets})
+        config.parse!(%w[--no-snippets])
 
         expect(config.options[:snippets]).to be false
       end
 
       it 'sets snippets and source and duration to false with --quiet option' do
-        config.parse!(%w{--quiet})
+        config.parse!(%w[--quiet])
 
         expect(config.options[:snippets]).to be false
         expect(config.options[:source]).to be false
@@ -235,73 +235,73 @@ Defined profiles in cucumber.yml:
       end
 
       it 'sets duration to false with --no-duration' do
-        config.parse!(%w{--no-duration})
+        config.parse!(%w[--no-duration])
 
         expect(config.options[:duration]).to be false
       end
 
       it 'accepts --verbose option' do
-        config.parse!(%w{--verbose})
+        config.parse!(%w[--verbose])
 
         expect(config.options[:verbose]).to be true
       end
 
       it 'accepts --out option' do
-        config.parse!(%w{--out jalla.txt})
+        config.parse!(%w[--out jalla.txt])
 
         expect(config.formats).to eq [['pretty', {}, 'jalla.txt']]
       end
 
       it 'accepts multiple --out options' do
-        config.parse!(%w{--format progress --out file1 --out file2})
+        config.parse!(%w[--format progress --out file1 --out file2])
 
         expect(config.formats).to eq [['progress', {}, 'file2']]
       end
 
       it 'accepts multiple --format options and put the STDOUT one first so progress is seen' do
-        config.parse!(%w{--format pretty --out pretty.txt --format progress})
+        config.parse!(%w[--format pretty --out pretty.txt --format progress])
 
         expect(config.formats).to eq [['progress', {}, out], ['pretty', {}, 'pretty.txt']]
       end
 
       it 'does not accept multiple --format options when both use implicit STDOUT' do
-        expect(-> { config.parse!(%w{--format pretty --format progress}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect(-> { config.parse!(%w[--format pretty --format progress]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'does not accept multiple --format options when both use implicit STDOUT (using profile with no formatters)' do
         given_cucumber_yml_defined_as('default' => ['-q'])
-        expect(-> { config.parse!(%w{--format pretty --format progress}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect(-> { config.parse!(%w[--format pretty --format progress]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'accepts same --format options with implicit STDOUT, and keep only one' do
-        config.parse!(%w{--format pretty --format pretty})
+        config.parse!(%w[--format pretty --format pretty])
 
         expect(config.formats).to eq [['pretty', {}, out]]
       end
 
       it 'does not accept multiple --out streams pointing to the same place' do
-        expect(-> { config.parse!(%w{--format pretty --out file1 --format progress --out file1}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect(-> { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
         given_cucumber_yml_defined_as('default' => ['-f', 'progress', '--out', 'file1'])
-        expect(-> { config.parse!(%w{--format pretty --out file1}) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect(-> { config.parse!(%w[--format pretty --out file1]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'associates --out to previous --format' do
-        config.parse!(%w{--format progress --out file1 --format profile --out file2})
+        config.parse!(%w[--format progress --out file1 --format profile --out file2])
 
         expect(config.formats).to match_array([['progress', {}, 'file1'], ['profile', {}, 'file2']])
       end
 
       it 'accepts same --format options with same --out streams and keep only one' do
-        config.parse!(%w{--format json --out file --format pretty --format json --out file})
+        config.parse!(%w[--format json --out file --format pretty --format json --out file])
 
         expect(config.formats).to eq [['pretty', {}, out], ['json', {}, 'file']]
       end
 
       it 'accepts same --format options with different --out streams' do
-        config.parse!(%w{--format json --out file1 --format json --out file2})
+        config.parse!(%w[--format json --out file1 --format json --out file2])
 
         expect(config.formats).to match_array([['json', {}, 'file1'], ['json', {}, 'file2']])
       end

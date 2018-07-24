@@ -18,4 +18,4 @@ default_tasks = [:spec, :cucumber, :rubocop]
 task default: default_tasks
 
 require 'rake/clean'
-CLEAN.include %w(**/*.{log,pyc,rbc,tgz} doc)
+CLEAN.include %w[**/*.{log,pyc,rbc,tgz} doc]

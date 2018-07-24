@@ -366,11 +366,11 @@ module Cucumber
       end
 
       def verify_column(column_name) #:nodoc:
-        raise %{The column named "#{column_name}" does not exist} unless raw[0].include?(column_name)
+        raise %(The column named "#{column_name}" does not exist) unless raw[0].include?(column_name)
       end
 
       def verify_table_width(width) #:nodoc:
-        raise %{The table must have exactly #{width} columns} unless raw[0].size == width
+        raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
       def has_text?(text) #:nodoc:

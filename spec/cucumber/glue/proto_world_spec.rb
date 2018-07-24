@@ -13,11 +13,11 @@ module Cucumber
 
       describe '#table' do
         it 'produces Ast::Table by #table' do
-          expect(world.table(%{
+          expect(world.table(%(
         | account | description | amount |
         | INT-100 | Taxi        | 114    |
         | CUC-101 | Peeler      | 22     |
-          })).to be_kind_of(MultilineArgument::DataTable)
+          ))).to be_kind_of(MultilineArgument::DataTable)
         end
       end
 

@@ -133,7 +133,7 @@ module Cucumber
       end
 
       it 'exposes the examples table row cell values' do
-        expect(wrapped_test_case.cell_values).to eq %w(a b)
+        expect(wrapped_test_case.cell_values).to eq %w[a b]
       end
     end
   end
