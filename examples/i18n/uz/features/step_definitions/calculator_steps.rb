@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Агар(/(\d+) сонини киритсам/) do |сон|
   calc.push сон.to_i
 end

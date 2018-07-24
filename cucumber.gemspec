@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
   s.version     = File.read(File.expand_path('../lib/cucumber/version', __FILE__))

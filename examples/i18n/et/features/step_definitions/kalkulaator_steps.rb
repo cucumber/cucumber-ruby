@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 begin
   require 'rspec/expectations'
 rescue LoadError

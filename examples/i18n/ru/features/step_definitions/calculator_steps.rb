@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Допустим(/ввожу число (\d+)/) do |число|
   calc.push число.to_i
 end

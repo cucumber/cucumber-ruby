@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Дадено(/въвел (\d+)/) do |x|
   calc.push x.to_i
 end

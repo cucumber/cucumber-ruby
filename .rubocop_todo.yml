@@ -156,11 +156,6 @@ Style/DoubleNegation:
   Exclude:
     - 'lib/cucumber/cli/configuration.rb'
 
-# Offense count: 68
-# Cop supports --auto-correct.
-Style/Encoding:
-  Enabled: false
-
 # Offense count: 1
 Style/EvalWithLocation:
   Exclude:
