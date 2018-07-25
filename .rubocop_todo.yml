@@ -45,10 +45,6 @@ Security/Eval:
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 167
-Style/Documentation:
-  Enabled: false
-
 # Offense count: 1
 Style/DoubleNegation:
   Exclude:

@@ -16,6 +16,9 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
+Style/Documentation:
+  Enabled: false
+
 # Offense count: 67
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: io, id, to, by, on, in, at, ip
