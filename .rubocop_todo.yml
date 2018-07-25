@@ -46,11 +46,6 @@ Naming/VariableNumber:
   EnforcedStyle: normalcase
   Enabled: false
 
-# Offense count: 1
-Performance/Caller:
-  Exclude:
-    - 'lib/cucumber/deprecate.rb'
-
 # Offense count: 2
 Security/Eval:
   Exclude:
