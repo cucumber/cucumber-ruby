@@ -178,8 +178,11 @@ module Cucumber
       end
 
       def do_print_profile_information(profiles)
-        profiles_sentence = profiles.size == 1 ? profiles.first :
-          "#{profiles[0...-1].join(', ')} and #{profiles.last}"
+        profiles_sentence = if profiles.size == 1
+                              profiles.first
+                            else
+                              "#{profiles[0...-1].join(', ')} and #{profiles.last}"
+                            end
 
         @io.puts "Using the #{profiles_sentence} profile#{'s' if profiles.size > 1}..."
       end

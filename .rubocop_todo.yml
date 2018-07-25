@@ -39,11 +39,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 1
-Naming/AccessorMethodName:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-
 # Offense count: 5
 Naming/BinaryOperatorParameterName:
   Exclude:
@@ -216,11 +211,6 @@ Style/MixinUsage:
 Style/MultilineBlockChain:
   Exclude:
     - 'lib/cucumber/formatter/console_counts.rb'
-
-# Offense count: 1
-Style/MultilineTernaryOperator:
-  Exclude:
-    - 'lib/cucumber/formatter/console.rb'
 
 # Offense count: 821
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

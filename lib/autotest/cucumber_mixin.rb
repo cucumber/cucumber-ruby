@@ -51,7 +51,7 @@ module Autotest::CucumberMixin
     features_to_run == ''
   end
 
-  def get_to_green
+  def get_to_green # rubocop:disable Naming/AccessorMethodName
     loop do
       super
       run_features

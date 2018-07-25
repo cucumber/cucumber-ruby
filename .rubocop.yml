@@ -17,6 +17,8 @@ AllCops:
     - 'vendor/**/*'
 
 # By FAR the most used form of regex values in the project are with slashes.
+# Rubocop doesn't handle all cases well (currently), so this cop has been 
+# disabled in some cases.
 Style/RegexpLiteral:
   EnforcedStyle: slashes
   Exclude:
