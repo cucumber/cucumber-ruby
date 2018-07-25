@@ -28,23 +28,23 @@ module Cucumber
     end
 
     it 'formats one group when we use Unicode' do
-      m = step_match(/I (#{WORD}+) ok/, "I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok")
+      m = step_match(/I (#{WORD}+) ok/, 'I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok')
 
-      expect(m.format_args('<span>%s</span>')).to eq "I <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> ok"
+      expect(m.format_args('<span>%s</span>')).to eq 'I <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> ok'
     end
 
     it 'formats several groups when we use Unicode' do
-      m = step_match(/I (#{WORD}+) (#{WORD}+) (#{WORD}+) this (#{WORD}+)/, "I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning")
+      m = step_match(/I (#{WORD}+) (#{WORD}+) (#{WORD}+) this (#{WORD}+)/, 'I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning')
 
-      expect(m.format_args('<span>%s</span>')).to eq "I <span>ate</span> <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> <span>egg</span> this <span>morning</span>"
+      expect(m.format_args('<span>%s</span>')).to eq 'I <span>ate</span> <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> <span>egg</span> this <span>morning</span>'
     end
 
     it 'deals with Unicode both inside and outside arguments' do
-      expect("Jæ vø ålsker døtte løndet").to match(/Jæ (.+) ålsker (.+) løndet/)
+      expect('Jæ vø ålsker døtte løndet').to match(/Jæ (.+) ålsker (.+) løndet/)
 
-      m = step_match(/Jæ (#{WORD}+) ålsker (#{WORD}+) løndet/, "Jæ vø ålsker døtte løndet")
+      m = step_match(/Jæ (#{WORD}+) ålsker (#{WORD}+) løndet/, 'Jæ vø ålsker døtte løndet')
 
-      expect(m.format_args('<span>%s</span>')).to eq "Jæ <span>vø</span> ålsker <span>døtte</span> løndet"
+      expect(m.format_args('<span>%s</span>')).to eq 'Jæ <span>vø</span> ålsker <span>døtte</span> løndet'
     end
 
     it 'formats groups with format string' do

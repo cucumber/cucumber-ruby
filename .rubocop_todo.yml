@@ -222,17 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'cucumber.gemspec'
-    - 'examples/i18n/ar/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/ja/features/step_definitions/calculator_steps.rb'
-    - 'spec/cucumber/step_match_spec.rb'
-
 # Offense count: 15
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

@@ -5,7 +5,7 @@ end
 After do
 end
 
-前提("$n を入力") do |n|
+前提('$n を入力') do |n|
   @calc.push n.to_i
 end
 

@@ -15,7 +15,7 @@ end
 After do
 end
 
-Given "كتابة $n في الآلة الحاسبة" do |n|
+Given 'كتابة $n في الآلة الحاسبة' do |n|
   @calc.push n.to_i
 end
 
