@@ -39,12 +39,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 67
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: io, id, to, by, on, in, at, ip
-Naming/UncommunicativeMethodParamName:
-  Enabled: false
-
 # Offense count: 15
 # Configuration parameters: .
 # SupportedStyles: snake_case, normalcase, non_integer

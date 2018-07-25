@@ -18,8 +18,8 @@ module Cucumber
       attr_accessor :use_full_backtrace
 
       # @private
-      def file_mode(m, encoding = 'UTF-8')
-        "#{m}:#{encoding}"
+      def file_mode(mode, encoding = 'UTF-8')
+        "#{mode}:#{encoding}"
       end
     end
     self.use_full_backtrace = false

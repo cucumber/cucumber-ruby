@@ -16,6 +16,16 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
+# Offense count: 67
+# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
+# AllowedNames: io, id, to, by, on, in, at, ip
+# Naming/UncommunicativeMethodParamName:
+#   Enabled: false
+# In most cases, being descriptive with parameter names helps a reader understand
+# what the variable is for. In some cases, shorter names are sufficient.
+Naming/UncommunicativeMethodParamName:
+  AllowedNames: _, e, n, v, id, io, gh, pr
+
 # For the most part, the project is solid on naming. There are though, a few
 # cases where the cop doesn't need to catch.
 Naming/MethodName:

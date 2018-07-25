@@ -23,23 +23,23 @@ if Cucumber::WINDOWS
   module Cucumber
     # @private
     module WindowsOutput
-      def self.extended(o)
-        o.instance_eval do
-          def cucumber_preprocess_output(*a)
-            a.map { |arg| arg.to_s.encode(Encoding.default_external) }
+      def self.extended(output)
+        output.instance_eval do
+          def cucumber_preprocess_output(*out)
+            out.map { |arg| arg.to_s.encode(Encoding.default_external) }
           rescue Encoding::UndefinedConversionError => e
             STDERR.cucumber_puts("WARNING: #{e.message}")
-            a
+            out
           end
 
           alias cucumber_print print
-          def print(*a)
-            cucumber_print(*cucumber_preprocess_output(*a))
+          def print(*out)
+            cucumber_print(*cucumber_preprocess_output(*out))
           end
 
           alias cucumber_puts puts
-          def puts(*a)
-            cucumber_puts(*cucumber_preprocess_output(*a))
+          def puts(*out)
+            cucumber_puts(*cucumber_preprocess_output(*out))
           end
         end
       end

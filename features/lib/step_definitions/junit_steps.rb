@@ -7,8 +7,8 @@ Then('the junit output file {string} should contain:') do |actual_file, text|
 end
 
 module JUnitHelper
-  def replace_junit_time(s)
-    s.gsub(/\d+\.\d\d+/m, '0.05')
+  def replace_junit_time(time)
+    time.gsub(/\d+\.\d\d+/m, '0.05')
   end
 end
 

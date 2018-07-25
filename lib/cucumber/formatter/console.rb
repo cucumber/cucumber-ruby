@@ -105,9 +105,9 @@ module Cucumber
       end
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
-      def linebreaks(s, max)
-        return s unless max && max > 0
-        s.gsub(/.{1,#{max}}(?:\s|\Z)/) { ($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }.rstrip
+      def linebreaks(msg, max)
+        return msg unless max && max > 0
+        msg.gsub(/.{1,#{max}}(?:\s|\Z)/) { ($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }.rstrip
       end
 
       def collect_snippet_data(test_step, result)

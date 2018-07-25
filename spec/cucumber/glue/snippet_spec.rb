@@ -22,8 +22,8 @@ module Cucumber
         snippet_class.new(@cucumber_expression_generator, code_keyword, @step_text, @multiline_argument)
       end
 
-      def unindented(s)
-        s.split("\n")[1..-2].join("\n").indent(-10)
+      def unindented(snippet)
+        snippet.split("\n")[1..-2].join("\n").indent(-10)
       end
 
       describe Snippet::Regexp do

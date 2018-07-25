@@ -9,14 +9,14 @@ module Spec #:nodoc:
     # will fail when running cucumber)
     class OptionParser < ::OptionParser #:nodoc:
       NEUTERED_RSPEC = Object.new
-      def NEUTERED_RSPEC.method_missing(_m, *_args)
+      def NEUTERED_RSPEC.method_missing(_method, *_args)
         self
       end
 
-      def self.method_added(m)
+      def self.method_added(method)
         unless @__neutering_rspec
           @__neutering_rspec = true
-          define_method(m) do |*_a|
+          define_method(method) do |*_a|
             NEUTERED_RSPEC
           end
           @__neutering_rspec = false
