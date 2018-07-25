@@ -222,13 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowIfMethodIsEmpty.
-Style/SingleLineMethods:
-  Exclude:
-    - 'lib/cucumber/rspec/disable_option_parser.rb'
-
 # Offense count: 91
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
