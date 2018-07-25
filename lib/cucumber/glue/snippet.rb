@@ -42,7 +42,7 @@ module Cucumber
         end
 
         def self.cli_option_string(type, cucumber_expression_generator)
-          format('%-7s: %-28s e.g. %s', type, description, example(cucumber_expression_generator))
+          format('%<type>-7s: %<description>-28s e.g. %<example>s', type: type, description: description, example: example(cucumber_expression_generator))
         end
 
         private

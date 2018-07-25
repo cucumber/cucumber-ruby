@@ -50,15 +50,6 @@ Style/EvalWithLocation:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 5
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: annotated, template, unannotated
-Style/FormatStringToken:
-  Exclude:
-    - 'lib/cucumber/glue/proto_world.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-    - 'lib/cucumber/rake/task.rb'
-
 # Offense count: 13
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:

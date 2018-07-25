@@ -19,6 +19,9 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
+Style/FormatStringToken:
+  EnforcedStyle: annotated
+
 # Offense count: 67
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: io, id, to, by, on, in, at, ip
