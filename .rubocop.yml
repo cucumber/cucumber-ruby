@@ -16,6 +16,19 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
+# For the most part, the project is solid on naming. There are though, a few
+# cases where the cop doesn't need to catch.
+Naming/MethodName:
+  EnforcedStyle: snake_case
+  Enabled: true
+  Exclude:
+    - 'examples/i18n/ar/lib/calculator.rb'
+    - 'examples/i18n/he/lib/calculator.rb'
+    - 'examples/i18n/he/lib/calculator.rb'
+    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
+    - 'lib/cucumber/glue/dsl.rb'
+
+
 # By FAR the most used form of regex values in the project are with slashes.
 # Rubocop doesn't handle all cases well (currently), so this cop has been 
 # disabled in some cases.
