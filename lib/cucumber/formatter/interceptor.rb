@@ -51,7 +51,7 @@ module Cucumber
         end
 
         def self.validate_pipe(pipe)
-          raise ArgumentError, '#wrap only accepts :stderr or :stdout' unless [:stdout, :stderr].include? pipe
+          raise ArgumentError, '#wrap only accepts :stderr or :stdout' unless %i[stdout stderr].include? pipe
         end
 
         def self.unwrap!(pipe)

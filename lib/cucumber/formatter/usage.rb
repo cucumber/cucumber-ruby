@@ -135,7 +135,7 @@ module Cucumber
       end
 
       def worst_status(statuses)
-        [:passed, :undefined, :pending, :skipped, :failed].find do |status|
+        %i[passed undefined pending skipped failed].find do |status|
           statuses.include?(status)
         end
       end

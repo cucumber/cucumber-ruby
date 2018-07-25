@@ -7,7 +7,7 @@ require 'cucumber/cli/profile_loader'
 
 module Autotest::CucumberMixin
   def self.included(receiver)
-    receiver::ALL_HOOKS << [:run_features, :ran_features]
+    receiver::ALL_HOOKS << %i[run_features ran_features]
   end
 
   attr_accessor :features_to_run
