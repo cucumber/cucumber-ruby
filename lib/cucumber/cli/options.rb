@@ -136,7 +136,7 @@ Specify SEED to reproduce the shuffling from a previous run.
   e.g. --order random:5738
                   TEXT
             @options[:order], @options[:seed] = *order.split(':')
-            raise "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}." unless ORDER_TYPES.include?(@options[:order])
+            raise "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(', ')}." unless ORDER_TYPES.include?(@options[:order])
           end
 
           opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }

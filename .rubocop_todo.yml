@@ -222,17 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 15
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiteralsInInterpolation:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/formatter/console_counts.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: MinSize.

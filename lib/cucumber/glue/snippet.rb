@@ -72,7 +72,7 @@ module Cucumber
         def parameters
           block_args = (0...number_of_arguments).map { |n| "arg#{n + 1}" }
           multiline_argument.append_block_parameter_to(block_args)
-          block_args.empty? ? '' : " |#{block_args.join(", ")}|"
+          block_args.empty? ? '' : " |#{block_args.join(', ')}|"
         end
 
         class << self
@@ -106,7 +106,7 @@ module Cucumber
         def parameters(expr)
           parameter_names = expr.parameter_names
           multiline_argument.append_block_parameter_to(parameter_names)
-          parameter_names.empty? ? '' : " |#{parameter_names.join(", ")}|"
+          parameter_names.empty? ? '' : " |#{parameter_names.join(', ')}|"
         end
 
         def self.description

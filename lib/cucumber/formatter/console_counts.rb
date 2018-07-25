@@ -37,7 +37,7 @@ module Cucumber
         end.map do |status, count|
           format_string("#{count} #{status}", status)
         end
-        "(#{counts.join(", ")})" if counts.any?
+        "(#{counts.join(', ')})" if counts.any?
       end
     end
   end
