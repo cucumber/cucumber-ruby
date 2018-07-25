@@ -194,12 +194,12 @@ module Cucumber
       end
 
       def scenario(scenario)
-        @scenario_name = (scenario.name.nil? || scenario.name == '') ? 'Unnamed scenario' : scenario.name
+        @scenario_name = scenario.name.nil? || scenario.name == '' ? 'Unnamed scenario' : scenario.name
         self
       end
 
       def scenario_outline(outline)
-        @scenario_name = (outline.name.nil? || outline.name == '') ? 'Unnamed scenario outline' : outline.name
+        @scenario_name = outline.name.nil? || outline.name == '' ? 'Unnamed scenario outline' : outline.name
         self
       end
 
