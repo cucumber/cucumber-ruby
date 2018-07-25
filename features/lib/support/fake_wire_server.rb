@@ -62,7 +62,7 @@ class FakeWireServer
         serialized_exception = { message: "Not understood: #{data}", backtrace: [] }
         send_response(['fail', serialized_exception].to_json)
       end
-    rescue => e
+    rescue StandardError => e
       response = [
         'fail',
         {
