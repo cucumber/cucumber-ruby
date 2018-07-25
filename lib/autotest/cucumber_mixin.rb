@@ -80,7 +80,7 @@ module Autotest::CucumberMixin
       self.results = []
       line = []
       begin
-        open("| #{cmd}", 'r') do |f|
+        open("| #{cmd}", 'r') do |f| # rubocop:disable Security/Open
           until f.eof?
             c = f.getc || break
             if RUBY_VERSION >= '1.9'

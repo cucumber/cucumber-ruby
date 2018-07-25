@@ -52,11 +52,6 @@ Security/Eval:
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 1
-Security/Open:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-
 # Offense count: 4
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: inline, group
