@@ -120,7 +120,7 @@ module Cucumber
 
             define_steps do
               Before do
-                fail 'hook failed'
+                raise 'hook failed'
               end
               Given(/^this step passes$/) {}
             end
@@ -146,7 +146,7 @@ module Cucumber
 
             define_steps do
               After do
-                fail 'hook failed'
+                raise 'hook failed'
               end
               Given(/^this step passes$/) {}
             end
