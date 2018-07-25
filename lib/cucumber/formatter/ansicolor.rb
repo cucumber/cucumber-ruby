@@ -88,7 +88,7 @@ module Cucumber
       #   end
       ALIASES.each_key do |method_name|
         next if method_name =~ /.*_param/
-        code = <<-EOF
+        code = <<-COLOR
           def #{method_name}(string=nil, &proc)
             #{ALIASES[method_name].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name].split(',').length}
           end
@@ -96,7 +96,7 @@ module Cucumber
           def #{method_name}_param(string=nil, &proc)
             #{ALIASES[method_name + '_param'].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name + '_param'].split(',').length} + #{ALIASES[method_name].split(',').join(' + ')}
           end
-        EOF
+        COLOR
         eval(code)
       end
 

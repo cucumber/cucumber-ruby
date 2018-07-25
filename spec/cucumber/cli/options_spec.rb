@@ -304,10 +304,10 @@ module Cucumber
             $cucumber_yml_read_count = 0
 
             begin
-              given_cucumber_yml_defined_as(<<-END
+              given_cucumber_yml_defined_as(<<-YML
               <% $cucumber_yml_read_count += 1 %>
               default: --format pretty
-              END
+              YML
                                            )
               options = Options.new(output_stream, error_stream, default_profile: 'default')
               options.parse!(%w[-f progress])

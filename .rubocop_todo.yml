@@ -39,14 +39,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 2
-# Configuration parameters: Blacklist.
-# Blacklist: (?-mix:(^|\s)(EO[A-Z]{1}|END)(\s|$))
-Naming/HeredocDelimiterNaming:
-  Exclude:
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
-
 # Offense count: 4
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional
