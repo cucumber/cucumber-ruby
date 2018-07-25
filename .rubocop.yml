@@ -38,6 +38,16 @@ Naming/MethodName:
     - 'examples/i18n/tr/lib/hesap_makinesi.rb'
     - 'lib/cucumber/glue/dsl.rb'
 
+# Rubocop doesn't handle some international words well for this cop
+Naming/VariableNumber:
+  EnforcedStyle: normalcase
+  Exclude:
+    - 'examples/i18n/**/*'
+
+# This cop throws errors when parsing a lot of the repo's code, possibly due
+# to splat issues?
+Style/AccessModifierDeclarations:
+    Enabled: false
 
 # By FAR the most used form of regex values in the project are with slashes.
 # Rubocop doesn't handle all cases well (currently), so this cop has been 

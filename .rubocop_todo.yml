@@ -39,28 +39,11 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 15
-# Configuration parameters: .
-# SupportedStyles: snake_case, normalcase, non_integer
-Naming/VariableNumber:
-  EnforcedStyle: normalcase
-  Enabled: false
-
 # Offense count: 2
 Security/Eval:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 4
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: inline, group
-Style/AccessModifierDeclarations:
-  Exclude:
-    - 'lib/cucumber/filters/randomizer.rb'
-    - 'lib/cucumber/formatter/fanout.rb'
-    - 'lib/cucumber/load_path.rb'
-    - 'lib/cucumber/runtime.rb'
 
 # Offense count: 9
 Style/CaseEquality:
