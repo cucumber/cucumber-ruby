@@ -199,7 +199,7 @@ module Cucumber
       end
 
       def column_names #:nodoc:
-        @col_names ||= cell_matrix[0].map(&:value)
+        @column_names ||= cell_matrix[0].map(&:value)
       end
 
       def rows
@@ -378,7 +378,7 @@ module Cucumber
       end
 
       def cells_rows #:nodoc:
-        @rows ||= cell_matrix.map do |cell_row|
+        @rows ||= cell_matrix.map do |cell_row| # rubocop:disable Naming/MemoizedInstanceVariableName
           Cells.new(self, cell_row)
         end
       end
@@ -514,7 +514,7 @@ module Cucumber
       end
 
       def clear_cache! #:nodoc:
-        @hashes = @rows_hash = @col_names = @rows = @columns = nil
+        @hashes = @rows_hash = @column_names = @rows = @columns = nil
       end
 
       def ensure_table(table_or_array) #:nodoc:

@@ -39,15 +39,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 4
-# Configuration parameters: EnforcedStyleForLeadingUnderscores.
-# SupportedStylesForLeadingUnderscores: disallowed, required, optional
-Naming/MemoizedInstanceVariableName:
-  Exclude:
-    - 'lib/cucumber/formatter/json.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'spec/cucumber/formatter/spec_helper.rb'
-
 # Offense count: 11
 # Configuration parameters: .
 # SupportedStyles: snake_case, camelCase

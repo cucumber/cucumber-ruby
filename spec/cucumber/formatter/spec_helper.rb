@@ -50,7 +50,7 @@ module Cucumber
       end
 
       def actual_runtime
-        @runtime ||= Runtime.new(options)
+        @actual_runtime ||= Runtime.new(options)
       end
 
       def event_bus
