@@ -103,7 +103,7 @@ module Cucumber
 
     private
 
-    def fire_after_configuration_hook #:nodoc
+    def fire_after_configuration_hook #:nodoc:
       @support_code.fire_hook(:after_configuration, @configuration)
     end
 

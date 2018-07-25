@@ -87,7 +87,7 @@ module Cucumber
 
       # Returns an uncolored version of the string, that is all
       # ANSI-sequences are stripped from the string.
-      def uncolored(string = nil) # :yields:
+      def uncolored(string = nil)
         if block_given?
           yield.gsub(COLORED_REGEXP, '')
         elsif string
