@@ -46,11 +46,6 @@ Security/Eval:
     - 'lib/cucumber/term/ansicolor.rb'
 
 # Offense count: 1
-Style/DoubleNegation:
-  Exclude:
-    - 'lib/cucumber/cli/configuration.rb'
-
-# Offense count: 1
 Style/EvalWithLocation:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'

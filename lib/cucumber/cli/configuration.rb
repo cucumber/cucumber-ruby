@@ -64,7 +64,7 @@ module Cucumber
       end
 
       def fail_fast?
-        !!@options[:fail_fast]
+        @options[:fail_fast]
       end
 
       def retry_attempts
