@@ -61,7 +61,7 @@ module Cucumber
           it 'lists all known languages' do
             after_parsing '--i18n-languages' do
               ::Gherkin::DIALECTS.keys.map do |key|
-                expect(@output_stream.string).to include(key.to_s);
+                expect(@output_stream.string).to include(key.to_s)
               end
             end
           end
@@ -90,7 +90,7 @@ module Cucumber
             it 'displays the language table' do
               after_parsing '--i18n-keywords foo' do
                 ::Gherkin::DIALECTS.keys.map do |key|
-                  expect(@output_stream.string).to include(key.to_s);
+                  expect(@output_stream.string).to include(key.to_s)
                 end
               end
             end

@@ -700,7 +700,10 @@ module Cucumber
           FEATURE
 
           define_steps do
-            Around() { |_scenario, block| block.call; raise RuntimeError, 'error' }
+            Around() do |_scenario, block|
+              block.call
+              raise RuntimeError, 'error'
+            end
             Given(/^there are bananas$/) {}
           end
 
@@ -723,13 +726,13 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:704"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:707"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "around":
                     [{"match": {"location": "unknown_hook_location:1"},
                       "result": {"status": "failed",
-                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:703:in `Around'",
+                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:705:in `Around'",
                                  "duration": 1}}]}]}]})
           end
         end
@@ -770,7 +773,7 @@ module Cucumber
                        "rows":
                          [{"cells": ["aa", "bb"]},
                           {"cells": ["cc", "dd"]}],
-                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:748"},
+                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:751"},
                        "result": {"status": "passed",
                                   "duration": 1}}]}]}]))
           end

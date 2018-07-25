@@ -258,14 +258,6 @@ Style/RescueStandardError:
     - 'features/lib/support/fake_wire_server.rb'
     - 'lib/cucumber/errors.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/formatter/json_spec.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
