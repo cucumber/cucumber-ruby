@@ -702,7 +702,7 @@ module Cucumber
           define_steps do
             Around() do |_scenario, block|
               block.call
-              raise RuntimeError, 'error'
+              raise 'error'
             end
             Given(/^there are bananas$/) {}
           end
