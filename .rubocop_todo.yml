@@ -45,15 +45,6 @@ Security/Eval:
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 9
-Style/CaseEquality:
-  Exclude:
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/formatter/io.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/rake/task.rb'
-    - 'lib/cucumber/step_match.rb'
-
 # Offense count: 2
 Style/CommentedKeyword:
   Exclude:

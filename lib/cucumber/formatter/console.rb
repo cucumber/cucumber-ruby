@@ -46,7 +46,7 @@ module Cucumber
       def format_string(o, status)
         fmt = format_for(status)
         o.to_s.split("\n").map do |line|
-          if Proc === fmt
+          if Proc == fmt.class
             fmt.call(line)
           else
             fmt % line

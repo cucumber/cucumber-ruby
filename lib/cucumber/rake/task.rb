@@ -38,7 +38,7 @@ module Cucumber
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
-          raise 'libs must be an Array when running in-process' unless Array === libs
+          raise 'libs must be an Array when running in-process' unless Array == libs.class
           libs.reverse_each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
             cucumber_opts +
@@ -113,7 +113,7 @@ module Cucumber
       # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
       attr_reader :cucumber_opts
       def cucumber_opts=(opts) #:nodoc:
-        @cucumber_opts = String === opts ? opts.split(' ') : opts
+        @cucumber_opts = String == opts.class ? opts.split(' ') : opts
       end
 
       # Whether or not to fork a new ruby interpreter. Defaults to true. You may gain

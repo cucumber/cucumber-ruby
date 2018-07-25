@@ -507,7 +507,7 @@ module Cucumber
         end
 
         @header_mappings.each_pair do |pre, post|
-          mapped_cells = header_cells.select { |cell| pre === cell.value }
+          mapped_cells = header_cells.select { |cell| cell.value.match? pre }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
           raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
           mapped_cells[0].value = post
@@ -520,7 +520,7 @@ module Cucumber
       end
 
       def ensure_table(table_or_array) #:nodoc:
-        return table_or_array if DataTable === table_or_array
+        return table_or_array if DataTable == table_or_array.class
         DataTable.from(table_or_array)
       end
 
@@ -603,7 +603,7 @@ module Cucumber
         end
 
         def ==(other)
-          SurplusCell === other || value == other.value
+          SurplusCell == other.class || value == other.value
         end
 
         def eql?(other)
