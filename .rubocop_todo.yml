@@ -222,13 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/UnneededCondition:
-  Exclude:
-    - 'lib/cucumber/formatter/json.rb'
-    - 'lib/cucumber/formatter/pretty.rb'
-
 # Offense count: 821
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

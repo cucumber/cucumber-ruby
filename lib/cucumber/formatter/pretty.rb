@@ -474,7 +474,7 @@ module Cucumber
 
       def print_expanded_row_data(test_case)
         feature = gherkin_document[:feature]
-        language_code = feature[:language] ? feature[:language] : 'en'
+        language_code = feature[:language] || 'en'
         language = ::Gherkin::Dialect.for(language_code)
         scenario_keyword = language.scenario_keywords[0]
         row = scenario_source(test_case).row

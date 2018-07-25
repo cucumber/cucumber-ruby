@@ -172,7 +172,7 @@ module Cucumber
       end
 
       def create_doc_string_hash(doc_string)
-        content_type = doc_string.content_type ? doc_string.content_type : ''
+        content_type = doc_string.content_type || ''
         {
           value: doc_string.content,
           content_type: content_type,
