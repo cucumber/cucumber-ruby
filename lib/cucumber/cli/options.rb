@@ -464,7 +464,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def default_profile_should_be_used?
         @profiles.empty? &&
           profile_loader.cucumber_yml_defined? &&
-          profile_loader.has_profile?(@default_profile)
+          profile_loader.profile?(@default_profile)
       end
 
       def profile_loader

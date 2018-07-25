@@ -112,8 +112,8 @@ module Autotest::CucumberMixin
 
     profile_loader = Cucumber::Cli::ProfileLoader.new
 
-    profile ||= 'autotest-all' if profile_loader.has_profile?('autotest-all') && features_to_run == :all
-    profile ||= 'autotest'     if profile_loader.has_profile?('autotest')
+    profile ||= 'autotest-all' if profile_loader.profile?('autotest-all') && features_to_run == :all
+    profile ||= 'autotest'     if profile_loader.profile?('autotest')
     profile ||= nil
 
     args = if profile

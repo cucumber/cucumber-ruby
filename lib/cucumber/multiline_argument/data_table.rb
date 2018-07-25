@@ -373,7 +373,9 @@ module Cucumber
         raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
-      def has_text?(text) #:nodoc:
+      # TODO: remove the below function if it's not actually being used.
+      # Nothing else in this repo calls it.
+      def text?(text) #:nodoc:
         raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 

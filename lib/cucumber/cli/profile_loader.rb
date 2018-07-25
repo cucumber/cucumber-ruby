@@ -45,7 +45,7 @@ Defined profiles in cucumber.yml:
         args_from_yml
       end
 
-      def has_profile?(profile)
+      def profile?(profile)
         cucumber_yml.key?(profile)
       end
 
