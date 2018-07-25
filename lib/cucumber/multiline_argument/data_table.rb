@@ -471,7 +471,11 @@ module Cucumber
 
       def create_cell_matrix(ast_table) #:nodoc:
         ast_table.raw.map do |raw_row|
-          line = raw_row.line rescue -1
+          line = begin
+                   raw_row.line
+                 rescue StandardError
+                   -1
+                 end
           raw_row.map do |raw_cell|
             Cell.new(raw_cell, self, line)
           end
