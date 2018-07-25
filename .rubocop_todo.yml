@@ -202,11 +202,6 @@ Style/MissingRespondToMissing:
     - 'lib/cucumber/formatter/interceptor.rb'
     - 'lib/cucumber/rspec/disable_option_parser.rb'
 
-# Offense count: 1
-Style/MixinUsage:
-  Exclude:
-    - 'lib/cucumber/glue/dsl.rb'
-
 # Offense count: 821
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
