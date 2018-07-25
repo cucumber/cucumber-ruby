@@ -19,7 +19,7 @@ module Cucumber
       end
     end
 
-    STRATEGY = $0 =~ /rspec$/ ? ForDevelopers : ForUsers
+    STRATEGY = $PROGRAM_NAME =~ /rspec$/ ? ForDevelopers : ForUsers
   end
 
   def self.deprecate(*args)

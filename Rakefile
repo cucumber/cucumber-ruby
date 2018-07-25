@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
-$:.unshift(File.dirname(__FILE__) + '/lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 
 require 'rubocop/rake_task'

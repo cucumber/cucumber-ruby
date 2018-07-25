@@ -222,13 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 91
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: use_perl_names, use_english_names
-Style/SpecialGlobalVars:
-  Enabled: false
-
 # Offense count: 10
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.

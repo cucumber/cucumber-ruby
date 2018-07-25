@@ -26,7 +26,7 @@ end
 
 begin
   token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
-  login = (ARGV[0] || raise("syntax: #{$0} <COLLABORATOR_LOGIN>")).to_s
+  login = (ARGV[0] || raise("syntax: #{$PROGRAM_NAME} <COLLABORATOR_LOGIN>")).to_s
 
   gh = Octokit::Client.new(access_token: token)
   [

@@ -67,7 +67,7 @@ end
 
 begin
   token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
-  num = (ARGV[0] || raise("syntax: #{$0} <PULL-REQUEST-NUMBER>")).to_i
+  num = (ARGV[0] || raise("syntax: #{$PROGRAM_NAME} <PULL-REQUEST-NUMBER>")).to_i
 
   gh = Octokit::Client.new(access_token: token)
   pr = PullRequest.new(gh, num)

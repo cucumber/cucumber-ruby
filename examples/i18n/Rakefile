@@ -28,5 +28,5 @@ def examples_working?(lang)
 end
 
 def rake(args)
-  ruby($0, args)
+  ruby($PROGRAM_NAME, args)
 end
