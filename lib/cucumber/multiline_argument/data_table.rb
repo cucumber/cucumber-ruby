@@ -600,12 +600,12 @@ module Cucumber
           @value = "(i) #{value.inspect}"
         end
 
-        def ==(o)
-          SurplusCell === o || value == o.value
+        def ==(other)
+          SurplusCell === other || value == other.value
         end
 
-        def eql?(o)
-          self == o
+        def eql?(other)
+          self == other
         end
 
         def hash
@@ -623,7 +623,7 @@ module Cucumber
           :comment
         end
 
-        def ==(_o)
+        def ==(_other)
           true
         end
 

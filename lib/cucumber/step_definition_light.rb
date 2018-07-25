@@ -13,8 +13,8 @@ module Cucumber
       @location = location
     end
 
-    def eql?(o)
-      regexp_source == o.regexp_source && location == o.location
+    def eql?(other)
+      regexp_source == other.regexp_source && location == other.location
     end
 
     def hash

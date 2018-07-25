@@ -94,8 +94,8 @@ module Cucumber
       end
 
       # @api private
-      def ==(step_definition)
-        expression.source == step_definition.expression.source
+      def ==(other)
+        expression.source == other.expression.source
       end
 
       # @api private

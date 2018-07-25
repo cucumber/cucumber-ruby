@@ -39,13 +39,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 5
-Naming/BinaryOperatorParameterName:
-  Exclude:
-    - 'lib/cucumber/glue/step_definition.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/step_definition_light.rb'
-
 # Offense count: 2
 # Configuration parameters: Blacklist.
 # Blacklist: (?-mix:(^|\s)(EO[A-Z]{1}|END)(\s|$))
