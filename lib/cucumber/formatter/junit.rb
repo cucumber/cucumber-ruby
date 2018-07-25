@@ -167,7 +167,7 @@ module Cucumber
       end
 
       def basename(feature_file)
-        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature')
+        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature') # rubocop:disable Style/RegexpLiteral
       end
 
       def write_file(feature_filename, data)

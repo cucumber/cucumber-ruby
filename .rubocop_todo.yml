@@ -222,20 +222,6 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'lib/cucumber/formatter/console.rb'
 
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'features/lib/support/normalise_output.rb'
-    - 'lib/cucumber/configuration.rb'
-    - 'lib/cucumber/formatter/backtrace_filter.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'spec/cucumber/glue/registry_and_more_spec.rb'
-    - 'spec/cucumber/project_initializer_spec.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/RescueModifier:

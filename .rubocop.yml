@@ -16,6 +16,12 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
+# By FAR the most used form of regex values in the project are with slashes.
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+  Exclude:
+    - 'spec/cucumber/project_initializer_spec.rb'
+
 # Reviewed: please see PR-1022 for details on why this cop is disabled:
 # https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:

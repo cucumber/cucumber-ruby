@@ -176,7 +176,7 @@ module Cucumber
     def all_files_to_load
       files = require_dirs.map do |path|
         path = path.tr('\\', '/') # In case we're on windows. Globs don't work with backslashes.
-        path = path.gsub(/\/$/, '') # Strip trailing slash.
+        path = path.gsub(/\/$/, '') # Strip trailing slash. # rubocop:disable Style/RegexpLiteral
         File.directory?(path) ? Dir["#{path}/**/*"] : path
       end.flatten.uniq
       remove_excluded_files_from(files)

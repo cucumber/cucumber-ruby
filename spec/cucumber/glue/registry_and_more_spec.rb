@@ -63,7 +63,7 @@ module Cucumber
           rescue Glue::NilWorld => e
             expect(e.message).to eq 'World procs should never return nil'
             expect(e.backtrace.length).to eq 1
-            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb\:\d+\:in `World'/)
+            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb\:\d+\:in `World'/) # rubocop:disable Style/RegexpLiteral
           end
         end
 

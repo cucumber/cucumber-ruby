@@ -10,6 +10,9 @@ module NormaliseArubaOutput
     normalise_output(super)
   end
 
+  # Rubocop doesn't handle the regex values below appropriately,
+  # so disabling here.
+  # rubocop:disable Style/RegexpLiteral
   def normalise_output(out)
     out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
        .gsub(/tmp\/aruba\//, '')            # Fix aruba path
@@ -17,6 +20,7 @@ module NormaliseArubaOutput
        .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
        .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
   end
+  # rubocop:enable Style/RegexpLiteral
 
   def normalise_json(json)
     # make sure duration was captured (should be >= 0)
