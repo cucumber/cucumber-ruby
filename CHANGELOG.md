@@ -49,7 +49,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* Let the Rerun Formatter handle flaky scenarios.
+  ([#1310](https://github.com/cucumber/cucumber-ruby/pull/1310)
+   [brasmusson](https://github.com/brasmusson))
 
 ### Improved
 
