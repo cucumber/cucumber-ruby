@@ -23,7 +23,7 @@ module Cucumber
 
     def activate(test_step)
       test_step.with_action(@step_definition.location) do
-        invoke(MultilineArgument.from_core(test_step.source.last.multiline_arg))
+        invoke(MultilineArgument.from_core(test_step.multiline_arg))
       end
     end
 
@@ -125,8 +125,7 @@ module Cucumber
     end
 
     def file_colon_line
-      raise "No file:line for #{@step}" unless @step.file_colon_line
-      @step.file_colon_line
+      location.to_s
     end
 
     def backtrace_line
@@ -134,7 +133,7 @@ module Cucumber
     end
 
     def text_length
-      @step.text_length
+      @step.text.length
     end
 
     def step_arguments

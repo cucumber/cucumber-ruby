@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'cucumber/step_match'
-require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
 require 'cucumber/glue/invoke_in_world'
 
@@ -44,7 +43,7 @@ module Cucumber
         end
 
         def patch_location_onto(block)
-          location = Core::Ast::Location.of_caller(5)
+          location = Core::Test::Location.of_caller(5)
           block.define_singleton_method(:source_location) { [location.file, location.line] }
           block
         end
@@ -131,7 +130,7 @@ module Cucumber
 
       # The source location where the step definition can be found
       def location
-        @location ||= Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
+        @location ||= Cucumber::Core::Test::Location.from_source_location(*@proc.source_location)
       end
 
       # @api private

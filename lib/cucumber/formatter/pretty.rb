@@ -7,9 +7,9 @@ require 'cucumber/formatter/io'
 require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/formatter/console_counts'
 require 'cucumber/formatter/console_issues'
-require 'cucumber/formatter/hook_query_visitor'
 require 'cucumber/formatter/duration_extractor'
 require 'cucumber/formatter/backtrace_filter'
+require 'cucumber/formatter/ast_lookup'
 
 module Cucumber
   module Formatter
@@ -35,15 +35,14 @@ module Cucumber
         @io = ensure_io(config.out_stream)
         @config = config
         @options = config.to_hash
-        @previous_step_keyword = nil
         @snippets_input = []
         @total_duration = 0
         @exceptions = []
         @gherkin_sources = {}
-        @gherkin_documents = {}
         @step_matches = {}
+        @ast_lookup = AstLookup.new(config)
         @counts = ConsoleCounts.new(config)
-        @issues = ConsoleIssues.new(config)
+        @issues = ConsoleIssues.new(config, @ast_lookup)
         @first_feature = true
         @current_feature_uri = ''
         @current_scenario_outline = nil
@@ -56,7 +55,6 @@ module Cucumber
         @source_indent = 0
         @next_comment_to_be_printed = 0
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
-        config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_step_started, &method(:on_test_step_started)
@@ -67,10 +65,6 @@ module Cucumber
 
       def on_gherkin_source_read(event)
         @gherkin_sources[event.path] = event.body
-      end
-
-      def on_gherkin_source_parsed(event)
-        @gherkin_documents[event.uri] = event.gherkin_document
       end
 
       def on_step_activated(event)
@@ -88,8 +82,6 @@ module Cucumber
             @io.puts
           end
           @current_feature_uri = event.test_case.location.file
-          @test_case_lookup = create_test_case_lookup
-          @test_step_lookup = create_test_step_lookup
           @exceptions = []
           print_feature_data
           if feature_has_background?
@@ -102,21 +94,18 @@ module Cucumber
         end
         @current_test_case = event.test_case
         print_step_header(current_test_case) unless print_background_steps
-        @previous_step_keyword = nil
       end
 
       def on_test_step_started(event)
-        hook_query = HookQueryVisitor.new(event.test_step)
-        return if hook_query.hook?
+        return if event.test_step.hook?
         print_step_header(current_test_case) if first_step_after_printing_background_steps?(event.test_step)
       end
 
       def on_test_step_finished(event)
-        hook_query = HookQueryVisitor.new(event.test_step)
-        collect_snippet_data(event.test_step, event.result) unless hook_query.hook?
+        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         return if in_scenario_outline && !options[:expand]
         exception_to_be_printed = find_exception_to_be_printed(event.result)
-        print_step_data(event.test_step, event.result) if !hook_query.hook? && (print_background_steps || event.test_step.location.line >= current_test_case.location.line || exception_to_be_printed)
+        print_step_data(event.test_step, event.result) if !event.test_step.hook? && (print_background_steps || event.test_step.location.lines.max >= current_test_case.location.lines.max || exception_to_be_printed)
         print_step_output
         return unless exception_to_be_printed
         print_exception(exception_to_be_printed, event.result.to_sym, 6)
@@ -177,8 +166,7 @@ module Cucumber
         indent = 7 + scenario_keyword.length
         indent += 2 + expanded_name.length
         test_case.test_steps.each do |step|
-          hook_query = HookQueryVisitor.new(step)
-          if !hook_query.hook? && step.location.line >= test_case.location.line
+          if !step.hook? && step.location.lines.max >= test_case.location.lines.max
             step_indent = 9 + test_step_keyword(step).length + step.text.length
             indent = step_indent if step_indent > indent
           end
@@ -208,12 +196,12 @@ module Cucumber
       def print_step_header(test_case)
         if from_scenario_outline?(test_case)
           @in_scenario_outline = true
-          unless same_outline_as_previous_test_case?(test_case.location)
+          unless same_outline_as_previous_test_case?(test_case)
             @current_scenario_outline = scenario_source(test_case).scenario_outline
             @io.puts
             print_outline_data(current_scenario_outline)
           end
-          unless same_examples_as_previous_test_case?(test_case.location)
+          unless same_examples_as_previous_test_case?(test_case)
             @current_examples = scenario_source(test_case).examples
             @io.puts
             print_examples_data(current_examples)
@@ -229,12 +217,12 @@ module Cucumber
         end
       end
 
-      def same_outline_as_previous_test_case?(location)
-        @test_case_lookup[location.line].scenario_outline == current_scenario_outline
+      def same_outline_as_previous_test_case?(test_case)
+        scenario_source(test_case).scenario_outline == current_scenario_outline
       end
 
-      def same_examples_as_previous_test_case?(location)
-        @test_case_lookup[location.line].examples == current_examples
+      def same_examples_as_previous_test_case?(test_case)
+        scenario_source(test_case).examples == current_examples
       end
 
       def from_scenario_outline?(test_case)
@@ -244,43 +232,9 @@ module Cucumber
 
       def first_step_after_printing_background_steps?(test_step)
         return false unless print_background_steps
-        return false unless test_step.location.line >= current_test_case.location.line
+        return false unless test_step.location.lines.max >= current_test_case.location.lines.max
         @print_background_steps = false
         true
-      end
-
-      ScenarioSource = Struct.new(:type, :scenario)
-
-      ScenarioOutlineSource = Struct.new(:type, :scenario_outline, :examples, :row)
-
-      StepSource = Struct.new(:type, :step)
-
-      def create_test_case_lookup
-        feature = gherkin_document[:feature]
-        lookup_hash = {}
-        feature[:children].each do |child|
-          if child[:type] == :Scenario
-            lookup_hash[child[:location][:line]] = ScenarioSource.new(:Scenario, child)
-          elsif child[:type] == :ScenarioOutline
-            child[:examples].each do |examples|
-              examples[:tableBody].each do |row|
-                lookup_hash[row[:location][:line]] = ScenarioOutlineSource.new(:ScenarioOutline, child, examples, row)
-              end
-            end
-          end
-        end
-        lookup_hash
-      end
-
-      def create_test_step_lookup
-        feature = gherkin_document[:feature]
-        lookup_hash = {}
-        feature[:children].each do |child|
-          child[:steps].each do |step|
-            lookup_hash[step[:location][:line]] = StepSource.new(:Step, step)
-          end
-        end
-        lookup_hash
       end
 
       def print_feature_data
@@ -369,7 +323,7 @@ module Cucumber
         base_indent = options[:expand] && in_scenario_outline ? 8 : 4
         step_keyword = test_step_keyword(test_step)
         indent = options[:source] ? @source_indent - step_keyword.length - test_step.text.length - base_indent : nil
-        print_comments(test_step.location.line, base_indent)
+        print_comments(test_step.location.lines.max, base_indent)
         name_to_report = format_step(step_keyword, @step_matches.fetch(test_step.to_s) { NoStepMatch.new(test_step, test_step.text) }, result.to_sym, indent)
         @io.puts(name_to_report.indent(base_indent))
         print_multiline_argument(test_step, result, base_indent + 2) unless options[:no_multiline]
@@ -382,11 +336,11 @@ module Cucumber
       end
 
       def step_source(test_step)
-        @test_step_lookup[test_step.original_location.line]
+        @ast_lookup.step_source(test_step)
       end
 
       def scenario_source(test_case)
-        @test_case_lookup[test_case.location.line]
+        @ast_lookup.scenario_source(test_case)
       end
 
       def gherkin_source
@@ -394,7 +348,7 @@ module Cucumber
       end
 
       def gherkin_document
-        @gherkin_documents[current_feature_uri]
+        @ast_lookup.gherkin_document(current_feature_uri)
       end
 
       def print_multiline_argument(test_step, result, indent)
@@ -456,8 +410,8 @@ module Cucumber
       end
 
       def print_row_data(test_case, result)
-        print_comments(test_case.location.line, 6)
-        @io.print(format_string(gherkin_source.split("\n")[test_case.location.line - 1].strip, result.to_sym).indent(6))
+        print_comments(test_case.location.lines.max, 6)
+        @io.print(format_string(gherkin_source.split("\n")[test_case.location.lines.max - 1].strip, result.to_sym).indent(6))
         @io.print(format_string(@test_step_output.join(', '), :tag).indent(2)) unless @test_step_output.empty?
         @test_step_output = []
         @io.puts
@@ -487,7 +441,7 @@ module Cucumber
       def print_summary
         print_statistics(@total_duration, config, @counts, @issues)
         print_snippets(options)
-        print_passing_wip(config, @passed_test_cases)
+        print_passing_wip(config, @passed_test_cases, @ast_lookup)
       end
     end
   end

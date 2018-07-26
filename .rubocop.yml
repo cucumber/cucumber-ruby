@@ -40,7 +40,7 @@ Naming/MethodName:
 
 
 # By FAR the most used form of regex values in the project are with slashes.
-# Rubocop doesn't handle all cases well (currently), so this cop has been 
+# Rubocop doesn't handle all cases well (currently), so this cop has been
 # disabled in some cases.
 Style/RegexpLiteral:
   EnforcedStyle: slashes
@@ -80,7 +80,7 @@ Metrics/ClassLength:
   Exclude:
     - 'lib/cucumber/cli/options.rb'
 
-# Rubocop doesn't like method names in other languages but as Cucumber supports 
+# Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
 Naming/AsciiIdentifiers:
   Enabled: false
@@ -94,3 +94,9 @@ Naming/VariableName:
 
 Style/ClassAndModuleChildren:
   Enabled: false
+
+# Reviewed: we need to specify 'cucumber-core' and 'cucumber-wire' twice
+# to be able to build using git on CI, but also using local repos locally.
+Bundler/DuplicatedGem:
+  Exclude:
+  - 'Gemfile'

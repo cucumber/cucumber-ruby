@@ -25,10 +25,7 @@ Feature: Custom Formatter
           end
 
           def print_test_case_name(test_case)
-            feature = test_case.source.first
-            scenario = test_case.source.last
-            @io.puts feature.short_name.upcase
-            @io.puts "  #{scenario.name.upcase}"
+            @io.puts "  #{test_case.name.upcase}"
           end
         end
       end
@@ -36,7 +33,6 @@ Feature: Custom Formatter
     When I run `cucumber features/f.feature --format MyCustom::Formatter`
     Then it should pass with exactly:
       """
-      I'LL USE MY OWN
         JUST PRINT ME
 
       """

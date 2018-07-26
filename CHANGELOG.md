@@ -18,6 +18,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Pass the registry to the Wire plugin.
+  ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
+   [brasmusson](https://github.com/brasmusson))
+* Adapt to using the Gherkin compiler and Pickles in the core.
+  ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
+   [brasmusson](https://github.com/brasmusson))
 * Let the Pretty Formatter use events.
   ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305)
    [brasmusson](https://github.com/brasmusson))
