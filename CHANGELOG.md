@@ -18,6 +18,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Do not apply Before and After Hooks to Test Cases with no Test Steps.
+  ([#1311](https://github.com/cucumber/cucumber-ruby/pull/1311)
+   [brasmusson](https://github.com/brasmusson))
 * Pass the registry to the Wire plugin.
   ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
    [brasmusson](https://github.com/brasmusson))

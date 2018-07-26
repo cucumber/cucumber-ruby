@@ -112,12 +112,14 @@ module Cucumber
       end
 
       def apply_before_hooks(test_case)
+        return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:before, scenario)
         BeforeHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def apply_after_hooks(test_case)
+        return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:after, scenario)
         AfterHooks.new(hooks, scenario).apply_to(test_case)
