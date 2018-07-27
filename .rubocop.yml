@@ -73,6 +73,11 @@ Metrics/CyclomaticComplexity:
 Metrics/LineLength:
   Max: 200
 
+Metrics/ModuleLength:
+  Max: 150
+  Exclude:
+    - './spec/**/*'
+
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
 Naming/AsciiIdentifiers:
