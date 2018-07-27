@@ -24,12 +24,7 @@ module Cucumber
       def execute!(existing_runtime = nil)
         trap_interrupt
 
-        runtime = if existing_runtime
-                    existing_runtime.configure(configuration)
-                    existing_runtime
-                  else
-                    Runtime.new(configuration)
-                  end
+        runtime = runtime(existing_runtime)
 
         runtime.run!
         if Cucumber.wants_to_quit
@@ -92,6 +87,12 @@ module Cucumber
           Cucumber.wants_to_quit = true
           STDERR.puts "\nExiting... Interrupt again to exit immediately."
         end
+      end
+
+      def runtime(existing_runtime)
+        return Runtime.new(configuration) unless existing_runtime
+        existing_runtime.configure(configuration)
+        existing_runtime
       end
     end
   end

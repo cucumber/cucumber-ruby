@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   # Keep this inline with the lowest ruby-* version in circleci/config.yml and
   # the version in the gemspec
@@ -77,6 +75,9 @@ Metrics/ModuleLength:
   Max: 150
   Exclude:
     - './spec/**/*'
+
+Metrics/MethodLength:
+  Max: 30
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
