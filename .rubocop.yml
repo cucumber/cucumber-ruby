@@ -68,6 +68,11 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 9
 
+# A line length of 200 covers most violations in the repo while still being
+# a more up to date length given today's screen sizes
+Metrics/LineLength:
+  Max: 200
+
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
 Naming/AsciiIdentifiers:

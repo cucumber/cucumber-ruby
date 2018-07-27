@@ -280,7 +280,8 @@ Defined profiles in cucumber.yml:
       end
 
       it 'does not accept multiple --out streams pointing to the same place' do
-        expect(-> { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expected_error = 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
+        expect(-> { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }).to raise_error(expected_error)
       end
 
       it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do

@@ -31,8 +31,16 @@ module Cucumber
 
       def warn_for_old_style_tag_expressions(tag_expressions)
         tag_expressions.each do |tag_expression|
-          warn("Deprecated: Found tagged hook with '#{tag_expression}'. Support for '~@tag' will be removed from the next release of Cucumber. Please use 'not @tag' instead.") if tag_expression.include?('~') && tag_expression != '~@no-clobber' # ~@no-clobber is used in aruba
-          warn("Deprecated: Found tagged hook with '#{tag_expression}'. Support for '@tag1,@tag2' will be removed from the next release of Cucumber. Please use '@tag or @tag2' instead.") if tag_expression.include?(',')
+          if tag_expression.include?('~') && tag_expression != '~@no-clobber' # ~@no-clobber is used in aruba
+            warn("Deprecated: Found tagged hook with '#{tag_expression}'." \
+            "Support for '~@tag' will be removed from the next release of Cucumber. " \
+            "Please use 'not @tag' instead.")
+          end
+
+          next unless tag_expression.include?(',')
+          warn("Deprecated: Found tagged hook with '#{tag_expression}'." \
+            "Support for '@tag1,@tag2' will be removed from the next release " \
+            "of Cucumber. Please use '@tag or @tag2' instead.")
         end
       end
     end

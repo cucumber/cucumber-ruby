@@ -9,7 +9,9 @@ module Cucumber
       AnsiEscapes = Cucumber::Gherkin::Formatter::AnsiEscapes
 
       def self.call(message, method, remove_after_version)
-        STDERR.puts AnsiEscapes.failed + "\nWARNING: ##{method} is deprecated and will be removed after version #{remove_after_version}. #{message}.\n(Called from #{caller(3..3).first})" + AnsiEscapes.reset
+        STDERR.puts AnsiEscapes.failed + "\nWARNING: ##{method} is deprecated" \
+        " and will be removed after version #{remove_after_version}. #{message}.\n" \
+        "(Called from #{caller(3..3).first})" + AnsiEscapes.reset
       end
     end
 

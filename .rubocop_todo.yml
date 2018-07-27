@@ -19,9 +19,3 @@ Metrics/ModuleLength:
 # Offense count: 7
 Metrics/PerceivedComplexity:
   Max: 11
-
-# Offense count: 826
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 310

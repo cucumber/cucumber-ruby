@@ -25,7 +25,11 @@ Defined profiles in cucumber.yml:
 
         case args_from_yml
         when String
-          raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+          if args_from_yml =~ /^\s*$/
+            raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was blank." \
+            "  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n"
+          end
+
           if Cucumber::WINDOWS
             # Shellwords treats backslash as an escape character so we have to mask it out temporarily
 
@@ -59,7 +63,9 @@ Defined profiles in cucumber.yml:
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless cucumber_yml_defined?
-          raise(ProfilesNotDefinedError, "cucumber.yml was not found.  Current directory is #{Dir.pwd}.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+          raise(ProfilesNotDefinedError, "cucumber.yml was not found.  Current directory is #{Dir.pwd}." \
+          "Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define" \
+          "a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
         end
 
         require 'erb'
@@ -76,7 +82,10 @@ Defined profiles in cucumber.yml:
           raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
-        raise(YmlLoadError, "cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n") if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
+        if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
+          raise(YmlLoadError, 'cucumber.yml was found, but was blank or malformed. ' \
+          "Please refer to cucumber's documentation on correct profile usage.\n")
+        end
 
         @cucumber_yml
       end
