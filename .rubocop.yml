@@ -16,57 +16,11 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
-Style/Documentation:
-  Enabled: false
-
-Style/FormatStringToken:
-  EnforcedStyle: annotated
-
-# Offense count: 67
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: io, id, to, by, on, in, at, ip
-# Naming/UncommunicativeMethodParamName:
-#   Enabled: false
-# In most cases, being descriptive with parameter names helps a reader understand
-# what the variable is for. In some cases, shorter names are sufficient.
-Naming/UncommunicativeMethodParamName:
-  AllowedNames: _, e, n, v, id, io, gh, pr
-
-# For the most part, the project is solid on naming. There are though, a few
-# cases where the cop doesn't need to catch.
-Naming/MethodName:
-  EnforcedStyle: snake_case
-  Enabled: true
+# Reviewed: we need to specify 'cucumber-core' and 'cucumber-wire' twice
+# to be able to build using git on CI, but also using local repos locally.
+Bundler/DuplicatedGem:
   Exclude:
-    - 'examples/i18n/ar/lib/calculator.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
-    - 'lib/cucumber/glue/dsl.rb'
-
-# Rubocop doesn't handle some international words well for this cop
-Naming/VariableNumber:
-  EnforcedStyle: normalcase
-  Exclude:
-    - 'examples/i18n/**/*'
-
-# This cop throws errors when parsing a lot of the repo's code, possibly due
-# to splat issues?
-Style/AccessModifierDeclarations:
-    Enabled: false
-
-# By FAR the most used form of regex values in the project are with slashes.
-# Rubocop doesn't handle all cases well (currently), so this cop has been
-# disabled in some cases.
-Style/RegexpLiteral:
-  EnforcedStyle: slashes
-  Exclude:
-    - 'spec/cucumber/project_initializer_spec.rb'
-
-# Reviewed: please see PR-1022 for details on why this cop is disabled:
-# https://github.com/cucumber/cucumber-ruby/pull/1022
-Lint/AmbiguousOperator:
-  Enabled: false
+  - 'Gemfile'
 
 # Disabling for appveyor
 Layout/EndOfLine:
@@ -85,12 +39,17 @@ Layout/IndentHeredoc:
     - 'spec/cucumber/formatter/pretty_spec.rb'
 
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
-#           In pretty_spec.rb, progress_spec.rb offences look false,
-#           as the trailing spaces are in multiline string literals
+# In pretty_spec.rb, progress_spec.rb offences look false,
+# as the trailing spaces are in multiline string literals
 Layout/TrailingWhitespace:
   Exclude:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
+
+# Reviewed: please see PR-1022 for details on why this cop is disabled:
+# https://github.com/cucumber/cucumber-ruby/pull/1022
+Lint/AmbiguousOperator:
+  Enabled: false
 
 Metrics/BlockLength:
   CountComments: false
@@ -107,6 +66,23 @@ Metrics/ClassLength:
 Naming/AsciiIdentifiers:
   Enabled: false
 
+# For the most part, the project is solid on naming. There are though, a few
+# cases where the cop doesn't need to catch.
+Naming/MethodName:
+  EnforcedStyle: snake_case
+  Enabled: true
+  Exclude:
+    - 'examples/i18n/ar/lib/calculator.rb'
+    - 'examples/i18n/he/lib/calculator.rb'
+    - 'examples/i18n/he/lib/calculator.rb'
+    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
+    - 'lib/cucumber/glue/dsl.rb'
+
+# In most cases, being descriptive with parameter names helps a reader understand
+# what the variable is for. In some cases, shorter names are sufficient.
+Naming/UncommunicativeMethodParamName:
+  AllowedNames: _, e, n, v, id, io, gh, pr
+
 # Reviewed: these offenses look false as the variables are in cyrillic
 Naming/VariableName:
   Exclude:
@@ -114,11 +90,30 @@ Naming/VariableName:
     - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
     - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
 
+# Rubocop doesn't handle some international words well for this cop
+Naming/VariableNumber:
+  EnforcedStyle: normalcase
+  Exclude:
+    - 'examples/i18n/**/*'
+
+# This cop throws errors when parsing a lot of the repo's code, possibly due
+# to splat issues?
+Style/AccessModifierDeclarations:
+    Enabled: false
+
 Style/ClassAndModuleChildren:
   Enabled: false
 
-# Reviewed: we need to specify 'cucumber-core' and 'cucumber-wire' twice
-# to be able to build using git on CI, but also using local repos locally.
-Bundler/DuplicatedGem:
+Style/Documentation:
+  Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: annotated
+
+# Slashes are by far the most used form of regex values in the project.
+# Rubocop doesn't handle all cases well (currently), so this cop has been
+# disabled in some cases.
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
   Exclude:
-  - 'Gemfile'
+    - 'spec/cucumber/project_initializer_spec.rb'
