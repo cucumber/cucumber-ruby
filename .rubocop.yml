@@ -61,8 +61,12 @@ Metrics/BlockLength:
     - './spec/**/*'
 
 Metrics/ClassLength:
+  Max: 375
   Exclude:
     - 'lib/cucumber/cli/options.rb'
+
+Metrics/CyclomaticComplexity:
+  Max: 9
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
