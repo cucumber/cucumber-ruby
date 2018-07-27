@@ -11,16 +11,15 @@ module Cucumber
         return if Cucumber.use_full_backtrace
 
         instance_exec_pos = backtrace.index(instance_exec_invocation_line)
-        if instance_exec_pos
-          replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
-          backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+        return unless instance_exec_pos
+        replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
+        backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
 
-          depth = backtrace.count { |line| line == instance_exec_invocation_line }
-          end_pos = depth > 1 ? instance_exec_pos : -1
+        depth = backtrace.count { |line| line == instance_exec_invocation_line }
+        end_pos = depth > 1 ? instance_exec_pos : -1
 
-          backtrace[replacement_line + 1..end_pos] = nil
-          backtrace.compact!
-        end
+        backtrace[replacement_line + 1..end_pos] = nil
+        backtrace.compact!
       end
 
       def self.cucumber_instance_exec_in(world, check_arity, pseudo_method, *args, &block)

@@ -14,13 +14,12 @@ module Spec #:nodoc:
       end
 
       def self.method_added(method)
-        unless @__neutering_rspec
-          @__neutering_rspec = true
-          define_method(method) do |*_a|
-            NEUTERED_RSPEC
-          end
-          @__neutering_rspec = false
+        return if @__neutering_rspec
+        @__neutering_rspec = true
+        define_method(method) do |*_a|
+          NEUTERED_RSPEC
         end
+        @__neutering_rspec = false
       end
     end
   end

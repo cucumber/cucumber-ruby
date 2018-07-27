@@ -50,20 +50,6 @@ Style/EvalWithLocation:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 9
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'lib/cucumber/constantize.rb'
-    - 'lib/cucumber/deprecate.rb'
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/glue/invoke_in_world.rb'
-    - 'lib/cucumber/glue/proto_world.rb'
-    - 'lib/cucumber/rspec/disable_option_parser.rb'
-    - 'lib/cucumber/step_argument.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-
 # Offense count: 4
 Style/MethodMissingSuper:
   Exclude:

@@ -6,13 +6,12 @@ module Cucumber
   class StepArgument
     def self.arguments_from(regexp, step_name)
       match = regexp.match(step_name)
-      if match
-        n = 0
-        match.captures.map do |val|
-          n += 1
-          offset = match.offset(n)[0]
-          new(offset, val)
-        end
+      return unless match
+      n = 0
+      match.captures.map do |val|
+        n += 1
+        offset = match.offset(n)[0]
+        new(offset, val)
       end
     end
 

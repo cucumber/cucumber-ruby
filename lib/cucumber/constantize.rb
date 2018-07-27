@@ -17,11 +17,8 @@ module Cucumber
         constant
       rescue NameError => e
         require underscore(camel_cased_word)
-        if try < 2
-          retry
-        else
-          raise e
-        end
+        retry if try < 2
+        raise e
       end
     end
 
