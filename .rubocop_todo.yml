@@ -44,20 +44,6 @@ Style/EvalWithLocation:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 4
-Style/MethodMissingSuper:
-  Exclude:
-    - 'lib/cucumber/formatter/fanout.rb'
-    - 'lib/cucumber/formatter/ignore_missing_messages.rb'
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/rspec/disable_option_parser.rb'
-
-# Offense count: 2
-Style/MissingRespondToMissing:
-  Exclude:
-    - 'lib/cucumber/formatter/interceptor.rb'
-    - 'lib/cucumber/rspec/disable_option_parser.rb'
-
 # Offense count: 821
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

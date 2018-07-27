@@ -9,8 +9,8 @@ module Spec #:nodoc:
     # will fail when running cucumber)
     class OptionParser < ::OptionParser #:nodoc:
       NEUTERED_RSPEC = Object.new
-      def NEUTERED_RSPEC.method_missing(_method, *_args)
-        self
+      def NEUTERED_RSPEC.method_missing(_method, *_args) # rubocop:disable Style/MissingRespondToMissing
+        self || super
       end
 
       def self.method_added(method)
