@@ -51,6 +51,9 @@ Layout/TrailingWhitespace:
 Lint/AmbiguousOperator:
   Enabled: false
 
+Metrics/AbcSize:
+  Max: 45
+
 Metrics/BlockLength:
   CountComments: false
   Exclude:

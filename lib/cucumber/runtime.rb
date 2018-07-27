@@ -209,7 +209,7 @@ module Cucumber
     public :failure?
 
     require 'cucumber/core/test/filters'
-    def filters
+    def filters # rubocop:disable Metrics/AbcSize
       tag_expressions = @configuration.tag_expressions
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
@@ -222,9 +222,7 @@ module Cucumber
         # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
-        @configuration.filters.each do |filter|
-          filters << filter
-        end
+        @configuration.filters.each { |filter| filters << filter }
         unless configuration.dry_run?
           filters << Filters::ApplyAfterStepHooks.new(@support_code)
           filters << Filters::ApplyBeforeHooks.new(@support_code)

@@ -471,7 +471,7 @@ Specify SEED to reproduce the shuffling from a previous run.
         @profile_loader ||= ProfileLoader.new
       end
 
-      def reverse_merge(other_options)
+      def reverse_merge(other_options) # rubocop:disable Metrics/AbcSize
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
         @options[:excludes] += other_options[:excludes]
