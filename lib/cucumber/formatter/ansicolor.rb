@@ -97,7 +97,7 @@ module Cucumber
             #{ALIASES[method_name + '_param'].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name + '_param'].split(',').length} + #{ALIASES[method_name].split(',').join(' + ')}
           end
         COLOR
-        eval(code)
+        eval(code) # rubocop:disable Security/Eval
       end
 
       def self.define_grey #:nodoc:

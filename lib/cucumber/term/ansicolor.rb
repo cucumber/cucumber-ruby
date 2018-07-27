@@ -54,6 +54,7 @@ module Cucumber
       end
       self.coloring = true
 
+      # rubocop:disable Security/Eval
       ATTRIBUTES.each do |c, v|
         eval %{
             def #{c}(string = nil)
@@ -73,6 +74,7 @@ module Cucumber
             end
         }
       end
+      # rubocop:enable Security/Eval
 
       # Regular expression that is used to scan for ANSI-sequences while
       # uncoloring strings.
