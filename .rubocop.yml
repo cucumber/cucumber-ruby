@@ -92,6 +92,12 @@ Layout/TrailingWhitespace:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
 
+Metrics/BlockLength:
+  CountComments: false
+  Exclude:
+    - './cucumber.gemspec'
+    - './spec/**/*'
+
 Metrics/ClassLength:
   Exclude:
     - 'lib/cucumber/cli/options.rb'

@@ -89,7 +89,7 @@ module Cucumber
 
         @args.extend(::OptionParser::Arguable)
 
-        @args.options do |opts|
+        @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 

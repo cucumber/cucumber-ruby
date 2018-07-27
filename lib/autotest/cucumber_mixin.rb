@@ -69,7 +69,7 @@ module Autotest::CucumberMixin
 
   def run_features
     hook :run_features
-    Tempfile.open('autotest-cucumber') do |dirty_features_file|
+    Tempfile.open('autotest-cucumber') do |dirty_features_file| # rubocop:disable Metrics/BlockLength
       cmd = make_cucumber_cmd(features_to_run, dirty_features_file.path)
       break if cmd.empty?
       old_sync = $stdout.sync

@@ -122,7 +122,7 @@ module Cucumber
 
       # Dynamially generate the API module, closuring the dependencies
       def self.for(runtime, language)
-        Module.new do
+        Module.new do # rubocop:disable Metrics/BlockLength
           def self.extended(object)
             # wrap the dynamically generated module so that we can document the methods
             # for yardoc, which doesn't like define_method.
