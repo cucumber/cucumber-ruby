@@ -50,15 +50,6 @@ Style/EvalWithLocation:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 13
-# Configuration parameters: AllowedVariables.
-Style/GlobalVars:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/glue/registry_and_more_spec.rb'
-    - 'spec/cucumber/glue/step_definition_spec.rb'
-
 # Offense count: 9
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:

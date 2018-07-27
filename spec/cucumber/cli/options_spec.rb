@@ -299,6 +299,7 @@ module Cucumber
             expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
           end
 
+          # rubocop:disable Style/GlobalVars
           it 'only reads cucumber.yml once' do
             original_parse_count = $cucumber_yml_read_count
             $cucumber_yml_read_count = 0
@@ -317,6 +318,7 @@ module Cucumber
               $cucumber_yml_read_count = original_parse_count
             end
           end
+          # rubocop:enable Style/GlobalVars
 
           it 'respects --quiet when defined in the profile' do
             given_cucumber_yml_defined_as('foo' => '-q')

@@ -23,8 +23,6 @@ module Autotest::CucumberMixin
     reset_features
     add_sigint_handler
 
-    self.last_mtime = Time.now if $f
-
     loop do # ^c handler
       begin
         get_to_green
@@ -74,7 +72,6 @@ module Autotest::CucumberMixin
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
       cmd = make_cucumber_cmd(features_to_run, dirty_features_file.path)
       break if cmd.empty?
-      puts cmd unless $q
       old_sync = $stdout.sync
       $stdout.sync = true
       self.results = []

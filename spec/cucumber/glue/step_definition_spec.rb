@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/ClassVars
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
 
@@ -17,7 +18,7 @@ module Cucumber
 
       before do
         registry.begin_scenario(scenario)
-        $inside = nil
+        @@inside = nil
       end
 
       def run_step(text)
@@ -33,12 +34,12 @@ module Cucumber
           step 'Inside'
         end
         dsl.Given(/Inside/) do
-          $inside = true
+          @@inside = true
         end
 
         run_step 'Outside'
 
-        expect($inside).to be true
+        expect(@@inside).to be true
       end
 
       it 'allows calling of other steps with inline arg' do
@@ -46,12 +47,12 @@ module Cucumber
           step 'Inside', table([['inside']])
         end
         dsl.Given(/Inside/) do |t|
-          $inside = t.raw[0][0]
+          @@inside = t.raw[0][0]
         end
 
         run_step 'Outside'
 
-        expect($inside).to eq 'inside'
+        expect(@@inside).to eq 'inside'
       end
 
       context 'mapping to world methods' do
@@ -197,3 +198,4 @@ module Cucumber
     end
   end
 end
+# rubocop:enable Style/ClassVars

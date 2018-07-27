@@ -16,6 +16,7 @@ module Cucumber
         Object.new.extend(Glue::Dsl)
       end
 
+      # rubocop:disable Style/GlobalVars
       describe '#load_code_file' do
         after do
           FileUtils.rm_rf('tmp.rb')
@@ -44,6 +45,7 @@ module Cucumber
 
           expect($foo).to eq 2
         end
+        # rubocop:enable Style/GlobalVars
 
         it 'only loads ruby files' do
           a_file_called('docs.md') do
