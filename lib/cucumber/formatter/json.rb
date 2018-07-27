@@ -85,13 +85,11 @@ module Cucumber
         if File.file?(src)
           content = File.open(src, 'rb', &:read)
           data = encode64(content)
+        elsif mime_type =~ /;base64$/
+          mime_type = mime_type[0..-8]
+          data = src
         else
-          if mime_type =~ /;base64$/
-            mime_type = mime_type[0..-8]
-            data = src
-          else
-            data = encode64(src)
-          end
+          data = encode64(src)
         end
         test_step_embeddings << { mime_type: mime_type, data: data }
       end

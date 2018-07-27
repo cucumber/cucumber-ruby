@@ -34,12 +34,10 @@ module Cucumber
         runtime.run!
         if Cucumber.wants_to_quit
           exit_unable_to_finish
+        elsif runtime.failure?
+          exit_tests_failed
         else
-          if runtime.failure?
-            exit_tests_failed
-          else
-            exit_ok
-          end
+          exit_ok
         end
       rescue SystemExit => e
         @kernel.exit(e.status)

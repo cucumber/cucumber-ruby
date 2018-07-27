@@ -64,12 +64,6 @@ Style/GuardClause:
     - 'lib/cucumber/step_argument.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 2
-Style/IfInsideElse:
-  Exclude:
-    - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/formatter/json.rb'
-
 # Offense count: 4
 Style/MethodMissingSuper:
   Exclude:
