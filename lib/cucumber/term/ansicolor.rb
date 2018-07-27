@@ -56,7 +56,7 @@ module Cucumber
 
       # rubocop:disable Security/Eval
       ATTRIBUTES.each do |c, v|
-        eval %{
+        eval <<-END_EVAL, binding, __FILE__, __LINE__ + 1
             def #{c}(string = nil)
               result = String.new
               result << "\e[#{v}m" if Cucumber::Term::ANSIColor.coloring?
@@ -72,7 +72,7 @@ module Cucumber
               result << "\e[0m" if Cucumber::Term::ANSIColor.coloring?
               result
             end
-        }
+        END_EVAL
       end
       # rubocop:enable Security/Eval
 

@@ -39,11 +39,6 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 11
 
-# Offense count: 1
-Style/EvalWithLocation:
-  Exclude:
-    - 'lib/cucumber/term/ansicolor.rb'
-
 # Offense count: 821
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
