@@ -183,7 +183,7 @@ Feature: JSON output formatter
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/one_passing_one_failing.feature:10:in `Given this step fails'",
+                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/one_passing_one_failing.feature:10:in `this step fails'",
                     "duration": 1
                   }
                 }
@@ -246,7 +246,7 @@ Feature: JSON output formatter
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": "a string (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'",
+                    "error_message": "a string (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `I should fail with'",
                     "duration": 1
                   }
                 }
@@ -357,7 +357,7 @@ Feature: JSON output formatter
                 },
                 "result": {
                   "status": "failed",
-                  "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:in `Given this step fails'\nfeatures/outline.feature:4:in `Given this step <status>'",
+                  "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:4:in `this step fails'",
                   "duration": 1
                 }
               }
@@ -503,7 +503,7 @@ Feature: JSON output formatter
                 },
                 "result": {
                   "status": "failed",
-                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:in `Given this step fails'\nfeatures/outline.feature:4:in `Given this step <status>'",
+                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:4:in `this step fails'",
 		  "duration": 1
                 }
               }

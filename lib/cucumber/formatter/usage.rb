@@ -17,7 +17,7 @@ module Cucumber
         @matches = {}
         config.on_event :step_activated do |event|
           test_step, step_match = *event.attributes
-          @matches[test_step.source] = step_match
+          @matches[test_step.to_s] = step_match
         end
         config.on_event :step_definition_registered, &method(:on_step_definition_registered)
       end
@@ -28,25 +28,26 @@ module Cucumber
       end
 
       def on_step_match(event)
-        @matches[event.test_step.source] = event.step_match
+        @matches[event.test_step.to_s] = event.step_match
         super
       end
 
       def on_test_step_finished(event)
-        return if HookQueryVisitor.new(event.test_step).hook?
+        return if event.test_step.hook?
 
         test_step = event.test_step
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        step_match = @matches[test_step.source]
+        step_match = @matches[test_step.to_s]
 
         unless step_match.nil?
           step_definition = step_match.step_definition
           stepdef_key = StepDefKey.new(step_definition.expression.to_s, step_definition.location)
           unless @stepdef_to_match[stepdef_key].map { |key| key[:location] }.include? test_step.location
             duration = DurationExtractor.new(result).result_duration
+            keyword = @ast_lookup.step_source(test_step).step[:keyword]
 
             @stepdef_to_match[stepdef_key] << {
-              keyword: test_step.source.last.keyword,
+              keyword: keyword,
               step_match: step_match,
               status: result.to_sym,
               location: test_step.location,

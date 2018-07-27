@@ -11,12 +11,12 @@ module Cucumber
     it 'parses locations from multiple files' do
       expect(locations.length).to eq 6
       expect(locations).to eq [
-        Cucumber::Core::Ast::Location.new('features/foo.feature', 1),
-        Cucumber::Core::Ast::Location.new('features/foo.feature', 2),
-        Cucumber::Core::Ast::Location.new('features/foo.feature', 3),
-        Cucumber::Core::Ast::Location.new('features/bar.feature', 4),
-        Cucumber::Core::Ast::Location.new('features/bar.feature', 5),
-        Cucumber::Core::Ast::Location.new('features/bar.feature', 6)
+        Cucumber::Core::Test::Location.new('features/foo.feature', 1),
+        Cucumber::Core::Test::Location.new('features/foo.feature', 2),
+        Cucumber::Core::Test::Location.new('features/foo.feature', 3),
+        Cucumber::Core::Test::Location.new('features/bar.feature', 4),
+        Cucumber::Core::Test::Location.new('features/bar.feature', 5),
+        Cucumber::Core::Test::Location.new('features/bar.feature', 6)
       ]
     end
 
@@ -42,8 +42,8 @@ module Cucumber
 
       it 'returns a wildcard location for that file' do
         expect(locations).to eq [
-          Cucumber::Core::Ast::Location.new('features/foo.feature'),
-          Cucumber::Core::Ast::Location.new('features/bar.feature', 34)
+          Cucumber::Core::Test::Location.new('features/foo.feature'),
+          Cucumber::Core::Test::Location.new('features/bar.feature', 34)
         ]
       end
     end
@@ -53,8 +53,8 @@ module Cucumber
 
       it 'returns locations in the order specified' do
         expect(locations).to eq [
-          Cucumber::Core::Ast::Location.new('features/foo.feature', 10),
-          Cucumber::Core::Ast::Location.new('features/foo.feature', 1)
+          Cucumber::Core::Test::Location.new('features/foo.feature', 10),
+          Cucumber::Core::Test::Location.new('features/foo.feature', 1)
         ]
       end
     end

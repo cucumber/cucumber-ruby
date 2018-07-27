@@ -10,14 +10,14 @@ module Cucumber
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
       let(:registry)       { support_code.registry }
-      let(:scenario)       { double('scenario', iso_code: 'en').as_null_object }
+      let(:test_case)      { double('scenario', language: 'en').as_null_object }
       let(:dsl) do
         registry
         Object.new.extend(Cucumber::Glue::Dsl)
       end
 
       before do
-        registry.begin_scenario(scenario)
+        registry.begin_scenario(test_case)
         @@inside = nil
       end
 

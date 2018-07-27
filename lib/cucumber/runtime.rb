@@ -97,8 +97,8 @@ module Cucumber
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
     def doc_string(string_without_triple_quotes, content_type = '', _line_offset = 0)
-      location = Core::Ast::Location.of_caller
-      Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
+      location = Core::Test::Location.of_caller
+      Core::Test::DocString.new(string_without_triple_quotes, content_type, location)
     end
 
     private
@@ -245,7 +245,7 @@ module Cucumber
     end
 
     def install_wire_plugin
-      Cucumber::Wire::Plugin.new(@configuration).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
     end
 
     def log

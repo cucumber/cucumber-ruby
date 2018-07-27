@@ -4,7 +4,7 @@ Feature: Tagged hooks
     Given the standard step definitions
     And a file named "features/support/hooks.rb" with:
       """
-      Before('not @no-boom') do 
+      Before('not @no-boom') do
         raise 'boom'
       end
       """
@@ -36,15 +36,15 @@ Feature: Tagged hooks
     Then it should fail with exactly:
       """
       Feature: With and without hooks
-      
+
         Scenario: using hook     # features/f.feature:2
             boom (RuntimeError)
             ./features/support/hooks.rb:2:in `Before'
           Given this step passes # features/step_definitions/steps.rb:1
-      
+
       Failing Scenarios:
       cucumber features/f.feature:2 # Scenario: using hook
-      
+
       1 scenario (1 failed)
       1 step (1 skipped)
       0m0.012s
@@ -67,7 +67,7 @@ Feature: Tagged hooks
 
         """
     Scenario: Omit example hook
-      When I run `cucumber features/f.feature:12`
+      When I run `cucumber features/f.feature:14`
       Then it should fail with exactly:
         """
         Feature: With and without hooks
@@ -82,14 +82,13 @@ Feature: Tagged hooks
               ./features/support/hooks.rb:2:in `Before'
 
         Failing Scenarios:
-        cucumber features/f.feature:14 # Scenario Outline: omitting hook on specified examples, Examples (#1)
+        cucumber features/f.feature:14 # Scenario Outline: omitting hook on specified examples
 
         1 scenario (1 failed)
         1 step (1 skipped)
         0m0.012s
 
       """
-    Scenario: 
+    Scenario:
       When I run `cucumber features/f.feature:17`
       Then it should pass
-

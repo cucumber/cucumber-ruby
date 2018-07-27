@@ -22,7 +22,7 @@ module Cucumber
         end
 
         def step(step)
-          location = Core::Ast::Location.of_caller
+          location = Core::Test::Location.of_caller
           @support_code.invoke_dynamic_step(step[:text], multiline_arg(step, location))
         end
 
@@ -62,8 +62,8 @@ module Cucumber
       #     Given I have 8 cukes in my belly
       #     Then I should not be thirsty
       #   })
-      def invoke_dynamic_steps(steps_text, i18n, _location)
-        parser = Cucumber::Gherkin::StepsParser.new(StepInvoker.new(self), i18n.iso_code)
+      def invoke_dynamic_steps(steps_text, iso_code, _location)
+        parser = Cucumber::Gherkin::StepsParser.new(StepInvoker.new(self), iso_code)
         parser.parse(steps_text)
       end
 
@@ -112,12 +112,14 @@ module Cucumber
       end
 
       def apply_before_hooks(test_case)
+        return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:before, scenario)
         BeforeHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def apply_after_hooks(test_case)
+        return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:after, scenario)
         AfterHooks.new(hooks, scenario).apply_to(test_case)
@@ -127,7 +129,7 @@ module Cucumber
         scenario = RunningTestCase.new(test_case)
 
         registry.hooks_for(:around, scenario).map do |hook|
-          Hooks.around_hook(test_case.source) do |run_scenario|
+          Hooks.around_hook do |run_scenario|
             hook.invoke('Around', scenario, &run_scenario)
           end
         end

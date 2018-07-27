@@ -50,7 +50,7 @@ Feature: Cucumber --work-in-progress switch
           Given this step raises an error
             error (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
-            features/wip.feature:4:in `Given this step raises an error'
+            features/wip.feature:4:in `this step raises an error'
 
       Failing Scenarios:
       cucumber features/wip.feature:3
@@ -149,6 +149,6 @@ Feature: Cucumber --work-in-progress switch
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
-      features/passing_outline.feature:7:in `Scenario Outline: Passing, Examples (#1)'
+      features/passing_outline.feature:7:in `Scenario Outline: Passing'
 
       """

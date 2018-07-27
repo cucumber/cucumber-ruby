@@ -3,7 +3,6 @@
 require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
-require 'cucumber/core/ast/describes_itself'
 require 'cucumber/multiline_argument/data_table/diff_matrices'
 
 module Cucumber
@@ -28,14 +27,16 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      include Core::Ast::DescribesItself
-
       def self.default_arg_name #:nodoc:
         'table'
       end
 
+      def describe_to(visitor, *args)
+        visitor.legacy_table(self, *args)
+      end
+
       class << self
-        def from(data, location = Core::Ast::Location.of_caller)
+        def from(data, location = Core::Test::Location.of_caller)
           case data
           when Array
             from_array(data, location)
@@ -48,15 +49,15 @@ module Cucumber
 
         private
 
-        def parse(text, location = Core::Ast::Location.of_caller)
+        def parse(text, location = Core::Test::Location.of_caller)
           builder = Builder.new
           parser = Cucumber::Gherkin::DataTableParser.new(builder)
           parser.parse(text)
           from_array(builder.rows, location)
         end
 
-        def from_array(data, location = Core::Ast::Location.of_caller)
-          new Core::Ast::DataTable.new(data, location)
+        def from_array(data, location = Core::Test::Location.of_caller)
+          new Core::Test::DataTable.new(data, location)
         end
       end
 
@@ -76,12 +77,12 @@ module Cucumber
 
       NULL_CONVERSIONS = Hash.new(strict: false, proc: ->(cell_value) { cell_value }).freeze
 
-      # @param data [Core::Ast::DataTable] the data for the table
+      # @param data [Core::Test::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_columns!
       # @param header_mappings [Hash] see map_headers!
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
-        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.is_a? Core::Ast::DataTable
+        raise ArgumentError, 'data must be a Core::Test::DataTable' unless data.is_a? Core::Test::DataTable
         ast_table = data
         # Verify that it's square
         ast_table.transpose
@@ -110,7 +111,7 @@ module Cucumber
       # registered with #map_column! and #map_headers!.
       #
       def dup
-        self.class.new(Core::Ast::DataTable.new(raw, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Returns a new, transposed table. Example:
@@ -125,7 +126,7 @@ module Cucumber
       #   | 4 | 2 |
       #
       def transpose
-        self.class.new(Core::Ast::DataTable.new(raw.transpose, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw.transpose, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Converts this table into an Array of Hash where the keys of each
@@ -268,7 +269,7 @@ module Cucumber
 
       # Returns a new Table where the headers are redefined. See #map_headers!
       def map_headers(mappings = {}, &block)
-        self.class.new(Core::Ast::DataTable.new(raw, location), @conversion_procs.dup, mappings, block)
+        self.class.new(Core::Test::DataTable.new(raw, location), @conversion_procs.dup, mappings, block)
       end
 
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
@@ -293,7 +294,7 @@ module Cucumber
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
         conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
-        self.class.new(Core::Ast::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Compares +other_table+ to self. If +other_table+ contains columns
@@ -442,10 +443,6 @@ module Cucumber
           prefix = prefixes[cell.status]
           "#{prefix}#{padded_text} "
         end
-      end
-
-      def description_for_visitors
-        :legacy_table
       end
 
       def columns #:nodoc:

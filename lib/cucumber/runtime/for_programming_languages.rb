@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
-require 'cucumber/core/ast/doc_string'
+require 'cucumber/core/test/doc_string'
 
 module Cucumber
   class Runtime

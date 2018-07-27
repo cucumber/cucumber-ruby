@@ -5,7 +5,7 @@ module Cucumber
     class ConsoleIssues
       include Console
 
-      def initialize(config)
+      def initialize(config, ast_lookup = AstLookup.new(config))
         @previous_test_case = nil
         @issues = Hash.new { |h, k| h[k] = [] }
         @config = config
@@ -18,6 +18,7 @@ module Cucumber
             @issues[:failed].delete(event.test_case)
           end
         end
+        @ast_lookup = ast_lookup
       end
 
       def to_s
@@ -35,8 +36,10 @@ module Cucumber
       def scenario_listing(type, test_cases)
         return [] if test_cases.empty?
         [format_string("#{type_heading(type)} Scenarios:", type)] + test_cases.map do |test_case|
-          source = @config.source? ? format_string(" # #{test_case.keyword}: #{test_case.name}", :comment) : ''
-          format_string("cucumber #{profiles_string}" + test_case.location, type) + source
+          scenario_source = @ast_lookup.scenario_source(test_case)
+          keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+          source = @config.source? ? format_string(" # #{keyword}: #{test_case.name}", :comment) : ''
+          format_string("cucumber #{profiles_string}#{test_case.location.file}:#{test_case.location.lines.max}", type) + source
         end
       end
 

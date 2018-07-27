@@ -110,7 +110,7 @@ Feature: Pretty formatter - Printing messages
             Announce with fail
              (RuntimeError)
             ./features/step_definitions/puts_steps.rb:18:in `/^I use puts and step fails$/'
-            features/f.feature:21:in `Given I use puts and step fails'
+            features/f.feature:21:in `I use puts and step fails'
           And this step passes
 
         Scenario Outline: 
@@ -121,8 +121,7 @@ Feature: Pretty formatter - Printing messages
             | 1    | anno1 | fail   |  Line: 1: anno1
              (RuntimeError)
             ./features/step_definitions/puts_steps.rb:13:in `/^I use message (.+) in line (.+) (?:with result (.+))$/'
-            features/f.feature:29:in `Given I use message anno1 in line 1 with result fail'
-            features/f.feature:25:in `Given I use message <ann> in line <line> with result <result>'
+            features/f.feature:29:25:in `I use message anno1 in line 1 with result fail'
             | 2    | anno2 | pass   |  Line: 2: anno2
       """
 

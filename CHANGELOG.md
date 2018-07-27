@@ -18,6 +18,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Do not apply Before and After Hooks to Test Cases with no Test Steps.
+  ([#1311](https://github.com/cucumber/cucumber-ruby/pull/1311)
+   [brasmusson](https://github.com/brasmusson))
+* Pass the registry to the Wire plugin.
+  ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
+   [brasmusson](https://github.com/brasmusson))
+* Adapt to using the Gherkin compiler and Pickles in the core.
+  ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
+   [brasmusson](https://github.com/brasmusson))
 * Let the Pretty Formatter use events.
   ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305)
    [brasmusson](https://github.com/brasmusson))
@@ -40,7 +49,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* Let the Rerun Formatter handle flaky scenarios.
+  ([#1310](https://github.com/cucumber/cucumber-ruby/pull/1310)
+   [brasmusson](https://github.com/brasmusson))
 
 ### Improved
 

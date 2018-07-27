@@ -46,7 +46,7 @@ module Cucumber
 
           def result
             begin
-              return NoStepMatch.new(test_step.source.last, test_step.text) unless matches.any?
+              return NoStepMatch.new(test_step, test_step.text) unless matches.any?
             rescue Cucumber::Ambiguous => e
               return AmbiguousStepMatch.new(e)
             end
