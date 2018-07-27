@@ -21,8 +21,6 @@ Defined profiles in cucumber.yml:
 
         args_from_yml = cucumber_yml[profile] || ''
 
-        require 'shellwords'
-
         case args_from_yml
         when String
           if args_from_yml =~ /^\s*$/
@@ -30,16 +28,7 @@ Defined profiles in cucumber.yml:
             "  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n"
           end
 
-          if Cucumber::WINDOWS
-            # Shellwords treats backslash as an escape character so we have to mask it out temporarily
-
-            placeholder = 'pseudo_unique_backslash_placeholder'
-            sanitized_line = args_from_yml.gsub('\\', placeholder)
-
-            args_from_yml = Shellwords.shellwords(sanitized_line).collect { |argument| argument.gsub(placeholder, '\\') }
-          else
-            args_from_yml = Shellwords.shellwords(args_from_yml)
-          end
+          args_from_yml = processed_shellwords(args_from_yml)
         when Array
           raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
         else
@@ -95,6 +84,18 @@ Defined profiles in cucumber.yml:
       # in a .config/ or config/ subdirectory of the current directory.
       def cucumber_file
         @cucumber_file ||= Dir.glob('{,.config/,config/}cucumber{.yml,.yaml}').first
+      end
+
+      def processed_shellwords(args_from_yml)
+        require 'shellwords'
+
+        return Shellwords.shellwords(args_from_yml) unless Cucumber::WINDOWS
+
+        # Shellwords treats backslash as an escape character so we have to mask it out temporarily
+        placeholder = 'pseudo_unique_backslash_placeholder'
+        sanitized_line = args_from_yml.gsub('\\', placeholder)
+
+        Shellwords.shellwords(sanitized_line).collect { |argument| argument.gsub(placeholder, '\\') }
       end
     end
   end

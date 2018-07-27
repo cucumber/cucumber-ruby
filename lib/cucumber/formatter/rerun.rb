@@ -7,7 +7,7 @@ module Cucumber
     class Rerun
       include Formatter::Io
 
-      def initialize(config)
+      def initialize(config) # rubocop:disable Metrics/PerceivedComplexity
         @io = ensure_io(config.out_stream)
         @config = config
         @failures = {}

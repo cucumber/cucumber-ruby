@@ -69,7 +69,7 @@ module Autotest::CucumberMixin
 
   def run_features
     hook :run_features
-    Tempfile.open('autotest-cucumber') do |dirty_features_file| # rubocop:disable Metrics/BlockLength
+    Tempfile.open('autotest-cucumber') do |dirty_features_file|
       cmd = make_cucumber_cmd(features_to_run, dirty_features_file.path)
       break if cmd.empty?
       old_sync = $stdout.sync
@@ -80,18 +80,10 @@ module Autotest::CucumberMixin
         open("| #{cmd}", 'r') do |f| # rubocop:disable Security/Open
           until f.eof?
             c = f.getc || break
-            if RUBY_VERSION >= '1.9'
-              print c
-            else
-              putc c
-            end
+            put_command(c)
             line << c
             next unless c == "\n"
-            results << if RUBY_VERSION >= '1.9'
-                         line.join
-                       else
-                         line.pack 'c*'
-                       end
+            results << join_line
             line.clear
           end
         end
@@ -104,15 +96,33 @@ module Autotest::CucumberMixin
     hook :ran_features
   end
 
-  def make_cucumber_cmd(features_to_run, dirty_features_filename)
-    return '' if features_to_run == ''
+  def put_command(cmd)
+    RUBY_VERSION >= '1.9' ? print(cmd) : putcmd(c)
+  end
+
+  def join_line
+    RUBY_VERSION >= '1.9' ? line.join : line.pack('c*')
+  end
+
+  def make_cucumber_cmd(features_to_run, _dirty_features_filename)
+    return '' if features_to_run.empty?
 
     profile_loader = Cucumber::Cli::ProfileLoader.new
 
+    profile = profile(profile_loader)
+
+    args = created_args(features_to_run, profile)
+
+    "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args}"
+  end
+
+  def profile(profile_loader)
     profile ||= 'autotest-all' if profile_loader.profile?('autotest-all') && features_to_run == :all
     profile ||= 'autotest'     if profile_loader.profile?('autotest')
-    profile ||= nil
+    profile || nil
+  end
 
+  def created_args(features_to_run, profile)
     args = if profile
              ['--profile', profile]
            else
@@ -122,11 +132,9 @@ module Autotest::CucumberMixin
     args += %w[--format rerun --out] << dirty_features_filename
     args << (features_to_run == :all ? '' : features_to_run)
 
-    # Unless I do this, all the steps turn up undefined during the rerun...
+    # All steps becom undefined during rerun unless the following is run.
     args << 'features/step_definitions' << 'features/support' unless features_to_run == :all
 
-    args = args.join(' ')
-
-    "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args}"
+    args.join(' ')
   end
 end

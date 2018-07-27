@@ -106,7 +106,7 @@ module Cucumber
         write_file(feature_result_filename(feature_data[:uri]), @testsuite.target!)
       end
 
-      def create_output_string(test_case, scenario, result, row_name)
+      def create_output_string(test_case, scenario, result, row_name) # rubocop:disable Metrics/PerceivedComplexity
         scenario_source = @ast_lookup.scenario_source(test_case)
         keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
         output = "#{keyword}: #{scenario}\n\n"

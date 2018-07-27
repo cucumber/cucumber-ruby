@@ -101,7 +101,7 @@ module Cucumber
         print_step_header(current_test_case) if first_step_after_printing_background_steps?(event.test_step)
       end
 
-      def on_test_step_finished(event)
+      def on_test_step_finished(event) # rubocop:disable Metrics/PerceivedComplexity
         collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         return if in_scenario_outline && !options[:expand]
         exception_to_be_printed = find_exception_to_be_printed(event.result)
@@ -371,7 +371,7 @@ module Cucumber
         end
       end
 
-      def print_outline_data(scenario_outline) # rubocop:disable Metrics/AbcSize
+      def print_outline_data(scenario_outline) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
         print_comments(scenario_outline[:location][:line], 2)
         print_tags(scenario_outline[:tags], 2)
         @source_indent = calculate_source_indent_for_ast_node(scenario_outline) if options[:source]
