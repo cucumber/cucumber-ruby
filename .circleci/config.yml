@@ -11,6 +11,26 @@ jobs:
       - checkout
       - run: git remote add cucumber-pro git@git.cucumber.pro:cucumber-ruby.git
       - run: git push --force cucumber-pro $CIRCLE_BRANCH
+  "ruby-2.6":
+    docker:
+       - image: circleci/ruby:2.6-rc
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - bundle-{{ checksum "cucumber.gemspec" }}
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: bundle-{{ checksum "cucumber.gemspec" }}
+      - run:
+          name: Run Rake
+          command: bundle exec rake
   "ruby-2.5":
     docker:
        - image: circleci/ruby:2.5.1
