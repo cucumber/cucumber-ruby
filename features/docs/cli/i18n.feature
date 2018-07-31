@@ -16,7 +16,7 @@ Feature: i18n
       """
         | feature          | "Funcionalidade", "Característica", "Caracteristica"                                         |
         | background       | "Contexto", "Cenário de Fundo", "Cenario de Fundo", "Fundo"                                  |
-        | scenario         | "Cenário", "Cenario"                                                                         |
+        | scenario         | "Exemplo", "Cenário", "Cenario"                                                              |
         | scenario_outline | "Esquema do Cenário", "Esquema do Cenario", "Delineação do Cenário", "Delineacao do Cenario" |
         | examples         | "Exemplos", "Cenários", "Cenarios"                                                           |
         | given            | "* ", "Dado ", "Dada ", "Dados ", "Dadas "                                                   |

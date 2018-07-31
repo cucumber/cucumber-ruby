@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-expressions', '~> 6.0.1'
   s.add_dependency 'cucumber-wire', '~> 0.0.1'
   s.add_dependency 'diff-lcs', '~> 1.3'
-  s.add_dependency 'gherkin', '~> 5.1.0'
+  s.add_dependency 'gherkin', '~> 6.0'
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.2'
 

@@ -461,7 +461,7 @@ Feature: Background
 
         Examples: 
  
-          Scenario: | 10 |
+          Example: | 10 |
             Then I should have '10' global cukes
 
       Scenario Outline: failing background
@@ -469,7 +469,7 @@ Feature: Background
 
         Examples: 
 
-          Scenario: | 10 |
+          Example: | 10 |
             And '10' global cukes
           FAIL (RuntimeError)
           ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'

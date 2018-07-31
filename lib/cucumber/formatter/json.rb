@@ -167,10 +167,8 @@ module Cucumber
           name: test_step.text,
           line: test_step.location.lines.min
         }
-        unless step_source[:argument].nil?
-          step_hash[:doc_string] = create_doc_string_hash(step_source[:argument]) if step_source[:argument][:type] == :DocString
-          step_hash[:rows] = create_data_table_value(step_source[:argument]) if step_source[:argument][:type] == :DataTable
-        end
+        step_hash[:doc_string] = create_doc_string_hash(step_source[:doc_string]) unless step_source[:doc_string].nil?
+        step_hash[:rows] = create_data_table_value(step_source[:data_table]) unless step_source[:data_table].nil?
         step_hash
       end
 
@@ -234,7 +232,7 @@ module Cucumber
           uri = test_case.location.file
           feature = ast_lookup.gherkin_document(uri)[:feature]
           feature(feature, uri)
-          background(feature[:children].first) if feature[:children].first[:type] == :Background
+          background(feature[:children].first[:background]) unless feature[:children].first[:background].nil?
           scenario(ast_lookup.scenario_source(test_case), test_case)
         end
 
@@ -300,7 +298,7 @@ module Cucumber
         end
 
         def calculate_row_number(scenario_source)
-          scenario_source.examples[:tableBody].each_with_index do |row, index|
+          scenario_source.examples[:table_body].each_with_index do |row, index|
             return index + 2 if row == scenario_source.row
           end
         end
