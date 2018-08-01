@@ -17,6 +17,5 @@ Layout/SpaceInsideBlockBraces:
 
 # Offense count: 1
 Metrics/PerceivedComplexity:
-  Max: 9
   Exclude:
-   - lib/cucumber/cli/profile_loader.rb
+    - 'lib/cucumber/cli/profile_loader.rb'
