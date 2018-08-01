@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   # Keep this inline with the lowest ruby-* version in circleci/config.yml and
   # the version in the gemspec
