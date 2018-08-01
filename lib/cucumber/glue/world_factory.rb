@@ -10,7 +10,7 @@ module Cucumber
       end
 
       def raise_nil_world
-        raise NilWorld.new
+        raise NilWorld
       rescue NilWorld => e
         e.backtrace.clear
         e.backtrace.push(Glue.backtrace_line(@proc, 'World'))

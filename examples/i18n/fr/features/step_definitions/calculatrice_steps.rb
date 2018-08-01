@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Soit(/^une calculatrice$/) do
   @calc = Calculatrice.new
 end
@@ -8,7 +6,7 @@ Etantdonné(/^qu'on tape (.*)$/) do |n|
   @calc.push n.to_i
 end
 
-Etantdonné(/^que j'entre (\d+) pour le (.*) nombre/) do |n, x|
+Etantdonné(/^que j'entre (\d+) pour le (.*) nombre/) do |n, _x|
   @calc.push n.to_i
 end
 

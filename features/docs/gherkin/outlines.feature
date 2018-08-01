@@ -23,19 +23,17 @@ Feature: Scenario outlines
       """
       Feature: Outline Sample
 
-        Scenario: I have no steps
-
         Scenario Outline: Test state
           Given <state> without a table
           Given <other_state> without a table
         Examples: Rainbow colours
-          | state    | other_state |
-          | missing  | passing     |
-          | passing  | passing     |
-          | failing  | passing     |
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
       Examples:Only passing
-          | state    | other_state |
-          | passing  | passing     |
+          | state   | other_state |
+          | passing | passing     |
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
@@ -44,7 +42,7 @@ Feature: Scenario outlines
       """
 
   @todo-windows
-  Scenario: Run scenario outline with filtering on outline name
+  Scenario: Run scenario outline
     When I run `cucumber -q features/outline_sample.feature`
     Then it should fail with:
       """
@@ -61,23 +59,22 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
-            features/outline_sample.feature:6:in `Given <state> without a table'
+            features/outline_sample.feature:10:4:in `failing without a table'
 
           Examples: Only passing
             | state   | other_state |
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:12
+      cucumber features/outline_sample.feature:10
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
       """
 
   @todo-windows
-  Scenario: Run scenario outline steps only
-    When I run `cucumber -q features/outline_sample.feature:7`
+  Scenario: Run scenario with filtering on the scenario outline name
+    When I run `cucumber -q features/outline_sample.feature --name 'Test state'`
     Then it should fail with:
       """
       Feature: Outline Sample
@@ -93,15 +90,14 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
-            features/outline_sample.feature:6:in `Given <state> without a table'
+            features/outline_sample.feature:10:4:in `failing without a table'
 
           Examples: Only passing
             | state   | other_state |
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:12
+      cucumber features/outline_sample.feature:10
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -110,7 +106,7 @@ Feature: Scenario outlines
 
   @todo-windows
   Scenario: Run single failing scenario outline table row
-    When I run `cucumber -q features/outline_sample.feature:12`
+    When I run `cucumber -q features/outline_sample.feature:10`
     Then it should fail with:
       """
       Feature: Outline Sample
@@ -124,11 +120,10 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
-            features/outline_sample.feature:6:in `Given <state> without a table'
+            features/outline_sample.feature:10:4:in `failing without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:12
+      cucumber features/outline_sample.feature:10
 
       1 scenario (1 failed)
       2 steps (1 failed, 1 skipped)
@@ -146,11 +141,10 @@ Feature: Scenario outlines
 
       RuntimeError (RuntimeError)
       ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-      features/outline_sample.feature:12:in `Given failing without a table'
-      features/outline_sample.feature:6:in `Given <state> without a table'
+      features/outline_sample.feature:10:4:in `failing without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:12
+      cucumber features/outline_sample.feature:10
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)

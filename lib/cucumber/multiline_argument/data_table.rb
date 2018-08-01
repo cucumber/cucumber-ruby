@@ -3,7 +3,6 @@
 require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
-require 'cucumber/core/ast/describes_itself'
 require 'cucumber/multiline_argument/data_table/diff_matrices'
 
 module Cucumber
@@ -28,14 +27,16 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      include Core::Ast::DescribesItself
-
       def self.default_arg_name #:nodoc:
         'table'
       end
 
+      def describe_to(visitor, *args)
+        visitor.legacy_table(self, *args)
+      end
+
       class << self
-        def from(data, location = Core::Ast::Location.of_caller)
+        def from(data, location = Core::Test::Location.of_caller)
           case data
           when Array
             from_array(data, location)
@@ -48,15 +49,15 @@ module Cucumber
 
         private
 
-        def parse(text, location = Core::Ast::Location.of_caller)
+        def parse(text, location = Core::Test::Location.of_caller)
           builder = Builder.new
           parser = Cucumber::Gherkin::DataTableParser.new(builder)
           parser.parse(text)
           from_array(builder.rows, location)
         end
 
-        def from_array(data, location = Core::Ast::Location.of_caller)
-          new Core::Ast::DataTable.new(data, location)
+        def from_array(data, location = Core::Test::Location.of_caller)
+          new Core::Test::DataTable.new(data, location)
         end
       end
 
@@ -71,18 +72,17 @@ module Cucumber
           @rows << row
         end
 
-        def eof
-        end
+        def eof; end
       end
 
-      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda { |cell_value| cell_value } }).freeze
+      NULL_CONVERSIONS = Hash.new(strict: false, proc: ->(cell_value) { cell_value }).freeze
 
-      # @param data [Core::Ast::DataTable] the data for the table
+      # @param data [Core::Test::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_columns!
       # @param header_mappings [Hash] see map_headers!
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
-        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.is_a? Core::Ast::DataTable
+        raise ArgumentError, 'data must be a Core::Test::DataTable' unless data.is_a? Core::Test::DataTable
         ast_table = data
         # Verify that it's square
         ast_table.transpose
@@ -111,7 +111,7 @@ module Cucumber
       # registered with #map_column! and #map_headers!.
       #
       def dup
-        self.class.new(Core::Ast::DataTable.new(raw, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Returns a new, transposed table. Example:
@@ -126,7 +126,7 @@ module Cucumber
       #   | 4 | 2 |
       #
       def transpose
-        self.class.new(Core::Ast::DataTable.new(raw.transpose, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw.transpose, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Converts this table into an Array of Hash where the keys of each
@@ -160,7 +160,7 @@ module Cucumber
       #
       def symbolic_hashes
         @symbolic_hashes ||=
-          self.hashes.map do |string_hash|
+          hashes.map do |string_hash|
             Hash[string_hash.map { |a, b| [symbolize_key(a), b] }]
           end
       end
@@ -180,7 +180,7 @@ module Cucumber
       def rows_hash
         return @rows_hash if @rows_hash
         verify_table_width(2)
-        @rows_hash = self.transpose.hashes[0]
+        @rows_hash = transpose.hashes[0]
       end
 
       # Gets the raw data of this table. For example, a Table built from
@@ -200,7 +200,7 @@ module Cucumber
       end
 
       def column_names #:nodoc:
-        @col_names ||= cell_matrix[0].map(&:value)
+        @column_names ||= cell_matrix[0].map(&:value)
       end
 
       def rows
@@ -269,7 +269,7 @@ module Cucumber
 
       # Returns a new Table where the headers are redefined. See #map_headers!
       def map_headers(mappings = {}, &block)
-        self.class.new(Core::Ast::DataTable.new(raw, location), @conversion_procs.dup, mappings, block)
+        self.class.new(Core::Test::DataTable.new(raw, location), @conversion_procs.dup, mappings, block)
       end
 
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
@@ -286,15 +286,15 @@ module Cucumber
       #
       def map_column!(column_name, strict = true, &conversion_proc)
         # TODO: Remove this method for 2.0
-        @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
+        @conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self
       end
 
       # Returns a new Table with an additional column mapping. See #map_column!
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
-        conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
-        self.class.new(Core::Ast::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
+        conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
+        self.class.new(Core::Test::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Compares +other_table+ to self. If +other_table+ contains columns
@@ -353,8 +353,8 @@ module Cucumber
       end
 
       def to_hash(cells) #:nodoc:
-        hash = Hash.new do |hash, key|
-          hash[key.to_s] if key.is_a?(Symbol)
+        hash = Hash.new do |hash_inner, key|
+          hash_inner[key.to_s] if key.is_a?(Symbol)
         end
         column_names.each_with_index do |column_name, column_index|
           hash[column_name] = cells.value(column_index)
@@ -367,19 +367,21 @@ module Cucumber
       end
 
       def verify_column(column_name) #:nodoc:
-        raise %{The column named "#{column_name}" does not exist} unless raw[0].include?(column_name)
+        raise %(The column named "#{column_name}" does not exist) unless raw[0].include?(column_name)
       end
 
       def verify_table_width(width) #:nodoc:
-        raise %{The table must have exactly #{width} columns} unless raw[0].size == width
+        raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
-      def has_text?(text) #:nodoc:
-        raw.flatten.compact.detect {|cell_value| cell_value.index(text)}
+      # TODO: remove the below function if it's not actually being used.
+      # Nothing else in this repo calls it.
+      def text?(text) #:nodoc:
+        raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 
       def cells_rows #:nodoc:
-        @rows ||= cell_matrix.map do |cell_row|
+        @rows ||= cell_matrix.map do |cell_row| # rubocop:disable Naming/MemoizedInstanceVariableName
           Cells.new(self, cell_row)
         end
       end
@@ -399,26 +401,48 @@ module Cucumber
       end
 
       def to_s(options = {}) #:nodoc:
-        # TODO: factor out this code so we don't depend on such a big lump of old cruft
-        require 'cucumber/formatter/pretty'
-        require 'cucumber/formatter/legacy_api/adapter'
-        options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
-        io = StringIO.new
-
-        c = Cucumber::Term::ANSIColor.coloring?
-        Cucumber::Term::ANSIColor.coloring = options[:color]
-        runtime = Struct.new(:configuration).new(Configuration.new)
-        formatter = Formatter::Pretty.new(runtime, io, options)
-        formatter.instance_variable_set('@indent', options[:indent])
-        Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::Fanout.new([formatter]))
-        Cucumber::Term::ANSIColor.coloring = c
-        io.rewind
-        s = "\n" + io.read + (' ' * (options[:indent] - 2))
-        s
+        indentation = options.key?(:indent) ? options[:indent] : 2
+        prefixes = options.key?(:prefixes) ? options[:prefixes] : TO_S_PREFIXES
+        DataTablePrinter.new(self, indentation, prefixes).to_s
       end
 
-      def description_for_visitors
-        :legacy_table
+      class DataTablePrinter #:nodoc:
+        include Cucumber::Gherkin::Formatter::Escaping
+        attr_reader :data_table, :indentation, :prefixes
+        private :data_table, :indentation, :prefixes
+
+        def initialize(data_table, indentation, prefixes)
+          @data_table = data_table
+          @indentation = indentation
+          @prefixes = prefixes
+        end
+
+        def to_s
+          leading_row = "\n"
+          end_indentation = indentation - 2
+          trailing_row = "\n" + (' ' * end_indentation)
+          table_rows = data_table.cell_matrix.map { |row| format_row(row) }
+          leading_row + table_rows.join("\n") + trailing_row
+        end
+
+        private
+
+        def format_row(row)
+          row_start = (' ' * indentation) + '| '
+          row_end = '|'
+          cells = row.map.with_index do |cell, i|
+            format_cell(cell, data_table.col_width(i))
+          end
+          row_start + cells.join('| ') + row_end
+        end
+
+        def format_cell(cell, col_width)
+          cell_text = escape_cell(cell.value.to_s)
+          cell_text_width = cell_text.unpack('U*').length
+          padded_text = cell_text + (' ' * (col_width - cell_text_width))
+          prefix = prefixes[cell.status]
+          "#{prefix}#{padded_text} "
+        end
       end
 
       def columns #:nodoc:
@@ -446,7 +470,11 @@ module Cucumber
 
       def create_cell_matrix(ast_table) #:nodoc:
         ast_table.raw.map do |raw_row|
-          line = raw_row.line rescue -1
+          line = begin
+                   raw_row.line
+                 rescue StandardError
+                   -1
+                 end
           raw_row.map do |raw_cell|
             Cell.new(raw_cell, self, line)
           end
@@ -476,22 +504,20 @@ module Cucumber
         end
 
         @header_mappings.each_pair do |pre, post|
-          mapped_cells = header_cells.select { |cell| pre === cell.value }
+          mapped_cells = header_cells.reject { |cell| cell.value.match(pre).nil? }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
           raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
           mapped_cells[0].value = post
-          if @conversion_procs.key?(pre)
-            @conversion_procs[post] = @conversion_procs.delete(pre)
-          end
+          @conversion_procs[post] = @conversion_procs.delete(pre) if @conversion_procs.key?(pre)
         end
       end
 
       def clear_cache! #:nodoc:
-        @hashes = @rows_hash = @col_names = @rows = @columns = nil
+        @hashes = @rows_hash = @column_names = @rows = @columns = nil
       end
 
       def ensure_table(table_or_array) #:nodoc:
-        return table_or_array if DataTable === table_or_array
+        return table_or_array if DataTable == table_or_array.class
         DataTable.from(table_or_array)
       end
 
@@ -507,7 +533,8 @@ module Cucumber
         attr_reader :exception
 
         def initialize(table, cells)
-          @table, @cells = table, cells
+          @table = table
+          @cells = cells
         end
 
         def accept(visitor)
@@ -554,7 +581,7 @@ module Cucumber
         end
 
         def width
-          map {|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
+          map { |cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0 }.max
         end
       end
 
@@ -563,19 +590,21 @@ module Cucumber
         attr_accessor :status, :value
 
         def initialize(value, table, line)
-          @value, @table, @line = value, table, line
+          @value = value
+          @table = table
+          @line = line
         end
 
         def inspect!
           @value = "(i) #{value.inspect}"
         end
 
-        def ==(o)
-          SurplusCell === o || value == o.value
+        def ==(other)
+          SurplusCell == other.class || value == other.value
         end
 
-        def eql?(o)
-          self == o
+        def eql?(other)
+          self == other
         end
 
         def hash
@@ -593,7 +622,7 @@ module Cucumber
           :comment
         end
 
-        def ==(_o)
+        def ==(_other)
           true
         end
 

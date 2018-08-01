@@ -8,9 +8,7 @@ module Cucumber
       end
 
       def test_case(test_case)
-        unless Cucumber.wants_to_quit
-          test_case.describe_to @receiver
-        end
+        test_case.describe_to @receiver unless Cucumber.wants_to_quit
         self
       end
 

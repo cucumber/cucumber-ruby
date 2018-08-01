@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Before do
   @calc = Calculadora.new
 end

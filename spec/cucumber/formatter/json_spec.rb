@@ -25,10 +25,10 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           it 'outputs the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -47,7 +47,7 @@ module Cucumber
                       "name": "there are bananas",
                       "line": 4,
                       "match": {"location": "spec.feature:4"},
-                      "result": {"status": "undefined"}}]}]}]})
+                      "result": {"status": "undefined"}}]}]}]))
           end
         end
 
@@ -57,14 +57,14 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
           end
 
           it 'outputs the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -84,7 +84,7 @@ module Cucumber
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:63"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -94,7 +94,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { raise 'no bananas' }
@@ -121,7 +121,7 @@ module Cucumber
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:100"},
                       "result": {"status": "failed",
-                                 "error_message": "no bananas (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:100:in `/^there are bananas$/'\\nspec.feature:4:in `Given there are bananas'",
+                                 "error_message": "no bananas (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:100:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
                                  "duration": 1}}]}]}]})
           end
         end
@@ -132,7 +132,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { pending }
@@ -159,7 +159,7 @@ module Cucumber
                       "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:138"},
                       "result": {"status": "pending",
-                                 "error_message": "TODO (Cucumber::Pending)\\n./spec/cucumber/formatter/json_spec.rb:138:in `/^there are bananas$/'\\nspec.feature:4:in `Given there are bananas'",
+                                 "error_message": "TODO (Cucumber::Pending)\\n./spec/cucumber/formatter/json_spec.rb:138:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
                                  "duration": 1}}]}]}]})
           end
         end
@@ -174,14 +174,14 @@ module Cucumber
               Examples: Fruit Table
               |  fruit  |
               | bananas |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
           end
 
           it 'outputs the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -198,10 +198,10 @@ module Cucumber
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
-                      "line": 8,
+                      "line": 4,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:180"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -222,14 +222,14 @@ module Cucumber
               Examples: Fruit Table
               |  fruit  |
               | bananas |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
           end
 
           it 'the tags are included in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -271,10 +271,10 @@ module Cucumber
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
-                      "line": 15,
+                      "line": 10,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:228"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -302,30 +302,26 @@ module Cucumber
               |  fruit  |
               #examples table row comment
               | bananas |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) {}
             Then(/^the monkey eats bananas$/) {}
           end
 
-          it 'the comments are included in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+          it 'the comments are not included in the json data' do
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
                 "name": "Banana party",
                 "line": 2,
                 "description": "",
-                "comments": [{"value": "#feature comment",
-                              "line": 1}],
                 "elements":
                  [{"keyword": "Background",
                    "name": "There are bananas",
                    "line": 5,
                    "description": "",
-                   "comments": [{"value": "#background comment",
-                                 "line": 4}],
                    "type": "background",
                    "steps":
                     [{"keyword": "Given ",
@@ -339,15 +335,11 @@ module Cucumber
                    "name": "Monkey eats bananas",
                    "line": 9,
                    "description": "",
-                   "comments": [{"value": "#scenario comment",
-                                 "line": 8}],
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Then ",
                       "name": "the monkey eats bananas",
                       "line": 11,
-                      "comments": [{"value": "#step comment1",
-                                    "line": 10}],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:309"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
@@ -355,8 +347,6 @@ module Cucumber
                    "name": "There are bananas",
                    "line": 5,
                    "description": "",
-                   "comments": [{"value": "#background comment",
-                                 "line": 4}],
                    "type": "background",
                    "steps":
                     [{"keyword": "Given ",
@@ -370,22 +360,14 @@ module Cucumber
                    "name": "Monkey eats bananas",
                    "line": 22,
                    "description": "",
-                   "comments": [{"value": "#scenario outline comment",
-                                 "line": 13},
-                                {"value": "#examples table comment",
-                                 "line": 18},
-                                {"value": "#examples table row comment",
-                                 "line": 21}],
                    "type": "scenario",
                    "steps":
                     [{"keyword": "Then ",
                       "name": "the monkey eats bananas",
-                      "line": 22,
-                      "comments": [{"value": "#step comment2",
-                                    "line": 15}],
+                      "line": 16,
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:309"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -398,14 +380,14 @@ module Cucumber
                 """
                 the doc string
                 """
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { |s| s }
           end
 
           it 'includes the doc string in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -426,9 +408,9 @@ module Cucumber
                       "doc_string": {"value": "the doc string",
                                      "content_type": "",
                                      "line": 5},
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:404"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:386"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -438,14 +420,14 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { puts 'from step' }
           end
 
           it 'includes the output from the step in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -464,9 +446,9 @@ module Cucumber
                       "name": "there are bananas",
                       "line": 4,
                       "output": ["from step"],
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:444"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:426"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -482,10 +464,10 @@ module Cucumber
 
             Scenario: Monkey eats more bananas
               Then the monkey eats more bananas
-            FEATURE
+          FEATURE
 
           it 'includes the background in the json data each time it is executed' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -538,7 +520,7 @@ module Cucumber
                       "name": "the monkey eats more bananas",
                       "line": 10,
                       "match": {"location": "spec.feature:10"},
-                      "result": {"status": "undefined"}}]}]}]})
+                      "result": {"status": "undefined"}}]}]}]))
           end
         end
 
@@ -548,14 +530,14 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64') }
           end
 
           it 'includes the data from the step in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -575,9 +557,9 @@ module Cucumber
                       "line": 4,
                       "embeddings": [{"mime_type": "mime-type",
                                       "data": "YWJj"}],
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:554"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:536"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -587,7 +569,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) do
@@ -600,7 +582,7 @@ module Cucumber
           end
 
           it 'includes the file content in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -620,9 +602,9 @@ module Cucumber
                       "line": 4,
                       "embeddings": [{"mime_type": "image/png",
                                       "data": "Zm9v"}],
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:593"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:575"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -632,7 +614,7 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
             Before() {}
@@ -641,12 +623,12 @@ module Cucumber
             After() {}
             AfterStep() {}
             AfterStep() {}
-            Around() { |scenario, block| block.call }
+            Around() { |_scenario, block| block.call }
             Given(/^there are bananas$/) {}
           end
 
           it 'includes all hooks except the around hook in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -661,33 +643,33 @@ module Cucumber
                    "description": "",
                    "type": "scenario",
                    "before":
-                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:638"},
+                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:620"},
                       "result": {"status": "passed",
                                  "duration": 1}},
-                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:639"},
+                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:621"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:645"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:627"},
                       "result": {"status": "passed",
                                  "duration": 1},
                       "after":
-                       [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:642"},
+                       [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:624"},
                          "result": {"status": "passed",
                                     "duration": 1}},
-                        {"match": {"location": "spec/cucumber/formatter/json_spec.rb:643"},
+                        {"match": {"location": "spec/cucumber/formatter/json_spec.rb:625"},
                          "result": {"status": "passed",
                                     "duration": 1}}]}],
                    "after":
-                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:641"},
+                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:623"},
                       "result": {"status": "passed",
                                  "duration": 1}},
-                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:640"},
+                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:622"},
                       "result": {"status": "passed",
-                                 "duration": 1}}]}]}]})
+                                 "duration": 1}}]}]}]))
           end
         end
 
@@ -697,10 +679,13 @@ module Cucumber
 
             Scenario: Monkey eats bananas
               Given there are bananas
-            FEATURE
+          FEATURE
 
           define_steps do
-            Around() { |scenario, block| block.call; raise RuntimeError, 'error' }
+            Around() do |_scenario, block|
+              block.call
+              raise 'error'
+            end
             Given(/^there are bananas$/) {}
           end
 
@@ -723,13 +708,13 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:704"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:689"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "around":
                     [{"match": {"location": "unknown_hook_location:1"},
                       "result": {"status": "failed",
-                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:703:in `Around'",
+                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:687:in `Around'",
                                  "duration": 1}}]}]}]})
           end
         end
@@ -742,14 +727,14 @@ module Cucumber
               Given there are bananas
                 | aa | bb |
                 | cc | dd |
-            FEATURE
+          FEATURE
 
           define_steps do
             Given(/^there are bananas$/) { |s| s }
           end
 
           it 'includes the doc string in the json data' do
-            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%(
               [{"id": "banana-party",
                 "uri": "spec.feature",
                 "keyword": "Feature",
@@ -770,9 +755,9 @@ module Cucumber
                        "rows":
                          [{"cells": ["aa", "bb"]},
                           {"cells": ["cc", "dd"]}],
-                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:748"},
+                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:733"},
                        "result": {"status": "passed",
-                                  "duration": 1}}]}]}]})
+                                  "duration": 1}}]}]}]))
           end
         end
       end
@@ -787,15 +772,13 @@ module Cucumber
         json.each do |feature|
           elements = feature.fetch('elements') { [] }
           elements.each do |scenario|
-            %w(steps before after around).each do |type|
-              if scenario[type]
-                scenario[type].each do |step_or_hook|
-                  normalise_json_step_or_hook(step_or_hook)
-                  if step_or_hook['after']
-                    step_or_hook['after'].each do |hook|
-                      normalise_json_step_or_hook(hook)
-                    end
-                  end
+            %w[steps before after around].each do |type|
+              next unless scenario[type]
+              scenario[type].each do |step_or_hook|
+                normalise_json_step_or_hook(step_or_hook)
+                next unless step_or_hook['after']
+                step_or_hook['after'].each do |hook|
+                  normalise_json_step_or_hook(hook)
                 end
               end
             end

@@ -55,20 +55,18 @@ module Cucumber
       include Cucumber::Term::ANSIColor
 
       ALIASES = Hash.new do |h, k|
-        if k.to_s =~ /(.*)_param/
-          h[$1] + ',bold'
-        end
-      end.merge({
-                  'undefined' => 'yellow',
-                  'pending'   => 'yellow',
-                  'flaky'     => 'yellow',
-                  'failed'    => 'red',
-                  'passed'    => 'green',
-                  'outline'   => 'cyan',
-                  'skipped'   => 'cyan',
-                  'comment'   => 'grey',
-                  'tag'       => 'cyan'
-                })
+        h[Regexp.last_match(1)] + ',bold' if k.to_s =~ /(.*)_param/
+      end.merge(
+        'undefined' => 'yellow',
+        'pending'   => 'yellow',
+        'flaky'     => 'yellow',
+        'failed'    => 'red',
+        'passed'    => 'green',
+        'outline'   => 'cyan',
+        'skipped'   => 'cyan',
+        'comment'   => 'grey',
+        'tag'       => 'cyan'
+      )
 
       if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
         ENV['CUCUMBER_COLORS'].split(':').each do |pair|
@@ -89,45 +87,42 @@ module Cucumber
       #     red(bold(string, &proc)) + red
       #   end
       ALIASES.each_key do |method_name|
-        unless method_name =~ /.*_param/
-          code = <<-EOF
+        next if method_name =~ /.*_param/
+        code = <<-COLOR
           def #{method_name}(string=nil, &proc)
-            #{ALIASES[method_name].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method_name].split(",").length}
+            #{ALIASES[method_name].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name].split(',').length}
           end
           # This resets the colour to the non-param colour
           def #{method_name}_param(string=nil, &proc)
-            #{ALIASES[method_name + '_param'].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method_name + '_param'].split(",").length} + #{ALIASES[method_name].split(",").join(' + ')}
+            #{ALIASES[method_name + '_param'].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name + '_param'].split(',').length} + #{ALIASES[method_name].split(',').join(' + ')}
           end
-          EOF
-          eval(code)
-        end
+        COLOR
+        eval(code) # rubocop:disable Security/Eval
       end
 
       def self.define_grey #:nodoc:
-        begin
-          gem 'genki-ruby-terminfo'
-          require 'terminfo'
-          case TermInfo.default_object.tigetnum('colors')
-          when 0
-            raise "Your terminal doesn't support colours."
-          when 1
-            ::Cucumber::Term::ANSIColor.coloring = false
-            alias grey white
-          when 2..8
-            alias grey white
-          else
-            define_real_grey
-          end
-        rescue Exception => e
-          if e.class.name == 'TermInfo::TermInfoError'
-            STDERR.puts '*** WARNING ***'
-            STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
-            STDERR.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
-            STDERR.puts "\n"
-            alias grey white
-          else
-            define_real_grey
-          end
+        gem 'genki-ruby-terminfo'
+        require 'terminfo'
+        case TermInfo.default_object.tigetnum('colors')
+        when 0
+          raise "Your terminal doesn't support colours."
+        when 1
+          ::Cucumber::Term::ANSIColor.coloring = false
+          alias_method :grey, :white
+        when 2..8
+          alias_method :grey, :white # rubocop:disable Lint/DuplicateMethods
+        else
+          define_real_grey
+        end
+      rescue Exception => e # rubocop:disable Lint/RescueException
+        if e.class.name == 'TermInfo::TermInfoError'
+          STDERR.puts '*** WARNING ***'
+          STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
+          STDERR.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
+          STDERR.puts "\n"
+          alias_method :grey, :white
+        else
+          define_real_grey
         end
       end
 

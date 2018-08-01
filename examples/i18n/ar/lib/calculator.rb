@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Calculator
   def push(n)
     @args ||= []
@@ -7,6 +5,6 @@ class Calculator
   end
 
   def جمع
-    @args.inject(0) {|n, sum| sum + n}
+    @args.inject(0) { |n, sum| sum + n }
   end
 end

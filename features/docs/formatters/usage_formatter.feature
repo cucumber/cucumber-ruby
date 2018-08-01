@@ -36,21 +36,21 @@ Feature: Usage formatter
     Then it should pass with exactly:
       """
       -----------
-      
+
       /A/       # features/step_definitions/steps.rb:1
         Given A # features/f.feature:3
-        Given A # features/f.feature:12
+        Given A # features/f.feature:12:7
         Given A # features/f.feature:14
       /B/       # features/step_definitions/steps.rb:2
         Given B # features/f.feature:5
-        And B   # features/f.feature:11
-        And B   # features/f.feature:12
+        And B   # features/f.feature:11:8
+        And B   # features/f.feature:12:8
       /C/       # features/step_definitions/steps.rb:3
-        Given C # features/f.feature:11
+        Given C # features/f.feature:11:7
         Given C # features/f.feature:15
       /D/       # features/step_definitions/steps.rb:4
         NOT MATCHED BY ANY STEPS
-      
+
       4 scenarios (4 skipped)
       11 steps (11 skipped)
 
@@ -62,21 +62,21 @@ Feature: Usage formatter
     Then it should pass with exactly:
       """
       -----------
-      
+
       /A/       # features/step_definitions/steps.rb:1
         Given A # features/f.feature:3
-        Given A # features/f.feature:12
+        Given A # features/f.feature:12:7
         Given A # features/f.feature:14
       /B/       # features/step_definitions/steps.rb:2
         Given B # features/f.feature:5
-        And B   # features/f.feature:11
-        And B   # features/f.feature:12
+        And B   # features/f.feature:11:8
+        And B   # features/f.feature:12:8
       /C/       # features/step_definitions/steps.rb:3
-        Given C # features/f.feature:11
+        Given C # features/f.feature:11:7
         Given C # features/f.feature:15
       /D/       # features/step_definitions/steps.rb:4
         NOT MATCHED BY ANY STEPS
-      
+
       4 scenarios (4 skipped)
       11 steps (11 skipped)
 
@@ -88,18 +88,18 @@ Feature: Usage formatter
       Then it should pass with exactly:
         """
         -----------
-        
+
         /A/   # features/step_definitions/steps.rb:1
         /B/   # features/step_definitions/steps.rb:2
         /C/   # features/step_definitions/steps.rb:3
         /D/   # features/step_definitions/steps.rb:4
           NOT MATCHED BY ANY STEPS
-        
+
         4 scenarios (4 skipped)
         11 steps (11 skipped)
 
         """
-    
+
     Scenario: Run with --format stepdefs when some steps are undefined
       Given a file named "features/calculator.feature" with:
       """

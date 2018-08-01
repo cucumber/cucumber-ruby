@@ -5,6 +5,7 @@ require 'cucumber/formatter/console'
 require 'cucumber/formatter/console_counts'
 require 'cucumber/formatter/console_issues'
 require 'cucumber/core/test/result'
+require 'cucumber/formatter/ast_lookup'
 
 module Cucumber
   module Formatter
@@ -14,9 +15,11 @@ module Cucumber
       include Console
 
       def initialize(config)
-        @config, @io = config, ensure_io(config.out_stream)
+        @config = config
+        @io = ensure_io(config.out_stream)
+        @ast_lookup = AstLookup.new(config)
         @counts = ConsoleCounts.new(@config)
-        @issues = ConsoleIssues.new(@config)
+        @issues = ConsoleIssues.new(@config, @ast_lookup)
         @start_time = Time.now
 
         @config.on_event :test_case_started do |event|
@@ -28,7 +31,7 @@ module Cucumber
           print_result event.result
         end
 
-        @config.on_event :test_run_finished do |event|
+        @config.on_event :test_run_finished do |_event|
           duration = Time.now - @start_time
           @io.puts
           print_statistics(duration, @config, @counts, @issues)
@@ -37,12 +40,17 @@ module Cucumber
 
       private
 
+      def gherkin_document(uri)
+        @ast_lookup.gherkin_document(uri)
+      end
+
       def print_feature(test_case)
-        feature = test_case.feature
-        return if @current_feature == feature
-        @io.puts unless @current_feature.nil?
-        @io.puts feature
-        @current_feature = feature
+        uri = test_case.location.file
+        return if @current_feature_uri == uri
+        feature_name = gherkin_document(uri)[:feature][:name]
+        @io.puts unless @current_feature_uri.nil?
+        @io.puts feature_name
+        @current_feature_uri = uri
       end
 
       def print_test_case(test_case)

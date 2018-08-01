@@ -3,7 +3,7 @@
 module Cucumber
   module Glue
     module Snippet
-      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
+      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)'].freeze
 
       class Generator
         def self.register_on(configuration)
@@ -42,7 +42,7 @@ module Cucumber
         end
 
         def self.cli_option_string(type, cucumber_expression_generator)
-          format('%-7s: %-28s e.g. %s', type, description, example(cucumber_expression_generator))
+          format('%<type>-7s: %<description>-28s e.g. %<example>s', type: type, description: description, example: example(cucumber_expression_generator))
         end
 
         private
@@ -61,7 +61,7 @@ module Cucumber
         end
 
         def do_block
-          do_block = String.new
+          do_block = String.new # rubocop:disable Style/EmptyLiteral
           do_block << "do#{parameters}\n"
           multiline_argument.append_comment_to(do_block)
           do_block << "  pending # Write code here that turns the phrase above into concrete actions\n"
@@ -72,11 +72,15 @@ module Cucumber
         def parameters
           block_args = (0...number_of_arguments).map { |n| "arg#{n + 1}" }
           multiline_argument.append_block_parameter_to(block_args)
-          block_args.empty? ? '' : " |#{block_args.join(", ")}|"
+          block_args.empty? ? '' : " |#{block_args.join(', ')}|"
         end
 
-        def self.example(cucumber_expression_generator)
-          new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
+        class << self
+          private
+
+          def example(cucumber_expression_generator)
+            new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
+          end
         end
       end
 
@@ -87,11 +91,11 @@ module Cucumber
 
         def to_s
           header = generated_expressions.each_with_index.map do |expr, i|
-            prefix = i == 0 ? '' : '# '
+            prefix = i.zero? ? '' : '# '
             "#{prefix}#{code_keyword}(\"#{expr.source}\") do#{parameters(expr)}"
           end.join("\n")
 
-          body = String.new
+          body = String.new # rubocop:disable Style/EmptyLiteral
           multiline_argument.append_comment_to(body)
           body << "  pending # Write code here that turns the phrase above into concrete actions\n"
           body << 'end'
@@ -102,7 +106,7 @@ module Cucumber
         def parameters(expr)
           parameter_names = expr.parameter_names
           multiline_argument.append_block_parameter_to(parameter_names)
-          parameter_names.empty? ? '' : " |#{parameter_names.join(", ")}|"
+          parameter_names.empty? ? '' : " |#{parameter_names.join(', ')}|"
         end
 
         def self.description
@@ -141,11 +145,11 @@ module Cucumber
       end
 
       SNIPPET_TYPES = {
-        :cucumber_expression => CucumberExpression,
-        :regexp => Regexp,
-        :classic => Classic,
-        :percent => Percent
-      }
+        cucumber_expression: CucumberExpression,
+        regexp: Regexp,
+        classic: Classic,
+        percent: Percent
+      }.freeze
 
       module MultilineArgumentSnippet
         def self.new(multiline_argument)
@@ -173,8 +177,7 @@ module Cucumber
             array << 'string'
           end
 
-          def append_comment_to(string)
-          end
+          def append_comment_to(string); end
         end
 
         class DataTable
@@ -192,11 +195,9 @@ module Cucumber
         end
 
         class None
-          def append_block_parameter_to(array)
-          end
+          def append_block_parameter_to(array); end
 
-          def append_comment_to(string)
-          end
+          def append_comment_to(string); end
         end
       end
     end

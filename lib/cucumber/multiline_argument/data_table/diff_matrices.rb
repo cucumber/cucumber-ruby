@@ -26,7 +26,7 @@ module Cucumber
           @original_header = other_table_cell_matrix[0]
           pad_and_match
           @padded_width = cell_matrix[0].length
-          @row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
+          @row_indices = Array.new(other_table_cell_matrix.length) { |n| n }
         end
 
         # Pads two cell matrices to same column width and matches columns according to header value.
@@ -38,19 +38,19 @@ module Cucumber
           matched_cols = []
 
           header_values.each_with_index do |v, i|
-            mapped_index = unmatched_cols.index {|unmapped_col| unmapped_col.first == v}
+            mapped_index = unmatched_cols.index { |unmapped_col| unmapped_col.first == v }
             if mapped_index
               matched_cols << unmatched_cols.delete_at(mapped_index)
             else
               mark_as_missing(cols[i])
-              empty_col = ensure_2d(other_table_cell_matrix).collect {SurplusCell.new(nil, self, -1)}
+              empty_col = ensure_2d(other_table_cell_matrix).collect { SurplusCell.new(nil, self, -1) }
               empty_col.first.value = v
               matched_cols << empty_col
             end
           end
 
           unmatched_cols.each do
-            empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
+            empty_col = cell_matrix.collect { SurplusCell.new(nil, self, -1) }
             cols << empty_col
           end
 
@@ -76,13 +76,13 @@ module Cucumber
           changes.each do |change|
             if change.action == '-'
               @missing_row_pos = change.position + inserted
-              cell_matrix[missing_row_pos].each {|cell| cell.status = :undefined}
+              cell_matrix[missing_row_pos].each { |cell| cell.status = :undefined }
               row_indices.insert(missing_row_pos, nil)
               missing += 1
             else # '+'
               @insert_row_pos = change.position + missing
               inserted_row = change.element
-              inserted_row.each {|cell| cell.status = :comment}
+              inserted_row.each { |cell| cell.status = :comment }
               cell_matrix.insert(insert_row_pos, inserted_row)
               row_indices[insert_row_pos] = nil
               inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change == '-'
@@ -121,7 +121,7 @@ module Cucumber
         end
 
         def missing_col
-          cell_matrix[0].find {|cell| cell.status == :undefined}
+          cell_matrix[0].find { |cell| cell.status == :undefined }
         end
 
         def surplus_col
@@ -135,7 +135,7 @@ module Cucumber
         def raise_error
           table = DataTable.from([[]])
           table.instance_variable_set :@cell_matrix, cell_matrix
-          raise Different.new(table) if should_raise?
+          raise Different, table if should_raise?
         end
 
         def should_raise?

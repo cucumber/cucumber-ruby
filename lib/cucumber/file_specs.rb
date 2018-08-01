@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'cucumber'
-require 'cucumber/core/ast/location'
+require 'cucumber/core/test/location'
 
 module Cucumber
   class FileSpecs
@@ -9,7 +9,7 @@ module Cucumber
 
     def initialize(file_specs)
       Cucumber.logger.debug("Features:\n")
-      @file_specs = file_specs.map { |s| FileSpec.new(s) }
+      @file_specs = file_specs.map { |spec| FileSpec.new(spec) }
       Cucumber.logger.debug("\n")
     end
 
@@ -22,8 +22,8 @@ module Cucumber
     end
 
     class FileSpec
-      def initialize(s)
-        @file, @lines = *FILE_COLON_LINE_PATTERN.match(s).captures
+      def initialize(spec)
+        @file, @lines = *FILE_COLON_LINE_PATTERN.match(spec).captures
         Cucumber.logger.debug("  * #{@file}\n")
         @lines = String(@lines).split(':').map { |line| Integer(line) }
       end
@@ -31,8 +31,8 @@ module Cucumber
       attr_reader :file
 
       def locations
-        return [Core::Ast::Location.new(@file)] if @lines.empty?
-        @lines.map { |line| Core::Ast::Location.new(@file, line) }
+        return [Core::Test::Location.new(@file)] if @lines.empty?
+        @lines.map { |line| Core::Test::Location.new(@file, line) }
       end
     end
   end

@@ -5,6 +5,7 @@ require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/interceptor'
 require 'fileutils'
+require 'cucumber/formatter/ast_lookup'
 
 module Cucumber
   module Formatter
@@ -19,6 +20,7 @@ module Cucumber
       end
 
       def initialize(config)
+        @ast_lookup = AstLookup.new(config)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
@@ -33,17 +35,15 @@ module Cucumber
             tests: 0,
             skipped: 0,
             time: 0,
-            builder: Builder::XmlMarkup.new(:indent => 2)
+            builder: Builder::XmlMarkup.new(indent: 2)
           }
         end
       end
 
       def on_test_case_started(event)
         test_case = event.test_case
-        unless same_feature_as_previous_test_case?(test_case.feature)
-          start_feature(test_case.feature)
-        end
-        @failing_step_source = nil
+        start_feature(test_case) unless same_feature_as_previous_test_case?(test_case)
+        @failing_test_step = nil
         # In order to fill out <system-err/> and <system-out/>, we need to
         # intercept the $stderr and $stdout
         @interceptedout = Interceptor::Pipe.wrap(:stdout)
@@ -52,15 +52,15 @@ module Cucumber
 
       def on_test_step_finished(event)
         test_step, result = *event.attributes
-        return if @failing_step_source
+        return if @failing_test_step
 
-        @failing_step_source = test_step.source.last unless result.ok?(@config.strict)
+        @failing_test_step = test_step unless result.ok?(@config.strict)
       end
 
       def on_test_case_finished(event)
         test_case, result = *event.attributes
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        test_case_name = NameBuilder.new(test_case)
+        test_case_name = NameBuilder.new(test_case, @ast_lookup)
         scenario = test_case_name.scenario_name
         scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
         output = create_output_string(test_case, scenario, result, test_case_name.row_name)
@@ -71,45 +71,54 @@ module Cucumber
       end
 
       def on_test_run_finished(_event)
-        @features_data.each { |file, data| end_feature(data) }
+        @features_data.each { |_file, data| end_feature(data) }
       end
 
       private
 
-      def same_feature_as_previous_test_case?(feature)
-        @current_feature_data && @current_feature_data[:feature].file == feature.file && @current_feature_data[:feature].location == feature.location
+      def same_feature_as_previous_test_case?(test_case)
+        @current_feature_data && @current_feature_data[:uri] == test_case.location.file
       end
 
-      def start_feature(feature)
-        raise UnNamedFeatureError.new(feature.file) if feature.name.empty?
-        @current_feature_data = @features_data[feature.file]
+      def start_feature(test_case)
+        uri = test_case.location.file
+        feature = @ast_lookup.gherkin_document(uri)[:feature]
+        raise UnNamedFeatureError, uri if feature[:name].empty?
+        @current_feature_data = @features_data[uri]
+        @current_feature_data[:uri] = uri unless @current_feature_data[:uri]
         @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
       end
 
       def end_feature(feature_data)
-        @testsuite = Builder::XmlMarkup.new(:indent => 2)
+        @testsuite = Builder::XmlMarkup.new(indent: 2)
         @testsuite.instruct!
         @testsuite.testsuite(
-          :failures => feature_data[:failures],
-          :errors => feature_data[:errors],
-          :skipped => feature_data[:skipped],
-          :tests => feature_data[:tests],
-          :time => format('%.6f', feature_data[:time]),
-          :name => feature_data[:feature].name
+          failures: feature_data[:failures],
+          errors: feature_data[:errors],
+          skipped: feature_data[:skipped],
+          tests: feature_data[:tests],
+          time: format('%.6f', feature_data[:time]),
+          name: feature_data[:feature][:name]
         ) do
           @testsuite << feature_data[:builder].target!
         end
 
-        write_file(feature_result_filename(feature_data[:feature].file), @testsuite.target!)
+        write_file(feature_result_filename(feature_data[:uri]), @testsuite.target!)
       end
 
-      def create_output_string(test_case, scenario, result, row_name)
-        output = "#{test_case.keyword}: #{scenario}\n\n"
+      def create_output_string(test_case, scenario, result, row_name) # rubocop:disable Metrics/PerceivedComplexity
+        scenario_source = @ast_lookup.scenario_source(test_case)
+        keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+        output = "#{keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
-        if test_case.keyword == 'Scenario'
-          if @failing_step_source
-            output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
-            output += "#{@failing_step_source}\n"
+        if scenario_source.type == :Scenario
+          if @failing_test_step
+            if @failing_test_step.hook?
+              output += "#{@failing_test_step.text} at #{@failing_test_step.location}\n"
+            else
+              step_source = @ast_lookup.step_source(@failing_test_step).step
+              output += "#{step_source[:keyword]}#{@failing_test_step.text}\n"
+            end
           else # An Around hook has failed
             output += "Around hook\n"
           end
@@ -119,24 +128,20 @@ module Cucumber
         output + "\nMessage:\n"
       end
 
-      def hook?(step)
-        ['Before hook', 'After hook', 'AfterStep hook'].include? step.text
-      end
-
       def build_testcase(result, scenario_designation, output)
         duration = ResultBuilder.new(result).test_case_duration
         @current_feature_data[:time] += duration
-        classname = @current_feature_data[:feature].name
+        classname = @current_feature_data[:feature][:name]
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => format('%.6f', duration)) do
+        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%.6f', duration)) do
           if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
           elsif !result.passed?
             status = result.to_sym
             exception = get_backtrace_object(result)
-            @current_feature_data[:builder].failure(:message => "#{status} #{name}", :type => status) do
+            @current_feature_data[:builder].failure(message: "#{status} #{name}", type: status) do
               @current_feature_data[:builder].cdata! output
               @current_feature_data[:builder].cdata!(format_exception(exception)) if exception
             end
@@ -154,11 +159,9 @@ module Cucumber
 
       def get_backtrace_object(result)
         if result.failed?
-          return result.exception
+          result.exception
         elsif result.backtrace
-          return result
-        else
-          return nil
+          result
         end
       end
 
@@ -171,7 +174,7 @@ module Cucumber
       end
 
       def basename(feature_file)
-        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature')
+        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature') # rubocop:disable Style/RegexpLiteral
       end
 
       def write_file(feature_filename, data)
@@ -187,34 +190,29 @@ module Cucumber
     class NameBuilder
       attr_reader :scenario_name, :name_suffix, :row_name
 
-      def initialize(test_case)
+      def initialize(test_case, ast_lookup)
         @name_suffix = ''
         @row_name = ''
-        test_case.describe_source_to self
-      end
-
-      def feature(*)
-        self
+        scenario_source = ast_lookup.scenario_source(test_case)
+        if scenario_source.type == :Scenario
+          scenario(scenario_source.scenario)
+        else
+          scenario_outline(scenario_source.scenario_outline)
+          examples_table_row(scenario_source.row)
+        end
       end
 
       def scenario(scenario)
-        @scenario_name = (scenario.name.nil? || scenario.name == '') ? 'Unnamed scenario' : scenario.name
-        self
+        @scenario_name = scenario[:name].empty? ? 'Unnamed scenario' : scenario[:name]
       end
 
       def scenario_outline(outline)
-        @scenario_name = (outline.name.nil? || outline.name == '') ? 'Unnamed scenario outline' : outline.name
-        self
-      end
-
-      def examples_table(*)
-        self
+        @scenario_name = outline[:name].empty? ? 'Unnamed scenario outline' : outline[:name]
       end
 
       def examples_table_row(row)
-        @row_name = '| ' + row.values.join(' | ') + ' |'
+        @row_name = '| ' + row[:cells].map { |cell| cell[:value] }.join(' | ') + ' |'
         @name_suffix = " (outline example : #{@row_name})"
-        self
       end
     end
 
@@ -238,7 +236,7 @@ module Cucumber
       def exception(*) end
 
       def duration(duration, *)
-        duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10**9.0 }
+        duration.tap { |dur| @test_case_duration = dur.nanoseconds / 10**9.0 }
       end
     end
   end

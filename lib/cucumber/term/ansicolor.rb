@@ -35,7 +35,7 @@ module Cucumber
         [:on_magenta,    45],
         [:on_cyan,       46],
         [:on_white,      47]
-      ]
+      ].freeze
 
       ATTRIBUTE_NAMES = ATTRIBUTES.transpose.first
       # :startdoc:
@@ -54,8 +54,9 @@ module Cucumber
       end
       self.coloring = true
 
+      # rubocop:disable Security/Eval
       ATTRIBUTES.each do |c, v|
-        eval %Q{
+        eval <<-END_EVAL, binding, __FILE__, __LINE__ + 1
             def #{c}(string = nil)
               result = String.new
               result << "\e[#{v}m" if Cucumber::Term::ANSIColor.coloring?
@@ -71,23 +72,23 @@ module Cucumber
               result << "\e[0m" if Cucumber::Term::ANSIColor.coloring?
               result
             end
-        }
+        END_EVAL
       end
+      # rubocop:enable Security/Eval
 
       # Regular expression that is used to scan for ANSI-sequences while
       # uncoloring strings.
       COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?m/
 
       def self.included(klass)
-        if klass == String
-          ATTRIBUTES.delete(:clear)
-          ATTRIBUTE_NAMES.delete(:clear)
-        end
+        return unless klass == String
+        ATTRIBUTES.delete(:clear)
+        ATTRIBUTE_NAMES.delete(:clear)
       end
 
       # Returns an uncolored version of the string, that is all
       # ANSI-sequences are stripped from the string.
-      def uncolored(string = nil) # :yields:
+      def uncolored(string = nil)
         if block_given?
           yield.gsub(COLORED_REGEXP, '')
         elsif string
@@ -105,7 +106,6 @@ module Cucumber
       def attributes
         ATTRIBUTE_NAMES
       end
-      extend self
     end
   end
 end

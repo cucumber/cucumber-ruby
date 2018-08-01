@@ -12,7 +12,7 @@ describe Cucumber::Filters::ActivateSteps do
   let(:activated_test_step) { double }
   let(:receiver) { double.as_null_object }
   let(:filter) { Cucumber::Filters::ActivateSteps.new(step_match_search, configuration) }
-  let(:step_match_search) { Proc.new { [step_match] } }
+  let(:step_match_search) { proc { [step_match] } }
   let(:configuration) { double(dry_run?: false, notify: nil) }
 
   context 'a scenario with a single step' do
@@ -68,7 +68,7 @@ describe Cucumber::Filters::ActivateSteps do
   end
 
   context 'undefined step' do
-    let(:step_match_search) { Proc.new { [] } }
+    let(:step_match_search) { proc { [] } }
 
     let(:doc) do
       gherkin do
@@ -124,7 +124,7 @@ describe Cucumber::Filters::ActivateSteps do
   end
 
   context 'undefined step in a dry run' do
-    let(:step_match_search) { Proc.new { [] } }
+    let(:step_match_search) { proc { [] } }
     let(:configuration) { double(dry_run?: true, notify: nil) }
 
     let(:doc) do

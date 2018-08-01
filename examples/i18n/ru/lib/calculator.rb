@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Calculator
   def initialize
     @stack = []
@@ -18,7 +16,8 @@ class Calculator
   end
 
   def /
-    divisor, dividend = [@stack.pop, @stack.pop]
+    divisor = @stack.pop
+    dividend = @stack.pop
     # Hm, @stack.pop(2) doesn't work
     @stack.push dividend / divisor
   end

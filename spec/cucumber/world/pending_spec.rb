@@ -17,7 +17,7 @@ module Cucumber
     end
 
     it 'raises a Pending if a supplied block fails as expected' do
-      expect(-> do
+      expect(lambda do
         @world.pending 'TODO' do
           raise 'oops'
         end
@@ -37,7 +37,7 @@ module Cucumber
     end
 
     it 'raises a Pending if a supplied block starts working' do
-      expect(-> { @world.pending 'TODO' } ).to raise_error(Cucumber::Pending, /TODO/)
+      expect(-> { @world.pending 'TODO' }).to raise_error(Cucumber::Pending, /TODO/)
     end
   end
 end

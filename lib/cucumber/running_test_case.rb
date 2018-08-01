@@ -15,45 +15,12 @@ module Cucumber
   # the passed / failed / undefined / skipped status of
   # the test case.
   #
-  # The test case might come from a regular Scenario or
-  # a Scenario outline. You can call the `#outline?`
-  # predicate to find out. If it's from an outline,
-  # you get a couple of extra methods.
   module RunningTestCase
     def self.new(test_case)
-      Builder.new(test_case).running_test_case
+      TestCase.new(test_case)
     end
 
-    class Builder
-      def initialize(test_case)
-        @test_case = test_case
-        test_case.describe_source_to(self)
-      end
-
-      def feature(feature)
-      end
-
-      def scenario(_scenario)
-        @factory = Scenario
-      end
-
-      def scenario_outline(_scenario)
-        @factory = ScenarioOutlineExample
-      end
-
-      def examples_table(examples_table)
-      end
-
-      def examples_table_row(row)
-      end
-
-      def running_test_case
-        @factory.new(@test_case)
-      end
-    end
-    private_constant :Builder
-
-    class Scenario < SimpleDelegator
+    class TestCase < SimpleDelegator
       def initialize(test_case, result = Core::Test::Result::Unknown.new)
         @test_case = test_case
         @result = result
@@ -85,26 +52,8 @@ module Cucumber
         tags.map &:name
       end
 
-      def outline?
-        false
-      end
-
       def with_result(result)
         self.class.new(@test_case, result)
-      end
-    end
-
-    class ScenarioOutlineExample < Scenario
-      def outline?
-        true
-      end
-
-      def scenario_outline
-        self
-      end
-
-      def cell_values
-        source.last.values
       end
     end
   end

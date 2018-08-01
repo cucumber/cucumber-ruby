@@ -11,16 +11,15 @@ module Cucumber
         return if Cucumber.use_full_backtrace
 
         instance_exec_pos = backtrace.index(instance_exec_invocation_line)
-        if instance_exec_pos
-          replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
-          backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+        return unless instance_exec_pos
+        replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
+        backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
 
-          depth = backtrace.count { |line| line == instance_exec_invocation_line }
-          end_pos = depth > 1 ? instance_exec_pos : -1
+        depth = backtrace.count { |line| line == instance_exec_invocation_line }
+        end_pos = depth > 1 ? instance_exec_pos : -1
 
-          backtrace[replacement_line + 1..end_pos] = nil
-          backtrace.compact!
-        end
+        backtrace[replacement_line + 1..end_pos] = nil
+        backtrace.compact!
       end
 
       def self.cucumber_instance_exec_in(world, check_arity, pseudo_method, *args, &block)
@@ -31,9 +30,7 @@ module Cucumber
               ari = ari < 0 ? (ari.abs - 1).to_s + '+' : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
-              raise ArityMismatchError.new(
-                "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
-              )
+              raise ArityMismatchError, "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
             end
           else
             world.instance_exec(*args, &block)
@@ -50,13 +47,11 @@ module Cucumber
       end
 
       def self.cucumber_run_with_backtrace_filtering(pseudo_method)
-        begin
-          yield
-        rescue Exception => e
-          instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
-          replace_instance_exec_invocation_line!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
-          raise e
-        end
+        yield
+      rescue Exception => e # rubocop:disable Lint/RescueException
+        instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
+        replace_instance_exec_invocation_line!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
+        raise e
       end
 
       INSTANCE_EXEC_OFFSET = -3

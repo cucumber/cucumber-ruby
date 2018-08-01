@@ -46,16 +46,12 @@ module Cucumber
       def format_string(o, status)
         fmt = format_for(status)
         o.to_s.split("\n").map do |line|
-          if Proc === fmt
+          if Proc == fmt.class
             fmt.call(line)
           else
             fmt % line
           end
         end.join("\n")
-      end
-
-      def print_steps(status)
-        print_elements(runtime.steps(status), status, 'steps')
       end
 
       def print_elements(elements, status, kind)
@@ -109,26 +105,23 @@ module Cucumber
       end
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
-      def linebreaks(s, max)
-        return s unless max && max > 0
-        s.gsub(/.{1,#{max}}(?:\s|\Z)/) {($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n")}.rstrip
+      def linebreaks(msg, max)
+        return msg unless max && max > 0
+        msg.gsub(/.{1,#{max}}(?:\s|\Z)/) { ($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }.rstrip
       end
 
-      def collect_snippet_data(test_step, result)
+      def collect_snippet_data(test_step, ast_lookup)
         # collect snippet data for undefined steps
-        return if hook?(test_step)
-        keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
-        @previous_step_keyword = keyword
-        return unless result.undefined?
-        @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
+        keyword = ast_lookup.snippet_step_keyword(test_step)
+        @snippets_input << Console::SnippetData.new(keyword, test_step)
       end
 
       def print_snippets(options)
         return unless options[:snippets]
-        return if runtime.steps(:undefined).empty?
+        return if @snippets_input.empty?
 
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
-          runtime.snippet_text(step_keyword, step_name, multiline_arg)
+          snippet_text(step_keyword, step_name, multiline_arg)
         end
         do_print_snippets(snippet_text_proc)
       end
@@ -146,10 +139,14 @@ module Cucumber
         @io.flush
       end
 
-      def print_passing_wip(options)
-        return unless options[:wip]
-        passed_messages = element_messages(runtime.scenarios(:passed), :passed)
-        do_print_passing_wip(passed_messages)
+      def print_passing_wip(config, passed_test_cases, ast_lookup)
+        return unless config.wip?
+        messages = passed_test_cases.map do |test_case|
+          scenario_source = ast_lookup.scenario_source(test_case)
+          keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+          linebreaks("#{test_case.location.on_line(test_case.location.lines.max)}:in `#{keyword}: #{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+        end
+        do_print_passing_wip(messages)
       end
 
       def do_print_passing_wip(passed_messages)
@@ -165,41 +162,13 @@ module Cucumber
         # no-op
       end
 
-      # define @delayed_messages = [] in your Formatter if you want to
-      # activate this feature
       def puts(*messages)
-        if @delayed_messages
-          @delayed_messages += messages
-        else
-          if @io
-            @io.puts
-            messages.each do |message|
-              @io.puts(format_string(message, :tag))
-            end
-            @io.flush
-          end
+        return unless @io
+        @io.puts
+        messages.each do |message|
+          @io.puts(format_string(message, :tag))
         end
-      end
-
-      def print_messages
-        @delayed_messages.each {|message| print_message(message)}
-        empty_messages
-      end
-
-      def print_table_row_messages
-        return if @delayed_messages.empty?
-        @io.print(format_string(@delayed_messages.join(', '), :tag).indent(2))
         @io.flush
-        empty_messages
-      end
-
-      def print_message(message)
-        @io.puts(format_string(message, :tag).indent(@indent))
-        @io.flush
-      end
-
-      def empty_messages
-        @delayed_messages = []
       end
 
       def print_profile_information
@@ -208,8 +177,11 @@ module Cucumber
       end
 
       def do_print_profile_information(profiles)
-        profiles_sentence = profiles.size == 1 ? profiles.first :
-          "#{profiles[0...-1].join(', ')} and #{profiles.last}"
+        profiles_sentence = if profiles.size == 1
+                              profiles.first
+                            else
+                              "#{profiles[0...-1].join(', ')} and #{profiles.last}"
+                            end
 
         @io.puts "Using the #{profiles_sentence} profile#{'s' if profiles.size > 1}..."
       end
@@ -223,10 +195,6 @@ module Cucumber
         fmt = FORMATS[key]
         raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
         fmt
-      end
-
-      def hook?(test_step)
-        not test_step.source.last.respond_to?(:actual_keyword)
       end
 
       def element_messages(elements, status)
@@ -249,7 +217,8 @@ module Cucumber
       class SnippetData
         attr_reader :actual_keyword, :step
         def initialize(actual_keyword, step)
-          @actual_keyword, @step = actual_keyword, step
+          @actual_keyword = actual_keyword
+          @step = step
         end
       end
     end

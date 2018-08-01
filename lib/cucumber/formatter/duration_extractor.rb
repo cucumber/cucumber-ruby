@@ -22,7 +22,7 @@ module Cucumber
       def exception(*) end
 
       def duration(duration, *)
-        duration.tap { |duration| @result_duration = duration.nanoseconds / 10**9.0 }
+        duration.tap { |dur| @result_duration = dur.nanoseconds / 10**9.0 }
       end
     end
   end

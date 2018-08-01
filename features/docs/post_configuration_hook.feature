@@ -8,14 +8,20 @@ Feature: Post Configuration Hook [#423]
     Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.formats << ['html', {}, config.out_stream]
+        config.formats << ['json', {}, config.out_stream]
       end
+      """
+    And a file named "features/simple_scenario.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given a step
       """
     When I run `cucumber features`
     Then the stderr should not contain anything
     And the output should contain:
       """
-      html
+      "uri": "features/simple_scenario.feature"
       """
 
   Scenario: feature directories read from configuration

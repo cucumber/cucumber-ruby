@@ -18,7 +18,8 @@ module Cucumber
 
       # @private
       def initialize(test_step, step_match)
-        @test_step, @step_match = test_step, step_match
+        @test_step = test_step
+        @step_match = step_match
       end
     end
   end

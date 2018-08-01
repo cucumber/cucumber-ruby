@@ -26,7 +26,7 @@ module Cucumber
         private
 
         def new_test_steps
-          @original_test_case.test_steps.map(&self.method(:attempt_to_activate))
+          @original_test_case.test_steps.map(&method(:attempt_to_activate))
         end
 
         def attempt_to_activate(test_step)
@@ -39,12 +39,14 @@ module Cucumber
 
         class FindMatch
           def initialize(step_match_search, configuration, test_step)
-            @step_match_search, @configuration, @test_step = step_match_search, configuration, test_step
+            @step_match_search = step_match_search
+            @configuration = configuration
+            @test_step = test_step
           end
 
           def result
             begin
-              return NoStepMatch.new(test_step.source.last, test_step.text) unless matches.any?
+              return NoStepMatch.new(test_step, test_step.text) unless matches.any?
             rescue Cucumber::Ambiguous => e
               return AmbiguousStepMatch.new(e)
             end

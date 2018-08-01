@@ -183,98 +183,7 @@ Feature: JSON output formatter
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/one_passing_one_failing.feature:10:in `Given this step fails'",
-                    "duration": 1
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-
-      """
-
-  @spawn @todo-windows
-  Scenario: one feature, one passing scenario, one failing scenario with prettyfied json
-    When I run `cucumber --format json_pretty features/one_passing_one_failing.feature`
-    Then it should fail with JSON:
-      """
-      [
-        {
-          "uri": "features/one_passing_one_failing.feature",
-          "keyword": "Feature",
-          "id": "one-passing-scenario,-one-failing-scenario",
-          "name": "One passing scenario, one failing scenario",
-          "line": 2,
-          "description": "",
-          "tags": [
-            {
-              "name": "@a",
-              "line": 1
-            }
-          ],
-          "elements": [
-            {
-              "keyword": "Scenario",
-              "id": "one-passing-scenario,-one-failing-scenario;passing",
-              "name": "Passing",
-              "line": 5,
-              "description": "",
-              "tags": [
-                {
-                  "name": "@a",
-                  "line": 1
-                },
-                {
-                  "name": "@b",
-                  "line": 4
-                }
-              ],
-              "type": "scenario",
-              "steps": [
-                {
-                  "keyword": "Given ",
-                  "name": "this step passes",
-                  "line": 6,
-                  "match": {
-                    "location": "features/step_definitions/steps.rb:1"
-                  },
-                  "result": {
-                    "status": "passed",
-                    "duration": 1
-                  }
-                }
-              ]
-            },
-            {
-              "keyword": "Scenario",
-              "id": "one-passing-scenario,-one-failing-scenario;failing",
-              "name": "Failing",
-              "line": 9,
-              "description": "",
-              "tags": [
-                {
-                  "name": "@a",
-                  "line": 1
-                },
-                {
-                  "name": "@c",
-                  "line": 8
-                }
-              ],
-              "type": "scenario",
-              "steps": [
-                {
-                  "keyword": "Given ",
-                  "name": "this step fails",
-                  "line": 10,
-                  "match": {
-                    "location": "features/step_definitions/steps.rb:4"
-                  },
-                  "result": {
-                    "status": "failed",
-                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/one_passing_one_failing.feature:10:in `Given this step fails'",
+                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/one_passing_one_failing.feature:10:in `this step fails'",
                     "duration": 1
                   }
                 }
@@ -337,7 +246,7 @@ Feature: JSON output formatter
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": "a string (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'",
+                    "error_message": "a string (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `I should fail with'",
                     "duration": 1
                   }
                 }
@@ -420,7 +329,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 8,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -442,13 +351,13 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step fails",
-                "line": 9,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:4"
                 },
                 "result": {
                   "status": "failed",
-                  "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:in `Given this step fails'\nfeatures/outline.feature:4:in `Given this step <status>'",
+                  "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:4:in `this step fails'",
                   "duration": 1
                 }
               }
@@ -465,7 +374,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 13,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -566,7 +475,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 8,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -588,13 +497,13 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step fails",
-                "line": 9,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:4"
                 },
                 "result": {
                   "status": "failed",
-                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:in `Given this step fails'\nfeatures/outline.feature:4:in `Given this step <status>'",
+                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:4:in `this step fails'",
 		  "duration": 1
                 }
               }
@@ -611,7 +520,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 13,
+                "line": 4,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -680,7 +589,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "I embed data directly",
-                "line": 11,
+                "line": 7,
                 "embeddings": [
                   {
                     "mime_type": "mime-type",
@@ -708,7 +617,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "I embed data directly",
-                "line": 12,
+                "line": 7,
                 "embeddings": [
                   {
                     "mime_type": "mime-type",

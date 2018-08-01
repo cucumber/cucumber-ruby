@@ -29,8 +29,8 @@ describe Cucumber::Filters::TagLimits::Verifier do
       it 'raises a TagLimitExceeded error with the locations of the tags' do
         expect { verifier.verify!(test_case_index) }.to raise_error(
           Cucumber::Filters::TagLimitExceededError,
-          "@exceed_me occurred 2 times, but the limit was set to 1\n" +
-          "  path/to/some.feature:3\n" +
+          "@exceed_me occurred 2 times, but the limit was set to 1\n" \
+          "  path/to/some.feature:3\n" \
           '  path/to/some/other.feature:8'
         )
       end

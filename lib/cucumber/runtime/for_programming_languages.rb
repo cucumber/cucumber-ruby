@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
-require 'cucumber/core/ast/doc_string'
+require 'cucumber/core/test/doc_string'
 
 module Cucumber
   class Runtime
@@ -15,7 +15,8 @@ module Cucumber
       attr_reader :support_code
 
       def initialize(support_code, user_interface)
-        @support_code, @user_interface = support_code, user_interface
+        @support_code = support_code
+        @user_interface = user_interface
       end
 
       def_delegators :@user_interface,

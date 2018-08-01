@@ -51,23 +51,21 @@ module Cucumber
           'white'   => "\e[37m",
           'grey'    => "\e[90m",
           'bold'    => "\e[1m"
-        }
+        }.freeze
 
         ALIASES = Hash.new do |h, k|
-          if k.to_s =~ /(.*)_arg/
-            h[$1] + ',bold'
-          end
-        end.merge({
-                    'undefined' => 'yellow',
-                    'pending'   => 'yellow',
-                    'executing' => 'grey',
-                    'failed'    => 'red',
-                    'passed'    => 'green',
-                    'outline'   => 'cyan',
-                    'skipped'   => 'cyan',
-                    'comments'  => 'grey',
-                    'tag'       => 'cyan'
-                  })
+          h[Regexp.last_match(1)] + ',bold' if k.to_s =~ /(.*)_arg/
+        end.merge(
+          'undefined' => 'yellow',
+          'pending'   => 'yellow',
+          'executing' => 'grey',
+          'failed'    => 'red',
+          'passed'    => 'green',
+          'outline'   => 'cyan',
+          'skipped'   => 'cyan',
+          'comments'  => 'grey',
+          'tag'       => 'cyan'
+        )
 
         if ENV['GHERKIN_COLORS'] # Example: export GHERKIN_COLORS="passed=red:failed=yellow"
           ENV['GHERKIN_COLORS'].split(':').each do |pair|
@@ -78,11 +76,11 @@ module Cucumber
 
         ALIASES.keys.each do |key|
           define_method(key) do
-            ALIASES[key].split(',').map {|color| COLORS[color]}.join('')
+            ALIASES[key].split(',').map { |color| COLORS[color] }.join('')
           end
 
           define_method("#{key}_arg") do
-            ALIASES["#{key}_arg"].split(',').map {|color| COLORS[color]}.join('')
+            ALIASES["#{key}_arg"].split(',').map { |color| COLORS[color] }.join('')
           end
         end
 
@@ -93,8 +91,6 @@ module Cucumber
         def up(n)
           "\e[#{n}A"
         end
-
-        extend self
       end
     end
   end

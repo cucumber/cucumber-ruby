@@ -12,10 +12,10 @@ module Cucumber
       end
 
       def from(argument, location = nil, content_type = nil)
-        location ||= Core::Ast::Location.of_caller
+        location ||= Core::Test::Location.of_caller
         case argument
         when String
-          builder.doc_string(Core::Ast::DocString.new(argument, content_type, location))
+          builder.doc_string(Core::Test::DocString.new(argument, content_type, location))
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
           builder.data_table(argument.map(&:cells), location)
@@ -52,11 +52,9 @@ module Cucumber
     end
 
     class None
-      def append_to(array)
-      end
+      def append_to(array); end
 
-      def describe_to(visitor)
-      end
+      def describe_to(visitor); end
     end
   end
 end

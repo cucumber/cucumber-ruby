@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 begin
   require 'rspec/expectations'
 rescue LoadError
@@ -7,7 +5,7 @@ rescue LoadError
 end
 
 require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
 Before do
@@ -22,9 +20,7 @@ Given(/在计算器上输入(\d+)/) do |n|
 end
 
 When(/按(.*)键/) do |op|
-  if op == '加号'
-    @result = @calc.send 'add'
-  end
+  @result = @calc.send 'add' if op == '加号'
 end
 
 Then(/屏幕上显示的结果应该是是(.*)/) do |result|

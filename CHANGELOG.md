@@ -10,7 +10,70 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...master) (Not released)
+## [In Git (targeting 4.0.0)](https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...master) (Not released)
+
+### Added
+
+* N/A
+
+### Changed
+
+* Do not apply Before and After Hooks to Test Cases with no Test Steps.
+  ([#1311](https://github.com/cucumber/cucumber-ruby/pull/1311)
+   [brasmusson](https://github.com/brasmusson))
+* Pass the registry to the Wire plugin.
+  ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
+   [brasmusson](https://github.com/brasmusson))
+* Adapt to using the Gherkin compiler and Pickles in the core.
+  ([#1309](https://github.com/cucumber/cucumber-ruby/pull/1309)
+   [brasmusson](https://github.com/brasmusson))
+* Let the Pretty Formatter use events.
+  ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305)
+   [brasmusson](https://github.com/brasmusson))
+
+### Deprecated
+
+* N/A
+
+### Removed
+
+* Remove the Legacy API for Formatters.
+  ([#1230](https://github.com/cucumber/cucumber-ruby/pull/1230),
+   [#839](https://github.com/cucumber/cucumber-ruby/issues/839)
+   [brasmusson](https://github.com/brasmusson))
+* Remove the JSON Pretty Formatter (which was the same as the JSON formatter).
+  ([brasmusson](https://github.com/brasmusson))
+* Remove the HTML Formatter.
+  ([#1306](https://github.com/cucumber/cucumber-ruby/pull/1306)
+   [brasmusson](https://github.com/brasmusson))
+
+### Fixed
+
+* Let the Rerun Formatter handle flaky scenarios.
+  ([#1310](https://github.com/cucumber/cucumber-ruby/pull/1310)
+   [brasmusson](https://github.com/brasmusson))
+
+### Improved
+
+* N/A
+
+## [3.1.2](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...v3.1.2) (2018-07-13)
+
+### Changed
+
+* Upgraded to `cucumber-core` 3.2.0
+* Change to use the gherkin step location in the Json formatter.
+  ([#1243](https://github.com/cucumber/cucumber-ruby/pull/1243),
+   [#1108](https://github.com/cucumber/cucumber-ruby/issues/1108)
+   [brasmusson](https://github.com/brasmusson))
+
+### Fixed
+
+* Support ParameterType with empty capture group.
+  ([#404](https://github.com/cucumber/cucumber/issues/404)
+   [aslakhellesoy](https://github.com/aslakhellesoy))
+
+## [3.1.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...v3.1.1) (2018-06-03)
 
 ### Added
 
@@ -19,6 +82,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 * Add Rubocop to default Rake task ([#1256](https://github.com/cucumber/cucumber-ruby/pull/1256) [@jaysonesmith](https://github.com/jaysonesmith))
+* Upgraded `cucumber-expressions` dependency to ~> 6.0.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
+* Upgraded to `gherkin` 5.1.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Deprecated
 
@@ -30,7 +95,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* Make --fail-fast play nice with --retry ([#1283](https://github.com/cucumber/cucumber-ruby/pull/1283) [@yrral86](https://github.com/yrral86))
+* Make `--fail-fast` play nice with `--retry` ([#1283](https://github.com/cucumber/cucumber-ruby/pull/1283) [@yrral86](https://github.com/yrral86))
 * Fix incompatible encodings error in JUnit formatter ([#1244](https://github.com/cucumber/cucumber-ruby/pull/1244) [@NickAb](https://github.com/NickAb)) (except on JRuby, see [#1259](https://github.com/cucumber/cucumber-ruby/pull/1259))
 * Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 * Fixed lengthy stacktrace when running `cucumber -f stepdefs` when steps aren't defined. ([#1286](https://github.com/cucumber/cucumber-ruby/pull/1286) [@xtrasimplicity](https://github.com/xtrasimplicity))
@@ -40,7 +105,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 * N/A
 
-## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...3.1.0) (2017-11-28)
+## [3.1.0](https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...v3.1.0) (2017-11-28)
 
 ### Added
 

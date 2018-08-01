@@ -1,7 +1,7 @@
 Feature: JUnit output formatter
   In order for developers to create test reports with ant
   Cucumber should be able to output JUnit xml files
-  
+
   Background:
     Given the standard step definitions
     And a file named "features/one_passing_one_failing.feature" with:
@@ -102,7 +102,7 @@ Feature: JUnit output formatter
 	]]>
           <![CDATA[ (RuntimeError)
 	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-	features/one_passing_one_failing.feature:7:in `Given this step fails']]>
+	features/one_passing_one_failing.feature:7:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -144,7 +144,7 @@ Feature: JUnit output formatter
 	]]>
           <![CDATA[ (RuntimeError)
 	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-	features/some_subdirectory/one_passing_one_failing.feature:7:in `Given this step fails']]>
+	features/some_subdirectory/one_passing_one_failing.feature:7:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -161,7 +161,7 @@ Feature: JUnit output formatter
     When I run `cucumber --format junit --out tmp/ features/pending.feature`
     Then it should pass with:
       """
-      
+
       """
     And the junit output file "tmp/TEST-features-pending.xml" should contain:
       """
@@ -186,7 +186,7 @@ Feature: JUnit output formatter
         </system-err>
       </testcase>
       </testsuite>
-      
+
       """
 
   Scenario: pending and undefined steps with strict option should fail
@@ -209,7 +209,7 @@ Feature: JUnit output formatter
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
       ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-      features/pending.feature:4:in `Given this step is pending']]>
+      features/pending.feature:4:in `this step is pending']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -221,13 +221,13 @@ Feature: JUnit output formatter
       <testcase classname="Pending step" name="Undefined" time="0.05">
         <failure message="undefined Undefined" type="undefined">
           <![CDATA[Scenario: Undefined
-      
+
       Given this step is undefined
 
       Message:
       ]]>
           <![CDATA[Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
-      features/pending.feature:7:in `Given this step is undefined']]>
+      features/pending.feature:7:in `this step is undefined']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -245,11 +245,11 @@ Feature: JUnit output formatter
     When I run `cucumber --format junit --out tmp/ features`
     Then it should fail with:
       """
-      
+
       """
     And a file named "tmp/TEST-features-one_passing_one_failing.xml" should exist
     And a file named "tmp/TEST-features-pending.xml" should exist
-  
+
   Scenario: show correct error message if no --out is passed
     When I run `cucumber --format junit features`
     Then the stderr should not contain:
@@ -283,15 +283,14 @@ You *must* specify --out DIR for the junit formatter
       <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05">
         <failure message="failed Using scenario outlines (outline example : | fails |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
-      
+
       Example row: | fails |
-      
+
       Message:
       ]]>
           <![CDATA[ (RuntimeError)
       ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-      features/scenario_outline.feature:9:in `Given this step fails'
-      features/scenario_outline.feature:4:in `Given this step <type>']]>
+      features/scenario_outline.feature:9:4:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -310,8 +309,7 @@ You *must* specify --out DIR for the junit formatter
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
       ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-      features/scenario_outline.feature:10:in `Given this step is pending'
-      features/scenario_outline.feature:4:in `Given this step <type>']]>
+      features/scenario_outline.feature:10:4:in `this step is pending']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -329,8 +327,7 @@ You *must* specify --out DIR for the junit formatter
       Message:
       ]]>
           <![CDATA[Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
-      features/scenario_outline.feature:11:in `Given this step is undefined'
-      features/scenario_outline.feature:4:in `Given this step <type>']]>
+      features/scenario_outline.feature:11:4:in `this step is undefined']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -341,7 +338,7 @@ You *must* specify --out DIR for the junit formatter
       </testcase>
       </testsuite>
 
-      """ 
+      """
 
   @spawn @todo-windows
   Scenario: strict mode with --expand option, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
@@ -365,15 +362,14 @@ You *must* specify --out DIR for the junit formatter
       <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05">
         <failure message="failed Using scenario outlines (outline example : | fails |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
-      
+
       Example row: | fails |
-      
+
       Message:
       ]]>
           <![CDATA[ (RuntimeError)
       ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-      features/scenario_outline.feature:9:in `Given this step fails'
-      features/scenario_outline.feature:4:in `Given this step <type>']]>
+      features/scenario_outline.feature:9:4:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -392,8 +388,7 @@ You *must* specify --out DIR for the junit formatter
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
       ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-      features/scenario_outline.feature:10:in `Given this step is pending'
-      features/scenario_outline.feature:4:in `Given this step <type>']]>
+      features/scenario_outline.feature:10:4:in `this step is pending']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -411,8 +406,7 @@ You *must* specify --out DIR for the junit formatter
       Message:
       ]]>
           <![CDATA[Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
-      features/scenario_outline.feature:11:in `Given this step is undefined'
-      features/scenario_outline.feature:4:in `Given this step <type>']]>
+      features/scenario_outline.feature:11:4:in `this step is undefined']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -423,7 +417,7 @@ You *must* specify --out DIR for the junit formatter
       </testcase>
       </testsuite>
 
-      """ 
+      """
 
   @spawn @todo-windows
   Scenario: run test cases from different features interweaved
@@ -454,7 +448,7 @@ You *must* specify --out DIR for the junit formatter
 	]]>
           <![CDATA[ (RuntimeError)
 	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-	features/one_passing_one_failing.feature:7:in `Given this step fails']]>
+	features/one_passing_one_failing.feature:7:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>

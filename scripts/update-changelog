@@ -23,13 +23,9 @@ class PullRequest
 
   def type_label
     types = labels.select { |label| label =~ /^type: / }
-    if types.empty?
-      raise('This pull request does not have a \'type\' label on it. Please add one.')
-    end
+    raise('This pull request does not have a \'type\' label on it. Please add one.') if types.empty?
 
-    if types.length > 1
-      raise('This pull request has more than one \'type\' label on it. Please choose just one.')
-    end
+    raise('This pull request has more than one \'type\' label on it. Please choose just one.') if types.length > 1
 
     types.first
   end
@@ -51,9 +47,7 @@ class Changelog
 
   def insert(label, entry)
     section_index = lines.index { |line| line.strip == heading_for(label) }
-    unless section_index
-      raise("Unable to find matching heading in CHANGELOG.md for '#{label}' (#{heading_for(label)})")
-    end
+    raise("Unable to find matching heading in CHANGELOG.md for '#{label}' (#{heading_for(label)})") unless section_index
     lines.insert(section_index + 2, "* #{entry}\n")
   end
 
@@ -73,7 +67,7 @@ end
 
 begin
   token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
-  num = (ARGV[0] || raise("syntax: #{$0} <PULL-REQUEST-NUMBER>")).to_i
+  num = (ARGV[0] || raise("syntax: #{$PROGRAM_NAME} <PULL-REQUEST-NUMBER>")).to_i
 
   gh = Octokit::Client.new(access_token: token)
   pr = PullRequest.new(gh, num)

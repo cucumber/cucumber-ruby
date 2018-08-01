@@ -5,7 +5,6 @@ require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 require 'cucumber/core/test/result'
 require 'cucumber/core/filter'
-require 'cucumber/core/ast'
 require 'cucumber'
 require 'support/standard_step_actions'
 

@@ -4,7 +4,7 @@ require 'cucumber/platform'
 
 module Cucumber
   module Formatter
-    @backtrace_filters = %w(
+    @backtrace_filters = %w[
       /vendor/rails
       lib/cucumber
       bin/cucumber:
@@ -15,11 +15,9 @@ module Cucumber
       .gem/ruby
       lib/ruby/
       bin/bundle
-    )
+    ]
 
-    if ::Cucumber::JRUBY
-      @backtrace_filters << 'org/jruby/'
-    end
+    @backtrace_filters << 'org/jruby/' if ::Cucumber::JRUBY
 
     BACKTRACE_FILTER_PATTERNS = Regexp.new(@backtrace_filters.join('|'))
 
@@ -31,7 +29,7 @@ module Cucumber
       def exception
         return @exception if ::Cucumber.use_full_backtrace
 
-        pwd_pattern = /#{::Regexp.escape(::Dir.pwd)}\//m
+        pwd_pattern = /#{::Regexp.escape(::Dir.pwd)}\//m # rubocop:disable Style/RegexpLiteral
         backtrace = @exception.backtrace.map { |line| line.gsub(pwd_pattern, './') }
 
         filtered = (backtrace || []).reject do |line|
@@ -41,7 +39,7 @@ module Cucumber
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
           # Strip off file locations
           filtered = filtered.map do |line|
-            line =~ /(.*):in `/ ? $1 : line
+            line =~ /(.*):in `/ ? Regexp.last_match(1) : line
           end
         end
 

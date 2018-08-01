@@ -37,14 +37,9 @@ module Cucumber
         expect(wrapped_test_case.name).to eq 'scenario name'
       end
 
-      it 'sets the feature name correctly' do
-        expect(wrapped_test_case.feature.name).to eq 'feature name'
-      end
-
       it 'exposes properties of the test_case' do
         expect(wrapped_test_case.location).to eq core_test_case.location
-        expect(wrapped_test_case.source).to eq core_test_case.source
-        expect(wrapped_test_case.keyword).to eq core_test_case.keyword
+        expect(wrapped_test_case.language).to eq core_test_case.language
       end
 
       it 'exposes properties of the result' do
@@ -66,7 +61,7 @@ module Cucumber
       let(:exception) { StandardError.new }
 
       before do
-        self.wrapped_test_case = self.wrapped_test_case.with_result(Core::Test::Result::Failed.new(0, exception))
+        self.wrapped_test_case = wrapped_test_case.with_result(Core::Test::Result::Failed.new(0, exception))
       end
 
       it 'is failed?' do
@@ -90,7 +85,7 @@ module Cucumber
       end
 
       before do
-        self.wrapped_test_case = self.wrapped_test_case.with_result(Core::Test::Result::Passed.new(0))
+        self.wrapped_test_case = wrapped_test_case.with_result(Core::Test::Result::Passed.new(0))
       end
 
       it 'is not failed?' do
@@ -119,21 +114,12 @@ module Cucumber
       end
 
       it "sets the test case's name correctly" do
-        expect(wrapped_test_case.name).to eq 'scenario outline name, examples name (#1)'
-      end
-
-      it 'sets the feature name correctly' do
-        expect(wrapped_test_case.feature.name).to eq 'feature name'
+        expect(wrapped_test_case.name).to eq 'scenario outline name'
       end
 
       it 'exposes properties of the test_case' do
         expect(wrapped_test_case.location).to eq core_test_case.location
-        expect(wrapped_test_case.source).to eq core_test_case.source
-        expect(wrapped_test_case.keyword).to eq core_test_case.keyword
-      end
-
-      it 'exposes the examples table row cell values' do
-        expect(wrapped_test_case.cell_values).to eq %w(a b)
+        expect(wrapped_test_case.language).to eq core_test_case.language
       end
     end
   end

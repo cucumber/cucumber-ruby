@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'cucumber/step_match'
-require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
 require 'cucumber/glue/invoke_in_world'
 
@@ -44,21 +43,21 @@ module Cucumber
         end
 
         def patch_location_onto(block)
-          location = Core::Ast::Location.of_caller(5)
+          location = Core::Test::Location.of_caller(5)
           block.define_singleton_method(:source_location) { [location.file, location.line] }
           block
         end
 
         def parse_target_proc_from(options)
-          return lambda { self } unless options.key?(:on)
+          return -> { self } unless options.key?(:on)
           target = options[:on]
           case target
           when Proc
             target
           when Symbol
-            lambda { self.send(target) }
+            -> { send(target) }
           else
-            lambda { raise ArgumentError, 'Target must be a symbol or a proc' }
+            -> { raise ArgumentError, 'Target must be a symbol or a proc' }
           end
         end
       end
@@ -67,7 +66,9 @@ module Cucumber
 
       def initialize(registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
-        @registry, @expression, @proc = registry, expression, proc
+        @registry = registry
+        @expression = expression
+        @proc = proc
         # @registry.available_step_definition(regexp_source, location)
       end
 
@@ -92,8 +93,8 @@ module Cucumber
       end
 
       # @api private
-      def ==(step_definition)
-        expression.source == step_definition.expression.source
+      def ==(other)
+        expression.source == other.expression.source
       end
 
       # @api private
@@ -106,12 +107,10 @@ module Cucumber
       # @api private
       # TODO: inline this and step definition just be a value object
       def invoke(args)
-        begin
-          InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
-        rescue ArityMismatchError => e
-          e.backtrace.unshift(self.backtrace_line)
-          raise e
-        end
+        InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
+      rescue ArityMismatchError => e
+        e.backtrace.unshift(backtrace_line)
+        raise e
       end
 
       # @api private
@@ -131,7 +130,7 @@ module Cucumber
 
       # The source location where the step definition can be found
       def location
-        @location ||= Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
+        @location ||= Cucumber::Core::Test::Location.from_source_location(*@proc.source_location)
       end
 
       # @api private

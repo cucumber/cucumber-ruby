@@ -20,7 +20,7 @@ module Cucumber
           config.on_event :test_step_started, &method(:on_test_step_started)
         end
 
-        def on_test_step_started(event)
+        def on_test_step_started(_event)
           Interceptor::Pipe.unwrap! :stdout
           @fake_io = $stdout = StringIO.new
           $stdout.sync = true
@@ -62,7 +62,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing ctrl scenario
-            FEATURE
+          FEATURE
 
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
@@ -113,14 +113,12 @@ module Cucumber
           end
 
           describe 'with a scenario in a subdirectory' do
-            # rubocop:disable Layout/EmptyLinesAroundArguments
-            define_feature %{
+            define_feature %(
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
                   Given a passing scenario
-            }, File.join('features', 'some', 'path', 'spec.feature')
-            # rubocop:enable Layout/EmptyLinesAroundArguments
+            ), File.join('features', 'some', 'path', 'spec.feature')
 
             it 'writes the filename with absolute path' do
               expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')
@@ -129,7 +127,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) { }
+              Given(/.*/) {}
             end
 
             define_feature <<-FEATURE
@@ -156,7 +154,7 @@ module Cucumber
             it { expect(@doc.to_s).to match(/Big Mac/) }
             it { expect(@doc.to_s).not_to match(/Things/) }
             it { expect(@doc.to_s).not_to match(/Good|Evil/) }
-            it { expect(@doc.to_s).not_to match(/type="skipped"/)}
+            it { expect(@doc.to_s).not_to match(/type="skipped"/) }
           end
 
           describe 'scenario with skipped test in junit report' do
@@ -172,13 +170,13 @@ module Cucumber
                   | still undefined  |
             FEATURE
 
-            it { expect(@doc.to_s).to match(/skipped="2"/)}
+            it { expect(@doc.to_s).to match(/skipped="2"/) }
           end
 
           describe 'with a regular data table scenario' do
             define_steps do
               Given(/the following items on a shortlist/) { |table| }
-              When(/I go.*/) { }
+              When(/I go.*/) {}
               Then(/I should have visited at least/) { |table| }
             end
 
@@ -213,7 +211,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(%r{Before hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
@@ -231,7 +229,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(%r{After hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
@@ -249,7 +247,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(%r{AfterStep hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
             end
@@ -268,7 +266,7 @@ module Cucumber
 
                 Scenario: Passing
                   Given a passing step
-            FEATURE
+              FEATURE
 
               it { expect(@doc.to_s).to match(/Around hook\n\nMessage:/) }
             end
@@ -277,10 +275,10 @@ module Cucumber
       end
 
       context 'In --expand mode' do
-        let(:runtime) { Runtime.new({:expand => true}) }
+        let(:runtime) { Runtime.new(expand: true) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
-          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', :expand => true))
+          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', expand: true))
         end
 
         describe 'given a single feature' do
@@ -291,7 +289,7 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) { }
+              Given(/.*/) {}
             end
 
             define_feature <<-FEATURE
@@ -318,7 +316,7 @@ module Cucumber
             it { expect(@doc.to_s).to match(/Big Mac/) }
             it { expect(@doc.to_s).not_to match(/Things/) }
             it { expect(@doc.to_s).not_to match(/Good|Evil/) }
-            it { expect(@doc.to_s).not_to match(/type="skipped"/)}
+            it { expect(@doc.to_s).not_to match(/type="skipped"/) }
           end
         end
       end

@@ -32,6 +32,7 @@ module Cucumber
         StepActivated,
         TestRunFinished,
         GherkinSourceRead,
+        GherkinSourceParsed,
         TestRunStarted
       )
     end

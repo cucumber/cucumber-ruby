@@ -38,7 +38,7 @@ Feature: Table diffing
               | (+) a | (+) c |
              (Cucumber::MultilineArgument::DataTable::Different)
             ./features/step_definitions/steps.rb:2:in `/the table should be:/'
-            features/tables.feature:3:in `Then the table should be:'
+            features/tables.feature:3:in `the table should be:'
 
       Failing Scenarios:
       cucumber features/tables.feature:2 # Scenario: Extra row

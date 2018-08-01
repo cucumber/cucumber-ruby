@@ -123,7 +123,7 @@ Feature: Nested Steps
       error (RuntimeError)
       ./features/step_definitions/steps2.rb:5:in `/I have a couple turtles/'
       ./features/step_definitions/steps2.rb:2:in `/two turtles/'
-      features/test_feature_1.feature:3:in `Given two turtles'
+      features/test_feature_1.feature:3:in `two turtles'
 
       Failing Scenarios:
       cucumber features/test_feature_1.feature:2 # Scenario: Test Scenario 1
@@ -162,14 +162,14 @@ Feature: Nested Steps
           Given a step that calls an undefined step
             Undefined dynamic step: "this does not exist" (Cucumber::UndefinedDynamicStep)
             ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
-            features/call_undefined_step_from_step_def.feature:4:in `Given a step that calls an undefined step'
+            features/call_undefined_step_from_step_def.feature:4:in `a step that calls an undefined step'
 
         Scenario: Call via another
           Given a step that calls a step that calls an undefined step
             Undefined dynamic step: "this does not exist" (Cucumber::UndefinedDynamicStep)
             ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
             ./features/step_definitions/steps.rb:6:in `/^a step that calls a step that calls an undefined step$/'
-            features/call_undefined_step_from_step_def.feature:7:in `Given a step that calls a step that calls an undefined step'
+            features/call_undefined_step_from_step_def.feature:7:in `a step that calls a step that calls an undefined step'
 
       Failing Scenarios:
       cucumber features/call_undefined_step_from_step_def.feature:3

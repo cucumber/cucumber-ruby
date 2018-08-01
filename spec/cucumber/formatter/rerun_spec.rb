@@ -38,7 +38,7 @@ module Cucumber
           execute [gherkin], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
 
-          expect( io.string ).to eq 'foo.feature:3:6'
+          expect(io.string).to eq 'foo.feature:3:6'
         end
       end
 
@@ -91,6 +91,75 @@ module Cucumber
           config.event_bus.test_run_finished
 
           expect(io.string).to eq ''
+        end
+      end
+
+      context 'with only a flaky scenarios' do
+        class FlakyStepActions < Cucumber::Core::Filter.new
+          def test_case(test_case)
+            failing_test_steps = test_case.test_steps.map do |step|
+              step.with_action { raise Failure }
+            end
+            passing_test_steps = test_case.test_steps.map do |step|
+              step.with_action {}
+            end
+
+            test_case.with_steps(failing_test_steps).describe_to(receiver)
+            test_case.with_steps(passing_test_steps).describe_to(receiver)
+          end
+        end
+
+        context 'with option --no-strict-flaky' do
+          it 'prints nothing' do
+            gherkin = gherkin('foo.feature') do
+              feature do
+                scenario do
+                  step 'flaky'
+                end
+              end
+            end
+
+            Rerun.new(config)
+            execute [gherkin], [FlakyStepActions.new], config.event_bus
+            config.event_bus.test_run_finished
+
+            expect(io.string).to eq ''
+          end
+        end
+        context 'with option --strict-flaky' do
+          let(:config) { Configuration.new(out_stream: io, strict: Core::Test::Result::StrictConfiguration.new([:flaky])) }
+
+          it 'prints the location of the flaky scenario' do
+            foo = gherkin('foo.feature') do
+              feature do
+                scenario do
+                  step 'flaky'
+                end
+              end
+            end
+
+            Rerun.new(config)
+            execute [foo], [FlakyStepActions.new], config.event_bus
+            config.event_bus.test_run_finished
+
+            expect(io.string).to eq 'foo.feature:3'
+          end
+
+          it 'does not include retried failing scenarios more than once' do
+            foo = gherkin('foo.feature') do
+              feature do
+                scenario do
+                  step 'failing'
+                end
+              end
+            end
+
+            Rerun.new(config)
+            execute [foo, foo], [StandardStepActions.new], config.event_bus
+            config.event_bus.test_run_finished
+
+            expect(io.string).to eq 'foo.feature:3'
+          end
         end
       end
     end

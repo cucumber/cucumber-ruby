@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # frozen_string_literal: true
 
 require 'fileutils'
@@ -19,8 +18,8 @@ module Cucumber
     end
   end
 
-  class FileException < Exception
-    attr :path
+  class FileException < RuntimeError
+    attr_reader :path
 
     def initialize(original_exception, path)
       super(original_exception)
@@ -31,7 +30,7 @@ module Cucumber
   class FileNotFoundException < FileException
   end
 
-  class FeatureFolderNotFoundException < Exception
+  class FeatureFolderNotFoundException < RuntimeError
     def initialize(path)
       @path = path
     end
@@ -54,7 +53,6 @@ module Cucumber
     def initialize(configuration = Configuration.default)
       @configuration = Configuration.new(configuration)
       @support_code = SupportCode.new(self, @configuration)
-      @results = Formatter::LegacyApi::Results.new
     end
 
     # Allows you to take an existing runtime and change its configuration
@@ -72,7 +70,7 @@ module Cucumber
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
-      compile features, receiver, filters
+      compile features, receiver, filters, @configuration.event_bus
       @configuration.notify :test_run_finished
     end
 
@@ -82,14 +80,6 @@ module Cucumber
 
     def dry_run?
       @configuration.dry_run?
-    end
-
-    def scenarios(status = nil)
-      @results.scenarios(status)
-    end
-
-    def steps(status = nil)
-      @results.steps(status)
     end
 
     def unmatched_step_definitions
@@ -107,13 +97,13 @@ module Cucumber
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
     def doc_string(string_without_triple_quotes, content_type = '', _line_offset = 0)
-      location = Core::Ast::Location.of_caller
-      Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
+      location = Core::Test::Location.of_caller
+      Core::Test::DocString.new(string_without_triple_quotes, content_type, location)
     end
 
     private
 
-    def fire_after_configuration_hook #:nodoc
+    def fire_after_configuration_hook #:nodoc:
       @support_code.fire_hook(:after_configuration, @configuration)
     end
 
@@ -143,14 +133,12 @@ module Cucumber
       end
 
       def initialize(path)
-        begin
-          @file = File.new(path)
-          set_encoding
-        rescue Errno::EACCES => e
-          raise FileNotFoundException.new(e, File.expand_path(path))
-        rescue Errno::ENOENT
-          raise FeatureFolderNotFoundException.new(path)
-        end
+        @file = File.new(path)
+        set_encoding
+      rescue Errno::EACCES => e
+        raise FileNotFoundException.new(e, File.expand_path(path))
+      rescue Errno::ENOENT
+        raise FeatureFolderNotFoundException, path
       end
 
       def read
@@ -162,7 +150,7 @@ module Cucumber
       def set_encoding
         @file.each do |line|
           if ENCODING_PATTERN =~ line
-            @file.set_encoding $1
+            @file.set_encoding Regexp.last_match(1)
             break
           end
           break unless COMMENT_OR_EMPTY_LINE_PATTERN =~ line
@@ -171,9 +159,6 @@ module Cucumber
       end
     end
 
-    require 'cucumber/formatter/legacy_api/adapter'
-    require 'cucumber/formatter/legacy_api/runtime_facade'
-    require 'cucumber/formatter/legacy_api/results'
     require 'cucumber/formatter/ignore_missing_messages'
     require 'cucumber/formatter/fail_fast'
     require 'cucumber/core/report/summary'
@@ -194,37 +179,24 @@ module Cucumber
 
     def formatters
       @formatters ||=
-        @configuration.formatter_factories do |factory, formatter_options, path_or_io, options|
-          create_formatter(factory, formatter_options, path_or_io, options)
+        @configuration.formatter_factories do |factory, formatter_options, path_or_io|
+          create_formatter(factory, formatter_options, path_or_io)
         end
     end
 
-    def create_formatter(factory, formatter_options, path_or_io, cli_options)
-      if !legacy_formatter?(factory)
-        if accept_options?(factory)
-          return factory.new(@configuration, formatter_options) if path_or_io.nil?
-          return factory.new(@configuration.with_options(out_stream: path_or_io),
-                             formatter_options)
-        else
-          return factory.new(@configuration) if path_or_io.nil?
-          return factory.new(@configuration.with_options(out_stream: path_or_io))
-        end
+    def create_formatter(factory, formatter_options, path_or_io)
+      if accept_options?(factory)
+        return factory.new(@configuration, formatter_options) if path_or_io.nil?
+        factory.new(@configuration.with_options(out_stream: path_or_io),
+                    formatter_options)
+      else
+        return factory.new(@configuration) if path_or_io.nil?
+        factory.new(@configuration.with_options(out_stream: path_or_io))
       end
-      results = Formatter::LegacyApi::Results.new
-      runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-      formatter = factory.new(runtime_facade, path_or_io, cli_options)
-      Formatter::LegacyApi::Adapter.new(
-        Formatter::IgnoreMissingMessages.new(formatter),
-        results, @configuration
-      )
     end
 
     def accept_options?(factory)
       factory.instance_method(:initialize).arity > 1
-    end
-
-    def legacy_formatter?(factory)
-      factory.instance_method(:initialize).arity > 2
     end
 
     def failure?
@@ -237,7 +209,7 @@ module Cucumber
     public :failure?
 
     require 'cucumber/core/test/filters'
-    def filters
+    def filters # rubocop:disable Metrics/AbcSize
       tag_expressions = @configuration.tag_expressions
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
@@ -250,9 +222,7 @@ module Cucumber
         # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
-        @configuration.filters.each do |filter|
-          filters << filter
-        end
+        @configuration.filters.each { |filter| filters << filter }
         unless configuration.dry_run?
           filters << Filters::ApplyAfterStepHooks.new(@support_code)
           filters << Filters::ApplyBeforeHooks.new(@support_code)
@@ -273,7 +243,7 @@ module Cucumber
     end
 
     def install_wire_plugin
-      Cucumber::Wire::Plugin.new(@configuration).install if @configuration.all_files_to_load.any? {|f| f =~ %r{\.wire$} }
+      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
     end
 
     def log

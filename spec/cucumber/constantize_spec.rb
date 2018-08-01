@@ -8,10 +8,10 @@ module Cucumber
   describe Constantize do
     include Constantize
 
-    it 'loads html formatter' do
-      clazz = constantize('Cucumber::Formatter::Html')
+    it 'loads pretty formatter' do
+      clazz = constantize('Cucumber::Formatter::Pretty')
 
-      expect(clazz.name).to eq 'Cucumber::Formatter::Html'
+      expect(clazz.name).to eq 'Cucumber::Formatter::Pretty'
     end
 
     it 'fails to load a made up class' do

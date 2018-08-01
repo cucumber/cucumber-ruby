@@ -10,8 +10,8 @@ module Cucumber
         # * \ becomes \\
         #
         # This is used in the pretty formatter.
-        def escape_cell(s)
-          s.gsub(/\\(?!\|)/, '\\\\\\\\').gsub(/\n/, '\\n').gsub(/\|/, '\\|')
+        def escape_cell(sym)
+          sym.gsub(/\\(?!\|)/, '\\\\\\\\').gsub(/\n/, '\\n').gsub(/\|/, '\\|')
         end
       end
     end

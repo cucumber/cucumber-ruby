@@ -16,7 +16,7 @@ module Cucumber
       let(:stdout) { StringIO.new }
       let(:stderr) { StringIO.new }
       let(:kernel) { double(:kernel) }
-      subject { Main.new(args, stdin, stdout, stderr, kernel)}
+      subject { Main.new(args, stdin, stdout, stderr, kernel) }
 
       describe '#execute!' do
         context 'passed an existing runtime' do
@@ -37,7 +37,7 @@ module Cucumber
           end
 
           it 'uses that runtime for running and reporting results' do
-            expected_results = double('results', :failure? => true)
+            expected_results = double('results', failure?: true)
 
             expect(existing_runtime).to receive(:run!)
             allow(existing_runtime).to receive(:results) { expected_results }
@@ -53,7 +53,7 @@ module Cucumber
           end
 
           it 'exits with error code' do
-            results = double('results', :failure? => false)
+            results = double('results', failure?: false)
 
             allow_any_instance_of(Runtime).to receive(:run!)
             allow_any_instance_of(Runtime).to receive(:results) { results }

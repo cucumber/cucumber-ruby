@@ -1,9 +1,7 @@
-# -*- encoding: utf-8 -*-
-
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
-  s.version     = File.read(File.expand_path('../lib/cucumber/version', __FILE__))
-  s.authors     = ["Aslak Hellesøy", 'Matt Wynne', 'Steve Tooke']
+  s.version     = File.read(File.expand_path('lib/cucumber/version', __dir__))
+  s.authors     = ['Aslak Hellesøy', 'Matt Wynne', 'Steve Tooke']
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
@@ -13,11 +11,11 @@ Gem::Specification.new do |s|
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.2'
   s.add_dependency 'builder', '>= 2.1.2'
-  s.add_dependency 'cucumber-core', '~> 3.1.0'
-  s.add_dependency 'cucumber-expressions', '~> 5.0.14'
+  s.add_dependency 'cucumber-core', '~> 3.2.0'
+  s.add_dependency 'cucumber-expressions', '~> 6.0.1'
   s.add_dependency 'cucumber-wire', '~> 0.0.1'
   s.add_dependency 'diff-lcs', '~> 1.3'
-  s.add_dependency 'gherkin', '~> 5.0'
+  s.add_dependency 'gherkin', '~> 5.1.0'
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.2'
 
@@ -27,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rake', '>= 0.9.2'
   s.add_development_dependency 'rspec', '>= 3.6'
-  s.add_development_dependency 'rubocop', '~> 0.52.1'
+  s.add_development_dependency 'rubocop', '~> 0.58.2'
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
 

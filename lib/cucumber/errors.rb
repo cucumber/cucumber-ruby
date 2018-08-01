@@ -6,13 +6,11 @@ module Cucumber
   # Raised when there is no matching StepDefinition for a step.
   class Undefined < Core::Test::Result::Undefined
     def self.from(result, step_name)
-      if result.is_a?(self)
-        return result.with_message(with_prefix(result.message))
-      end
+      return result.with_message(with_prefix(result.message)) if result.is_a?(self)
 
       begin
-        raise self.new(with_prefix(step_name))
-      rescue => exception
+        raise new(with_prefix(step_name)) # rubocop:disable Style/RaiseArgs
+      rescue StandardError => exception
         return exception
       end
     end
@@ -37,7 +35,7 @@ module Cucumber
   # Raised when a step matches 2 or more StepDefinitions
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions, used_guess)
-      message = String.new
+      message = String.new # rubocop:disable Style/EmptyLiteral
       message << "Ambiguous match of \"#{step_name}\":\n\n"
       message << step_definitions.map(&:backtrace_line).join("\n")
       message << "\n\n"

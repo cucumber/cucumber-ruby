@@ -47,7 +47,7 @@ Feature: Using descriptions to give features context
           Specific examples for an outline are allowed to have
           descriptions, too.
 
-          |  state |
+          | state  |
           | passes |
     """
     When I run `cucumber -q`

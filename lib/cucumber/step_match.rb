@@ -9,7 +9,9 @@ module Cucumber
 
     def initialize(step_definition, step_name, step_arguments)
       raise "step_arguments can't be nil (but it can be an empty array)" if step_arguments.nil?
-      @step_definition, @name_to_match, @step_arguments = step_definition, step_name, step_arguments
+      @step_definition = step_definition
+      @name_to_match = step_name
+      @step_arguments = step_arguments
     end
 
     def args
@@ -21,7 +23,7 @@ module Cucumber
 
     def activate(test_step)
       test_step.with_action(@step_definition.location) do
-        invoke(MultilineArgument.from_core(test_step.source.last.multiline_arg))
+        invoke(MultilineArgument.from_core(test_step.multiline_arg))
       end
     end
 
@@ -46,7 +48,7 @@ module Cucumber
     #
     #   lambda { |param| "[#{param}]" }
     #
-    def format_args(format = lambda {|a| a}, &proc)
+    def format_args(format = ->(a) { a }, &proc)
       replace_arguments(@name_to_match, @step_arguments, format, &proc)
     end
 
@@ -75,7 +77,7 @@ module Cucumber
 
         replacement = if block_given?
                         yield(group.value)
-                      elsif Proc === format
+                      elsif Proc == format.class
                         format.call(group.value)
                       else
                         format % group.value
@@ -95,13 +97,13 @@ module Cucumber
     private
 
     def deep_clone_args
-      Marshal.load( Marshal.dump( args ) )
+      Marshal.load(Marshal.dump(args))
     end
   end
 
   class SkippingStepMatch
     def activate(test_step)
-      return test_step.with_action { raise Core::Test::Result::Skipped.new }
+      test_step.with_action { raise Core::Test::Result::Skipped }
     end
   end
 
@@ -123,8 +125,7 @@ module Cucumber
     end
 
     def file_colon_line
-      raise "No file:line for #{@step}" unless @step.file_colon_line
-      @step.file_colon_line
+      location.to_s
     end
 
     def backtrace_line
@@ -132,7 +133,7 @@ module Cucumber
     end
 
     def text_length
-      @step.text_length
+      @step.text.length
     end
 
     def step_arguments
@@ -141,7 +142,7 @@ module Cucumber
 
     def activate(test_step)
       # noop
-      return test_step
+      test_step
     end
   end
 
@@ -151,7 +152,7 @@ module Cucumber
     end
 
     def activate(test_step)
-      return test_step.with_action { raise @error }
+      test_step.with_action { raise @error }
     end
   end
 end

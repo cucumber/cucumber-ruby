@@ -28,7 +28,7 @@ module Cucumber
     # Raised if there are 2 or more World blocks.
     class MultipleWorld < StandardError
       def initialize(first_proc, second_proc)
-        message = String.new
+        message = String.new # rubocop:disable Style/EmptyLiteral
         message << "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
         message << Glue.backtrace_line(first_proc, 'World') << "\n"
@@ -53,7 +53,8 @@ module Cucumber
       end
 
       def initialize(runtime, configuration)
-        @runtime, @configuration = runtime, configuration
+        @runtime = runtime
+        @configuration = configuration
         @step_definitions = []
         Glue::Dsl.rb_language = self
         @world_proc = @world_modules = nil
@@ -63,11 +64,10 @@ module Cucumber
       end
 
       def step_matches(name_to_match)
-        @step_definitions.reduce([]) do |result, step_definition|
+        @step_definitions.each_with_object([]) do |step_definition, result|
           if (arguments = step_definition.arguments_from(name_to_match))
             result << StepMatch.new(step_definition, name_to_match, arguments)
           end
-          result
         end
       end
 
@@ -96,9 +96,7 @@ module Cucumber
 
         @namespaced_world_modules ||= Hash.new { |h, k| h[k] = [] }
         namespaced_world_modules.each do |namespace, world_module|
-          unless @namespaced_world_modules[namespace].include?(world_module)
-            @namespaced_world_modules[namespace] << world_module
-          end
+          @namespaced_world_modules[namespace] << world_module unless @namespaced_world_modules[namespace].include?(world_module)
         end
       end
 
@@ -135,7 +133,7 @@ module Cucumber
       end
 
       def hooks_for(phase, scenario) #:nodoc:
-        hooks[phase.to_sym].select {|hook| scenario.accept_hook?(hook)}
+        hooks[phase.to_sym].select { |hook| scenario.accept_hook?(hook) }
       end
 
       def unmatched_step_definitions
@@ -153,7 +151,7 @@ module Cucumber
       def create_expression(string_or_regexp)
         return CucumberExpressions::CucumberExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(String)
         return CucumberExpressions::RegularExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(Regexp)
-        raise ArgumentError.new('Expression must be a String or Regexp')
+        raise ArgumentError, 'Expression must be a String or Regexp'
       end
 
       def self.cli_snippet_type_options
@@ -175,12 +173,12 @@ module Cucumber
       end
 
       def hooks
-        @hooks ||= Hash.new {|h, k| h[k] = []}
+        @hooks ||= Hash.new { |h, k| h[k] = [] }
       end
     end
 
     def self.backtrace_line(proc, name)
-      location = Cucumber::Core::Ast::Location.from_source_location(*proc.source_location)
+      location = Cucumber::Core::Test::Location.from_source_location(*proc.source_location)
       "#{location}:in `#{name}'"
     end
   end
