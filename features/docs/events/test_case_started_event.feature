@@ -1,4 +1,3 @@
-@wip
 Feature: Test Case Started Event
 
   This event is fired just before each scenario or scenario outline example row
