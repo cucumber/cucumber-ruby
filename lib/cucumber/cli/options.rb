@@ -366,8 +366,8 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def add_tag(value)
-        warn("Deprecated: Found tags option '#{value}'. Support for '~@tag' will be removed from the next release of Cucumber. Please use 'not @tag' instead.") if value.include?('~')
-        warn("Deprecated: Found tags option '#{value}'. Support for '@tag1,@tag2' will be removed from the next release of Cucumber. Please use '@tag or @tag2' instead.") if value.include?(',')
+        raise("Found tags option '#{value}'. '~@tag' is no longer supported, use 'not @tag' instead.") if value.include?('~')
+        raise("Found tags option '#{value}'. '@tag1,@tag2' is no longer supported, use '@tag or @tag2' instead.") if value.include?(',')
         @options[:tag_expressions] << value.gsub(/(@\w+)(:\d+)?/, '\1')
         add_tag_limits(value)
       end
