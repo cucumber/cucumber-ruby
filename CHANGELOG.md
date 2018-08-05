@@ -55,7 +55,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
-* N/A
+* Code style changes completed as per backlog of Rubocop TODO file. ([#1021](https://github.com/cucumber/cucumber-ruby/issues/1021) [@jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.1.2](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...v3.1.2) (2018-07-13)
 
@@ -136,13 +136,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Fix the printing of newlines in the rerun formatter - a problem introduced in [#1162](https://github.com/cucumber/cucumber-ruby/issues/1162) ([#1207](https://github.com/cucumber/cucumber-ruby/issues/1207) [@brasmusson](https://github.com/brasmusson))
 * Handle the `--retry` option in profiles ([#1050](https://github.com/cucumber/cucumber-ruby/issues/1050) [@brasmusson](https://github.com/brasmusson))
 
-### Improved
-
-* Exclude the legacy_api from rubocop, regenerate Rubocop Todo ([@jaysonesmith](https://github.com/jaysonesmith), [@brasmusson](https://github.com/brasmusson))
-* Review and handle excluded/ignored cops ([#1208](https://github.com/cucumber/cucumber-ruby/pull/1208) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix SymbolProc issues ([#1212](https://github.com/cucumber/cucumber-ruby/pull/1212) [@jaysonesmith](https://github.com/jaysonesmith))
-* Fix TrailingBlankLines ([#1211](https://github.com/cucumber/cucumber-ruby/pull/1211) [@jaysonesmith](https://github.com/jaysonesmith))
-
 ## [3.0.1](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...3.0.1) (2017-09-29)
 
 ### Fixed
@@ -178,12 +171,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Refactor: Extract HTMLBuilder#string_to_embed method to DRY up code ([#1187](https://github.com/cucumber/cucumber-ruby/pulls/1187) [@danascheider](https://github.com/danascheider))
 * As per [#251](https://github.com/cucumber/cucumber/issues/251): renamed History.md to CHANGELOG.md, added contributing message at beginning, and misc formatting. ([#1185](https://github.com/cucumber/cucumber-ruby/issues/1185) [jaysonesmith](https://github.com/jaysonesmith))
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson).
-* Fix Lint/DeprecatedClassMethods ([#1172](https://github.com/cucumber/cucumber-ruby/issues/1172) [jaysonesmith](https://github.com/jaysonesmith))
-* Fix Lint/DuplicateMethods ([#1173](https://github.com/cucumber/cucumber-ruby/issues/1173) [jaysonesmith](https://github.com/jaysonesmith))
-* Fix Metrics/LineLength ([#1175](https://github.com/cucumber/cucumber-ruby/issues/1175), [#1175](https://github.com/cucumber/cucumber-ruby/issues/1175), [#1176](https://github.com/cucumber/cucumber-ruby/issues/1176) [jaysonesmith](https://github.com/jaysonesmith))
-* Fix Style/AlignArray ([#1177](https://github.com/cucumber/cucumber-ruby/issues/1177) [jaysonesmith](https://github.com/jaysonesmith))
-* Fix Style/AndOr ([#1178](https://github.com/cucumber/cucumber-ruby/issues/1178) [jaysonesmith](https://github.com/jaysonesmith))
-* Fix Multiple Cops ([#1179](https://github.com/cucumber/cucumber-ruby/issues/1179) [jaysonesmith](https://github.com/jaysonesmith))
 
 ## [3.0.0.pre.2](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
 
