@@ -37,6 +37,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
+* Remove the support of old style tag expressions.
+  ([#1314](https://github.com/cucumber/cucumber-ruby/pull/1314),
+   [brasmusson](https://github.com/brasmusson))
 * Remove the Legacy API for Formatters.
   ([#1230](https://github.com/cucumber/cucumber-ruby/pull/1230),
    [#839](https://github.com/cucumber/cucumber-ruby/issues/839)
