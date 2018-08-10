@@ -150,13 +150,13 @@ Feature: Around hooks
         block.call
       end
 
-      Around('@one,@two') do |scenario, block|
+      Around('@one or @two') do |scenario, block|
         $hooks_called ||= []
         $hooks_called << 'one or two'
         block.call
       end
 
-      Around('@one', '@two') do |scenario, block|
+      Around('@one and @two') do |scenario, block|
         $hooks_called ||= []
         $hooks_called << 'one and two'
         block.call

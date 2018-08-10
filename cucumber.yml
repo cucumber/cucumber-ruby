@@ -6,7 +6,7 @@ std_opts << " --tags 'not @wip-jruby'" if defined?(JRUBY_VERSION)
 
 wip_opts = "--color -r features".dup
 wip_opts << " --tags @wip" if !defined?(JRUBY_VERSION)
-wip_opts << " --tags @wip,@wip-jruby" if defined?(JRUBY_VERSION)
+wip_opts << " --tags '@wip or @wip-jruby'" if defined?(JRUBY_VERSION)
 %>
 default:     <%= std_opts %> --tags "not @jruby"
 jruby:       <%= std_opts %> --tags "not @wire"
