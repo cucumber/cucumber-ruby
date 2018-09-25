@@ -99,10 +99,10 @@ Feature: JUnit output formatter
       Given this step fails
 
       Message:
-	]]>
+      ]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-	features/one_passing_one_failing.feature:7:in `this step fails']]>
+      ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/one_passing_one_failing.feature:7:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -141,10 +141,10 @@ Feature: JUnit output formatter
       Given this step fails
 
       Message:
-	]]>
+      ]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-	features/some_subdirectory/one_passing_one_failing.feature:7:in `this step fails']]>
+      ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/some_subdirectory/one_passing_one_failing.feature:7:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
@@ -445,10 +445,10 @@ You *must* specify --out DIR for the junit formatter
       Given this step fails
 
       Message:
-	]]>
+      ]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
-	features/one_passing_one_failing.feature:7:in `this step fails']]>
+      ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/one_passing_one_failing.feature:7:in `this step fails']]>
         </failure>
         <system-out>
           <![CDATA[]]>
