@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'gherkin/token_scanner'
-require 'gherkin/token_matcher'
-require 'gherkin/parser'
+require 'gherkin/gherkin'
 require 'gherkin/dialect'
 
 module Cucumber
@@ -15,12 +13,13 @@ module Cucumber
 
       def parse(text)
         dialect = ::Gherkin::Dialect.for(@language)
-        token_matcher = ::Gherkin::TokenMatcher.new(@language)
-        token_scanner = ::Gherkin::TokenScanner.new(feature_header(dialect) + text)
-        parser = ::Gherkin::Parser.new
-        gherkin_document = parser.parse(token_scanner, token_matcher)
+        gherkin_document = nil
+        messages = ::Gherkin::Gherkin.from_source('dummy', feature_header(dialect) + text, default_dialect: @language, include_source: false, include_pickles: false)
+        messages.each do |message|
+          gherkin_document = message.gherkinDocument.to_hash unless message.gherkinDocument.nil?
+        end
 
-        @builder.steps(gherkin_document[:feature][:children][0][:steps])
+        @builder.steps(gherkin_document[:feature][:children][0][:scenario][:steps])
       end
 
       def feature_header(dialect)

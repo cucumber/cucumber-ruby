@@ -18,6 +18,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Use Gherkin v6.
+  ([#1313](https://github.com/cucumber/cucumber-ruby/pull/1313)
+   [brasmusson](https://github.com/brasmusson))
 * Do not apply Before and After Hooks to Test Cases with no Test Steps.
   ([#1311](https://github.com/cucumber/cucumber-ruby/pull/1311)
    [brasmusson](https://github.com/brasmusson))

@@ -192,7 +192,7 @@ module Cucumber
       def feature_has_background?
         feature_children = gherkin_document[:feature][:children]
         return false if feature_children.empty?
-        feature_children[0][:type] == :Background
+        !feature_children.first[:background].nil?
       end
 
       def print_step_header(test_case)
@@ -296,7 +296,7 @@ module Cucumber
 
       def print_background_data
         @io.puts
-        background = gherkin_document[:feature][:children][0]
+        background = gherkin_document[:feature][:children].first[:background]
         @source_indent = calculate_source_indent_for_ast_node(background) if options[:source]
         print_comments(background[:location][:line], 2)
         print_background_line(background)
@@ -355,12 +355,10 @@ module Cucumber
 
       def print_multiline_argument(test_step, result, indent)
         step = step_source(test_step).step
-        multiline_arg = step[:argument]
-        return unless multiline_arg
-        if multiline_arg[:type] == :DocString
-          print_doc_string(multiline_arg[:content], result.to_sym, indent)
-        elsif multiline_arg[:type] == :DataTable
-          print_data_table(step[:argument], result.to_sym, indent)
+        if !step[:doc_string].nil?
+          print_doc_string(step[:doc_string][:content], result.to_sym, indent)
+        elsif !step[:data_table].nil?
+          print_data_table(step[:data_table], result.to_sym, indent)
         end
       end
 
@@ -371,7 +369,7 @@ module Cucumber
         end
       end
 
-      def print_outline_data(scenario_outline) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      def print_outline_data(scenario_outline) # rubocop:disable Metrics/AbcSize
         print_comments(scenario_outline[:location][:line], 2)
         print_tags(scenario_outline[:tags], 2)
         @source_indent = calculate_source_indent_for_ast_node(scenario_outline) if options[:source]
@@ -387,8 +385,8 @@ module Cucumber
           end
           @io.puts
           next if options[:no_multiline]
-          print_doc_string(step[:argument][:content], :skipped, 6) if step[:argument] && step[:argument][:type] == :DocString
-          print_data_table(step[:argument], :skipped, 6) if step[:argument] && step[:argument][:type] == :DataTable
+          print_doc_string(step[:doc_string][:content], :skipped, 6) unless step[:doc_string].nil?
+          print_data_table(step[:data_table], :skipped, 6) unless step[:data_table].nil?
         end
         @io.flush
       end
@@ -405,8 +403,8 @@ module Cucumber
         print_keyword_name(examples[:keyword], examples[:name], 4)
         print_description(examples[:description])
         unless options[:expand]
-          print_comments(examples[:tableHeader][:location][:line], 6)
-          @io.puts(gherkin_source.split("\n")[examples[:tableHeader][:location][:line] - 1].strip.indent(6))
+          print_comments(examples[:table_header][:location][:line], 6)
+          @io.puts(gherkin_source.split("\n")[examples[:table_header][:location][:line] - 1].strip.indent(6))
         end
         @io.flush
       end

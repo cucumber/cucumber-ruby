@@ -32,12 +32,12 @@ Feature: Scenario outlines --expand option
 
           Examples: 
 
-            Scenario: | blue | blue | right |
+            Example: | blue | blue | right |
               Given the secret code is blue
               When I guess blue
               Then I am right
 
-            Scenario: | red | blue | wrong |
+            Example: | red | blue | wrong |
               Given the secret code is red
               When I guess blue
               Then I am wrong

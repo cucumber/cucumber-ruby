@@ -12,7 +12,7 @@ module Cucumber
       end
 
       def on_gherkin_source_parsed(event)
-        @gherkin_documents[event.uri] = event.gherkin_document
+        @gherkin_documents[event.gherkin_document[:uri]] = event.gherkin_document
       end
 
       def gherkin_document(uri)
@@ -21,13 +21,13 @@ module Cucumber
 
       def scenario_source(test_case)
         uri = test_case.location.file
-        @test_case_lookups[uri] ||= create_test_case_lookup(gherkin_document(uri))
+        @test_case_lookups[uri] ||= TestCaseLookupBuilder.new(gherkin_document(uri)).lookup_hash
         @test_case_lookups[uri][test_case.location.lines.max]
       end
 
       def step_source(test_step)
         uri = test_step.location.file
-        @test_step_lookups[uri] ||= create_test_step_lookup(gherkin_document(uri))
+        @test_step_lookups[uri] ||= TestStepLookupBuilder.new(gherkin_document(uri)).lookup_hash
         @test_step_lookups[uri][test_step.location.lines.min]
       end
 
@@ -61,52 +61,99 @@ module Cucumber
       private
 
       def step_keyword_lookup(uri)
-        @step_keyword_lookups[uri] ||= create_keyword_lookup(gherkin_document(uri))
+        @step_keyword_lookups[uri] ||= KeywordLookupBuilder.new(gherkin_document(uri)).lookup_hash
       end
 
-      def create_test_case_lookup(gherkin_document)
-        feature = gherkin_document[:feature]
-        lookup_hash = {}
-        feature[:children].each do |child|
-          if child[:type] == :Scenario
-            lookup_hash[child[:location][:line]] = ScenarioSource.new(:Scenario, child)
-          elsif child[:type] == :ScenarioOutline
-            child[:examples].each do |examples|
-              examples[:tableBody].each do |row|
-                lookup_hash[row[:location][:line]] = ScenarioOutlineSource.new(:ScenarioOutline, child, examples, row)
+      class TestCaseLookupBuilder
+        attr_reader :lookup_hash
+
+        def initialize(gherkin_document)
+          @lookup_hash = {}
+          process_scenario_container(gherkin_document[:feature])
+        end
+
+        private
+
+        def process_scenario_container(container)
+          container[:children].each do |child|
+            if !child[:rule].nil?
+              process_scenario_container(child[:rule])
+            elsif !child[:scenario].nil?
+              if child[:scenario][:examples].empty?
+                @lookup_hash[child[:scenario][:location][:line]] = ScenarioSource.new(:Scenario, child[:scenario])
+
+              else
+                child[:scenario][:examples].each do |examples|
+                  examples[:table_body].each do |row|
+                    @lookup_hash[row[:location][:line]] = ScenarioOutlineSource.new(:ScenarioOutline, child[:scenario], examples, row)
+                  end
+                end
               end
             end
           end
         end
-        lookup_hash
       end
 
-      def create_test_step_lookup(gherkin_document)
-        feature = gherkin_document[:feature]
-        lookup_hash = {}
-        feature[:children].each do |child|
-          child[:steps].each do |step|
-            lookup_hash[step[:location][:line]] = StepSource.new(:Step, step)
+      class TestStepLookupBuilder
+        attr_reader :lookup_hash
+
+        def initialize(gherkin_document)
+          @lookup_hash = {}
+          process_scenario_container(gherkin_document[:feature])
+        end
+
+        private
+
+        def process_scenario_container(container)
+          container[:children].each do |child|
+            if !child[:rule].nil?
+              process_scenario_container(child[:rule])
+            elsif !child[:scenario].nil?
+              child[:scenario][:steps].each do |step|
+                @lookup_hash[step[:location][:line]] = StepSource.new(:Step, step)
+              end
+            elsif !child[:background].nil?
+              child[:background][:steps].each do |step|
+                @lookup_hash[step[:location][:line]] = StepSource.new(:Step, step)
+              end
+            end
           end
         end
-        lookup_hash
       end
 
       KeywordSearchNode = Struct.new(:keyword, :previous_node)
 
-      def create_keyword_lookup(gherkin_document)
-        lookup = {}
-        original_previous_node = nil
-        gherkin_document[:feature][:children].each do |child|
-          previous_node = original_previous_node
-          child[:steps].each do |step|
-            node = KeywordSearchNode.new(step[:keyword], previous_node)
-            lookup[step[:location][:line]] = node
-            previous_node = node
-          end
-          original_previous_node = previous_node if child[:type] == :Background
+      class KeywordLookupBuilder
+        attr_reader :lookup_hash
+
+        def initialize(gherkin_document)
+          @lookup_hash = {}
+          process_scenario_container(gherkin_document[:feature], nil)
         end
-        lookup
+
+        private
+
+        def process_scenario_container(container, original_previous_node)
+          container[:children].each do |child|
+            previous_node = original_previous_node
+            if !child[:rule].nil?
+              process_scenario_container(child[:rule], original_previous_node)
+            elsif !child[:scenario].nil?
+              child[:scenario][:steps].each do |step|
+                node = KeywordSearchNode.new(step[:keyword], previous_node)
+                @lookup_hash[step[:location][:line]] = node
+                previous_node = node
+              end
+            elsif !child[:background].nil?
+              child[:background][:steps].each do |step|
+                node = KeywordSearchNode.new(step[:keyword], previous_node)
+                @lookup_hash[step[:location][:line]] = node
+                previous_node = node
+                original_previous_node = previous_node
+              end
+            end
+          end
+        end
       end
     end
   end
