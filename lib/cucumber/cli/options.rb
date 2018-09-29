@@ -13,6 +13,7 @@ module Cucumber
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
+        'dots'        => ['Cucumber::Formatter::Dots',        'Simple progress output to console'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
         'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" \
                                                               "#{INDENT}The slowest step definitions (with duration) are\n" \

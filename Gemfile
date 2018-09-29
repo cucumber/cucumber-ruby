@@ -21,3 +21,5 @@ gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUM
 gem 'gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
 
 gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_MESSAGES_RUBY']
+
+gem 'cucumber-formatter-dots', path: ENV['CUCUMBER_FORMATTER_DOTS'] if ENV['CUCUMBER_FORMATTER_DOTS']
