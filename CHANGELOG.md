@@ -61,6 +61,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([#1310](https://github.com/cucumber/cucumber-ruby/pull/1310)
    [brasmusson](https://github.com/brasmusson))
 
+### Added
+
+* Added new formatter option: cucumber-formatter-dots. Run with `--format dots` This is the first step of a larger strategy to move the formatters to a new architecture where they delegate to shared executables via messages.
+
 ### Improved
 
 * Code style changes completed as per backlog of Rubocop TODO file. ([#1021](https://github.com/cucumber/cucumber-ruby/issues/1021) [@jaysonesmith](https://github.com/jaysonesmith))
