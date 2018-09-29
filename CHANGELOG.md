@@ -10,11 +10,28 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git (targeting 4.0.0)](https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...master) (Not released)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...master) (Not released)
 
 ### Added
 
-* N/A
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Added
+
+### Improved
+
+## [4.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...v4.0.0.rc.1) (2018-09-29)
+
+### Added
+
+* Added support for new `Rule` keyword. [Read more here.](https://github.com/cucumber/cucumber/blob/master/gherkin/CHANGELOG.md#6013---2018-09-25)
+* Added new `dots` formatter. This is the first step of a larger strategy to move the formatters to a new architecture where they delegate to shared executables via messages.
 
 ### Changed
 
@@ -33,10 +50,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Let the Pretty Formatter use events.
   ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305)
    [brasmusson](https://github.com/brasmusson))
-
-### Deprecated
-
-* N/A
 
 ### Removed
 
@@ -60,10 +73,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Let the Rerun Formatter handle flaky scenarios.
   ([#1310](https://github.com/cucumber/cucumber-ruby/pull/1310)
    [brasmusson](https://github.com/brasmusson))
-
-### Added
-
-* Added new formatter option: cucumber-formatter-dots. Run with `--format dots` This is the first step of a larger strategy to move the formatters to a new architecture where they delegate to shared executables via messages.
 
 ### Improved
 
