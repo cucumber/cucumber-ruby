@@ -8,6 +8,15 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.homepage    = 'https://cucumber.io/'
   s.platform    = Gem::Platform::RUBY
+
+  s.metadata    = {
+                    'bug_tracker_uri'   => 'https://github.com/cucumber/cucumber-ruby/issues',
+                    'changelog_uri'     => 'https://github.com/cucumber/cucumber-ruby/blob/master/CHANGELOG.md',
+                    'documentation_uri' => 'https://www.rubydoc.info/github/cucumber/cucumber-ruby/',
+                    'mailing_list_uri'  => 'https://groups.google.com/forum/#!forum/cukes',
+                    'source_code_uri'   => 'https://github.com/cucumber/cucumber-ruby',
+                  }
+
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.2'
   s.add_dependency 'builder', '>= 2.1.2'
