@@ -20,7 +20,7 @@ module Cucumber::Formatter
 
       context 'when passed :stderr' do
         before :each do
-          @stderr = $stdout
+          @stderr = $stderr
         end
 
         it 'wraps $stderr' do
