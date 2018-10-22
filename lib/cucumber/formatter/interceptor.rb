@@ -18,19 +18,6 @@ module Cucumber
           end
         end
 
-        # @deprecated use #buffer_string
-        def buffer
-          require 'cucumber/deprecate.rb'
-          Cucumber.deprecate(
-            'Use Cucumber::Formatter::Interceptor::Pipe#buffer_string instead',
-            'Cucumber::Formatter::Interceptor::Pipe#buffer',
-            '3.99'
-          )
-          lock.synchronize do
-            return @buffer.string.lines
-          end
-        end
-
         def buffer_string
           lock.synchronize do
             return @buffer.string.dup
