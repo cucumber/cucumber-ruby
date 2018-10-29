@@ -50,6 +50,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Let the Pretty Formatter use events.
   ([#1305](https://github.com/cucumber/cucumber-ruby/pull/1305)
    [brasmusson](https://github.com/brasmusson))
+* Use single quotes in generated template steps ([#1323](https://github.com/cucumber/cucumber-ruby/pull/1323) [acant](https://github.com/acant))
 
 ### Removed
 
