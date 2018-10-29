@@ -860,12 +860,12 @@ OUTPUT
           FEATURE
 
           it "containes snippets with 'And' or 'But' replaced by previous step name" do
-            expect(@out.string).to include('Given("there are bananas and apples")')
-            expect(@out.string).to include('Given("other monkeys are around")')
-            expect(@out.string).to include('When("one monkey eats a banana")')
-            expect(@out.string).to include('When("the other monkeys eat all the apples")')
-            expect(@out.string).to include('Then("bananas remain")')
-            expect(@out.string).to include('Then("there are no apples left")')
+            expect(@out.string).to include("Given('there are bananas and apples')")
+            expect(@out.string).to include("Given('other monkeys are around')")
+            expect(@out.string).to include("When('one monkey eats a banana')")
+            expect(@out.string).to include("When('the other monkeys eat all the apples')")
+            expect(@out.string).to include("Then('bananas remain')")
+            expect(@out.string).to include("Then('there are no apples left')")
           end
         end
 
@@ -882,12 +882,12 @@ OUTPUT
               * there are no apples left
           FEATURE
           it "replaces the first step with 'Given'" do
-            expect(@out.string).to include('Given("there are bananas and apples")')
+            expect(@out.string).to include("Given('there are bananas and apples')")
           end
           it "uses actual keywords as the 'previous' keyword for future replacements" do
-            expect(@out.string).to include('Given("other monkeys are around")')
-            expect(@out.string).to include('When("the other monkeys eat all the apples")')
-            expect(@out.string).to include('Then("there are no apples left")')
+            expect(@out.string).to include("Given('other monkeys are around')")
+            expect(@out.string).to include("When('the other monkeys eat all the apples')")
+            expect(@out.string).to include("Then('there are no apples left')")
           end
         end
 
@@ -904,7 +904,7 @@ OUTPUT
             Given('this step passes') {}
           end
           it 'uses actual keyword of the previous passing step for the undefined step' do
-            expect(@out.string).to include('Then("this step is undefined")')
+            expect(@out.string).to include("Then('this step is undefined')")
           end
         end
 
@@ -924,8 +924,8 @@ OUTPUT
             Given('this step passes') {}
           end
           it "uses 'Given' as actual keyword the step in each scenario" do
-            expect(@out.string).to include('Given("this step is undefined")')
-            expect(@out.string).to include('Given("this step is also undefined")')
+            expect(@out.string).to include("Given('this step is undefined')")
+            expect(@out.string).to include("Given('this step is also undefined')")
           end
         end
 
@@ -939,7 +939,7 @@ OUTPUT
               AN I EAT CUCUMBRZ
           FEATURE
           it 'uses actual keyword of the previous passing step for the undefined step' do
-            expect(@out.string).to include('ICANHAZ("I EAT CUCUMBRZ")')
+            expect(@out.string).to include("ICANHAZ('I EAT CUCUMBRZ')")
           end
         end
       end
