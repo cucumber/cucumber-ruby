@@ -189,10 +189,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def dry_run_msg
-        [
-          'Invokes formatters without executing the steps.',
-          'This also omits the loading of your support/env.rb file if it exists.'
-        ]
+        ['Invokes formatters without executing the steps.']
       end
 
       def exclude_msg
