@@ -168,9 +168,13 @@ module Cucumber
 
     def support_to_load
       support_files = all_files_to_load.select { |f| f =~ %r{/support/} }
+
+      # env_files are separated from other_files so we can ensure env files
+      # load first.
+      #
       env_files = support_files.select { |f| f =~ %r{/support/env\..*} }
       other_files = support_files - env_files
-      @options[:dry_run] ? other_files : env_files + other_files
+      env_files + other_files
     end
 
     def all_files_to_load
