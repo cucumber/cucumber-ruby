@@ -59,7 +59,7 @@ Feature: #{name}
   end
 
   def features
-    in_current_dir do
+    cd('.') do
       Dir['features/*.feature']
     end
   end
