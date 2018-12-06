@@ -3,7 +3,7 @@
 # override aruba to filter out some stuff
 module NormaliseArubaOutput
   def all_stdout
-    normalise_output(super)
+    all_commands.map(&:output).join("\n")
   end
 
   def sanitize_text(text)
