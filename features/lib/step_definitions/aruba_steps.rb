@@ -17,7 +17,7 @@ Then('{string} should be required') do |file_name|
 end
 
 Then('it fails before running features with:') do |expected|
-  assert_matching_output("\\A#{expected}", all_stdout)
+  expect(all_stdout).to match(/\A#{expected}/)
   step 'it should fail'
 end
 
