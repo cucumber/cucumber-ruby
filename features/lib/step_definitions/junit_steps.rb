@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Then('the junit output file {string} should contain:') do |actual_file, text|
-  actual = IO.read(current_dir + '/' + actual_file)
+  actual = IO.read(expand_path('.') + '/' + actual_file)
   actual = replace_junit_time(actual)
   expect(actual).to eq text
 end
