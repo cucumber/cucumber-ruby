@@ -9,9 +9,7 @@ require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
 require 'cucumber/rake/task'
-Cucumber::Rake::Task.new do |t|
-  t.profile = 'ruby' if Cucumber::RUBY
-end
+Cucumber::Rake::Task.new
 
 default_tasks = %i[spec cucumber rubocop]
 
