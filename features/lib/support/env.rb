@@ -6,12 +6,13 @@ require 'aruba/spawn_process'
 require 'cucumber/cli/main'
 
 Before('@spawn') do
-  Aruba.process = Aruba::SpawnProcess
+  aruba.config.command_launcher = :spawn
+  aruba.config.main_class = NilClass
 end
 
 Before('not @spawn') do
-  Aruba::InProcess.main_class = Cucumber::Cli::Main
-  Aruba.process = Aruba::InProcess
+  aruba.config.command_launcher = :in_process
+  aruba.config.main_class = Cucumber::Cli::Main
 end
 
 Before do
