@@ -5,5 +5,5 @@ Then(/^it should (pass|fail) with JSON:$/) do |pass_fail, json|
   expected = MultiJson.load(json)
 
   expect(actual).to eq expected
-  assert_success(pass_fail == 'pass')
+  step "it should #{pass_fail}"
 end
