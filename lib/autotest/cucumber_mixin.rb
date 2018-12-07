@@ -80,10 +80,10 @@ module Autotest::CucumberMixin
         open("| #{cmd}", 'r') do |f| # rubocop:disable Security/Open
           until f.eof?
             c = f.getc || break
-            put_command(c)
+            print(c)
             line << c
             next unless c == "\n"
-            results << join_line
+            results << line.join
             line.clear
           end
         end
@@ -94,14 +94,6 @@ module Autotest::CucumberMixin
       self.tainted = true unless features_to_run == ''
     end
     hook :ran_features
-  end
-
-  def put_command(cmd)
-    RUBY_VERSION >= '1.9' ? print(cmd) : putcmd(c)
-  end
-
-  def join_line
-    RUBY_VERSION >= '1.9' ? line.join : line.pack('c*')
   end
 
   def make_cucumber_cmd(features_to_run, _dirty_features_filename)
