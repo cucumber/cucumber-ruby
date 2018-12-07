@@ -108,7 +108,7 @@ module Cucumber
       end
 
       def to_hash
-        Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
+        Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream, seed: seed)
       end
 
       private

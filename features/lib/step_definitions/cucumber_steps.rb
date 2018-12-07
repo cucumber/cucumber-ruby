@@ -66,6 +66,20 @@ When(/^I run the feature with the (\w+) formatter$/) do |formatter|
   run_feature features.first, formatter
 end
 
+When(/^I rerun the previous command with the same seed$/) do
+  previous_seed = last_command_started.output.match(/with seed (\d+)/)[1]
+  second_command = all_commands.last.commandline.gsub(/random/, "random:#{previous_seed}")
+
+  step "I run `#{second_command}`"
+end
+
+Then(/the output of both commands should be the same/) do
+  first_output = all_commands.first.output.gsub(/\d+m\d+\.\d+s/, '')
+  last_output = all_commands.last.output.gsub(/\d+m\d+\.\d+s/, '')
+
+  expect(first_output).to eq(last_output)
+end
+
 module CucumberHelper
   def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
     run_simple "#{Cucumber::BINARY} #{filename} --format #{formatter}", false
