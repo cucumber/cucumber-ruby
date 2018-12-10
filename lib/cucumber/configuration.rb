@@ -54,7 +54,7 @@ module Cucumber
     end
 
     def seed
-      Integer(@options[:seed] || rand(0xFFFF))
+      @options[:seed]
     end
 
     def dry_run?
