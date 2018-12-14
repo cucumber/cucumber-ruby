@@ -117,7 +117,7 @@ jobs:
 
   "jruby":
     docker:
-       - image: circleci/jruby:9.2.0.0-jdk
+       - image: circleci/jruby:9.2.5-jdk
     working_directory: ~/repo
     steps:
       - checkout
