@@ -13,7 +13,7 @@ jobs:
       - run: git push --force cucumber-pro $CIRCLE_BRANCH
   "ruby-2.6":
     docker:
-       - image: circleci/ruby:2.6-rc
+       - image: circleci/ruby:2.6
     working_directory: ~/repo
     steps:
       - checkout
@@ -30,7 +30,8 @@ jobs:
           key: bundle-{{ checksum "cucumber.gemspec" }}
       - run:
           name: Run Rake
-          command: bundle exec rake || echo "Ignoring failure as Ruby 2.6 support is 'optional' at this point in time."
+          command: bundle exec rake
+
   "ruby-2.5":
     docker:
        - image: circleci/ruby:2.5.1
@@ -141,6 +142,7 @@ workflows:
   build:
     jobs:
       # Keep lowest ruby-* version in sync with cucumber.gemspec & .rubocop.yml
+      - "ruby-2.6"
       - "ruby-2.5"
       - "ruby-2.4"
       - "ruby-2.3"
