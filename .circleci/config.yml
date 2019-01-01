@@ -20,6 +20,8 @@ jobs:
       - restore_cache:
           keys:
           - bundle-{{ checksum "cucumber.gemspec" }}
+      # See https://github.com/protocolbuffers/protobuf/issues/5161
+      - run: "gem install google-protobuf --platform=ruby"
       - run:
           name: install dependencies
           command: |
