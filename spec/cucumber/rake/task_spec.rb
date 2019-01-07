@@ -7,13 +7,14 @@ require 'rake'
 module Cucumber
   module Rake
     describe Task do
-      describe '@task_name' do
-        context 'has read access to task name' do
-          it { expect(subject.respond_to? :task_name).to be true }
+      describe '#task_name' do
+        it 'can be read' do
+          expect(subject.task_name).to eq('cucumber')
         end
-        context 'has no write access to task name' do
-          it { expect(subject.respond_to? "#{:task_name}=").to be false }
-        end
+      end
+
+      describe '#task_name=' do
+        it { is_expected.not_to respond_to(:task_name=) }
       end
 
       describe '#cucumber_opts' do
