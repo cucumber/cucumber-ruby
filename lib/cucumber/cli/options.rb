@@ -306,11 +306,13 @@ Specify SEED to reproduce the shuffling from a previous run.
         [
           'Require files before executing the features. If this',
           'option is not specified, all *.rb files that are',
-          'siblings or below the features will be loaded auto-',
+          'siblings of or below the features will be loaded auto-',
           'matically. Automatic loading is disabled when this',
-          'option is specified, and all loading becomes explicit.',
-          'Files under directories named "support" are always',
-          'loaded first.',
+          'option is specified; all loading becomes explicit.',
+          'Files in directories named "support" are still always',
+          'loaded first when their parent directories are',
+          'required or if the "support" directoires themselves are',
+          'explicitly required.',
           'This option can be specified multiple times.'
         ]
       end
