@@ -39,6 +39,27 @@ module Cucumber
         ]
       end
 
+      it 'features/support/env.rb is loaded before any other features/**/support/env.rb file' do
+        configuration = Configuration.new
+        given_the_following_files(
+          '/features/foo/support/env.rb',
+          '/features/foo/support/a_file.rb',
+          '/features/foo/bar/support/env.rb',
+          '/features/foo/bar/support/a_file.rb',
+          '/features/support/a_file.rb',
+          '/features/support/env.rb'
+        )
+
+        expect(configuration.support_to_load).to eq [
+          '/features/support/env.rb',
+          '/features/foo/support/env.rb',
+          '/features/foo/bar/support/env.rb',
+          '/features/support/a_file.rb',
+          '/features/foo/support/a_file.rb',
+          '/features/foo/bar/support/a_file.rb'
+        ]
+      end
+
       it 'requires step defs in vendor/{plugins,gems}/*/cucumber/*.rb' do
         given_the_following_files('/vendor/gems/gem_a/cucumber/bar.rb',
                                   '/vendor/plugins/plugin_a/cucumber/foo.rb')
