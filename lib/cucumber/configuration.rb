@@ -174,7 +174,7 @@ module Cucumber
       #
       env_files = support_files.select { |f| f =~ %r{/support/env\..*} }
       other_files = support_files - env_files
-      env_files + other_files
+      env_files.reverse + other_files.reverse
     end
 
     def all_files_to_load
