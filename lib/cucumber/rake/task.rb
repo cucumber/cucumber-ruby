@@ -132,6 +132,9 @@ module Cucumber
       # Note that this attribute has no effect if you don't run in forked mode.
       attr_accessor :bundler
 
+      # Name of the running task
+      attr_reader :task_name
+
       # Define Cucumber Rake task
       def initialize(task_name = 'cucumber', desc = 'Run Cucumber features')
         @task_name = task_name
