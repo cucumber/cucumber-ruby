@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.2'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'cucumber-core', '~> 4.0'
-  s.add_dependency 'cucumber-expressions', '~> 6.0', '>= 6.0.1'
+  s.add_dependency 'cucumber-expressions', '~> 7.0.0'
   s.add_dependency 'cucumber-formatter-dots', '~> 1.0'
   s.add_dependency 'cucumber-wire', '~> 1.0'
   s.add_dependency 'diff-lcs', '~> 1.3'
