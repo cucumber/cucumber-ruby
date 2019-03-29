@@ -680,7 +680,7 @@ all.
 * Upgrade Gherkin version to remove warnings when running on JRuby. ([#393](https://github.com/cucumber/cucumber-ruby/issues/393) Oleg Sukhodolsky)
 * Do not use TagExpression.eval() which is deprecated in Gherkin 2.11.7 ([#420](https://github.com/cucumber/cucumber-ruby/issues/420) Oleg Sukhodolsky)
 
-## 1.2.4
+## 1.2.4
 
 Yanked. See ([#428](https://github.com/cucumber/cucumber-ruby/issues/428)).
 
