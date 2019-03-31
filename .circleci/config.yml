@@ -13,7 +13,7 @@ jobs:
       - run: git push --force cucumber-pro $CIRCLE_BRANCH
   "ruby-2.6":
     docker:
-       - image: circleci/ruby:2.6-rc
+       - image: circleci/ruby:2.6
     working_directory: ~/repo
     steps:
       - checkout
@@ -33,7 +33,7 @@ jobs:
           command: bundle exec rake || echo "Ignoring failure as Ruby 2.6 support is 'optional' at this point in time."
   "ruby-2.5":
     docker:
-       - image: circleci/ruby:2.5.1
+       - image: circleci/ruby:2.5
     working_directory: ~/repo
     steps:
       - checkout
@@ -54,7 +54,7 @@ jobs:
 
   "ruby-2.4":
     docker:
-       - image: circleci/ruby:2.4.4
+       - image: circleci/ruby:2.4
     working_directory: ~/repo
     steps:
       - checkout
@@ -75,7 +75,7 @@ jobs:
 
   "ruby-2.3":
     docker:
-       - image: circleci/ruby:2.3.7
+       - image: circleci/ruby:2.3
     working_directory: ~/repo
     steps:
       - checkout
@@ -93,31 +93,9 @@ jobs:
       - run:
           name: Run Rake
           command: bundle exec rake
-
-  "ruby-2.2":
+  "jruby-9.2":
     docker:
-       - image: circleci/ruby:2.2.10
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
-
-  "jruby":
-    docker:
-       - image: circleci/jruby:9.2.5-jdk
+       - image: circleci/jruby:9.2-jdk
     working_directory: ~/repo
     steps:
       - checkout
@@ -141,9 +119,9 @@ workflows:
   build:
     jobs:
       # Keep lowest ruby-* version in sync with cucumber.gemspec & .rubocop.yml
+      - "ruby-2.6"
       - "ruby-2.5"
       - "ruby-2.4"
       - "ruby-2.3"
-      - "ruby-2.2"
-      - "jruby"
+      - "jruby-9.2"
       - publish
