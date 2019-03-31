@@ -42,7 +42,7 @@ module Cucumber
 
           define_steps do
             When(/^puts is called twice for the same variable$/) do
-              foo = String.new('a')
+              foo = +'a'
               puts foo
               foo.upcase!
               puts foo

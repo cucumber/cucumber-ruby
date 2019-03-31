@@ -6,7 +6,7 @@ require 'cucumber/glue/registry_and_more'
 
 module Cucumber
   describe StepMatch do
-    WORD = '[[:word:]]'.freeze
+    WORD = '[[:word:]]'
 
     before do
       @registry = Glue::RegistryAndMore.new(nil, Configuration.new)

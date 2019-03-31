@@ -27,7 +27,7 @@ module Cucumber
           if check_arity && !cucumber_compatible_arity?(args, block)
             world.instance_exec do
               ari = block.arity
-              ari = ari < 0 ? (ari.abs - 1).to_s + '+' : ari
+              ari = ari.negative? ? (ari.abs - 1).to_s + '+' : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
               raise ArityMismatchError, "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
@@ -40,7 +40,7 @@ module Cucumber
 
       def self.cucumber_compatible_arity?(args, block)
         return true if block.arity == args.length
-        if block.arity < 0
+        if block.arity.negative?
           return true if args.length >= (block.arity.abs - 1)
         end
         false

@@ -131,6 +131,9 @@ Style/Documentation:
 Style/FormatStringToken:
   EnforcedStyle: annotated
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 # Slashes are by far the most used form of regex values in the project.
 # Rubocop doesn't handle all cases well (currently), so this cop has been
 # disabled in some cases.

@@ -68,11 +68,10 @@ module Cucumber
         'tag'       => 'cyan'
       )
 
-      if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
-        ENV['CUCUMBER_COLORS'].split(':').each do |pair|
-          a = pair.split('=')
-          ALIASES[a[0]] = a[1]
-        end
+      # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
+      ENV['CUCUMBER_COLORS']&.split(':')&.each do |pair|
+        a = pair.split('=')
+        ALIASES[a[0]] = a[1]
       end
 
       # Eval to define the color-named methods required by Term::ANSIColor.

@@ -43,12 +43,12 @@ module Cucumber
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
       end) + FORMAT_HELP_MSG
-      PROFILE_SHORT_FLAG = '-p'.freeze
-      NO_PROFILE_SHORT_FLAG = '-P'.freeze
-      PROFILE_LONG_FLAG = '--profile'.freeze
-      NO_PROFILE_LONG_FLAG = '--no-profile'.freeze
-      FAIL_FAST_FLAG = '--fail-fast'.freeze
-      RETRY_FLAG = '--retry'.freeze
+      PROFILE_SHORT_FLAG = '-p'
+      NO_PROFILE_SHORT_FLAG = '-P'
+      PROFILE_LONG_FLAG = '--profile'
+      NO_PROFILE_LONG_FLAG = '--no-profile'
+      FAIL_FAST_FLAG = '--fail-fast'
+      RETRY_FLAG = '--retry'
       OPTIONS_WITH_ARGS = [
         '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
         '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',

@@ -98,6 +98,7 @@ module Cucumber
       end
 
       def exception_message_string(e, indent)
+        # rubocop:disable Performance/UnfreezeString
         message = "#{e.message} (#{e.class})".dup.force_encoding('UTF-8')
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
@@ -106,7 +107,7 @@ module Cucumber
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
       def linebreaks(msg, max)
-        return msg unless max && max > 0
+        return msg unless max&.positive?
         msg.gsub(/.{1,#{max}}(?:\s|\Z)/) { ($& + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n") }.rstrip
       end
 
