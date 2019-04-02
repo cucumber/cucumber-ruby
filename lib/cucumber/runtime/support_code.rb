@@ -23,14 +23,14 @@ module Cucumber
 
         def step(step)
           location = Core::Test::Location.of_caller
-          @support_code.invoke_dynamic_step(step[:text], multiline_arg(step, location))
+          @support_code.invoke_dynamic_step(step.text, multiline_arg(step, location))
         end
 
         def multiline_arg(step, location)
-          if !step[:doc_string].nil?
-            MultilineArgument.from(step[:doc_string][:content], location, step[:doc_string][:content_type])
-          elsif !step[:data_table].nil?
-            MultilineArgument::DataTable.from(step[:data_table][:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
+          if !step.doc_string.nil?
+            MultilineArgument.from(step.doc_string.content, location, step.doc_string.content_type)
+          elsif !step.data_table.nil?
+            MultilineArgument::DataTable.from(step.data_table.rows.map { |row| row.cells.map(&:value) })
           else
             MultilineArgument.from(nil)
           end

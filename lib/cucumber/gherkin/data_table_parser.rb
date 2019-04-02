@@ -14,12 +14,12 @@ module Cucumber
         gherkin_document = nil
         messages = ::Gherkin::Gherkin.from_source('dummy', feature_header + text, include_source: false, include_pickles: false)
         messages.each do |message|
-          gherkin_document = message.gherkinDocument.to_hash unless message.gherkinDocument.nil?
+          gherkin_document = message.gherkinDocument unless message.gherkinDocument.nil?
         end
 
         return if gherkin_document.nil?
-        gherkin_document[:feature][:children][0][:scenario][:steps][0][:data_table][:rows].each do |row|
-          @builder.row(row[:cells].map { |cell| cell[:value] })
+        gherkin_document.feature.children[0].scenario.steps[0].data_table.rows.each do |row|
+          @builder.row(row.cells.map(&:value))
         end
       end
 
