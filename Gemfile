@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 if ENV['CUCUMBER_RUBY_CORE']
   gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
 elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
-  gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core'
+  gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core', branch: 'protobuf-accessors'
 end
 
 if ENV['CUCUMBER_RUBY_WIRE']

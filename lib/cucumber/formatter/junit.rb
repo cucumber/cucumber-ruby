@@ -82,8 +82,8 @@ module Cucumber
 
       def start_feature(test_case)
         uri = test_case.location.file
-        feature = @ast_lookup.gherkin_document(uri)[:feature]
-        raise UnNamedFeatureError, uri if feature[:name].empty?
+        feature = @ast_lookup.gherkin_document(uri).feature
+        raise UnNamedFeatureError, uri if feature.name.empty?
         @current_feature_data = @features_data[uri]
         @current_feature_data[:uri] = uri unless @current_feature_data[:uri]
         @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
@@ -98,7 +98,7 @@ module Cucumber
           skipped: feature_data[:skipped],
           tests: feature_data[:tests],
           time: format('%.6f', feature_data[:time]),
-          name: feature_data[:feature][:name]
+          name: feature_data[:feature].name
         ) do
           @testsuite << feature_data[:builder].target!
         end
@@ -108,7 +108,7 @@ module Cucumber
 
       def create_output_string(test_case, scenario, result, row_name) # rubocop:disable Metrics/PerceivedComplexity
         scenario_source = @ast_lookup.scenario_source(test_case)
-        keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+        keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
         output = "#{keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
         if scenario_source.type == :Scenario
@@ -117,7 +117,7 @@ module Cucumber
               output += "#{@failing_test_step.text} at #{@failing_test_step.location}\n"
             else
               step_source = @ast_lookup.step_source(@failing_test_step).step
-              output += "#{step_source[:keyword]}#{@failing_test_step.text}\n"
+              output += "#{step_source.keyword}#{@failing_test_step.text}\n"
             end
           else # An Around hook has failed
             output += "Around hook\n"
@@ -131,7 +131,7 @@ module Cucumber
       def build_testcase(result, scenario_designation, output)
         duration = ResultBuilder.new(result).test_case_duration
         @current_feature_data[:time] += duration
-        classname = @current_feature_data[:feature][:name]
+        classname = @current_feature_data[:feature].name
         name = scenario_designation
 
         @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%.6f', duration)) do
@@ -203,15 +203,15 @@ module Cucumber
       end
 
       def scenario(scenario)
-        @scenario_name = scenario[:name].empty? ? 'Unnamed scenario' : scenario[:name]
+        @scenario_name = scenario.name.empty? ? 'Unnamed scenario' : scenario.name
       end
 
       def scenario_outline(outline)
-        @scenario_name = outline[:name].empty? ? 'Unnamed scenario outline' : outline[:name]
+        @scenario_name = outline.name.empty? ? 'Unnamed scenario outline' : outline.name
       end
 
       def examples_table_row(row)
-        @row_name = '| ' + row[:cells].map { |cell| cell[:value] }.join(' | ') + ' |'
+        @row_name = '| ' + row.cells.map(&:value).join(' | ') + ' |'
         @name_suffix = " (outline example : #{@row_name})"
       end
     end
