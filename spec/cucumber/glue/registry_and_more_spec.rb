@@ -42,17 +42,18 @@ module Cucumber
           end
 
           registry.load_code_file('tmp.rb')
-
           expect($foo).to eq 2
         end
-        # rubocop:enable Style/GlobalVars
 
         it 'only loads ruby files' do
           a_file_called('docs.md') do
-            'yo'
+            '$foo = 1'
           end
+
           registry.load_code_file('docs.md')
+          expect($foo).to be nil
         end
+        # rubocop:enable Style/GlobalVars
       end
 
       describe 'Handling the World' do
