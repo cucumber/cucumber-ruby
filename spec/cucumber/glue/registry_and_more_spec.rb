@@ -29,29 +29,97 @@ module Cucumber
           end
         end
 
-        it 're-loads the file when called multiple times' do
-          a_file_called('tmp.rb') do
-            '$foo = 1'
+        context 'by default' do
+          before(:each) { $foo = nil }
+
+          it 're-loads the file when called multiple times' do
+            a_file_called('tmp.rb') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('tmp.rb')
+            expect($foo).to eq 1
+
+            a_file_called('tmp.rb') do
+              '$foo = 2'
+            end
+
+            registry.load_code_file('tmp.rb')
+            expect($foo).to eq 2
           end
 
-          registry.load_code_file('tmp.rb')
-          expect($foo).to eq 1
+          it 'only loads ruby files' do
+            a_file_called('docs.md') do
+              '$foo = 1'
+            end
 
-          a_file_called('tmp.rb') do
-            '$foo = 2'
+            registry.load_code_file('docs.md')
+            expect($foo).to be nil
           end
-
-          registry.load_code_file('tmp.rb')
-          expect($foo).to eq 2
         end
 
-        it 'only loads ruby files' do
-          a_file_called('docs.md') do
-            '$foo = 1'
+        context 'With `only_load_files_once` set to false' do
+          before(:each) do
+            allow(Cucumber).to receive(:only_load_files_once).and_return(false)
+            $foo = nil
           end
 
-          registry.load_code_file('docs.md')
-          expect($foo).to be nil
+          it 're-loads the file when called multiple times' do
+            a_file_called('tmp.rb') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('tmp.rb')
+            expect($foo).to eq 1
+
+            a_file_called('tmp.rb') do
+              '$foo = 2'
+            end
+
+            registry.load_code_file('tmp.rb')
+            expect($foo).to eq 2
+          end
+
+          it 'only loads ruby files' do
+            a_file_called('docs.md') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('docs.md')
+            expect($foo).to be nil
+          end
+        end
+
+        context 'With `only_load_files_once` set to true' do
+          before(:each) do
+            allow(Cucumber).to receive(:only_load_files_once).and_return(true)
+            $foo = nil
+          end
+
+          it 'does not re-load the file when called multiple times' do
+            a_file_called('tmp.rb') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('tmp.rb')
+            expect($foo).to eq 1
+
+            a_file_called('tmp.rb') do
+              '$foo = 2'
+            end
+
+            registry.load_code_file('tmp.rb')
+            expect($foo).to eq 1
+          end
+
+          it 'only loads ruby files' do
+            a_file_called('docs.md') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('docs.md')
+            expect($foo).to be nil
+          end
         end
         # rubocop:enable Style/GlobalVars
       end
