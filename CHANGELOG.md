@@ -19,7 +19,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Deprecated
 
 ### Removed
-
+* Removed Travis publish job for cucumber-pro(a.k.a. jam)
+  ([#1350](https://github.com/cucumber/cucumber-ruby/pull/1350)
+   [luke-hill](https://github.com/luke-hill))
 ### Fixed
 
 * Fix seed printed in cucumber UI to match the seed that was actually used.
