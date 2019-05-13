@@ -16,7 +16,7 @@ your team.
 Where to get more info:
 
  * The main website: https://cucumber.io/ 
- * Documentation: https://docs.cucumber.io
+ * Documentation: https://cucumber.io/docs
  * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
  * Support forum: https://groups.google.com/group/cukes
  * Chat: ([Slack](https://cucumber.io/support#slack) and [Gitter](https://cucumber.io/support#gitter))
