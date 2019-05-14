@@ -88,8 +88,8 @@ module Cucumber
         super
       end
 
-      # Embed an image in the output
-      def embed(file, mime_type, label = 'Screenshot')
+      # Embed an file in the output
+      def embed(file, mime_type, label = nil)
         super
       end
 
@@ -161,7 +161,7 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:embed) do |file, mime_type, label = 'Screenshot'|
+          define_method(:embed) do |file, mime_type, label = nil|
             runtime.embed(file, mime_type, label)
           end
 
