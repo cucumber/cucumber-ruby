@@ -84,7 +84,7 @@ module Cucumber
         test_step_output << message
       end
 
-      def embed(src, mime_type, label)
+      def embed(src, mime_type, label = nil)
         if File.file?(src)
           content = File.open(src, 'rb', &:read)
           data = encode64(content)
@@ -94,7 +94,9 @@ module Cucumber
         else
           data = encode64(src)
         end
-        test_step_embeddings << { mime_type: mime_type, data: data, label: label }
+        embeddings = { mime_type: mime_type, data: data }
+        embeddings[:label] = label unless label.nil?
+        test_step_embeddings << embeddings
       end
 
       private
