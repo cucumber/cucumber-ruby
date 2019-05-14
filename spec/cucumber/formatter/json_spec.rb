@@ -533,7 +533,7 @@ module Cucumber
           FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64') }
+            Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64', 'embed_label') }
           end
 
           it 'includes the data from the step in the json data' do
@@ -556,7 +556,7 @@ module Cucumber
                       "name": "there are bananas",
                       "line": 4,
                       "embeddings": [{"mime_type": "mime-type",
-                                      "data": "YWJj"}],
+                                      "data": "YWJj", "label": "embed_label"}],
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:536"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
