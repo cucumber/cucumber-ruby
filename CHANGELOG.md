@@ -25,6 +25,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Fix seed printed in cucumber UI to match the seed that was actually used.
   ([#1329](https://github.com/cucumber/cucumber-ruby/pull/1329)
    [deivid-rodriguez](https://github.com/deivid-rodriguez))
+* Make SIGINT/`Ctrl+c` behavior consistent with SIGTERM/`kill` behavior - now first invocation causes existing scenario to stop running and jump to `at_exit`, second invocation causes immediate exit. Before that first invocation only instructed Cucumber to exit after scenario and second invocation caused immediate exit skipping `at_exit`.
+  ([#1353](https://github.com/cucumber/cucumber-ruby/pull/1353)
+   [akostadinov](https://github.com/akostadinov))
 
 ### Added
 
