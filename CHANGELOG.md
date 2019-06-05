@@ -13,6 +13,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...master) (Not released)
 
 ### Added
+* There is a new methodology in Cucumber for how the auto-loader works
+   * To begin with the initial behaviour is retained (Cucumber auto-loads files using the `load` method)
+   * If you wish to alter this, then you can set a top level config option: `Cucumber.only_load_files_once`
+   * Like most config options, setting this inside a `spec_helper.rb` or `env.rb` file is advised
+   * For more information on this change, including why it was made. Please read this
+   [Blog Post](www.google.com)
+   ([#1349](https://github.com/cucumber/cucumber-ruby/pull/1349)
+   ([#1043](https://github.com/cucumber/cucumber-ruby/issues/1043)
+    [luke-hill](https://github.com/luke-hill))
 
 ### Changed
 
@@ -22,6 +31,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Removed Travis publish job for cucumber-pro(a.k.a. jam)
   ([#1350](https://github.com/cucumber/cucumber-ruby/pull/1350)
    [luke-hill](https://github.com/luke-hill))
+
 ### Fixed
 
 * Fix seed printed in cucumber UI to match the seed that was actually used.
