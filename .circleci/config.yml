@@ -88,27 +88,6 @@ jobs:
           name: Run Rake
           command: bundle exec rake
 
-  "ruby-2.2":
-    docker:
-       - image: circleci/ruby:2.2.10
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
-
   "jruby":
     docker:
        - image: circleci/jruby:9.2.5-jdk
@@ -138,5 +117,4 @@ workflows:
       - "ruby-2.5"
       - "ruby-2.4"
       - "ruby-2.3"
-      - "ruby-2.2"
       - "jruby"
