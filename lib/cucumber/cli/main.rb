@@ -86,6 +86,7 @@ module Cucumber
           exit_unable_to_finish! if Cucumber.wants_to_quit
           Cucumber.wants_to_quit = true
           STDERR.puts "\nExiting... Interrupt again to exit immediately."
+          exit_unable_to_finish
         end
       end
 

@@ -13,9 +13,11 @@ module Cucumber
       minitest
       test/unit
       .gem/ruby
-      lib/ruby/
       bin/bundle
     ]
+
+    @backtrace_filters << RbConfig::CONFIG['rubyarchdir'] if RbConfig::CONFIG['rubyarchdir']
+    @backtrace_filters << RbConfig::CONFIG['rubylibdir'] if RbConfig::CONFIG['rubylibdir']
 
     @backtrace_filters << 'org/jruby/' if ::Cucumber::JRUBY
 
