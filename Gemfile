@@ -22,7 +22,7 @@ gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_ME
 
 gem 'cucumber-formatter-dots', path: ENV['CUCUMBER_FORMATTER_DOTS'] if ENV['CUCUMBER_FORMATTER_DOTS']
 
-# Use an older protobuf on JRuby and MRI < 2.5
-gem 'google-protobuf', '~> 3.2.0.2' if RbConfig::CONFIG['MAJOR'].to_i == 2 && RbConfig::CONFIG['MINOR'].to_i < 5 || RUBY_PLATFORM == 'java'
+# Use an older protobuf on JRuby
+gem 'google-protobuf', '~> 3.2.0.2' if RUBY_PLATFORM == 'java'
 
 gemspec
