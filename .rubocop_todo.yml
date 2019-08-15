@@ -40,15 +40,6 @@ Naming/FileName:
   Exclude:
     - 'features/lib/step_definitions/iso-8859-1_steps.rb'
 
-# Offense count: 6
-Performance/UnfreezeString:
-  Exclude:
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/glue/registry_and_more.rb'
-    - 'lib/cucumber/glue/snippet.rb'
-    - 'spec/cucumber/glue/proto_world_spec.rb'
-
 # Offense count: 167
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

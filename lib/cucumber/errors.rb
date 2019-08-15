@@ -10,8 +10,8 @@ module Cucumber
 
       begin
         raise new(with_prefix(step_name)) # rubocop:disable Style/RaiseArgs
-      rescue StandardError => exception
-        return exception
+      rescue StandardError => e
+        return e
       end
     end
 

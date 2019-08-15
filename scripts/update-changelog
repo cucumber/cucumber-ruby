@@ -75,6 +75,6 @@ begin
   Changelog.open('..') do
     insert(pr.type_label, pr.entry)
   end
-rescue StandardError => error
-  abort error.message
+rescue StandardError => e
+  abort e.message
 end
