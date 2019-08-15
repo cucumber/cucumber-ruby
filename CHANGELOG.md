@@ -16,7 +16,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 * Going forward the minimum ruby version for all cucumber based gems is 2.4
-([luke-hill](https://github.com/luke-hill), [luke-hill](https://github.com/aslakhellesoy)
+([luke-hill](https://github.com/luke-hill), [aslakhellesoy](https://github.com/aslakhellesoy)
 
 ### Deprecated
 
