@@ -37,6 +37,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
+* Filter out any lines containing `site_ruby` from stacktrace
+
 ## [4.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...v4.0.0.rc.1) (2018-09-29)
 
 ### Added

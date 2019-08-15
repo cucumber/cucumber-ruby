@@ -10,7 +10,7 @@ module Cucumber
       bin/cucumber:
       lib/rspec
       gems/
-      bundler/
+      site_ruby/
       minitest
       test/unit
       .gem/ruby
