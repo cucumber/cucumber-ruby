@@ -24,6 +24,13 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Removed Travis publish job for cucumber-pro(a.k.a. jam)
   ([#1350](https://github.com/cucumber/cucumber-ruby/pull/1350)
    [luke-hill](https://github.com/luke-hill))
+
+* Drop support for JRuby. We may add this back if new versions of protobuf for JRuby
+  start working, or if someone can make the build pass with an older version.
+  All this means is we're ok to make releases while the jruby CI job is failing.
+  
+  ([aslakhellesoy](https://github.com/aslakhellesoy))
+
 ### Fixed
 
 * Fix seed printed in cucumber UI to match the seed that was actually used.
