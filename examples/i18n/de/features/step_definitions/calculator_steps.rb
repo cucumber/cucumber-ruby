@@ -24,5 +24,5 @@ Wenn(/ich (\w+) drücke/) do |op|
 end
 
 Dann(/sollte das Ergebniss auf dem Bildschirm (.*) sein/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

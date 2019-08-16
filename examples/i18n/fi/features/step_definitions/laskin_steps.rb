@@ -24,5 +24,5 @@ When(/painan "(\w+)"/) do |op|
 end
 
 Then(/laskimen ruudulla pitäisi näkyä tulos (.*)/) do |tulos|
-  @tulos.should == tulos.to_f
+  expect(@tulos).to eq(tulos.to_f)
 end

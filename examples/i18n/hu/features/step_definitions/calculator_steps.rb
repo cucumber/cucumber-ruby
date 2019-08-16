@@ -24,5 +24,5 @@ Majd(/^megnyomom az? (\w+) gombot$/) do |op|
 end
 
 Akkor(/^eredményül (.*)\-(?:e|a|ö|á|)t kell kapnom$/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

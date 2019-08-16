@@ -7,8 +7,8 @@ Požadavek: Sčítání
   Náčrt Scénáře: Sčítaní dvou čísel
     Pokud Zadám číslo <vstup_1> do kalkulačky
     A Zadám číslo <vstup_2> do kalkulačky
-    Když Stisknu <tlačítko>
-    Pak Výsledek by měl být <výstup>
+    Když stisknu <tlačítko>
+    Pak výsledek by měl být <výstup>
 
   Příklady:
     | vstup_1 | vstup_2 | tlačítko | výstup |

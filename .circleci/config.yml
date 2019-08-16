@@ -24,7 +24,7 @@ jobs:
           key: bundle-{{ checksum "cucumber.gemspec" }}
       - run:
           name: Run Rake
-          command: bundle exec rake || echo "Ignoring failure as Ruby 2.6 support is 'optional' at this point in time."
+          command: bundle exec rake"
   "ruby-2.5":
     docker:
        - image: circleci/ruby:2.5

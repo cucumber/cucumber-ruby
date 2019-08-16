@@ -24,5 +24,5 @@ When('jeg lægger sammen') do
 end
 
 Then(/skal resultatet være (\d*)/) do |result|
-  @result.should == result.to_i
+  expect(@result).to eq(result.to_f)
 end

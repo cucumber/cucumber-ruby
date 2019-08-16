@@ -24,5 +24,5 @@ Eğerki(/(.*) tuşuna basarsam/) do |op|
 end
 
 Ozaman(/ekrandaki sonuç (.*) olmalı/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

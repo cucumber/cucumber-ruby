@@ -24,5 +24,5 @@ When(/Stlačím tlačidlo (\w+)/) do |op|
 end
 
 Then(/Výsledok by mal byť (.*)/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

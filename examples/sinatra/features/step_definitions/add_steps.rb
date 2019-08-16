@@ -11,5 +11,5 @@ When(/^I press '(.*)'$/) do |name|
 end
 
 Then(/^I should see '(.*)'$/) do |text|
-  body.should match(/#{text}/m)
+  expect(body).to match(/#{text}/m)
 end
