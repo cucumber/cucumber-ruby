@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   }
 
   # Keep in sync with .circleci/config.yml & .rubocop.yml
-  s.required_ruby_version = '>= 2.4'
+  s.required_ruby_version = '>= 2.3'
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.3'
   s.add_dependency 'cucumber-core', '~> 5.0', '>= 5.0.0'
   s.add_dependency 'cucumber-expressions', '~> 8.0', '>= 8.0.0'
