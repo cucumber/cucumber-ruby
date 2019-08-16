@@ -8,9 +8,9 @@ WEN(/^I EAT (\d+) CUCUMBRZ$/) do |n|
 end
 
 DEN(/^I HAS (\d+) CUCUMBERZ IN MAH BELLY$/) do |n|
-  @belly.cukes.should == n.to_i
+  expect(@belly.cukes).to eq(n.to_i)
 end
 
 DEN(/^IN TEH END (\d+) CUCUMBRZ KTHXBAI$/) do |n|
-  @basket.cukes.should == n.to_i
+  expect(@basket.cukes).to eq(n.to_i)
 end

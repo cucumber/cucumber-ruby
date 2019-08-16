@@ -1,10 +1,3 @@
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
@@ -12,17 +5,20 @@ Before do
   @calc = Calculator.new
 end
 
-After do
+ParameterType(
+  name: 'op',
+  regexp: /按相加按/,
+  transformer: ->(_s) { 'add' }
+)
+
+假如('我已经在计算器里输入{int}') do |n|
+  @calc.push n
 end
 
-Given(/在计算器上输入(\d+)/) do |n|
-  @calc.push n.to_i
+当('我{op}钮') do |op|
+  @result = @calc.send op
 end
 
-When(/按(.*)键/) do |op|
-  @result = @calc.send 'add' if op == '加号'
-end
-
-Then(/屏幕上显示的结果应该是是(.*)/) do |result|
-  @result.should == result.to_f
+那么('我应该在屏幕上看到的结果是{float}') do |result|
+  expect(@result).to eq(result)
 end

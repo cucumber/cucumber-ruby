@@ -114,10 +114,14 @@ Feature: Usage formatter
       You can implement step definitions for undefined steps with these snippets:
 
       When('I add {int} and {int}') do |int, int2|
+      # When('I add {int} and {float}') do |int, float|
+      # When('I add {float} and {int}') do |float, int|
+      # When('I add {float} and {float}') do |float, float2|
         pending # Write code here that turns the phrase above into concrete actions
       end
 
       Then('I should get {int}') do |int|
+      # Then('I should get {float}') do |float|
         pending # Write code here that turns the phrase above into concrete actions
       end
       """

@@ -5,7 +5,7 @@ Funkcionalnost: Sabiranje
   Želim da mogu da izračunam zbir dva broja
 
   Struktura scenarija: Dodaj dva broja
-    Zadato Unesen <input_1> broj u kalkulator
+    Za dato Unesen <input_1> broj u kalkulator
     I Unesen <input_2> broj u kalkulator
     Kada pritisnem <button>
     Onda bi trebalo da bude <output> prikazano na ekranu

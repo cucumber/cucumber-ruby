@@ -25,6 +25,7 @@ Feature: Snippets
       end
 
       When('{int} simple when step') do |int|
+      # When('{float} simple when step') do |float|
         pending # Write code here that turns the phrase above into concrete actions
       end
 

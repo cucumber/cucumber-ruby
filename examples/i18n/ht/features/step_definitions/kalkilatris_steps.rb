@@ -1,10 +1,3 @@
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'kalkilatris'
 
@@ -12,17 +5,14 @@ Before do
   @kalk = Kalkilatris.new
 end
 
-After do
+Sipoze('mwen te antre {int} nan kalkilatris la') do |int|
+  @kalk.push int
 end
 
-Sipoze(/Mwen te antre nan (\d+) nan kalkilatris la/) do |n|
-  @kalk.push n.to_i
-end
-
-Lè(/Mwen peze (\w+)/) do |op|
+Lè('mwen peze {word}') do |op|
   @result = @kalk.send op
 end
 
-Lè sa a(/Rezilta a ta dwe (.*) sou ekran an/) do |result|
-  @result.should == result.to_f
+Lè('sa a rezilta a ta dwe {float} sou ekran an') do |rezilta|
+  expect(@result).to eq(rezilta)
 end

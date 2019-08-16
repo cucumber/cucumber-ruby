@@ -24,5 +24,5 @@ When(/^내가 (.*)를 누르면$/) do |op|
 end
 
 Then(/^화면에 출력된 결과는 (.*)이다$/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

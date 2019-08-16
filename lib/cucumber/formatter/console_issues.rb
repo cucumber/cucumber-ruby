@@ -37,7 +37,7 @@ module Cucumber
         return [] if test_cases.empty?
         [format_string("#{type_heading(type)} Scenarios:", type)] + test_cases.map do |test_case|
           scenario_source = @ast_lookup.scenario_source(test_case)
-          keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+          keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
           source = @config.source? ? format_string(" # #{keyword}: #{test_case.name}", :comment) : ''
           format_string("cucumber #{profiles_string}#{test_case.location.file}:#{test_case.location.lines.max}", type) + source
         end

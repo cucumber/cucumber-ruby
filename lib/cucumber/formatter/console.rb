@@ -143,7 +143,7 @@ module Cucumber
         return unless config.wip?
         messages = passed_test_cases.map do |test_case|
           scenario_source = ast_lookup.scenario_source(test_case)
-          keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
+          keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
           linebreaks("#{test_case.location.on_line(test_case.location.lines.max)}:in `#{keyword}: #{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
         end
         do_print_passing_wip(messages)
