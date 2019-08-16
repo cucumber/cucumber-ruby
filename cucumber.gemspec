@@ -44,9 +44,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'octokit', '~> 4.14', '>= 4.14.0'
 
   # Needed for examples (rake examples)
-  s.add_development_dependency 'capybara', '~> 3.28', '>= 3.28.0'
   s.add_development_dependency 'rack-test', '~> 1.1', '>= 1.1.0'
   s.add_development_dependency 'sinatra', '~> 2.0', '>= 2.0.5'
+  # Capybara dropped support for Ruby 2.3 in 3.16.0 - keep 3.15.0 while we're still supporting ruby 2.3
+  s.add_development_dependency 'capybara', '= 3.15.0'
 
   s.rubygems_version = '>= 1.6.1'
   s.files            = Dir[
