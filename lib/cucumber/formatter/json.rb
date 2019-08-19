@@ -190,6 +190,7 @@ module Cucumber
       def add_match_and_result(test_step, result)
         @step_or_hook_hash[:match] = create_match_hash(test_step, result)
         @step_or_hook_hash[:result] = create_result_hash(result)
+        result.embeddings.each { |e| embed(e['src'], e['mime_type'], e['label']) } if result.respond_to?(:embeddings)
       end
 
       def add_failed_around_hook(result)
