@@ -1,24 +1,29 @@
 # frozen_string_literal: true
+
 require 'cucumber/multiline_argument'
 
 module Cucumber
-
   # Represents the match found between a Test Step and its activation
   class StepMatch #:nodoc:
     attr_reader :step_definition, :step_arguments
 
     def initialize(step_definition, step_name, step_arguments)
       raise "step_arguments can't be nil (but it can be an empty array)" if step_arguments.nil?
-      @step_definition, @name_to_match, @step_arguments = step_definition, step_name, step_arguments
+      @step_definition = step_definition
+      @name_to_match = step_name
+      @step_arguments = step_arguments
     end
 
     def args
-      @step_arguments.map(&:value)
+      current_world = @step_definition.registry.current_world
+      @step_arguments.map do |arg|
+        arg.value(current_world)
+      end
     end
 
     def activate(test_step)
       test_step.with_action(@step_definition.location) do
-        invoke(MultilineArgument.from_core(test_step.source.last.multiline_arg))
+        invoke(MultilineArgument.from_core(test_step.multiline_arg))
       end
     end
 
@@ -43,7 +48,7 @@ module Cucumber
     #
     #   lambda { |param| "[#{param}]" }
     #
-    def format_args(format = lambda{|a| a}, &proc)
+    def format_args(format = ->(a) { a }, &proc)
       replace_arguments(@name_to_match, @step_arguments, format, &proc)
     end
 
@@ -63,7 +68,7 @@ module Cucumber
       @step_definition.expression.source.to_s.unpack('U*').length
     end
 
-    def replace_arguments(string, step_arguments, format, &proc)
+    def replace_arguments(string, step_arguments, format)
       s = string.dup
       offset = past_offset = 0
       step_arguments.each do |step_argument|
@@ -71,8 +76,8 @@ module Cucumber
         next if group.value.nil? || group.start < past_offset
 
         replacement = if block_given?
-                        proc.call(group.value)
-                      elsif Proc === format
+                        yield(group.value)
+                      elsif Proc == format.class
                         format.call(group.value)
                       else
                         format % group.value
@@ -90,14 +95,15 @@ module Cucumber
     end
 
     private
+
     def deep_clone_args
-      Marshal.load( Marshal.dump( args ) )
+      Marshal.load(Marshal.dump(args))
     end
   end
 
   class SkippingStepMatch
     def activate(test_step)
-      return test_step.with_action { raise Core::Test::Result::Skipped.new }
+      test_step.with_action { raise Core::Test::Result::Skipped }
     end
   end
 
@@ -119,8 +125,7 @@ module Cucumber
     end
 
     def file_colon_line
-      raise "No file:line for #{@step}" unless @step.file_colon_line
-      @step.file_colon_line
+      location.to_s
     end
 
     def backtrace_line
@@ -128,7 +133,7 @@ module Cucumber
     end
 
     def text_length
-      @step.text_length
+      @step.text.length
     end
 
     def step_arguments
@@ -137,20 +142,17 @@ module Cucumber
 
     def activate(test_step)
       # noop
-      return test_step
+      test_step
     end
   end
 
   class AmbiguousStepMatch
-
     def initialize(error)
       @error = error
     end
 
     def activate(test_step)
-      return test_step.with_action { raise @error }
+      test_step.with_action { raise @error }
     end
-
   end
-
 end

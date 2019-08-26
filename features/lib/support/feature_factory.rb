@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # frozen_string_literal: true
+
 module FeatureFactory
   def create_feature(name = generate_feature_name)
     gherkin = <<-GHERKIN
@@ -59,7 +59,7 @@ Feature: #{name}
   end
 
   def features
-    in_current_dir do
+    cd('.') do
       Dir['features/*.feature']
     end
   end

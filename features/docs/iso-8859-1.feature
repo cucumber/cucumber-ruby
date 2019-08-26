@@ -1,6 +1,7 @@
 # language: no
 # encoding: iso-8859-1
+@wip
 Egenskap: Alle bruker ikke UTF-8
-  Scenario: Dette bør gå bra
-    Når jeg drikker en "øl"
-    Så skal de andre si "skål"
+  Scenario: Dette bÃ¸r gÃ¥ bra
+    NÃ¥r jeg drikker en "Ã¸l"
+    SÃ¥ skal de andre si "skÃ¥l"

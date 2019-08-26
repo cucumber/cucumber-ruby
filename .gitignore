@@ -30,3 +30,4 @@ tags
 .project
 Gemfile.local
 .envrc
+Gemfile.lock

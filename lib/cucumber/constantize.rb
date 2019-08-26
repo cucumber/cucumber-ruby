@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/platform'
 module Cucumber
   module Constantize #:nodoc:
@@ -16,21 +17,18 @@ module Cucumber
         constant
       rescue NameError => e
         require underscore(camel_cased_word)
-        if try < 2
-          retry
-        else
-          raise e
-        end
+        retry if try < 2
+        raise e
       end
     end
 
     # Snagged from active_support
     def underscore(camel_cased_word)
-      camel_cased_word.to_s.gsub(/::/, '/').
-        gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-        gsub(/([a-z\d])([A-Z])/,'\1_\2').
-        tr('-', '_').
-        downcase
+      camel_cased_word.to_s.gsub(/::/, '/')
+                      .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+                      .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+                      .tr('-', '_')
+                      .downcase
     end
 
     private

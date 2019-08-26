@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/cli/rerun_file'
@@ -19,7 +20,7 @@ module Cucumber
       def initialize(out_stream = STDOUT, error_stream = STDERR)
         @out_stream   = out_stream
         @error_stream = error_stream
-        @options = Options.new(@out_stream, @error_stream, :default_profile => 'default')
+        @options = Options.new(@out_stream, @error_stream, default_profile: 'default')
       end
 
       def parse!(args)
@@ -63,7 +64,7 @@ module Cucumber
       end
 
       def fail_fast?
-        !!@options[:fail_fast]
+        @options[:fail_fast]
       end
 
       def retry_attempts
@@ -78,7 +79,7 @@ module Cucumber
         logger = Logger.new(@out_stream)
         logger.formatter = LogFormatter.new
         logger.level = Logger::INFO
-        logger.level = Logger::DEBUG if self.verbose?
+        logger.level = Logger::DEBUG if verbose?
         logger
       end
 
@@ -107,7 +108,7 @@ module Cucumber
       end
 
       def to_hash
-        Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
+        Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream, seed: seed)
       end
 
       private
@@ -130,7 +131,7 @@ module Cucumber
           f[2] == @out_stream ? -1 : 1
         end
         @options[:formats].uniq!
-        @options.check_formatter_stream_conflicts()
+        @options.check_formatter_stream_conflicts
       end
     end
   end

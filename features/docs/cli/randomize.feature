@@ -17,10 +17,10 @@ Feature: Randomize
     Given a file named "features/bad_practice_part_1.feature" with:
       """
       Feature: Bad practice, part 1
-        
+
         Scenario: Set state
           Given I set some state
-      
+
         Scenario: Depend on state from a preceding scenario
           When I depend on the state
       """
@@ -69,7 +69,7 @@ Feature: Randomize
           When I depend on the state
             I expect the state to be set! (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
-            features/bad_practice_part_1.feature:7:in `When I depend on the state'
+            features/bad_practice_part_1.feature:7:in `I depend on the state'
 
       Feature: Unrelated
 
@@ -83,13 +83,13 @@ Feature: Randomize
           When I depend on the state
             I expect the state to be set! (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
-            features/bad_practice_part_2.feature:4:in `When I depend on the state'
+            features/bad_practice_part_2.feature:4:in `I depend on the state'
 
       Feature: Bad practice, part 1
 
         Scenario: Set state
           Given I set some state
-      
+
       Failing Scenarios:
       cucumber features/bad_practice_part_1.feature:6
       cucumber features/bad_practice_part_2.feature:3
@@ -101,9 +101,14 @@ Feature: Randomize
 
       """
 
+  Scenario: Rerun scenarios randomized
+    When I run `cucumber --order random --format summary`
+    And I rerun the previous command with the same seed
+    Then the output of both commands should be the same
+
   @spawn @todo-windows
   Scenario: Run scenarios randomized with some skipped
-    When I run `cucumber --tags ~@skipme --order random:41544 -q`
+    When I run `cucumber --tags 'not @skipme' --order random:41544 -q`
     Then it should fail
     And the stdout should contain exactly:
       """
@@ -113,7 +118,7 @@ Feature: Randomize
           When I depend on the state
             I expect the state to be set! (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
-            features/bad_practice_part_1.feature:7:in `When I depend on the state'
+            features/bad_practice_part_1.feature:7:in `I depend on the state'
 
       Feature: Bad practice, part 2
 
@@ -121,7 +126,7 @@ Feature: Randomize
           When I depend on the state
             I expect the state to be set! (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
-            features/bad_practice_part_2.feature:4:in `When I depend on the state'
+            features/bad_practice_part_2.feature:4:in `I depend on the state'
 
       Feature: Bad practice, part 1
 

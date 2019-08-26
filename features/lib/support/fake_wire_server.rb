@@ -1,10 +1,12 @@
 # frozen_string_literal: true
+
 require 'multi_json'
 require 'socket'
 
 class FakeWireServer
   def initialize(port, protocol_table)
-    @port, @protocol_table = port, protocol_table
+    @port = port
+    @protocol_table = protocol_table
     @delays = {}
   end
 
@@ -24,14 +26,10 @@ class FakeWireServer
   end
 
   def open_session_on(socket, io)
-    begin
-      on_message = lambda { |message| io.puts message }
-      SocketSession.new(socket, @protocol_table, @delays, on_message).start
-    rescue Exception => e
-      raise e
-    ensure
-      socket.close
-    end
+    on_message = ->(message) { io.puts message }
+    SocketSession.new(socket, @protocol_table, @delays, on_message).start
+  ensure
+    socket.close
   end
 
   class SocketSession
@@ -61,18 +59,18 @@ class FakeWireServer
         @on_message.call(MultiJson.load(protocol_entry['request'])[0])
         send_response(protocol_entry['response'])
       else
-        serialized_exception = { :message => "Not understood: #{data}", :backtrace => [] }
-        send_response(['fail', serialized_exception ].to_json)
+        serialized_exception = { message: "Not understood: #{data}", backtrace: [] }
+        send_response(['fail', serialized_exception].to_json)
       end
-    rescue => e
+    rescue StandardError => e
       response = [
-                    'fail',
-                    {
-                      :message => e.message,
-                      :backtrace => e.backtrace,
-                      :exception => e.class
-                    }
-                  ].to_json
+        'fail',
+        {
+          message: e.message,
+          backtrace: e.backtrace,
+          exception: e.class
+        }
+      ].to_json
       send_response(response)
     end
 

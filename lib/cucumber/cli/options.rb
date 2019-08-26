@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/glue/registry_and_more'
@@ -7,56 +8,54 @@ require 'cucumber/core/test/result'
 
 module Cucumber
   module Cli
-
     class Options
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
-        'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
+        'dots'        => ['Cucumber::Formatter::Dots',        'Simple progress output to console'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
-        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
-                                                              "#{INDENT}The slowest step definitions (with duration) are\n" +
-                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" +
-                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" +
+        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" \
+                                                              "#{INDENT}The slowest step definitions (with duration) are\n" \
+                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" \
+                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" \
                                                               "#{INDENT}filename instead."],
-        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" +
+        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" \
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
-        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
-      }
+      }.freeze
       max = BUILTIN_FORMATS.keys.map(&:length).max
       FORMAT_HELP_MSG = [
-                          'Use --format rerun --out rerun.txt to write out failing',
-                          'features. You can rerun them with cucumber @rerun.txt.',
-                          'FORMAT can also be the fully qualified class name of',
-                          "your own custom formatter. If the class isn't loaded,",
-                          'Cucumber will attempt to require a file with a relative',
-                          'file name that is the underscore name of the class name.',
-                          'Example: --format Foo::BarZap -> Cucumber will look for',
-                          'foo/bar_zap.rb. You can place the file with this relative',
-                          'path underneath your features/support directory or anywhere',
-                          "on Ruby's LOAD_PATH, for example in a Ruby gem."
-                        ]
+        'Use --format rerun --out rerun.txt to write out failing',
+        'features. You can rerun them with cucumber @rerun.txt.',
+        'FORMAT can also be the fully qualified class name of',
+        "your own custom formatter. If the class isn't loaded,",
+        'Cucumber will attempt to require a file with a relative',
+        'file name that is the underscore name of the class name.',
+        'Example: --format Foo::BarZap -> Cucumber will look for',
+        'foo/bar_zap.rb. You can place the file with this relative',
+        'path underneath your features/support directory or anywhere',
+        "on Ruby's LOAD_PATH, for example in a Ruby gem."
+      ].freeze
 
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
       end) + FORMAT_HELP_MSG
-      PROFILE_SHORT_FLAG = '-p'
-      NO_PROFILE_SHORT_FLAG = '-P'
-      PROFILE_LONG_FLAG = '--profile'
-      NO_PROFILE_LONG_FLAG = '--no-profile'
-      FAIL_FAST_FLAG = '--fail-fast'
-      RETRY_FLAG = '--retry'
+      PROFILE_SHORT_FLAG = '-p'.freeze
+      NO_PROFILE_SHORT_FLAG = '-P'.freeze
+      PROFILE_LONG_FLAG = '--profile'.freeze
+      NO_PROFILE_LONG_FLAG = '--no-profile'.freeze
+      FAIL_FAST_FLAG = '--fail-fast'.freeze
+      RETRY_FLAG = '--retry'.freeze
       OPTIONS_WITH_ARGS = [
-                            '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
-                            '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
-                            PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
-                            '--lines', '--port', '-I', '--snippet-type'
-                          ]
-      ORDER_TYPES = %w{defined random}
+        '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
+        '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
+        PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
+        '--lines', '--port', '-I', '--snippet-type'
+      ].freeze
+      ORDER_TYPES = %w[defined random].freeze
       TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
       def self.parse(args, out_stream, error_stream, options = {})
@@ -85,40 +84,38 @@ module Cucumber
         @options[key] = value
       end
 
-      def parse!(args) # rubocop:disable Metrics/AbcSize
+      def parse!(args) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         @args = args
         @expanded_args = @args.dup
 
         @args.extend(::OptionParser::Arguable)
 
-        @args.options do |opts|
+        @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
-          opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) {|lib| require_files(lib) }
+          opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
-          if(Cucumber::JRUBY)
-            opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
-          end
+          opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) } if Cucumber::JRUBY
 
-          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
+          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) { |v| set_option :retry, v.to_i }
           opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
-          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| set_language lang }
+          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) { |lang| language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
           opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
             add_option :formats, [*parse_formats(v), @out_stream]
           end
-          opts.on('--init', *init_msg) {|v| initialize_project }
-          opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| set_out_stream v }
-          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_tag v }
-          opts.on('-n NAME', '--name NAME', *name_msg) {|v| add_option :name_regexps, /#{v}/ }
-          opts.on('-e', '--exclude PATTERN', *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
-          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
-          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| disable_profile_loading }
-          opts.on('-c', '--[no-]color', *color_msg) {|v| set_color v }
+          opts.on('--init', *init_msg) { |_v| initialize_project }
+          opts.on('-o', '--out [FILE|DIR]', *out_msg) { |v| out_stream v }
+          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) { |v| add_tag v }
+          opts.on('-n NAME', '--name NAME', *name_msg) { |v| add_option :name_regexps, /#{v}/ }
+          opts.on('-e', '--exclude PATTERN', *exclude_msg) { |v| add_option :excludes, Regexp.new(v) }
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) { |v| add_profile v }
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) { |_v| disable_profile_loading }
+          opts.on('-c', '--[no-]color', *color_msg) { |v| color v }
           opts.on('-d', '--dry-run', *dry_run_msg) { set_dry_run_and_duration }
           opts.on('-m', '--no-multiline', "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
           opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
           opts.on('-i', '--no-snippets', "Don't print snippets for pending steps.") { set_option :snippets, false }
-          opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) {|v| set_option :snippet_type, v.to_sym }
+          opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) { |v| set_option :snippet_type, v.to_sym }
           opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
           opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
@@ -129,20 +126,18 @@ module Cucumber
           opts.on('-w', '--wip', 'Fail if there are any passing scenarios.') { set_option :wip }
           opts.on('-v', '--verbose', 'Show the files and features loaded.') { set_option :verbose }
           opts.on('-g', '--guess', 'Guess best match for Ambiguous steps.') { set_option :guess }
-          opts.on('-l', '--lines LINES', *lines_msg) {|lines| set_option :lines, lines }
+          opts.on('-l', '--lines LINES', *lines_msg) { |lines| set_option :lines, lines }
           opts.on('-x', '--expand', 'Expand Scenario Outline Tables in output.') { set_option :expand }
 
           opts.on('--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
-            *<<-TEXT.split("\n")) do |order|
+                  *<<-TEXT.split("\n")) do |order|
   [defined]     Run scenarios in the order they were defined (default).
   [random]      Shuffle scenarios before running.
 Specify SEED to reproduce the shuffling from a previous run.
   e.g. --order random:5738
-TEXT
+                  TEXT
             @options[:order], @options[:seed] = *order.split(':')
-            unless ORDER_TYPES.include?(@options[:order])
-              fail "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}."
-            end
+            raise "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(', ')}." unless ORDER_TYPES.include?(@options[:order])
           end
 
           opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
@@ -152,9 +147,9 @@ TEXT
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 
         extract_environment_variables
-        @options[:paths] = @args.dup #whatver is left over
+        @options[:paths] = @args.dup # whatver is left over
 
-        check_formatter_stream_conflicts()
+        check_formatter_stream_conflicts
 
         merge_profiles
 
@@ -169,7 +164,7 @@ TEXT
         @options[:filters] ||= []
       end
 
-      def check_formatter_stream_conflicts()
+      def check_formatter_stream_conflicts
         streams = @options[:formats].uniq.map { |(_, _, stream)| stream }
         return if streams == streams.uniq
         raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
@@ -194,18 +189,15 @@ TEXT
       end
 
       def dry_run_msg
-        [
-          'Invokes formatters without executing the steps.',
-          'This also omits the loading of your support/env.rb file if it exists.'
-        ]
+        ['Invokes formatters without executing the steps.']
       end
 
       def exclude_msg
-        [ "Don't run feature files or require ruby files matching PATTERN" ]
+        ["Don't run feature files or require ruby files matching PATTERN"]
       end
 
       def format_msg
-        [ 'How to format features (Default: pretty). Available formats:' ]
+        ['How to format features (Default: pretty). Available formats:']
       end
 
       def i18n_languages_msg
@@ -217,7 +209,7 @@ TEXT
       def i18n_keywords_msg
         [
           'List keywords for in a particular language',
-          %{Run with "--i18n help" to see all languages}
+          %(Run with "--i18n help" to see all languages)
         ]
       end
 
@@ -229,7 +221,7 @@ TEXT
       end
 
       def lines_msg
-        [ 'Run given line numbers. Equivalent to FILE:LINE syntax' ]
+        ['Run given line numbers. Equivalent to FILE:LINE syntax']
       end
 
       def no_profile_short_flag_msg
@@ -249,7 +241,7 @@ TEXT
       end
 
       def retry_msg
-        [ 'Specify the number of times to retry failing tests (default: 0)' ]
+        ['Specify the number of times to retry failing tests (default: 0)']
       end
 
       def name_msg
@@ -273,7 +265,7 @@ TEXT
         [formatter, options_hash]
       end
 
-      def set_out_stream(v)
+      def out_stream(v)
         @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
         @options[:formats][-1][2] = v
       end
@@ -314,11 +306,13 @@ TEXT
         [
           'Require files before executing the features. If this',
           'option is not specified, all *.rb files that are',
-          'siblings or below the features will be loaded auto-',
+          'siblings of or below the features will be loaded auto-',
           'matically. Automatic loading is disabled when this',
-          'option is specified, and all loading becomes explicit.',
-          'Files under directories named "support" are always',
-          'loaded first.',
+          'option is specified; all loading becomes explicit.',
+          'Files in directories named "support" are still always',
+          'loaded first when their parent directories are',
+          'required or if the "support" directoires themselves are',
+          'explicitly required.',
           'This option can be specified multiple times.'
         ]
       end
@@ -332,12 +326,12 @@ TEXT
 
       def banner
         [
-         'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
-         'Examples:',
-         'cucumber examples/i18n/en/features',
-         'cucumber @rerun.txt (See --format rerun)',
-         'cucumber examples/i18n/it/features/somma.feature:6:98:113',
-         'cucumber -s -i http://rubyurl.com/eeCl', '', ''
+          'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
+          'Examples:',
+          'cucumber examples/i18n/en/features',
+          'cucumber @rerun.txt (See --format rerun)',
+          'cucumber examples/i18n/it/features/somma.feature:6:98:113',
+          'cucumber -s -i http://rubyurl.com/eeCl', '', ''
         ].join("\n")
       end
 
@@ -349,13 +343,13 @@ TEXT
       end
 
       def require_jars(jars)
-        Dir["#{jars}/**/*.jar"].each {|jar| require jar}
+        Dir["#{jars}/**/*.jar"].each { |jar| require jar }
       end
 
-      def set_language(lang)
+      def language(lang)
         require 'gherkin/dialect'
 
-        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.keys.include? lang
+        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.key?(lang)
         list_keywords_and_exit(lang)
       end
 
@@ -364,7 +358,7 @@ TEXT
       end
 
       def non_stdout_formats
-        @options[:formats].select { |_, _, output| output != @out_stream }
+        @options[:formats].reject { |_, _, output| output == @out_stream }
       end
 
       def add_option(option, value)
@@ -372,8 +366,8 @@ TEXT
       end
 
       def add_tag(value)
-        warn("Deprecated: Found tags option '#{value}'. Support for '~@tag' will be removed from the next release of Cucumber. Please use 'not @tag' instead.") if value.include?('~')
-        warn("Deprecated: Found tags option '#{value}'. Support for '@tag1,@tag2' will be removed from the next release of Cucumber. Please use '@tag or @tag2' instead.") if value.include?(',')
+        raise("Found tags option '#{value}'. '~@tag' is no longer supported, use 'not @tag' instead.") if value.include?('~')
+        raise("Found tags option '#{value}'. '@tag1,@tag2' is no longer supported, use '@tag or @tag2' instead.") if value.include?(',')
         @options[:tag_expressions] << value.gsub(/(@\w+)(:\d+)?/, '\1')
         add_tag_limits(value)
       end
@@ -385,13 +379,11 @@ TEXT
       end
 
       def add_tag_limit(tag_limits, tag_name, limit)
-        if tag_limits[tag_name] && tag_limits[tag_name] != limit
-          raise "Inconsistent tag limits for #{tag_name}: #{tag_limits[tag_name]} and #{limit}"
-        end
+        raise "Inconsistent tag limits for #{tag_name}: #{tag_limits[tag_name]} and #{limit}" if tag_limits[tag_name] && tag_limits[tag_name] != limit
         tag_limits[tag_name] = limit
       end
 
-      def set_color(color)
+      def color(color)
         Cucumber::Term::ANSIColor.coloring = color
       end
 
@@ -403,7 +395,7 @@ TEXT
         @profiles << p
       end
 
-      def set_option(option, value=nil)
+      def set_option(option, value = nil)
         @options[option] = value.nil? ? true : value
       end
 
@@ -434,7 +426,7 @@ TEXT
       def extract_environment_variables
         @args.delete_if do |arg|
           if arg =~ /^(\w+)=(.*)$/
-            @options[:env_vars][$1] = $2
+            @options[:env_vars][Regexp.last_match(1)] = Regexp.last_match(2)
             true
           end
         end
@@ -463,8 +455,8 @@ TEXT
         profile_args = profile_loader.args_from(profile)
         profile_options = Options.parse(
           profile_args, @out_stream, @error_stream,
-          :skip_profile_information => true,
-          :profile_loader => profile_loader
+          skip_profile_information: true,
+          profile_loader: profile_loader
         )
         reverse_merge(profile_options)
       end
@@ -472,14 +464,14 @@ TEXT
       def default_profile_should_be_used?
         @profiles.empty? &&
           profile_loader.cucumber_yml_defined? &&
-          profile_loader.has_profile?(@default_profile)
+          profile_loader.profile?(@default_profile)
       end
 
       def profile_loader
         @profile_loader ||= ProfileLoader.new
       end
 
-      def reverse_merge(other_options)
+      def reverse_merge(other_options) # rubocop:disable Metrics/AbcSize
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
         @options[:excludes] += other_options[:excludes]
@@ -508,7 +500,7 @@ TEXT
           @options[:formats] = stdout_formats[0..0] + non_stdout_formats
         end
 
-        @options[:retry] = other_options[:retry] if @options[:retry] == 0
+        @options[:retry] = other_options[:retry] if @options[:retry].zero?
 
         self
       end
@@ -544,7 +536,7 @@ TEXT
             ['but (code)', to_code_keywords_string(language.but_keywords)]
           ]
         )
-        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
+        @out_stream.write(data.to_s(color: false, prefixes: Hash.new('')))
         Kernel.exit(0)
       end
 
@@ -553,8 +545,9 @@ TEXT
         data = Cucumber::MultilineArgument::DataTable.from(
           ::Gherkin::DIALECTS.keys.map do |key|
             [key, ::Gherkin::DIALECTS[key].fetch('name'), ::Gherkin::DIALECTS[key].fetch('native')]
-          end)
-        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
+          end
+        )
+        @out_stream.write(data.to_s(color: false, prefixes: Hash.new('')))
         Kernel.exit(0)
       end
 
@@ -568,23 +561,22 @@ TEXT
 
       def default_options
         {
-          :strict       => Cucumber::Core::Test::Result::StrictConfiguration.new,
-          :require      => [],
-          :dry_run      => false,
-          :formats      => [],
-          :excludes     => [],
-          :tag_expressions  => [],
-          :tag_limits   => {},
-          :name_regexps => [],
-          :env_vars     => {},
-          :diff_enabled => true,
-          :snippets     => true,
-          :source       => true,
-          :duration     => true,
-          :retry        => 0
+          strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
+          require: [],
+          dry_run: false,
+          formats: [],
+          excludes: [],
+          tag_expressions: [],
+          tag_limits: {},
+          name_regexps: [],
+          env_vars: {},
+          diff_enabled: true,
+          snippets: true,
+          source: true,
+          duration: true,
+          retry: 0
         }
       end
     end
-
   end
 end

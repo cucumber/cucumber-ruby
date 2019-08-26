@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'autotest'
 require 'autotest/cucumber_mixin'
 

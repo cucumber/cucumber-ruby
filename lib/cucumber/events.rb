@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 Dir[File.dirname(__FILE__) + '/events/*.rb'].map(&method(:require))
 
 module Cucumber
-
   # Events tell you what's happening while Cucumber runs your features.
   #
   # They're designed to be read-only, appropriate for writing formatters and other
@@ -32,6 +32,7 @@ module Cucumber
         StepActivated,
         TestRunFinished,
         GherkinSourceRead,
+        GherkinSourceParsed,
         TestRunStarted
       )
     end

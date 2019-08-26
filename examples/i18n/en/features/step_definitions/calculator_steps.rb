@@ -1,12 +1,4 @@
-# encoding: utf-8
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
 Before do
@@ -25,5 +17,5 @@ When(/I press (\w+)/) do |op|
 end
 
 Then(/the result should be (.*) on the screen/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

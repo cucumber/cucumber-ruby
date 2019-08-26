@@ -1,14 +1,18 @@
 # frozen_string_literal: true
+
 # override aruba to filter out some stuff
 module NormaliseArubaOutput
   def all_stdout
-    normalise_output(super)
+    all_commands.map(&:output).join("\n")
   end
 
   def sanitize_text(text)
     normalise_output(super)
   end
 
+  # Rubocop doesn't handle the regex values below appropriately,
+  # so disabling here.
+  # rubocop:disable Style/RegexpLiteral
   def normalise_output(out)
     out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
        .gsub(/tmp\/aruba\//, '')            # Fix aruba path
@@ -16,23 +20,22 @@ module NormaliseArubaOutput
        .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
        .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
   end
+  # rubocop:enable Style/RegexpLiteral
 
   def normalise_json(json)
-    #make sure duration was captured (should be >= 0)
-    #then set it to what is "expected" since duration is dynamic
+    # make sure duration was captured (should be >= 0)
+    # then set it to what is "expected" since duration is dynamic
     json.each do |feature|
       elements = feature.fetch('elements') { [] }
       elements.each do |scenario|
-        scenario['steps'].each do |step|
-          %w(steps before after).each do |type|
-            if scenario[type]
-              scenario[type].each do |step_or_hook|
-                normalise_json_step_or_hook(step_or_hook)
-                if step_or_hook['after']
-                  step_or_hook['after'].each do |hook|
-                    normalise_json_step_or_hook(hook)
-                  end
-                end
+        scenario['steps'].each do |_step|
+          %w[steps before after].each do |type|
+            next unless scenario[type]
+            scenario[type].each do |step_or_hook|
+              normalise_json_step_or_hook(step_or_hook)
+              next unless step_or_hook['after']
+              step_or_hook['after'].each do |hook|
+                normalise_json_step_or_hook(hook)
               end
             end
           end
@@ -46,7 +49,6 @@ module NormaliseArubaOutput
     expect(step_or_hook['result']['duration']).to be >= 0
     step_or_hook['result']['duration'] = 1
   end
-
 end
 
 World(NormaliseArubaOutput)

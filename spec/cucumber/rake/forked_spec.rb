@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/rake/task'
 require 'rake'
@@ -14,8 +15,7 @@ module Cucumber
       context 'when running with bundler' do
         let(:bundler) { true }
 
-        subject { Task::ForkedCucumberRunner.new(
-            libs, binary, cucumber_opts, bundler, feature_files) }
+        subject { Task::ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) }
 
         it 'does use bundler if bundler is set to true' do
           expect(subject.use_bundler).to be true
@@ -23,21 +23,20 @@ module Cucumber
 
         it 'uses bundle exec to find cucumber and libraries' do
           expect(subject.cmd).to eq [
-              Cucumber::RUBY_BINARY,
-              '-S',
-              'bundle',
-              'exec',
-              'cucumber',
-              '--cuke-option'
-            ] + feature_files
+            Cucumber::RUBY_BINARY,
+            '-S',
+            'bundle',
+            'exec',
+            'cucumber',
+            '--cuke-option'
+          ] + feature_files
         end
       end
 
       context 'when running without bundler' do
         let(:bundler) { false }
 
-        subject { Task::ForkedCucumberRunner.new(
-            libs, binary, cucumber_opts, bundler, feature_files) }
+        subject { Task::ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) }
 
         it 'does not use bundler if bundler is set to false' do
           expect(subject.use_bundler).to be false
@@ -45,12 +44,12 @@ module Cucumber
 
         it 'uses well known cucumber location and specified libraries' do
           expect(subject.cmd).to eq [
-              Cucumber::RUBY_BINARY,
-              '-I',
-              '"lib"',
-              "\"#{Cucumber::BINARY}\"",
-              '--cuke-option'
-            ] + feature_files
+            Cucumber::RUBY_BINARY,
+            '-I',
+            '"lib"',
+            "\"#{Cucumber::BINARY}\"",
+            '--cuke-option'
+          ] + feature_files
         end
       end
     end

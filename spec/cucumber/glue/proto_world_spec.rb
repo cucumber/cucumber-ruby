@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
@@ -6,18 +7,17 @@ require 'cucumber/formatter/pretty'
 module Cucumber
   module Glue
     describe ProtoWorld do
-
       let(:runtime) { double('runtime') }
       let(:language) { double('language') }
       let(:world) { Object.new.extend(ProtoWorld.for(runtime, language)) }
 
       describe '#table' do
         it 'produces Ast::Table by #table' do
-          expect(world.table(%{
+          expect(world.table(%(
         | account | description | amount |
         | INT-100 | Taxi        | 114    |
         | CUC-101 | Peeler      | 22     |
-          })).to be_kind_of(MultilineArgument::DataTable)
+          ))).to be_kind_of(MultilineArgument::DataTable)
         end
       end
 
@@ -28,7 +28,7 @@ module Cucumber
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Cucumber::Formatter::Pretty.new(runtime, @out, {})
+          @formatter = Cucumber::Formatter::Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
           run_defined_feature
         end
 

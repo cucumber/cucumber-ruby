@@ -1,4 +1,3 @@
-# encoding: utf-8
 begin
   require 'rspec/expectations'
 rescue LoadError
@@ -6,7 +5,7 @@ rescue LoadError
 end
 
 require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'lommeregner'
 
 Before do
@@ -25,5 +24,5 @@ When('jeg lægger sammen') do
 end
 
 Then(/skal resultatet være (\d*)/) do |result|
-  @result.should == result.to_i
+  expect(@result).to eq(result.to_f)
 end

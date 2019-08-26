@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 require 'cucumber/gherkin/formatter/ansi_escapes'
-require 'cucumber/core/ast/data_table'
+require 'cucumber/core/test/data_table'
 
 module Cucumber
   module Glue
@@ -9,7 +10,6 @@ module Cucumber
     # You can, and probably should, extend this API with your own methods that
     # make sense in your domain. For more on that, see {Cucumber::Glue::Dsl#World}
     module ProtoWorld
-
       # Run a single Gherkin step
       # @example Call another step
       #   step "I am logged in"
@@ -24,8 +24,8 @@ module Cucumber
       # @example Passing a multiline string
       #   step "the email should contain:", "Dear sir,\nYou've won a prize!\n"
       # @param [String] name The name of the step
-      # @param [String,Cucumber::Ast::DocString,Cucumber::Ast::Table] multiline_argument
-      def step(name, raw_multiline_arg=nil)
+      # @param [String,Cucumber::Test::DocString,Cucumber::Ast::Table] multiline_argument
+      def step(name, raw_multiline_arg = nil)
         super
       end
 
@@ -67,8 +67,8 @@ module Cucumber
       #     %w{ CUC-101 Peeler      22     }
       #   ])
       #
-      def table(text_or_table, file=nil, line=0)
-        location = !file ? Core::Ast::Location.of_caller : Core::Ast::Location.new(file, line)
+      def table(text_or_table, file = nil, line = 0)
+        location = !file ? Core::Test::Location.of_caller : Core::Test::Location.new(file, line)
         MultilineArgument::DataTable.from(text_or_table, location)
       end
 
@@ -84,27 +84,25 @@ module Cucumber
       end
 
       # Pause the tests and ask the operator for input
-      def ask(question, timeout_seconds=60)
+      def ask(question, timeout_seconds = 60)
         super
       end
 
       # Embed an image in the output
-      def embed(file, mime_type, label='Screenshot')
+      def embed(file, mime_type, label = 'Screenshot')
         super
       end
 
       # Mark the matched step as pending.
       def pending(message = 'TODO')
-        if block_given?
-          begin
-            yield
-          rescue Exception
-            raise Pending, message
-          end
-          raise Pending, "Expected pending '#{message}' to fail. No Error was raised. No longer pending?"
-        else
+        raise Pending, message unless block_given?
+
+        begin
+          yield
+        rescue Exception # rubocop:disable Lint/RescueException
           raise Pending, message
         end
+        raise Pending, "Expected pending '#{message}' to fail. No Error was raised. No longer pending?"
       end
 
       # Skips this step and the remaining steps in the scenario
@@ -123,8 +121,8 @@ module Cucumber
       end
 
       # Dynamially generate the API module, closuring the dependencies
-      def self.for(runtime, language)
-        Module.new do
+      def self.for(runtime, language) # rubocop:disable Metrics/MethodLength
+        Module.new do # rubocop:disable Metrics/BlockLength
           def self.extended(object)
             # wrap the dynamically generated module so that we can document the methods
             # for yardoc, which doesn't like define_method.
@@ -138,13 +136,13 @@ module Cucumber
             add_namespaced_modules!(namespaced_world_modules)
           end
 
-          define_method(:step) do |name, raw_multiline_arg=nil|
-            location = Core::Ast::Location.of_caller
+          define_method(:step) do |name, raw_multiline_arg = nil|
+            location = Core::Test::Location.of_caller
             runtime.invoke_dynamic_step(name, MultilineArgument.from(raw_multiline_arg, location))
           end
 
           define_method(:steps) do |steps_text|
-            location = Core::Ast::Location.of_caller
+            location = Core::Test::Location.of_caller
             runtime.invoke_dynamic_steps(steps_text, language, location)
           end
 
@@ -159,11 +157,11 @@ module Cucumber
           end
           # rubocop:enable UnneededInterpolation
 
-          define_method(:ask) do |question, timeout_seconds=60|
+          define_method(:ask) do |question, timeout_seconds = 60|
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:embed) do |file, mime_type, label='Screenshot'|
+          define_method(:embed) do |file, mime_type, label = 'Screenshot'|
             runtime.embed(file, mime_type, label)
           end
 
@@ -174,7 +172,7 @@ module Cucumber
               modules += included_modules
             end
             modules << stringify_namespaced_modules
-            format('#<%s:0x%x>', modules.join('+'), self.object_id)
+            format('#<%<modules>s:0x%<object_id>x>', modules: modules.join('+'), object_id: object_id)
           end
 
           private
@@ -211,7 +209,6 @@ module Cucumber
           def stringify_namespaced_modules
             @__namespaced_modules.map { |k, v| "#{v.join(',')} (as #{k})" }.join('+')
           end
-
         end
       end
 

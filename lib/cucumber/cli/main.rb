@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'optparse'
 require 'cucumber'
 require 'logger'
@@ -13,7 +14,7 @@ module Cucumber
         end
       end
 
-      def initialize(args, _=nil, out=STDOUT, err=STDERR, kernel=Kernel)
+      def initialize(args, _ = nil, out = STDOUT, err = STDERR, kernel = Kernel)
         @args   = args
         @out    = out
         @err    = err
@@ -23,22 +24,15 @@ module Cucumber
       def execute!(existing_runtime = nil)
         trap_interrupt
 
-        runtime = if existing_runtime
-                    existing_runtime.configure(configuration)
-                    existing_runtime
-                  else
-                    Runtime.new(configuration)
-                  end
+        runtime = runtime(existing_runtime)
 
         runtime.run!
         if Cucumber.wants_to_quit
           exit_unable_to_finish
+        elsif runtime.failure?
+          exit_tests_failed
         else
-          if runtime.failure?
-            exit_tests_failed
-          else
-            exit_ok
-          end
+          exit_ok
         end
       rescue SystemExit => e
         @kernel.exit(e.status)
@@ -55,7 +49,7 @@ module Cucumber
       rescue Errno::EACCES, Errno::ENOENT => e
         @err.puts("#{e.message} (#{e.class})")
         exit_unable_to_finish
-      rescue Exception => e
+      rescue Exception => e # rubocop:disable Lint/RescueException
         @err.puts("#{e.message} (#{e.class})")
         @err.puts(e.backtrace.join("\n"))
         exit_unable_to_finish
@@ -69,7 +63,6 @@ module Cucumber
       end
 
       private
-
 
       def exit_ok
         @kernel.exit 0
@@ -93,7 +86,14 @@ module Cucumber
           exit_unable_to_finish! if Cucumber.wants_to_quit
           Cucumber.wants_to_quit = true
           STDERR.puts "\nExiting... Interrupt again to exit immediately."
+          exit_unable_to_finish
         end
+      end
+
+      def runtime(existing_runtime)
+        return Runtime.new(configuration) unless existing_runtime
+        existing_runtime.configure(configuration)
+        existing_runtime
       end
     end
   end

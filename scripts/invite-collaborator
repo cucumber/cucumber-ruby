@@ -18,23 +18,23 @@ class Team
   end
 
   def team
-    @team ||= gh.organization_teams('cucumber').
-      find { |team| team['name'] == name } || raise("Unable to find a team named #{name}")
+    @team ||=
+      gh.organization_teams('cucumber')
+        .find { |team| team['name'] == name } || raise("Unable to find a team named #{name}")
   end
 end
 
 begin
   token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
-  login = (ARGV[0] || raise("syntax: #{$0} <COLLABORATOR_LOGIN>")).to_s
+  login = (ARGV[0] || raise("syntax: #{$PROGRAM_NAME} <COLLABORATOR_LOGIN>")).to_s
 
   gh = Octokit::Client.new(access_token: token)
   [
     Team.new(gh, 'cucumber-ruby'),
     Team.new(gh, 'collaborators')
-  ].each { |team|
+  ].each do |team|
     team.add_member(login)
-  }
-
-rescue StandardError => error
-  abort error.message
+  end
+rescue StandardError => e
+  abort e.message
 end

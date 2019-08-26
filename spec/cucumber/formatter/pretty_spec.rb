@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
@@ -14,7 +15,7 @@ module Cucumber
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
         end
 
         describe 'given a single feature' do
@@ -277,7 +278,7 @@ OUTPUT
               Given this step <status>
               Examples:
               | status |
-              | passes  |
+              | passes |
             FEATURE
 
             define_steps do
@@ -294,7 +295,7 @@ OUTPUT
             end
 
             it 'displays hook output appropriately ' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 Feature: 
 
   Scenario: 
@@ -339,7 +340,7 @@ OUTPUT
             end
 
             it 'displays hook output appropriately ' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 Feature: 
 
   Background: 
@@ -375,7 +376,7 @@ OUTPUT
             FEATURE
 
             it 'includes the tags in the output ' do
-              expect( @out.string ).to include <<OUTPUT
+              expect(@out.string).to include <<OUTPUT
 @tag1
 Feature: 
 
@@ -419,27 +420,29 @@ OUTPUT
                 | dummy |
                 #comment11
                 | dummy |
+                #comment12
             FEATURE
 
-            it 'includes the all comments except for data table rows in the output ' do
-              expect( @out.string ).to include <<OUTPUT
+            it 'includes the all comments in the output' do
+              expect(@out.string).to include <<OUTPUT
 #comment1
 Feature: 
 
   #comment2
   Background: 
-      #comment3
+    #comment3
     Given this step passes
 
   #comment4
   Scenario: 
-      #comment5
+    #comment5
     Given this step passes
+      #comment6
       | dummy |
 
   #comment7
   Scenario Outline: 
-      #comment8
+    #comment8
     Given this step passes
 
     #comment9
@@ -448,6 +451,47 @@ Feature:
       | dummy |
       #comment11
       | dummy |
+#comment12
+OUTPUT
+            end
+          end
+
+          describe 'with the rule keyword' do
+            define_feature <<-FEATURE
+          Feature: Some rules
+
+            Background: FB
+              Given fb
+
+            Rule: A
+              The rule A description
+
+              Background: AB
+                Given ab
+
+              Example: Example A
+                Given a
+
+            Rule: B
+              The rule B description
+
+              Example: Example B
+                Given b
+            FEATURE
+
+            it 'ignores the rule keyword' do
+              expect(@out.string).to include <<OUTPUT
+Feature: Some rules
+
+  Background: FB
+    Given fb
+    Given ab
+
+  Example: Example A
+    Given a
+
+  Example: Example B
+    Given b
 OUTPUT
             end
           end
@@ -458,7 +502,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {:no_multiline => true})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false, no_multiline: true))
         end
 
         describe 'given a single feature' do
@@ -632,7 +676,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out))
         end
 
         describe 'given a single feature' do
@@ -660,14 +704,14 @@ OUTPUT
             it 'outputs the instantiated scenarios' do
               lines = <<-OUTPUT
               Examples: Fruit
-                Scenario: | apples |
+                Example: | apples |
                   Given there are apples
-                Scenario: | bananas |
+                Example: | bananas |
                   Given there are bananas
               Examples: Vegetables
-                Scenario: | broccoli |
+                Example: | broccoli |
                   Given there are broccoli
-                Scenario: | carrots |
+                Example: | carrots |
                   Given there are carrots
               OUTPUT
               lines.split("\n").each do |line|
@@ -721,7 +765,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {:source => true})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: true))
         end
 
         describe 'given a single feature' do
@@ -751,15 +795,15 @@ OUTPUT
               Scenario Outline: Monkey eats a balanced diet # spec.feature:3
                 Given there are <Things>                    # spec.feature:4
                 Examples: Fruit
-                  Scenario: | apples |                          # spec.feature:8
-                    Given there are apples                      # spec.feature:8
-                  Scenario: | bananas |                         # spec.feature:9
-                    Given there are bananas                     # spec.feature:9
+                  Example: | apples |      # spec.feature:8
+                    Given there are apples # spec.feature:8
+                  Example: | bananas |      # spec.feature:9
+                    Given there are bananas # spec.feature:9
                 Examples: Vegetables
-                  Scenario: | broccoli |                        # spec.feature:12
-                    Given there are broccoli                    # spec.feature:12
-                  Scenario: | carrots |                         # spec.feature:13
-                    Given there are carrots                     # spec.feature:13
+                  Example: | broccoli |      # spec.feature:12
+                    Given there are broccoli # spec.feature:12
+                  Example: | carrots |      # spec.feature:13
+                    Given there are carrots # spec.feature:13
               OUTPUT
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
@@ -781,8 +825,8 @@ OUTPUT
               it 'the scenario line controls the source indentation' do
                 lines = <<-OUTPUT
               Examples:
-                 Scenario: | Hominidae | Very long cell content | # spec.feature:8
-                   Given there are Hominidae                      # spec.feature:8
+                 Example: | Hominidae | Very long cell content | # spec.feature:8
+                   Given there are Hominidae                     # spec.feature:8
 
                 OUTPUT
                 lines.split("\n").each do |line|
@@ -795,11 +839,10 @@ OUTPUT
       end
 
       context 'snippets contain relevant keyword replacements' do
-
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {snippets: true})
+          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, snippets: true))
           run_defined_feature
         end
 
@@ -814,15 +857,15 @@ OUTPUT
               And the other monkeys eat all the apples
               Then bananas remain
               But there are no apples left
-            FEATURE
+          FEATURE
 
           it "containes snippets with 'And' or 'But' replaced by previous step name" do
-            expect(@out.string).to include('Given("there are bananas and apples")')
-            expect(@out.string).to include('Given("other monkeys are around")')
-            expect(@out.string).to include('When("one monkey eats a banana")')
-            expect(@out.string).to include('When("the other monkeys eat all the apples")')
-            expect(@out.string).to include('Then("bananas remain")')
-            expect(@out.string).to include('Then("there are no apples left")')
+            expect(@out.string).to include("Given('there are bananas and apples')")
+            expect(@out.string).to include("Given('other monkeys are around')")
+            expect(@out.string).to include("When('one monkey eats a banana')")
+            expect(@out.string).to include("When('the other monkeys eat all the apples')")
+            expect(@out.string).to include("Then('bananas remain')")
+            expect(@out.string).to include("Then('there are no apples left')")
           end
         end
 
@@ -839,12 +882,12 @@ OUTPUT
               * there are no apples left
           FEATURE
           it "replaces the first step with 'Given'" do
-            expect(@out.string).to include('Given("there are bananas and apples")')
+            expect(@out.string).to include("Given('there are bananas and apples')")
           end
           it "uses actual keywords as the 'previous' keyword for future replacements" do
-            expect(@out.string).to include('Given("other monkeys are around")')
-            expect(@out.string).to include('When("the other monkeys eat all the apples")')
-            expect(@out.string).to include('Then("there are no apples left")')
+            expect(@out.string).to include("Given('other monkeys are around')")
+            expect(@out.string).to include("When('the other monkeys eat all the apples')")
+            expect(@out.string).to include("Then('there are no apples left')")
           end
         end
 
@@ -861,7 +904,7 @@ OUTPUT
             Given('this step passes') {}
           end
           it 'uses actual keyword of the previous passing step for the undefined step' do
-            expect(@out.string).to include('Then("this step is undefined")')
+            expect(@out.string).to include("Then('this step is undefined')")
           end
         end
 
@@ -881,8 +924,8 @@ OUTPUT
             Given('this step passes') {}
           end
           it "uses 'Given' as actual keyword the step in each scenario" do
-            expect(@out.string).to include('Given("this step is undefined")')
-            expect(@out.string).to include('Given("this step is also undefined")')
+            expect(@out.string).to include("Given('this step is undefined')")
+            expect(@out.string).to include("Given('this step is also undefined')")
           end
         end
 
@@ -894,9 +937,9 @@ OUTPUT
             MISHUN: CUCUMBR
               I CAN HAZ IN TEH BEGINNIN CUCUMBRZ
               AN I EAT CUCUMBRZ
-            FEATURE
+          FEATURE
           it 'uses actual keyword of the previous passing step for the undefined step' do
-            expect(@out.string).to include('ICANHAZ("I EAT CUCUMBRZ")')
+            expect(@out.string).to include("ICANHAZ('I EAT CUCUMBRZ')")
           end
         end
       end

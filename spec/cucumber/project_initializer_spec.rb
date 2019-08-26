@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'tmpdir'
 
 module Cucumber
-  describe ProjectInitializer, :isolated_home => true do
+  describe ProjectInitializer, isolated_home: true do
     let(:command_line_config) { ProjectInitializer.new }
 
     before do
@@ -12,7 +13,6 @@ module Cucumber
 
     context 'no files created' do
       around(:example) do |example|
-
         dir = Dir.mktmpdir
         original_dir = Dir.pwd
         begin
@@ -25,25 +25,24 @@ module Cucumber
       end
 
       it 'should create features directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features$)
+        expect(command_line_config).to receive(:puts).with(/^\s+create\s+features$/)
         command_line_config.run
       end
 
       it 'should create step_definitions directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/step_definitions$)
+        expect(command_line_config).to receive(:puts).with(/^\s+create\s+features\/step_definitions$/)
         command_line_config.run
       end
 
       it 'should create support directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/support$)
+        expect(command_line_config).to receive(:puts).with(/^\s+create\s+features\/support$/)
         command_line_config.run
       end
 
       it 'should create env.rb directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/support/env.rb$)
+        expect(command_line_config).to receive(:puts).with(/^\s+create\s+features\/support\/env.rb$/)
         command_line_config.run
       end
-
     end
 
     context 'files created' do
@@ -64,25 +63,24 @@ module Cucumber
       end
 
       it 'should not create features directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features$)
+        expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features$/)
         command_line_config.run
       end
 
       it 'should not create step_definitions directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/step_definitions$)
+        expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features\/step_definitions$/)
         command_line_config.run
       end
 
       it 'should not create support directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/support$)
+        expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features\/support$/)
         command_line_config.run
       end
 
       it 'should not create env.rb directory' do
-        expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/support/env.rb$)
+        expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features\/support\/env.rb$/)
         command_line_config.run
       end
-
     end
   end
 end

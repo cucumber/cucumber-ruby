@@ -1,4 +1,3 @@
-# encoding: utf-8
 begin
   require 'rspec/expectations'
 rescue LoadError
@@ -6,7 +5,7 @@ rescue LoadError
 end
 
 require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'laskin'
 
 Before do
@@ -25,5 +24,5 @@ When(/painan "(\w+)"/) do |op|
 end
 
 Then(/laskimen ruudulla pitäisi näkyä tulos (.*)/) do |tulos|
-  @tulos.should == tulos.to_f
+  expect(@tulos).to eq(tulos.to_f)
 end

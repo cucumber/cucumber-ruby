@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 file_name = File.dirname(__FILE__) + '/../lib'
-$:.unshift(file_name) unless $:.include?(file_name)
+$LOAD_PATH.unshift(file_name) unless $LOAD_PATH.include?(file_name)
 
 require 'simplecov_setup'
 require 'cucumber/rspec/disable_option_parser'

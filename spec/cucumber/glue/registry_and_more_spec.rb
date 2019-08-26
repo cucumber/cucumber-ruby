@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
 
@@ -15,6 +16,7 @@ module Cucumber
         Object.new.extend(Glue::Dsl)
       end
 
+      # rubocop:disable Style/GlobalVars
       describe '#load_code_file' do
         after do
           FileUtils.rm_rf('tmp.rb')
@@ -43,6 +45,7 @@ module Cucumber
 
           expect($foo).to eq 2
         end
+        # rubocop:enable Style/GlobalVars
 
         it 'only loads ruby files' do
           a_file_called('docs.md') do
@@ -62,7 +65,7 @@ module Cucumber
           rescue Glue::NilWorld => e
             expect(e.message).to eq 'World procs should never return nil'
             expect(e.backtrace.length).to eq 1
-            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb\:\d+\:in `World'/)
+            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb\:\d+\:in `World'/) # rubocop:disable Style/RegexpLiteral
           end
         end
 
@@ -88,7 +91,7 @@ module Cucumber
         end
 
         it 'raises error when we try to register more than one World proc' do
-          expected_error = %{You can only pass a proc to #World once, but it's happening
+          expected_error = %(You can only pass a proc to #World once, but it's happening
 in 2 places:
 
 spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
@@ -97,12 +100,10 @@ spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
 Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc
 or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
-}
-          dsl.World { Hash.new }
+)
+          dsl.World { Hash.new } # rubocop:disable Style/EmptyLiteral
 
-          expect(-> {
-            dsl.World { Array.new }
-          }).to raise_error(Glue::MultipleWorld, /#{expected_error}/)
+          expect(-> { dsl.World { Array.new } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/) # rubocop:disable Style/EmptyLiteral
         end
       end
 
@@ -184,8 +185,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
       describe 'hooks' do
         it 'finds before hooks' do
-          fish = dsl.Before('@fish'){}
-          meat = dsl.Before('@meat'){}
+          fish = dsl.Before('@fish') {}
+          meat = dsl.Before('@meat') {}
 
           scenario = double('Scenario')
 

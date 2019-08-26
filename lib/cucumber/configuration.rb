@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
@@ -53,7 +54,7 @@ module Cucumber
     end
 
     def seed
-      Integer(@options[:seed] || rand(0xFFFF))
+      @options[:seed]
     end
 
     def dry_run?
@@ -166,27 +167,31 @@ module Cucumber
     end
 
     def support_to_load
-      support_files = all_files_to_load.select {|f| f =~ %r{/support/} }
-      env_files = support_files.select {|f| f =~ %r{/support/env\..*} }
+      support_files = all_files_to_load.select { |f| f =~ %r{/support/} }
+
+      # env_files are separated from other_files so we can ensure env files
+      # load first.
+      #
+      env_files = support_files.select { |f| f =~ %r{/support/env\..*} }
       other_files = support_files - env_files
-      @options[:dry_run] ? other_files : env_files + other_files
+      env_files.reverse + other_files.reverse
     end
 
     def all_files_to_load
       files = require_dirs.map do |path|
         path = path.tr('\\', '/') # In case we're on windows. Globs don't work with backslashes.
-        path = path.gsub(/\/$/, '') # Strip trailing slash.
+        path = path.gsub(/\/$/, '') # Strip trailing slash. # rubocop:disable Style/RegexpLiteral
         File.directory?(path) ? Dir["#{path}/**/*"] : path
       end.flatten.uniq
       remove_excluded_files_from(files)
-      files.reject! {|f| !File.file?(f)}
-      files.reject! {|f| File.extname(f) == '.feature' }
-      files.reject! {|f| f =~ /^http/}
+      files.select! { |f| File.file?(f) }
+      files.reject! { |f| File.extname(f) == '.feature' }
+      files.reject! { |f| f =~ /^http/ }
       files.sort
     end
 
     def step_defs_to_load
-      all_files_to_load.reject {|f| f =~ %r{/support/} }
+      all_files_to_load.reject { |f| f =~ %r{/support/} }
     end
 
     def formatter_factories
@@ -195,9 +200,8 @@ module Cucumber
           factory = formatter_class(format)
           yield factory,
                 formatter_options,
-                path_or_io,
-                Cli::Options.new(STDOUT, STDERR, @options)
-        rescue Exception => e
+                path_or_io
+        rescue Exception => e # rubocop:disable Lint/RescueException
           raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
         end
       end
@@ -242,22 +246,22 @@ module Cucumber
 
     def default_options
       {
-        :autoload_code_paths => ['features/support', 'features/step_definitions'],
-        :filters             => [],
-        :strict              => Cucumber::Core::Test::Result::StrictConfiguration.new,
-        :require             => [],
-        :dry_run             => false,
-        :fail_fast           => false,
-        :formats             => [],
-        :excludes            => [],
-        :tag_expressions     => [],
-        :name_regexps        => [],
-        :env_vars            => {},
-        :diff_enabled        => true,
-        :snippets            => true,
-        :source              => true,
-        :duration            => true,
-        :event_bus           => Cucumber::Events.make_event_bus
+        autoload_code_paths: ['features/support', 'features/step_definitions'],
+        filters: [],
+        strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
+        require: [],
+        dry_run: false,
+        fail_fast: false,
+        formats: [],
+        excludes: [],
+        tag_expressions: [],
+        name_regexps: [],
+        env_vars: {},
+        diff_enabled: true,
+        snippets: true,
+        source: true,
+        duration: true,
+        event_bus: Cucumber::Events.make_event_bus
       }
     end
 
@@ -271,7 +275,7 @@ module Cucumber
     end
 
     def remove_excluded_files_from(files)
-      files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
+      files.reject! { |path| @options[:excludes].detect { |pattern| path =~ pattern } }
     end
 
     def require_dirs

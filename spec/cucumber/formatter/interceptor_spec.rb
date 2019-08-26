@@ -1,27 +1,20 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/formatter/interceptor'
 
 module Cucumber::Formatter
   describe Interceptor::Pipe do
-    let(:pipe) do
-      pipe = double('original pipe')
-
-      allow(pipe).to receive(:instance_of?) { true }
-
-      pipe
-    end
+    let(:pipe) { instance_spy(IO) }
 
     describe '#wrap!' do
       it 'raises an ArgumentError if its not passed :stderr/:stdout' do
-        expect {
-          Interceptor::Pipe.wrap(:nonsense)
-        }.to raise_error(ArgumentError)
+        expect { Interceptor::Pipe.wrap(:nonsense) }.to raise_error(ArgumentError)
       end
 
       context 'when passed :stderr' do
         before :each do
-          @stderr = $stdout
+          @stderr = $stderr
         end
 
         it 'wraps $stderr' do
@@ -57,13 +50,12 @@ module Cucumber::Formatter
     describe '#unwrap!' do
       before :each do
         @stdout = $stdout
+        $stdout = pipe
         @wrapped = Interceptor::Pipe.wrap(:stdout)
       end
 
       it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
-        expect {
-          Interceptor::Pipe.unwrap!(:nonsense)
-        }.to raise_error(ArgumentError)
+        expect { Interceptor::Pipe.unwrap!(:nonsense) }.to raise_error(ArgumentError)
       end
 
       it 'resets $stdout when #unwrap! is called' do
@@ -87,10 +79,9 @@ module Cucumber::Formatter
         buffer = '(::)'
         Interceptor::Pipe.unwrap! :stdout
 
-        expect(@wrapped).to receive(:write).with(buffer)
-        expect(@wrapped.buffer).not_to receive(:<<)
-
         @wrapped.write(buffer)
+
+        expect(@wrapped.buffer_string).not_to end_with(buffer)
       end
 
       after :each do
@@ -108,12 +99,12 @@ module Cucumber::Formatter
       end
 
       it 'adds the buffer to its stored output' do
-        allow(pipe).to receive(:write)
+        expect(pipe).to receive(:write).with(buffer)
 
         pi.write(buffer)
 
-        expect(pi.buffer).not_to be_empty
-        expect(pi.buffer.first).to eq buffer
+        expect(pi.buffer_string).not_to be_empty
+        expect(pi.buffer_string).to eq buffer
       end
     end
 

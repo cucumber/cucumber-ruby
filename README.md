@@ -5,7 +5,6 @@
 
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master)
-[![Dependency Status](https://gemnasium.com/cucumber/cucumber-ruby.svg)](https://gemnasium.com/cucumber/cucumber-ruby)
 
 # Cucumber
 
@@ -16,20 +15,19 @@ your team.
 
 Where to get more info:
 
-  * The main website: https://cucumber.io/
-  * Documentation: https://github.com/cucumber/cucumber/wiki
-  * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
-  * Support forum: https://groups.google.com/group/cukes
-  * Chat: ([Slack](https://cucumber.io/support#slack) and [Gitter](https://cucumber.io/support#gitter))
+ * The main website: https://cucumber.io/ 
+ * Documentation: https://cucumber.io/docs
+ * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
+ * Support forum: https://groups.google.com/group/cukes
+ * Chat: ([Slack](https://cucumber.io/support#slack) and [Gitter](https://cucumber.io/support#gitter))
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
 ## Supported platforms
-
+* Ruby 2.6
+* Ruby 2.5
 * Ruby 2.4
 * Ruby 2.3
-* Ruby 2.2
-* Ruby 2.1
 * JRuby 9.1
 
 ## Code of Conduct

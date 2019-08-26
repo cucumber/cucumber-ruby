@@ -1,4 +1,3 @@
-# encoding: utf-8
 begin
   require 'rspec/expectations'
 rescue LoadError
@@ -6,5 +5,5 @@ rescue LoadError
 end
 
 require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculatrice'

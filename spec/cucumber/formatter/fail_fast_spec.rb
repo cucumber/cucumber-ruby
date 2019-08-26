@@ -1,10 +1,10 @@
 # frozen_string_literal: true
+
 require 'cucumber/formatter/fail_fast'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 require 'cucumber/core/test/result'
 require 'cucumber/core/filter'
-require 'cucumber/core/ast'
 require 'cucumber'
 require 'support/standard_step_actions'
 
@@ -83,6 +83,5 @@ module Cucumber::Formatter
         end
       end
     end
-
   end
 end

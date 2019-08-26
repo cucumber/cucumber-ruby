@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   class Runtime
     class AfterHooks
@@ -9,16 +10,16 @@ module Cucumber
 
       def apply_to(test_case)
         test_case.with_steps(
-          test_case.test_steps + after_hooks(test_case.source).reverse
+          test_case.test_steps + after_hooks.reverse
         )
       end
 
       private
 
-      def after_hooks(source)
+      def after_hooks
         @hooks.map do |hook|
           action = ->(result) { hook.invoke('After', @scenario.with_result(result)) }
-          Hooks.after_hook(source, hook.location, &action)
+          Hooks.after_hook(hook.location, &action)
         end
       end
     end

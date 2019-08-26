@@ -1,10 +1,13 @@
 # frozen_string_literal: true
+
 require 'cucumber/platform'
 require 'cucumber/gherkin/formatter/ansi_escapes'
 begin
   # Support Rake > 0.8.7
   require 'rake/dsl_definition'
+  # rubocop:disable Lint/HandleExceptions
 rescue LoadError
+  # rubocop:enable Lint/HandleExceptions
 end
 
 module Cucumber
@@ -35,8 +38,8 @@ module Cucumber
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
-          raise 'libs must be an Array when running in-process' unless Array === libs
-          libs.reverse.each{|lib| $LOAD_PATH.unshift(lib)}
+          raise 'libs must be an Array when running in-process' unless Array == libs.class
+          libs.reverse_each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
             cucumber_opts +
             feature_files
@@ -62,11 +65,11 @@ module Cucumber
         end
 
         def load_path
-          [format('"%s"', @libs.join(File::PATH_SEPARATOR))]
+          [format('"%<path>s"', path: @libs.join(File::PATH_SEPARATOR))]
         end
 
         def quoted_binary(cucumber_bin)
-          [format('"%s"', cucumber_bin)]
+          [format('"%<path>s"', path: cucumber_bin)]
         end
 
         def use_bundler
@@ -82,7 +85,7 @@ module Cucumber
         def cmd
           if use_bundler
             [
-              Cucumber::RUBY_BINARY,'-S', 'bundle', 'exec', 'cucumber',
+              Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber',
               @cucumber_opts, @feature_files
             ].flatten
           else
@@ -95,9 +98,7 @@ module Cucumber
 
         def run
           sh cmd.join(' ') do |ok, res|
-            if !ok
-              exit res.exitstatus
-            end
+            exit res.exitstatus unless ok
           end
         end
       end
@@ -110,9 +111,9 @@ module Cucumber
 
       # Extra options to pass to the cucumber binary. Can be overridden by the CUCUMBER_OPTS environment variable.
       # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
-      attr_accessor :cucumber_opts
+      attr_reader :cucumber_opts
       def cucumber_opts=(opts) #:nodoc:
-        @cucumber_opts = String === opts ? opts.split(' ') : opts
+        @cucumber_opts = String == opts.class ? opts.split(' ') : opts
       end
 
       # Whether or not to fork a new ruby interpreter. Defaults to true. You may gain
@@ -131,12 +132,16 @@ module Cucumber
       # Note that this attribute has no effect if you don't run in forked mode.
       attr_accessor :bundler
 
+      # Name of the running task
+      attr_reader :task_name
+
       # Define Cucumber Rake task
       def initialize(task_name = 'cucumber', desc = 'Run Cucumber features')
-        @task_name, @desc = task_name, desc
+        @task_name = task_name
+        @desc = desc
         @fork = true
         @libs = ['lib']
-        @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
+        @rcov_opts = %w[--rails --exclude osx\/objc,gems\/]
         yield self if block_given?
         @binary = binary.nil? ? Cucumber::BINARY : File.expand_path(binary)
         define_task
@@ -151,22 +156,20 @@ module Cucumber
 
       def runner(_task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
-        if(@fork)
-          return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
-        end
+        return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) if @fork
         InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
       end
 
       def cucumber_opts_with_profile #:nodoc:
-        Array(cucumber_opts).concat Array(@profile).flat_map {|p| ['--profile', p] }
+        Array(cucumber_opts).concat(Array(@profile).flat_map { |p| ['--profile', p] })
       end
 
       def feature_files #:nodoc:
-        make_command_line_safe(FileList[ ENV['FEATURE'] || [] ])
+        make_command_line_safe(FileList[ENV['FEATURE'] || []])
       end
 
       def make_command_line_safe(list)
-        list.map{|string| string.gsub(' ', '\ ')}
+        list.map { |string| string.gsub(' ', '\ ') }
       end
     end
   end

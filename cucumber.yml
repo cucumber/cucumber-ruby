@@ -1,16 +1,16 @@
 <%
 cucumber_pro_opts = ENV['ENABLE_CUCUMBER_PRO'] ? "--format Cucumber::Pro --out /dev/null" : ""
-std_opts = "--format progress features -r features --strict #{cucumber_pro_opts}"
-std_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
+std_opts = "--format progress features -r features --strict #{cucumber_pro_opts}".dup
+std_opts << " --tags 'not @wip'"
+std_opts << " --tags 'not @wip-jruby'" if defined?(JRUBY_VERSION)
 
-wip_opts = "--color -r features"
+wip_opts = "--color -r features".dup
 wip_opts << " --tags @wip" if !defined?(JRUBY_VERSION)
-wip_opts << " --tags @wip,@wip-jruby" if defined?(JRUBY_VERSION)
+wip_opts << " --tags '@wip or @wip-jruby'" if defined?(JRUBY_VERSION)
 %>
 default:     <%= std_opts %> --tags "not @jruby"
 jruby:       <%= std_opts %> --tags "not @wire"
 jruby_win:   <%= std_opts %> --tags "not @wire" CUCUMBER_FORWARD_SLASH_PATHS=true
 windows_mri: <%= std_opts %> --tags "not @jruby" --tags "not @wire" --tags "not @needs-many-fonts" --tags "not @todo-windows" CUCUMBER_FORWARD_SLASH_PATHS=true
-ruby:        <%= std_opts %> --tags "not @todo-windows" --tags "not @jruby"
 wip:         --wip <%= wip_opts %> features <%= cucumber_pro_opts %>
 none:        --format pretty --format Cucumber::Pro --out /dev/null

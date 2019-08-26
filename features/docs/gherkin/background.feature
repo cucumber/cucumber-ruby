@@ -35,14 +35,14 @@ Feature: Background
         Scenario Outline: passing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
 
         Scenario Outline: another passing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
       """
     And a file named "features/background_tagged_before_on_outline.feature" with:
       """
@@ -83,14 +83,14 @@ Feature: Background
         Scenario Outline: failing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
 
         Scenario Outline: another failing background
           Then I should have '<count>' cukes
           Examples:
-            |count|
-            | 10  |
+            | count |
+            | 10    |
       """
     And a file named "features/pending_background.feature" with:
       """
@@ -148,8 +148,8 @@ Feature: Background
 
         Background:
           Given table
-            |a|b|
-            |c|d|
+            | a | b |
+            | c | d |
           And multiline string
             \"\"\"
             I'm a cucumber and I'm okay. 
@@ -158,8 +158,8 @@ Feature: Background
 
         Scenario: passing background
           Then the table should be
-            |a|b|
-            |c|d|
+            | a | b |
+            | c | d |
           Then the multiline string should be
             \"\"\"
             I'm a cucumber and I'm okay. 
@@ -168,8 +168,8 @@ Feature: Background
 
         Scenario: another passing background
           Then the table should be
-            |a|b|
-            |c|d|
+            | a | b |
+            | c | d |
           Then the multiline string should be
             \"\"\"
             I'm a cucumber and I'm okay. 
@@ -306,7 +306,7 @@ Feature: Background
         Given this step raises an error
           error (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
-          features/failing_background.feature:4:in `Given this step raises an error'
+          features/failing_background.feature:4:in `this step raises an error'
         And '10' cukes
 
       Scenario: failing background
@@ -335,7 +335,7 @@ Feature: Background
         Given this step raises an error
           error (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
-          features/scenario_outline_failing_background.feature:4:in `Given this step raises an error'
+          features/scenario_outline_failing_background.feature:4:in `this step raises an error'
 
       Scenario Outline: failing background
         Then I should have '<count>' cukes
@@ -368,9 +368,6 @@ Feature: Background
 
       Background: 
         Given this step is pending
-          TODO (Cucumber::Pending)
-          ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-          features/pending_background.feature:4:in `Given this step is pending'
 
       Scenario: pending background
         Then I should have '10' cukes
@@ -401,7 +398,7 @@ Feature: Background
         And '10' global cukes
           FAIL (RuntimeError)
           ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'
-          features/failing_background_after_success.feature:5:in `And '10' global cukes'
+          features/failing_background_after_success.feature:5:in `'10' global cukes'
         Then I should have '10' global cukes
 
     Failing Scenarios:
@@ -438,7 +435,7 @@ Feature: Background
           | 10    |
           FAIL (RuntimeError)
           ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'
-          features/failing_background_after_success_outline.feature:5:in `And '10' global cukes'
+          features/failing_background_after_success_outline.feature:5:in `'10' global cukes'
 
     Failing Scenarios:
     cucumber features/failing_background_after_success_outline.feature:19
@@ -464,7 +461,7 @@ Feature: Background
 
         Examples: 
  
-          Scenario: | 10 |
+          Example: | 10 |
             Then I should have '10' global cukes
 
       Scenario Outline: failing background
@@ -472,11 +469,11 @@ Feature: Background
 
         Examples: 
 
-          Scenario: | 10 |
+          Example: | 10 |
             And '10' global cukes
           FAIL (RuntimeError)
           ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'
-          features/failing_background_after_success_outline.feature:5:in `And '10' global cukes'
+          features/failing_background_after_success_outline.feature:5:in `'10' global cukes'
             Then I should have '10' global cukes
 
     Failing Scenarios:

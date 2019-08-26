@@ -29,15 +29,10 @@ module Cucumber
       end
 
       def status_counts(summary)
-        counts = Core::Test::Result::TYPES.map { |status|
-          count = summary.total(status)
-          [status, count]
-        }.select { |status, count|
-          count > 0
-        }.map { |status, count|
-          format_string("#{count} #{status}", status)
-        }
-        "(#{counts.join(", ")})" if counts.any?
+        counts = Core::Test::Result::TYPES.map { |status| [status, summary.total(status)] }
+        counts = counts.select { |_status, count| count > 0 }
+        counts = counts.map { |status, count| format_string("#{count} #{status}", status) }
+        "(#{counts.join(', ')})" if counts.any?
       end
     end
   end

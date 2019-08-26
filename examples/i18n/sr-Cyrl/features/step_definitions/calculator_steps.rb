@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 Before do
   @calc = Calculator.new
 end
@@ -15,6 +13,6 @@ end
   @result = @calc.send op
 end
 
-Онда(/би требало да буде (.*) прикаѕано на екрану/) do |result|
-  @result.should == result.to_f
+Онда('би требало да буде {float} прикаѕано на екрану') do |result|
+  expect(@result).to eq(result)
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
 require 'cucumber/configuration'
@@ -12,17 +13,15 @@ module Cucumber
     end
 
     it 'raises a Pending if no block is supplied' do
-      expect(-> {
-        @world.pending 'TODO'
-      }).to raise_error(Cucumber::Pending, /TODO/)
+      expect(-> { @world.pending 'TODO' }).to raise_error(Cucumber::Pending, /TODO/)
     end
 
     it 'raises a Pending if a supplied block fails as expected' do
-      expect(-> {
+      expect(lambda do
         @world.pending 'TODO' do
-        raise 'oops'
+          raise 'oops'
         end
-      }).to raise_error(Cucumber::Pending, /TODO/)
+      end).to raise_error(Cucumber::Pending, /TODO/)
     end
 
     it 'raises a Pending if a supplied block fails as expected with a double' do
@@ -38,11 +37,7 @@ module Cucumber
     end
 
     it 'raises a Pending if a supplied block starts working' do
-      expect(-> {
-        @world.pending 'TODO' do
-          # success!
-        end
-      }).to raise_error(Cucumber::Pending, /TODO/)
+      expect(-> { @world.pending 'TODO' }).to raise_error(Cucumber::Pending, /TODO/)
     end
   end
 end

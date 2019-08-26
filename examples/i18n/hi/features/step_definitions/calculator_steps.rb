@@ -1,12 +1,4 @@
-# encoding: utf-8
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
 Before do
@@ -16,14 +8,25 @@ end
 After do
 end
 
-Given(/मैं गणक में (\d+) डालता हूँ/) do |n|
-  @calc.push n.to_i
+ops = {
+  जोड़: 'add',
+  भाग: 'divide'
+}
+
+ParameterType(
+  name: 'op',
+  regexp: /#{ops.keys.join('|')}/,
+  transformer: ->(s) { ops[s.to_sym] }
+)
+
+अगर('मैं गणक में {int} डालता हूँ') do |int|
+  @calc.push int
 end
 
-When(/मैं (\w+) दबाता हूँ/) do |op|
+जब('मैं {op} दबाता हूँ') do |op|
   @result = @calc.send op
 end
 
-Then(/परिणाम (.*) परदे पर प्रदशित होना चाहिए/) do |result|
-  @result.should == result.to_f
+अगर('परिणाम {float} परदे पर प्रदशित होना चाहिए') do |float|
+  expect(@result).to eq(float)
 end

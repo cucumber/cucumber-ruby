@@ -55,34 +55,17 @@ gem 'byebug'
 If you are new to the project or to OSS, check the label
 [Easy](https://github.com/cucumber/cucumber-ruby/labels/Easy). Also, you can
 help us to correct style violations reported here:
-[.rubocop_todo.yaml](https://github.com/cucumber/cucumber-ruby/blob/master/.rubocop_todo.yml).
+[.rubocop_todo.yml](https://github.com/cucumber/cucumber-ruby/blob/master/.rubocop_todo.yml).
 
 ## Release Process
 
-* Bump the version number in `lib/cucumber/platform.rb`.
-* Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
-* No need to add a `History.md` header at this point - this should be done when a new change is made, later.
-* Make sure you have up-to-date and clean copy of cucumber/cucumber.github.com.git at the same level as cucumber repo.
+* Bump the version number in `lib/cucumber/version`.
+* Make sure `CHANGELOG.md` is updated with the upcoming version number, and has entries for all fixes.
 
 Now release it
 
     bundle update
     bundle exec rake
     git commit -m "Release X.Y.Z"
+    # Make sure you run gem signin as the cukebot@cucumber.io user before running the following step. Credentials can be found in 1Password
     rake release
-
-## Gaining Release Karma
-
-To become a release manager, create a pull request adding your name to the list below, and include your Rubygems email address in the ticket. One of the existing Release managers will then add you.
-
-Current release managers:
-  * [Matt Wynne](https://rubygems.org/profiles/mattwynne)
-  * [Aslak Hellesøy](https://rubygems.org/profiles/aslakhellesoy)
-  * [Oleg Sukhodolsky](https://rubygems.org/profiles/os97673)
-  * [Steve Tooke](https://rubygems.org/profiles/tooky)
-  * [Björn Rasmusson](https://rubygems.org/profiles/brasmusson)
-
-To grant release karma, issue the following commands:
-
-    gem owner cucumber --add <NEW OWNER RUBYGEMS EMAIL>
-    gem owner cucumber-core --add <NEW OWNER RUBYGEMS EMAIL>

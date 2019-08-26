@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/progress'
@@ -78,17 +79,15 @@ module Cucumber
           it 'has 4 undefined steps' do
             expect(@out.string).to include '4 steps (4 undefined)'
           end
-
         end
 
         describe 'with hooks' do
-
           describe 'all hook passes' do
             define_feature <<-FEATURE
           Feature:
             Scenario:
               Given this step passes
-          FEATURE
+            FEATURE
 
             define_steps do
               Before do
@@ -117,11 +116,11 @@ module Cucumber
           Feature:
             Scenario:
               Given this step passes
-          FEATURE
+            FEATURE
 
             define_steps do
               Before do
-                fail 'hook failed'
+                raise 'hook failed'
               end
               Given(/^this step passes$/) {}
             end
@@ -143,11 +142,11 @@ module Cucumber
           Feature:
             Scenario:
               Given this step passes
-          FEATURE
+            FEATURE
 
             define_steps do
               After do
-                fail 'hook failed'
+                raise 'hook failed'
               end
               Given(/^this step passes$/) {}
             end

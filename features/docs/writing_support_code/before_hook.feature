@@ -1,7 +1,7 @@
 Feature: Before Hook
 
   @todo-windows
-  Scenario: Examine names of scenario and feature
+  Scenario: Examine name of scenario
     Given a file named "features/foo.feature" with:
       """
       Feature: Feature name
@@ -13,10 +13,8 @@ Feature: Before Hook
       """
       names = []
       Before do |scenario|
-        expect(scenario).to_not respond_to(:scenario_outline)
-        names << scenario.feature.name.split("\n").first
         names << scenario.name.split("\n").first
-        if(names.size == 2)
+        if(names.size == 1)
           raise "NAMES:\n" + names.join("\n") + "\n"
         end
       end
@@ -24,14 +22,13 @@ Feature: Before Hook
     When I run `cucumber`
     Then the output should contain:
       """
-        NAMES:
-        Feature name
-        Scenario name
+            NAMES:
+            Scenario name
 
       """
 
   @todo-windows
-  Scenario: Examine names of scenario outline and feature
+  Scenario: Examine name of scenario outline
     Given a file named "features/foo.feature" with:
       """
       Feature: Feature name
@@ -47,10 +44,8 @@ Feature: Before Hook
       """
       names = []
       Before do |scenario|
-        names << scenario.scenario_outline.feature.name.split("\n").first
-        names << scenario.scenario_outline.name.split("\n").first
         names << scenario.name.split("\n").first
-        if(names.size == 3)
+        if(names.size == 1)
           raise "NAMES:\n" + names.join("\n") + "\n"
         end
       end
@@ -59,9 +54,6 @@ Feature: Before Hook
     Then the output should contain:
       """
             NAMES:
-            Feature name
-            Scenario Outline name, Examples Table name (#1)
-            Scenario Outline name, Examples Table name (#1)
+            Scenario Outline name
 
       """
-

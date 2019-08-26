@@ -33,7 +33,7 @@ Feature: Showing differences to expected output
             (compared using ==)
              (RSpec::Expectations::ExpectationNotMetError)
             ./features/step_definitions/steps.rb:2:in `/^failing expectation$/'
-            features/failing_expectation.feature:4:in `Given failing expectation'
+            features/failing_expectation.feature:4:in `failing expectation'
 
       Failing Scenarios:
       cucumber features/failing_expectation.feature:3

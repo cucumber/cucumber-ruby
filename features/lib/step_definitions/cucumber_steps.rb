@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 Given('a directory without standard Cucumber project directory structure') do
-  in_current_dir do
+  cd('.') do
     FileUtils.rm_rf 'features' if File.directory?('features')
   end
 end
@@ -19,8 +20,7 @@ end
 
 Given('the standard step definitions') do
   write_file 'features/step_definitions/steps.rb',
-
-  <<-STEPS
+             <<-STEPS
   Given(/^this step passes$/)          { }
   Given(/^this step raises an error$/) { raise 'error' }
   Given(/^this step is pending$/)      { pending }
@@ -35,28 +35,28 @@ end
 
 Given('a scenario {string} that passes') do |name|
   write_file "features/#{name}.feature",
-  <<-FEATURE
+             <<-FEATURE
   Feature: #{name}
     Scenario: #{name}
       Given it passes
   FEATURE
 
   write_file "features/step_definitions/#{name}_steps.rb",
-  <<-STEPS
+             <<-STEPS
   Given(/^it passes$/) { expect(true).to be true }
   STEPS
 end
 
 Given('a scenario {string} that fails') do |name|
   write_file "features/#{name}.feature",
-  <<-FEATURE
+             <<-FEATURE
   Feature: #{name}
     Scenario: #{name}
       Given it fails
   FEATURE
 
   write_file "features/step_definitions/#{name}_steps.rb",
-  <<-STEPS
+             <<-STEPS
   Given(/^it fails$/) { expect(false).to be true }
   STEPS
 end
@@ -66,9 +66,23 @@ When(/^I run the feature with the (\w+) formatter$/) do |formatter|
   run_feature features.first, formatter
 end
 
+When(/^I rerun the previous command with the same seed$/) do
+  previous_seed = last_command_started.output.match(/with seed (\d+)/)[1]
+  second_command = all_commands.last.commandline.gsub(/random/, "random:#{previous_seed}")
+
+  step "I run `#{second_command}`"
+end
+
+Then(/the output of both commands should be the same/) do
+  first_output = all_commands.first.output.gsub(/\d+m\d+\.\d+s/, '')
+  last_output = all_commands.last.output.gsub(/\d+m\d+\.\d+s/, '')
+
+  expect(first_output).to eq(last_output)
+end
+
 module CucumberHelper
   def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
-    run_simple "#{Cucumber::BINARY} #{filename} --format #{formatter}", false
+    run_command_and_stop "#{Cucumber::BINARY} #{filename} --format #{formatter}", exit_timeout: 5
   end
 end
 

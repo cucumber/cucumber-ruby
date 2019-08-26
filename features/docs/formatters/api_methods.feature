@@ -26,7 +26,7 @@ Feature: Formatter API methods
         module Formatter
           class Test
             include Io
-            def initialize(runtime, path_or_io, options)
+            def initialize(config)
               ensure_file("my/special/output.file", "custom formatter")
             end
           end

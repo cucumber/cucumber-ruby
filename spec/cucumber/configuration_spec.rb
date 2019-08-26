@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 module Cucumber
@@ -13,7 +14,7 @@ module Cucumber
     end
 
     describe 'with custom user options' do
-      let(:user_options) { { :autoload_code_paths => ['foo/bar/baz'] } }
+      let(:user_options) { { autoload_code_paths: ['foo/bar/baz'] } }
       subject { Configuration.new(user_options) }
 
       it 'allows you to override the defaults' do
@@ -22,7 +23,6 @@ module Cucumber
     end
 
     context 'selecting files to load' do
-
       def given_the_following_files(*files)
         allow(File).to receive(:directory?) { true }
         allow(File).to receive(:file?) { true }
@@ -31,7 +31,7 @@ module Cucumber
 
       it 'requires env.rb files first' do
         configuration = Configuration.new
-        given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
+        given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
         expect(configuration.support_to_load).to eq [
           '/features/support/env.rb',
@@ -39,12 +39,24 @@ module Cucumber
         ]
       end
 
-      it 'does not require env.rb files when dry run' do
-        configuration = Configuration.new(dry_run: true)
-        given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
+      it 'features/support/env.rb is loaded before any other features/**/support/env.rb file' do
+        configuration = Configuration.new
+        given_the_following_files(
+          '/features/foo/support/env.rb',
+          '/features/foo/support/a_file.rb',
+          '/features/foo/bar/support/env.rb',
+          '/features/foo/bar/support/a_file.rb',
+          '/features/support/a_file.rb',
+          '/features/support/env.rb'
+        )
 
         expect(configuration.support_to_load).to eq [
-          '/features/support/a_file.rb'
+          '/features/support/env.rb',
+          '/features/foo/support/env.rb',
+          '/features/foo/bar/support/env.rb',
+          '/features/support/a_file.rb',
+          '/features/foo/support/a_file.rb',
+          '/features/foo/bar/support/a_file.rb'
         ]
       end
 
@@ -61,9 +73,8 @@ module Cucumber
       end
 
       describe '--exclude' do
-
         it 'excludes a ruby file from requiring when the name matches exactly' do
-          given_the_following_files('/features/support/a_file.rb','/features/support/env.rb')
+          given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
           configuration = Configuration.new(excludes: [/a_file.rb/])
 
@@ -73,8 +84,8 @@ module Cucumber
         end
 
         it 'excludes all ruby files that match the provided patterns from requiring' do
-          given_the_following_files('/features/support/foof.rb','/features/support/bar.rb',
-                                    '/features/support/food.rb','/features/blah.rb',
+          given_the_following_files('/features/support/foof.rb', '/features/support/bar.rb',
+                                    '/features/support/food.rb', '/features/blah.rb',
                                     '/features/support/fooz.rb')
 
           configuration = Configuration.new(excludes: [/foo[df]/, /blah/])
@@ -85,13 +96,11 @@ module Cucumber
           ]
         end
       end
-
     end
 
     context 'selecting feature files' do
-
       it 'preserves the order of the feature files' do
-        configuration = Configuration.new(paths: %w{b.feature c.feature a.feature})
+        configuration = Configuration.new(paths: %w[b.feature c.feature a.feature])
 
         expect(configuration.feature_files).to eq ['b.feature', 'c.feature', 'a.feature']
       end
@@ -100,7 +109,7 @@ module Cucumber
         allow(File).to receive(:directory?) { true }
         allow(Dir).to receive(:[]).with('feature_directory/**/*.feature') { ['cucumber.feature'] }
 
-        configuration = Configuration.new(paths: %w{feature_directory/})
+        configuration = Configuration.new(paths: %w[feature_directory/])
 
         expect(configuration.feature_files).to eq ['cucumber.feature']
       end
@@ -120,9 +129,10 @@ module Cucumber
         allow(IO).to receive(:read).and_return(
           "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
           "domain folder/different cuke.feature:134 domain folder/cuke.feature:1\n"\
-          'domain folder/different cuke.feature:4:5 bar.feature')
+          'domain folder/different cuke.feature:4:5 bar.feature'
+        )
 
-        configuration = Configuration.new(paths: %w{@rerun.txt})
+        configuration = Configuration.new(paths: %w[@rerun.txt])
 
         expect(configuration.feature_files).to eq [
           'cucumber.feature:1:3',
@@ -131,7 +141,8 @@ module Cucumber
           'domain folder/different cuke.feature:134',
           'domain folder/cuke.feature:1',
           'domain folder/different cuke.feature:4:5',
-          'bar.feature']
+          'bar.feature'
+        ]
       end
     end
 
@@ -143,6 +154,5 @@ module Cucumber
         expect(config.out_stream).to eq new_out_stream
       end
     end
-
   end
 end

@@ -1,12 +1,4 @@
-# encoding: utf-8
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
 Before do
@@ -16,8 +8,12 @@ end
 After do
 end
 
-Δεδομένου ότι(/έχω εισάγει (\d+) στην αριθμομηχανή/) do |n|
-  @calc.push n.to_i
+Δεδομένου('ότι έχω εισάγει {int} στην αριθμομηχανή') do |int|
+  @calc.push int
+end
+
+Δεδομένου('έχω εισάγει {int} στην αριθμομηχανή') do |int|
+  @calc.push int
 end
 
 Όταν(/πατάω (\w+)/) do |op|
@@ -25,5 +21,5 @@ end
 end
 
 Τότε(/το αποτέλεσμα στην οθόνη πρέπει να είναι (.*)/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

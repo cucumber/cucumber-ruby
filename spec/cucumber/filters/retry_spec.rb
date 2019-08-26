@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber'
 require 'cucumber/filters/retry'
 require 'cucumber/core/gherkin/writer'
@@ -12,12 +13,16 @@ describe Cucumber::Filters::Retry do
   include Cucumber::Core
   include Cucumber::Events
 
-  let(:configuration) { Cucumber::Configuration.new(:retry => 2) }
-  let(:test_case) { Cucumber::Core::Test::Case.new([double('test steps')], double('source').as_null_object) }
+  let(:configuration) { Cucumber::Configuration.new(retry: 2) }
+  let(:name) { double }
+  let(:location) { double }
+  let(:tags) { double }
+  let(:language) { double }
+  let(:test_case) { Cucumber::Core::Test::Case.new(name, [double('test steps')], location, tags, language) }
   let(:receiver) { double('receiver').as_null_object }
   let(:filter) { Cucumber::Filters::Retry.new(configuration, receiver) }
-  let(:fail) { Cucumber::Events::AfterTestCase.new(test_case, double('result', :failed? => true, :ok? => false)) }
-  let(:pass) { Cucumber::Events::AfterTestCase.new(test_case, double('result', :failed? => false, :ok? => true)) }
+  let(:fail) { Cucumber::Events::AfterTestCase.new(test_case, double('result', failed?: true, ok?: false)) }
+  let(:pass) { Cucumber::Events::AfterTestCase.new(test_case, double('result', failed?: false, ok?: true)) }
 
   it { is_expected.to respond_to(:test_case) }
   it { is_expected.to respond_to(:with_receiver) }
@@ -37,7 +42,7 @@ describe Cucumber::Filters::Retry do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
     it 'describes the same test case object each time' do
-      allow(receiver).to receive(:test_case) {|tc|
+      allow(receiver).to receive(:test_case) { |tc|
         expect(tc).to equal(test_case)
         configuration.notify :test_case_finished, tc.with_steps(tc.test_steps), result
       }
@@ -50,7 +55,7 @@ describe Cucumber::Filters::Retry do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
     it 'describes the test case the specified number of times' do
-      expect(receiver).to receive(:test_case) {|test_case|
+      expect(receiver).to receive(:test_case) { |test_case|
         configuration.notify :test_case_finished, test_case, result
       }.exactly(3).times
 
@@ -59,17 +64,16 @@ describe Cucumber::Filters::Retry do
   end
 
   context 'flaky test cases' do
-
     context 'a little flaky' do
-      let(:results) {
+      let(:results) do
         [
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
           Cucumber::Core::Test::Result::Passed.new(0)
         ]
-      }
+      end
 
       it 'describes the test case twice' do
-        expect(receiver).to receive(:test_case) {|test_case|
+        expect(receiver).to receive(:test_case) { |test_case|
           configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(2).times
 
@@ -78,16 +82,16 @@ describe Cucumber::Filters::Retry do
     end
 
     context 'really flaky' do
-      let(:results) {
+      let(:results) do
         [
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
           Cucumber::Core::Test::Result::Passed.new(0)
         ]
-      }
+      end
 
       it 'describes the test case 3 times' do
-        expect(receiver).to receive(:test_case) {|test_case|
+        expect(receiver).to receive(:test_case) { |test_case|
           configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(3).times
 

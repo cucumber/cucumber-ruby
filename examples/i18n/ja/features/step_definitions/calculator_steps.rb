@@ -1,4 +1,3 @@
-# encoding: UTF-8
 Before do
   @calc = Calculator.new
 end
@@ -6,8 +5,8 @@ end
 After do
 end
 
-前提("$n を入力") do |n|
-  @calc.push n.to_i
+前提('{int} を入力') do |int|
+  @calc.push int
 end
 
 もし(/(\w+) を押した/) do |op|
@@ -15,5 +14,5 @@ end
 end
 
 ならば(/(.*) を表示/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
+
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format steps</tt>
     class Steps
-
       def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io)
         @options = options
@@ -35,15 +35,14 @@ module Cucumber
       end
 
       def collect_steps(runtime)
-        runtime.step_definitions.inject({}) do |step_definitions, step_definition|
+        runtime.step_definitions.each_with_object({}) do |step_definition, step_definitions|
           step_definitions[step_definition.file] ||= []
-          step_definitions[step_definition.file] << [ step_definition.file_colon_line, step_definition.regexp_source ]
-          step_definitions
+          step_definitions[step_definition.file] << [step_definition.file_colon_line, step_definition.regexp_source]
         end
       end
 
       def source_indent(sources)
-        sources.map { |file_colon_line, regexp| regexp.size }.max + 1
+        sources.map { |_file_colon_line, regexp| regexp.size }.max + 1
       end
     end
   end

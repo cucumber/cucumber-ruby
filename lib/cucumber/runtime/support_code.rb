@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/constantize'
 require 'cucumber/runtime/for_programming_languages'
 require 'cucumber/runtime/step_hooks'
@@ -8,14 +9,10 @@ require 'cucumber/gherkin/steps_parser'
 require 'cucumber/step_match_search'
 
 module Cucumber
-
   class Runtime
-
     class SupportCode
-
       require 'forwardable'
       class StepInvoker
-
         def initialize(support_code)
           @support_code = support_code
         end
@@ -25,19 +22,15 @@ module Cucumber
         end
 
         def step(step)
-          location = Core::Ast::Location.of_caller
+          location = Core::Test::Location.of_caller
           @support_code.invoke_dynamic_step(step[:text], multiline_arg(step, location))
         end
 
         def multiline_arg(step, location)
-          argument = step[:argument]
-
-          if argument
-            if argument[:type] == :DocString
-              MultilineArgument.from(argument[:content], location, argument[:content_type])
-            else
-              MultilineArgument::DataTable.from(argument[:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
-            end
+          if !step[:doc_string].nil?
+            MultilineArgument.from(step[:doc_string][:content], location, step[:doc_string][:content_type])
+          elsif !step[:data_table].nil?
+            MultilineArgument::DataTable.from(step[:data_table][:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
           else
             MultilineArgument.from(nil)
           end
@@ -48,7 +41,7 @@ module Cucumber
 
       attr_reader :registry
 
-      def initialize(user_interface, configuration=Configuration.default)
+      def initialize(user_interface, configuration = Configuration.default)
         @configuration = configuration
         # TODO: needs a better name, or inlining its methods
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
@@ -65,8 +58,8 @@ module Cucumber
       #     Given I have 8 cukes in my belly
       #     Then I should not be thirsty
       #   })
-      def invoke_dynamic_steps(steps_text, i18n, _location)
-        parser = Cucumber::Gherkin::StepsParser.new(StepInvoker.new(self), i18n.iso_code)
+      def invoke_dynamic_steps(steps_text, iso_code, _location)
+        parser = Cucumber::Gherkin::StepsParser.new(StepInvoker.new(self), iso_code)
         parser.parse(steps_text)
       end
 
@@ -76,7 +69,7 @@ module Cucumber
       # steps which are compiled into test steps before execution.
       #
       # These are commonly called nested steps.
-      def invoke_dynamic_step(step_name, multiline_argument, _location=nil)
+      def invoke_dynamic_step(step_name, multiline_argument, _location = nil)
         matches = step_matches(step_name)
         raise UndefinedDynamicStep, step_name if matches.empty?
         matches.first.invoke(multiline_argument)
@@ -115,12 +108,14 @@ module Cucumber
       end
 
       def apply_before_hooks(test_case)
+        return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:before, scenario)
         BeforeHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def apply_after_hooks(test_case)
+        return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:after, scenario)
         AfterHooks.new(hooks, scenario).apply_to(test_case)
@@ -130,7 +125,7 @@ module Cucumber
         scenario = RunningTestCase.new(test_case)
 
         registry.hooks_for(:around, scenario).map do |hook|
-          Hooks.around_hook(test_case.source) do |run_scenario|
+          Hooks.around_hook do |run_scenario|
             hook.invoke('Around', scenario, &run_scenario)
           end
         end
@@ -150,7 +145,6 @@ module Cucumber
       def log
         Cucumber.logger
       end
-
     end
   end
 end

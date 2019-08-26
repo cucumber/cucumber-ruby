@@ -1,23 +1,25 @@
-# encoding: utf-8
-
-Дадено(/въвел (\d+)/) do |x|
-  calc.push x.to_i
+Дадено('е че съм въвел {int}') do |int|
+  calc.push int
 end
 
-Когато(/^въведа (\d+)/) do |x|
-  calc.push x.to_i
+Дадено('съм въвел {int}') do |int|
+  calc.push int
 end
 
-Когато(/натисна "(.*)"/) do |op|
+Дадено('е че съм събрал {int} и {int}') do |int1, int2|
+  calc.push int1
+  calc.push int2
+  calc.send '+'
+end
+
+Когато('въведа {int}') do |int|
+  calc.push int
+end
+
+Когато('натисна {string}') do |op|
   calc.send op
 end
 
-То(/резултата трябва да е равен на (\d+)/) do |result|
-  calc.result.should == result.to_f
-end
-
-Дадено(/събрал (\d+) и (\d+)/) do |x, y|
-  Дадено %{въвел #{x}}
-  Дадено %{въвел #{y}}
-  Дадено %{натисна "+"}
+То('резултата трябва да е равен на {int}') do |int|
+  expect(calc.result).to eq(int)
 end

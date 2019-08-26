@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   module LoadPath
     def add_dirs(*dirs)

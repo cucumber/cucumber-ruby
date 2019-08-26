@@ -1,6 +1,3 @@
-examples
 .github
-spec
-CONTRIBUTING.md
-History.md
-README.md
+/examples
+/spec
