@@ -33,6 +33,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* Fix the placeholder expansions in the json formatter
+  ([#1361](https://github.com/cucumber/cucumber-ruby/pull/1361)
+   [brasmusson](https://github.com/brasmusson))
 * Fix seed printed in cucumber UI to match the seed that was actually used.
   ([#1329](https://github.com/cucumber/cucumber-ruby/pull/1329)
    [deivid-rodriguez](https://github.com/deivid-rodriguez))

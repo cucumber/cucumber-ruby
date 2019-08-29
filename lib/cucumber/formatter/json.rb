@@ -269,7 +269,7 @@ module Cucumber
           @test_case_hash = {
             id: "#{@feature_hash[:id]};#{create_id_from_scenario_source(scenario_source)}",
             keyword: scenario.keyword,
-            name: scenario.name,
+            name: test_case.name,
             description: value_or_empty_string(scenario.description),
             line: test_case.location.lines.max,
             type: 'scenario'

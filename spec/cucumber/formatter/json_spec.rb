@@ -168,7 +168,7 @@ module Cucumber
           define_feature <<-FEATURE
           Feature: Banana party
 
-            Scenario Outline: Monkey eats bananas
+            Scenario Outline: Monkey eats <fruit>
               Given there are <fruit>
 
               Examples: Fruit Table
@@ -189,7 +189,7 @@ module Cucumber
                 "line": 1,
                 "description": "",
                 "elements":
-                 [{"id": "banana-party;monkey-eats-bananas;fruit-table;2",
+                 [{"id": "banana-party;monkey-eats-<fruit>;fruit-table;2",
                    "keyword": "Scenario Outline",
                    "name": "Monkey eats bananas",
                    "line": 8,
