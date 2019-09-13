@@ -14,13 +14,14 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 * There is a new methodology in Cucumber for how the auto-loader works
-   * To begin with the initial behaviour is retained (Cucumber auto-loads files using the `load` method)
-   * If you wish to alter this, then you can set a top level config option: `Cucumber.only_load_files_once`
+   * The old `load` behaviour is now replaced with a newer `require` behaviour
+   * Cucumber will (From version 4), now auto-load files using the `require` method
+   * If you wish to alter this, then you can set a top level config option: `Cucumber.use_legacy_autoloader`
    * Like most config options, setting this inside a `spec_helper.rb` or `env.rb` file is advised
    * For more information on this change, including why it was made. Please read this
    [Blog Post](www.google.com)
-   ([#1349](https://github.com/cucumber/cucumber-ruby/pull/1349)
-   ([#1043](https://github.com/cucumber/cucumber-ruby/issues/1043)
+   ([#1349](https://github.com/cucumber/cucumber-ruby/pull/1349),
+    [#1043](https://github.com/cucumber/cucumber-ruby/issues/1043)
     [luke-hill](https://github.com/luke-hill))
 
 ### Changed
