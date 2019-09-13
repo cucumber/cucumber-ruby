@@ -32,7 +32,7 @@ module Cucumber
         context 'by default' do
           before(:each) { $foo = nil }
 
-          it 're-loads the file when called multiple times' do
+          it 'does not re-load the file when called multiple times' do
             a_file_called('tmp.rb') do
               '$foo = 1'
             end
@@ -45,7 +45,7 @@ module Cucumber
             end
 
             registry.load_code_file('tmp.rb')
-            expect($foo).to eq 2
+            expect($foo).to eq 1
           end
 
           it 'only loads ruby files' do
@@ -58,9 +58,9 @@ module Cucumber
           end
         end
 
-        context 'With `only_load_files_once` set to false' do
+        context 'With `use_legacy_autoloader` set to false' do
           before(:each) do
-            allow(Cucumber).to receive(:only_load_files_once).and_return(false)
+            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
             $foo = nil
           end
 
@@ -90,9 +90,9 @@ module Cucumber
           end
         end
 
-        context 'With `only_load_files_once` set to true' do
+        context 'With `use_legacy_autoloader` set to true' do
           before(:each) do
-            allow(Cucumber).to receive(:only_load_files_once).and_return(true)
+            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
             $foo = nil
           end
 

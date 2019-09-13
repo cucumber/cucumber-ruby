@@ -105,10 +105,10 @@ module Cucumber
 
         # This will cause self.add_step_definition, self.add_hook, and self.define_parameter_type to be called from Glue::Dsl
 
-        if Cucumber.only_load_files_once
-          require File.expand_path(code_file)
-        else
+        if Cucumber.use_legacy_autoloader
           load File.expand_path(code_file)
+        else
+          require File.expand_path(code_file)
         end
       end
 
