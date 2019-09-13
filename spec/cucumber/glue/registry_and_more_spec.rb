@@ -58,9 +58,9 @@ module Cucumber
           end
         end
 
-        context 'With `use_legacy_autoloader` set to false' do
+        context 'With `use_legacy_autoloader` set to true' do
           before(:each) do
-            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
+            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
             $foo = nil
           end
 
@@ -90,9 +90,9 @@ module Cucumber
           end
         end
 
-        context 'With `use_legacy_autoloader` set to true' do
+        context 'With `use_legacy_autoloader` set to false' do
           before(:each) do
-            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
+            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
             $foo = nil
           end
 
