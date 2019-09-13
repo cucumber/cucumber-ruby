@@ -154,7 +154,7 @@ module Cucumber
             after_parsing(['--tags', 'not @foo or @bar']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
           end
 
-          it 'stores tags passed with different --tags seperately' do
+          it 'stores tags passed with different --tags separately' do
             after_parsing('--tags @foo --tags @bar') { expect(options[:tag_expressions]).to eq ['@foo', '@bar'] }
           end
 

@@ -1,10 +1,3 @@
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
@@ -24,5 +17,5 @@ When(/يتم الضغط على (.+)/) do |op|
 end
 
 Then(/يظهر (.*) على الشاشة/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result)
 end

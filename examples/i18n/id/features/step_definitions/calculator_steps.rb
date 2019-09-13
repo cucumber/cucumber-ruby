@@ -24,5 +24,5 @@ When(/aku tekan (\w+)/) do |op|
 end
 
 Then(/hasilnya harus (.*) di layar/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

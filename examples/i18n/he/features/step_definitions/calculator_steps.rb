@@ -24,5 +24,5 @@ When(/אני לוחץ על (.+)/) do |op|
 end
 
 Then(/התוצאה על המסך צריכה להיות (.*)/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

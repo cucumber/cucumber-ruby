@@ -1,10 +1,3 @@
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
-
-require 'cucumber/formatter/unicode'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'calculator'
 
@@ -12,17 +5,14 @@ Before do
   @calc = Calculator.new
 end
 
-After do
+Zadato('Unesen {int} broj u kalkulator') do |int|
+  @calc.push int
 end
 
-Zadato(/Unesen (\d+) broj u kalkulator/) do |n|
-  @calc.push n.to_i
-end
-
-Kada(/pritisnem (\w+)/) do |op|
+Kada('pritisnem {word}') do |op|
   @result = @calc.send op
 end
 
-Onda(/bi trebalo da bude (.*) prikazano na ekranu/) do |result|
-  @result.should == result.to_f
+Onda('bi trebalo da bude {float} prikazano na ekranu') do |float|
+  expect(@result).to eq(float)
 end

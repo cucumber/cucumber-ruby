@@ -55,7 +55,7 @@ gem 'byebug'
 If you are new to the project or to OSS, check the label
 [Easy](https://github.com/cucumber/cucumber-ruby/labels/Easy). Also, you can
 help us to correct style violations reported here:
-[.rubocop_todo.yaml](https://github.com/cucumber/cucumber-ruby/blob/master/.rubocop_todo.yml).
+[.rubocop_todo.yml](https://github.com/cucumber/cucumber-ruby/blob/master/.rubocop_todo.yml).
 
 ## Release Process
 
@@ -69,4 +69,3 @@ Now release it
     git commit -m "Release X.Y.Z"
     # Make sure you run gem signin as the cukebot@cucumber.io user before running the following step. Credentials can be found in 1Password
     rake release
-

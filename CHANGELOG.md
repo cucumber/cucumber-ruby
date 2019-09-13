@@ -24,6 +24,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
     [luke-hill](https://github.com/luke-hill))
 
 ### Changed
+* Going forward the minimum ruby version for all cucumber based gems is 2.3
+([luke-hill](https://github.com/luke-hill))
 
 ### Deprecated
 
@@ -32,8 +34,17 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([#1350](https://github.com/cucumber/cucumber-ruby/pull/1350)
    [luke-hill](https://github.com/luke-hill))
 
+* Drop support for JRuby. We may add this back if new versions of protobuf for JRuby
+  start working, or if someone can make the build pass with an older version.
+  All this means is we're ok to make releases while the jruby CI job is failing.
+  
+  ([aslakhellesoy](https://github.com/aslakhellesoy))
+
 ### Fixed
 
+* Fix the placeholder expansions in the json formatter
+  ([#1361](https://github.com/cucumber/cucumber-ruby/pull/1361)
+   [brasmusson](https://github.com/brasmusson))
 * Fix seed printed in cucumber UI to match the seed that was actually used.
   ([#1329](https://github.com/cucumber/cucumber-ruby/pull/1329)
    [deivid-rodriguez](https://github.com/deivid-rodriguez))
@@ -44,6 +55,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Added
 
 ### Improved
+
+* Filter out any lines containing `site_ruby` from stacktrace
 
 ## [4.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...v4.0.0.rc.1) (2018-09-29)
 

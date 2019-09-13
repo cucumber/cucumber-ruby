@@ -24,5 +24,5 @@ When(/aš paspaudžiu "(\w+)"/) do |op|
 end
 
 Then(/rezultatas ekrane turi būti (.*)/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

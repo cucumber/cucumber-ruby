@@ -24,5 +24,5 @@ When(/我按下 (\w+)/) do |op|
 end
 
 Then(/螢幕上應該顯示 (.*)/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end

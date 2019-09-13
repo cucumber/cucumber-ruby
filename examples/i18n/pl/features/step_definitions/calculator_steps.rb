@@ -24,5 +24,5 @@ Jeżeli(/nacisnę (\w+)/) do |op|
 end
 
 Wtedy(/rezultat (.*) wyświetli się na ekranie/) do |result|
-  @result.should == result.to_f
+  expect(@result).to eq(result.to_f)
 end
