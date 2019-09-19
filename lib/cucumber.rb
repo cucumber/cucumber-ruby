@@ -10,7 +10,7 @@ require 'cucumber/term/ansicolor'
 
 module Cucumber
   class << self
-    attr_accessor :wants_to_quit
+    attr_accessor :wants_to_quit, :use_legacy_autoloader
 
     def logger
       return @log if @log

@@ -19,3 +19,7 @@ Before do
   # Set a longer timeout for aruba, and a really long one if running on JRuby
   @aruba_timeout_seconds = Cucumber::JRUBY ? 60 : 15
 end
+
+# TODO: This probably shouldn't be used. To fix this we need to triage all of the
+# file names created in tests, and ensure they are unique
+Cucumber.use_legacy_autoloader = true

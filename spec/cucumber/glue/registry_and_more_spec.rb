@@ -18,7 +18,9 @@ module Cucumber
 
       # rubocop:disable Style/GlobalVars
       describe '#load_code_file' do
-        after do
+        before(:each) { $foo = nil }
+
+        after(:each) do
           FileUtils.rm_rf('tmp.rb')
           FileUtils.rm_rf('docs.md')
         end
@@ -29,30 +31,107 @@ module Cucumber
           end
         end
 
-        it 're-loads the file when called multiple times' do
-          a_file_called('tmp.rb') do
-            '$foo = 1'
+        context 'by default' do
+          after(:each) do
+            FileUtils.rm_rf('tmp1.rb')
           end
 
-          registry.load_code_file('tmp.rb')
-          expect($foo).to eq 1
+          it 'does not re-load the file when called multiple times' do
+            a_file_called('tmp1.rb') do
+              '$foo = 1'
+            end
 
-          a_file_called('tmp.rb') do
-            '$foo = 2'
+            registry.load_code_file('tmp1.rb')
+            expect($foo).to eq 1
+
+            a_file_called('tmp1.rb') do
+              '$foo = 2'
+            end
+
+            registry.load_code_file('tmp1.rb')
+            expect($foo).to eq 1
           end
 
-          registry.load_code_file('tmp.rb')
+          it 'only loads ruby files' do
+            a_file_called('docs.md') do
+              '$foo = 1'
+            end
 
-          expect($foo).to eq 2
+            registry.load_code_file('docs.md')
+            expect($foo).to be nil
+          end
+        end
+
+        context 'With `use_legacy_autoloader` set to true' do
+          before(:each) do
+            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
+          end
+
+          after(:each) do
+            FileUtils.rm_rf('tmp2.rb')
+          end
+
+          it 're-loads the file when called multiple times' do
+            a_file_called('tmp2.rb') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('tmp2.rb')
+            expect($foo).to eq 1
+
+            a_file_called('tmp2.rb') do
+              '$foo = 2'
+            end
+
+            registry.load_code_file('tmp2.rb')
+            expect($foo).to eq 2
+          end
+
+          it 'only loads ruby files' do
+            a_file_called('docs.md') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('docs.md')
+            expect($foo).to be nil
+          end
+        end
+
+        context 'With `use_legacy_autoloader` set to false' do
+          before(:each) do
+            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
+          end
+
+          after(:each) do
+            FileUtils.rm_rf('tmp3.rb')
+          end
+
+          it 'does not re-load the file when called multiple times' do
+            a_file_called('tmp3.rb') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('tmp3.rb')
+            expect($foo).to eq 1
+
+            a_file_called('tmp3.rb') do
+              '$foo = 2'
+            end
+
+            registry.load_code_file('tmp3.rb')
+            expect($foo).to eq 1
+          end
+
+          it 'only loads ruby files' do
+            a_file_called('docs.md') do
+              '$foo = 1'
+            end
+
+            registry.load_code_file('docs.md')
+            expect($foo).to be nil
+          end
         end
         # rubocop:enable Style/GlobalVars
-
-        it 'only loads ruby files' do
-          a_file_called('docs.md') do
-            'yo'
-          end
-          registry.load_code_file('docs.md')
-        end
       end
 
       describe 'Handling the World' do
