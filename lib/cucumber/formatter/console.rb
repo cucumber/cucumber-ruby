@@ -46,10 +46,14 @@ module Cucumber
       def format_string(o, status)
         fmt = format_for(status)
         o.to_s.split("\n").map do |line|
-          if Proc == fmt.class
-            fmt.call(line)
+          if @io.is_a?(File)
+            line.gsub(Cucumber::Term::ANSIColor::COLORED_REGEXP, '')
           else
-            fmt % line
+            if Proc === fmt
+              fmt.call(line)
+            else
+              fmt % line
+            end
           end
         end.join("\n")
       end
