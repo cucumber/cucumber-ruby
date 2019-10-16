@@ -7,13 +7,13 @@ gemspec
 if ENV['CUCUMBER_RUBY_CORE']
   gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
 elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
-  gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core'
+  gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core:gherkin-8'
 end
 
 if ENV['CUCUMBER_RUBY_WIRE']
   gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE']
 elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
-  gem 'cucumber-wire', github: 'cucumber/cucumber-ruby-wire'
+  gem 'cucumber-wire', github: 'cucumber/cucumber-ruby-wire:gherkin-8'
 end
 
 gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUMBER_EXPRESSIONS_RUBY']
@@ -21,8 +21,6 @@ gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUM
 gem 'gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
 
 gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_MESSAGES_RUBY']
-
-gem 'cucumber-formatter-dots', path: ENV['CUCUMBER_FORMATTER_DOTS'] if ENV['CUCUMBER_FORMATTER_DOTS']
 
 # Use an older protobuf on JRuby
 gem 'google-protobuf', '~> 3.2.0.2' if RUBY_PLATFORM == 'java'
