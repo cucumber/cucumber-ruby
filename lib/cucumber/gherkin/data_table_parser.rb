@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gherkin/gherkin'
+require 'gherkin'
 require 'gherkin/dialect'
 
 module Cucumber
@@ -12,7 +12,8 @@ module Cucumber
 
       def parse(text)
         gherkin_document = nil
-        messages = ::Gherkin::Gherkin.from_source('dummy', feature_header + text, include_source: false, include_pickles: false)
+        messages = ::Gherkin.from_source('dummy', feature_header + text, gherkin_options)
+
         messages.each do |message|
           gherkin_document = message.gherkinDocument.to_hash unless message.gherkinDocument.nil?
         end
@@ -21,6 +22,14 @@ module Cucumber
         gherkin_document[:feature][:children][0][:scenario][:steps][0][:data_table][:rows].each do |row|
           @builder.row(row[:cells].map { |cell| cell[:value] })
         end
+      end
+
+      def gherkin_options
+        {
+          include_source: false,
+          include_gherkin_document: true,
+          include_pickles: false
+        }
       end
 
       def feature_header
