@@ -1,6 +1,6 @@
 Feature: Rule
 
-  When running an example mapping session, you end up with four kind of cards: features, rules, examples and questions.
+  After running an example mapping session, you end up with four kind of cards: features, rules, examples and questions.
   Since Gherkin 6, this is easily translated in your feature files.
 
   Background:
@@ -23,13 +23,14 @@ Feature: Rule
         Rule: This is a second rule
 
           Example: First example
-            Given some context
+            Given some other context
             When I do another action
             Then some results should be there
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given("some context") { }
+      Given("some other context") { }
       When("I do an action") { }
       Then("some results should be there") { }
       When("I do another action") { }
@@ -56,7 +57,7 @@ Feature: Rule
           Then some other results should be there
 
         Example: First example
-          Given some context
+          Given some other context
           When I do another action
           Then some results should be there
 
