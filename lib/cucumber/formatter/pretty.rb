@@ -19,7 +19,7 @@ module Cucumber
     #
     # If the output is STDOUT (and not a file), there are bright colours to watch too.
     #
-    class Pretty
+    class Pretty # rubocop:disable Metrics/ClassLength
       include FileUtils
       include Console
       include Io
@@ -101,13 +101,11 @@ module Cucumber
         print_step_header(current_test_case) if first_step_after_printing_background_steps?(event.test_step)
       end
 
-      def on_test_step_finished(event) # rubocop:disable Metrics/PerceivedComplexity
+      def on_test_step_finished(event)
         collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         return if in_scenario_outline && !options[:expand]
         exception_to_be_printed = find_exception_to_be_printed(event.result)
-        # rubocop:disable Metrics/LineLength
-        print_step_data(event.test_step, event.result) if !event.test_step.hook? && (print_background_steps || event.test_step.location.lines.max >= current_test_case.location.lines.max || exception_to_be_printed)
-        # rubocop:enable Metrics/LineLength
+        print_step_data(event.test_step, event.result) if print_step_data?(event, exception_to_be_printed)
         print_step_output
         return unless exception_to_be_printed
         print_exception(exception_to_be_printed, event.result.to_sym, 6)
@@ -319,6 +317,14 @@ module Cucumber
 
       def print_scenario_line(scenario, location = nil)
         print_keyword_name(scenario.keyword, scenario.name, 2, location)
+      end
+
+      def print_step_data?(event, exception_to_be_printed)
+        !event.test_step.hook? && (
+          print_background_steps ||
+          event.test_step.location.lines.max >= current_test_case.location.lines.max ||
+          exception_to_be_printed
+        )
       end
 
       def print_step_data(test_step, result)
