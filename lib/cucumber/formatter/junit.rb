@@ -97,7 +97,7 @@ module Cucumber
           errors: feature_data[:errors],
           skipped: feature_data[:skipped],
           tests: feature_data[:tests],
-          time: format('%.6f', feature_data[:time]),
+          time: format('%<time>.6f', time: feature_data[:time]),
           name: feature_data[:feature].name
         ) do
           @testsuite << feature_data[:builder].target!
@@ -134,7 +134,7 @@ module Cucumber
         classname = @current_feature_data[:feature].name
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%.6f', duration)) do
+        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%<duration>.6f', duration: duration)) do
           if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
