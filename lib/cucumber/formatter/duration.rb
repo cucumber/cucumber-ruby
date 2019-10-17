@@ -8,7 +8,7 @@ module Cucumber
       # <tt>time</tt> format.
       def format_duration(seconds)
         m, s = seconds.divmod(60)
-        "#{m}m#{format('%.3f', s)}s"
+        "#{m}m#{format('%<seconds>.3f', seconds: s)}s"
       end
     end
   end
