@@ -83,7 +83,6 @@ jobs:
 
     working_directory: ~/repo
     steps:
-      - export_jruby_env
       - build
       - test_allow_failure
 
