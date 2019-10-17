@@ -146,7 +146,7 @@ module Cucumber
             runtime.invoke_dynamic_steps(steps_text, language, location)
           end
 
-          # rubocop:disable UnneededInterpolation
+          # rubocop:disable Style/UnneededInterpolation
           define_method(:puts) do |*messages|
             # Even though they won't be output until later, converting the messages to
             # strings right away will protect them from modifications to their original
@@ -155,7 +155,7 @@ module Cucumber
 
             runtime.puts(*messages)
           end
-          # rubocop:enable UnneededInterpolation
+          # rubocop:enable Style/UnneededInterpolation
 
           define_method(:ask) do |question, timeout_seconds = 60|
             runtime.ask(question, timeout_seconds)
