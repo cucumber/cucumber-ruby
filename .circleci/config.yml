@@ -4,6 +4,9 @@
 #
 version: 2.1
 
+orbs:
+  win: circleci/windows@1.0.0
+
 commands:
   build:
     description: "Build and run the tests"
@@ -41,6 +44,14 @@ commands:
             set -o errexit
 
 jobs:
+  build_windows:
+    executor: win/vs2019
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run: Write-Host 'Hello, Windows'
+
   build-ruby-2_3:
     docker:
       - image: circleci/ruby:2.3
