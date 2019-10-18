@@ -2,120 +2,122 @@
 #
 # Check https://circleci.com/docs/2.0/language-ruby/ for more details
 #
-version: 2.0
+version: 2.1
+
+commands:
+  build:
+    description: "Build and run the tests"
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - bundle-{{ checksum "cucumber.gemspec" }}
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: bundle-{{ checksum "cucumber.gemspec" }}
+
+  test:
+    description: "Run tests"
+    steps:
+      - run:
+          name: run tests
+          command: |
+            bundle exec rake
+
+  test_allow_failure:
+    description: "Run tests (allow failure so workflow is not marked as failed)"
+    steps:
+      - run:
+          name: run tests with allowed failure
+          command: |
+            set -o errexit
+            bundle exec rake
+            set -o errexit
 
 jobs:
-  "ruby-2.6":
+  build-ruby-2_3:
     docker:
-       - image: circleci/ruby:2.6
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
-  "ruby-2.5":
-    docker:
-       - image: circleci/ruby:2.5
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
+      - image: circleci/ruby:2.3
 
-  "ruby-2.4":
-    docker:
-       - image: circleci/ruby:2.4
     working_directory: ~/repo
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
+      - build
+      - test
 
-  "ruby-2.3":
+  build-ruby-2_4:
     docker:
-       - image: circleci/ruby:2.3
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
+      - image: circleci/ruby:2.4
 
-  "jruby":
-    docker:
-       - image: circleci/jruby:9.2
     working_directory: ~/repo
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: install dependencies
-          command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
-      - run:
-          name: Run Rake
-          command: bundle exec rake
+      - build
+      - test
+
+  build-ruby-2_5:
+    docker:
+      - image: circleci/ruby:2.5
+
+    working_directory: ~/repo
+    steps:
+      - build
+      - test
+
+  build-ruby-2_6:
+    docker:
+      - image: circleci/ruby:2.6
+
+    working_directory: ~/repo
+    steps:
+      - build
+      - test
+
+  build-jruby:
+    docker:
+      - image: circleci/jruby:9.2.8.0
+
+    working_directory: ~/repo
+    steps:
+      - build
+      - test_allow_failure
+
+  build-ruby-latest:
+    docker:
+      - image: circleci/ruby:latest
+
+    working_directory: ~/repo
+    steps:
+      - build
+      - test_allow_failure
 
 workflows:
   version: 2
+
+  nightly-build:
+    triggers:
+      - schedule:
+          cron: "0 5 * * *"
+          filters:
+            branches:
+              only:
+                - master
+
+    jobs:
+      - build-ruby-2_3
+      - build-ruby-2_4
+      - build-ruby-2_5
+      - build-ruby-2_6
+
   build:
     jobs:
-      # Keep lowest ruby-* version in sync with cucumber.gemspec & .rubocop.yml
-      - "ruby-2.6"
-      - "ruby-2.5"
-      - "ruby-2.4"
-      - "ruby-2.3"
-      - "jruby"
+      - build-ruby-2_3
+      - build-ruby-2_4
+      - build-ruby-2_5
+      - build-ruby-2_6
+      - build-ruby-latest
+      - build-jruby
