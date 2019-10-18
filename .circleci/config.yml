@@ -49,8 +49,8 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - checkout
-      - run: Write-Host 'Hello, Windows'
+      - build
+      - test
 
   build-ruby-2_3:
     docker:
