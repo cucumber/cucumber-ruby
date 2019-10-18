@@ -126,6 +126,7 @@ workflows:
 
   build:
     jobs:
+      - build_windows
       - build-ruby-2_3
       - build-ruby-2_4
       - build-ruby-2_5
