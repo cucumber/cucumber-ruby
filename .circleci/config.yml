@@ -15,7 +15,7 @@ commands:
       - run:
           name: "Run ridk"
           command: |
-            ridk install
+            ridk install 1
 
   build:
     description: "Build and run the tests"
