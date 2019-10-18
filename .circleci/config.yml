@@ -8,6 +8,15 @@ orbs:
   win: circleci/windows@1.0.0
 
 commands:
+  add_windows_dependencies:
+    description: "Update Windows environment"
+
+    steps:
+      - run:
+        name: "Run ridk"
+        command: |
+          ridk install
+
   build:
     description: "Build and run the tests"
 
@@ -49,6 +58,7 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - add_windows_dependencies
       - build
       - test
 
