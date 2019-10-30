@@ -26,7 +26,7 @@ Layout/EmptyLineAfterGuardClause:
 
 # Offense count: 5
 # Cop supports --auto-correct.
-Lint/UnneededCopDisableDirective:
+Lint/RedundantCopDisableDirective:
   Exclude:
     - 'lib/cucumber/errors.rb'
     - 'lib/cucumber/glue/proto_world.rb'
