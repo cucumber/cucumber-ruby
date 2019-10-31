@@ -10,27 +10,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...master)
+## [4.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...v4.0.0.rc.3)
 
 ### Changed
 
 * Update to cucumber-wire 1.1.
 
-### Added
-
-* N/A
-
-### Fixed
-
-* N/A
-
-### Removed
-
-* N/A
-
-### Improved
-
-* N/A
 
 ## [4.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2)
 
