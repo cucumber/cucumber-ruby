@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...master) (Not released)
+## [4.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2) (Not released)
 
 ### Added
 * There is a new methodology in Cucumber for how the auto-loader works
@@ -27,8 +27,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 * Going forward the minimum ruby version for all cucumber based gems is 2.3
 ([luke-hill](https://github.com/luke-hill))
-
-### Deprecated
 
 ### Removed
 * Removed Travis publish job for cucumber-pro(a.k.a. jam)
@@ -54,8 +52,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Make SIGINT/`Ctrl+c` behavior consistent with SIGTERM/`kill` behavior - now first invocation causes existing scenario to stop running and jump to `at_exit`, second invocation causes immediate exit. Before that first invocation only instructed Cucumber to exit after scenario and second invocation caused immediate exit skipping `at_exit`.
   ([#1353](https://github.com/cucumber/cucumber-ruby/pull/1353)
    [akostadinov](https://github.com/akostadinov))
-
-### Added
 
 ### Improved
 
