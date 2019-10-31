@@ -10,7 +10,29 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [4.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2) (Not released)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...master)
+
+### Changed
+
+* N/A
+
+### Added
+
+* N/A
+
+### Fixed
+
+* N/A
+
+### Removed
+
+* N/A
+
+### Improved
+
+* N/A
+
+## [4.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2)
 
 ### Added
 * There is a new methodology in Cucumber for how the auto-loader works
