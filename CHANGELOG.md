@@ -38,8 +38,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Drop support for JRuby. We may add this back if new versions of protobuf for JRuby
   start working, or if someone can make the build pass with an older version.
   All this means is we're ok to make releases while the jruby CI job is failing.
-  
+
   ([aslakhellesoy](https://github.com/aslakhellesoy))
+
+* Remove `dots-formatter introduced in `4.0.0rc1`
 
 ### Fixed
 
