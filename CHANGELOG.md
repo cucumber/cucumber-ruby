@@ -14,7 +14,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* N/A
+* Update to cucumber-wire 1.1.
 
 ### Added
 
