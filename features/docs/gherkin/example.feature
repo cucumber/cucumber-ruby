@@ -54,3 +54,4 @@ Feature: Example
       | feature_file                    | expected                  |
       | features/example.feature        | Feature: A simple example |
       | features/second_example.feature | Feature: Another example  |
+
