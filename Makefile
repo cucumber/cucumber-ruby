@@ -1,4 +1,4 @@
-FEATURES = $(sort $(wildcard features/docs/*.feature))
+FEATURES = $(sort $(wildcard features/docs/**.feature))
 GOLDEN_JSONS = $(patsubst features/docs/%.feature,acceptance/%-golden.json,$(FEATURES))
 GENERATED_JSONS = $(patsubst features/docs/%.feature,acceptance/%-generated.json,$(FEATURES))
 TESTED = $(patsubst features/docs/%.feature,acceptance/%.tested,$(FEATURES))
@@ -18,11 +18,16 @@ acceptance/%.tested: acceptance/%-golden.json acceptance/%-generated.json
 
 acceptance/%-golden.json: features/docs/%.feature
 	mkdir -p $$(dirname $@)
-	bundle exec cucumber --format=json $< | jq --sort-keys "." > $@
+	bundle exec cucumber --format=json $< | \
+		jq --sort-keys "." | \
+		bin/neutralize-json > $@
 
 acceptance/%-generated.json: features/docs/%.feature bin/json-formatter
 	mkdir -p $$(dirname $@)
-	bundle exec cucumber --format=protobuf $< | bin/json-formatter | jq --sort-keys "." > $@
+	bundle exec cucumber --format=protobuf $< | \
+		bin/json-formatter | \
+		jq --sort-keys "." | \
+		bin/neutralize-json > $@
 
 bin/json-formatter:
 	curl -L https://github.com/cucumber/cucumber/releases/latest/download/json-formatter-$(OS)-$(ARCH) > $@

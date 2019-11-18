@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Replaces certain "uncontrollable" properties with fixed values
+# This allows for comparison of documents without expecting these
+# properties to be equal
+#
+
+jq ".[].elements[].steps[].result.duration = 99" | \
+jq ".[].elements[].steps[].result.error_message = \"some error\"" | \
+jq ".[].elements[].steps[].match.location = \"some_file.xyz\""
