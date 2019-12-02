@@ -72,7 +72,9 @@ module Cucumber
       end
 
       def register_rb_hook(phase, tag_expressions, proc)
-        add_hook(phase, Hook.new(self, tag_expressions, proc))
+        hook = add_hook(phase, Hook.new(self, tag_expressions, proc))
+        @configuration.notify :envelope, hook.to_envelope
+        hook
       end
 
       def define_parameter_type(parameter_type)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'cucumber/messages'
 require 'cucumber/glue/invoke_in_world'
 
 module Cucumber
@@ -24,6 +25,20 @@ module Cucumber
           pseudo_method,
           *[arguments, block].flatten.compact,
           &@proc
+        )
+      end
+
+      def to_envelope
+        Cucumber::Messages::Envelope.new(
+          testCaseHookDefinitionConfig: Cucumber::Messages::TestCaseHookDefinitionConfig.new(
+            tagExpression: tag_expressions.join(" "),
+            location: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
+            )
+          )
         )
       end
 
