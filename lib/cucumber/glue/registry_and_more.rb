@@ -83,6 +83,7 @@ module Cucumber
         step_definition = StepDefinition.new(self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
+        @configuration.notify :envelope, step_definition.to_envelope
         step_definition
       end
 

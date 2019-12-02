@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'cucumber/messages'
 
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
@@ -70,6 +71,24 @@ module Cucumber
         @expression = expression
         @proc = proc
         # @registry.available_step_definition(regexp_source, location)
+      end
+
+      def to_envelope
+        Cucumber::Messages::Envelope.new(
+          stepDefinitionConfig: Cucumber::Messages::StepDefinitionConfig.new(
+            id: '',
+            pattern: Cucumber::Messages::StepDefinitionPattern.new(
+              source:  expression.regexp.to_s,
+              type: expression.is_a?(CucumberExpressions::CucumberExpression) ? Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION : Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
+            ),
+            location: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
+            )
+          )
+        )
       end
 
       # @api private

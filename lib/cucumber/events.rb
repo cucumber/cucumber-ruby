@@ -24,6 +24,7 @@ module Cucumber
 
     def self.registry
       Core::Events.build_registry(
+        Envelope,
         TestCaseStarted,
         TestCaseFinished,
         TestStepFinished,
