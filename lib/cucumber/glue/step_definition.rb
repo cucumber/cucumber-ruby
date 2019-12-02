@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'cucumber/messages'
+require 'securerandom'
 
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
@@ -63,10 +64,11 @@ module Cucumber
         end
       end
 
-      attr_reader :expression, :registry
+      attr_reader :id, :expression, :registry
 
       def initialize(registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
+        @id = SecureRandom.uuid
         @registry = registry
         @expression = expression
         @proc = proc
@@ -76,6 +78,7 @@ module Cucumber
       def to_envelope
         Cucumber::Messages::Envelope.new(
           stepDefinitionConfig: Cucumber::Messages::StepDefinitionConfig.new(
+            id: id,
             pattern: Cucumber::Messages::StepDefinitionPattern.new(
               source:  expression.regexp.to_s,
               type: expression.is_a?(CucumberExpressions::CucumberExpression) ? Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION : Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION

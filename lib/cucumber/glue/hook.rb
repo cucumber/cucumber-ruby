@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'securerandom'
 require 'cucumber/messages'
 require 'cucumber/glue/invoke_in_world'
 
@@ -7,9 +7,10 @@ module Cucumber
   module Glue
     # TODO: Kill pointless wrapper for Before, After and AfterStep hooks with fire
     class Hook
-      attr_reader :tag_expressions, :location
+      attr_reader :id, :tag_expressions, :location
 
       def initialize(registry, tag_expressions, proc)
+        @id = SecureRandom.uuid
         @registry = registry
         @tag_expressions = sanitize_tag_expressions(tag_expressions)
         @proc = proc
@@ -31,6 +32,7 @@ module Cucumber
       def to_envelope
         Cucumber::Messages::Envelope.new(
           testCaseHookDefinitionConfig: Cucumber::Messages::TestCaseHookDefinitionConfig.new(
+            id: id,
             tagExpression: tag_expressions.join(" "),
             location: Cucumber::Messages::SourceReference.new(
               uri: location.file,

@@ -196,6 +196,13 @@ module Cucumber
         )
       end
 
+
+      it 'has a unqiue id' do
+        step = StepDefinition.new(registry, /I CAN HAZ (\d+) CUKES/i, -> {}, {})
+
+        expect(step.id).not_to be_nil
+      end
+
       context('#to_envelope') do
         let(:step) {StepDefinition.new(
           registry,
@@ -213,7 +220,11 @@ module Cucumber
           expect(envelope.stepDefinitionConfig).not_to be_nil
         end
 
-        it 'provides the pattern' do
+        it 'provides the step definition id' do
+          expect(envelope.stepDefinitionConfig.id).to eq(step.id)
+        end
+
+        it 'outputs the pattern' do
           expect(envelope.stepDefinitionConfig.pattern.source)
             .to eq("(?i-mx:I CAN HAZ (\\d+) CUKES)")
           expect(envelope.stepDefinitionConfig.pattern.type)
@@ -226,7 +237,7 @@ module Cucumber
 
           # Note: this may be a bit brittle ...
           expect(envelope.stepDefinitionConfig.location.location.line)
-            .to eq(203)
+            .to eq(210)
         end
       end
 

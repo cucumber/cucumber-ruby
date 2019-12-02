@@ -7,6 +7,11 @@ module Cucumber
       let(:subject) {
         Hook.new(nil, ['@foo', 'not @bar'], Proc.new {puts "This is a hook"})
       }
+
+      it 'has a unique ID' do
+        expect(subject.id).not_to be_nil
+      end
+
       context('#to_envelope') do
         let(:envelope) { subject.to_envelope }
 
@@ -18,7 +23,12 @@ module Cucumber
           expect(envelope.testCaseHookDefinitionConfig).not_to be_nil
         end
 
-        it 'adds the tags expressions as string' do
+        it 'outputs the hook id' do
+          expect(envelope.testCaseHookDefinitionConfig.id)
+            .to eq(subject.id)
+        end
+
+        it 'outputs the tags expressions as string' do
           expect(envelope.testCaseHookDefinitionConfig.tagExpression)
             .to eq("@foo not @bar")
         end
