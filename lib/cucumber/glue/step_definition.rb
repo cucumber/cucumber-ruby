@@ -76,7 +76,6 @@ module Cucumber
       def to_envelope
         Cucumber::Messages::Envelope.new(
           stepDefinitionConfig: Cucumber::Messages::StepDefinitionConfig.new(
-            id: '',
             pattern: Cucumber::Messages::StepDefinitionPattern.new(
               source:  expression.regexp.to_s,
               type: expression.is_a?(CucumberExpressions::CucumberExpression) ? Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION : Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION

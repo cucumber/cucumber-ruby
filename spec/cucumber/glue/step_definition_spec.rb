@@ -195,6 +195,41 @@ module Cucumber
           }
         )
       end
+
+      context('#to_envelope') do
+        let(:step) {StepDefinition.new(
+          registry,
+          /I CAN HAZ (\d+) CUKES/i,
+          -> {},
+          {}
+        )}
+        let(:envelope) { step.to_envelope }
+
+        it 'produces a Cucumber::Messages::Envelope message' do
+          expect(envelope).to be_a(Cucumber::Messages::Envelope)
+        end
+
+        it 'fills the stepDefinitionConfig field of the envelope' do
+          expect(envelope.stepDefinitionConfig).not_to be_nil
+        end
+
+        it 'provides the pattern' do
+          expect(envelope.stepDefinitionConfig.pattern.source)
+            .to eq("(?i-mx:I CAN HAZ (\\d+) CUKES)")
+          expect(envelope.stepDefinitionConfig.pattern.type)
+            .to eq(:REGULAR_EXPRESSION)
+        end
+
+        it 'sets the correct location for the step definition' do
+          expect(envelope.stepDefinitionConfig.location.uri)
+            .to eq('spec/cucumber/glue/step_definition_spec.rb')
+
+          # Note: this may be a bit brittle ...
+          expect(envelope.stepDefinitionConfig.location.location.line)
+            .to eq(203)
+        end
+      end
+
     end
   end
 end
