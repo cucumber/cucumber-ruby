@@ -21,7 +21,7 @@ module Cucumber
       def before_hooks
         @hooks.map do |hook|
           action_block = ->(result) { hook.invoke('Before', @scenario.with_result(result)) }
-          Hooks.before_hook(hook.location, &action_block)
+          Hooks.before_hook(hook, &action_block)
         end
       end
     end
