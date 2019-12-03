@@ -18,7 +18,7 @@ describe Cucumber::Filters::Retry do
   let(:location) { double }
   let(:tags) { double }
   let(:language) { double }
-  let(:test_case) { Cucumber::Core::Test::Case.new(name, [double('test steps')], location, tags, language) }
+  let(:test_case) { Cucumber::Core::Test::Case.new(name, [double('test steps')], location, tags, language, []) }
   let(:receiver) { double('receiver').as_null_object }
   let(:filter) { Cucumber::Filters::Retry.new(configuration, receiver) }
   let(:fail) { Cucumber::Events::AfterTestCase.new(test_case, double('result', failed?: true, ok?: false)) }
