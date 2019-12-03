@@ -34,8 +34,7 @@ module Cucumber
         TestRunFinished,
         GherkinSourceRead,
         GherkinSourceParsed,
-        TestRunStarted,
-        Pickle
+        TestRunStarted
       )
     end
   end
