@@ -28,7 +28,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 * Ruby 2.5
 * Ruby 2.4
 * Ruby 2.3
-* JRuby 9.1
 
 ## Code of Conduct
 
