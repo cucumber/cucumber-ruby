@@ -4,9 +4,9 @@ require 'cucumber/glue/hook'
 module Cucumber
   module Glue
     describe Hook do
-      let(:subject) {
-        Hook.new(nil, ['@foo', 'not @bar'], Proc.new {puts "This is a hook"})
-      }
+      let(:subject) do
+        Hook.new(nil, ['@foo', 'not @bar'], proc { puts 'This is a hook' })
+      end
 
       it 'has a unique ID' do
         expect(subject.id).not_to be_nil
@@ -30,7 +30,7 @@ module Cucumber
 
         it 'outputs the tags expressions as string' do
           expect(envelope.hook.tag_expression)
-            .to eq("@foo not @bar")
+            .to eq('@foo not @bar')
         end
 
         it 'sets the correct source_reference for the hook' do

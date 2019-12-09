@@ -196,7 +196,6 @@ module Cucumber
         )
       end
 
-
       it 'has a unqiue id' do
         step = StepDefinition.new(registry, /I CAN HAZ (\d+) CUKES/i, -> {}, {})
 
@@ -204,12 +203,14 @@ module Cucumber
       end
 
       context('#to_envelope') do
-        let(:step) {StepDefinition.new(
-          registry,
-          /I CAN HAZ (\d+) CUKES/i,
-          -> {},
-          {}
-        )}
+        let(:step) do
+          StepDefinition.new(
+            registry,
+            /I CAN HAZ (\d+) CUKES/i,
+            -> {},
+            {}
+          )
+        end
         let(:envelope) { step.to_envelope }
 
         it 'produces a Cucumber::Messages::Envelope message' do
@@ -226,7 +227,7 @@ module Cucumber
 
         it 'outputs the pattern' do
           expect(envelope.step_definition.pattern.source)
-            .to eq("(?i-mx:I CAN HAZ (\\d+) CUKES)")
+            .to eq('(?i-mx:I CAN HAZ (\\d+) CUKES)')
           expect(envelope.step_definition.pattern.type)
             .to eq(:REGULAR_EXPRESSION)
         end
@@ -240,7 +241,6 @@ module Cucumber
             .to eq(210)
         end
       end
-
     end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/messages'
 require 'securerandom'
 
@@ -80,8 +81,8 @@ module Cucumber
           step_definition: Cucumber::Messages::StepDefinition.new(
             id: id,
             pattern: Cucumber::Messages::StepDefinitionPattern.new(
-              source:  expression.regexp.to_s,
-              type: expression.is_a?(CucumberExpressions::CucumberExpression) ? Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION : Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
+              source: expression.regexp.to_s,
+              type: expression_type
             ),
             sourceReference: Cucumber::Messages::SourceReference.new(
               uri: location.file,
@@ -91,6 +92,11 @@ module Cucumber
             )
           )
         )
+      end
+
+      def expression_type
+        return Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
+        Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
       end
 
       # @api private
