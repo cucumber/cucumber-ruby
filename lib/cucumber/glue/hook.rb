@@ -31,10 +31,10 @@ module Cucumber
 
       def to_envelope
         Cucumber::Messages::Envelope.new(
-          testCaseHookDefinitionConfig: Cucumber::Messages::TestCaseHookDefinitionConfig.new(
+          hook: Cucumber::Messages::Hook.new(
             id: id,
-            tagExpression: tag_expressions.join(" "),
-            location: Cucumber::Messages::SourceReference.new(
+            tag_expression: tag_expressions.join(" "),
+            source_reference: Cucumber::Messages::SourceReference.new(
               uri: location.file,
               location: Cucumber::Messages::Location.new(
                 line: location.lines.first

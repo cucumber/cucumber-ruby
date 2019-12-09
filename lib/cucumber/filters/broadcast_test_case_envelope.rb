@@ -6,7 +6,6 @@ module Cucumber
     class BroadcastTestCaseEnvelope < Core::Filter.new(:config)
       def test_case(test_case)
         config.notify :envelope, test_case.to_envelope
-        self
       end
     end
   end

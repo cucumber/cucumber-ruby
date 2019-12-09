@@ -77,13 +77,13 @@ module Cucumber
 
       def to_envelope
         Cucumber::Messages::Envelope.new(
-          stepDefinitionConfig: Cucumber::Messages::StepDefinitionConfig.new(
+          step_definition: Cucumber::Messages::StepDefinition.new(
             id: id,
             pattern: Cucumber::Messages::StepDefinitionPattern.new(
               source:  expression.regexp.to_s,
               type: expression.is_a?(CucumberExpressions::CucumberExpression) ? Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION : Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
             ),
-            location: Cucumber::Messages::SourceReference.new(
+            sourceReference: Cucumber::Messages::SourceReference.new(
               uri: location.file,
               location: Cucumber::Messages::Location.new(
                 line: location.lines.first

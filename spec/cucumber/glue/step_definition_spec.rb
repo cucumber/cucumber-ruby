@@ -216,27 +216,27 @@ module Cucumber
           expect(envelope).to be_a(Cucumber::Messages::Envelope)
         end
 
-        it 'fills the stepDefinitionConfig field of the envelope' do
-          expect(envelope.stepDefinitionConfig).not_to be_nil
+        it 'fills the step_definition field of the envelope' do
+          expect(envelope.step_definition).not_to be_nil
         end
 
         it 'provides the step definition id' do
-          expect(envelope.stepDefinitionConfig.id).to eq(step.id)
+          expect(envelope.step_definition.id).to eq(step.id)
         end
 
         it 'outputs the pattern' do
-          expect(envelope.stepDefinitionConfig.pattern.source)
+          expect(envelope.step_definition.pattern.source)
             .to eq("(?i-mx:I CAN HAZ (\\d+) CUKES)")
-          expect(envelope.stepDefinitionConfig.pattern.type)
+          expect(envelope.step_definition.pattern.type)
             .to eq(:REGULAR_EXPRESSION)
         end
 
         it 'sets the correct location for the step definition' do
-          expect(envelope.stepDefinitionConfig.location.uri)
+          expect(envelope.step_definition.sourceReference.uri)
             .to eq('spec/cucumber/glue/step_definition_spec.rb')
 
           # Note: this may be a bit brittle ...
-          expect(envelope.stepDefinitionConfig.location.location.line)
+          expect(envelope.step_definition.sourceReference.location.line)
             .to eq(210)
         end
       end
