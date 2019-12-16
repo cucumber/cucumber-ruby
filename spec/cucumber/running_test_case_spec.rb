@@ -12,6 +12,8 @@ module Cucumber
     attr_accessor :wrapped_test_case, :core_test_case
 
     let(:result) { double(:result, to_sym: :status_symbol) }
+    let(:event_bus) { Cucumber::Core::EventBus.new }
+    let(:id_generator) { Cucumber::Messages::IdGenerator::Incrementing.new }
 
     before do
       receiver = double.as_null_object
@@ -19,7 +21,7 @@ module Cucumber
         self.core_test_case = core_test_case
         self.wrapped_test_case = RunningTestCase.new(core_test_case).with_result(result)
       }
-      compile [gherkin_doc], receiver
+      compile [gherkin_doc], receiver, [], event_bus, id_generator
     end
 
     context 'for a regular scenario' do

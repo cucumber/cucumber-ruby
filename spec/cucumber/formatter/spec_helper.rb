@@ -36,7 +36,7 @@ module Cucumber
           Filters::PrepareWorld.new(actual_runtime)
         ]
         event_bus.gherkin_source_read(gherkin_doc.uri, gherkin_doc.body)
-        compile [gherkin_doc], receiver, filters, event_bus
+        compile [gherkin_doc], receiver, filters, event_bus, Cucumber::Messages::IdGenerator::Incrementing.new
         event_bus.test_run_finished
       end
 

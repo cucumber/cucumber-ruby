@@ -35,7 +35,7 @@ module Cucumber
             end
           end
           Rerun.new(config)
-          execute [gherkin], [StandardStepActions.new], config.event_bus
+          execute [gherkin], [StandardStepActions.new], config.event_bus, config.id_generator
           config.event_bus.test_run_finished
 
           expect(io.string).to eq 'foo.feature:3:6'
@@ -69,7 +69,7 @@ module Cucumber
           end
 
           Rerun.new(config)
-          execute [foo, bar], [StandardStepActions.new], config.event_bus
+          execute [foo, bar], [StandardStepActions.new], config.event_bus, config.id_generator
           config.event_bus.test_run_finished
 
           expect(io.string).to eq "foo.feature:3:6\nbar.feature:3"
@@ -87,7 +87,7 @@ module Cucumber
           end
 
           Rerun.new(config)
-          execute [gherkin], [StandardStepActions.new], config.event_bus
+          execute [gherkin], [StandardStepActions.new], config.event_bus, config.id_generator
           config.event_bus.test_run_finished
 
           expect(io.string).to eq ''
@@ -120,7 +120,7 @@ module Cucumber
             end
 
             Rerun.new(config)
-            execute [gherkin], [FlakyStepActions.new], config.event_bus
+            execute [gherkin], [FlakyStepActions.new], config.event_bus, config.id_generator
             config.event_bus.test_run_finished
 
             expect(io.string).to eq ''
@@ -139,7 +139,7 @@ module Cucumber
             end
 
             Rerun.new(config)
-            execute [foo], [FlakyStepActions.new], config.event_bus
+            execute [foo], [FlakyStepActions.new], config.event_bus, config.id_generator
             config.event_bus.test_run_finished
 
             expect(io.string).to eq 'foo.feature:3'
@@ -155,7 +155,7 @@ module Cucumber
             end
 
             Rerun.new(config)
-            execute [foo, foo], [StandardStepActions.new], config.event_bus
+            execute [foo, foo], [StandardStepActions.new], config.event_bus, config.id_generator
             config.event_bus.test_run_finished
 
             expect(io.string).to eq 'foo.feature:3'

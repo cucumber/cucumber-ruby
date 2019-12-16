@@ -36,7 +36,7 @@ module Cucumber::Formatter
       end
 
       it 'sets Cucumber.wants_to_quit' do
-        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus, configuration.id_generator
         expect(Cucumber.wants_to_quit).to be true
       end
     end
@@ -53,7 +53,7 @@ module Cucumber::Formatter
       end
 
       it 'doesn\'t set Cucumber.wants_to_quit' do
-        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus, configuration.id_generator
         expect(Cucumber.wants_to_quit).to be_falsey
       end
     end
@@ -70,7 +70,7 @@ module Cucumber::Formatter
       end
 
       it 'doesn\'t set Cucumber.wants_to_quit' do
-        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus, configuration.id_generator
         expect(Cucumber.wants_to_quit).to be_falsey
       end
 
@@ -78,7 +78,7 @@ module Cucumber::Formatter
         let(:configuration) { Cucumber::Configuration.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
 
         it 'sets Cucumber.wants_to_quit' do
-          execute [@gherkin], [StandardStepActions.new], configuration.event_bus
+          execute [@gherkin], [StandardStepActions.new], configuration.event_bus, configuration.id_generator
           expect(Cucumber.wants_to_quit).to be_truthy
         end
       end

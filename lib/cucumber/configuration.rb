@@ -242,6 +242,10 @@ module Cucumber
       @options[:event_bus]
     end
 
+    def id_generator
+      @id_generator ||= Cucumber::Messages::IdGenerator::Incrementing.new
+    end
+
     private
 
     def default_options
