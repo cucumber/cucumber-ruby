@@ -5,9 +5,10 @@ require 'cucumber/hooks'
 module Cucumber
   class Runtime
     class BeforeHooks
-      def initialize(hooks, scenario)
+      def initialize(hooks, scenario, id_generator)
         @hooks = hooks
         @scenario = scenario
+        @id_generator = id_generator
       end
 
       def apply_to(test_case)
@@ -21,7 +22,7 @@ module Cucumber
       def before_hooks
         @hooks.map do |hook|
           action_block = ->(result) { hook.invoke('Before', @scenario.with_result(result)) }
-          Hooks.before_hook(hook, &action_block)
+          Hooks.before_hook(@id_generator.new_id, hook, &action_block)
         end
       end
     end

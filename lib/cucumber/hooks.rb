@@ -9,17 +9,17 @@ module Cucumber
   # source for test steps
   module Hooks
     class << self
-      def before_hook(hook, &block)
-        build_hook_step(hook.id, hook.location, block, BeforeHook, Core::Test::UnskippableAction)
+      def before_hook(step_id, hook, &block)
+        build_hook_step(step_id, hook.id, hook.location, block, BeforeHook, Core::Test::UnskippableAction)
       end
 
-      def after_hook(hook, &block)
-        build_hook_step(hook.id, hook.location, block, AfterHook, Core::Test::UnskippableAction)
+      def after_hook(step_id, hook, &block)
+        build_hook_step(step_id, hook.id, hook.location, block, AfterHook, Core::Test::UnskippableAction)
       end
 
-      def after_step_hook(test_step, location, &block)
+      def after_step_hook(step_id, test_step, location, &block)
         raise ArgumentError if test_step.hook?
-        build_hook_step('', location, block, AfterStepHook, Core::Test::Action)
+        build_hook_step(step_id, '', location, block, AfterStepHook, Core::Test::Action)
       end
 
       def around_hook(&block)
@@ -28,10 +28,10 @@ module Cucumber
 
       private
 
-      def build_hook_step(hook_id, location, block, hook_type, action_type)
+      def build_hook_step(step_id, hook_id, location, block, hook_type, action_type)
         action = action_type.new(location, &block)
         hook = hook_type.new(action.location)
-        Core::Test::HookStep.new('step_id', hook_id, hook.text, location, action)
+        Core::Test::HookStep.new(step_id, hook_id, hook.text, location, action)
       end
     end
 
