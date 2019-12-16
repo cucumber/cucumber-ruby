@@ -84,7 +84,7 @@ module Cucumber
               source: expression.regexp.to_s,
               type: expression_type
             ),
-            sourceReference: Cucumber::Messages::SourceReference.new(
+            source_reference: Cucumber::Messages::SourceReference.new(
               uri: location.file,
               location: Cucumber::Messages::Location.new(
                 line: location.lines.first

@@ -31,7 +31,7 @@ module Cucumber
       def build_hook_step(hook_id, location, block, hook_type, action_type)
         action = action_type.new(location, &block)
         hook = hook_type.new(action.location)
-        Core::Test::HookStep.new(hook_id, hook.text, location, action)
+        Core::Test::HookStep.new('step_id', hook_id, hook.text, location, action)
       end
     end
 

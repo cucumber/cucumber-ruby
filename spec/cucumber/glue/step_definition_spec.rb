@@ -233,11 +233,11 @@ module Cucumber
         end
 
         it 'sets the correct location for the step definition' do
-          expect(envelope.step_definition.sourceReference.uri)
+          expect(envelope.step_definition.source_reference.uri)
             .to eq('spec/cucumber/glue/step_definition_spec.rb')
 
           # Note: this may be a bit brittle ...
-          expect(envelope.step_definition.sourceReference.location.line)
+          expect(envelope.step_definition.source_reference.location.line)
             .to eq(210)
         end
       end
