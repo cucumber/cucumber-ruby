@@ -112,6 +112,7 @@ module Cucumber
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) { |_v| disable_profile_loading }
           opts.on('-c', '--[no-]color', *color_msg) { |v| color v }
           opts.on('-d', '--dry-run', *dry_run_msg) { set_dry_run_and_duration }
+          opts.on('--predictable-ids', "Generate predictable ids in messages.") { set_option :predictable_ids }
           opts.on('-m', '--no-multiline', "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
           opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
           opts.on('-i', '--no-snippets', "Don't print snippets for pending steps.") { set_option :snippets, false }
