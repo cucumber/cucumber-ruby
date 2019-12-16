@@ -22,7 +22,7 @@ module Cucumber
         'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" \
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
-        'protobuf'    => ['Cucumber::Formatter::Protobuf',    'Outputs protobuf messages'],
+        'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }.freeze

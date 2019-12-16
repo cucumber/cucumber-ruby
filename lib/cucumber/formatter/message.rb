@@ -2,8 +2,8 @@ require 'cucumber/messages'
 
 module Cucumber
   module Formatter
-    # The formatter used for <tt>--format protobuf</tt>
-    class Protobuf
+    # The formatter used for <tt>--format message</tt>
+    class Message
       include Console
       include Io
       attr_reader :config, :current_feature_uri

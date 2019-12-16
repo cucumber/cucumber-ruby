@@ -28,11 +28,13 @@ module Cucumber
 
       private
 
+      # rubocop:disable Metrics/ParameterLists
       def build_hook_step(step_id, hook_id, location, block, hook_type, action_type)
         action = action_type.new(location, &block)
         hook = hook_type.new(action.location)
         Core::Test::HookStep.new(step_id, hook_id, hook.text, location, action)
       end
+      # rubocop:enable Metrics/ParameterLists
     end
 
     class AfterHook
