@@ -181,6 +181,7 @@ module Cucumber
 
       it 'has a JSON representation of the signature' do
         expect(StepDefinition.new(
+          'some-id',
           registry,
           /I CAN HAZ (\d+) CUKES/i,
           -> {},
@@ -197,7 +198,7 @@ module Cucumber
       end
 
       it 'has a unqiue id' do
-        step = StepDefinition.new(registry, /I CAN HAZ (\d+) CUKES/i, -> {}, {})
+        step = StepDefinition.new('some-id', registry, /I CAN HAZ (\d+) CUKES/i, -> {}, {})
 
         expect(step.id).not_to be_nil
       end
@@ -205,6 +206,7 @@ module Cucumber
       context('#to_envelope') do
         let(:step) do
           StepDefinition.new(
+            'some-id',
             registry,
             /I CAN HAZ (\d+) CUKES/i,
             -> {},
@@ -238,7 +240,7 @@ module Cucumber
 
           # Note: this may be a bit brittle ...
           expect(envelope.step_definition.source_reference.location.line)
-            .to eq(210)
+            .to eq(212)
         end
       end
     end

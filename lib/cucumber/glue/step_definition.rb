@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'cucumber/messages'
-require 'securerandom'
 
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
@@ -27,9 +26,9 @@ module Cucumber
       end
 
       class << self
-        def new(registry, string_or_regexp, proc_or_sym, options)
+        def new(id, registry, string_or_regexp, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super registry, registry.create_expression(string_or_regexp), create_proc(proc_or_sym, options)
+          super id, registry, registry.create_expression(string_or_regexp), create_proc(proc_or_sym, options)
         end
 
         private
@@ -67,9 +66,9 @@ module Cucumber
 
       attr_reader :id, :expression, :registry
 
-      def initialize(registry, expression, proc)
+      def initialize(id, registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
-        @id = SecureRandom.uuid
+        @id = id
         @registry = registry
         @expression = expression
         @proc = proc

@@ -82,7 +82,7 @@ module Cucumber
       end
 
       def register_rb_step_definition(string_or_regexp, proc_or_sym, options)
-        step_definition = StepDefinition.new(self, string_or_regexp, proc_or_sym, options)
+        step_definition = StepDefinition.new(@configuration.id_generator.new_id(), self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
         @configuration.notify :envelope, step_definition.to_envelope
