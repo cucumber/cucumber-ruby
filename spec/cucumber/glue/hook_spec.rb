@@ -5,7 +5,7 @@ module Cucumber
   module Glue
     describe Hook do
       let(:subject) do
-        Hook.new(nil, ['@foo', 'not @bar'], proc { puts 'This is a hook' })
+        Hook.new('some-id', nil, ['@foo', 'not @bar'], proc { puts 'This is a hook' })
       end
 
       it 'has a unique ID' do

@@ -1,20 +1,29 @@
 Then("all IDs in the message output should be UUIDs") do
-  all_stdout.split("\n").each do |line|
-    message = JSON.parse(line)
-    IdFinder.new.find_ids(message).each do |key, id|
-      expect(id).to match(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/), "Id for #{key} is not a UID, got #{id}"
-    end
+  ids = find_all_ids_in_ndjson(all_stdout)
+  not_uuids = {}
+
+  ids.each do |key, value|
+    next if value.match(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/)
+    not_uuids[key] = value
   end
+
+  expect(not_uuids).to be_empty, "All ids are not UUIDs, found:\n#{not_uuids.map{ |path, id| " - #{id} => #{path}" }.join("\n")}\n"
 end
 
 Then("all IDs in the message output should be incremental") do
+  ids = find_all_ids_in_ndjson(all_stdout)
+  expected_ids = Array(0..ids.length-1).map(&:to_s)
+
+  expect(ids.values.sort).to eq(expected_ids), "All ids are not incremental, found:\n#{ids.map {|path, id| " - #{id} => #{path}" }.join("\n")}\n"
+end
+
+def find_all_ids_in_ndjson(ndjson)
   ids = {}
-  all_stdout.split("\n").each do |line|
+  ndjson.split("\n").each do |line|
     message = JSON.parse(line)
     ids.merge!(IdFinder.new.find_ids(message))
   end
-
-  expect(ids.values.map(&:to_i).sort).to eq(Array(0..ids.length-1))
+  ids
 end
 
 class IdFinder

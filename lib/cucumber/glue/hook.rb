@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
 require 'cucumber/messages'
 require 'cucumber/glue/invoke_in_world'
 
@@ -10,8 +9,8 @@ module Cucumber
     class Hook
       attr_reader :id, :tag_expressions, :location
 
-      def initialize(registry, tag_expressions, proc)
-        @id = SecureRandom.uuid
+      def initialize(id, registry, tag_expressions, proc)
+        @id = id
         @registry = registry
         @tag_expressions = sanitize_tag_expressions(tag_expressions)
         @proc = proc

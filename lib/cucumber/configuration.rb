@@ -243,7 +243,7 @@ module Cucumber
     end
 
     def id_generator
-      @id_generator ||= Cucumber::Messages::IdGenerator::Incrementing.new
+      @id_generator ||= @options[:predictable_ids] ? Cucumber::Messages::IdGenerator::Incrementing.new : Cucumber::Messages::IdGenerator::UUID.new
     end
 
     private
