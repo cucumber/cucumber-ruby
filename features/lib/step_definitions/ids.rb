@@ -1,4 +1,4 @@
-Then("all IDs in the message output should be UUIDs") do
+Then('all IDs in the message output should be UUIDs') do
   ids = find_all_ids_in_ndjson(all_stdout)
   not_uuids = {}
 
@@ -7,14 +7,14 @@ Then("all IDs in the message output should be UUIDs") do
     not_uuids[key] = value
   end
 
-  expect(not_uuids).to be_empty, "All ids are not UUIDs, found:\n#{not_uuids.map{ |path, id| " - #{id} => #{path}" }.join("\n")}\n"
+  expect(not_uuids).to be_empty, "All ids are not UUIDs, found:\n#{not_uuids.map { |path, id| " - #{id} => #{path}" }.join("\n")}\n"
 end
 
-Then("all IDs in the message output should be incremental") do
+Then('all IDs in the message output should be incremental') do
   ids = find_all_ids_in_ndjson(all_stdout)
-  expected_ids = Array(0..ids.length-1).map(&:to_s)
+  expected_ids = Array(0..ids.length - 1).map(&:to_s)
 
-  expect(ids.values.sort).to eq(expected_ids), "All ids are not incremental, found:\n#{ids.map {|path, id| " - #{id} => #{path}" }.join("\n")}\n"
+  expect(ids.values.sort).to eq(expected_ids), "All ids are not incremental, found:\n#{ids.map { |path, id| " - #{id} => #{path}" }.join("\n")}\n"
 end
 
 def find_all_ids_in_ndjson(ndjson)
@@ -47,8 +47,8 @@ class IdFinder
     end
   end
 
-  def walk_array(a)
-    a.each_with_index do |item, index|
+  def walk_array(array)
+    array.each_with_index do |item, index|
       @path << index.to_s
       walk_item(nil, item)
       @path.pop
@@ -57,7 +57,7 @@ class IdFinder
 
   def walk_item(key, value)
     if value.is_a? String
-      @ids[@path.join('/')] = value if key =='id'
+      @ids[@path.join('/')] = value if key == 'id'
     elsif value.is_a? Array
       walk_array(value)
     elsif value.is_a? Hash
