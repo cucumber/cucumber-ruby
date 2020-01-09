@@ -19,10 +19,7 @@ Feature: Post Configuration Hook [#423]
       """
     When I run `cucumber features`
     Then the stderr should not contain anything
-    And the output should contain:
-      """
-      "uri": "features/simple_scenario.feature"
-      """
+    And the output should contain JSON with key "uri" and value "features/simple_scenario.feature"
 
   Scenario: feature directories read from configuration
     Given a file named "features/support/env.rb" with:

@@ -52,7 +52,7 @@ module Cucumber
 
         it 'recognises a mix of ints, strings and why not a table too' do
           @step_text = 'I have 9 "awesome" cukes in 37 "boxes"'
-          @multiline_argument = Core::Test::DataTable.new([[]], Core::Test::Location.new(''))
+          @multiline_argument = Core::Test::DataTable.new([[]])
 
           expect(snippet_text).to eq unindented(%{
           Given(/^I have (\\d+) "([^"]*)" cukes in (\\d+) "([^"]*)"$/) do |arg1, arg2, arg3, arg4, table|
@@ -94,7 +94,7 @@ module Cucumber
 
         it 'is helpful with tables' do
           @step_text = 'A "first" arg'
-          @multiline_argument = Core::Test::DataTable.new([[]], Core::Test::Location.new(''))
+          @multiline_argument = Core::Test::DataTable.new([[]])
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A "([^"]*)" arg$/) do |arg1, table|
