@@ -15,7 +15,7 @@ module Cucumber
         location ||= Core::Test::Location.of_caller
         case argument
         when String
-          builder.doc_string(Core::Test::DocString.new(argument, content_type, location))
+          builder.doc_string(Core::Test::DocString.new(argument, content_type))
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
           builder.data_table(argument.map(&:cells), location)

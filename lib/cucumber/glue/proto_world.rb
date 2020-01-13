@@ -67,9 +67,8 @@ module Cucumber
       #     %w{ CUC-101 Peeler      22     }
       #   ])
       #
-      def table(text_or_table, file = nil, line = 0)
-        location = !file ? Core::Test::Location.of_caller : Core::Test::Location.new(file, line)
-        MultilineArgument::DataTable.from(text_or_table, location)
+      def table(text_or_table)
+        MultilineArgument::DataTable.from(text_or_table)
       end
 
       # Print a message to the output.
