@@ -36,12 +36,12 @@ module Cucumber
       end
 
       class << self
-        def from(data, location = Core::Test::Location.of_caller)
+        def from(data)
           case data
           when Array
-            from_array(data, location)
+            from_array(data)
           when String
-            parse(data, location)
+            parse(data)
           else
             raise ArgumentError, 'expected data to be a String or an Array.'
           end
@@ -49,15 +49,15 @@ module Cucumber
 
         private
 
-        def parse(text, location = Core::Test::Location.of_caller)
+        def parse(text)
           builder = Builder.new
           parser = Cucumber::Gherkin::DataTableParser.new(builder)
           parser.parse(text)
-          from_array(builder.rows, location)
+          from_array(builder.rows)
         end
 
-        def from_array(data, location = Core::Test::Location.of_caller)
-          new Core::Test::DataTable.new(data, location)
+        def from_array(data)
+          new Core::Test::DataTable.new(data)
         end
       end
 
@@ -111,7 +111,7 @@ module Cucumber
       # registered with #map_column! and #map_headers!.
       #
       def dup
-        self.class.new(Core::Test::DataTable.new(raw, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Returns a new, transposed table. Example:
@@ -126,7 +126,7 @@ module Cucumber
       #   | 4 | 2 |
       #
       def transpose
-        self.class.new(Core::Test::DataTable.new(raw.transpose, location), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw.transpose), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Converts this table into an Array of Hash where the keys of each
@@ -269,7 +269,7 @@ module Cucumber
 
       # Returns a new Table where the headers are redefined. See #map_headers!
       def map_headers(mappings = {}, &block)
-        self.class.new(Core::Test::DataTable.new(raw, location), @conversion_procs.dup, mappings, block)
+        self.class.new(Core::Test::DataTable.new(raw), @conversion_procs.dup, mappings, block)
       end
 
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
@@ -294,7 +294,7 @@ module Cucumber
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
         conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
-        self.class.new(Core::Test::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
+        self.class.new(Core::Test::DataTable.new(raw), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Compares +other_table+ to self. If +other_table+ contains columns
