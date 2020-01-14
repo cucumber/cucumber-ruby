@@ -15,8 +15,8 @@ module Cucumber
                      _anything__test/unit__anything_
                      _anything__Xgem/ruby__anything_
                      _anything__.rbenv/versions/2.3/bin/bundle__anything_]
-          trace << "_anything__#{RbConfig::CONFIG['rubyarchdir']}__anything_"
-          trace << "_anything__#{RbConfig::CONFIG['rubylibdir']}__anything_"
+          trace << "_anything__#{RbConfig::CONFIG['rubyarchdir']}__anything_" if RbConfig::CONFIG['rubyarchdir']
+          trace << "_anything__#{RbConfig::CONFIG['rubylibdir']}__anything_" if RbConfig::CONFIG['rubylibdir']
 
           @exception = Exception.new
           @exception.set_backtrace(trace)
