@@ -23,6 +23,7 @@ module Cucumber
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
+        'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }.freeze
       max = BUILTIN_FORMATS.keys.map(&:length).max

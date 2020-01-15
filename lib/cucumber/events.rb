@@ -33,7 +33,8 @@ module Cucumber
         TestRunFinished,
         GherkinSourceRead,
         GherkinSourceParsed,
-        TestRunStarted
+        TestRunStarted,
+        Envelope
       )
     end
   end
