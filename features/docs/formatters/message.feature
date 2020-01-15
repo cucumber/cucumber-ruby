@@ -14,13 +14,16 @@ Feature: Protobuf message output formatter
           | failed |
       """
 
-  Scenario: It produces NDJSON messages
+  Scenario: it produces NDJSON messages
+    When I run `cucumber features/my_feature.feature --format message`
+    Then output should be valid NDJSON
+    And messages types should be:
+      """
+      gherkinDocument
+      pickle
+      pickle
+      """
 
-  When I run `cucumber features/my_feature.feature --format message`
-  Then output should be valid NDJSON
-  And messages types should be:
-    """
-    gherkinDocument
-    pickle
-    pickle
-    """
+  Scenario: it produces binary message if asked too
+    When I run `cucumber features/my_feature.feature --format message --message-format=binary`
+    Then output should be binary protobuf messages

@@ -139,6 +139,7 @@ Specify SEED to reproduce the shuffling from a previous run.
             @options[:order], @options[:seed] = *order.split(':')
             raise "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(', ')}." unless ORDER_TYPES.include?(@options[:order])
           end
+          opts.on('--message-format', 'Select protobuf messages format') { |v| set_option :message_format, v.to_sym }
 
           opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
           opts.on_tail('-h', '--help', "You're looking at it.") { exit_ok(opts.help) }
