@@ -29,7 +29,7 @@ module Cucumber
         end
 
         describe 'with a scenario' do
-          context '#pickle_id' do
+          context '#pickle_step_id' do
             define_feature <<-FEATURE
               Feature: Banana party
 
@@ -54,7 +54,6 @@ module Cucumber
               allow(test_step).to receive(:id).and_return('whatever-id')
 
               expect { @formatter.pickle_step_id(test_step) }.to raise_error(Cucumber::Formatter::TestStepUnknownError)
-
             end
           end
         end

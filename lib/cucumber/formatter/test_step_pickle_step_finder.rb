@@ -1,23 +1,23 @@
+require 'cucumber/formatter/errors'
+
 module Cucumber
   module Formatter
-    class TestStepUnknownError < StandardError; end
-
     class TestStepPickleStepFinder
       def initialize(config)
-        @pickle_step_by_test_step_id = {}
+        @pickle_id_step_by_test_step_id = {}
         config.on_event :test_step_created, &method(:on_test_step_created)
       end
 
       def pickle_step_id(test_step)
-        return @pickle_step_by_test_step_id[test_step.id] if @pickle_step_by_test_step_id.key?(test_step.id)
+        return @pickle_id_step_by_test_step_id[test_step.id] if @pickle_id_step_by_test_step_id.key?(test_step.id)
 
-        raise TestStepUnknownError, "No pickle step found for #{test_step.id} }. Known: #{@pickle_step_by_test_step_id.keys}"
+        raise TestStepUnknownError, "No pickle step found for #{test_step.id} }. Known: #{@pickle_id_step_by_test_step_id.keys}"
       end
 
       private
 
       def on_test_step_created(event)
-        @pickle_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
+        @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
       end
     end
   end
