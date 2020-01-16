@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
-require 'cucumber/formatter/test_pickle_finder'
+require 'cucumber/formatter/test_step_pickle_step_finder'
 
 module Cucumber
   module Formatter
-    describe TestPickleFinder do
+    describe TestStepPickleStepFinder do
       extend SpecHelperDsl
       include SpecHelper
 
@@ -16,7 +16,7 @@ module Cucumber
 
         @out = StringIO.new
         @config = actual_runtime.configuration.with_options(out_stream: @out)
-        @formatter = TestPickleFinder.new(@config)
+        @formatter = TestStepPickleStepFinder.new(@config)
 
         @config.on_event :test_case_created do |event|
           @test_cases << event.test_case
@@ -37,19 +37,24 @@ module Cucumber
                   Given there are bananas
             FEATURE
 
-            it 'provides the ID of the pickle used to generate the Test::Case' do
+            it 'provides the ID of the PickleStep used to generate the Test::Step' do
+              # IDs are predictable:
               # - 0 -> first step
               # - 1 -> scenario
               # - 2 -> pickle step
               # - 3 -> the pickle
-              expect(@formatter.pickle_id(@test_cases.first)).to eq('3')
+              test_case = @test_cases.first
+              test_step = test_case.test_steps.first
+
+              expect(@formatter.pickle_step_id(test_step)).to eq('2')
             end
 
-            it 'raises an error when the Test::Case is unknown' do
-              test_case = double
-              allow(test_case).to receive(:id).and_return('whatever-id')
+            it 'raises an exception when the test_step is unknown' do
+              test_step = double
+              allow(test_step).to receive(:id).and_return('whatever-id')
 
-              expect { @formatter.pickle_id(test_case) }.to raise_error(Cucumber::Formatter::TestCaseUnknownError)
+              expect { @formatter.pickle_step_id(test_step) }.to raise_error(Cucumber::Formatter::TestStepUnknownError)
+
             end
           end
         end
