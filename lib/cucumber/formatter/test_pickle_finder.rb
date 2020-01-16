@@ -1,5 +1,7 @@
 module Cucumber
   module Formatter
+    class TestCaseUnknownError < StandardError; end
+
     class TestPickleFinder
       def initialize(config)
         @pickle_by_test_case_id = {}
@@ -7,7 +9,9 @@ module Cucumber
       end
 
       def pickle_id(test_case)
-        @pickle_by_test_case_id[test_case.id]
+        return @pickle_by_test_case_id[test_case.id] if @pickle_by_test_case_id.key?(test_case.id)
+
+        raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@pickle_by_test_case_id.keys}"
       end
 
       private

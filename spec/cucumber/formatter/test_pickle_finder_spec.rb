@@ -37,12 +37,19 @@ module Cucumber
                   Given there are bananas
             FEATURE
 
-            it 'provides the ID of the pickle used to generate the Test' do
+            it 'provides the ID of the pickle used to generate the Test::Case' do
               # IDs are predictable:
               # - 1 -> scenario
               # - 2 -> first step
               # - 3 -> the pickle
-              expect(@formatter.pickle_id(@test_cases.first)).to eq("3")
+              expect(@formatter.pickle_id(@test_cases.first)).to eq('3')
+            end
+
+            it 'raises an error when the Test::Case is unknown' do
+              test_case = double
+              allow(test_case).to receive(:id).and_return('whatever-id')
+
+              expect { @formatter.pickle_id(test_case) }.to raise_error(Cucumber::Formatter::TestCaseUnknownError)
             end
           end
         end
