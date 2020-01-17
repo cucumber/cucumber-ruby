@@ -26,6 +26,7 @@ module Cucumber
       Core::Events.build_registry(
         GherkinSourceParsed,
         GherkinSourceRead,
+        HookTestStepCreated,
         StepActivated,
         StepDefinitionRegistered,
         TestCaseCreated,
