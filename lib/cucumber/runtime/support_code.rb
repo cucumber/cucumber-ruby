@@ -118,7 +118,7 @@ module Cucumber
         return test_case if test_case.test_steps.empty?
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:after, scenario)
-        AfterHooks.new(@configuration.id_generator, hooks, scenario).apply_to(test_case)
+        AfterHooks.new(@configuration.id_generator, hooks, scenario, @configuration.event_bus).apply_to(test_case)
       end
 
       def find_around_hooks(test_case)
