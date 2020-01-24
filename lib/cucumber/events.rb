@@ -32,6 +32,7 @@ module Cucumber
         TestCaseCreated,
         TestCaseFinished,
         TestCaseStarted,
+        TestCaseReady,
         TestRunFinished,
         TestRunStarted,
         TestStepCreated,
