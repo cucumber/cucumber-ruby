@@ -43,7 +43,7 @@ module Cucumber
               if step.hook?
                 Cucumber::Messages::TestCase::TestStep.new(
                   id: step.id,
-                  pickle_step_id: @hook_by_test_step.hook_id(step)
+                  hook_id: @hook_by_test_step.hook_id(step)
                 )
               else
                 Cucumber::Messages::TestCase::TestStep.new(
