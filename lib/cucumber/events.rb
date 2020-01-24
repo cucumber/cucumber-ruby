@@ -36,7 +36,8 @@ module Cucumber
         TestRunStarted,
         TestStepCreated,
         TestStepFinished,
-        TestStepStarted
+        TestStepStarted,
+        Envelope
       )
     end
   end
