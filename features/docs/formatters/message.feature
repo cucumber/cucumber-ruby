@@ -22,10 +22,13 @@ Feature: Protobuf message output formatter
       gherkinDocument
       pickle
       pickle
-      test_case
-      test_case
+      testCase
+      testCase
+      testCaseStarted
+      testStepFinished
+      testCaseFinished
+      testCaseStarted
+      testStepFinished
+      testCaseFinished
       """
 
-  Scenario: it produces binary message if asked too
-    When I run `cucumber features/my_feature.feature --format message`
-    Then output should be binary protobuf messages
