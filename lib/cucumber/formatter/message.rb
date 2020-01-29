@@ -6,7 +6,6 @@ require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/pickle_step_by_test_step'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 
-
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format message</tt>
@@ -101,8 +100,6 @@ module Cucumber
 
         output_envelope(message)
       end
-
-
     end
   end
 end
