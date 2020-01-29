@@ -19,16 +19,21 @@ Feature: Protobuf message output formatter
     Then output should be valid NDJSON
     And messages types should be:
       """
+      source
       gherkinDocument
       pickle
       pickle
       testCase
       testCase
+      testRunStarted
       testCaseStarted
+      testStepStarted
       testStepFinished
       testCaseFinished
       testCaseStarted
+      testStepStarted
       testStepFinished
       testCaseFinished
+      testRunFinished
       """
 

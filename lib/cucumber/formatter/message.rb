@@ -81,9 +81,9 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_test_run_started(event)
+      def on_test_run_started(*)
         message = Cucumber::Messages::Envelope.new(
-          test_run_started: Cucumber::Messages::TestRunStarted.new()
+          test_run_started: Cucumber::Messages::TestRunStarted.new
         )
 
         output_envelope(message)
@@ -95,7 +95,7 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
             test_step_id: event.test_step.id,
-            test_case_started_id: "#{test_case_id}-0",
+            test_case_started_id: "#{test_case_id}-0"
           )
         )
 
@@ -137,9 +137,9 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_test_run_finished(event)
+      def on_test_run_finished(*)
         message = Cucumber::Messages::Envelope.new(
-          test_run_finished: Cucumber::Messages::TestRunFinished.new()
+          test_run_finished: Cucumber::Messages::TestRunFinished.new
         )
 
         output_envelope(message)
