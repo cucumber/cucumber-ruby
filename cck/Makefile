@@ -1,8 +1,12 @@
 CCK_FEATURES=$(wildcard ../../../cucumber/compatibility-kit/javascript/features/**/*.feature)
 FEATURES=$(patsubst ../../../cucumber/compatibility-kit/javascript/%,%,$(CCK_FEATURES))
 NDJSON=$(patsubst %.feature,%.ndjson,$(FEATURES))
+TESTED=$(patsubst %.feature,%.tested,$(FEATURES))
 
-default: $(NDJSON)
+default: $(TESTED)
+
+%.tested: %.ndjson
+	diff --unified $< $(patsubst %.ndjson,../../../cucumber/compatibility-kit/javascript/%.ndjson,$<)
 
 %.ndjson: %.feature Gemfile.lock step_definitions/cck_step_definitions.rb
 	bundle exec cucumber $< --format=message > $@
