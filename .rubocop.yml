@@ -16,7 +16,7 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'temp_app/**/*'
-    - 'cck/**/*_spec.rb'
+    - 'cck/features/**/*'
 
 # Reviewed: we need to specify 'cucumber-core' and 'cucumber-wire' twice
 # to be able to build using git on CI, but also using local repos locally.
