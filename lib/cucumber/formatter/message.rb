@@ -68,11 +68,6 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        # TestResult test_result = 1;
-        # Timestamp timestamp = 2;
-        # string test_step_id = 3;
-        # string test_case_started_id = 4;
-
         test_case_id = @test_case_id_by_step[event.test_step.id]
 
         message = Cucumber::Messages::Envelope.new(
