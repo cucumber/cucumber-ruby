@@ -23,7 +23,11 @@ module Cucumber
         @io = ensure_io(config.out_stream)
         config.on_event :envelope, &method(:on_envelope)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
+        config.on_event :test_case_started, &method(:on_test_case_started)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
 
+        @test_case_id_by_step = {}
       end
 
       def output_envelope(envelope)
@@ -35,6 +39,10 @@ module Cucumber
       end
 
       def on_test_case_ready(event)
+        event.test_case.test_steps.each do |step|
+          @test_case_id_by_step[step.id] = event.test_case.id
+        end
+
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
@@ -58,6 +66,47 @@ module Cucumber
 
         output_envelope(message)
       end
+
+      def on_test_step_finished(event)
+        # TestResult test_result = 1;
+        # Timestamp timestamp = 2;
+        # string test_step_id = 3;
+        # string test_case_started_id = 4;
+
+        test_case_id = @test_case_id_by_step[event.test_step.id]
+
+        message = Cucumber::Messages::Envelope.new(
+          test_step_finished: Cucumber::Messages::TestStepFinished.new(
+            test_step_id: event.test_step.id,
+            test_case_started_id: "#{test_case_id}-0",
+            test_result: event.result.to_message
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_case_started(event)
+        message = Cucumber::Messages::Envelope.new(
+          test_case_started: Cucumber::Messages::TestCaseStarted.new(
+            id: "#{event.test_case.id}-0",
+            test_case_id: event.test_case.id
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_case_finished(event)
+        message = Cucumber::Messages::Envelope.new(
+          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
+            test_case_started_id: "#{event.test_case.id}-0"
+          )
+        )
+
+        output_envelope(message)
+      end
+
 
     end
   end

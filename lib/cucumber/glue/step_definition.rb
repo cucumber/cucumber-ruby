@@ -78,7 +78,7 @@ module Cucumber
           step_definition: Cucumber::Messages::StepDefinition.new(
             id: id,
             pattern: Cucumber::Messages::StepDefinitionPattern.new(
-              source: expression.regexp.to_s,
+              source: expression.source.to_s,
               type: expression_type
             ),
             source_reference: Cucumber::Messages::SourceReference.new(
