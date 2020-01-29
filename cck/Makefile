@@ -12,7 +12,7 @@ tested: $(SPEC)
 	cp templates/specs.rb $@
 
 %.ndjson: %.feature Gemfile.lock %_steps.rb
-	-bundle exec cucumber $< --format=message > $@
+	-bundle exec cucumber $< --require $(patsubst %.feature,%_steps.rb,$@) --format=message > $@
 
 Gemfile.lock: Gemfile
 	bundle install
@@ -22,4 +22,4 @@ Gemfile.lock: Gemfile
 	cp $(patsubst %,../../../cucumber/compatibility-kit/javascript/%,$@) $@
 
 clean:
-	rm Gemfile.lock **/*.feature **/*.ndjson **/*_spec.rb
+	-rm Gemfile.lock **/*.feature **/*.ndjson **/*_spec.rb
