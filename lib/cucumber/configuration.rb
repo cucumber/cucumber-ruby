@@ -3,6 +3,7 @@
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
+require 'cucumber/messages'
 require 'cucumber/core/event_bus'
 require 'cucumber/core/test/result'
 require 'forwardable'
@@ -240,6 +241,10 @@ module Cucumber
 
     def event_bus
       @options[:event_bus]
+    end
+
+    def id_generator
+      @id_generator ||= Cucumber::Messages::IdGenerator::Incrementing.new
     end
 
     private

@@ -72,7 +72,7 @@ module Cucumber
       end
 
       def register_rb_hook(phase, tag_expressions, proc)
-        add_hook(phase, Hook.new(self, tag_expressions, proc))
+        add_hook(phase, Hook.new(@configuration.id_generator.new_id, self, tag_expressions, proc))
       end
 
       def define_parameter_type(parameter_type)
@@ -80,7 +80,7 @@ module Cucumber
       end
 
       def register_rb_step_definition(string_or_regexp, proc_or_sym, options)
-        step_definition = StepDefinition.new(self, string_or_regexp, proc_or_sym, options)
+        step_definition = StepDefinition.new(@configuration.id_generator.new_id, self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
         step_definition

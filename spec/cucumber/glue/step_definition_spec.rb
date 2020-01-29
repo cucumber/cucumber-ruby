@@ -7,6 +7,7 @@ require 'cucumber/glue/registry_and_more'
 module Cucumber
   module Glue
     describe StepDefinition do
+      let(:id)             { double }
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
       let(:registry)       { support_code.registry }
@@ -181,6 +182,7 @@ module Cucumber
 
       it 'has a JSON representation of the signature' do
         expect(StepDefinition.new(
+          id,
           registry,
           /I CAN HAZ (\d+) CUKES/i,
           -> {},
