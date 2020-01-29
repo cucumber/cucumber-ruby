@@ -3,13 +3,15 @@ FEATURES=$(patsubst ../../../cucumber/compatibility-kit/javascript/%,%,$(CCK_FEA
 NDJSON=$(patsubst %.feature,%.ndjson,$(FEATURES))
 TESTED=$(patsubst %.feature,%.tested,$(FEATURES))
 
-default: $(TESTED)
+default: $(NDJSON)
+
+tested: $(TESTED)
 
 %.tested: %.ndjson
 	diff --unified $< $(patsubst %.ndjson,../../../cucumber/compatibility-kit/javascript/%.ndjson,$<)
 
-%.ndjson: %.feature Gemfile.lock step_definitions/cck_step_definitions.rb
-	bundle exec cucumber $< --format=message > $@
+%.ndjson: %.feature Gemfile.lock %_steps.rb
+	-bundle exec cucumber $< --format=message > $@
 
 Gemfile.lock: Gemfile
 	bundle install
