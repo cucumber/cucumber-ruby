@@ -23,9 +23,12 @@ module Cucumber
         config.on_event :envelope, &method(:on_envelope)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
+        config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_case_started, &method(:on_test_case_started)
+        config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
 
         @test_case_id_by_step = {}
       end
@@ -78,6 +81,27 @@ module Cucumber
         output_envelope(message)
       end
 
+      def on_test_run_started(event)
+        message = Cucumber::Messages::Envelope.new(
+          test_run_started: Cucumber::Messages::TestRunStarted.new()
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_step_started(event)
+        test_case_id = @test_case_id_by_step[event.test_step.id]
+
+        message = Cucumber::Messages::Envelope.new(
+          test_step_started: Cucumber::Messages::TestStepStarted.new(
+            test_step_id: event.test_step.id,
+            test_case_started_id: "#{test_case_id}-0",
+          )
+        )
+
+        output_envelope(message)
+      end
+
       def on_test_step_finished(event)
         test_case_id = @test_case_id_by_step[event.test_step.id]
 
@@ -108,6 +132,14 @@ module Cucumber
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
             test_case_started_id: "#{event.test_case.id}-0"
           )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_run_finished(event)
+        message = Cucumber::Messages::Envelope.new(
+          test_run_finished: Cucumber::Messages::TestRunFinished.new()
         )
 
         output_envelope(message)
