@@ -1,6 +1,6 @@
 require_relative '../../shared_examples.rb'
 
-describe 'attachments' do
+describe __dir__ do
   let(:current_path) { __dir__ }
   let(:examples_name) { File.basename(current_path) }
 
@@ -9,4 +9,3 @@ describe 'attachments' do
 
   include_examples 'equivalent messages'
 end
-
