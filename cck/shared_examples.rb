@@ -14,7 +14,7 @@ end
 RSpec.shared_examples 'equivalent messages' do
   # Note: to use those examples, you need to define:
   # let(:original) { 'path to .ndjson file in CCK' }
-  # let(:generated) { 'patht o generated .ndjson file' }
+  # let(:generated) { 'path to generated .ndjson file' }
 
   let(:parsed_original) { parse_ndjson(original) }
   let(:parsed_generated) { parse_ndjson(generated) }

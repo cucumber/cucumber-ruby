@@ -5,14 +5,14 @@ SPEC=$(patsubst %.feature,%_spec.rb,$(FEATURES))
 
 default: tested
 
-tested: $(SPEC)
+tested: $(NDJSON) $(SPEC)
 	bundle exec rspec features/**/*_spec.rb
 
 %_spec.rb: %.ndjson templates/specs.rb
 	cp templates/specs.rb $@
 
-%.ndjson: %.feature Gemfile.lock %_steps.rb
-	-bundle exec cucumber $< --require $(patsubst %.feature,%_steps.rb,$@) --format=message > $@
+%.ndjson: %.feature %_steps.rb Gemfile.lock
+	-bundle exec cucumber $< --require $(patsubst %.ndjson,%_steps.rb,$@) --format=message > $@
 
 Gemfile.lock: Gemfile
 	bundle install

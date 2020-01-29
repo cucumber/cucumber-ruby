@@ -21,6 +21,7 @@ module Cucumber
 
         @io = ensure_io(config.out_stream)
         config.on_event :envelope, &method(:on_envelope)
+        config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
@@ -35,6 +36,17 @@ module Cucumber
 
       def on_envelope(event)
         output_envelope(event.envelope)
+      end
+
+      def on_gherkin_source_read(event)
+        message = Cucumber::Messages::Envelope.new(
+          source: Cucumber::Messages::Source.new(
+            uri: event.path,
+            data: event.body
+          )
+        )
+
+        output_envelope(message)
       end
 
       def on_test_case_ready(event)
