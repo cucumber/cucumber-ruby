@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'base64'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
@@ -31,7 +31,33 @@ module Cucumber
         config.on_event :test_run_finished, &method(:on_test_run_finished)
 
         @test_case_id_by_step = {}
+        @current_test_case_started_id = nil
+        @current_test_step_id = nil
       end
+
+      def embed(src, media_type, _label)
+        attachment_data = {
+          test_step_id: @current_test_step_id,
+          test_case_started_id: @current_test_case_started_id,
+          media_type: media_type
+        }
+
+        if media_type == 'text/plain'
+          attachment_data[:text] = src
+        elsif src.respond_to? :read
+          attachment_data[:binary] = Base64.encode64(src.read)
+        else
+          attachment_data[:binary] = Base64.encode64(src)
+        end
+
+        message = Cucumber::Messages::Envelope.new(
+          attachment: Cucumber::Messages::Attachment.new(**attachment_data)
+        )
+
+        output_envelope(message)
+      end
+
+      private
 
       def output_envelope(envelope)
         envelope.write_ndjson_to(@io)
@@ -89,8 +115,23 @@ module Cucumber
         output_envelope(message)
       end
 
+      def on_test_case_started(event)
+        test_case_started_id = "#{event.test_case.id}-0"
+        @current_test_case_started_id = test_case_started_id
+
+        message = Cucumber::Messages::Envelope.new(
+          test_case_started: Cucumber::Messages::TestCaseStarted.new(
+            id: test_case_started_id,
+            test_case_started_id: event.test_case.id
+          )
+        )
+
+        output_envelope(message)
+      end
+
       def on_test_step_started(event)
         test_case_id = @test_case_id_by_step[event.test_step.id]
+        @current_test_step_id = event.test_step.id
 
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
@@ -110,17 +151,6 @@ module Cucumber
             test_step_id: event.test_step.id,
             test_case_started_id: "#{test_case_id}-0",
             test_result: event.result.to_message
-          )
-        )
-
-        output_envelope(message)
-      end
-
-      def on_test_case_started(event)
-        message = Cucumber::Messages::Envelope.new(
-          test_case_started: Cucumber::Messages::TestCaseStarted.new(
-            id: "#{event.test_case.id}-0",
-            test_case_id: event.test_case.id
           )
         )
 

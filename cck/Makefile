@@ -6,7 +6,7 @@ SPEC=$(patsubst %.feature,%_spec.rb,$(FEATURES))
 
 default: tested
 
-tested: $(SPEC)
+tested: $(SPEC) $(NDJSON)
 	bundle exec rspec features/**/*_spec.rb
 
 %_spec.rb: %.ndjson templates/specs.rb

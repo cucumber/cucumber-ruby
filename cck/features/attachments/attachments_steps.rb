@@ -1,14 +1,23 @@
-When('the string {string} is attached as {string}') do |message, media_type|
-  expect(message).not_to be_empty
-  expect(media_type).not_to be_empty
+require 'stringio'
+
+# Cucumber-JVM needs to use a Before hook in order to create attachments
+Before do
+  # no-op
 end
 
-When('an array with {int} bytes are attached as {string}') do |count, media_type|
-  expect(count).not_to be_nil
-  expect(media_type).not_to be_empty
+When('the string {string} is attached as {string}') do |text, media_type|
+  embed(text, media_type)
 end
 
-When('a stream with {int} bytes are attached as {string}') do |count, media_type|
-  expect(count).not_to be_nil
-  expect(media_type).not_to be_empty
+When('an array with {int} bytes are attached as {string}') do |size, media_type|
+  data = (0..size).map(&:to_s).join('')
+  embed(data, media_type)
+end
+
+When('a stream with {int} bytes are attached as {string}') do |size, media_type|
+  stream = StringIO.new
+  stream.puts (0..size).map(&:to_s).join('')
+  stream.seek(0)
+
+  embed(stream, media_type)
 end

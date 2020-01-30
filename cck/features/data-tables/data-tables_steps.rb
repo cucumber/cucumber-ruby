@@ -1,7 +1,7 @@
 When('the following table is transposed:') do |table|
-  expect(table.to_s).not_to be_empty
+  @transposed = table.transpose
 end
 
-Then('it should be:') do |table|
-  expect(table.to_s).not_to be_empty
+Then('it should be:') do |expected|
+  @transposed.diff!(expected)
 end
