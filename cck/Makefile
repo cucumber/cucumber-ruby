@@ -1,5 +1,6 @@
-CCK_FEATURES=$(wildcard ../../../cucumber/compatibility-kit/javascript/features/**/*.feature)
-FEATURES=$(patsubst ../../../cucumber/compatibility-kit/javascript/%,%,$(CCK_FEATURES))
+MONOREPO_PATH ?= ../../../cucumber
+CCK_FEATURES=$(wildcard $(MONOREPO_PATH)/compatibility-kit/javascript/features/**/*.feature)
+FEATURES=$(patsubst $(MONOREPO_PATH)/compatibility-kit/javascript/%,%,$(CCK_FEATURES))
 NDJSON=$(patsubst %.feature,%.ndjson,$(FEATURES))
 SPEC=$(patsubst %.feature,%_spec.rb,$(FEATURES))
 
@@ -19,7 +20,7 @@ Gemfile.lock: Gemfile
 
 %.feature:
 	mkdir -p $$(dirname $@)
-	cp $(patsubst %,../../../cucumber/compatibility-kit/javascript/%,$@) $@
+	cp $(patsubst %,$(MONOREPO_PATH)/compatibility-kit/javascript/%,$@) $@
 
 clean:
 	-rm Gemfile.lock **/*.feature **/*.ndjson **/*_spec.rb
