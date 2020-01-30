@@ -88,21 +88,14 @@ jobs:
 
   validate-cck:
     docker:
-      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
+      - image: circleci/ruby:2.6
     working_directory: ~/repo
-    environment:
-      # Override CI=true to false because CI=true causes
-      # tag-expressions/python/Makefile to use sudo, which we don't want
-      # because the cucumber-build docker image doesn't have sudo installed
-      CI: false
     steps:
       - build
       - run:
-          name: Checkout and build monorepo
+          name: Checkout monorepo
           command: |
             git clone git@github.com:cucumber/cucumber.git ~/cucumber
-            cd ~/cucumber
-            make ci
       - run:
           name: Validates against CCK
           command: |
