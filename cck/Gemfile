@@ -1,7 +1,18 @@
 source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'cucumber', path: ENV['CUCUMBER_RUBY']
-gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
-gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE']
+gem 'cucumber', path: '..'
+
+if ENV['CUCUMBER_RUBY_CORE']
+  gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
+elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
+  gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core', branch: 'fire-events'
+end
+
+if ENV['CUCUMBER_RUBY_WIRE']
+  gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE']
+elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
+  gem 'cucumber-wire', github: 'cucumber/cucumber-ruby-wire'
+end
 
 gem 'rspec'
