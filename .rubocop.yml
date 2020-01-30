@@ -23,6 +23,7 @@ AllCops:
 Bundler/DuplicatedGem:
   Exclude:
   - 'Gemfile'
+  - 'cck/Gemfile'
 
 # Disabling for appveyor
 Layout/EndOfLine:

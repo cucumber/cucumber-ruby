@@ -78,6 +78,8 @@ module Cucumber
       end
 
       def define_parameter_type(parameter_type)
+        @configuration.notify :envelope, parameter_type_envelope(parameter_type)
+
         @parameter_type_registry.define_parameter_type(parameter_type)
       end
 
@@ -173,6 +175,17 @@ module Cucumber
       end
 
       private
+
+      def parameter_type_envelope(parameter_type)
+        # TODO: should me moved to Cucumber::Expression::ParameterType#to_envelope ?
+        # Note: that wxould mean that cucumber-expression would depend on cucumber-messages
+
+        Cucumber::Messages::Envelope.new(
+          parameter_type: Cucumber::Messages::ParameterType.new(
+            name: parameter_type.name
+          )
+        )
+      end
 
       def available_step_definition_hash
         @available_step_definition_hash ||= {}
