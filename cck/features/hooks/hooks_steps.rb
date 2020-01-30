@@ -1,7 +1,19 @@
+Before do
+  # no-op
+end
+
 When('a step passes') do
-  true
+  # no-op
 end
 
 When('a step throws an exception') do
-  raise StandardError, 'An exception is raised here'
+  raise StandardError, 'Exception in step'
+end
+
+After do
+  raise StandardError, 'Exception in hook'
+end
+
+After('@some-tag or @some-other-tag') do
+  raise StandardError, 'Exception in conditional hook'
 end
