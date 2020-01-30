@@ -70,14 +70,25 @@ class MessagesComparator
   end
 
   def compare_message(found, expected)
+    return unless found.is_a?(Protobuf::Message)
     return if found.is_a?(Cucumber::Messages::GherkinDocument)
     return if found.is_a?(Cucumber::Messages::Pickle)
 
     @compared << found.class.name
-
     same_keys?(found, expected)
+    compare_sub_messages(found, expected)
+  end
 
-    # TODO: find sub-messages (TestResults etc)
+  def compare_sub_messages(found, expected)
+    return unless expected.respond_to? :to_hash
+    expected.to_hash.keys.each do |key|
+      value = expected.send(key)
+      if value.is_a?(Protobuf::Message)
+        compare_message(found.send(key), value)
+      elsif value.is_a?(Array)
+        compare_list(found.send(key), value)
+      end
+    end
   end
 
   def same_keys?(found, expected)
