@@ -1,14 +1,13 @@
 require 'json'
 require 'rspec'
+require 'cucumber/messages'
 
 def message_type(message)
-  message.keys.first
+  message.to_hash.keys.first
 end
 
 def parse_ndjson(path)
-  File.read(path).split("\n").map do |line|
-    JSON.parse(line)
-  end
+  Cucumber::Messages::NdjsonToMessageEnumerator.new(File.read(path))
 end
 
 def debug_lists(expected, obtained)
