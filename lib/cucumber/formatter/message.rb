@@ -12,6 +12,7 @@ module Cucumber
     # The formatter used for <tt>--format message</tt>
     class Message
       include Io
+      include Cucumber::Messages::TimeConversion
 
       def initialize(config)
         @config = config
@@ -111,7 +112,9 @@ module Cucumber
 
       def on_test_run_started(*)
         message = Cucumber::Messages::Envelope.new(
-          test_run_started: Cucumber::Messages::TestRunStarted.new
+          test_run_started: Cucumber::Messages::TestRunStarted.new(
+            timestamp: time_to_timestamp(Time.now)
+          )
         )
 
         output_envelope(message)
@@ -124,7 +127,8 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
             id: test_case_started_id,
-            test_case_started_id: event.test_case.id
+            test_case_started_id: event.test_case.id,
+            timestamp: time_to_timestamp(Time.now)
           )
         )
 
@@ -138,7 +142,8 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
             test_step_id: event.test_step.id,
-            test_case_started_id: "#{test_case_id}-0"
+            test_case_started_id: "#{test_case_id}-0",
+            timestamp: time_to_timestamp(Time.now)
           )
         )
 
@@ -152,7 +157,8 @@ module Cucumber
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
             test_case_started_id: "#{test_case_id}-0",
-            test_result: event.result.to_message
+            test_result: event.result.to_message,
+            timestamp: time_to_timestamp(Time.now)
           )
         )
 
@@ -162,7 +168,8 @@ module Cucumber
       def on_test_case_finished(event)
         message = Cucumber::Messages::Envelope.new(
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: "#{event.test_case.id}-0"
+            test_case_started_id: "#{event.test_case.id}-0",
+            timestamp: time_to_timestamp(Time.now)
           )
         )
 
@@ -171,7 +178,9 @@ module Cucumber
 
       def on_test_run_finished(*)
         message = Cucumber::Messages::Envelope.new(
-          test_run_finished: Cucumber::Messages::TestRunFinished.new
+          test_run_finished: Cucumber::Messages::TestRunFinished.new(
+            timestamp: time_to_timestamp(Time.now)
+          )
         )
 
         output_envelope(message)
