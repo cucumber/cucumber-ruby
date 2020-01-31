@@ -7,7 +7,8 @@ CCK_FEATURES=$(call rwildcard,$(MONOREPO_PATH)/compatibility-kit/javascript/feat
 FEATURES=$(patsubst $(MONOREPO_PATH)/compatibility-kit/javascript/%,%,$(CCK_FEATURES))
 NDJSON=$(patsubst %.feature,%.ndjson,$(FEATURES))
 SPEC=$(patsubst %.feature,%_spec.rb,$(FEATURES))
-RUBY_FILES=$(call rwildcard,../lib,*.rb)
+RUBY_FILES=$(call rwildcard,../lib ../../cucumber-ruby-core/lib/,*.rb)
+
 
 default: tested
 
