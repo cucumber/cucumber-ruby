@@ -72,7 +72,8 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           source: Cucumber::Messages::Source.new(
             uri: event.path,
-            data: event.body
+            data: event.body,
+            media_type: 'text/x.cucumber.gherkin+plain'
           )
         )
 
