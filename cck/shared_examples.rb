@@ -37,12 +37,12 @@ RSpec.shared_examples 'equivalent messages' do
   let(:original_messages_types) { parsed_original.map { |msg| message_type(msg) } }
   let(:generated_messages_types) { parsed_generated.map { |msg| message_type(msg) } }
 
-  it 'produces the same kind of messages' do
+  it 'identical message types' do
     # debug_lists(original_messages_types, generated_messages_types)
     expect(generated_messages_types).to contain_exactly(*original_messages_types)
   end
 
-  it 'produces messages with the same keys' do
+  it 'identical individual message structure' do
     comparator = CCK::MessagesComparator.new(CCK::KeysChecker, parsed_generated, parsed_original)
     comparator.debug if ENV['VERBOSE']
 
