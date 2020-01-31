@@ -62,6 +62,7 @@ Metrics/BlockLength:
   Exclude:
     - './cucumber.gemspec'
     - './spec/**/*'
+    - 'cck/spec/**/*'
 
 Metrics/ClassLength:
   Max: 375
@@ -80,6 +81,8 @@ Metrics/ModuleLength:
   Max: 150
   Exclude:
     - './spec/**/*'
+    - 'cck/spec/**/*'
+
 
 Metrics/MethodLength:
   Max: 30
