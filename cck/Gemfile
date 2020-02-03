@@ -16,8 +16,8 @@ elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
 end
 
 if ENV['MONOREPO_PATH']
-  gem 'cucumber-messages', path: "#{ENV['MONOREPO_PATH']}/messages/ruby/"
   gem 'cucumber-gherkin', path: "#{ENV['MONOREPO_PATH']}/gherkin/ruby/"
+  gem 'cucumber-messages', path: "#{ENV['MONOREPO_PATH']}/messages/ruby/"
 end
 
 gem 'rspec'
