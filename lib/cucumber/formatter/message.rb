@@ -97,10 +97,24 @@ module Cucumber
                   hook_id: @hook_by_test_step.hook_id(step)
                 )
               else
+                begin
+                  step_match_arguments = @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
+                    Cucumber::Messages::StepMatchArgument.new(
+                      group: argument_group_to_message(argument.group),
+                      parameter_type_name: argument.parameter_type.name
+                    )
+                  end
+                rescue Cucumber::Formatter::TestStepUnknownError
+                  step_match_arguments = []
+                end
+
                 Cucumber::Messages::TestCase::TestStep.new(
                   id: step.id,
                   pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
-                  step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step)
+                  step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
+                  step_match_arguments_lists: [Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList.new(
+                    step_match_arguments: step_match_arguments
+                  )]
                 )
               end
             end
@@ -108,6 +122,14 @@ module Cucumber
         )
 
         output_envelope(message)
+      end
+
+      def argument_group_to_message(group)
+        Cucumber::Messages::StepMatchArgument::Group.new(
+          start: group.start,
+          value: group.value,
+          children: group.children.map { |child| argument_group_to_message(child) }
+        )
       end
 
       def on_test_run_started(*)
