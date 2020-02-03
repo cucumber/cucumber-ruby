@@ -127,7 +127,7 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
             id: test_case_started_id,
-            test_case_started_id: event.test_case.id,
+            test_case_id: event.test_case.id,
             timestamp: time_to_timestamp(Time.now)
           )
         )
