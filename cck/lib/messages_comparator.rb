@@ -58,8 +58,8 @@ module CCK
       return unless found.is_a?(Protobuf::Message)
       return if found.is_a?(Cucumber::Messages::GherkinDocument)
       return if found.is_a?(Cucumber::Messages::Pickle)
-      return if found.is_a?(Cucumber::Messages::Duration)
-
+      return if found.is_a?(Cucumber::Messages::Timestamp) & expected.is_a?(Cucumber::Messages::Timestamp)
+      return if found.is_a?(Cucumber::Messages::Duration) && expected.is_a?(Cucumber::Messages::Duration)
 
       @compared << found.class.name
       @all_errors << @validator.compare(found, expected)

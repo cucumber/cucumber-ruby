@@ -106,9 +106,7 @@ module Cucumber
           id: step.id,
           pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
           step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
-          step_match_arguments_lists: [Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList.new(
-            step_match_arguments: step_match_arguments(step)
-          )]
+          step_match_arguments_lists: step_match_arguments_lists(step)
         )
       end
 
@@ -119,6 +117,15 @@ module Cucumber
         )
       end
 
+      def step_match_arguments_lists(step)
+        match_arguments = step_match_arguments(step)
+        [Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList.new(
+          step_match_arguments: match_arguments
+        )]
+      rescue Cucumber::Formatter::TestStepUnknownError
+        []
+      end
+
       def step_match_arguments(step)
         @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
@@ -126,8 +133,6 @@ module Cucumber
             parameter_type_name: argument.parameter_type.name
           )
         end
-      rescue Cucumber::Formatter::TestStepUnknownError
-        []
       end
 
       def argument_group_to_message(group)

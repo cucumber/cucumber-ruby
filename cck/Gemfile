@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'cucumber', path: '..'
+gem 'protobuf-cucumber', path: ENV['PROTOBUF_CUCUMBER'] if ENV['PROTOBUF_CUCUMBER']
 
 if ENV['CUCUMBER_RUBY_CORE']
   gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
