@@ -35,7 +35,7 @@ module Cucumber
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
 
-        @test_case_id_by_step = {}
+        @test_case_by_step_id = {}
         @current_test_case_started_id = nil
         @current_test_step_id = nil
       end
@@ -86,7 +86,7 @@ module Cucumber
 
       def on_test_case_ready(event)
         event.test_case.test_steps.each do |step|
-          @test_case_id_by_step[step.id] = event.test_case.id
+          @test_case_by_step_id[step.id] = event.test_case
         end
 
         message = Cucumber::Messages::Envelope.new(
@@ -146,12 +146,11 @@ module Cucumber
       end
 
       def on_test_case_started(event)
-        test_case_started_id = "#{event.test_case.id}-0"
-        @current_test_case_started_id = test_case_started_id
+        @current_test_case_started_id = test_case_started_id(event.test_case)
 
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
-            id: test_case_started_id,
+            id: test_case_started_id(event.test_case),
             test_case_id: event.test_case.id,
             timestamp: time_to_timestamp(Time.now),
             attempt: @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
@@ -162,13 +161,13 @@ module Cucumber
       end
 
       def on_test_step_started(event)
-        test_case_id = @test_case_id_by_step[event.test_step.id]
         @current_test_step_id = event.test_step.id
+        test_case = @test_case_by_step_id[event.test_step.id]
 
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
             test_step_id: event.test_step.id,
-            test_case_started_id: "#{test_case_id}-0",
+            test_case_started_id: test_case_started_id(test_case),
             timestamp: time_to_timestamp(Time.now)
           )
         )
@@ -177,12 +176,12 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        test_case_id = @test_case_id_by_step[event.test_step.id]
+        test_case = @test_case_by_step_id[event.test_step.id]
 
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
-            test_case_started_id: "#{test_case_id}-0",
+            test_case_started_id: test_case_started_id(test_case),
             test_result: event.result.to_message,
             timestamp: time_to_timestamp(Time.now)
           )
@@ -194,7 +193,7 @@ module Cucumber
       def on_test_case_finished(event)
         message = Cucumber::Messages::Envelope.new(
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: "#{event.test_case.id}-0",
+            test_case_started_id: test_case_started_id(event.test_case),
             timestamp: time_to_timestamp(Time.now)
           )
         )
@@ -210,6 +209,10 @@ module Cucumber
         )
 
         output_envelope(message)
+      end
+
+      def test_case_started_id(test_case)
+        @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
       end
     end
   end
