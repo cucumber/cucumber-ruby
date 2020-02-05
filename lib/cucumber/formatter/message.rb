@@ -8,7 +8,6 @@ require 'cucumber/formatter/query/pickle_step_by_test_step'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
 
-
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format message</tt>
@@ -93,38 +92,42 @@ module Cucumber
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
             pickle_id: @pickle_by_test.pickle_id(event.test_case),
-            test_steps: event.test_case.test_steps.map do |step|
-              if step.hook?
-                Cucumber::Messages::TestCase::TestStep.new(
-                  id: step.id,
-                  hook_id: @hook_by_test_step.hook_id(step)
-                )
-              else
-                begin
-                  step_match_arguments = @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
-                    Cucumber::Messages::StepMatchArgument.new(
-                      group: argument_group_to_message(argument.group),
-                      parameter_type_name: argument.parameter_type.name
-                    )
-                  end
-                rescue Cucumber::Formatter::TestStepUnknownError
-                  step_match_arguments = []
-                end
-
-                Cucumber::Messages::TestCase::TestStep.new(
-                  id: step.id,
-                  pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
-                  step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
-                  step_match_arguments_lists: [Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList.new(
-                    step_match_arguments: step_match_arguments
-                  )]
-                )
-              end
-            end
+            test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) }
           )
         )
 
         output_envelope(message)
+      end
+
+      def test_step_to_message(step)
+        return hook_step_to_message(step) if step.hook?
+
+        Cucumber::Messages::TestCase::TestStep.new(
+          id: step.id,
+          pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
+          step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
+          step_match_arguments_lists: [Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList.new(
+            step_match_arguments: step_match_arguments(step)
+          )]
+        )
+      end
+
+      def hook_step_to_message(step)
+        Cucumber::Messages::TestCase::TestStep.new(
+          id: step.id,
+          hook_id: @hook_by_test_step.hook_id(step)
+        )
+      end
+
+      def step_match_arguments(step)
+        @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
+          Cucumber::Messages::StepMatchArgument.new(
+            group: argument_group_to_message(argument.group),
+            parameter_type_name: argument.parameter_type.name
+          )
+        end
+      rescue Cucumber::Formatter::TestStepUnknownError
+        []
       end
 
       def argument_group_to_message(group)
