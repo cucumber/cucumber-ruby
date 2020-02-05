@@ -6,6 +6,8 @@ require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/pickle_step_by_test_step'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
+require 'cucumber/formatter/query/test_case_started_by_test_case'
+
 
 module Cucumber
   module Formatter
@@ -20,6 +22,7 @@ module Cucumber
         @pickle_by_test = Query::PickleByTest.new(config)
         @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
+        @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
 
         @io = ensure_io(config.out_stream)
         config.on_event :envelope, &method(:on_envelope)
@@ -150,7 +153,8 @@ module Cucumber
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
             id: test_case_started_id,
             test_case_id: event.test_case.id,
-            timestamp: time_to_timestamp(Time.now)
+            timestamp: time_to_timestamp(Time.now),
+            attempt: @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
           )
         )
 
