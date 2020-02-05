@@ -29,4 +29,4 @@ Gemfile.lock: Gemfile
 	cp $(patsubst %,$(MONOREPO_PATH)/compatibility-kit/javascript/%,$@) $@
 
 clean:
-	-rm Gemfile.lock **/*.feature **/*.ndjson **/*_spec.rb
+	-rm Gemfile.lock **/*.feature **/*.ndjson features/**/*_spec.rb
