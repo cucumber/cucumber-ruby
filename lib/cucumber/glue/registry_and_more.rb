@@ -178,11 +178,14 @@ module Cucumber
 
       def parameter_type_envelope(parameter_type)
         # TODO: should me moved to Cucumber::Expression::ParameterType#to_envelope ?
-        # Note: that wxould mean that cucumber-expression would depend on cucumber-messages
+        # Note: that would mean that cucumber-expression would depend on cucumber-messages
 
         Cucumber::Messages::Envelope.new(
           parameter_type: Cucumber::Messages::ParameterType.new(
-            name: parameter_type.name
+            name: parameter_type.name,
+            regular_expressions: parameter_type.regexps.map(&:to_s),
+            prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match?,
+            use_for_snippets: parameter_type.use_for_snippets?
           )
         )
       end
