@@ -15,6 +15,7 @@ end
 
 def debug_lists(expected, obtained)
   return unless ENV['VERBOSE']
+  return if expected.sort == obtained.sort
 
   to_read = expected.count > obtained.count ? expected : obtained
   columnize = "\t\t\t\t | \t\t\t\t"
@@ -38,7 +39,7 @@ RSpec.shared_examples 'equivalent messages' do
   let(:generated_messages_types) { parsed_generated.map { |msg| message_type(msg) } }
 
   it 'identical message types' do
-    # debug_lists(original_messages_types, generated_messages_types)
+    debug_lists(original_messages_types, generated_messages_types)
     expect(generated_messages_types).to contain_exactly(*original_messages_types)
   end
 
