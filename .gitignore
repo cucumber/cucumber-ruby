@@ -31,6 +31,5 @@ tags
 Gemfile.local
 .envrc
 Gemfile.lock
-bin/neutralize-json
 bin/json-formatter
-acceptance/
+acceptance/*.json

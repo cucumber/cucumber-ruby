@@ -1,5 +1,10 @@
 MONOREPO_PATH ?= ../../../cucumber
 
+# https://stackoverflow.com/questions/2483182/recursive-wildcards-in-gnu-make
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+RUBY_FILES=$(call rwildcard,../lib ../../cucumber-ruby-core/lib/,*.rb)
+
+
 FEATURES = $(sort $(wildcard features/docs/**.feature))
 GOLDEN_JSONS = $(patsubst features/docs/%.feature,acceptance/%-golden.json,$(FEATURES))
 GENERATED_JSONS = $(patsubst features/docs/%.feature,acceptance/%-generated.json,$(FEATURES))
@@ -17,27 +22,23 @@ acceptance/%.tested: acceptance/%-golden.json acceptance/%-generated.json
 	diff --unified $^
 .PHONY: acceptance/%.tested
 
-acceptance/%-golden.json: features/docs/%.feature bin/neutralize-json
+acceptance/%-golden.json: features/docs/%.feature acceptance/neutralize-json $(RUBY_FILES)
 	mkdir -p $$(dirname $@)
 	bundle exec cucumber --format=json $< | \
 		jq --sort-keys "." | \
-		bin/neutralize-json > $@
+		acceptance/neutralize-json > $@
 
-acceptance/%-generated.json: features/docs/%.feature bin/json-formatter bin/neutralize-json
+acceptance/%-generated.json: features/docs/%.feature $(RUBY_FILES) bin/json-formatter acceptance/neutralize-json
 	mkdir -p $$(dirname $@)
 	bundle exec cucumber --format=message $< | \
 		bin/json-formatter --format ndjson | \
 		jq --sort-keys "." | \
-		bin/neutralize-json > $@
+		acceptance/neutralize-json > $@
 
 bin/json-formatter:
 	cp $(MONOREPO_PATH)/json-formatter/go/dist/cucumber-json-formatter-$(OS)-$(ARCH) $@
 	chmod +x $@
 
-bin/neutralize-json:
-	cp $(MONOREPO_PATH)/json-formatter/ruby/neutralize-json $@
-	chmod +x $@
-
 clean:
-	rm -rf acceptance bin/json-formatter bin/neutralize-json
+	rm -rf acceptance/*.json bin/json-formatter
 .PHONY: clean

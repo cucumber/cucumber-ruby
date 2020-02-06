@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Replaces certain "uncontrollable" properties with fixed values
+# This allows for comparison of documents without expecting these
+# properties to be equal
+#
+set -euf -o pipefail
+
+jq ".[].elements[]?.before[]?.result.duration = 99" | \
+jq ".[].elements[]?.steps[]?.result.duration = 99" | \
+jq ".[].elements[]?.after[]?.result.duration = 99" | \
+
+jq
