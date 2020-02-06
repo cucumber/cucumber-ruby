@@ -16,7 +16,7 @@ elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
   gem 'cucumber-wire', github: 'cucumber/cucumber-ruby-wire'
 end
 
-if ENV['MONOREPO_PATH']
+if ENV['MONOREPO_PATH'] && ENV['USE_MONOREPO_GEM']
   gem 'cucumber-gherkin', path: "#{ENV['MONOREPO_PATH']}/gherkin/ruby/"
   gem 'cucumber-messages', path: "#{ENV['MONOREPO_PATH']}/messages/ruby/"
 end
