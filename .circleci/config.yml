@@ -102,6 +102,24 @@ jobs:
             cd ~/repo/cck
             MONOREPO_PATH=~/cucumber make
 
+  validate-messages:
+    docker:
+      - image: circleci/ruby:2.6
+    working_directory: ~/repo
+    steps:
+      - build
+      - run:
+          name: Checkout monorepo and build
+          command: |
+            git clone git@github.com:cucumber/cucumber.git ~/cucumber
+            cd cucumber
+            LANGUAGES=go make
+      - run:
+          name: Validates messages with JSON
+          command: |
+            cd ~/repo
+            MONOREPO_PATH=~/cucumber make
+
 workflows:
   version: 2
 
@@ -128,3 +146,4 @@ workflows:
       - build-ruby-2_6
       - build-ruby-latest
       - validate-cck
+      - validate-messages
