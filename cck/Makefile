@@ -10,7 +10,25 @@ SPEC=$(patsubst %.feature,%_spec.rb,$(FEATURES))
 RUBY_FILES=$(call rwildcard,../lib ../../cucumber-ruby-core/lib/,*.rb)
 
 
-default: tested
+default: tested jsons htmls
+
+jsons: $(NDJSON)
+	mkdir -p output/json
+	$(MONOREPO_PATH)/compatibility-kit/scripts/run-formatter \
+                -e .json \
+                -o output/json \
+                -c "$(MONOREPO_PATH)/compatibility-kit/scripts/cucumber-json-formatter" \
+                features/**/*.ndjson
+.PHONY: jsons
+
+htmls: $(NDJSON)
+	mkdir -p output/html
+	$(MONOREPO_PATH)/compatibility-kit/scripts/run-formatter \
+                -e .html \
+                -o output/html \
+                -c "$(MONOREPO_PATH)/compatibility-kit/scripts/cucumber-html-formatter" \
+                features/**/*.ndjson
+.PHONY: htmls
 
 tested: $(SPEC) $(NDJSON)
 	bundle exec rspec features/**/*_spec.rb
@@ -29,4 +47,5 @@ Gemfile.lock: Gemfile
 	cp $(patsubst %,$(MONOREPO_PATH)/compatibility-kit/javascript/%,$@) $@
 
 clean:
-	-rm Gemfile.lock **/*.feature **/*.ndjson features/**/*_spec.rb
+	-rm Gemfile.lock **/*.feature **/*.ndjson features/**/*_spec.rb output
+.PHONY: clean

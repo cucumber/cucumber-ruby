@@ -1,3 +1,4 @@
 *.feature
 *.ndjson
 features/**/*_spec.rb
+output
