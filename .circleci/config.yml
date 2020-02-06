@@ -104,7 +104,7 @@ jobs:
 
   validate-messages:
     docker:
-      - image: circleci/ruby:2.6
+      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
     working_directory: ~/repo
     steps:
       - build
