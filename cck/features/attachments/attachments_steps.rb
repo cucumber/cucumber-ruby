@@ -21,3 +21,7 @@ When('a stream with {int} bytes are attached as {string}') do |size, media_type|
 
   embed(stream, media_type)
 end
+
+When('a JPEG image is attached') do
+  embed(File.open("#{__dir__}/cucumber-growing-on-vine.jpg"), 'image/jpg')
+end
