@@ -8,11 +8,23 @@ FEATURES=$(patsubst $(MONOREPO_PATH)/compatibility-kit/javascript/%,%,$(CCK_FEAT
 NDJSON=$(patsubst %.feature,%.ndjson,$(FEATURES))
 SPEC=$(patsubst %.feature,%_spec.rb,$(FEATURES))
 RUBY_FILES=$(call rwildcard,../lib ../../cucumber-ruby-core/lib/,*.rb)
+
+SELF_TESTED = $(patsubst %.feature,%.json.tested,$(FEATURES))
 JSONS=$(patsubst %.feature,%.json,$(FEATURES))
 GOLDEN_JSONS=$(patsubst %.feature,%-golden.json,$(FEATURES))
-SELF_TESTED = $(patsubst %.feature,%.json.tested,$(FEATURES))
 
-default: tested self_tested json_reports html_reports
+CCK_JSON_TESTED=$(patsubst %.feature,%-cck.json.tested,$(FEATURES))
+CCK_JSONS=$(patsubst %.feature,%-cck.json,$(FEATURES))
+
+default: tested cck_json_compared# self_tested
+.PHONY: default
+
+reports: json_reports html_reports
+.PHONY: reports
+
+clean:
+	-rm Gemfile.lock **/*.feature **/*.ndjson feature/**.json features/**/*_spec.rb output
+.PHONY: clean
 
 ###############################################################################
 #            Run features file and compare messages against CCK               #
@@ -24,6 +36,28 @@ tested: $(SPEC) $(NDJSON)
 
 %_spec.rb: %.ndjson templates/specs.rb
 	cp templates/specs.rb $@
+
+###############################################################################
+#     Run features file and compare messages against CCK JSONS                #
+###############################################################################
+
+cck_json_compared: $(CCK_JSON_TESTED)
+.PHONY: cck_json_compared
+
+%-cck.json.tested: %-cck.json %-neutralized.json
+	diff --unified $^
+.PHONY: %-cck.json.tested
+
+%-cck.json: scripts/neutralize-json-cross-language # Need to make it depend on source file ...
+	cat $(MONOREPO_PATH)/compatibility-kit/javascript/$(patsubst %-cck.json,%.ndjson,$@) | \
+		"$(MONOREPO_PATH)/compatibility-kit/scripts/cucumber-json-formatter" | \
+		jq --sort-keys "." | \
+		scripts/neutralize-json-cross-language > $@
+
+%-neutralized.json: %.json scripts/neutralize-json-cross-language
+	cat $< | \
+		jq --sort-keys "." | \
+		scripts/neutralize-json-cross-language > $@
 
 ###############################################################################
 #        Compare --format=json against --format=message | json-formatter      #
@@ -79,8 +113,3 @@ html_reports: $(NDJSON)
                 -c "$(MONOREPO_PATH)/compatibility-kit/scripts/cucumber-html-formatter" \
                 features/**/*.ndjson
 .PHONY: html_reports
-
-
-clean:
-	-rm Gemfile.lock **/*.feature **/*.ndjson feature/**.json features/**/*_spec.rb output
-.PHONY: clean
