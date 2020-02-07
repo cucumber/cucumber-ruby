@@ -2,6 +2,7 @@
 
 require 'base64'
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/pickle_step_by_test_step'
@@ -185,17 +186,36 @@ module Cucumber
 
       def on_test_step_finished(event)
         test_case = @test_case_by_step_id[event.test_step.id]
+        result = event
+                 .result
+                 .with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+                 .with_appended_backtrace(event.test_step)
+
+        result_message = result.to_message
+        if result.failed? || result.pending?
+          result_message = Cucumber::Messages::TestResult.new(
+            status: result_message.status,
+            duration: result_message.duration,
+            message: create_error_message(result)
+          )
+        end
 
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
             test_case_started_id: test_case_started_id(test_case),
-            test_result: event.result.to_message,
+            test_result: result_message,
             timestamp: time_to_timestamp(Time.now)
           )
         )
 
         output_envelope(message)
+      end
+
+      def create_error_message(result)
+        message_element = result.failed? ? result.exception : result
+        message = "#{message_element.message} (#{message_element.class})"
+        ([message] + message_element.backtrace).join("\n")
       end
 
       def on_test_case_finished(event)
