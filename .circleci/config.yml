@@ -107,6 +107,9 @@ jobs:
       - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
     working_directory: ~/repo
     steps:
+      - run:
+          name: Add Nokogiri dependencies
+          command: apk add libxml2-dev libxslt-dev
       - build
       - run:
           name: Checkout monorepo and build
