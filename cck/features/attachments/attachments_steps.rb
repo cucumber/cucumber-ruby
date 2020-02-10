@@ -10,7 +10,7 @@ When('the string {string} is attached as {string}') do |text, media_type|
 end
 
 When('an array with {int} bytes are attached as {string}') do |size, media_type|
-  data = (0..size).map(&:to_s).join('')
+  data = (0..size-1).map {|i| [i].pack('C') }.join
   embed(data, media_type)
 end
 
