@@ -4,7 +4,6 @@ MONOREPO_PATH ?= ../../cucumber
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 RUBY_FILES=$(call rwildcard,../lib ../../cucumber-ruby-core/lib/,*.rb)
 
-
 FEATURES = $(sort $(wildcard features/docs/**.feature))
 GOLDEN_JSONS = $(patsubst features/docs/%.feature,acceptance/%-golden.json,$(FEATURES))
 GENERATED_JSONS = $(patsubst features/docs/%.feature,acceptance/%-generated.json,$(FEATURES))
@@ -35,7 +34,7 @@ acceptance/%-generated.json: features/docs/%.feature $(RUBY_FILES) bin/json-form
 		jq --sort-keys "." | \
 		cck/scripts/neutralize-json > $@
 
-bin/json-formatter:
+bin/json-formatter: $(MONOREPO_PATH)/json-formatter/go/dist/cucumber-json-formatter-$(OS)-$(ARCH)
 	cp $(MONOREPO_PATH)/json-formatter/go/dist/cucumber-json-formatter-$(OS)-$(ARCH) $@
 	chmod +x $@
 
