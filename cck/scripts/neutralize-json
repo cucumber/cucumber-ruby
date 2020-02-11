@@ -12,8 +12,5 @@ set -euf -o pipefail
 jq "del(.[].elements[]?.before[]?.result.duration)" | \
 jq "del(.[].elements[]?.steps[]?.result.duration)" | \
 jq "del(.[].elements[]?.after[]?.result.duration)" | \
-jq "del(.[].elements[]?.before[]?.output)" | \
-jq "del(.[].elements[]?.steps[]?.output)" | \
-jq "del(.[].elements[]?.after[]?.output)" | \
 jq
 
