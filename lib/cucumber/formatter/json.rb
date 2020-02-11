@@ -173,7 +173,6 @@ module Cucumber
       end
 
       def create_doc_string_hash(doc_string)
-        puts doc_string
         content_type = doc_string.media_type || ''
         {
           value: doc_string.content,
