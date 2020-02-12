@@ -96,6 +96,8 @@ jobs:
           name: Checkout monorepo
           command: |
             git clone git@github.com:cucumber/cucumber.git ~/cucumber
+            cd ~/cucumber
+            git checkout ruby-cck-in-monorepo
       - run:
           name: Validates against CCK
           command: |
@@ -116,7 +118,6 @@ jobs:
           command: |
             git clone git@github.com:cucumber/cucumber.git ~/cucumber
             cd ~/cucumber
-            git checkout ruby-cck-in-monorepo
             LANGUAGES=go make
       - run:
           name: Validates messages with JSON
