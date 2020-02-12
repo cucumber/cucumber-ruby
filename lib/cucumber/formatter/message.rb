@@ -62,6 +62,20 @@ module Cucumber
         output_envelope(message)
       end
 
+      def output(text)
+        message = Cucumber::Messages::Envelope.new(
+          attachment: Cucumber::Messages::Attachment.new(
+            test_step_id: @current_test_step_id,
+            test_case_started_id: @current_test_case_started_id,
+            media_type: 'text/x.cucumber.output+plain',
+            text: text
+          )
+        )
+
+        output_envelope(message)
+      end
+      alias puts output
+
       private
 
       def output_envelope(envelope)
@@ -189,7 +203,6 @@ module Cucumber
         result = event
                  .result
                  .with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-                 .with_appended_backtrace(event.test_step)
 
         result_message = result.to_message
         if result.failed? || result.pending?
