@@ -99,8 +99,8 @@ jobs:
       - run:
           name: Validates against CCK
           command: |
-            cd ~/repo/cck
-            MONOREPO_PATH=~/cucumber make
+            cd ~/cucumber/compatibility-kit/ruby
+            CUCUMBER_RUBY=~/repo make
 
   validate-messages:
     docker:
@@ -116,6 +116,7 @@ jobs:
           command: |
             git clone git@github.com:cucumber/cucumber.git ~/cucumber
             cd ~/cucumber
+            git checkout ruby-cck-in-monorepo
             LANGUAGES=go make
       - run:
           name: Validates messages with JSON
