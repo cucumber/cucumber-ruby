@@ -92,9 +92,6 @@ jobs:
     working_directory: ~
     steps:
       - run:
-          name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
-      - run:
           name: Checkout monorepo and build
           command: |
             git clone https://github.com/cucumber/cucumber.git --branch ruby-cck-in-monorepo ~/cucumber
@@ -113,6 +110,9 @@ jobs:
     steps:
       - attach_workspace:
           at: "~/cucumber"
+      - run:
+          name: Add Nokogiri dependencies
+          command: apk add libxml2-dev libxslt-dev
       - build
       - run:
           name: Validates against CCK
@@ -127,6 +127,9 @@ jobs:
     steps:
       - attach_workspace:
           at: "~/cucumber"
+      - run:
+          name: Add Nokogiri dependencies
+          command: apk add libxml2-dev libxslt-dev
       - build
       - run:
           name: Validates messages with JSON
