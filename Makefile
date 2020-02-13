@@ -21,18 +21,18 @@ acceptance/%.tested: acceptance/%-golden.json acceptance/%-generated.json
 	diff --unified $^
 .PHONY: acceptance/%.tested
 
-acceptance/%-golden.json: features/docs/%.feature cck/scripts/neutralize-json $(RUBY_FILES)
+acceptance/%-golden.json: features/docs/%.feature $(MONOREPO_PATH)/compatibility-kit/ruby/scripts/neutralize-json $(RUBY_FILES)
 	mkdir -p $$(dirname $@)
 	bundle exec cucumber --format=json $< | \
 		jq --sort-keys "." | \
-		cck/scripts/neutralize-json > $@
+		$(MONOREPO_PATH)/compatibility-kit/ruby/scripts/neutralize-json > $@
 
-acceptance/%-generated.json: features/docs/%.feature $(RUBY_FILES) bin/json-formatter cck/scripts/neutralize-json
+acceptance/%-generated.json: features/docs/%.feature $(RUBY_FILES) bin/json-formatter $(MONOREPO_PATH)/compatibility-kit/ruby/scripts/neutralize-json
 	mkdir -p $$(dirname $@)
 	bundle exec cucumber --format=message $< | \
 		bin/json-formatter --format ndjson | \
 		jq --sort-keys "." | \
-		cck/scripts/neutralize-json > $@
+		$(MONOREPO_PATH)/compatibility-kit/ruby/scripts/neutralize-json > $@
 
 bin/json-formatter: $(MONOREPO_PATH)/json-formatter/go/dist/cucumber-json-formatter-$(OS)-$(ARCH)
 	cp $(MONOREPO_PATH)/json-formatter/go/dist/cucumber-json-formatter-$(OS)-$(ARCH) $@
