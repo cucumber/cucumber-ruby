@@ -100,7 +100,7 @@ jobs:
       - persist_to_workspace:
           root: ~/cucumber
           paths:
-            - cck
+            - compatibility-kit
             - json-formatter
 
   validate-cck:
