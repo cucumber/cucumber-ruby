@@ -99,11 +99,12 @@ jobs:
           command: |
             git clone https://github.com/cucumber/cucumber.git --branch ruby-cck-in-monorepo ~/cucumber
             cd ~/cucumber
-            LANGUAGES=go make
+            NO_CROSS_COMPILE=1 LANGUAGES=go PACKAGES="messages json-formatter" make
       - persist_to_workspace:
           root: ~/cucumber
           paths:
-            - cucumber
+            - cck
+            - json-formatter
 
   validate-cck:
     docker:
