@@ -89,6 +89,16 @@ module Cucumber
         @configuration.notify :step_definition_registered, step_definition
         @configuration.notify :envelope, step_definition.to_envelope
         step_definition
+      rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => err
+        # TODO: add a way to extract the parameter type directly from the error.
+        type_name = err.message.match(/^Undefined parameter type \{(.*)\}$/)[1]
+
+        @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
+            name: type_name,
+            expression: string_or_regexp
+          )
+        )
       end
 
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
