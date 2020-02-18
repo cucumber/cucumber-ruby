@@ -28,6 +28,21 @@ module Cucumber
         )
       end
 
+      def to_envelope
+        Cucumber::Messages::Envelope.new(
+          hook: Cucumber::Messages::Hook.new(
+            id: id,
+            tag_expression: tag_expressions.join(' '),
+            source_reference: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
+            )
+          )
+        )
+      end
+
       private
 
       def sanitize_tag_expressions(tag_expressions)

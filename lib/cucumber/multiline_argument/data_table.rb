@@ -352,7 +352,11 @@ module Cucumber
         end
       end
 
-      def to_hash(cells) #:nodoc:
+      def to_hash
+        cells_rows.map { |cells| cells.map(&:value) }
+      end
+
+      def cells_to_hash(cells) #:nodoc:
         hash = Hash.new do |hash_inner, key|
           hash_inner[key.to_s] if key.is_a?(Symbol)
         end
@@ -551,7 +555,7 @@ module Cucumber
         end
 
         def to_hash #:nodoc:
-          @to_hash ||= @table.to_hash(self)
+          @to_hash ||= @table.cells_to_hash(self)
         end
 
         def value(n) #:nodoc:

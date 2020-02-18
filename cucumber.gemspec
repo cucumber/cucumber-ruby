@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.3'
   s.add_dependency 'cucumber-core', '~> 5.0', '>= 5.0.0'
   s.add_dependency 'cucumber-expressions', '~> 8.0', '>= 8.0.2'
-  s.add_dependency 'cucumber-gherkin', '~> 9.1', '>= 9.1.0'
+  s.add_dependency 'cucumber-gherkin', '~> 10.0', '>= 10.0.0'
   s.add_dependency 'cucumber-wire', '~> 1.1', '>= 1.1.0'
   s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
   s.add_dependency 'multi_json', '~> 1.13', '>= 1.13.1'

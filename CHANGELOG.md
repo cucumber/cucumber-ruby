@@ -18,7 +18,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
-* N/A
+* Add `message`formatter which produces `Cucumber::Messages` ndjson output.
+
+* Comply with [`cucumber-compatibility-kit](https://github.com/cucumber/cucumber/tree/master/compatibility-kit)
 
 ### Fixed
 

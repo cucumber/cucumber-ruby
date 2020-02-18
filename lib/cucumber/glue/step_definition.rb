@@ -73,6 +73,29 @@ module Cucumber
         # @registry.available_step_definition(regexp_source, location)
       end
 
+      def to_envelope
+        Cucumber::Messages::Envelope.new(
+          step_definition: Cucumber::Messages::StepDefinition.new(
+            id: id,
+            pattern: Cucumber::Messages::StepDefinitionPattern.new(
+              source: expression.source.to_s,
+              type: expression_type
+            ),
+            source_reference: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
+            )
+          )
+        )
+      end
+
+      def expression_type
+        return Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
+        Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
+      end
+
       # @api private
       def to_hash
         type = expression.is_a?(CucumberExpressions::RegularExpression) ? 'regular expression' : 'cucumber expression'
