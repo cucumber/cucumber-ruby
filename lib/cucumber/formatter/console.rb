@@ -158,9 +158,7 @@ module Cucumber
         end
       end
 
-      def embed(file, mime_type, label)
-        # no-op
-      end
+      def attach(*) end
 
       def puts(*messages)
         return unless @io

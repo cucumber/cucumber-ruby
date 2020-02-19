@@ -2,6 +2,7 @@
 
 require 'cucumber/gherkin/formatter/ansi_escapes'
 require 'cucumber/core/test/data_table'
+require 'cucumber/deprecate'
 
 module Cucumber
   module Glue
@@ -88,7 +89,12 @@ module Cucumber
       end
 
       # Embed an image in the output
-      def embed(file, mime_type, label = 'Screenshot')
+      def embed(file, mime_type, _label = 'Screenshot')
+        Cucumber.deprecate('Please use attach(file, media_type) instead', 'embed(file, mime_type, label)', '5.0.0')
+        attach(file, mime_type)
+      end
+
+      def attach(file, media_type)
         super
       end
 
@@ -160,8 +166,8 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:embed) do |file, mime_type, label = 'Screenshot'|
-            runtime.embed(file, mime_type, label)
+          define_method(:attach) do |file, media_type|
+            runtime.attach(file, media_type)
           end
 
           # Prints the list of modules that are included in the World

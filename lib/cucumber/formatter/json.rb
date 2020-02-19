@@ -94,7 +94,7 @@ module Cucumber
         test_step_output << message
       end
 
-      def embed(src, mime_type, _label)
+      def attach(src, mime_type)
         if File.file?(src)
           content = File.open(src, 'rb', &:read)
           data = encode64(content)
