@@ -5,6 +5,8 @@ require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/ast_lookup'
+require 'cucumber/deprecate'
+require 'cucumber/gherkin/formatter/ansi_escapes'
 
 module Cucumber
   module Formatter
@@ -13,6 +15,14 @@ module Cucumber
       include Io
 
       def initialize(config)
+        Cucumber::Deprecate::CliOption.deprecate(
+          config.error_stream,
+          '--format=json',
+          "Please use --format=message and stand-alone json-formatter.\n" \
+          'json-formatter homepage: https://github.com/cucumber/cucumber/tree/master/json-formatter#cucumber-json-formatter',
+          '5.0.0'
+        )
+
         @io = ensure_io(config.out_stream)
         @ast_lookup = AstLookup.new(config)
         @feature_hashes = []
