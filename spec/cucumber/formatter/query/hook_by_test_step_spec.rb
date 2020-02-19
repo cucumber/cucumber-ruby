@@ -22,6 +22,13 @@ module Cucumber
           @config.on_event :test_case_started do |event|
             @test_cases << event.test_case
           end
+
+          @hook_ids = []
+          @config.on_event :envelope do |event|
+            next unless event.envelope.hook
+
+            @hook_ids << event.envelope.hook.id
+          end
         end
 
         describe 'given a single feature' do
@@ -45,12 +52,12 @@ module Cucumber
 
               it 'provides the ID of the Before Hook used to generate the Test::Step' do
                 test_case = @test_cases.first
-                expect(@formatter.hook_id(test_case.test_steps.first)).to eq('0')
+                expect(@formatter.hook_id(test_case.test_steps.first)).to eq(@hook_ids.first)
               end
 
               it 'provides the ID of the After Hook used to generate the Test::Step' do
                 test_case = @test_cases.first
-                expect(@formatter.hook_id(test_case.test_steps.last)).to eq('1')
+                expect(@formatter.hook_id(test_case.test_steps.last)).to eq(@hook_ids.last)
               end
 
               it 'returns nil if the step was not generated from a hook' do
