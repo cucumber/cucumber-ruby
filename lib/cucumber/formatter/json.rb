@@ -18,7 +18,8 @@ module Cucumber
         Cucumber::Deprecate::CliOption.deprecate(
           config.error_stream,
           '--format=json',
-          'Please use --format=message and stand-alone json-formatter',
+          "Please use --format=message and stand-alone json-formatter.\n" \
+          'json-formatter homepage: https://github.com/cucumber/cucumber/tree/master/json-formatter#cucumber-json-formatter',
           '5.0.0'
         )
 
