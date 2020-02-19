@@ -3,6 +3,10 @@
 # override aruba to filter out some stuff
 module NormaliseArubaOutput
   def all_stdout
+    all_commands.map(&:stdout).join("\n")
+  end
+
+  def all_output
     all_commands.map(&:output).join("\n")
   end
 
