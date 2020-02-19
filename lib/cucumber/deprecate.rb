@@ -5,6 +5,21 @@ require 'cucumber/gherkin/formatter/ansi_escapes'
 
 module Cucumber
   module Deprecate
+    class CliOption
+      include Cucumber::Gherkin::Formatter::AnsiEscapes
+
+      def self.deprecate(stream, option, message, remove_after_version)
+        return if stream.nil?
+        CliOption.new.deprecate(stream, option, message, remove_after_version)
+      end
+
+      def deprecate(stream, option, message, remove_after_version)
+        stream.puts(failed + "\nWARNING: #{option} is deprecated" \
+        " and will be removed after version #{remove_after_version}.\n#{message}.\n" \
+        + reset)
+      end
+    end
+
     module ForUsers
       AnsiEscapes = Cucumber::Gherkin::Formatter::AnsiEscapes
 

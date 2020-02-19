@@ -9,31 +9,16 @@ require 'cucumber/deprecate'
 require 'cucumber/gherkin/formatter/ansi_escapes'
 
 module Cucumber
-  class DeprecatedJSONFormatter
-    include Cucumber::Gherkin::Formatter::AnsiEscapes
-
-    def self.deprecate(stream, message, method, remove_after_version)
-      return if stream.nil?
-      DeprecatedJSONFormatter.new.deprecate(stream, message, method, remove_after_version)
-    end
-
-    def deprecate(stream, message, method, remove_after_version)
-      stream.puts(failed + "\nWARNING: #{method} is deprecated" \
-      " and will be removed after version #{remove_after_version}.\n#{message}.\n" \
-      + reset)
-    end
-  end
-
   module Formatter
     # The formatter used for <tt>--format json</tt>
     class Json
       include Io
 
       def initialize(config)
-        Cucumber::DeprecatedJSONFormatter.deprecate(
+        Cucumber::Deprecate::CliOption.deprecate(
           config.error_stream,
-          'Please use --format=message and stand-alone json-formatter',
           '--format=json',
+          'Please use --format=message and stand-alone json-formatter',
           '5.0.0'
         )
 
