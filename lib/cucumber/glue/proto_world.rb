@@ -80,7 +80,16 @@ module Cucumber
       #
       #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
       def puts(*messages)
-        super
+        Cucumber.deprecate(
+          'Messages emitted with "puts" will no longer be caught by Cucumber ' \
+          'and sent to the formatter. If you want message to be in the formatted output, ' \
+          "please use log(message) instead.\n" \
+          'If you simply want it in the console, '\
+          'keep using "puts" (or Kernel.puts to avoid this message)',
+          'puts(message)',
+          '5.0.0'
+        )
+        messages.each { |message| log(message.to_s) }
       end
 
       # Pause the tests and ask the operator for input
@@ -90,8 +99,17 @@ module Cucumber
 
       # Embed an image in the output
       def embed(file, mime_type, _label = 'Screenshot')
-        Cucumber.deprecate('Please use attach(file, media_type) instead', 'embed(file, mime_type, label)', '5.0.0')
+        Cucumber.deprecate(
+          'Please use attach(file, media_type) instead',
+          'embed(file, mime_type, label)',
+          '5.0.0'
+        )
         attach(file, mime_type)
+      end
+
+      def log(message)
+        raise Cucumber::LogTypeInvalid unless message.is_a?(String)
+        attach(message.dup, 'text/x.cucumber.log+plain')
       end
 
       def attach(file, media_type)
@@ -150,17 +168,6 @@ module Cucumber
             location = Core::Test::Location.of_caller
             runtime.invoke_dynamic_steps(steps_text, language, location)
           end
-
-          # rubocop:disable Style/UnneededInterpolation
-          define_method(:puts) do |*messages|
-            # Even though they won't be output until later, converting the messages to
-            # strings right away will protect them from modifications to their original
-            # objects in the mean time
-            messages.collect! { |message| "#{message}" }
-
-            runtime.puts(*messages)
-          end
-          # rubocop:enable Style/UnneededInterpolation
 
           define_method(:ask) do |question, timeout_seconds = 60|
             runtime.ask(question, timeout_seconds)

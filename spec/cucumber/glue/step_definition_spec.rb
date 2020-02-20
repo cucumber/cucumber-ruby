@@ -164,12 +164,39 @@ module Cucumber
         expect(-> { run_step step_name }).not_to change { step_args.first } # rubocop:disable Lint/AmbiguousBlockAssociation
       end
 
-      it 'allows puts' do
-        expect(user_interface).to receive(:puts).with('wasup')
-        dsl.Given(/Loud/) do
-          puts 'wasup'
+      context 'allows puts' do
+        it 'is deprecated is favor of "log"' do
+          expect(user_interface).to receive(:attach).with('wasup', 'text/x.cucumber.log+plain')
+          dsl.Given(/Loud/) do
+            puts 'wasup'
+          end
+          run_step 'Loud'
         end
-        run_step 'Loud'
+
+        it 'cast the message as a String before logging it' do
+          expect(user_interface).to receive(:attach).with('[1]', 'text/x.cucumber.log+plain')
+          dsl.Given(/Loud/) do
+            puts [1]
+          end
+          run_step 'Loud'
+        end
+      end
+
+      context 'allows log' do
+        it 'calls "attach" with the correct media type' do
+          expect(user_interface).to receive(:attach).with('wasup', 'text/x.cucumber.log+plain')
+          dsl.Given(/Loud/) do
+            log 'wasup'
+          end
+          run_step 'Loud'
+        end
+
+        it 'raises an exception if the message is not a String' do
+          dsl.Given(/Loud/) do
+            log ['Not', 1, 'string']
+          end
+          expect { run_step 'Loud' }.to raise_exception(Cucumber::LogTypeInvalid)
+        end
       end
 
       it 'recognizes $arg style captures' do

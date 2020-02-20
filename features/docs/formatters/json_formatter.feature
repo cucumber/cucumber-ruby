@@ -25,7 +25,7 @@ Feature: JSON output formatter
       end
 
       Given /^I print from step definition/ do
-        puts "from step definition"
+        log "from step definition"
       end
 
       Given /^I attach data directly/ do
@@ -644,32 +644,32 @@ Feature: JSON output formatter
      Given a file named "features/step_definitions/output_steps.rb" with:
       """
       Before do
-        puts "Before hook 1"
+        log "Before hook 1"
         attach "src", "mime_type"
       end
 
       Before do
-        puts "Before hook 2"
+        log "Before hook 2"
         attach "src", "mime_type"
       end
 
       AfterStep do
-        puts "AfterStep hook 1"
+        log "AfterStep hook 1"
         attach "src", "mime_type"
       end
 
       AfterStep do
-        puts "AfterStep hook 2"
+        log "AfterStep hook 2"
         attach "src", "mime_type"
       end
 
       After do
-        puts "After hook 1"
+        log "After hook 1"
         attach "src", "mime_type"
       end
 
       After do
-        puts "After hook 2"
+        log "After hook 2"
         attach "src", "mime_type"
       end
       """

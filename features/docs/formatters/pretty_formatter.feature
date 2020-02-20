@@ -40,15 +40,15 @@ Feature: Pretty output formatter
     And a file named "features/step_definitions/output_steps.rb" with:
       """
       Before do
-        puts "Before hook"
+        log "Before hook"
        end
 
       AfterStep do
-        puts "AfterStep hook"
+        log "AfterStep hook"
       end
 
       After do
-        puts "After hook"
+        log "After hook"
 	raise "error"
       end
       """

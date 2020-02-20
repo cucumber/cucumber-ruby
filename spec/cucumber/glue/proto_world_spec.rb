@@ -57,6 +57,32 @@ module Cucumber
 OUTPUT
           end
         end
+
+        describe 'when modifying the printed variable after the call to log' do
+          define_feature <<-FEATURE
+        Feature: Banana party
+
+          Scenario: Monkey eats banana
+            When puts is called twice for the same variable
+          FEATURE
+
+          define_steps do
+            When(/^puts is called twice for the same variable$/) do
+              foo = String.new('a')
+              log foo
+              foo.upcase!
+              log foo
+            end
+          end
+
+          it 'prints the variable value at the time puts was called' do
+            expect(@out.string).to include <<OUTPUT
+    When puts is called twice for the same variable
+      a
+      A
+OUTPUT
+          end
+        end
       end
     end
   end
