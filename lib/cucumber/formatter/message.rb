@@ -47,7 +47,7 @@ module Cucumber
           media_type: media_type
         }
 
-        if media_type =~ /^text\//
+        if media_type.start_with?('text/')
           attachment_data[:text] = src
         elsif src.respond_to? :read
           attachment_data[:binary] = Base64.encode64(src.read)
