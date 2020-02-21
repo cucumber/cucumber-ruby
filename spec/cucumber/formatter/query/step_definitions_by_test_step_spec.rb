@@ -22,6 +22,13 @@ module Cucumber
           @config.on_event :test_case_created do |event|
             @test_cases << event.test_case
           end
+
+          @step_definition_ids = []
+          @config.on_event :envelope do |event|
+            next unless event.envelope.step_definition
+
+            @step_definition_ids << event.envelope.step_definition.id
+          end
         end
 
         describe 'given a single feature' do
@@ -46,7 +53,7 @@ module Cucumber
                 test_case = @test_cases.first
                 test_step = test_case.test_steps.first
 
-                expect(@formatter.step_definition_ids(test_step)).to eq(['0'])
+                expect(@formatter.step_definition_ids(test_step)).to eq([@step_definition_ids.first])
               end
             end
 

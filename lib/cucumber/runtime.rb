@@ -70,7 +70,7 @@ module Cucumber
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
-      compile features, receiver, filters, @configuration.event_bus, @configuration.id_generator
+      compile features, receiver, filters, @configuration.event_bus
       @configuration.notify :test_run_finished
     end
 
