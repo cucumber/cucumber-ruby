@@ -19,7 +19,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Added
 
 * Add `message`formatter which produces `Cucumber::Messages` ndjson output.
-
 * Comply with [`cucumber-compatibility-kit](https://github.com/cucumber/cucumber/tree/master/compatibility-kit)
 
 ### Fixed
@@ -33,6 +32,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Improved
 
 * N/A
+
+### Deprecated
+* `--format=json` in favor of the `message` formatter and the stand-alone JSON formatter
+* `puts` in step definitions in favor of `log` ([cucumber#897](https://github.com/cucumber/cucumber/issues/897))
+* `embed` in step definitions in favor of `attach` ([cucumber#897](https://github.com/cucumber/cucumber/issues/897))
+
 
 ## [4.0.0.rc.3](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...v4.0.0.rc.3)
 
