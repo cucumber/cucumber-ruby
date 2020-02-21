@@ -22,6 +22,15 @@ module Cucumber
           @config.on_event :test_case_created do |event|
             @test_cases << event.test_case
           end
+
+          @pickle_step_ids = []
+          @config.on_event :envelope do |event|
+            next unless event.envelope.pickle
+
+            event.envelope.pickle.steps.each do |step|
+              @pickle_step_ids << step.id
+            end
+          end
         end
 
         describe 'given a single feature' do
@@ -39,15 +48,10 @@ module Cucumber
               FEATURE
 
               it 'provides the ID of the PickleStep used to generate the Test::Step' do
-                # IDs are predictable:
-                # - 0 -> first step
-                # - 1 -> scenario
-                # - 2 -> pickle step
-                # - 3 -> the pickle
                 test_case = @test_cases.first
                 test_step = test_case.test_steps.first
 
-                expect(@formatter.pickle_step_id(test_step)).to eq('2')
+                expect(@formatter.pickle_step_id(test_step)).to eq(@pickle_step_ids.first)
               end
 
               it 'raises an exception when the test_step is unknown' do
