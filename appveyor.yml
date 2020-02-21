@@ -4,11 +4,12 @@ environment:
   matrix:
     - RUBY_VERSION: 23
     - RUBY_VERSION: 23-x64
-
+  ANSICON: false
 
 install:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
   - bundle install
+  - cinst ansicon
 
 build: off
 
