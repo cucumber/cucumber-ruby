@@ -94,7 +94,7 @@ jobs:
       - run:
           name: Checkout monorepo and build
           command: |
-            git clone https://github.com/cucumber/cucumber.git --branch ruby-cck-in-monorepo ~/cucumber
+            git clone https://github.com/cucumber/cucumber.git ~/cucumber
             cd ~/cucumber
             NO_CROSS_COMPILE=1 LANGUAGES=go PACKAGES="messages json-formatter" make
       - persist_to_workspace:
