@@ -89,11 +89,11 @@ module Cucumber
         @io.write(MultiJson.dump(@feature_hashes, pretty: true))
       end
 
-      def puts(message)
-        test_step_output << message
-      end
-
-      def embed(src, mime_type, _label)
+      def attach(src, mime_type)
+        if mime_type == 'text/x.cucumber.log+plain'
+          test_step_output << src
+          return
+        end
         if File.file?(src)
           content = File.open(src, 'rb', &:read)
           data = encode64(content)

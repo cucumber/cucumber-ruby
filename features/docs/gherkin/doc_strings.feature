@@ -43,7 +43,7 @@ Feature: Doc strings
     And a step definition that looks like this:
       """ruby
       Given /say/ do |text|
-        puts text
+        log text
       end
       """
     When I run the feature with the progress formatter
@@ -66,7 +66,7 @@ Feature: Doc strings
     And a step definition that looks like this:
       """ruby
       Given /code/ do |text|
-        puts text.class
+        log text.class.to_s
       end
       """
     When I run the feature with the progress formatter

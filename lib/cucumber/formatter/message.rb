@@ -40,7 +40,7 @@ module Cucumber
         @current_test_step_id = nil
       end
 
-      def embed(src, media_type, _label)
+      def attach(src, media_type)
         attachment_data = {
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,

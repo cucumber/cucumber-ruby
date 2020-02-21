@@ -131,10 +131,9 @@ module Cucumber
         print_summary
       end
 
-      def puts(*messages)
-        messages.each do |message|
-          @test_step_output.push message
-        end
+      def attach(src, media_type)
+        return unless media_type == 'text/x.cucumber.log+plain'
+        @test_step_output.push src
       end
 
       private

@@ -49,4 +49,7 @@ module Cucumber
       super(messages.join("\n"))
     end
   end
+
+  class LogTypeInvalid < StandardError
+  end
 end

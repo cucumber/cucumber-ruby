@@ -12,7 +12,7 @@ Feature: Nested Steps with either table or doc string
       """ruby
       Given /turtles:/ do |table|
         table.hashes.each do |row|
-          puts row[:name]
+          log row[:name]
         end
       end
       """
@@ -46,7 +46,7 @@ Feature: Nested Steps with either table or doc string
     And a step definition that looks like this:
       """ruby
       Given /turtles:/ do |text|
-        puts "#{text}:#{text.class}"
+        log "#{text}:#{text.class}"
       end
       """
     When I run the feature with the progress formatter

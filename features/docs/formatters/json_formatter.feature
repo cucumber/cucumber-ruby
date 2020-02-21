@@ -19,26 +19,26 @@ Feature: JSON output formatter
       """
     And a file named "features/step_definitions/json_steps.rb" with:
       """
-      Given /^I embed a screenshot/ do
+      Given /^I attach a screenshot/ do
         File.open("screenshot.png", "w") { |file| file << "foo" }
-        embed "screenshot.png", "image/png"
+        attach "screenshot.png", "image/png"
       end
 
       Given /^I print from step definition/ do
-        puts "from step definition"
+        log "from step definition"
       end
 
-      Given /^I embed data directly/ do
+      Given /^I attach data directly/ do
         data = "YWJj"
-        embed data, "mime-type;base64"
+        attach data, "mime-type;base64"
       end
       """
-    And a file named "features/embed.feature" with:
+    And a file named "features/attachments.feature" with:
       """
       Feature: A screenshot feature
 
         Scenario:
-          Given I embed a screenshot
+          Given I attach a screenshot
 
       """
     And a file named "features/outline.feature" with:
@@ -75,15 +75,15 @@ Feature: JSON output formatter
           And I print from step definition
 
       """
-    And a file named "features/embed_data_directly.feature" with:
+    And a file named "features/attach_data_directly.feature" with:
       """
       Feature: An embed data directly feature
 
         Scenario:
-          Given I embed data directly
+          Given I attach data directly
 
         Scenario Outline:
-          Given I embed data directly
+          Given I attach data directly
 
 	  Examples:
 	  | dummy |
@@ -257,13 +257,13 @@ Feature: JSON output formatter
       ]
       """
 
-  Scenario: embedding screenshot
-    When I run `cucumber --format json features/embed.feature`
+  Scenario: Attaching screenshot
+    When I run `cucumber --format json features/attachments.feature`
     Then it should pass with JSON:
     """
     [
       {
-        "uri": "features/embed.feature",
+        "uri": "features/attachments.feature",
         "id": "a-screenshot-feature",
         "keyword": "Feature",
         "name": "A screenshot feature",
@@ -280,7 +280,7 @@ Feature: JSON output formatter
             "steps": [
               {
                 "keyword": "Given ",
-                "name": "I embed a screenshot",
+                "name": "I attach a screenshot",
                 "line": 4,
                 "embeddings": [
                   {
@@ -537,13 +537,13 @@ Feature: JSON output formatter
 
     """
 
-  Scenario: embedding data directly
-    When I run `cucumber --format json -x features/embed_data_directly.feature`
+  Scenario: Attaching data directly
+    When I run `cucumber --format json -x features/attach_data_directly.feature`
     Then it should pass with JSON:
     """
     [
       {
-        "uri": "features/embed_data_directly.feature",
+        "uri": "features/attach_data_directly.feature",
         "id": "an-embed-data-directly-feature",
         "keyword": "Feature",
         "name": "An embed data directly feature",
@@ -560,7 +560,7 @@ Feature: JSON output formatter
             "steps": [
               {
                 "keyword": "Given ",
-                "name": "I embed data directly",
+                "name": "I attach data directly",
                 "line": 4,
                 "embeddings": [
                   {
@@ -588,7 +588,7 @@ Feature: JSON output formatter
             "steps": [
               {
                 "keyword": "Given ",
-                "name": "I embed data directly",
+                "name": "I attach data directly",
                 "line": 7,
                 "embeddings": [
                   {
@@ -616,7 +616,7 @@ Feature: JSON output formatter
             "steps": [
               {
                 "keyword": "Given ",
-                "name": "I embed data directly",
+                "name": "I attach data directly",
                 "line": 7,
                 "embeddings": [
                   {
@@ -644,33 +644,33 @@ Feature: JSON output formatter
      Given a file named "features/step_definitions/output_steps.rb" with:
       """
       Before do
-        puts "Before hook 1"
-        embed "src", "mime_type", "label"
+        log "Before hook 1"
+        attach "src", "mime_type"
       end
 
       Before do
-        puts "Before hook 2"
-        embed "src", "mime_type", "label"
+        log "Before hook 2"
+        attach "src", "mime_type"
       end
 
       AfterStep do
-        puts "AfterStep hook 1"
-        embed "src", "mime_type", "label"
+        log "AfterStep hook 1"
+        attach "src", "mime_type"
       end
 
       AfterStep do
-        puts "AfterStep hook 2"
-        embed "src", "mime_type", "label"
+        log "AfterStep hook 2"
+        attach "src", "mime_type"
       end
 
       After do
-        puts "After hook 1"
-        embed "src", "mime_type", "label"
+        log "After hook 1"
+        attach "src", "mime_type"
       end
 
       After do
-        puts "After hook 2"
-        embed "src", "mime_type", "label"
+        log "After hook 2"
+        attach "src", "mime_type"
       end
       """
     When I run `cucumber --format json features/out_scenario_out_scenario_outline.feature`

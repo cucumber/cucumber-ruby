@@ -5,28 +5,37 @@ require 'cucumber/gherkin/formatter/ansi_escapes'
 
 module Cucumber
   module Deprecate
-    class CliOption
+    class AnsiString
       include Cucumber::Gherkin::Formatter::AnsiEscapes
 
-      def self.deprecate(stream, option, message, remove_after_version)
-        return if stream.nil?
-        CliOption.new.deprecate(stream, option, message, remove_after_version)
+      def self.failure_message(message)
+        AnsiString.new.failure_message(message)
       end
 
-      def deprecate(stream, option, message, remove_after_version)
-        stream.puts(failed + "\nWARNING: #{option} is deprecated" \
-        " and will be removed after version #{remove_after_version}.\n#{message}.\n" \
-        + reset)
+      def failure_message(message)
+        failed + message + reset
+      end
+    end
+
+    class CliOption
+      def self.deprecate(stream, option, message, remove_after_version)
+        return if stream.nil?
+        stream.puts(
+          AnsiString.failure_message(
+            "\nWARNING: #{option} is deprecated" \
+            " and will be removed after version #{remove_after_version}.\n#{message}.\n"
+          )
+        )
       end
     end
 
     module ForUsers
-      AnsiEscapes = Cucumber::Gherkin::Formatter::AnsiEscapes
-
       def self.call(message, method, remove_after_version)
-        STDERR.puts AnsiEscapes.failed + "\nWARNING: ##{method} is deprecated" \
-        " and will be removed after version #{remove_after_version}. #{message}.\n" \
-        "(Called from #{caller(3..3).first})" + AnsiEscapes.reset
+        STDERR.puts AnsiString.failure_message(
+          "\nWARNING: ##{method} is deprecated" \
+          " and will be removed after version #{remove_after_version}. #{message}.\n" \
+          "(Called from #{caller(3..3).first})"
+        )
       end
     end
 

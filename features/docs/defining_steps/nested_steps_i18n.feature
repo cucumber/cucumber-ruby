@@ -10,7 +10,7 @@ Feature: Nested Steps in I18n
       # -*- coding: utf-8 -*-
       # frozen_string_literal: true
       前提 /a turtle/ do
-        puts "turtle!"
+        log "turtle!"
       end
       """
 
