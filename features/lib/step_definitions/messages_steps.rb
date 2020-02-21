@@ -12,4 +12,3 @@ Then('messages types should be:') do |expected_types|
 
   expect(expected_types.split("\n").map(&:strip)).to contain_exactly(*message_types)
 end
-
