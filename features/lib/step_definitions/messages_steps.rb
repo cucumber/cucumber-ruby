@@ -13,8 +13,3 @@ Then('messages types should be:') do |expected_types|
   expect(expected_types.split("\n").map(&:strip)).to contain_exactly(*message_types)
 end
 
-Then('output should be binary protobuf messages') do
-  Cucumber::Messages::BinaryToMessageEnumerator.new(all_stdout) do |message|
-    # puts message
-  end
-end
