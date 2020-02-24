@@ -20,10 +20,10 @@ Gem::Specification.new do |s|
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.3'
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.3'
-  s.add_dependency 'cucumber-core', '~> 5.0', '>= 5.0.0'
+  s.add_dependency 'cucumber-core', '~> 6.0', '>= 6.0.0'
   s.add_dependency 'cucumber-expressions', '~> 8.0', '>= 8.0.2'
   s.add_dependency 'cucumber-gherkin', '~> 10.0', '>= 10.0.0'
-  s.add_dependency 'cucumber-wire', '~> 1.1', '>= 1.1.0'
+  s.add_dependency 'cucumber-wire', '~> 2.0', '>= 2.0.0'
   s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
   s.add_dependency 'multi_json', '~> 1.13', '>= 1.13.1'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
