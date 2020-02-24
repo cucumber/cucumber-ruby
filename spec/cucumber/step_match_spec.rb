@@ -13,7 +13,7 @@ module Cucumber
     end
 
     def stepdef(string_or_regexp)
-      Glue::StepDefinition.new(@registry, string_or_regexp, -> {}, {})
+      Glue::StepDefinition.new('some-id', @registry, string_or_regexp, -> {}, {})
     end
 
     def step_match(regexp, name)

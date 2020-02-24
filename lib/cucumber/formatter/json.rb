@@ -5,6 +5,7 @@ require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/ast_lookup'
+require 'cucumber/deprecate'
 
 module Cucumber
   module Formatter
@@ -13,6 +14,14 @@ module Cucumber
       include Io
 
       def initialize(config)
+        Cucumber::Deprecate::CliOption.deprecate(
+          config.error_stream,
+          '--format=json',
+          "Please use --format=message and stand-alone json-formatter.\n" \
+          'json-formatter homepage: https://github.com/cucumber/cucumber/tree/master/json-formatter#cucumber-json-formatter',
+          '5.0.0'
+        )
+
         @io = ensure_io(config.out_stream)
         @ast_lookup = AstLookup.new(config)
         @feature_hashes = []
@@ -80,11 +89,11 @@ module Cucumber
         @io.write(MultiJson.dump(@feature_hashes, pretty: true))
       end
 
-      def puts(message)
-        test_step_output << message
-      end
-
-      def embed(src, mime_type, _label)
+      def attach(src, mime_type)
+        if mime_type == 'text/x.cucumber.log+plain'
+          test_step_output << src
+          return
+        end
         if File.file?(src)
           content = File.open(src, 'rb', &:read)
           data = encode64(content)
@@ -173,7 +182,6 @@ module Cucumber
       end
 
       def create_doc_string_hash(doc_string)
-        puts doc_string
         content_type = doc_string.media_type || ''
         {
           value: doc_string.content,

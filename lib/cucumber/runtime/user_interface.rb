@@ -7,14 +7,6 @@ module Cucumber
     module UserInterface
       attr_writer :visitor
 
-      # Output +messages+ alongside the formatted output.
-      # This is an alternative to using Kernel#puts - it will display
-      # nicer, and in all outputs (in case you use several formatters)
-      #
-      def puts(*messages)
-        @visitor.puts(*messages)
-      end
-
       # Suspends execution and prompts +question+ to the console (STDOUT).
       # An operator (manual tester) can then enter a line of text and hit
       # <ENTER>. The entered text is returned, and both +question+ and
@@ -48,8 +40,8 @@ module Cucumber
       # be a path to a file, or if it's an image it may also be a Base64 encoded image.
       # The embedded data may or may not be ignored, depending on what kind of formatter(s) are active.
       #
-      def embed(src, mime_type, label)
-        @visitor.embed(src, mime_type, label)
+      def attach(src, media_type)
+        @visitor.attach(src, media_type)
       end
 
       private

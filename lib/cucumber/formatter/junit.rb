@@ -239,7 +239,7 @@ module Cucumber
         duration.tap { |dur| @test_case_duration = dur.nanoseconds / 10**9.0 }
       end
 
-      def embed(*) end
+      def attach(*) end
     end
   end
 end

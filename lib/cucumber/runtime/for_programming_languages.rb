@@ -21,6 +21,7 @@ module Cucumber
 
       def_delegators :@user_interface,
                      :embed,
+                     :attach,
                      :ask,
                      :puts,
                      :features_paths,

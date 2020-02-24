@@ -8,7 +8,7 @@ Feature: Post Configuration Hook [#423]
     Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.formats << ['json', {}, config.out_stream]
+        config.formats << ['message', {}, config.out_stream]
       end
       """
     And a file named "features/simple_scenario.feature" with:
@@ -19,7 +19,7 @@ Feature: Post Configuration Hook [#423]
       """
     When I run `cucumber features`
     Then the stderr should not contain anything
-    And the output should contain JSON with key "uri" and value "features/simple_scenario.feature"
+    And the output should contain NDJSON with key "uri" and value "features/simple_scenario.feature"
 
   Scenario: feature directories read from configuration
     Given a file named "features/support/env.rb" with:

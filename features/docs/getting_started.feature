@@ -1,6 +1,6 @@
 Feature: Getting started
 
-  To get started, just open a command prompt in an empty directory and run 
+  To get started, just open a command prompt in an empty directory and run
   `cucumber`. You'll be prompted for what to do next.
 
   @spawn @todo-windows
@@ -17,7 +17,7 @@ Feature: Getting started
     Given a directory without standard Cucumber project directory structure
     And a file named "should_not_load.rb" with:
       """
-      puts 'this will not be shown'
+      log 'this will not be shown'
       """
     When I run `cucumber`
     Then the exit status should be 2

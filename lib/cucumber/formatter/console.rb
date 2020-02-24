@@ -158,16 +158,11 @@ module Cucumber
         end
       end
 
-      def embed(file, mime_type, label)
-        # no-op
-      end
-
-      def puts(*messages)
+      def attach(src, media_type)
+        return unless media_type == 'text/x.cucumber.log+plain'
         return unless @io
         @io.puts
-        messages.each do |message|
-          @io.puts(format_string(message, :tag))
-        end
+        @io.puts(format_string(src, :tag))
         @io.flush
       end
 

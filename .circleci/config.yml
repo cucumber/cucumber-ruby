@@ -95,6 +95,57 @@ jobs:
       - build
       - test_allow_failure
 
+  build_monorepo:
+    docker:
+      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
+    working_directory: ~
+    steps:
+      - run:
+          name: Checkout monorepo and build
+          command: |
+            git clone https://github.com/cucumber/cucumber.git ~/cucumber
+            cd ~/cucumber
+            NO_CROSS_COMPILE=1 LANGUAGES=go PACKAGES="messages json-formatter" make
+      - persist_to_workspace:
+          root: ~/cucumber
+          paths:
+            - compatibility-kit
+            - json-formatter
+
+  validate-cck:
+    docker:
+      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: "~/cucumber"
+      - run:
+          name: Add Nokogiri dependencies
+          command: apk add libxml2-dev libxslt-dev
+      - build
+      - run:
+          name: Validates against CCK
+          command: |
+            cd ~/cucumber/compatibility-kit/ruby
+            CUCUMBER_RUBY=~/repo make
+
+  validate-messages:
+    docker:
+      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: "~/cucumber"
+      - run:
+          name: Add Nokogiri dependencies
+          command: apk add libxml2-dev libxslt-dev
+      - build
+      - run:
+          name: Validates messages with JSON
+          command: |
+            cd ~/repo
+            MONOREPO_PATH=~/cucumber make
+
 workflows:
   version: 2
 
@@ -121,3 +172,10 @@ workflows:
       - build-ruby-2_6
       - build-ruby-latest
       - build-jruby
+      - build_monorepo
+      - validate-cck:
+          requires:
+            - build_monorepo
+      - validate-messages:
+          requires:
+            - build_monorepo
