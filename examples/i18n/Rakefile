@@ -4,27 +4,38 @@ task :cucumber do
   Dir["#{dir}/*"].sort.each do |f|
     next unless File.directory?(f)
     lang = f[dir.length + 1..-1]
-    if examples_working?(lang)
-      Dir.chdir(f) do
-        puts "DIR: #{f}"
-        rake('cucumber')
-      end
-    else
-      STDERR.puts %{
-    !!!!!
-    !!!!!
-    !!!!! SKIPPING #{lang} (The examples are out of date - please help update them)
-    !!!!!
-    !!!!!
-    }
+    message = examples_disabled?(lang)
+    unless message.nil?
+      STDERR.puts(message)
+      next
+    end
+
+    Dir.chdir(f) do
+      puts "DIR: #{f}"
+      rake('cucumber')
     end
   end
 end
 
 task default: :cucumber
 
+def examples_disabled?(lang)
+  return make_warning("SKIPPING #{lang} (The examples are out of date - please help update them)") unless examples_working?(lang)
+  return make_warning('Russian examples have been disabled for JRuby.') if RUBY_PLATFORM == 'java' && lang == 'ru'
+end
+
 def examples_working?(lang)
   !%w[ar].index(lang)
+end
+
+def make_warning(msg)
+  %(
+    !!!!!
+    !!!!!
+    !!!!! #{msg}
+    !!!!!
+    !!!!!
+  )
 end
 
 def rake(args)
