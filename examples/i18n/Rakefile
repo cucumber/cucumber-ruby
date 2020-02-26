@@ -26,7 +26,7 @@ end
 
 def jruby_disabled_examples?(lang)
   return unless RUBY_PLATFORM == 'java'
-  %w[uk ru].include?(lang)
+  %w[ru uk uz].include?(lang)
 end
 
 def examples_working?(lang)
