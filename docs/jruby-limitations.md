@@ -1,6 +1,6 @@
 # Cucumber and JRuby limitations
 
-`cucumber` can be executed on `JRuby` (tested with `9.2.8.0`), allthough some of the features
+`cucumber` can be executed on `JRuby` (tested with `9.2.8.0`), although some of the features
 are not available on this platform.
 
 ## Defining steps with native languages
