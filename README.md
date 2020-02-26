@@ -28,7 +28,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 * Ruby 2.5
 * Ruby 2.4
 * Ruby 2.3
-* JRuby 9.1 (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/master/docs/jruby-limitations.md))
+* JRuby 9.2 (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/master/docs/jruby-limitations.md))
 
 ## Code of Conduct
 
