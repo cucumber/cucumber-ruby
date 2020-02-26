@@ -15,7 +15,7 @@ your team.
 
 Where to get more info:
 
- * The main website: https://cucumber.io/ 
+ * The main website: https://cucumber.io/
  * Documentation: https://cucumber.io/docs
  * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
  * Support forum: https://groups.google.com/group/cukes
@@ -28,7 +28,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 * Ruby 2.5
 * Ruby 2.4
 * Ruby 2.3
-* JRuby 9.1
+* JRuby 9.1 (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/master/docs/jruby-limitations.md))
 
 ## Code of Conduct
 
