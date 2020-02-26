@@ -3,7 +3,7 @@
 `cucumber` can be executed on `JRuby` (tested with `9.2.8.0`), allthough some of the features
 are not available on this platform.
 
-## Defining steps with native languages:
+## Defining steps with native languages
 
 There are currently three languages (Russian, Ukrainian and Uzbek) for which the step definition
 can not be written in native language.
