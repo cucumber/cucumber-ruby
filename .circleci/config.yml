@@ -77,14 +77,23 @@ jobs:
       - build
       - test
 
-  build-jruby:
+  build-jruby-9.1:
+    docker:
+      - image: circleci/jruby:9.1
+
+    working_directory: ~/repo
+    steps:
+      - build
+      - test
+
+  build-jruby-9.2:
     docker:
       - image: circleci/jruby:9.2.8.0
 
     working_directory: ~/repo
     steps:
       - build
-      - test_allow_failure
+      - test
 
   build-ruby-latest:
     docker:
@@ -171,7 +180,8 @@ workflows:
       - build-ruby-2_5
       - build-ruby-2_6
       - build-ruby-latest
-      - build-jruby
+      - build-jruby-9.1
+      - build-jruby-9.2
       - build_monorepo
       - validate-cck:
           requires:
