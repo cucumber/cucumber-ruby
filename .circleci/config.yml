@@ -15,8 +15,8 @@ commands:
       - run:
           name: "Clone cucumber-messages"
           command: |
-            git clone https://github.com/cucumber/messages-ruby.git > ~/cucumber-messages
-            cd ~/cucumber-messages
+            git clone https://github.com/cucumber/messages-ruby.git > $HOME/cucumber-messages
+            cd $HOME/cucumber-messages
             make
 
   build:
@@ -65,8 +65,8 @@ jobs:
       - run:
           name: run tests
           command: |
-            CUCUMBER_MESSAGES_RUBY= ~/cucumber-messages bundle exec rspec
-            CUCUMBER_MESSAGES_RUBY= ~/cucumber-messages bundle exec cucumber
+            CUCUMBER_MESSAGES_RUBY=$HOME/cucumber-messages bundle exec rspec
+            CUCUMBER_MESSAGES_RUBY=$HOME/cucumber-messages bundle exec cucumber
 
   build-ruby-2_3:
     docker:
