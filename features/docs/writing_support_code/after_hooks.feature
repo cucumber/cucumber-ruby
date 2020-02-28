@@ -15,7 +15,7 @@ Feature: After Hooks
     Given a file named "features/support/debug_hook.rb" with:
       """
       After do |scenario|
-        puts scenario.status.inspect
+        log scenario.status.inspect
       end
       """
     And a file named "features/result.feature" with:
@@ -38,7 +38,7 @@ Feature: After Hooks
       """
       After do |scenario|
         if scenario.failed?
-          puts "eek"
+          log "eek"
         end
       end
       """
@@ -80,11 +80,11 @@ Feature: After Hooks
     Given a file named "features/support/hooks.rb" with:
       """
       After do
-        puts "First"
+        log "First"
       end
 
       After do
-        puts "Second"
+        log "Second"
       end
       """
     And a file named "features/pass.feature" with:

@@ -13,7 +13,6 @@ module Cucumber
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
-        'dots'        => ['Cucumber::Formatter::Dots',        'Simple progress output to console'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
         'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" \
                                                               "#{INDENT}The slowest step definitions (with duration) are\n" \
@@ -23,7 +22,8 @@ module Cucumber
         'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" \
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
-        'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
+        'json'        => ['Cucumber::Formatter::Json',        '[DEPRECATED] Prints the feature as JSON'],
+        'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }.freeze
       max = BUILTIN_FORMATS.keys.map(&:length).max

@@ -6,9 +6,10 @@ module Cucumber
   module Glue
     # TODO: Kill pointless wrapper for Before, After and AfterStep hooks with fire
     class Hook
-      attr_reader :tag_expressions, :location
+      attr_reader :id, :tag_expressions, :location
 
-      def initialize(registry, tag_expressions, proc)
+      def initialize(id, registry, tag_expressions, proc)
+        @id = id
         @registry = registry
         @tag_expressions = sanitize_tag_expressions(tag_expressions)
         @proc = proc
@@ -24,6 +25,21 @@ module Cucumber
           pseudo_method,
           *[arguments, block].flatten.compact,
           &@proc
+        )
+      end
+
+      def to_envelope
+        Cucumber::Messages::Envelope.new(
+          hook: Cucumber::Messages::Hook.new(
+            id: id,
+            tag_expression: tag_expressions.join(' '),
+            source_reference: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
+            )
+          )
         )
       end
 

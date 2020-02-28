@@ -24,9 +24,9 @@ module Cucumber
       end
 
       class << self
-        def new(registry, string_or_regexp, proc_or_sym, options)
+        def new(id, registry, string_or_regexp, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super registry, registry.create_expression(string_or_regexp), create_proc(proc_or_sym, options)
+          super id, registry, registry.create_expression(string_or_regexp), create_proc(proc_or_sym, options)
         end
 
         private
@@ -62,14 +62,38 @@ module Cucumber
         end
       end
 
-      attr_reader :expression, :registry
+      attr_reader :id, :expression, :registry
 
-      def initialize(registry, expression, proc)
+      def initialize(id, registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
+        @id = id
         @registry = registry
         @expression = expression
         @proc = proc
         # @registry.available_step_definition(regexp_source, location)
+      end
+
+      def to_envelope
+        Cucumber::Messages::Envelope.new(
+          step_definition: Cucumber::Messages::StepDefinition.new(
+            id: id,
+            pattern: Cucumber::Messages::StepDefinitionPattern.new(
+              source: expression.source.to_s,
+              type: expression_type
+            ),
+            source_reference: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
+            )
+          )
+        )
+      end
+
+      def expression_type
+        return Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
+        Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
       end
 
       # @api private

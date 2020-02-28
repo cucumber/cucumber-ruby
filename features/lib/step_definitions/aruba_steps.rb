@@ -17,10 +17,14 @@ Then('{string} should be required') do |file_name|
 end
 
 Then('it fails before running features with:') do |expected|
-  expect(all_stdout).to match(/\A#{expected}/)
+  expect(all_output).to match(/\A#{expected}/)
   step 'it should fail'
 end
 
 Then('the output includes the message {string}') do |message|
   expect(all_stdout).to include(message)
+end
+
+Then('the output should contain (ND)JSON with key {string} and value {string}') do |key, value|
+  expect(all_stdout).to match(/"#{key}": ?"#{value}"/)
 end

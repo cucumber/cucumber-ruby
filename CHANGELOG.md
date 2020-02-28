@@ -10,7 +10,48 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...master) (Not released)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...master)
+
+### Added
+
+* N/A
+
+### Changed
+
+* N/A
+
+### Removed
+
+* N/A
+
+### Improved
+
+* N/A
+
+
+## [4.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.3...4.0.0.rc.4)
+
+### Added
+
+* Add `message`formatter which produces `Cucumber::Messages` ndjson output.
+* Comply with [`cucumber-compatibility-kit](https://github.com/cucumber/cucumber/tree/master/compatibility-kit)
+* Methods `log` and `attach` can be used in step definitions to attach text or images
+
+### Deprecated
+
+* `--format=json` in favor of the `message` formatter and the stand-alone JSON formatter
+* `puts` in step definitions in favor of `log` ([cucumber#897](https://github.com/cucumber/cucumber/issues/897))
+* `embed` in step definitions in favor of `attach` ([cucumber#897](https://github.com/cucumber/cucumber/issues/897))
+
+
+## [4.0.0.rc.3](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...v4.0.0.rc.3)
+
+### Changed
+
+* Update to cucumber-wire 1.1.
+
+
+## [4.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2)
 
 ### Added
 * There is a new methodology in Cucumber for how the auto-loader works
@@ -28,8 +69,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Going forward the minimum ruby version for all cucumber based gems is 2.3
 ([luke-hill](https://github.com/luke-hill))
 
-### Deprecated
-
 ### Removed
 * Removed Travis publish job for cucumber-pro(a.k.a. jam)
   ([#1350](https://github.com/cucumber/cucumber-ruby/pull/1350)
@@ -38,8 +77,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Drop support for JRuby. We may add this back if new versions of protobuf for JRuby
   start working, or if someone can make the build pass with an older version.
   All this means is we're ok to make releases while the jruby CI job is failing.
-  
+
   ([aslakhellesoy](https://github.com/aslakhellesoy))
+
+* Remove `dots-formatter introduced in `4.0.0rc1`
 
 ### Fixed
 
@@ -52,8 +93,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Make SIGINT/`Ctrl+c` behavior consistent with SIGTERM/`kill` behavior - now first invocation causes existing scenario to stop running and jump to `at_exit`, second invocation causes immediate exit. Before that first invocation only instructed Cucumber to exit after scenario and second invocation caused immediate exit skipping `at_exit`.
   ([#1353](https://github.com/cucumber/cucumber-ruby/pull/1353)
    [akostadinov](https://github.com/akostadinov))
-
-### Added
 
 ### Improved
 

@@ -8,7 +8,7 @@ Feature: Nested Steps
     And a step definition that looks like this:
       """ruby
       Given /a turtle/ do
-        puts "turtle!"
+        log "turtle!"
       end
       """
 
@@ -56,7 +56,7 @@ Feature: Nested Steps
       """ruby
       Given /turtles:/ do |table|
         table.hashes.each do |row|
-          puts row[:name]
+          log row[:name]
         end
       end
       """
@@ -97,7 +97,7 @@ Feature: Nested Steps
     And a step definition that looks like this:
       """ruby
       Given /turtles:/ do |string|
-        puts string
+        log string
       end
       """
     When I run the feature with the progress formatter
@@ -107,7 +107,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn @todo-windows
+  @spawn @todo-windows @todo-jruby @wip-jruby
   Scenario: Backtrace doesn't skip nested steps
     Given a step definition that looks like this:
       """ruby

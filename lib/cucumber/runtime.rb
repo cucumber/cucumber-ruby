@@ -97,8 +97,7 @@ module Cucumber
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
     def doc_string(string_without_triple_quotes, content_type = '', _line_offset = 0)
-      location = Core::Test::Location.of_caller
-      Core::Test::DocString.new(string_without_triple_quotes, content_type, location)
+      Core::Test::DocString.new(string_without_triple_quotes, content_type)
     end
 
     private
@@ -228,6 +227,7 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
+          filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
           filters << Filters::Quit.new
           filters << Filters::Retry.new(@configuration)

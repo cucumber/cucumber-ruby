@@ -72,18 +72,33 @@ module Cucumber
       end
 
       def register_rb_hook(phase, tag_expressions, proc)
-        add_hook(phase, Hook.new(self, tag_expressions, proc))
+        hook = add_hook(phase, Hook.new(@configuration.id_generator.new_id, self, tag_expressions, proc))
+        @configuration.notify :envelope, hook.to_envelope
+        hook
       end
 
       def define_parameter_type(parameter_type)
+        @configuration.notify :envelope, parameter_type_envelope(parameter_type)
+
         @parameter_type_registry.define_parameter_type(parameter_type)
       end
 
       def register_rb_step_definition(string_or_regexp, proc_or_sym, options)
-        step_definition = StepDefinition.new(self, string_or_regexp, proc_or_sym, options)
+        step_definition = StepDefinition.new(@configuration.id_generator.new_id, self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
+        @configuration.notify :envelope, step_definition.to_envelope
         step_definition
+      rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
+        # TODO: add a way to extract the parameter type directly from the error.
+        type_name = e.message.match(/^Undefined parameter type \{(.*)\}$/)[1]
+
+        @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
+            name: type_name,
+            expression: string_or_regexp
+          )
+        )
       end
 
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
@@ -170,6 +185,20 @@ module Cucumber
       end
 
       private
+
+      def parameter_type_envelope(parameter_type)
+        # TODO: should me moved to Cucumber::Expression::ParameterType#to_envelope ?
+        # Note: that would mean that cucumber-expression would depend on cucumber-messages
+
+        Cucumber::Messages::Envelope.new(
+          parameter_type: Cucumber::Messages::ParameterType.new(
+            name: parameter_type.name,
+            regular_expressions: parameter_type.regexps.map(&:to_s),
+            prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match?,
+            use_for_snippets: parameter_type.use_for_snippets?
+          )
+        )
+      end
 
       def available_step_definition_hash
         @available_step_definition_hash ||= {}
