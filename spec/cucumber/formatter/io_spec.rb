@@ -21,7 +21,7 @@ module Cucumber
           received_body = req.body
         end
 
-        @thread = Thread.new do
+        Thread.new do
           @server.start
         end
 
