@@ -6,7 +6,7 @@ require 'cucumber/formatter/io'
 
 module Cucumber
   module Formatter
-    describe Io do
+    describe HTTPIO do
       include Io
 
       def start_server(url)
@@ -34,28 +34,32 @@ module Cucumber
         end
       end
 
-      it 'POSTs with HTTP' do
-        url = 'http://localhost:9987'
-        start_server(url)
-        sent_body = 'X' * 10000000 # 10Mb
+      context 'created by Io#ensure_io' do
+        it 'creates an IO that POSTs with HTTP' do
+          url = 'http://localhost:9987'
+          start_server(url)
+          sent_body = 'X' * 10000000 # 10Mb
 
-        io = ensure_io(url) # OpenSSL::SSL::VERIFY_NONE
-        io.write(sent_body)
-        io.flush
-        io.close
-        expect(@received_body).to eq(sent_body)
+          io = ensure_io(url)
+          io.write(sent_body)
+          io.flush
+          io.close
+          expect(@received_body).to eq(sent_body)
+        end
       end
       
-      it 'POSTs with HTTPS' do
-        url = 'https://localhost:9987'
-        start_server(url)
-        sent_body = 'X' * 10000000 # 10Mb
+      context 'created with constructor (because we need to relax SSL verification during testing)' do
+        it 'POSTs with HTTPS' do
+          url = 'https://localhost:9987'
+          start_server(url)
+          sent_body = 'X' * 10000000 # 10Mb
 
-        io = Io::HTTPIO.new(url, OpenSSL::SSL::VERIFY_NONE)
-        io.write(sent_body)
-        io.flush
-        io.close
-        expect(@received_body).to eq(sent_body)
+          io = HTTPIO.new(url, OpenSSL::SSL::VERIFY_NONE)
+          io.write(sent_body)
+          io.flush
+          io.close
+          expect(@received_body).to eq(sent_body)
+        end
       end
 
       after do
