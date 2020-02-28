@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'multi_json'
+require 'json'
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'
@@ -86,7 +86,7 @@ module Cucumber
       end
 
       def on_test_run_finished(_event)
-        @io.write(MultiJson.dump(@feature_hashes, pretty: true))
+        @io.write(JSON.generate(@feature_hashes, pretty: true))
       end
 
       def attach(src, mime_type)

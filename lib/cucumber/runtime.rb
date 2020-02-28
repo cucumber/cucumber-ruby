@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'multi_json'
 require 'cucumber/configuration'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'

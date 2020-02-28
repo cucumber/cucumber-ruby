@@ -25,11 +25,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-gherkin', '~> 10.0', '>= 10.0.0'
   s.add_dependency 'cucumber-wire', '~> 2.0', '>= 2.0.0'
   s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
-  s.add_dependency 'multi_json', '~> 1.13', '>= 1.13.1'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
 
   s.add_development_dependency 'aruba', '~> 0.14', '>= 0.14.11'
-  s.add_development_dependency 'json', '~> 2.2', '>= 2.2.0'
   s.add_development_dependency 'nokogiri', '~> 1.10', '>= 1.10.4'
   s.add_development_dependency 'pry', '~> 0.12', '>= 0.12.2'
   s.add_development_dependency 'rake', '~> 12.3', '>= 12.3.3'

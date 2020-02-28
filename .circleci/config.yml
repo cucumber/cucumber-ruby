@@ -13,9 +13,11 @@ commands:
 
     steps:
       - run:
-          name: "Run ridk"
+          name: "Clone cucumber-messages"
           command: |
-            ridk install 1
+            git clone https://github.com/cucumber/messages-ruby.git > ~/cucumber-messages
+            cd ~/cucumber-messages
+            make
 
   build:
     description: "Build and run the tests"
@@ -58,8 +60,13 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - add_windows_dependencies
       - build
-      - test
+      - run:
+          name: run tests
+          command: |
+            CUCUMBER_MESSAGES_RUBY= ~/cucumber-messages bundle exec rspec
+            CUCUMBER_MESSAGES_RUBY= ~/cucumber-messages bundle exec cucumber
 
   build-ruby-2_3:
     docker:
