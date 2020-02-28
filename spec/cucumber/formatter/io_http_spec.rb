@@ -33,9 +33,7 @@ module Cucumber
       end
       
       after do
-        if @server
-          @server.shutdown 
-        end
+        @server.shutdown 
       end
     end
   end
