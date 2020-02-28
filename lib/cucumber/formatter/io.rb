@@ -38,8 +38,9 @@ module Cucumber
       end
       
       class HTTPIO
-        def initialize(url)
+        def initialize(url, https_verify_mode=nil)
           @url = url
+          @https_verify_mode = https_verify_mode
           @closed = false
           @body = ''
         end
@@ -57,7 +58,10 @@ module Cucumber
           req = Net::HTTP::Post.new(uri)
           req.body = @body
           http = Net::HTTP.new(uri.hostname, uri.port)
-          http.use_ssl = uri.scheme == 'https'
+          if uri.scheme == 'https'
+            http.use_ssl = true
+            http.verify_mode = @https_verify_mode if @https_verify_mode
+          end
           res = http.request(req)
           raise "Not OK" unless Net::HTTPOK === res
         end
