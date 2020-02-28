@@ -20,6 +20,9 @@ gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUM
 gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_MESSAGES_RUBY']
 gem 'gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
 
-install_if -> { RUBY_PLATFORM != 'mswin' } do
+require 'rbconfig'
+is_windows = !!(RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+
+install_if -> { !is_windows } do
   gem 'rubocop', '~> 0.75', '= 0.75.1'
 end
