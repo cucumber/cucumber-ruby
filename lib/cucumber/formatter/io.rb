@@ -56,9 +56,9 @@ module Cucumber
           uri = URI(@url)
           req = Net::HTTP::Post.new(uri)
           req.body = @body
-          res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-            http.request(req)
-          end
+          http = Net::HTTP.new(uri.hostname, uri.port)
+          http.use_ssl = uri.scheme == 'https'
+          res = http.request(req)
           raise "Not OK" unless Net::HTTPOK === res
         end
         
