@@ -15,7 +15,7 @@ commands:
       - run:
           name: "Clone cucumber-messages"
           command: |
-            git clone https://github.com/cucumber/messages-ruby.git > $HOME/cucumber-messages
+            git clone https://github.com/cucumber/messages-ruby.git $HOME/cucumber-messages
             cd $HOME/cucumber-messages
             make
 
