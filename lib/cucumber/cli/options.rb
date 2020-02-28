@@ -295,10 +295,14 @@ Specify SEED to reproduce the shuffling from a previous run.
 
       def out_msg
         [
-          'Write output to a file/directory instead of STDOUT. This option',
+          'Write output to a file/directory/URL instead of STDOUT. This option',
           'applies to the previously specified --format, or the',
           'default format if no format is specified. Check the specific',
-          "formatter's docs to see whether to pass a file or a dir."
+          "formatter's docs to see whether to pass a file, dir or URL.",
+          "\n",
+          "When using a URL, HTTP headers can be set with http- prefixed query parameters,",
+          "for example ?http-content-type=application/json. These parameters will be",
+          "removed from the sent query parameters."
         ]
       end
 

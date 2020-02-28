@@ -61,9 +61,21 @@ module Cucumber
           expect(@received_body).to eq(sent_body)
         end
       end
+      
+      it "sets Content-Type=application/json by default" do
+        io = HTTPIO.new('http://localhost:9987')
+        expect(io.req['content-type']).to eq('application/json')
+        expect(io.req.uri.to_s).to eq('http://localhost:9987')
+      end
+
+      it "sets Content-Type header when http-content-type query parameter set" do
+        io = HTTPIO.new('http://localhost:9987?http-content-type=text/plain&foo=bar')
+        expect(io.req['content-type']).to eq('text/plain')
+        expect(io.req.uri.to_s).to eq('http://localhost:9987?foo=bar')
+      end
 
       after do
-        @server.shutdown 
+        @server.shutdown unless @server.nil?
       end
     end
   end
