@@ -54,7 +54,7 @@ commands:
 
 jobs:
   build_windows:
-    executor: win/vs2019
+    executor: win/default
     working_directory: ~/repo
 
     steps:
