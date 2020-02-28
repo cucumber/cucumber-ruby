@@ -1,21 +1,26 @@
 # frozen_string_literal: true
+require 'net/http'
 
 module Cucumber
   module Formatter
     module Io
       module_function
 
-      def ensure_io(path_or_io)
-        return nil if path_or_io.nil?
-        return path_or_io if path_or_io.respond_to?(:write)
-        file = File.open(path_or_io, Cucumber.file_mode('w'))
+      def ensure_io(path_or_url_or_io)
+        return nil if path_or_url_or_io.nil?
+        return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
+        if path_or_url_or_io.match(/^http/)
+          io = HTTPIO.new(path_or_url_or_io) 
+        else
+          io = File.open(path_or_url_or_io, Cucumber.file_mode('w'))
+        end
         at_exit do
-          unless file.closed?
-            file.flush
-            file.close
+          unless io.closed?
+            io.flush
+            io.close
           end
         end
-        file
+        io
       end
 
       def ensure_file(path, name)
@@ -30,6 +35,36 @@ module Cucumber
         raise "I can't write #{name} reports to a file - it has to be a directory" if File.file?(path)
         FileUtils.mkdir_p(path) unless File.directory?(path)
         File.absolute_path path
+      end
+      
+      class HTTPIO
+        def initialize(url)
+          @url = url
+          @closed = false
+          @body = ''
+        end
+        
+        def write(chunk)
+          @body += chunk
+        end
+        
+        def closed?
+          @closed
+        end
+        
+        def flush
+          uri = URI(@url)
+          req = Net::HTTP::Post.new(uri)
+          req.body = @body
+          res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+            http.request(req)
+          end
+          raise "Not OK" unless Net::HTTPOK === res
+        end
+        
+        def close
+          @closed = true
+        end
       end
     end
   end
