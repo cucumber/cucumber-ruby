@@ -18,7 +18,7 @@ module Cucumber
         http_query_pairs = query_pairs.select {|pair| pair[0] =~ /^http-/}
         http_query_pairs_wthout_prefix = http_query_pairs.map do |pair|
           [
-            pair[0][5..-1], # remove http- prefix
+            pair[0][5..-1].downcase, # remove http- prefix
             pair[1]
           ]
         end
