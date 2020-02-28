@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'net/http'
 require 'cucumber/formatter/http_io'
 
 module Cucumber

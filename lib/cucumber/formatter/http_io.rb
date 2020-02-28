@@ -1,3 +1,5 @@
+require 'net/http'
+
 module Cucumber
   module Formatter
     # Quacks like an IO and executes a HTTP request with the data as body on flush
