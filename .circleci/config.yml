@@ -5,7 +5,7 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@1.0.0
+  win: circleci/windows@2.2.0
 
 commands:
   add_windows_dependencies:
@@ -58,7 +58,6 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - add_windows_dependencies
       - build
       - test
 
