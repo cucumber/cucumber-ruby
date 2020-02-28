@@ -104,7 +104,7 @@ module Cucumber
             add_option :formats, [*parse_formats(v), @out_stream]
           end
           opts.on('--init', *init_msg) { |_v| initialize_project }
-          opts.on('-o', '--out [FILE|DIR]', *out_msg) { |v| out_stream v }
+          opts.on('-o', '--out [FILE|DIR|URL]', *out_msg) { |v| out_stream v }
           opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) { |v| add_tag v }
           opts.on('-n NAME', '--name NAME', *name_msg) { |v| add_option :name_regexps, /#{v}/ }
           opts.on('-e', '--exclude PATTERN', *exclude_msg) { |v| add_option :excludes, Regexp.new(v) }

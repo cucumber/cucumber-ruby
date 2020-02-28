@@ -9,9 +9,13 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ----
+## [master](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...master)
+
+### Added
+
+* Accept `--out URL` to POST results to a web server
 
 ## [4.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.3...4.0.0.rc.4)
-
 
 ### Added
 
