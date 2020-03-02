@@ -30,6 +30,5 @@ tags
 .project
 Gemfile.local
 .envrc
-Gemfile.lock
 bin/json-formatter
 acceptance/*
