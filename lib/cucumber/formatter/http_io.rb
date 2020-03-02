@@ -5,17 +5,17 @@ module Cucumber
     # Quacks like an IO and executes a HTTP request with the data as body on flush
     class HTTPIO
       attr_reader :req
-      
-      def initialize(url, https_verify_mode=nil)
+
+      def initialize(url, https_verify_mode = nil)
         @https_verify_mode = https_verify_mode
         @closed = false
         @body = ''
-        
+
         uri = URI(url)
         query_pairs = uri.query ? URI.decode_www_form(uri.query) : []
-        
+
         # Build headers from query parameters prefixed with http-
-        http_query_pairs = query_pairs.select {|pair| pair[0] =~ /^http-/}
+        http_query_pairs = query_pairs.select { |pair| pair[0] =~ /^http-/ }
         http_query_pairs_wthout_prefix = http_query_pairs.map do |pair|
           [
             pair[0][5..-1].downcase, # remove http- prefix
@@ -35,28 +35,31 @@ module Cucumber
         headers.each do |header, value|
           @req[header] = value
         end
-        
+
         @http = Net::HTTP.new(uri.hostname, uri.port)
-        if uri.scheme == 'https'
-          @http.use_ssl = true
-          @http.verify_mode = https_verify_mode if https_verify_mode
-        end
+        return unless uri.scheme == 'https'
+
+        @http.use_ssl = true
+        @http.verify_mode = https_verify_mode if https_verify_mode
       end
-      
+
       def write(chunk)
         @body += chunk
       end
-      
+
       def closed?
         @closed
       end
-      
+
       def flush
         @req.body = @body
         res = @http.request(@req)
-        raise "Not OK" unless Net::HTTPOK === res
+        # Note: Rubocop does not like res.kind_of?(Net::HTTPOK) neither
+        # rubocop:disable Style/CaseEquality
+        raise 'Not OK' unless Net::HTTPOK === res
+        # rubocop:enable Style/CaseEquality
       end
-      
+
       def close
         @closed = true
       end

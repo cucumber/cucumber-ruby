@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/formatter/http_io'
 
 module Cucumber
@@ -9,11 +10,11 @@ module Cucumber
       def ensure_io(path_or_url_or_io)
         return nil if path_or_url_or_io.nil?
         return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
-        if path_or_url_or_io.match(/^http/)
-          io = HTTPIO.new(path_or_url_or_io) 
-        else
-          io = File.open(path_or_url_or_io, Cucumber.file_mode('w'))
-        end
+        io = if path_or_url_or_io.match(/^http/)
+               HTTPIO.new(path_or_url_or_io)
+             else
+               File.open(path_or_url_or_io, Cucumber.file_mode('w'))
+             end
         at_exit do
           unless io.closed?
             io.flush
