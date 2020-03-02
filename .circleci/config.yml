@@ -17,7 +17,7 @@ commands:
           command: |
             git clone https://github.com/cucumber/messages-ruby.git $HOME/cucumber-messages
             cd $HOME/cucumber-messages
-            make
+            sed -i "s/package io.cucumber.messages/package cucumber.messages/" messages.proto
 
   build:
     description: "Build and run the tests"
