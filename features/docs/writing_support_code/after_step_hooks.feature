@@ -32,7 +32,6 @@ Feature: AfterStep Hooks
 
       """
 
-  @todo-windows
   Scenario: An AfterStep with one named argument receives only the result
     Given a file named "features/support/env.rb" with:
       """
