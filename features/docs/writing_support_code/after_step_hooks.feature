@@ -19,7 +19,7 @@ Feature: AfterStep Hooks
         expect(test_step).to be_a(Cucumber::Core::Test::Step)
       end
       """
-    When I run `cucumber features`
+    When I run `cucumber features/sample-after-step-hook.feature`
     Then it should pass with:
       """
       Feature: Sample
@@ -40,7 +40,7 @@ Feature: AfterStep Hooks
         expect(result).to be_a(Cucumber::Core::Test::Result::Passed)
       end
       """
-    When I run `cucumber features`
+    When I run `cucumber features/sample-after-step-hook.feature`
     Then it should pass with:
       """
       Feature: Sample
