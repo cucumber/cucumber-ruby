@@ -16,7 +16,6 @@ Feature: Rake task
           Given I don't want this ran
       """
 
-  @todo-windows
   Scenario: rake task with a defined profile
     Given the following profile is defined:
       """
@@ -42,7 +41,6 @@ Feature: Rake task
       1 step (1 undefined)
       """
 
-  @todo-windows
   Scenario: rake task without a profile
     Given a file named "Rakefile" with:
       """
@@ -52,7 +50,7 @@ Feature: Rake task
         t.cucumber_opts = %w{--quiet --no-color}
       end
       """
-    When I run `rake cucumber`
+    When I run `rake cucumber features/missing_step_definitions.feature`
     Then it should pass with:
       """
       Feature: Sample
@@ -67,7 +65,6 @@ Feature: Rake task
       2 steps (2 undefined)
       """
 
-  @todo-windows
   Scenario: rake task with a defined profile and cucumber_opts
     Given the following profile is defined:
       """
@@ -94,7 +91,6 @@ Feature: Rake task
       1 step (1 undefined)
       """
 
-  @todo-windows
   Scenario: respect requires
     Given an empty file named "features/support/env.rb"
     And an empty file named "features/support/dont_require_me.rb"
@@ -118,7 +114,6 @@ Feature: Rake task
         * features/support/dont_require_me.rb
       """
 
-  @todo-windows
   Scenario: feature files with spaces
     Given a file named "features/spaces are nasty.feature" with:
        """
