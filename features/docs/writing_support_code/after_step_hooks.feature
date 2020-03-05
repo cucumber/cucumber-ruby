@@ -4,7 +4,7 @@ Feature: AfterStep Hooks
 
   Background:
     Given the standard step definitions
-    And a file named "features/sample.feature" with:
+    And a file named "features/sample-after-step-hook.feature" with:
       """
       Feature: Sample
 
@@ -12,7 +12,6 @@ Feature: AfterStep Hooks
           Given this step passes
       """
 
-  @todo-windows
   Scenario: Access Test Step object in AfterStep Block
     Given a file named "features/support/env.rb" with:
       """
@@ -25,7 +24,7 @@ Feature: AfterStep Hooks
       """
       Feature: Sample
 
-        Scenario: Success        # features/sample.feature:3
+        Scenario: Success        # features/sample-after-step-hook.feature:3
           Given this step passes # features/step_definitions/steps.rb:1
 
       1 scenario (1 passed)
@@ -46,7 +45,7 @@ Feature: AfterStep Hooks
       """
       Feature: Sample
 
-        Scenario: Success        # features/sample.feature:3
+        Scenario: Success        # features/sample-after-step-hook.feature:3
           Given this step passes # features/step_definitions/steps.rb:1
 
       1 scenario (1 passed)
