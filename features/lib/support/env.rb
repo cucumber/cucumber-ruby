@@ -5,6 +5,14 @@ require 'aruba/processes/in_process'
 require 'aruba/processes/spawn_process'
 require 'cucumber/cli/main'
 
+Before do
+  aruba_dir = File.join('.', 'tmp', 'aruba')
+  Dir.entries(aruba_dir).each do |entry|
+    next if entry.start_with?('.')
+    FileUtils.rm_rf(File.join(aruba_dir, entry))
+  end
+end
+
 Before('@spawn') do
   aruba.config.command_launcher = :spawn
   aruba.config.main_class = NilClass
@@ -18,10 +26,6 @@ end
 Before do
   # Set a longer timeout for aruba, and a really long one if running on JRuby
   @aruba_timeout_seconds = Cucumber::JRUBY ? 60 : 15
-end
-
-Before do
-  FileUtils.rm_rf('./tmp/aruba/features')
 end
 
 # TODO: This probably shouldn't be used. To fix this we need to triage all of the
