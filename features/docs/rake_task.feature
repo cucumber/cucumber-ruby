@@ -47,7 +47,7 @@ Feature: Rake task
       require 'cucumber/rake/task'
 
       Cucumber::Rake::Task.new do |t|
-        t.cucumber_opts = %w{--quiet --no-color features/missing_step_definitions.feature}
+        t.cucumber_opts = %w{--quiet --no-color}
       end
       """
     When I run `rake cucumber`

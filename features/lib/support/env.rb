@@ -20,6 +20,10 @@ Before do
   @aruba_timeout_seconds = Cucumber::JRUBY ? 60 : 15
 end
 
+Before do
+  FileUtils.rm_rf('./tmp/aruba/features')
+end
+
 # TODO: This probably shouldn't be used. To fix this we need to triage all of the
 # file names created in tests, and ensure they are unique
 Cucumber.use_legacy_autoloader = true
