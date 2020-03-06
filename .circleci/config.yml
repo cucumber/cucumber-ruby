@@ -19,7 +19,7 @@ commands:
       - run:
           name: "Use Aruba 1.0"
           command: |
-            sed -i "s/0.14/1.0/" cucumber.gemspec
+            sed -i "s/0.14/1.0/" repo/cucumber.gemspec
 
   build:
     description: "Build and run the tests"
