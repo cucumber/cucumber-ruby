@@ -16,6 +16,10 @@ commands:
           name: "Add ansicon"
           command: |
             choco install ansicon
+      - run:
+          name: "Use Aruba 1.0"
+          command: |
+            sed -i "s/0.14/1.0/" cucumber.gemspec
 
   build:
     description: "Build and run the tests"
@@ -64,7 +68,7 @@ jobs:
           name: run tests
           command: |
             bundle exec rspec
-            bundle exec cucumber
+            bundle exec cucumber --retry 4
 
   build-ruby-2_3:
     docker:
