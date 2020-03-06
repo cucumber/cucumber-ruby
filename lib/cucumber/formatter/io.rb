@@ -10,8 +10,8 @@ module Cucumber
       def ensure_io(path_or_url_or_io)
         return nil if path_or_url_or_io.nil?
         return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
-        io = if path_or_url_or_io.match(/^http/)
-               HTTPIO.new(path_or_url_or_io)
+        io = if path_or_url_or_io.match(%r{^https?://})
+               HTTPIO.open(path_or_url_or_io)
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end

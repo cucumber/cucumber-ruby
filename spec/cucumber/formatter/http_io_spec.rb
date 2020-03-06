@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'stringio'
 require 'webrick'
 require 'webrick/https'
 require 'spec_helper'
@@ -12,7 +13,7 @@ module Cucumber
 
       def start_server(url)
         uri = URI(url)
-        @received_body = nil
+        @received_body_io = StringIO.new
 
         webrick_options = {
           Port: uri.port,
@@ -27,7 +28,7 @@ module Cucumber
 
         @server = WEBrick::HTTPServer.new(webrick_options)
         @server.mount_proc '/' do |req, _res|
-          @received_body = req.body
+          IO.copy_stream(req.body_reader, @received_body_io)
         end
 
         Thread.new do
@@ -39,13 +40,16 @@ module Cucumber
         it 'creates an IO that POSTs with HTTP' do
           url = 'http://localhost:9987'
           start_server(url)
-          sent_body = 'X' * 10_000_000 # 10Mb
+          sent_body = 'X' * 10 # 10Mb
 
           io = ensure_io(url)
           io.write(sent_body)
           io.flush
           io.close
-          expect(@received_body).to eq(sent_body)
+          sleep(0.1)
+          @received_body_io.rewind
+          received_body = @received_body_io.read
+          expect(received_body).to eq(sent_body)
         end
       end
 
@@ -53,26 +57,29 @@ module Cucumber
         it 'POSTs with HTTPS' do
           url = 'https://localhost:9987'
           start_server(url)
-          sent_body = 'X' * 10_000_000 # 10Mb
+          sent_body = 'X' * 10 # 10Mb
 
-          io = HTTPIO.new(url, OpenSSL::SSL::VERIFY_NONE)
+          io = HTTPIO.open(url, OpenSSL::SSL::VERIFY_NONE)
           io.write(sent_body)
           io.flush
           io.close
-          expect(@received_body).to eq(sent_body)
+          sleep(0.1)
+          @received_body_io.rewind
+          received_body = @received_body_io.read
+          expect(received_body).to eq(sent_body)
         end
       end
 
       it 'sets Content-Type=application/json by default' do
-        io = HTTPIO.new('http://localhost:9987')
-        expect(io.req['content-type']).to eq('application/json')
-        expect(io.req.uri.to_s).to eq('http://localhost:9987')
+        uri, headers = HTTPIO.build_uri_and_headers('http://localhost:9987')
+        expect(headers['content-type']).to eq('application/json')
+        expect(uri.to_s).to eq('http://localhost:9987')
       end
 
       it 'sets Content-Type header when http-content-type query parameter set' do
-        io = HTTPIO.new('http://localhost:9987?http-content-type=text/plain&foo=bar')
-        expect(io.req['content-type']).to eq('text/plain')
-        expect(io.req.uri.to_s).to eq('http://localhost:9987?foo=bar')
+        uri, headers = HTTPIO.build_uri_and_headers('http://localhost:9987?http-content-type=text/plain&foo=bar')
+        expect(headers['content-type']).to eq('text/plain')
+        expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end
 
       after do
