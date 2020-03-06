@@ -17,13 +17,13 @@ module Cucumber
 
         rd, wt = IO.pipe
         webrick_options = {
-            Port: uri.port,
-            Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
-            AccessLog: [],
-            StartCallback: Proc.new {
-              wt.write(1) # write "1", signal a server start message
-              wt.close
-            }
+          Port: uri.port,
+          Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
+          AccessLog: [],
+          StartCallback: proc do
+                           wt.write(1) # write "1", signal a server start message
+                           wt.close
+                         end
         }
         if uri.scheme == 'https'
           webrick_options[:SSLEnable] = true

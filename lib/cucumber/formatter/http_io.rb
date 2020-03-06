@@ -22,18 +22,20 @@ module Cucumber
               @req_thread = Thread.new do
                 begin
                   res = http.request(req)
-                  if res.code.to_i >= 400
-                    raise Exception.new("request to #{req.uri} failed with status #{res.code}")
-                  end
-                rescue Exception => err
-                  @http_error = err
+                  raise StandardError, "request to #{req.uri} failed with status #{res.code}" if res.code.to_i >= 400
+                rescue StandardError => e
+                  @http_error = e
                 end
               end
             end
 
             def close
               super
-              @req_thread.join rescue nil
+              begin
+                @req_thread.join
+              rescue StandardError
+                nil
+              end
               raise @http_error unless @http_error.nil?
             end
           end
