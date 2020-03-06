@@ -14,6 +14,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Added
 
 * Accept `--out URL` to POST results to a web server
+  If a URL is used as output, the output will be sent with a POST request. 
+  This can be overridden by specifying e.g. `http-method=PUT` as a query parameter. 
+  Other `http-` prefixed query parameters will be converted to request headers 
+  (with the `http-` prefix stripped off).
 
 ### Changed
 

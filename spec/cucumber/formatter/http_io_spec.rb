@@ -70,14 +70,14 @@ module Cucumber
         end
       end
 
-      it 'sets Content-Type=application/json by default' do
-        uri, headers = HTTPIO.build_uri_and_headers('http://localhost:9987')
-        expect(headers['content-type']).to eq('application/json')
-        expect(uri.to_s).to eq('http://localhost:9987')
+      it 'sets HTTP method when http-method is set' do
+        uri, method, = HTTPIO.build_uri_and_headers('http://localhost:9987?http-method=PUT&foo=bar')
+        expect(method).to eq('PUT')
+        expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end
 
       it 'sets Content-Type header when http-content-type query parameter set' do
-        uri, headers = HTTPIO.build_uri_and_headers('http://localhost:9987?http-content-type=text/plain&foo=bar')
+        uri, _method, headers = HTTPIO.build_uri_and_headers('http://localhost:9987?http-content-type=text/plain&foo=bar')
         expect(headers['content-type']).to eq('text/plain')
         expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end
