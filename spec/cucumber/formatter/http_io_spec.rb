@@ -61,6 +61,21 @@ module Cucumber
           expect(received_body).to eq(sent_body)
         end
 
+        it 'streams HTTP body to server' do
+          url = 'http://localhost:9987'
+          start_server(url)
+          sent_body = 'X' * 10_000_000
+
+          io = ensure_io(url)
+          io.write(sent_body)
+          io.flush
+          sleep 0.2 # ugh
+          # Not calling io.close
+          @received_body_io.rewind
+          received_body = @received_body_io.read
+          expect(received_body.length).to be > 0
+        end
+
         it 'notifies user if the server responds with error' do
           url = 'http://localhost:9987/404'
           start_server(url)
