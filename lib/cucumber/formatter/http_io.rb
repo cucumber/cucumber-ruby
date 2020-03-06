@@ -7,31 +7,42 @@ module Cucumber
         # Returns an IO that will write to a HTTP request's body
         def open(url, https_verify_mode = nil)
           @https_verify_mode = https_verify_mode
-          uri, method, headers = build_uri_and_headers(url)
+          uri, method, headers = build_uri_method_headers(url)
 
-          method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
-          @req = Net::HTTP.const_get(method_class_name).new(uri)
-          headers.each do |header, value|
-            @req[header] = value
-          end
-
-          @http = Net::HTTP.new(uri.hostname, uri.port)
-          if uri.scheme == 'https'
-            @http.use_ssl = true
-            @http.verify_mode = https_verify_mode if https_verify_mode
-          end
+          @req = build_request(uri, method, headers)
+          @http = build_client(uri, https_verify_mode)
 
           read_io, write_io = IO.pipe
           @req.body_stream = read_io
 
-          Thread.new do
-            @http.request(@req)
+          class << write_io
+            attr_writer :request_thread
+
+            def start_request(http, req)
+              @req_thread = Thread.new do
+                begin
+                  res = http.request(req)
+                  if res.code.to_i >= 400
+                    raise Exception.new("request to #{req.uri} failed with status #{res.code}")
+                  end
+                rescue Exception => err
+                  @http_error = err
+                end
+              end
+            end
+
+            def close
+              super
+              @req_thread.join rescue nil
+              raise @http_error unless @http_error.nil?
+            end
           end
+          write_io.start_request(@http, @req)
 
           write_io
         end
 
-        def build_uri_and_headers(url)
+        def build_uri_method_headers(url)
           uri = URI(url)
           query_pairs = uri.query ? URI.decode_www_form(uri.query) : []
 
@@ -53,6 +64,26 @@ module Cucumber
           new_query_hash = Hash[remaining_query_pairs]
           uri.query = URI.encode_www_form(new_query_hash) unless new_query_hash.empty?
           [uri, method, headers]
+        end
+
+        private
+
+        def build_request(uri, method, headers)
+          method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
+          req = Net::HTTP.const_get(method_class_name).new(uri)
+          headers.each do |header, value|
+            req[header] = value
+          end
+          req
+        end
+
+        def build_client(uri, https_verify_mode)
+          http = Net::HTTP.new(uri.hostname, uri.port)
+          if uri.scheme == 'https'
+            http.use_ssl = true
+            http.verify_mode = https_verify_mode if https_verify_mode
+          end
+          http
         end
       end
     end
