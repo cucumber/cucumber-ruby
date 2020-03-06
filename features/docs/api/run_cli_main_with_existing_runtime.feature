@@ -14,12 +14,13 @@ Feature: Run Cli::Main with existing Runtime
           Scenario:
             Given this step passes
         """
-      When I run the following Ruby code:
+      And a file named "create_runtime.rb" with:
         """
         require 'cucumber'
         runtime = Cucumber::Runtime.new
         Cucumber::Cli::Main.new([]).execute!(runtime)
         """
+      When I run `bundle exec ruby create_runtime.rb`
       Then it should pass
       And the output should contain:
         """

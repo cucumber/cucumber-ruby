@@ -14,12 +14,13 @@ Feature: List step defs as json
       Given(/foo/i)  { }
       Given(/b.r/xm) { }
       """
-    When I run the following Ruby code:
+    And a file named "list_step_definitions.rb" with:
       """
       require 'cucumber'
       puts Cucumber::StepDefinitions.new.to_json
 
       """
+    When I run `bundle exec ruby list_step_definitions.rb`
     Then it should pass with JSON:
       """
       [
@@ -40,12 +41,12 @@ Feature: List step defs as json
       Given(/foo/)  { }
       Given(/b.r/x) { }
       """
-    When I run the following Ruby code:
+    And a file named "list_step_definitions.rb" with:
       """
       require 'cucumber'
       puts Cucumber::StepDefinitions.new(:autoload_code_paths => ['my_weird']).to_json
-
       """
+    When I run `bundle exec ruby list_step_definitions.rb`
     Then it should pass with JSON:
       """
       [
