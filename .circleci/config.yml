@@ -16,10 +16,6 @@ commands:
           name: "Add ansicon"
           command: |
             choco install ansicon
-      - run:
-          name: "Use Aruba 1.0"
-          command: |
-            sed -i "s/0.14/1.0/" repo/cucumber.gemspec
 
   build:
     description: "Build and run the tests"
@@ -63,7 +59,15 @@ jobs:
 
     steps:
       - add_windows_dependencies
-      - build
+      - checkout
+      - run:
+          name: "Use Aruba 1.0"
+          command: |
+            sed -i "s/0.14/1.0/" $HOME/repo/cucumber.gemspec
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: run tests
           command: |
