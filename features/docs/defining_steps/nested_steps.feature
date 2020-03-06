@@ -107,7 +107,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn @todo-windows
+  @spawn @todo-windows @todo-jruby @wip-jruby
   Scenario: Backtrace doesn't skip nested steps
     Given a step definition that looks like this:
       """ruby
