@@ -6,4 +6,7 @@ Then(/^it should (pass|fail) with JSON:$/) do |pass_fail, json|
 
   expect(actual).to eq expected
   step "it should #{pass_fail}"
+rescue JSON::ParserError => err
+  Kernel.puts "Got invalid JSON: \n------------------------------\n\n#{all_stdout}\n\n------------------------------\n\n"
+  raise err
 end
