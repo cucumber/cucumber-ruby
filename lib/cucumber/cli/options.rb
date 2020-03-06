@@ -300,10 +300,10 @@ Specify SEED to reproduce the shuffling from a previous run.
           'default format if no format is specified. Check the specific',
           "formatter's docs to see whether to pass a file, dir or URL.",
           "\n",
-          'When using a URL, the output of the formatter will be sent as the raw request body',
-          'HTTP headers can be set with http- prefixed query parameters,',
-          'for example ?http-content-type=application/json. These parameters will be',
-          'removed from the sent query parameters.'
+          'When using a URL, the output of the formatter will be sent as the HTTP request body.',
+          'HTTP headers and request method can be set with http- prefixed query parameters,',
+          'for example ?http-content-type=application/json&http-method=PUT.',
+          'All http- prefixed query parameters will be removed from the sent query parameters.'
         ]
       end
 
