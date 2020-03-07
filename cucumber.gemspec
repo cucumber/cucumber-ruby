@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0.17', '>= 0.17.0'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
   s.add_development_dependency 'test-unit', '~> 1.2', '>= 1.2.3'
+  s.add_development_dependency 'webrick', '~> 1.6', '>= 1.6.0'
 
   # For maintainer scripts
   s.add_development_dependency 'octokit', '~> 4.14', '>= 4.14.0'
