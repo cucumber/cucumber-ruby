@@ -114,7 +114,7 @@ jobs:
 
   validate-cck:
     docker:
-      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
+      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
     working_directory: ~/repo
     steps:
       - attach_workspace:
@@ -131,7 +131,7 @@ jobs:
 
   validate-messages:
     docker:
-      - image: cucumber/cucumber-build:bcd26c1ff045bbf9848c025fb2cfcc79
+      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
     working_directory: ~/repo
     steps:
       - attach_workspace:
