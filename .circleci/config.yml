@@ -5,9 +5,15 @@
 version: 2.1
 
 commands:
+  add_nokogiri_dependencies:
+    description: Add necessary libs to install Nokogiri on Alpine
+    steps:
+      - run:
+          name: Add Nokogiri dependencies
+          command: sudo apk add libxml2-dev libxslt-dev
+
   build:
     description: "Build and run the tests"
-
     steps:
       - checkout
       - restore_cache:
@@ -119,9 +125,7 @@ jobs:
     steps:
       - attach_workspace:
           at: "~/cucumber"
-      - run:
-          name: Add Nokogiri dependencies
-          command: sudo apk add libxml2-dev libxslt-dev
+      - add_nokogiri_dependencies
       - build
       - run:
           name: Validates against CCK
@@ -136,9 +140,7 @@ jobs:
     steps:
       - attach_workspace:
           at: "~/cucumber"
-      - run:
-          name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
+      - add_nokogiri_dependencies
       - build
       - run:
           name: Validates messages with JSON
