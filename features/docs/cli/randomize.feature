@@ -109,8 +109,7 @@ Feature: Randomize
   @spawn @todo-windows
   Scenario: Run scenarios randomized with some skipped
     When I run `cucumber --tags 'not @skipme' --order random:41544 -q`
-    Then it should fail
-    And the stdout should contain exactly:
+    Then it should fail with exactly:
       """
       Feature: Bad practice, part 1
 
