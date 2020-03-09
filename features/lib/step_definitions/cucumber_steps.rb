@@ -82,7 +82,7 @@ end
 
 module CucumberHelper
   def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
-    run_command_and_stop "#{Cucumber::BINARY} #{filename} --format #{formatter}", exit_timeout: 5
+    run_command(sanitize_text("#{Cucumber::BINARY} #{filename} --format #{formatter}"))
   end
 end
 
