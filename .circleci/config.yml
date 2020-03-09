@@ -118,7 +118,11 @@ jobs:
     steps:
       - attach_workspace:
           at: "~/cucumber"
-      - build
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Validates against CCK
           command: |
@@ -132,7 +136,11 @@ jobs:
     steps:
       - attach_workspace:
           at: "~/cucumber"
-      - build
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Validates messages with JSON
           command: |
