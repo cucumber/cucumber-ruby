@@ -121,7 +121,7 @@ jobs:
           at: "~/cucumber"
       - run:
           name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
+          command: sudo apk add libxml2-dev libxslt-dev
       - build
       - run:
           name: Validates against CCK
