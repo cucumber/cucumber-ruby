@@ -5,13 +5,6 @@
 version: 2.1
 
 commands:
-  add_nokogiri_dependencies:
-    description: Add necessary libs to install Nokogiri on Alpine
-    steps:
-      - run:
-          name: Add Nokogiri dependencies
-          command: sudo apk add libxml2-dev libxslt-dev
-
   build:
     description: "Build and run the tests"
     steps:
@@ -103,7 +96,7 @@ jobs:
 
   build_monorepo:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~
     steps:
       - run:
@@ -120,12 +113,11 @@ jobs:
 
   validate-cck:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~/repo
     steps:
       - attach_workspace:
           at: "~/cucumber"
-      - add_nokogiri_dependencies
       - build
       - run:
           name: Validates against CCK
@@ -135,12 +127,11 @@ jobs:
 
   validate-messages:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~/repo
     steps:
       - attach_workspace:
           at: "~/cucumber"
-      - add_nokogiri_dependencies
       - build
       - run:
           name: Validates messages with JSON
