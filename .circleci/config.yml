@@ -7,7 +7,6 @@ version: 2.1
 commands:
   build:
     description: "Build and run the tests"
-
     steps:
       - checkout
       - restore_cache:
@@ -97,7 +96,7 @@ jobs:
 
   build_monorepo:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~
     steps:
       - run:
@@ -114,15 +113,16 @@ jobs:
 
   validate-cck:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~/repo
     steps:
       - attach_workspace:
           at: "~/cucumber"
+      - checkout
       - run:
-          name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
-      - build
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Validates against CCK
           command: |
@@ -131,15 +131,16 @@ jobs:
 
   validate-messages:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~/repo
     steps:
       - attach_workspace:
           at: "~/cucumber"
+      - checkout
       - run:
-          name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
-      - build
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Validates messages with JSON
           command: |
