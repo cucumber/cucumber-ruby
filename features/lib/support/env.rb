@@ -23,6 +23,7 @@ Before do
     next if entry.start_with?('.')
     FileUtils.remove_entry_secure(File.join(aruba_dir, entry), force: true)
   end
+  log("Left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(' ')}") unless Dir.empty?(aruba_dir)
 end
 
 Before('@spawn') do
