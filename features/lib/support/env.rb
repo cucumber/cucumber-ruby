@@ -5,9 +5,8 @@ require 'aruba/processes/spawn_process'
 require 'cucumber/cli/main'
 
 Before do
-  cleaned = []
   aruba_dir = File.join('.', 'tmp', 'aruba')
-  FileUtils.rm_rf(aruba_dir)
+  FileUtils.remove_entry_secure(aruba_dir, force: true)
   FileUtils.mkdir(aruba_dir)
 end
 
