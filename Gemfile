@@ -20,6 +20,8 @@ gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUM
 gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_MESSAGES_RUBY']
 gem 'gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
 
+gem 'aruba', '~> 0.14.11' if RUBY_VERSION == '2.3'
+
 require 'rbconfig'
 # rubocop:disable Style/DoubleNegation
 is_windows = !!(RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
