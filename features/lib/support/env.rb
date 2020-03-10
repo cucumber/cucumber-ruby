@@ -7,7 +7,8 @@ require 'cucumber/cli/main'
 
 def empty_directory(dir_path)
   Dir.entries(dir_path).each do |entry|
-    next if (entry == '.' || entry == '..')
+    next if ['.', '..'].includes?(entry)
+
     entry_path = File.join(aruba_dir, entry)
     empty_directory(entry_path) if File.directory?(entry_path)
 
