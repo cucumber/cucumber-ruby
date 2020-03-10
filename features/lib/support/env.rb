@@ -5,6 +5,16 @@ require 'aruba/processes/in_process'
 require 'aruba/processes/spawn_process'
 require 'cucumber/cli/main'
 
+def empty_directory(dir_path)
+  Dir.entries(dir_path).each do |entry|
+    next if (entry == '.' || entry == '..')
+    entry_path = File.join(aruba_dir, entry)
+    empty_directory(entry_path) if File.directory?(entry_path)
+
+    FileUtils.remove_entry_secure(entry_path, force: true)
+  end
+end
+
 Before do
   next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
   aruba_dir = File.join('.', 'tmp', 'aruba')
