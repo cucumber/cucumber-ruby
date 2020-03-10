@@ -6,6 +6,7 @@ require 'aruba/processes/spawn_process'
 require 'cucumber/cli/main'
 
 Before do
+  next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
   aruba_dir = File.join('.', 'tmp', 'aruba')
   Dir.entries(aruba_dir).each do |entry|
     next if entry.start_with?('.')
