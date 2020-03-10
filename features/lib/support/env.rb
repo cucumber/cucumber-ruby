@@ -5,9 +5,16 @@ require 'aruba/processes/spawn_process'
 require 'cucumber/cli/main'
 
 Before do
+  cleaned = []
   aruba_dir = File.join('.', 'tmp', 'aruba')
-  FileUtils.remove_entry_secure(aruba_dir, force: true)
-  FileUtils.mkdir(aruba_dir)
+  Kernel.puts "\n------------------------------------"
+  Dir.entries(aruba_dir).each do |entry|
+    next if entry.start_with?('.')
+    FileUtils.remove_entry_secure(File.join(aruba_dir, entry), force: true)
+    cleaned << entry
+  end
+  Kernel.puts "Cleaned: #{cleaned} - left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(', ')}"
+  Kernel.puts '------------------------------------'
 end
 
 Before('@spawn') do
