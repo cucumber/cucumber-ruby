@@ -12,18 +12,26 @@ def empty_directory(dir_path)
   end
 end
 
+def list_content(dir_path, indent = '  ')
+  Dir.entries(dir_path).map do |entry|
+    next if ['.', '..'].include?(entry)
+
+    entry_path = File.join(dir_path, entry)
+    if File.directory?(entry_path)
+      ["#{indent}#{entry_path}:", list_content(entry_path, indent + '  ')]
+    else
+      "#{indent} - #{entry}"
+    end
+  end.flatten.compact.join("\n")
+end
+
 Before do
   next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
 
   aruba_dir = File.join('.', 'tmp', 'aruba')
   empty_directory(aruba_dir)
 
-  unless Dir.empty?(aruba_dir)
-    sleep(2)
-    empty_directory(aruba_dir)
-  end
-
-  log("Left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(' ')}") unless Dir.empty?(aruba_dir)
+  log("Left in ./tmp/aruba: #{list_content(aruba_dir)}") unless Dir.empty?(aruba_dir)
 end
 
 Before('@spawn') do
