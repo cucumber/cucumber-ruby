@@ -61,6 +61,7 @@ jobs:
       - build
       - run:
           name: run tests
+          shell: bash.exe
           command: |
             bundle exec rspec
             bundle exec cucumber --retry 4 --no-strict-flaky
