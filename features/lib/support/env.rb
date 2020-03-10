@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'aruba/cucumber'
 require 'aruba/processes/in_process'
 require 'aruba/processes/spawn_process'
