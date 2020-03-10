@@ -218,7 +218,7 @@ Feature: Around hooks
         Scenario Outline: using hook # features/f.feature:2
           Then the hook is called    # features/f.feature:3
 
-          Examples:
+          Examples: 
             | Number |
             | one    |
             | two    |

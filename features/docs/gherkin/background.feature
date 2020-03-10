@@ -214,7 +214,7 @@ Feature: Background
     """
     Feature: Passing background sample
 
-      Background:
+      Background: 
         Given '10' cukes
 
       Scenario: another passing background
@@ -231,7 +231,7 @@ Feature: Background
     """
     Feature: Passing background sample
 
-      Background:
+      Background: 
         Given '10' cukes
 
       Scenario: passing background
@@ -251,20 +251,20 @@ Feature: Background
     """
     Feature: Passing background with scenario outlines sample
 
-      Background:
+      Background: 
         Given '10' cukes
 
       Scenario Outline: passing background
         Then I should have '<count>' cukes
 
-        Examples:
+        Examples: 
           | count |
           | 10    |
 
       Scenario Outline: another passing background
         Then I should have '<count>' cukes
 
-        Examples:
+        Examples: 
           | count |
           | 10    |
 
@@ -280,13 +280,13 @@ Feature: Background
     @background_tagged_before_on_outline
     Feature: Background tagged Before on Outline
 
-      Background:
+      Background: 
         Given this step passes
 
       Scenario Outline: passing background
         Then I should have '<count>' cukes
 
-        Examples:
+        Examples: 
           | count |
           | 888   |
 
@@ -302,7 +302,7 @@ Feature: Background
     """
     Feature: Failing background sample
 
-      Background:
+      Background: 
         Given this step raises an error
           error (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
@@ -331,7 +331,7 @@ Feature: Background
     """
     Feature: Failing background with scenario outlines sample
 
-      Background:
+      Background: 
         Given this step raises an error
           error (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
@@ -340,14 +340,14 @@ Feature: Background
       Scenario Outline: failing background
         Then I should have '<count>' cukes
 
-        Examples:
+        Examples: 
           | count |
           | 10    |
 
       Scenario Outline: another failing background
         Then I should have '<count>' cukes
 
-        Examples:
+        Examples: 
           | count |
           | 10    |
 
@@ -366,7 +366,7 @@ Feature: Background
     """
     Feature: Pending background sample
 
-      Background:
+      Background: 
         Given this step is pending
 
       Scenario: pending background
@@ -387,7 +387,7 @@ Feature: Background
     """
     Feature: Failing background after previously successful background sample
 
-      Background:
+      Background: 
         Given this step passes
         And '10' global cukes
 
@@ -416,21 +416,21 @@ Feature: Background
     """
     Feature: Failing background after previously successful background sample
 
-      Background:
+      Background: 
         Given this step passes
         And '10' global cukes
 
       Scenario Outline: passing background
         Then I should have '<count>' global cukes
 
-        Examples:
+        Examples: 
           | count |
           | 10    |
 
       Scenario Outline: failing background
         Then I should have '<count>' global cukes
 
-        Examples:
+        Examples: 
           | count |
           | 10    |
           FAIL (RuntimeError)
@@ -452,14 +452,14 @@ Feature: Background
     """
     Feature: Failing background after previously successful background sample
 
-      Background:
+      Background: 
         Given this step passes
         And '10' global cukes
 
       Scenario Outline: passing background
         Then I should have '<count>' global cukes
 
-        Examples:
+        Examples: 
 
           Example: | 10 |
             Then I should have '10' global cukes
@@ -467,7 +467,7 @@ Feature: Background
       Scenario Outline: failing background
         Then I should have '<count>' global cukes
 
-        Examples:
+        Examples: 
 
           Example: | 10 |
             And '10' global cukes
@@ -508,7 +508,7 @@ Feature: Background
       """
       Feature: Passing background with multiline args
 
-        Background:
+        Background: 
           Given table
             | a | b |
             | c | d |

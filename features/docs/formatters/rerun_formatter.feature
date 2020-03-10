@@ -110,7 +110,7 @@ Feature: Rerun formatter
 
         Scenario Outline:
           Given this step <status>
-
+        
         Examples:
           | status |
           | passes |

@@ -79,7 +79,7 @@ Feature: Exception in AfterStep Block
         Scenario Outline: Naughty Step # features/naughty_step_in_scenario_outline.feature:3
           Given this step <Might Work> # features/naughty_step_in_scenario_outline.feature:4
 
-          Examples:
+          Examples: 
             | Might Work             |
             | passes                 |
             | does something naughty |

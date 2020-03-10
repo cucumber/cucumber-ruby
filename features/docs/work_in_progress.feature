@@ -132,7 +132,7 @@ Feature: Cucumber --work-in-progress switch
         Scenario Outline: Passing
           Given this step <what>
 
-          Examples:
+          Examples: 
             | what   |
             | passes |
 

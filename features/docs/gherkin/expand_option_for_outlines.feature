@@ -22,14 +22,14 @@ Feature: Scenario outlines --expand option
     Then the stderr should not contain anything
     And it should pass with:
       """
-      Feature:
+      Feature: 
 
-        Scenario Outline:
+        Scenario Outline: 
           Given the secret code is <code>
           When I guess <guess>
           Then I am <verdict>
 
-          Examples:
+          Examples: 
 
             Example: | blue | blue | right |
               Given the secret code is blue
