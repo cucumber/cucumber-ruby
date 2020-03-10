@@ -8,11 +8,7 @@ require 'cucumber/cli/main'
 def empty_directory(dir_path)
   Dir.entries(dir_path).each do |entry|
     next if ['.', '..'].include?(entry)
-
-    entry_path = File.join(dir_path, entry)
-    empty_directory(entry_path) if File.directory?(entry_path)
-
-    FileUtils.remove_entry_secure(entry_path, force: true)
+    FileUtils.remove_entry_secure(File.join(dir_path, entry), force: true)
   end
 end
 
@@ -21,6 +17,12 @@ Before do
 
   aruba_dir = File.join('.', 'tmp', 'aruba')
   empty_directory(aruba_dir)
+
+  unless Dir.empty?(aruba_dir)
+    sleep(2)
+    empty_directory(aruba_dir)
+  end
+
   log("Left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(' ')}") unless Dir.empty?(aruba_dir)
 end
 
