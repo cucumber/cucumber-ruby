@@ -7,14 +7,8 @@ require 'cucumber/cli/main'
 Before do
   cleaned = []
   aruba_dir = File.join('.', 'tmp', 'aruba')
-  Kernel.puts "\n------------------------------------"
-  Dir.entries(aruba_dir).each do |entry|
-    next if entry.start_with?('.')
-    FileUtils.rm_rf(File.join(aruba_dir, entry), verbose: true)
-    cleaned << entry
-  end
-  Kernel.puts "Cleaned: #{cleaned} - left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(', ')}"
-  Kernel.puts "------------------------------------"
+  FileUtils.rm_rf(aruba_dir)
+  FileUtils.mkdir(aruba_dir)
 end
 
 Before('@spawn') do
