@@ -7,9 +7,9 @@ require 'cucumber/cli/main'
 
 def empty_directory(dir_path)
   Dir.entries(dir_path).each do |entry|
-    next if ['.', '..'].includes?(entry)
+    next if ['.', '..'].include?(entry)
 
-    entry_path = File.join(aruba_dir, entry)
+    entry_path = File.join(dir_path, entry)
     empty_directory(entry_path) if File.directory?(entry_path)
 
     FileUtils.remove_entry_secure(entry_path, force: true)
@@ -18,11 +18,9 @@ end
 
 Before do
   next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+
   aruba_dir = File.join('.', 'tmp', 'aruba')
-  Dir.entries(aruba_dir).each do |entry|
-    next if entry.start_with?('.')
-    FileUtils.remove_entry_secure(File.join(aruba_dir, entry), force: true)
-  end
+  empty_directory(aruba_dir)
   log("Left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(' ')}") unless Dir.empty?(aruba_dir)
 end
 
