@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'aruba/cucumber'
 require 'aruba/processes/in_process'
 require 'aruba/processes/spawn_process'
@@ -11,7 +10,7 @@ Before do
   Kernel.puts "\n------------------------------------"
   Dir.entries(aruba_dir).each do |entry|
     next if entry.start_with?('.')
-    FileUtils.rm_rf(File.join(aruba_dir, entry))
+    FileUtils.rm_rf(File.join(aruba_dir, entry), verbose: true)
     cleaned << entry
   end
   Kernel.puts "Cleaned: #{cleaned} - left in ./tmp/aruba: #{Dir.entries(aruba_dir).join(', ')}"
