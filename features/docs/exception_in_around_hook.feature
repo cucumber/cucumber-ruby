@@ -12,7 +12,6 @@ Feature: Exceptions in Around Hooks
   There's another scenario to consider, where the exception occurs after the steps
   have been run. How would we want to report in that case?
 
-  @todo-windows
   Scenario: Exception before the test case is run
     Given the standard step definitions
     And a file named "features/support/env.rb" with:
@@ -31,21 +30,20 @@ Feature: Exceptions in Around Hooks
     When I run `cucumber -q`
     Then it should fail with exactly:
       """
-      Feature: 
+      Feature:
 
-        Scenario: 
+        Scenario:
             this should be reported (RuntimeError)
             ./features/support/env.rb:2:in `Around'
-      
+
       Failing Scenarios:
       cucumber features/test.feature:2
-      
+
       1 scenario (1 failed)
       0 steps
-      
+
       """
 
-  @todo-windows
   Scenario: Exception after the test case is run
     Given the standard step definitions
     And a file named "features/support/env.rb" with:
@@ -64,16 +62,16 @@ Feature: Exceptions in Around Hooks
     When I run `cucumber -q`
     Then it should fail with exactly:
       """
-      Feature: 
+      Feature:
 
-        Scenario: 
+        Scenario:
           Given this step passes
             this should be reported (RuntimeError)
             ./features/support/env.rb:3:in `Around'
-      
+
       Failing Scenarios:
       cucumber features/test.feature:2
-      
+
       1 scenario (1 failed)
       1 step (1 passed)
 

@@ -57,7 +57,7 @@ Feature: Randomize
     When I run `cucumber`
     Then it should pass
 
-  @spawn @todo-windows
+  @spawn
   Scenario: Run scenarios randomized
     When I run `cucumber --order random:41544 -q`
     Then it should fail
@@ -106,7 +106,7 @@ Feature: Randomize
     And I rerun the previous command with the same seed
     Then the output of both commands should be the same
 
-  @spawn @todo-windows
+  @spawn
   Scenario: Run scenarios randomized with some skipped
     When I run `cucumber --tags "not @skipme" --order random:41544 -q`
     Then it should fail with exactly:

@@ -12,7 +12,6 @@ Feature: Nested Steps
       end
       """
 
-  @todo-windows
   Scenario: Use #steps to call several steps at once
     Given a step definition that looks like this:
       """ruby
@@ -32,7 +31,6 @@ Feature: Nested Steps
 
       """
 
-  @todo-windows
   Scenario: Use #step to call a single step
     Given a step definition that looks like this:
       """ruby
@@ -50,7 +48,6 @@ Feature: Nested Steps
 
       """
 
-  @todo-windows
   Scenario: Use #steps to call a table
     Given a step definition that looks like this:
       """ruby
@@ -80,7 +77,6 @@ Feature: Nested Steps
 
       """
 
-  @todo-windows
   Scenario: Use #steps to call a multi-line string
     Given a step definition that looks like this:
       """ruby
@@ -107,7 +103,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn @todo-windows @todo-jruby @wip-jruby
+  @spawn @todo-jruby @wip-jruby
   Scenario: Backtrace doesn't skip nested steps
     Given a file named "features/nested_steps.feature" with:
       """gherkin

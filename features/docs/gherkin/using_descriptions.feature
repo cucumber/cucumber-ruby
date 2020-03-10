@@ -1,4 +1,3 @@
-@todo-windows
 Feature: Using descriptions to give features context
 
   When writing your feature files its very helpful to use description
@@ -58,7 +57,7 @@ Feature: Using descriptions to give features context
       We can put a useful description here of the feature, which can
       span multiple lines.
 
-      Background: 
+      Background:
         We can also put in descriptions showing what the background is
         doing.
         Given this step passes

@@ -1,7 +1,7 @@
 Feature: Rerun formatter
 
   The rerun formatter writes an output that's perfect for
-  passing to Cucumber when you want to rerun only the 
+  passing to Cucumber when you want to rerun only the
   scenarios that prevented the exit code to be zero.
 
   You can save off the rerun output to a file by using it like this:
@@ -18,7 +18,6 @@ Feature: Rerun formatter
   Background:
     Given the standard step definitions
 
-  @todo-windows
   Scenario: Exit code is zero
     Given a file named "features/mixed.feature" with:
       """
@@ -71,7 +70,6 @@ Feature: Rerun formatter
       """
       """
 
-  @todo-windows
   Scenario: Exit code is not zero, regular scenario
     Given a file named "features/mixed.feature" with:
       """
@@ -112,7 +110,7 @@ Feature: Rerun formatter
 
         Scenario Outline:
           Given this step <status>
-        
+
         Examples:
           | status |
           | passes |

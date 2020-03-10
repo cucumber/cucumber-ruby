@@ -1,6 +1,5 @@
 Feature: Before Hook
 
-  @todo-windows
   Scenario: Examine name of scenario
     Given a file named "features/foo.feature" with:
       """
@@ -27,7 +26,6 @@ Feature: Before Hook
 
       """
 
-  @todo-windows
   Scenario: Examine name of scenario outline
     Given a file named "features/foo.feature" with:
       """

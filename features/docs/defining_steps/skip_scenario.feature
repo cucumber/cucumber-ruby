@@ -1,6 +1,5 @@
 Feature: Skip Scenario
 
-  @todo-windows
   Scenario: With a passing step
     Given a file named "features/test.feature" with:
       """

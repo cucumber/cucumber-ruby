@@ -3,7 +3,7 @@ Feature: Pretty formatter - Printing messages
   When you want to print to Cucumber's output, call `log` from
   a step definition. Cucumber will grab the output and print it via
   the formatter that you're using.
-  
+
   Your message will be printed out after the step has run.
 
   Background:
@@ -76,36 +76,36 @@ Feature: Pretty formatter - Printing messages
       """
 
     # Don't know why, but we need to spawn this for JRuby otherwise it gives wierd errors
-    @spawn @todo-windows
+    @spawn
     Scenario: Delayed messages feature
       When I run `cucumber --quiet --format pretty features/f.feature`
       Then the stderr should not contain anything
       And the output should contain:
       """
-      Feature: 
+      Feature:
 
-        Scenario: 
+        Scenario:
           Given I use log with text "Ann"
             Ann
           And this step passes
 
-        Scenario: 
+        Scenario:
           Given I use multiple logs
             Multiple
             Announce
             Me
           And this step passes
 
-        Scenario Outline: 
+        Scenario Outline:
           Given I use message <ann> in line <line>
 
-          Examples: 
+          Examples:
             | line | ann   |
             | 1    | anno1 |
             | 2    | anno2 |
             | 3    | anno3 |
 
-        Scenario: 
+        Scenario:
           Given I use log and step fails
             Announce with fail
              (RuntimeError)
@@ -113,10 +113,10 @@ Feature: Pretty formatter - Printing messages
             features/f.feature:21:in `I use log and step fails'
           And this step passes
 
-        Scenario Outline: 
+        Scenario Outline:
           Given I use message <ann> in line <line> with result <result>
 
-          Examples: 
+          Examples:
             | line | ann   | result |
             | 1    | anno1 | fail   |  Line: 1: anno1
              (RuntimeError)
@@ -132,7 +132,7 @@ Feature: Pretty formatter - Printing messages
         Ann
         ..
         Multiple
-        
+
         Announce
         Me
         ..UUU

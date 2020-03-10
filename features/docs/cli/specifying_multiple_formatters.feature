@@ -18,7 +18,6 @@ Feature: Running multiple formatters
         And there is world peace
     """
 
-  @todo-windows
   Scenario: Multiple formatters and outputs
     When I run `cucumber --no-color --format progress --out progress.txt --format pretty --out pretty.txt --no-source --dry-run --no-snippets features/test.feature`
     Then the stderr should not contain anything
@@ -46,7 +45,6 @@ Feature: Running multiple formatters
 
       """
 
-  @todo-windows
   Scenario: Two formatters to stdout
     When I run `cucumber -f progress -f pretty features/test.feature`
     Then it should fail with:
@@ -54,7 +52,6 @@ Feature: Running multiple formatters
       All but one formatter must use --out, only one can print to each stream (or STDOUT) (RuntimeError)
       """
 
-  @todo-windows
   Scenario: Two formatters to stdout when using a profile
     Given the following profiles are defined:
       """

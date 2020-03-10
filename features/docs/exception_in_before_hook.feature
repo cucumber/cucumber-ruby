@@ -14,7 +14,7 @@ Feature: Exception in Before Block
       end
       """
 
-  @spawn @todo-windows
+  @spawn
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -41,7 +41,6 @@ Feature: Exception in Before Block
 
       """
 
-  @todo-windows
   Scenario: Handle Exception in Before hook for Scenario with Background
     Given a file named "features/naughty_step_in_before.feature" with:
       """
@@ -57,12 +56,12 @@ Feature: Exception in Before Block
     Then it should fail with exactly:
       """
       Feature: Sample
-      
+
         Background:              # features/naughty_step_in_before.feature:3
             I cannot even start this scenario (SomeSetupException)
             ./features/support/env.rb:4:in `Before'
           Given this step passes # features/step_definitions/steps.rb:1
-      
+
         Scenario: Run a good step # features/naughty_step_in_before.feature:6
           Given this step passes  # features/step_definitions/steps.rb:1
 
@@ -75,7 +74,6 @@ Feature: Exception in Before Block
 
       """
 
-  @todo-windows
   Scenario: Handle Exception using the progress format
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """

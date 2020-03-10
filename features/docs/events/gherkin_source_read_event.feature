@@ -5,7 +5,6 @@ Feature: Gherkin Source Read Event
   See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/GherkinSourceRead)
   for more information about the data available on this event.
 
-  @todo-windows
   Scenario: Read two documents
     Given a file named "features/one.feature" with:
       """

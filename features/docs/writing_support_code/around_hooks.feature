@@ -5,7 +5,6 @@ Feature: Around hooks
   that provide only a block syntax for transactions, Cucumber should
   permit definition of Around hooks.
 
-  @todo-windows
   Scenario: A single Around hook
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -39,7 +38,6 @@ Feature: Around hooks
 
       """
 
-  @todo-windows
   Scenario: Multiple Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -86,7 +84,6 @@ Feature: Around hooks
 
       """
 
-  @todo-windows
   Scenario: Mixing Around, Before, and After hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -134,7 +131,6 @@ Feature: Around hooks
 
       """
 
-  @todo-windows
   Scenario: Around hooks with tags
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -189,7 +185,6 @@ Feature: Around hooks
 
       """
 
-  @todo-windows
   Scenario: Around hooks with scenario outlines
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -223,7 +218,7 @@ Feature: Around hooks
         Scenario Outline: using hook # features/f.feature:2
           Then the hook is called    # features/f.feature:3
 
-          Examples: 
+          Examples:
             | Number |
             | one    |
             | two    |
@@ -233,7 +228,6 @@ Feature: Around hooks
 
       """
 
-  @todo-windows
   Scenario: Around Hooks and the Custom World
     Given a file named "features/step_definitions/steps.rb" with:
       """

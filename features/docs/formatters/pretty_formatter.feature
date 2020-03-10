@@ -17,7 +17,6 @@ Feature: Pretty output formatter
     When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand `
     Then it should pass
 
-  @todo-windows
   Scenario: when using a profile the output should include 'Using the default profile...'
     And a file named "cucumber.yml" with:
     """
@@ -56,19 +55,19 @@ Feature: Pretty output formatter
     Then the stderr should not contain anything
     Then it should fail with:
       """
-      Feature: 
- 
-        Scenario: 
+      Feature:
+
+        Scenario:
             Before hook
           Given this step passes
             AfterStep hook
             After hook
             error (RuntimeError)
             ./features/step_definitions/output_steps.rb:11:in `After'
-      
+
       Failing Scenarios:
       cucumber features/test.feature:2
-      
+
       1 scenario (1 failed)
       1 step (1 passed)
       """
