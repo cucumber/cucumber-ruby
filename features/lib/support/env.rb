@@ -5,42 +5,34 @@ require 'aruba/processes/in_process'
 require 'aruba/processes/spawn_process'
 require 'cucumber/cli/main'
 
-def empty_directory(dir_path)
-  Dir.entries(dir_path).each do |entry|
-    next if ['.', '..'].include?(entry)
-    FileUtils.remove_entry_secure(File.join(dir_path, entry), force: true)
-  end
-end
+# def empty_directory(dir_path)
+#   Dir.entries(dir_path).each do |entry|
+#     next if ['.', '..'].include?(entry)
+#     FileUtils.remove_entry_secure(File.join(dir_path, entry), force: true)
+#   end
+# end
 
-def list_content(dir_path, indent = '  ')
-  Dir.entries(dir_path).map do |entry|
-    next if ['.', '..'].include?(entry)
+# def list_content(dir_path, indent = '  ')
+#   Dir.entries(dir_path).map do |entry|
+#     next if ['.', '..'].include?(entry)
 
-    entry_path = File.join(dir_path, entry)
-    if File.directory?(entry_path)
-      ["#{indent}#{entry_path}:", list_content(entry_path, indent + '  ')]
-    else
-      "#{indent} - #{entry}"
-    end
-  end.flatten.compact.join("\n")
-end
+#     entry_path = File.join(dir_path, entry)
+#     if File.directory?(entry_path)
+#       ["#{indent}#{entry_path}:", list_content(entry_path, indent + '  ')]
+#     else
+#       "#{indent} - #{entry}"
+#     end
+#   end.flatten.compact.join("\n")
+# end
 
-Before do
-  next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+# Before do
+#   next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
 
-  aruba_dir = File.join('.', 'tmp', 'aruba')
-  empty_directory(aruba_dir)
+#   aruba_dir = File.join('.', 'tmp', 'aruba')
+#   empty_directory(aruba_dir)
 
-  log("Left in ./tmp/aruba: #{list_content(aruba_dir)}") unless Dir.empty?(aruba_dir)
-end
-
-After do
-  next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-
-  aruba.command_monitor.registered_commands.each do |process|
-    system("Stop-Process -Id #{process.id}")
-  end
-end
+#   log("Left in ./tmp/aruba: #{list_content(aruba_dir)}") unless Dir.empty?(aruba_dir)
+# end
 
 Before('@spawn') do
   aruba.config.command_launcher = :spawn
