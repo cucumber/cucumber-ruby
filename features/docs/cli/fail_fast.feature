@@ -1,10 +1,9 @@
 @spawn
 Feature: Fail fast
 
-  The --fail-fast flag causes Cucumber to exit immediately after the first 
+  The --fail-fast flag causes Cucumber to exit immediately after the first
   scenario fails.
 
-  @todo-windows
   Scenario: When a scenario fails
     Given a file named "features/bad.feature" with:
       """
@@ -26,7 +25,6 @@ Feature: Fail fast
     1 scenario (1 failed)
     """
 
-  @todo-windows
   Scenario: When all the scenarios pass
     Given a file named "features/first.feature" with:
       """

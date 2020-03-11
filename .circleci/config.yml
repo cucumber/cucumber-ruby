@@ -4,7 +4,19 @@
 #
 version: 2.1
 
+orbs:
+  win: circleci/windows@2.2.0
+
 commands:
+  add_windows_dependencies:
+    description: "Update Windows environment"
+
+    steps:
+      - run:
+          name: "Add ansicon"
+          command: |
+            choco install ansicon
+
   build:
     description: "Build and run the tests"
     steps:
@@ -40,6 +52,18 @@ commands:
             set -o errexit
 
 jobs:
+  build_windows:
+    executor: win/default
+    working_directory: ~/repo
+    steps:
+      - add_windows_dependencies
+      - build
+      - run:
+          name: run tests
+          command: |
+            bundle exec rspec
+            bundle exec cucumber --retry 8 --no-strict-flaky
+
   build-ruby-2_3:
     docker:
       - image: circleci/ruby:2.3
@@ -167,6 +191,7 @@ workflows:
 
   build:
     jobs:
+      - build_windows
       - build-ruby-2_3
       - build-ruby-2_4
       - build-ruby-2_5

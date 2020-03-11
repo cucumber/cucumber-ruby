@@ -9,7 +9,6 @@ Feature: Ambiguous Steps
   to use. Use it with caution!
 
 
-  @todo-windows
   Scenario: Ambiguous steps
 
     Given a file named "features/ambiguous.feature" with:
@@ -53,7 +52,6 @@ Feature: Ambiguous Steps
 
     """
 
-  @todo-windows
   Scenario: Ambiguous steps with guess mode
 
     Given a file named "features/ambiguous.feature" with:

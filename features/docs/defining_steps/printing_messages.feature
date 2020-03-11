@@ -3,7 +3,7 @@ Feature: Pretty formatter - Printing messages
   When you want to print to Cucumber's output, call `log` from
   a step definition. Cucumber will grab the output and print it via
   the formatter that you're using.
-  
+
   Your message will be printed out after the step has run.
 
   Background:
@@ -76,7 +76,7 @@ Feature: Pretty formatter - Printing messages
       """
 
     # Don't know why, but we need to spawn this for JRuby otherwise it gives wierd errors
-    @spawn @todo-windows
+    @spawn
     Scenario: Delayed messages feature
       When I run `cucumber --quiet --format pretty features/f.feature`
       Then the stderr should not contain anything

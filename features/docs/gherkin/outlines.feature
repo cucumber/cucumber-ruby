@@ -41,7 +41,6 @@ Feature: Scenario outlines
       Given(/^failing without a table$/) { raise RuntimeError }
       """
 
-  @todo-windows
   Scenario: Run scenario outline
     When I run `cucumber -q features/outline_sample.feature`
     Then it should fail with:
@@ -72,7 +71,6 @@ Feature: Scenario outlines
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
       """
 
-  @todo-windows
   Scenario: Run scenario with filtering on the scenario outline name
     When I run `cucumber -q features/outline_sample.feature --name 'Test state'`
     Then it should fail with:
@@ -104,7 +102,6 @@ Feature: Scenario outlines
 
       """
 
-  @todo-windows
   Scenario: Run single failing scenario outline table row
     When I run `cucumber -q features/outline_sample.feature:10`
     Then it should fail with:
@@ -130,7 +127,6 @@ Feature: Scenario outlines
 
       """
 
-  @todo-windows
   Scenario: Run all with progress formatter
     When I run `cucumber -q --format progress features/outline_sample.feature`
     Then it should fail with exactly:
