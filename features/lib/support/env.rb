@@ -34,6 +34,15 @@ Before do
   log("Left in ./tmp/aruba: #{list_content(aruba_dir)}") unless Dir.empty?(aruba_dir)
 end
 
+After do
+  running_processes = aruba.command_monitor.registered_commands.filter { |p| !p.stopped? }
+  next if running_processes.empty?
+
+  log("Running processes: #{running_processes.map(&:commandline).join(', ')}")
+  log('Killing processes')
+  running_processes.map(&:terminate)
+end
+
 Before('@spawn') do
   aruba.config.command_launcher = :spawn
   aruba.config.main_class = NilClass
