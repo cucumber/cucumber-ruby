@@ -35,12 +35,11 @@ Before do
 end
 
 After do
-  running_processes = aruba.command_monitor.registered_commands.filter { |p| !p.stopped? }
-  next if running_processes.empty?
+  next unless RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
 
-  log("Running processes: #{running_processes.map(&:commandline).join(', ')}")
-  log('Killing processes')
-  running_processes.map(&:terminate)
+  aruba.command_monitor.registered_commands.each do |process|
+    system("Stop-Process -Id #{process.id}")
+  end
 end
 
 Before('@spawn') do
