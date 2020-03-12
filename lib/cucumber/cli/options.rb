@@ -24,6 +24,7 @@ module Cucumber
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        '[DEPRECATED] Prints the feature as JSON'],
         'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
+        'html'        => ['Cucumber::Formatter::HTML',        'Outputs HTML report'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }.freeze
       max = BUILTIN_FORMATS.keys.map(&:length).max
