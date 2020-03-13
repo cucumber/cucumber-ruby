@@ -12,7 +12,6 @@ Feature: Nested Steps
       end
       """
 
-  @todo-windows
   Scenario: Use #steps to call several steps at once
     Given a step definition that looks like this:
       """ruby
@@ -32,7 +31,6 @@ Feature: Nested Steps
 
       """
 
-  @todo-windows
   Scenario: Use #step to call a single step
     Given a step definition that looks like this:
       """ruby
@@ -50,7 +48,6 @@ Feature: Nested Steps
 
       """
 
-  @todo-windows
   Scenario: Use #steps to call a table
     Given a step definition that looks like this:
       """ruby
@@ -80,7 +77,6 @@ Feature: Nested Steps
 
       """
 
-  @todo-windows
   Scenario: Use #steps to call a multi-line string
     Given a step definition that looks like this:
       """ruby
@@ -107,8 +103,15 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn @todo-windows @todo-jruby @wip-jruby
+  @spawn @todo-jruby @wip-jruby
   Scenario: Backtrace doesn't skip nested steps
+    Given a file named "features/nested_steps.feature" with:
+      """gherkin
+      Feature: nested steps
+
+        Scenario: Test Scenario 1
+          Given two turtles
+      """
     Given a step definition that looks like this:
       """ruby
       Given /two turtles/ do
@@ -117,16 +120,16 @@ Feature: Nested Steps
 
       When(/I have a couple turtles/) { raise 'error' }
       """
-    When I run the feature with the progress formatter
+    When I run `cucumber features/nested_steps.feature --format progress`
     Then it should fail with:
       """
       error (RuntimeError)
       ./features/step_definitions/steps2.rb:5:in `/I have a couple turtles/'
       ./features/step_definitions/steps2.rb:2:in `/two turtles/'
-      features/test_feature_1.feature:3:in `two turtles'
+      features/nested_steps.feature:4:in `two turtles'
 
       Failing Scenarios:
-      cucumber features/test_feature_1.feature:2 # Scenario: Test Scenario 1
+      cucumber features/nested_steps.feature:3 # Scenario: Test Scenario 1
 
       1 scenario (1 failed)
       1 step (1 failed)

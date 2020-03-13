@@ -1,12 +1,11 @@
 Feature: Spec formatter
 
-  This formatter mimics the output from tools like RSpec or Mocha, giving an 
+  This formatter mimics the output from tools like RSpec or Mocha, giving an
   overview of each feature and scenario but omitting the steps.
 
   Background:
     Given the standard step definitions
 
-  @todo-windows
   Scenario: A couple of scenarios
     Given a file named "features/test.feature" with:
     """

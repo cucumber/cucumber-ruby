@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'multi_json'
+require 'json'
 require 'socket'
 
 class FakeWireServer
@@ -56,7 +56,7 @@ class FakeWireServer
 
       if protocol_entry
         sleep delay(data)
-        @on_message.call(MultiJson.load(protocol_entry['request'])[0])
+        @on_message.call(JSON.parse(protocol_entry['request'])[0])
         send_response(protocol_entry['response'])
       else
         serialized_exception = { message: "Not understood: #{data}", backtrace: [] }
@@ -76,7 +76,7 @@ class FakeWireServer
 
     def response_to(data)
       @protocol.detect do |entry|
-        MultiJson.load(entry['request']) == MultiJson.load(data)
+        JSON.parse(entry['request']) == JSON.parse(data)
       end
     end
 
@@ -85,7 +85,7 @@ class FakeWireServer
     end
 
     def delay(data)
-      message = MultiJson.load(data.strip)[0]
+      message = JSON.parse(data.strip)[0]
       @delays[message.to_sym] || 0
     end
   end

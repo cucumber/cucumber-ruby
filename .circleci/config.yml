@@ -4,10 +4,21 @@
 #
 version: 2.1
 
+orbs:
+  win: circleci/windows@2.2.0
+
 commands:
+  add_windows_dependencies:
+    description: "Update Windows environment"
+
+    steps:
+      - run:
+          name: "Add ansicon"
+          command: |
+            choco install ansicon
+
   build:
     description: "Build and run the tests"
-
     steps:
       - checkout
       - restore_cache:
@@ -41,6 +52,18 @@ commands:
             set -o errexit
 
 jobs:
+  build_windows:
+    executor: win/default
+    working_directory: ~/repo
+    steps:
+      - add_windows_dependencies
+      - build
+      - run:
+          name: run tests
+          command: |
+            bundle exec rspec
+            bundle exec cucumber --retry 8 --no-strict-flaky
+
   build-ruby-2_3:
     docker:
       - image: circleci/ruby:2.3
@@ -97,7 +120,7 @@ jobs:
 
   build_monorepo:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~
     steps:
       - run:
@@ -114,15 +137,16 @@ jobs:
 
   validate-cck:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~/repo
     steps:
       - attach_workspace:
           at: "~/cucumber"
+      - checkout
       - run:
-          name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
-      - build
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Validates against CCK
           command: |
@@ -131,15 +155,16 @@ jobs:
 
   validate-messages:
     docker:
-      - image: cucumber/cucumber-build:ec704464c6acc2c0352f6cf94bb101ad
+      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
     working_directory: ~/repo
     steps:
       - attach_workspace:
           at: "~/cucumber"
+      - checkout
       - run:
-          name: Add Nokogiri dependencies
-          command: apk add libxml2-dev libxslt-dev
-      - build
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
       - run:
           name: Validates messages with JSON
           command: |
@@ -166,6 +191,7 @@ workflows:
 
   build:
     jobs:
+      - build_windows
       - build-ruby-2_3
       - build-ruby-2_4
       - build-ruby-2_5

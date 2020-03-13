@@ -4,7 +4,7 @@ Feature: AfterStep Hooks
 
   Background:
     Given the standard step definitions
-    And a file named "features/sample.feature" with:
+    And a file named "features/sample-after-step-hook.feature" with:
       """
       Feature: Sample
 
@@ -12,7 +12,6 @@ Feature: AfterStep Hooks
           Given this step passes
       """
 
-  @todo-windows
   Scenario: Access Test Step object in AfterStep Block
     Given a file named "features/support/env.rb" with:
       """
@@ -20,12 +19,12 @@ Feature: AfterStep Hooks
         expect(test_step).to be_a(Cucumber::Core::Test::Step)
       end
       """
-    When I run `cucumber features`
+    When I run `cucumber features/sample-after-step-hook.feature`
     Then it should pass with:
       """
       Feature: Sample
 
-        Scenario: Success        # features/sample.feature:3
+        Scenario: Success        # features/sample-after-step-hook.feature:3
           Given this step passes # features/step_definitions/steps.rb:1
 
       1 scenario (1 passed)
@@ -33,7 +32,6 @@ Feature: AfterStep Hooks
 
       """
 
-  @todo-windows
   Scenario: An AfterStep with one named argument receives only the result
     Given a file named "features/support/env.rb" with:
       """
@@ -41,12 +39,12 @@ Feature: AfterStep Hooks
         expect(result).to be_a(Cucumber::Core::Test::Result::Passed)
       end
       """
-    When I run `cucumber features`
+    When I run `cucumber features/sample-after-step-hook.feature`
     Then it should pass with:
       """
       Feature: Sample
 
-        Scenario: Success        # features/sample.feature:3
+        Scenario: Success        # features/sample-after-step-hook.feature:3
           Given this step passes # features/step_definitions/steps.rb:1
 
       1 scenario (1 passed)

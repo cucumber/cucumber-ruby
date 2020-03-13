@@ -1,16 +1,16 @@
 Feature: Background
 
-  Often you find that several scenarios in the same feature start with 
+  Often you find that several scenarios in the same feature start with
   a common context.
-  
+
   Cucumber provides a mechanism for this, by providing a `Background` keyword
   where you can specify steps that should be run before each scenario in the
   feature. Typically these will be `Given` steps, but you can use any steps
   that you need to.
-  
+
   **Hint:** if you find that some of the scenarios don't fit the background,
   consider splitting them into a separate feature.
-  
+
   Background:
     Given a file named "features/passing_background.feature" with:
       """
@@ -20,7 +20,7 @@ Feature: Background
           Given '10' cukes
 
         Scenario: passing background
-          Then I should have '10' cukes    
+          Then I should have '10' cukes
 
         Scenario: another passing background
           Then I should have '10' cukes
@@ -49,13 +49,13 @@ Feature: Background
       @background_tagged_before_on_outline
       Feature: Background tagged Before on Outline
 
-        Background: 
+        Background:
           Given this step passes
 
         Scenario Outline: passing background
           Then I should have '<count>' cukes
 
-          Examples: 
+          Examples:
             | count |
             | 888   |
       """
@@ -130,14 +130,14 @@ Feature: Background
         Scenario Outline: passing background
           Then I should have '<count>' global cukes
 
-          Examples: 
+          Examples:
             | count |
             | 10    |
 
         Scenario Outline: failing background
           Then I should have '<count>' global cukes
 
-          Examples: 
+          Examples:
             | count |
             | 10    |
 
@@ -152,7 +152,7 @@ Feature: Background
             | c | d |
           And multiline string
             \"\"\"
-            I'm a cucumber and I'm okay. 
+            I'm a cucumber and I'm okay.
             I sleep all night and I test all day
             \"\"\"
 
@@ -162,7 +162,7 @@ Feature: Background
             | c | d |
           Then the multiline string should be
             \"\"\"
-            I'm a cucumber and I'm okay. 
+            I'm a cucumber and I'm okay.
             I sleep all night and I test all day
             \"\"\"
 
@@ -172,7 +172,7 @@ Feature: Background
             | c | d |
           Then the multiline string should be
             \"\"\"
-            I'm a cucumber and I'm okay. 
+            I'm a cucumber and I'm okay.
             I sleep all night and I test all day
             \"\"\"
       """
@@ -213,7 +213,7 @@ Feature: Background
     Then it should pass with exactly:
     """
     Feature: Passing background sample
-    
+
       Background: 
         Given '10' cukes
 
@@ -224,7 +224,7 @@ Feature: Background
     2 steps (2 passed)
 
     """
-  
+
   Scenario: run a feature with a background that passes
     When I run `cucumber -q features/passing_background.feature`
     Then it should pass with exactly:
@@ -295,7 +295,7 @@ Feature: Background
 
     """
 
-  @spawn @todo-windows
+  @spawn
   Scenario: run a feature with a background that fails
     When I run `cucumber -q features/failing_background.feature`
     Then it should fail with exactly:
@@ -318,13 +318,13 @@ Feature: Background
     Failing Scenarios:
     cucumber features/failing_background.feature:7
     cucumber features/failing_background.feature:10
-    
+
     2 scenarios (2 failed)
     6 steps (2 failed, 4 skipped)
-    
+
     """
 
-  @spawn @todo-windows
+  @spawn
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run `cucumber -q features/scenario_outline_failing_background.feature`
     Then it should fail with exactly:
@@ -357,7 +357,7 @@ Feature: Background
 
     2 scenarios (2 failed)
     4 steps (2 failed, 2 skipped)
-    
+
     """
 
   Scenario: run a feature with a background that is pending
@@ -377,10 +377,10 @@ Feature: Background
 
     2 scenarios (2 pending)
     4 steps (2 skipped, 2 pending)
-    
+
     """
 
-  @spawn @todo-windows
+  @spawn
   Scenario: background passes with first scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:
@@ -406,10 +406,10 @@ Feature: Background
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
-    
+
     """
 
-  @spawn @todo-windows
+  @spawn
   Scenario: background passes with first outline scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success_outline.feature`
     Then it should fail with exactly:
@@ -442,10 +442,10 @@ Feature: Background
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
-    
+
     """
 
-  @spawn @todo-windows
+  @spawn
   Scenario: background passes with first outline scenario but fails with second (--expand)
     When I run `cucumber -x -q features/failing_background_after_success_outline.feature`
     Then it should fail with exactly:
@@ -460,7 +460,7 @@ Feature: Background
         Then I should have '<count>' global cukes
 
         Examples: 
- 
+
           Example: | 10 |
             Then I should have '10' global cukes
 
@@ -481,7 +481,7 @@ Feature: Background
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
-    
+
     """
 
   Scenario: background with multline args
@@ -514,7 +514,7 @@ Feature: Background
             | c | d |
           And multiline string
             \"\"\"
-            I'm a cucumber and I'm okay. 
+            I'm a cucumber and I'm okay.
             I sleep all night and I test all day
             \"\"\"
 
@@ -524,7 +524,7 @@ Feature: Background
             | c | d |
           Then the multiline string should be
             \"\"\"
-            I'm a cucumber and I'm okay. 
+            I'm a cucumber and I'm okay.
             I sleep all night and I test all day
             \"\"\"
 
@@ -534,12 +534,12 @@ Feature: Background
             | c | d |
           Then the multiline string should be
             \"\"\"
-            I'm a cucumber and I'm okay. 
+            I'm a cucumber and I'm okay.
             I sleep all night and I test all day
             \"\"\"
 
       2 scenarios (2 passed)
       8 steps (8 passed)
-    
+
       """
 

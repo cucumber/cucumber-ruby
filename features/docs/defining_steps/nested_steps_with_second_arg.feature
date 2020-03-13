@@ -6,7 +6,6 @@ Feature: Nested Steps with either table or doc string
       Given two turtles
       """
 
-  @todo-windows
   Scenario: Use #step with table
     Given a step definition that looks like this:
       """ruby
@@ -35,7 +34,6 @@ Feature: Nested Steps with either table or doc string
 
       """
 
-  @todo-windows
   Scenario: Use #step with Doc String
     Given a step definition that looks like this:
       """ruby
