@@ -1,21 +1,27 @@
 # frozen_string_literal: true
 
+require 'cucumber/formatter/http_io'
+
 module Cucumber
   module Formatter
     module Io
       module_function
 
-      def ensure_io(path_or_io)
-        return nil if path_or_io.nil?
-        return path_or_io if path_or_io.respond_to?(:write)
-        file = File.open(path_or_io, Cucumber.file_mode('w'))
+      def ensure_io(path_or_url_or_io)
+        return nil if path_or_url_or_io.nil?
+        return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
+        io = if path_or_url_or_io.match(%r{^https?://})
+               HTTPIO.open(path_or_url_or_io)
+             else
+               File.open(path_or_url_or_io, Cucumber.file_mode('w'))
+             end
         at_exit do
-          unless file.closed?
-            file.flush
-            file.close
+          unless io.closed?
+            io.flush
+            io.close
           end
         end
-        file
+        io
       end
 
       def ensure_file(path, name)
