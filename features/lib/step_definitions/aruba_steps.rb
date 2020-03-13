@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'nokogiri'
+
 Then(/^it should (pass|fail)$/) do |result|
   if result == 'pass'
     expect(last_command_started).to be_successfully_executed
@@ -27,4 +29,9 @@ end
 
 Then('the output should contain (ND)JSON with key {string} and value {string}') do |key, value|
   expect(all_stdout).to match(/"#{key}": ?"#{value}"/)
+end
+
+Then('output should be html with title {string}') do |title|
+  document = Nokogiri::HTML.parse(all_stdout)
+  expect(document.xpath("//title").text).to eq(title)
 end
