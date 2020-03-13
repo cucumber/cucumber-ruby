@@ -104,7 +104,7 @@ module Cucumber
             add_option :formats, [*parse_formats(v), @out_stream]
           end
           opts.on('--init', *init_msg) { |_v| initialize_project }
-          opts.on('-o', '--out [FILE|DIR]', *out_msg) { |v| out_stream v }
+          opts.on('-o', '--out [FILE|DIR|URL]', *out_msg) { |v| out_stream v }
           opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) { |v| add_tag v }
           opts.on('-n NAME', '--name NAME', *name_msg) { |v| add_option :name_regexps, /#{v}/ }
           opts.on('-e', '--exclude PATTERN', *exclude_msg) { |v| add_option :excludes, Regexp.new(v) }
@@ -295,10 +295,15 @@ Specify SEED to reproduce the shuffling from a previous run.
 
       def out_msg
         [
-          'Write output to a file/directory instead of STDOUT. This option',
+          'Write output to a file/directory/URL instead of STDOUT. This option',
           'applies to the previously specified --format, or the',
           'default format if no format is specified. Check the specific',
-          "formatter's docs to see whether to pass a file or a dir."
+          "formatter's docs to see whether to pass a file, dir or URL.",
+          "\n",
+          'When using a URL, the output of the formatter will be sent as the HTTP request body.',
+          'HTTP headers and request method can be set with http- prefixed query parameters,',
+          'for example ?http-content-type=application/json&http-method=PUT.',
+          'All http- prefixed query parameters will be removed from the sent query parameters.'
         ]
       end
 
