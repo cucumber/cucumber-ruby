@@ -17,7 +17,5 @@ Feature: html formatter
 
   Scenario: output html to stdout
     When I run `cucumber features/my_feature.feature --format html`
-    Then it should pass with:
-      """
-      <head>
-      """
+    Then it should pass
+    And output should be html with title "Cucumber"
