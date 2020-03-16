@@ -9,8 +9,6 @@ def write_file(path, content)
 end
 
 def clean_output(output)
-  current_working_directory = Dir.pwd
-
   output.split("\n").map do |line|
     next if line.include?("lib/noruba_steps.rb")
     line
@@ -94,6 +92,11 @@ After do
   Dir.chdir(@original_cwd)
 end
 
+Given('a directory named {string}') do |path|
+  FileUtils.mkdir_p(File.dirname(path))
+end
+
+
 Given('a directory without standard Cucumber project directory structure') do
 end
 
@@ -137,6 +140,10 @@ end
 Then('it should fail with exactly:') do |output|
   #expect(@cucumber.exit_status).not_to eq(0)
   output_equals(@cucumber.all_output, output)
+end
+
+Then('it should pass') do
+  expect(@cucumber.exit_status).to eq(0)
 end
 
 Then('it should pass with:') do |output|
