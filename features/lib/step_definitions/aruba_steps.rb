@@ -33,5 +33,5 @@ end
 
 Then('output should be html with title {string}') do |title|
   document = Nokogiri::HTML.parse(all_stdout)
-  expect(document.xpath("//title").text).to eq(title)
+  expect(document.xpath('//title').text).to eq(title)
 end
