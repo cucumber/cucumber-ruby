@@ -1,0 +1,1 @@
+default: "docs --format progress --require lib/"

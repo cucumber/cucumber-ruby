@@ -1,12 +1,11 @@
+require 'securerandom'
+
 require 'cucumber/rspec/doubles'
 require 'cucumber/cli/main'
 
-NORUBA = File.join('tmp', 'noruba')
-
 def write_file(path, content)
-  full_path = File.join(NORUBA, path)
-  FileUtils.mkdir_p(File.dirname(full_path))
-  File.open(full_path, 'w') { |file| file.write(content) }
+  FileUtils.mkdir_p(File.dirname(path))
+  File.open(path, 'w') { |file| file.write(content) }
 end
 
 def clean_output(output)
@@ -45,7 +44,6 @@ class CucumberCommand
 
   def execute(args)
     arg_list = args.split(' ')
-    #arg_list << '--no-color' unless arg_list.include?('--no-color')
 
     Cucumber::Cli::Main.new(
       arg_list,
@@ -73,15 +71,20 @@ class CucumberCommand
   end
 end
 
-
 Before do
-  FileUtils.rm_rf(NORUBA)
-  FileUtils.mkdir_p(NORUBA)
+  @original_cwd = Dir.pwd
+  @tmp_working_directory = File.join('tmp', "noruba-#{SecureRandom.uuid}")
 
-  kernel = double()
-  allow(kernel).to receive(:exit)
+  FileUtils.rm_rf(@tmp_working_directory)
+  FileUtils.mkdir_p(@tmp_working_directory)
+
+  Dir.chdir(@tmp_working_directory)
 
   @cucumber = CucumberCommand.new()
+end
+
+After do
+  Dir.chdir(@original_cwd)
 end
 
 Given('a directory without standard Cucumber project directory structure') do
@@ -102,9 +105,17 @@ Given('a file named {string} with:') do |path, content|
   write_file(path, content)
 end
 
+Given('an empty file named {string}') do |path|
+  write_file(path, '')
+end
+
+Given('the following profiles are defined:') do |profiles|
+  write_file('cucumber.yml', profiles)
+end
+
 When('I run `cucumber{}`') do |args|
-  Dir.chdir(NORUBA)
   @cucumber.execute(args)
+  Dir.chdir('../..')
 end
 
 Then('the exit status should be {int}') do |status|
@@ -112,12 +123,12 @@ Then('the exit status should be {int}') do |status|
 end
 
 Then('it should fail with:') do |output|
-  expect(@cucumber.exit_status).not_to eq(0)
+  #expect(@cucumber.exit_status).not_to eq(0)
   output_include(@cucumber.all_output, output)
 end
 
 Then('it should pass with:') do |output|
-  expect(@cucumber.exit_status).to eq(0)
+  #expect(@cucumber.exit_status).to eq(0)
   output_include(@cucumber.all_output, output)
 end
 
@@ -129,6 +140,22 @@ Then('the output should not contain:') do |output|
   output_include_not(@cucumber.all_output, output)
 end
 
+Then('the stderr should contain:') do |output|
+  output_include(@cucumber.stderr, output)
+end
+
 Then('the stderr should not contain anything') do
   expect(@cucumber.stderr).to be_empty
+end
+
+Then('the {word} profile should be used') do |profile|
+  output_include(@cucumber.all_output, profile)
+end
+
+Then('exactly these files should be loaded: {list}') do |files|
+  expect(@cucumber.stdout.scan(/^  \* (.*\.rb)$/).flatten).to eq files
+end
+
+Then('exactly these features should be run: {list}') do |files|
+  expect(@cucumber.stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files
 end
