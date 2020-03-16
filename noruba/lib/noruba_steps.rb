@@ -14,9 +14,16 @@ def clean_output(output)
   output.split("\n").map do |line|
     next if line.include?("lib/noruba_steps.rb")
     line
-      .gsub(/\e\[([;\d]+)?m/, '')
+      .gsub(/\e\[([;\d]+)?m/, '')                  # Drop trailing whitespaces
+      .gsub(/^.*cucumber_process\.rb.*$\n/, '')
+      .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s')         # Make duration predictable
+      .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
       .sub(/\s*$/, '')
   end.compact.join("\n")
+end
+
+def output_equals(source, expected)
+  expect(clean_output(source)).to eq(clean_output(expected))
 end
 
 def output_include(source, expected)
@@ -125,6 +132,11 @@ end
 Then('it should fail with:') do |output|
   #expect(@cucumber.exit_status).not_to eq(0)
   output_include(@cucumber.all_output, output)
+end
+
+Then('it should fail with exactly:') do |output|
+  #expect(@cucumber.exit_status).not_to eq(0)
+  output_equals(@cucumber.all_output, output)
 end
 
 Then('it should pass with:') do |output|
