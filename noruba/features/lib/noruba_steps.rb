@@ -4,6 +4,8 @@ require 'nokogiri'
 require 'cucumber/rspec/doubles'
 require 'cucumber/cli/main'
 
+NORUBA_PATH = 'noruba/features/lib'
+
 def write_file(path, content)
   FileUtils.mkdir_p(File.dirname(path))
   File.open(path, 'w') { |file| file.write(content) }
@@ -11,19 +13,19 @@ end
 
 def clean_output(output)
   output.split("\n").map do |line|
-    next if line.include?('noruba/lib')
+    next if line.include?(NORUBA_PATH)
     line
-      .gsub(/\e\[([;\d]+)?m/, '')                  # Drop trailing whitespaces
+      .gsub(/\e\[([;\d]+)?m/, '')                  # Drop colors
       .gsub(/^.*cucumber_process\.rb.*$\n/, '')
       .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s')         # Make duration predictable
       .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
-      .sub(/\s*$/, '')
+      .sub(/\s*$/, '')                             # Drop trailing whitespaces
   end.compact.join("\n")
 end
 
 def remove_self_ref(output)
   output.split("\n")
-    .reject { |line| line.include?('noruba/lib') }
+    .reject { |line| line.include?(NORUBA_PATH) }
     .join("\n")
 end
 
@@ -330,7 +332,7 @@ def normalise_json_step_or_hook(step_or_hook)
   if step_or_hook['result']['error_message']
     step_or_hook['result']['error_message'] = step_or_hook['result']['error_message']
       .split("\n")
-      .reject { |line| line.include?('noruba/lib')}
+      .reject { |line| line.include?(NORUBA_PATH)}
       .join("\n")
   end
 

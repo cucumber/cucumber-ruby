@@ -1,1 +1,1 @@
-default: --format progress features -r features --tags "not @jruby"
+default: features --require features --format progress --tags "not @jruby"
