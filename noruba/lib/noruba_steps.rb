@@ -141,6 +141,11 @@ When('I run `cucumber{}`') do |args|
   Dir.chdir('../..')
 end
 
+When('I run the feature with the progress formatter') do
+  @cucumber.execute("features/ --format progress")
+  Dir.chdir('../..')
+end
+
 Then('the exit status should be {int}') do |status|
   expect(@cucumber.exit_status).to eq(status)
 end
@@ -211,4 +216,33 @@ end
 Then('it fails before running features with:') do |expected|
   output_starts_with(@cucumber.all_output, expected)
   expect(@cucumber.exit_status).not_to eq(0)
+end
+
+Given('a scenario with a step that looks like this:') do |content|
+  write_file(
+    'features/my_feature.feature',
+     <<-FEATURE
+Feature: feature #{ SecureRandom.uuid }
+
+  Scenario: scenario #{ SecureRandom.uuid }
+  #{content}
+FEATURE
+  )
+end
+
+Given('a scenario with a step that looks like this in japanese:') do |content|
+  write_file(
+    'features/my_feature.feature',
+     <<-FEATURE
+# language: ja
+機能: #{ SecureRandom.uuid }
+
+シナリオ: scenario #{ SecureRandom.uuid }
+#{content}
+FEATURE
+  )
+end
+
+Given('a step definition that looks like this:') do |content|
+  write_file("features/step_definitions/steps#{ SecureRandom.uuid }.rb", content)
 end
