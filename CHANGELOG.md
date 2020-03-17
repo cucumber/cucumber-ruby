@@ -9,7 +9,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ----
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...master)
+## [4.0.0.rc.5](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...4.0.0.rc.5)
 
 ### Added
 
@@ -21,17 +21,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   Other `http-` prefixed query parameters will be converted to request headers
   (with the `http-` prefix stripped off).
 
-### Changed
-
-* N/A
-
-### Removed
-
-* N/A
-
-### Improved
-
-* N/A
 
 ## [4.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.3...4.0.0.rc.4)
 
