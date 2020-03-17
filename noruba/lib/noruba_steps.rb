@@ -112,7 +112,7 @@ After do
 end
 
 Given('a directory named {string}') do |path|
-  FileUtils.mkdir_p(File.dirname(path))
+  FileUtils.mkdir_p(path)
 end
 
 
@@ -327,6 +327,13 @@ def normalise_json(json)
 end
 
 def normalise_json_step_or_hook(step_or_hook)
+  if step_or_hook['result']['error_message']
+    step_or_hook['result']['error_message'] = step_or_hook['result']['error_message']
+      .split("\n")
+      .reject { |line| line.include?('noruba/lib')}
+      .join("\n")
+  end
+
   return unless step_or_hook['result'] && step_or_hook['result']['duration']
   expect(step_or_hook['result']['duration']).to be >= 0
   step_or_hook['result']['duration'] = 1
