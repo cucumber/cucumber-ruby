@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'nokogiri'
 
 require 'cucumber/rspec/doubles'
 require 'cucumber/cli/main'
@@ -10,7 +11,7 @@ end
 
 def clean_output(output)
   output.split("\n").map do |line|
-    next if line.include?("lib/noruba_steps.rb")
+    next if line.include?('noruba/lib')
     line
       .gsub(/\e\[([;\d]+)?m/, '')                  # Drop trailing whitespaces
       .gsub(/^.*cucumber_process\.rb.*$\n/, '')
@@ -20,6 +21,11 @@ def clean_output(output)
   end.compact.join("\n")
 end
 
+def remove_self_ref(output)
+  output.split("\n")
+    .reject { |line| line.include?('noruba/lib') }
+    .join("\n")
+end
 
 def output_starts_with(source, expected)
   expect(clean_output(source)).to start_with(clean_output(expected))
@@ -138,12 +144,10 @@ end
 
 When('I run `cucumber{}`') do |args|
   @cucumber.execute(args)
-  Dir.chdir('../..')
 end
 
 When('I run the feature with the progress formatter') do
   @cucumber.execute("features/ --format progress")
-  Dir.chdir('../..')
 end
 
 Then('the exit status should be {int}') do |status|
@@ -187,6 +191,10 @@ end
 
 Then('the stderr should contain:') do |output|
   output_include(@cucumber.stderr, output)
+end
+
+Then('the stderr should not contain:') do |output|
+  output_include_not(@cucumber.stderr, output)
 end
 
 Then('the stderr should not contain anything') do
@@ -245,4 +253,81 @@ end
 
 Given('a step definition that looks like this:') do |content|
   write_file("features/step_definitions/steps#{ SecureRandom.uuid }.rb", content)
+end
+
+Then('a file named {string} should exist') do |path|
+  expect(File.file?(path)).to be true
+end
+
+Then('output should be html with title {string}') do |title|
+  document = Nokogiri::HTML.parse(@cucumber.stdout)
+  expect(document.xpath('//title').text).to eq(title)
+end
+
+Then('output should be valid NDJSON') do
+  @cucumber.stdout.split("\n").map do |line|
+    expect { JSON.parse(line) }.not_to raise_exception
+  end
+end
+
+Then('messages types should be:') do |expected_types|
+  parsed_json = @cucumber.stdout.split("\n").map { |line| JSON.parse(line) }
+  message_types = parsed_json.map(&:keys).flatten.compact
+
+  expect(expected_types.split("\n").map(&:strip)).to contain_exactly(*message_types)
+end
+
+Then('the junit output file {string} should contain:') do |actual_file, text|
+  actual = IO.read(File.expand_path('.') + '/' + actual_file)
+  actual = remove_self_ref(replace_junit_time(actual))
+
+  output_equals(actual, text)
+end
+
+def replace_junit_time(time)
+  time.gsub(/\d+\.\d\d+/m, '0.05')
+end
+
+Then('it should fail with JSON:') do |json|
+  #expect(@cucumber.exit_status).not_to eq(0)
+  actual = normalise_json(JSON.parse(@cucumber.stdout))
+  expected = JSON.parse(json)
+
+  expect(actual).to eq expected
+end
+
+Then('it should pass with JSON:') do |json|
+  #expect(@cucumber.exit_status).to eq(0)
+  actual = normalise_json(JSON.parse(@cucumber.stdout))
+  expected = JSON.parse(json)
+
+  expect(actual).to eq expected
+end
+
+def normalise_json(json)
+  # make sure duration was captured (should be >= 0)
+  # then set it to what is "expected" since duration is dynamic
+  json.each do |feature|
+    elements = feature.fetch('elements') { [] }
+    elements.each do |scenario|
+      scenario['steps'].each do |_step|
+        %w[steps before after].each do |type|
+          next unless scenario[type]
+          scenario[type].each do |step_or_hook|
+            normalise_json_step_or_hook(step_or_hook)
+            next unless step_or_hook['after']
+            step_or_hook['after'].each do |hook|
+              normalise_json_step_or_hook(hook)
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+def normalise_json_step_or_hook(step_or_hook)
+  return unless step_or_hook['result'] && step_or_hook['result']['duration']
+  expect(step_or_hook['result']['duration']).to be >= 0
+  step_or_hook['result']['duration'] = 1
 end
