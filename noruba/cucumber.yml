@@ -1,1 +1,1 @@
-default: "docs --format progress --require lib/"
+default: docs --format progress --require lib/ --tags "not @jruby"

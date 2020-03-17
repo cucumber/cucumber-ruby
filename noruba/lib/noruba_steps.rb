@@ -20,6 +20,11 @@ def clean_output(output)
   end.compact.join("\n")
 end
 
+
+def output_starts_with(source, expected)
+  expect(clean_output(source)).to start_with(clean_output(expected))
+end
+
 def output_equals(source, expected)
   expect(clean_output(source)).to eq(clean_output(expected))
 end
@@ -48,10 +53,8 @@ class CucumberCommand
   end
 
   def execute(args)
-    arg_list = args.split(' ')
-
     Cucumber::Cli::Main.new(
-      arg_list,
+      make_arg_list(args),
       nil,
       @stdout,
       @stderr,
@@ -68,11 +71,21 @@ class CucumberCommand
   end
 
   def all_output
-    "#{stdout}\n#{stderr}"
+    [stdout, stderr].reject(&:empty?).join("\n")
   end
 
   def exit_status
     @kernel.exit_status
+  end
+
+  private
+
+  def make_arg_list(args)
+    index = -1
+    args.split(/'|"/).map do |chunk|
+      index += 1
+      index % 2 == 0 ? chunk.split(' ') : chunk
+    end.flatten
   end
 end
 
@@ -132,6 +145,10 @@ Then('the exit status should be {int}') do |status|
   expect(@cucumber.exit_status).to eq(status)
 end
 
+Then('it should fail') do
+  expect(@cucumber.exit_status).not_to eq(0)
+end
+
 Then('it should fail with:') do |output|
   #expect(@cucumber.exit_status).not_to eq(0)
   output_include(@cucumber.all_output, output)
@@ -149,6 +166,10 @@ end
 Then('it should pass with:') do |output|
   #expect(@cucumber.exit_status).to eq(0)
   output_include(@cucumber.all_output, output)
+end
+
+Then('it should pass with exactly:') do |output|
+  output_equals(@cucumber.all_output, output)
 end
 
 Then('the output should contain:') do |output|
@@ -177,4 +198,17 @@ end
 
 Then('exactly these features should be run: {list}') do |files|
   expect(@cucumber.stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files
+end
+
+Then('{string} should not be required') do |file_name|
+  expect(@cucumber.stdout).not_to include("* #{file_name}")
+end
+
+Then('{string} should be required') do |file_name|
+  expect(@cucumber.stdout).to include("* #{file_name}")
+end
+
+Then('it fails before running features with:') do |expected|
+  output_starts_with(@cucumber.all_output, expected)
+  expect(@cucumber.exit_status).not_to eq(0)
 end
