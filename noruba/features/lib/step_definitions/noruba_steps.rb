@@ -54,6 +54,8 @@ class MockKernel
 end
 
 class CucumberCommand
+  attr_reader :args
+
   def initialize()
     @stdout = StringIO.new
     @stderr = StringIO.new
@@ -61,8 +63,11 @@ class CucumberCommand
   end
 
   def execute(args)
+    @args = args
+    argument_list = make_arg_list(args)
+
     Cucumber::Cli::Main.new(
-      make_arg_list(args),
+      argument_list,
       nil,
       @stdout,
       @stderr,
@@ -144,8 +149,20 @@ Given('the following profiles are defined:') do |profiles|
   write_file('cucumber.yml', profiles)
 end
 
+Given('the following profile is defined:') do |profile|
+  write_file('cucumber.yml', profile)
+end
+
 When('I run `cucumber{}`') do |args|
   @cucumber.execute(args)
+end
+
+When('I run `bundle{}`') do |args|
+  pending
+end
+
+When('I run `rake{}`') do |args|
+  pending
 end
 
 When('I run the feature with the progress formatter') do
@@ -187,8 +204,24 @@ Then('the output should contain:') do |output|
   output_include(@cucumber.all_output, output)
 end
 
+Then('the output should contain {string}') do |output|
+  output_include(@cucumber.all_output, output)
+end
+
+Then('the output includes the message {string}') do |message|
+  expect(@cucumber.all_output).to include(message)
+end
+
 Then('the output should not contain:') do |output|
   output_include_not(@cucumber.all_output, output)
+end
+
+Then('the output should not contain {string}') do |output|
+  output_include_not(@cucumber.all_output, output)
+end
+
+Then('the stdout should contain exactly:') do |output|
+  output_equals(@cucumber.stdout, output)
 end
 
 Then('the stderr should contain:') do |output|
@@ -253,12 +286,95 @@ FEATURE
   )
 end
 
+Given('a scenario {string} that fails once, then passes') do |full_name|
+  name = snake_case(full_name)
+  write_file "features/#{name}.feature",
+             <<-FEATURE
+  Feature: #{full_name} feature
+    Scenario: #{full_name}
+      Given it fails once, then passes
+  FEATURE
+
+  write_file "features/step_definitions/#{name}_steps.rb",
+             <<-STEPS
+  Given(/^it fails once, then passes$/) do
+    $#{name} += 1
+    expect($#{name}).to be > 1
+  end
+  STEPS
+
+  write_file "features/support/#{name}_init.rb",
+             <<-INIT
+  $#{name} = 0
+  INIT
+end
+
+Given('a scenario {string} that fails twice, then passes') do |full_name|
+  name = snake_case(full_name)
+  write_file "features/#{name}.feature",
+             <<-FEATURE
+  Feature: #{full_name} feature
+    Scenario: #{full_name}
+      Given it fails twice, then passes
+  FEATURE
+
+  write_file "features/step_definitions/#{name}_steps.rb",
+             <<-STEPS
+  Given(/^it fails twice, then passes$/) do
+    $#{name} ||= 0
+    $#{name} += 1
+    expect($#{name}).to be > 2
+  end
+  STEPS
+
+  write_file "features/support/#{name}_init.rb",
+             <<-INIT
+  $#{name} = 0
+  INIT
+end
+
+Given('a scenario {string} that passes') do |name|
+  write_file "features/#{name}.feature",
+             <<-FEATURE
+  Feature: #{name}
+    Scenario: #{name}
+      Given it passes
+  FEATURE
+
+  write_file "features/step_definitions/#{name}_steps.rb",
+             <<-STEPS
+  Given(/^it passes$/) { expect(true).to be true }
+  STEPS
+end
+
+Given('a scenario {string} that fails') do |name|
+  write_file "features/#{name}.feature",
+             <<-FEATURE
+  Feature: #{name}
+    Scenario: #{name}
+      Given it fails
+  FEATURE
+
+  write_file "features/step_definitions/#{name}_steps.rb",
+             <<-STEPS
+  Given(/^it fails$/) { expect(false).to be true }
+  STEPS
+end
+
+def snake_case(name)
+  name.downcase.gsub(/\W/, '_')
+end
+
 Given('a step definition that looks like this:') do |content|
   write_file("features/step_definitions/steps#{ SecureRandom.uuid }.rb", content)
 end
 
 Then('a file named {string} should exist') do |path|
   expect(File.file?(path)).to be true
+end
+
+Then('the file {string} should contain:') do |path, content|
+  expect(File.read(path)).to include(content)
 end
 
 Then('output should be html with title {string}') do |title|
@@ -339,4 +455,30 @@ def normalise_json_step_or_hook(step_or_hook)
   return unless step_or_hook['result'] && step_or_hook['result']['duration']
   expect(step_or_hook['result']['duration']).to be >= 0
   step_or_hook['result']['duration'] = 1
+end
+
+Then('I should see the CLI help') do
+  expect(@cucumber.stdout).to include('Usage:')
+end
+
+Then('cucumber lists all the supported languages') do
+  sample_languages = %w[Arabic български Pirate English 日本語]
+  sample_languages.each do |language|
+    expect(@cucumber.stdout.force_encoding('utf-8')).to include(language)
+  end
+end
+
+Then('the output should contain NDJSON with key {string} and value {string}') do |key, value|
+  expect(@cucumber.stdout).to match(/"#{key}": ?"#{value}"/)
+end
+
+When('I rerun the previous command with the same seed') do
+  previous_seed = @cucumber.stdout.match(/with seed (\d+)/)[1]
+
+  @cucumber2 = CucumberCommand.new()
+  @cucumber2.execute(@cucumber.args.gsub(/random/, "random:#{previous_seed}"))
+end
+
+Then('the output of both commands should be the same') do
+  output_equals(@cucumber.stdout, @cucumber2.stdout)
 end

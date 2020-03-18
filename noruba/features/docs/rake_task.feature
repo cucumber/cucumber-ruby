@@ -1,4 +1,4 @@
-@wip
+@wip @spawn
 Feature: Rake task
   In order to ease the development process
   As a developer and CI server administrator

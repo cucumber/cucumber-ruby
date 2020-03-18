@@ -1,4 +1,4 @@
-@wip
+@wip @spawn
 Feature: Raketask
 
   In order to use cucumber's rake task
