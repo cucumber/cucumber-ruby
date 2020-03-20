@@ -109,7 +109,7 @@ module Cucumber
           @multiline_argument = MultilineArgument.from('', Core::Test::Location.new(''))
 
           expect(snippet_text).to eq unindented(%{
-          Given(/^A "([^"]*)" arg$/) do |arg1, string|
+          Given(/^A "([^"]*)" arg$/) do |arg1, doc_string|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })

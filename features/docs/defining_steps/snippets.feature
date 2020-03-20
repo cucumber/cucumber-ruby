@@ -20,7 +20,7 @@ Feature: Snippets
     When I run `cucumber features/undefined_steps.feature -s`
     Then the output should contain:
       """
-      Given('a Doc String') do |string|
+      Given('a Doc String') do |doc_string|
         pending # Write code here that turns the phrase above into concrete actions
       end
 
@@ -52,24 +52,6 @@ Feature: Snippets
       """
       Given('a table') do |table|
         # table is a Cucumber::MultilineArgument::DataTable
-        pending # Write code here that turns the phrase above into concrete actions
-      end
-      """
-      
-  Scenario: Snippet for undefined step with combined arguments
-    Given a file named "features/undefined_steps.feature" with:
-      """
-      Feature:
-        Scenario: combined step
-          Given a file named "todos" with:
-          \"\"\"
-          - Buy milk
-          \"\"\"
-      """
-    When I run `cucumber features/undefined_steps.feature -s`
-    Then the output should contain:
-      """
-      Given('a file named {string} with:') do |string, string2|
         pending # Write code here that turns the phrase above into concrete actions
       end
       """

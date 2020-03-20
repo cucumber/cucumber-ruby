@@ -174,8 +174,7 @@ module Cucumber
 
         class DocString
           def append_block_parameter_to(array)
-            parameter = format('string%<index>s', index: (array.size + 1 if array.include?('string')))
-            array << parameter
+            array << 'doc_string'
           end
 
           def append_comment_to(string); end
