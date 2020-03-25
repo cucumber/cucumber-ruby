@@ -55,3 +55,29 @@ Feature: Snippets
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
+
+  Scenario: Snippet for undefined step with multiple params
+    Given a file named "features/undefined_steps.feature" with:
+      """
+      Feature:
+        Scenario: Send emails
+          Given I send an email entitled "Hi from Cucumber" to john@example.org with content:
+          \"\"\"
+          Hello there!
+          \"\"\"
+      """
+    And a file named "features/support/parameter_types.rb" with:
+      """
+      ParameterType(
+        name: 'email_address',
+        regexp: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/,
+        transformer: -> (email) { email }
+      )
+      """
+    When I run `cucumber features/undefined_steps.feature -s`
+    Then the output should contain:
+      """
+      Given('I send an email entitled {string} to {email_address} with content:') do |string, email_address, doc_string|
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+      """
