@@ -9,17 +9,18 @@ module Cucumber
           @pipe = pipe
           @buffer = StringIO.new
           @wrapped = true
+          @lock = Mutex.new
         end
 
         def write(str)
-          lock.synchronize do
+          @lock.synchronize do
             @buffer << str if @wrapped
             return @pipe.write(str)
           end
         end
 
         def buffer_string
-          lock.synchronize do
+          @lock.synchronize do
             return @buffer.string.dup
           end
         end
@@ -66,12 +67,6 @@ module Cucumber
             $stdout = new($stdout)
             return $stdout
           end
-        end
-
-        private
-
-        def lock
-          @lock ||= Mutex.new
         end
       end
     end
