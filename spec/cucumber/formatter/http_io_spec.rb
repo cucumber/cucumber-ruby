@@ -11,13 +11,13 @@ module Cucumber
     describe HTTPIO do
       include Io
 
-      def start_server(url)
-        uri = URI(url)
+      def start_server
+        uri = URI('http://localhost')
         @received_body_io = StringIO.new
 
         rd, wt = IO.pipe
         webrick_options = {
-          Port: uri.port,
+          Port: 0,
           Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
           AccessLog: [],
           StartCallback: proc do
@@ -44,12 +44,13 @@ module Cucumber
         end
         rd.read(1) # read a byte for the server start signal
         rd.close
+
+        "http://localhost:#{@server.config[:Port]}"
       end
 
       context 'created by Io#ensure_io' do
         it 'creates an IO that POSTs with HTTP' do
-          url = 'http://localhost:9987'
-          start_server(url)
+          url = start_server
           sent_body = 'X' * 10_000_000 # 10Mb
 
           io = ensure_io(url)
@@ -62,8 +63,7 @@ module Cucumber
         end
 
         it 'streams HTTP body to server' do
-          url = 'http://localhost:9987'
-          start_server(url)
+          url = start_server
           sent_body = 'X' * 10_000_000
 
           io = ensure_io(url)
@@ -77,10 +77,9 @@ module Cucumber
         end
 
         it 'notifies user if the server responds with error' do
-          url = 'http://localhost:9987/404'
-          start_server(url)
-          io = ensure_io(url)
-          expect { io.close }.to(raise_error('request to http://localhost:9987/404 failed with status 404'))
+          url = start_server
+          io = ensure_io("#{url}/404")
+          expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
         end
 
         it 'notifies user if the server is unreachable' do
@@ -92,8 +91,7 @@ module Cucumber
 
       context 'created with constructor (because we need to relax SSL verification during testing)' do
         it 'POSTs with HTTPS' do
-          url = 'https://localhost:9987'
-          start_server(url)
+          url = start_server
           sent_body = 'X' * 10_000_000 # 10Mb
 
           io = HTTPIO.open(url, OpenSSL::SSL::VERIFY_NONE)
