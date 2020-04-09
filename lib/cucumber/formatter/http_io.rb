@@ -2,6 +2,57 @@ require 'net/http'
 
 module Cucumber
   module Formatter
+    class HTTPIO
+      class << self
+        # Returns an IO that will write to a HTTP request's body
+        def open(url, https_verify_mode = nil)
+          @https_verify_mode = https_verify_mode
+          uri, method, headers = build_uri_method_headers(url)
+
+          http = build_client(uri, https_verify_mode)
+
+          writer = HTTPWriter.new
+          writer.start_request(http, uri, method, headers)
+          writer
+        end
+
+        def build_uri_method_headers(url)
+          uri = URI(url)
+          query_pairs = uri.query ? URI.decode_www_form(uri.query) : []
+
+          # Build headers from query parameters prefixed with http- and extract HTTP method
+          http_query_pairs = query_pairs.select { |pair| pair[0] =~ /^http-/ }
+          http_query_hash_without_prefix = Hash[http_query_pairs.map do |pair|
+                                                  [
+                                                    pair[0][5..-1].downcase, # remove http- prefix
+                                                    pair[1]
+                                                  ]
+                                                end]
+          method = http_query_hash_without_prefix.delete('method') || 'PUT'
+          headers = {
+            'transfer-encoding' => 'chunked'
+          }.merge(http_query_hash_without_prefix)
+
+          # Update the query with the http-* parameters removed
+          remaining_query_pairs = query_pairs - http_query_pairs
+          new_query_hash = Hash[remaining_query_pairs]
+          uri.query = URI.encode_www_form(new_query_hash) unless new_query_hash.empty?
+          [uri, method, headers]
+        end
+
+        private
+
+        def build_client(uri, https_verify_mode)
+          http = Net::HTTP.new(uri.hostname, uri.port)
+          if uri.scheme == 'https'
+            http.use_ssl = true
+            http.verify_mode = https_verify_mode if https_verify_mode
+          end
+          http
+        end
+      end
+    end
+
     class HTTPWriter
       def initialize
         @read_io, @write_io = IO.pipe
@@ -69,57 +120,6 @@ module Cucumber
           req[header] = value
         end
         req
-      end
-    end
-
-    class HTTPIO
-      class << self
-        # Returns an IO that will write to a HTTP request's body
-        def open(url, https_verify_mode = nil)
-          @https_verify_mode = https_verify_mode
-          uri, method, headers = build_uri_method_headers(url)
-
-          http = build_client(uri, https_verify_mode)
-
-          writer = HTTPWriter.new
-          writer.start_request(http, uri, method, headers)
-          writer
-        end
-
-        def build_uri_method_headers(url)
-          uri = URI(url)
-          query_pairs = uri.query ? URI.decode_www_form(uri.query) : []
-
-          # Build headers from query parameters prefixed with http- and extract HTTP method
-          http_query_pairs = query_pairs.select { |pair| pair[0] =~ /^http-/ }
-          http_query_hash_without_prefix = Hash[http_query_pairs.map do |pair|
-                                                  [
-                                                    pair[0][5..-1].downcase, # remove http- prefix
-                                                    pair[1]
-                                                  ]
-                                                end]
-          method = http_query_hash_without_prefix.delete('method') || 'POST'
-          headers = {
-            'transfer-encoding' => 'chunked'
-          }.merge(http_query_hash_without_prefix)
-
-          # Update the query with the http-* parameters removed
-          remaining_query_pairs = query_pairs - http_query_pairs
-          new_query_hash = Hash[remaining_query_pairs]
-          uri.query = URI.encode_www_form(new_query_hash) unless new_query_hash.empty?
-          [uri, method, headers]
-        end
-
-        private
-
-        def build_client(uri, https_verify_mode)
-          http = Net::HTTP.new(uri.hostname, uri.port)
-          if uri.scheme == 'https'
-            http.use_ssl = true
-            http.verify_mode = https_verify_mode if https_verify_mode
-          end
-          http
-        end
       end
     end
   end

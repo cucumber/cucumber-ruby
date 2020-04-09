@@ -66,11 +66,11 @@ module Cucumber
       # rubocop:enable Metrics/MethodLength
 
       context 'created by Io#ensure_io' do
-        it 'creates an IO that POSTs with HTTP' do
+        it 'creates an IO that PUTs with HTTP' do
           url = start_server
           sent_body = 'X' * 10_000_000 # 10Mb
 
-          io = ensure_io(url)
+          io = ensure_io("#{url}/?http-method=POST")
           io.write(sent_body)
           io.flush
           io.close
@@ -83,7 +83,7 @@ module Cucumber
           url = start_server
           sent_body = 'X' * 10_000_000
 
-          io = ensure_io(url)
+          io = ensure_io("#{url}/?http-method=POST")
           io.write(sent_body)
           io.flush
           sleep 0.2 # ugh
@@ -95,13 +95,12 @@ module Cucumber
 
         it 'notifies user if the server responds with error' do
           url = start_server
-          io = ensure_io("#{url}/404")
-          expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
+          io = ensure_io("#{url}/404?http-method=POST")
+          expect { io.close }.to(raise_error("request to #{url}/404?http-method=POST failed with status 404"))
         end
 
         it 'notifies user if the server is unreachable' do
-          url = 'http://localhost:9987'
-          io = ensure_io(url)
+          io = ensure_io('http://localhost:9987')
           expect { io.close }.to(raise_error(/Failed to open TCP connection to localhost:9987/))
         end
 
@@ -109,7 +108,7 @@ module Cucumber
           url = start_server
           sent_body = 'X' * 10_000_000
 
-          io = ensure_io("#{url}/redirect")
+          io = ensure_io("#{url}/redirect?http-method=POST")
           io.write(sent_body)
           io.flush
           io.close
@@ -120,17 +119,17 @@ module Cucumber
 
         it 'raises an error when maximum redirection is reached' do
           url = start_server
-          io = ensure_io("#{url}/loop_redirect")
+          io = ensure_io("#{url}/loop_redirect?http-method=POST")
           expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
         end
       end
 
       context 'created with constructor (because we need to relax SSL verification during testing)' do
-        it 'POSTs with HTTPS' do
+        it 'PUTs with HTTPS' do
           url = start_server
           sent_body = 'X' * 10_000_000 # 10Mb
 
-          io = HTTPIO.open(url, OpenSSL::SSL::VERIFY_NONE)
+          io = HTTPIO.open("#{url}/?http-method=POST", OpenSSL::SSL::VERIFY_NONE)
           io.write(sent_body)
           io.flush
           io.close
@@ -140,9 +139,15 @@ module Cucumber
         end
       end
 
-      it 'sets HTTP method when http-method is set' do
-        uri, method, = HTTPIO.build_uri_method_headers('http://localhost:9987?http-method=PUT&foo=bar')
+      it 'default method is PUT' do
+        uri, method, = HTTPIO.build_uri_method_headers('http://localhost:9987?foo=bar')
         expect(method).to eq('PUT')
+        expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
+      end
+
+      it 'sets HTTP method when http-method is set' do
+        uri, method, = HTTPIO.build_uri_method_headers('http://localhost:9987?http-method=GET&foo=bar')
+        expect(method).to eq('GET')
         expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end
 
