@@ -11,6 +11,7 @@ module Cucumber
     describe HTTPIO do
       include Io
 
+      # rubocop:disable Metrics/MethodLength
       def start_server
         uri = URI('http://localhost')
         @received_body_io = StringIO.new
@@ -35,8 +36,23 @@ module Cucumber
         @server.mount_proc '/' do |req, _res|
           IO.copy_stream(req.body_reader, @received_body_io)
         end
+
         @server.mount_proc '/404' do |_req, res|
           res.status = 404
+        end
+
+        @server.mount_proc '/redirect' do |_req, res|
+          res.set_redirect(
+            WEBrick::HTTPStatus::TemporaryRedirect,
+            '/'
+          )
+        end
+
+        @server.mount_proc '/loop_redirect' do |_req, res|
+          res.set_redirect(
+            WEBrick::HTTPStatus::TemporaryRedirect,
+            '/loop_redirect'
+          )
         end
 
         Thread.new do
@@ -47,6 +63,7 @@ module Cucumber
 
         "http://localhost:#{@server.config[:Port]}"
       end
+      # rubocop:enable Metrics/MethodLength
 
       context 'created by Io#ensure_io' do
         it 'creates an IO that POSTs with HTTP' do
@@ -86,6 +103,25 @@ module Cucumber
           url = 'http://localhost:9987'
           io = ensure_io(url)
           expect { io.close }.to(raise_error(/Failed to open TCP connection to localhost:9987/))
+        end
+
+        it 'follows redirects' do
+          url = start_server
+          sent_body = 'X' * 10_000_000
+
+          io = ensure_io("#{url}/redirect")
+          io.write(sent_body)
+          io.flush
+          io.close
+          @received_body_io.rewind
+          received_body = @received_body_io.read
+          expect(received_body).to eq(sent_body)
+        end
+
+        it 'raises an error when maximum redirection is reached' do
+          url = start_server
+          io = ensure_io("#{url}/loop_redirect")
+          expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
         end
       end
 
