@@ -47,11 +47,12 @@ module Cucumber
         }
 
         if media_type.start_with?('text/')
-          attachment_data[:text] = src
-        elsif src.respond_to? :read
-          attachment_data[:binary] = Base64.encode64(src.read)
+          attachment_data[:body] = src
         else
-          attachment_data[:binary] = Base64.encode64(src)
+          body = src.respond_to?(:read) ? src.read : src
+
+          attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::BASE64
+          attachment_data[:body] = Base64.encode64(body)
         end
 
         message = Cucumber::Messages::Envelope.new(
