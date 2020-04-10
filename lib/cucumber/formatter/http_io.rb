@@ -122,5 +122,52 @@ module Cucumber
         req
       end
     end
+
+    class CurlOptionParser
+      def self.parse(options)
+        chunks = options.split(/\s/).compact
+        http_method = 'PUT'
+        url = chunks[0]
+        headers = ''
+
+        last_flag = nil
+        chunks.each do |chunk|
+          if ['-X', '--request'].include?(chunk)
+            last_flag = '-X'
+            next
+          end
+
+          if chunk == '-H'
+            last_flag = '-H'
+            next
+          end
+
+          if last_flag == '-X'
+            http_method = chunk
+            last_flag = nil
+          end
+
+          headers += chunk if last_flag == '-H'
+        end
+
+        [
+          url,
+          http_method,
+          make_headers(headers)
+        ]
+      end
+
+      def self.make_headers(headers)
+        hash_headers = {}
+        headers.split('"').map do |header|
+          next unless header.include?(':')
+
+          chunks = header.split(':')
+          hash_headers[chunks[0]] = chunks[1].strip
+        end
+
+        hash_headers
+      end
+    end
   end
 end

@@ -161,5 +161,89 @@ module Cucumber
         @server&.shutdown
       end
     end
+
+    describe CurlOptionParser do
+      context '.parse' do
+        context 'when a simple URL is given' do
+          it 'returns the URL' do
+            url, = CurlOptionParser.parse('http://whatever.ltd')
+            expect(url).to eq('http://whatever.ltd')
+          end
+
+          it 'uses PUT as the default method' do
+            _, http_method = CurlOptionParser.parse('http://whatever.ltd')
+            expect(http_method).to eq('PUT')
+          end
+
+          it 'does not specify any header' do
+            _, _, headers = CurlOptionParser.parse('http://whatever.ltd')
+            expect(headers).to eq({})
+          end
+        end
+
+        it 'detects the HTTP method with the flag -X' do
+          expect(CurlOptionParser.parse('http://whatever.ltd -X POST')).to eq(
+            ['http://whatever.ltd', 'POST', {}]
+          )
+        end
+
+        it 'detects the HTTP method with the flag --request' do
+          expect(CurlOptionParser.parse('http://whatever.ltd --request GET')).to eq(
+            ['http://whatever.ltd', 'GET', {}]
+          )
+        end
+
+        it 'can recognize headers set with option -H' do
+          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json"')).to eq(
+            [
+              'http://whatever.ltd',
+              'PUT',
+              {
+                'Content-Type' => 'text/json'
+              }
+            ]
+          )
+        end
+
+        it 'can recognize multiple headers set with option -H' do
+          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" "Transfer-Encoding: chunked"')).to eq(
+            [
+              'http://whatever.ltd',
+              'PUT',
+              {
+                'Content-Type' => 'text/json',
+                'Transfer-Encoding' => 'chunked'
+              }
+            ]
+          )
+        end
+
+        it 'supports multiple -H options' do
+          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" -H "Transfer-Encoding: chunked"')).to eq(
+            [
+              'http://whatever.ltd',
+              'PUT',
+              {
+                'Content-Type' => 'text/json',
+                'Transfer-Encoding' => 'chunked'
+              }
+            ]
+          )
+        end
+
+        it 'supports all options at once' do
+          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" -X GET -H "Transfer-Encoding: chunked"')).to eq(
+            [
+              'http://whatever.ltd',
+              'GET',
+              {
+                'Content-Type' => 'text/json',
+                'Transfer-Encoding' => 'chunked'
+              }
+            ]
+          )
+        end
+      end
+    end
   end
 end
