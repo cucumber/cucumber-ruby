@@ -52,7 +52,7 @@ module Cucumber
           body = src.respond_to?(:read) ? src.read : src
 
           attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::BASE64
-          attachment_data[:body] = Base64.encode64(body)
+          attachment_data[:body] = Base64.strict_encode64(body)
         end
 
         message = Cucumber::Messages::Envelope.new(
