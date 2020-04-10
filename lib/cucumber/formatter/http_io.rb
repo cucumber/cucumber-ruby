@@ -159,11 +159,11 @@ module Cucumber
 
       def self.make_headers(headers)
         hash_headers = {}
-        headers.split('"').map do |header|
-          next unless header.include?(':')
+        str_scanner = /("(?<key>[^":]+)\s*:\s*(?<value>[^":]+)")|('(?<key1>[^':]+)\s*:\s*(?<value1>[^':]+)')/
 
-          chunks = header.split(':')
-          hash_headers[chunks[0]] = chunks[1].strip
+        headers.scan(str_scanner) do |header|
+          header = header.compact!
+          hash_headers[header[0]] = header[1]&.strip
         end
 
         hash_headers
