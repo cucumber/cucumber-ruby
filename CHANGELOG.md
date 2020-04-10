@@ -17,7 +17,16 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* N/A
+* Code snippet for an undefined step with a Doc String will ouput `doc_string` instead of `string` in block params 
+  ([#1401](https://github.com/cucumber/cucumber-ruby/issues/1401)
+   [#1402](https://github.com/cucumber/cucumber-ruby/pull/1402)
+   [karamosky](https://github.com/karamosky))
+
+* Updated monorepo libraries:
+  - cucumber-gherkin ~> 12
+  - cucumber-html-formatter ~> 5
+
+* Use `body` field of attachments
 
 ### Removed
 
