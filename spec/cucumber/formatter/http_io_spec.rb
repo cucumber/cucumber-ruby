@@ -70,7 +70,7 @@ module Cucumber
           url = start_server
           sent_body = 'X' * 10_000_000 # 10Mb
 
-          io = ensure_io("#{url}/?http-method=POST")
+          io = ensure_io("#{url}/ -X POST")
           io.write(sent_body)
           io.flush
           io.close
@@ -83,7 +83,7 @@ module Cucumber
           url = start_server
           sent_body = 'X' * 10_000_000
 
-          io = ensure_io("#{url}/?http-method=POST")
+          io = ensure_io("#{url}/ -X POST")
           io.write(sent_body)
           io.flush
           sleep 0.2 # ugh
@@ -95,8 +95,8 @@ module Cucumber
 
         it 'notifies user if the server responds with error' do
           url = start_server
-          io = ensure_io("#{url}/404?http-method=POST")
-          expect { io.close }.to(raise_error("request to #{url}/404?http-method=POST failed with status 404"))
+          io = ensure_io("#{url}/404 -X POST")
+          expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
         end
 
         it 'notifies user if the server is unreachable' do
@@ -108,7 +108,7 @@ module Cucumber
           url = start_server
           sent_body = 'X' * 10_000_000
 
-          io = ensure_io("#{url}/redirect?http-method=POST")
+          io = ensure_io("#{url}/redirect -X POST")
           io.write(sent_body)
           io.flush
           io.close
@@ -119,7 +119,7 @@ module Cucumber
 
         it 'raises an error when maximum redirection is reached' do
           url = start_server
-          io = ensure_io("#{url}/loop_redirect?http-method=POST")
+          io = ensure_io("#{url}/loop_redirect -X POST")
           expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
         end
       end
@@ -129,7 +129,7 @@ module Cucumber
           url = start_server
           sent_body = 'X' * 10_000_000 # 10Mb
 
-          io = HTTPIO.open("#{url}/?http-method=POST", OpenSSL::SSL::VERIFY_NONE)
+          io = HTTPIO.open("#{url}/ -X POST", OpenSSL::SSL::VERIFY_NONE)
           io.write(sent_body)
           io.flush
           io.close
@@ -145,14 +145,14 @@ module Cucumber
         expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end
 
-      it 'sets HTTP method when http-method is set' do
-        uri, method, = HTTPIO.build_uri_method_headers('http://localhost:9987?http-method=GET&foo=bar')
+      it 'sets HTTP method when -X is set' do
+        uri, method, = HTTPIO.build_uri_method_headers('http://localhost:9987?foo=bar -X GET')
         expect(method).to eq('GET')
         expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end
 
-      it 'sets Content-Type header when http-content-type query parameter set' do
-        uri, _method, headers = HTTPIO.build_uri_method_headers('http://localhost:9987?http-content-type=text/plain&foo=bar')
+      it 'sets Content-Type header when -H is set' do
+        uri, _method, headers = HTTPIO.build_uri_method_headers('http://localhost:9987?foo=bar -H "content-type: text/plain"')
         expect(headers['content-type']).to eq('text/plain')
         expect(uri.to_s).to eq('http://localhost:9987?foo=bar')
       end

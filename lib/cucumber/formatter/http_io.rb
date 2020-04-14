@@ -17,27 +17,14 @@ module Cucumber
         end
 
         def build_uri_method_headers(url)
-          uri = URI(url)
-          query_pairs = uri.query ? URI.decode_www_form(uri.query) : []
-
-          # Build headers from query parameters prefixed with http- and extract HTTP method
-          http_query_pairs = query_pairs.select { |pair| pair[0] =~ /^http-/ }
-          http_query_hash_without_prefix = Hash[http_query_pairs.map do |pair|
-                                                  [
-                                                    pair[0][5..-1].downcase, # remove http- prefix
-                                                    pair[1]
-                                                  ]
-                                                end]
-          method = http_query_hash_without_prefix.delete('method') || 'PUT'
-          headers = {
-            'transfer-encoding' => 'chunked'
-          }.merge(http_query_hash_without_prefix)
-
-          # Update the query with the http-* parameters removed
-          remaining_query_pairs = query_pairs - http_query_pairs
-          new_query_hash = Hash[remaining_query_pairs]
-          uri.query = URI.encode_www_form(new_query_hash) unless new_query_hash.empty?
-          [uri, method, headers]
+          uri, method, headers = CurlOptionParser.parse(url)
+          [
+            URI(uri),
+            method,
+            {
+              'transfer-encoding' => 'chunked'
+            }.merge(headers)
+          ]
         end
 
         private
