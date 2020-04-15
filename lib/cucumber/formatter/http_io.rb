@@ -1,4 +1,5 @@
 require 'net/http'
+require 'tempfile'
 
 module Cucumber
   module Formatter
@@ -7,106 +8,9 @@ module Cucumber
         # Returns an IO that will write to a HTTP request's body
         def open(url, https_verify_mode = nil)
           @https_verify_mode = https_verify_mode
-          uri, method, headers = build_uri_method_headers(url)
-
-          http = build_client(uri, https_verify_mode)
-
-          writer = HTTPWriter.new
-          writer.start_request(http, uri, method, headers)
-          writer
-        end
-
-        def build_uri_method_headers(url)
           uri, method, headers = CurlOptionParser.parse(url)
-          [
-            URI(uri),
-            method,
-            {
-              'transfer-encoding' => 'chunked'
-            }.merge(headers)
-          ]
+          IOHTTPBuffer.new(uri, method, headers, https_verify_mode)
         end
-
-        private
-
-        def build_client(uri, https_verify_mode)
-          http = Net::HTTP.new(uri.hostname, uri.port)
-          if uri.scheme == 'https'
-            http.use_ssl = true
-            http.verify_mode = https_verify_mode if https_verify_mode
-          end
-          http
-        end
-      end
-    end
-
-    class HTTPWriter
-      def initialize
-        @read_io, @write_io = IO.pipe
-      end
-
-      def start_request(http, uri, method, headers)
-        @req_thread = Thread.new do
-          begin
-            final_uri = test_uri(http, uri, method, headers)
-
-            req = build_request(final_uri, method, headers)
-            req.body_stream = @read_io
-
-            res = http.request(req)
-            raise_on_errors(res, req)
-          rescue StandardError => e
-            @http_error = e
-          end
-        end
-      end
-
-      def test_uri(http, uri, method, headers, attempt = 10)
-        raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
-
-        req = build_request(uri, method, headers)
-        res = http.request(req)
-        raise_on_errors(res, req)
-
-        return test_uri(http, res['Location'], method, headers, attempt - 1) if res.code.to_i >= 300
-        uri
-      end
-
-      def raise_on_errors(res, req)
-        raise StandardError, "request to #{req.uri} failed with status #{res.code}" if res.code.to_i >= 400
-      end
-
-      def close
-        @write_io.close
-        begin
-          @req_thread.join
-        rescue StandardError
-          nil
-        end
-        raise @http_error unless @http_error.nil?
-      end
-
-      def write(data)
-        @write_io.write(data)
-      end
-
-      def flush
-        @write_io.flush
-      end
-
-      def closed?
-        @write_io.closed?
-      end
-
-      private
-
-      def build_request(uri, method, headers)
-        method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
-        req = Net::HTTP.const_get(method_class_name).new(uri)
-        headers.each do |header, value|
-          req[header] = value
-        end
-        req
       end
     end
 
@@ -154,6 +58,82 @@ module Cucumber
         end
 
         hash_headers
+      end
+    end
+
+    class IOHTTPBuffer
+      attr_reader :uri, :method, :headers
+
+      def initialize(uri, method, headers = {}, https_verify_mode = nil)
+        @uri = URI(uri)
+        @method = method
+        @headers = headers
+        @write_io = Tempfile.new('foo')
+
+        @http = build_client(@uri, https_verify_mode)
+      end
+
+      def close
+        @write_io.rewind
+        post_content(@uri, @method, @headers, @write_io.read)
+        @write_io.close
+      end
+
+      def write(data)
+        @write_io.write(data)
+      end
+
+      def flush
+        @write_io.flush
+      end
+
+      def closed?
+        @write_io.closed?
+      end
+
+      private
+
+      def post_content(uri, method, headers, content)
+        req = build_request(
+          test_uri(@http, uri, method, headers),
+          method,
+          headers
+        )
+        res = @http.request(req, content)
+        raise_on_errors(res, req)
+      end
+
+      def test_uri(http, uri, method, headers, attempt = 10)
+        raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
+
+        req = build_request(uri, method, headers)
+        res = http.request(req)
+        raise_on_errors(res, req)
+
+        return test_uri(http, res['Location'], method, headers, attempt - 1) if res.code.to_i >= 300
+        uri
+      end
+
+      def raise_on_errors(res, req)
+        raise StandardError, "request to #{req.uri} failed with status #{res.code}" if res.code.to_i >= 400
+      end
+
+      def build_request(uri, method, headers)
+        method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
+        req = Net::HTTP.const_get(method_class_name).new(uri)
+        headers.each do |header, value|
+          req[header] = value
+        end
+        req
+      end
+
+      def build_client(uri, https_verify_mode)
+        http = Net::HTTP.new(uri.hostname, uri.port)
+        if uri.scheme == 'https'
+          http.use_ssl = true
+          http.verify_mode = https_verify_mode if https_verify_mode
+        end
+        http
       end
     end
   end
