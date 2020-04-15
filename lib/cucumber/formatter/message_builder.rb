@@ -188,7 +188,7 @@ module Cucumber
 
         result_message = result.to_message
         if result.failed? || result.pending?
-          result_message = Cucumber::Messages::TestStepResult.new(
+          result_message = Cucumber::Messages::TestStepFinished::TestStepResult.new(
             status: result_message.status,
             duration: result_message.duration,
             message: create_error_message(result)
