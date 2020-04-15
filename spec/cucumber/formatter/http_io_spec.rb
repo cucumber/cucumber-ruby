@@ -220,7 +220,10 @@ module Cucumber
       include_context 'an HTTP server accepting file requests'
 
       let(:url) { start_server }
-      let(:sent_body) { 'X' * 10_000_000 } # 10Mb
+      # JRuby seems to have some issues with huge reports. At least during tests
+      # M/aybe something to see with Webrick configuration.
+      let(:report_size) { RUBY_PLATFORM == 'java' ? 8_000 : 10_000_000 }
+      let(:sent_body) { 'X' * report_size }
 
       it 'raises an error on close when server in unreachable' do
         io = IOHTTPBuffer.new("#{url}/404", 'POST')

@@ -99,6 +99,7 @@ module Cucumber
           method,
           headers
         )
+
         res = @http.request(req, content)
         raise_on_errors(res, req)
       end
