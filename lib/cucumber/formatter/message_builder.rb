@@ -125,7 +125,7 @@ module Cucumber
 
       def step_match_arguments(step)
         @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
-          Cucumber::Messages::StepMatchArgument.new(
+          Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: argument.parameter_type.name
           )
@@ -133,7 +133,7 @@ module Cucumber
       end
 
       def argument_group_to_message(group)
-        Cucumber::Messages::StepMatchArgument::Group.new(
+        Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList::StepMatchArgument::Group.new(
           start: group.start,
           value: group.value,
           children: group.children.map { |child| argument_group_to_message(child) }
