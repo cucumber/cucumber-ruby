@@ -192,6 +192,7 @@ module Cucumber
 
         Cucumber::Messages::Envelope.new(
           parameter_type: Cucumber::Messages::ParameterType.new(
+            id: @configuration.id_generator.new_id,
             name: parameter_type.name,
             regular_expressions: parameter_type.regexps.map(&:to_s),
             prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match?,
