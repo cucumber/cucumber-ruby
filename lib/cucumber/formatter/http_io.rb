@@ -74,7 +74,6 @@ module Cucumber
       end
 
       def close
-        @write_io.rewind
         post_content(@uri, @method, @headers, @write_io)
         @write_io.close
       end
@@ -93,32 +92,32 @@ module Cucumber
 
       private
 
-      def post_content(uri, method, headers, content)
-        final_uri = test_uri(@http, uri, method, headers)
+      def post_content(uri, method, headers, content, attempt = 10)
+        raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
         req = build_request(
-          final_uri,
+          uri,
           method,
           headers.merge('Content-Length' => content.size)
         )
 
+        content.rewind
         req.body_stream = content
-        res = @http.request(req)
-        raise_on_errors(res, req)
-      end
 
-      def test_uri(http, uri, method, headers, attempt = 10)
-        raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
+        begin
+          response = @http.request(req)
+        rescue Errno::ENOTCONN
+          # We may get the redirect response before pushing the file.
+          response = @http.request(build_request(uri, method, headers))
+        end
 
-        req = build_request(uri, method, headers)
-        res = http.request(req)
-        raise_on_errors(res, req)
-
-        return test_uri(http, res['Location'], method, headers, attempt - 1) if res.code.to_i >= 300
-        uri
-      end
-
-      def raise_on_errors(res, req)
-        raise StandardError, "request to #{req.uri} failed with status #{res.code}" if res.code.to_i >= 400
+        case response
+        when Net::HTTPSuccess
+          response
+        when Net::HTTPRedirection
+          post_content(response['Location'], method, headers, content, attempt - 1)
+        else
+          raise StandardError, "request to #{uri} failed with status #{response.code}"
+        end
       end
 
       def build_request(uri, method, headers)
