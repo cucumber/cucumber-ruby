@@ -105,7 +105,7 @@ module Cucumber
 
         begin
           response = @http.request(req)
-        rescue Errno::ENOTCONN
+        rescue SystemCallError
           # We may get the redirect response before pushing the file.
           response = @http.request(build_request(uri, method, headers))
         end
