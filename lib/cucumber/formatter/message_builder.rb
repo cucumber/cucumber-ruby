@@ -47,6 +47,7 @@ module Cucumber
         }
 
         if media_type.start_with?('text/')
+          attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::IDENTITY
           attachment_data[:body] = src
         else
           body = src.respond_to?(:read) ? src.read : src
