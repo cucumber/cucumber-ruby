@@ -75,7 +75,7 @@ module Cucumber
 
       def close
         @write_io.rewind
-        post_content(@uri, @method, @headers, @write_io.read)
+        post_content(@uri, @method, @headers, @write_io)
         @write_io.close
       end
 
@@ -94,13 +94,15 @@ module Cucumber
       private
 
       def post_content(uri, method, headers, content)
+        final_uri = test_uri(@http, uri, method, headers)
         req = build_request(
-          test_uri(@http, uri, method, headers),
+          final_uri,
           method,
-          headers
+          headers.merge('Content-Length' => content.size)
         )
 
-        res = @http.request(req, content)
+        req.body_stream = content
+        res = @http.request(req)
         raise_on_errors(res, req)
       end
 
