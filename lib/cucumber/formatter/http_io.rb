@@ -68,13 +68,13 @@ module Cucumber
         @uri = URI(uri)
         @method = method
         @headers = headers
-        @write_io = Tempfile.new('foo')
+        @write_io = Tempfile.new('cucumber', encoding: 'UTF-8')
 
         @http = build_client(@uri, https_verify_mode)
       end
 
       def close
-        post_content(@uri, @method, @headers, @write_io)
+        post_content(@uri, @method, @headers)
         @write_io.close
       end
 
@@ -92,12 +92,18 @@ module Cucumber
 
       private
 
-      def post_content(uri, method, headers, content, attempt = 10)
+      def post_content(uri, method, headers, attempt = 10)
+        content = @write_io
+
         raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
         req = build_request(
           uri,
           method,
-          headers.merge('Content-Length' => content.size)
+          headers.merge(
+            'Content-Length' => content.size.to_s,
+            'Content-Type' => 'text/plain',
+            'charset' => 'utf-8'
+          )
         )
 
         content.rewind
@@ -114,7 +120,7 @@ module Cucumber
         when Net::HTTPSuccess
           response
         when Net::HTTPRedirection
-          post_content(response['Location'], method, headers, content, attempt - 1)
+          post_content(response['Location'], method, headers, attempt - 1)
         else
           raise StandardError, "request to #{uri} failed with status #{response.code}"
         end
