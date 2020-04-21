@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
-  s.version     = File.read(File.expand_path('lib/cucumber/version', __dir__))
+  s.version     = File.read(File.expand_path('lib/cucumber/version', __dir__)).strip
   s.authors     = ['Aslak Hellesøy', 'Matt Wynne', 'Steve Tooke']
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-cucumber-expressions', '~> 10.1', '>= 10.1.0'
   s.add_dependency 'cucumber-gherkin', '~> 13.0', '>= 13.0.0'
   s.add_dependency 'cucumber-html-formatter', '~> 6.0', '>= 6.0.1'
+  s.add_dependency 'cucumber-messages', '~> 12.1', '>= 12.1.1'
   s.add_dependency 'cucumber-wire', '~> 2.0', '>= 2.0.0'
   s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'

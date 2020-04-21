@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rbconfig'
+require 'cucumber/platform'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/message_builder'
 
