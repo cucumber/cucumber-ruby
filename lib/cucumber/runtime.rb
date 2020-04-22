@@ -10,6 +10,7 @@ require 'cucumber/formatter/fanout'
 require 'cucumber/gherkin/i18n'
 require 'cucumber/step_match_search'
 require 'cucumber/messages'
+require 'sys/uname'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -116,7 +117,8 @@ module Cucumber
           version: RUBY_VERSION
         ),
         os: Cucumber::Messages::Meta::Product.new(
-          name: RbConfig::CONFIG['target_os']
+          name: RbConfig::CONFIG['target_os'],
+          version: Sys::Uname.uname.version
         ),
         cpu: Cucumber::Messages::Meta::Product.new(
           name: RbConfig::CONFIG['target_cpu']

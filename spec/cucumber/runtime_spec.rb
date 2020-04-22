@@ -30,6 +30,7 @@ module Cucumber
         expect(meta.runtime.name).to match(/(jruby|ruby)/)
         expect(meta.runtime.version).to eq(RUBY_VERSION)
         expect(meta.os.name).to match(/.+/)
+        expect(meta.os.version).to match(/.+/)
         expect(meta.cpu.name).to match(/.+/)
       end
     end

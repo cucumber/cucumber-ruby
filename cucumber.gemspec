@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-wire', '~> 2.0', '>= 2.0.0'
   s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
+  s.add_dependency 'sys-uname', '~> 1.0', '>= 1.0.2'
 
   s.add_development_dependency 'aruba', '~> 1.0', '>= 1.0.0'
   s.add_development_dependency 'nokogiri', '~> 1.10', '>= 1.10.4'
