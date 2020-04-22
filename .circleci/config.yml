@@ -126,7 +126,7 @@ jobs:
       - run:
           name: Checkout monorepo and build
           command: |
-            git clone https://github.com/cucumber/cucumber.git --branch messages/v12.0.0 ~/cucumber
+            git clone https://github.com/cucumber/cucumber.git --branch messages/v12.1.1 ~/cucumber
             cd ~/cucumber
             NO_CROSS_COMPILE=1 LANGUAGES=go PACKAGES="messages json-formatter" make
       - persist_to_workspace:
