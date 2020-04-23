@@ -19,6 +19,7 @@ Feature: Protobuf message output formatter
     Then output should be valid NDJSON
     And messages types should be:
       """
+      meta
       source
       gherkinDocument
       pickle
