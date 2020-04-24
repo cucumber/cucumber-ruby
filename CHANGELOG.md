@@ -35,7 +35,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
-* N/A
+* `--out url` updates:
+  * supports redirects
+  * use `PUT` method by default
+  * use a cURL like options (for example: `cucumber --out 'http://example.com -X POST -H Content-Type: json`)
 
 ## [4.0.0.rc.5](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...4.0.0.rc.5)
 
