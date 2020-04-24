@@ -69,8 +69,7 @@ module Cucumber
         @method = method
         @headers = headers
         @write_io = Tempfile.new('cucumber', encoding: 'UTF-8')
-
-        @http = build_client(@uri, https_verify_mode)
+        @https_verify_mode = https_verify_mode
       end
 
       def close
@@ -94,15 +93,14 @@ module Cucumber
 
       def post_content(uri, method, headers, attempt = 10)
         content = @write_io
+        http = build_client(uri, @https_verify_mode)
 
         raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
         req = build_request(
           uri,
           method,
           headers.merge(
-            'Content-Length' => content.size.to_s,
-            'Content-Type' => 'text/plain',
-            'charset' => 'utf-8'
+            'Content-Length' => content.size.to_s
           )
         )
 
@@ -110,17 +108,17 @@ module Cucumber
         req.body_stream = content
 
         begin
-          response = @http.request(req)
+          response = http.request(req)
         rescue SystemCallError
           # We may get the redirect response before pushing the file.
-          response = @http.request(build_request(uri, method, headers))
+          response = http.request(build_request(uri, method, headers))
         end
 
         case response
         when Net::HTTPSuccess
           response
         when Net::HTTPRedirection
-          post_content(response['Location'], method, headers, attempt - 1)
+          post_content(URI(response['Location']), method, headers, attempt - 1)
         else
           raise StandardError, "request to #{uri} failed with status #{response.code}"
         end
