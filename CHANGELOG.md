@@ -9,11 +9,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ----
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...master)
-
-### Added
-
-* N/A
+## [4.0.0.rc.6](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...4.0.0.rc.6)
 
 ### Changed
 
@@ -27,11 +23,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   - cucumber-html-formatter ~> 6
   - cucumber-cucumber-expressions ~> 10
 
+* Use `cucumber-ruby-core` 7.0.0
+
+* Use `cucumber-ruby-wire` 3.0.0
+
 * Use `body` field of attachments
-
-### Removed
-
-* N/A
 
 ### Improved
 
