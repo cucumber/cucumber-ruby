@@ -87,7 +87,7 @@ OUTPUT
 
           define_steps do
             When('{word} {word} {word}') do |subject, verb, complement|
-              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}"
+              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}", subject: subject, verb: verb, complement: complement
             end
           end
 
@@ -95,7 +95,8 @@ OUTPUT
             expect(@out.string).to include [
               '      subject: monkey',
               '      verb: eats',
-              '      complement: banana'
+              '      complement: banana',
+              '      {:subject=>"monkey", :verb=>"eats", :complement=>"banana"}'
             ].join("\n")
           end
         end
