@@ -58,6 +58,25 @@ OUTPUT
           end
         end
 
+        describe 'when logging an object' do
+          define_feature <<-FEATURE
+        Feature: Banana party
+
+          Scenario: Monkey eats banana
+            When an object is logged
+          FEATURE
+
+          define_steps do
+            When('an object is logged') do
+              log(a: 1, b: 2, c: 3)
+            end
+          end
+
+          it 'attached the styring version on the object' do
+            expect(@out.string).to include '{:a=>1, :b=>2, :c=>3}'
+          end
+        end
+
         describe 'when modifying the printed variable after the call to log' do
           define_feature <<-FEATURE
         Feature: Banana party

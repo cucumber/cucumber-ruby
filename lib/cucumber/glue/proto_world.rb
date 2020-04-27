@@ -108,8 +108,7 @@ module Cucumber
       end
 
       def log(message)
-        raise Cucumber::LogTypeInvalid unless message.is_a?(String)
-        attach(message.dup, 'text/x.cucumber.log+plain')
+        attach(message.to_s.dup, 'text/x.cucumber.log+plain')
       end
 
       def attach(file, media_type)
