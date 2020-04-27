@@ -107,8 +107,8 @@ module Cucumber
         attach(file, mime_type)
       end
 
-      def log(message)
-        attach(message.to_s.dup, 'text/x.cucumber.log+plain')
+      def log(*messages)
+        messages.each { |message| attach(message.to_s.dup, 'text/x.cucumber.log+plain') }
       end
 
       def attach(file, media_type)

@@ -77,6 +77,29 @@ OUTPUT
           end
         end
 
+        describe 'when logging multiple items on one call' do
+          define_feature <<-FEATURE
+        Feature: Banana party
+
+          Scenario: Monkey eats banana
+            When monkey eats banana
+          FEATURE
+
+          define_steps do
+            When('{word} {word} {word}') do |subject, verb, complement|
+              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}"
+            end
+          end
+
+          it 'logs each parameter independently' do
+            expect(@out.string).to include [
+              '      subject: monkey',
+              '      verb: eats',
+              '      complement: banana'
+            ].join("\n")
+          end
+        end
+
         describe 'when modifying the printed variable after the call to log' do
           define_feature <<-FEATURE
         Feature: Banana party
