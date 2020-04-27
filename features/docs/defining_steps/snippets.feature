@@ -82,6 +82,7 @@ Feature: Snippets
       end
       """
 
+  @wip
   Scenario: Snippet for undefined step with undefined parameter type
     Given a file named "features/undefined_parameter_type.feature" with:
       """

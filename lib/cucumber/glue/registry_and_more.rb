@@ -93,12 +93,7 @@ module Cucumber
         # TODO: add a way to extract the parameter type directly from the error.
         type_name = e.message.match(/^Undefined parameter type \{(.*)\}$/)[1]
 
-        @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
-          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
-            name: type_name,
-            expression: string_or_regexp
-          )
-        )
+        @configuration.notify :undefined_parameter_type, type_name, string_or_regexp
       end
 
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
