@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
-  s.version     = File.read(File.expand_path('lib/cucumber/version', __dir__))
+  s.version     = File.read(File.expand_path('lib/cucumber/version', __dir__)).strip
   s.authors     = ['Aslak Hellesøy', 'Matt Wynne', 'Steve Tooke']
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
@@ -20,13 +20,15 @@ Gem::Specification.new do |s|
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.3'
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.3'
-  s.add_dependency 'cucumber-core', '~> 6.0', '>= 6.0.0'
-  s.add_dependency 'cucumber-expressions', '~> 8.0', '>= 8.0.2'
-  s.add_dependency 'cucumber-gherkin', '~> 10.0', '>= 10.0.0'
-  s.add_dependency 'cucumber-html-formatter', '~> 4.3', '>= 4.3.0'
-  s.add_dependency 'cucumber-wire', '~> 2.0', '>= 2.0.0'
+  s.add_dependency 'cucumber-core', '~> 7.0', '>= 7.0.0'
+  s.add_dependency 'cucumber-cucumber-expressions', '~> 10.1', '>= 10.1.0'
+  s.add_dependency 'cucumber-gherkin', '~> 13.0', '>= 13.0.0'
+  s.add_dependency 'cucumber-html-formatter', '~> 6.0', '>= 6.0.1'
+  s.add_dependency 'cucumber-messages', '~> 12.1', '>= 12.1.1'
+  s.add_dependency 'cucumber-wire', '~> 3.0', '>= 3.0.0'
   s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
+  s.add_dependency 'sys-uname', '~> 1.0', '>= 1.0.2'
 
   s.add_development_dependency 'aruba', '~> 1.0', '>= 1.0.0'
   s.add_development_dependency 'nokogiri', '~> 1.10', '>= 1.10.4'

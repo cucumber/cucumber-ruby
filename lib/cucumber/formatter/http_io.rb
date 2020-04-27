@@ -1,4 +1,5 @@
 require 'net/http'
+require 'tempfile'
 
 module Cucumber
   module Formatter
@@ -7,86 +8,138 @@ module Cucumber
         # Returns an IO that will write to a HTTP request's body
         def open(url, https_verify_mode = nil)
           @https_verify_mode = https_verify_mode
-          uri, method, headers = build_uri_method_headers(url)
+          uri, method, headers = CurlOptionParser.parse(url)
+          IOHTTPBuffer.new(uri, method, headers, https_verify_mode)
+        end
+      end
+    end
 
-          @req = build_request(uri, method, headers)
-          @http = build_client(uri, https_verify_mode)
+    class CurlOptionParser
+      def self.parse(options)
+        chunks = options.split(/\s/).compact
+        http_method = 'PUT'
+        url = chunks[0]
+        headers = ''
 
-          read_io, write_io = IO.pipe
-          @req.body_stream = read_io
-
-          class << write_io
-            attr_writer :request_thread
-
-            def start_request(http, req)
-              @req_thread = Thread.new do
-                begin
-                  res = http.request(req)
-                  raise StandardError, "request to #{req.uri} failed with status #{res.code}" if res.code.to_i >= 400
-                rescue StandardError => e
-                  @http_error = e
-                end
-              end
-            end
-
-            def close
-              super
-              begin
-                @req_thread.join
-              rescue StandardError
-                nil
-              end
-              raise @http_error unless @http_error.nil?
-            end
+        last_flag = nil
+        chunks.each do |chunk|
+          if ['-X', '--request'].include?(chunk)
+            last_flag = '-X'
+            next
           end
-          write_io.start_request(@http, @req)
 
-          write_io
-        end
-
-        def build_uri_method_headers(url)
-          uri = URI(url)
-          query_pairs = uri.query ? URI.decode_www_form(uri.query) : []
-
-          # Build headers from query parameters prefixed with http- and extract HTTP method
-          http_query_pairs = query_pairs.select { |pair| pair[0] =~ /^http-/ }
-          http_query_hash_without_prefix = Hash[http_query_pairs.map do |pair|
-                                                  [
-                                                    pair[0][5..-1].downcase, # remove http- prefix
-                                                    pair[1]
-                                                  ]
-                                                end]
-          method = http_query_hash_without_prefix.delete('method') || 'POST'
-          headers = {
-            'transfer-encoding' => 'chunked'
-          }.merge(http_query_hash_without_prefix)
-
-          # Update the query with the http-* parameters removed
-          remaining_query_pairs = query_pairs - http_query_pairs
-          new_query_hash = Hash[remaining_query_pairs]
-          uri.query = URI.encode_www_form(new_query_hash) unless new_query_hash.empty?
-          [uri, method, headers]
-        end
-
-        private
-
-        def build_request(uri, method, headers)
-          method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
-          req = Net::HTTP.const_get(method_class_name).new(uri)
-          headers.each do |header, value|
-            req[header] = value
+          if chunk == '-H'
+            last_flag = '-H'
+            next
           end
-          req
+
+          if last_flag == '-X'
+            http_method = chunk
+            last_flag = nil
+          end
+
+          headers += chunk if last_flag == '-H'
         end
 
-        def build_client(uri, https_verify_mode)
-          http = Net::HTTP.new(uri.hostname, uri.port)
-          if uri.scheme == 'https'
-            http.use_ssl = true
-            http.verify_mode = https_verify_mode if https_verify_mode
-          end
-          http
+        [
+          url,
+          http_method,
+          make_headers(headers)
+        ]
+      end
+
+      def self.make_headers(headers)
+        hash_headers = {}
+        str_scanner = /("(?<key>[^":]+)\s*:\s*(?<value>[^":]+)")|('(?<key1>[^':]+)\s*:\s*(?<value1>[^':]+)')/
+
+        headers.scan(str_scanner) do |header|
+          header = header.compact!
+          hash_headers[header[0]] = header[1]&.strip
         end
+
+        hash_headers
+      end
+    end
+
+    class IOHTTPBuffer
+      attr_reader :uri, :method, :headers
+
+      def initialize(uri, method, headers = {}, https_verify_mode = nil)
+        @uri = URI(uri)
+        @method = method
+        @headers = headers
+        @write_io = Tempfile.new('cucumber', encoding: 'UTF-8')
+        @https_verify_mode = https_verify_mode
+      end
+
+      def close
+        post_content(@uri, @method, @headers)
+        @write_io.close
+      end
+
+      def write(data)
+        @write_io.write(data)
+      end
+
+      def flush
+        @write_io.flush
+      end
+
+      def closed?
+        @write_io.closed?
+      end
+
+      private
+
+      def post_content(uri, method, headers, attempt = 10)
+        content = @write_io
+        http = build_client(uri, @https_verify_mode)
+
+        raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
+        req = build_request(
+          uri,
+          method,
+          headers.merge(
+            'Content-Length' => content.size.to_s
+          )
+        )
+
+        content.rewind
+        req.body_stream = content
+
+        begin
+          response = http.request(req)
+        rescue SystemCallError
+          # We may get the redirect response before pushing the file.
+          response = http.request(build_request(uri, method, headers))
+        end
+
+        case response
+        when Net::HTTPSuccess
+          response
+        when Net::HTTPRedirection
+          post_content(URI(response['Location']), method, headers, attempt - 1)
+        else
+          raise StandardError, "request to #{uri} failed with status #{response.code}"
+        end
+      end
+
+      def build_request(uri, method, headers)
+        method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
+        req = Net::HTTP.const_get(method_class_name).new(uri)
+        headers.each do |header, value|
+          req[header] = value
+        end
+        req
+      end
+
+      def build_client(uri, https_verify_mode)
+        http = Net::HTTP.new(uri.hostname, uri.port)
+        if uri.scheme == 'https'
+          http.use_ssl = true
+          http.verify_mode = https_verify_mode if https_verify_mode
+        end
+        http
       end
     end
   end

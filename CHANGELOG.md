@@ -9,17 +9,12 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ----
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...master)
+
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...master)
 
 ### Added
 
-* New html formatter enabled by option `--format html --out report.html`.
-
-* Accept `--out URL` to POST results to a web server
-  If a URL is used as output, the output will be sent with a POST request.
-  This can be overridden by specifying e.g. `http-method=PUT` as a query parameter.
-  Other `http-` prefixed query parameters will be converted to request headers
-  (with the `http-` prefix stripped off).
+* N/A
 
 ### Changed
 
@@ -32,6 +27,46 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Improved
 
 * N/A
+
+## [4.0.0.rc.6](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...4.0.0.rc.6)
+
+### Changed
+
+* Code snippet for an undefined step with a Doc String will ouput `doc_string` instead of `string` in block params
+  ([#1401](https://github.com/cucumber/cucumber-ruby/issues/1401)
+   [#1402](https://github.com/cucumber/cucumber-ruby/pull/1402)
+   [karamosky](https://github.com/karamosky))
+
+* Updated monorepo libraries:
+  - cucumber-gherkin ~> 13
+  - cucumber-html-formatter ~> 6
+  - cucumber-cucumber-expressions ~> 10
+
+* Use `cucumber-ruby-core` 7.0.0
+
+* Use `cucumber-ruby-wire` 3.0.0
+
+* Use `body` field of attachments
+
+### Improved
+
+* `--out url` updates:
+  * supports redirects
+  * use `PUT` method by default
+  * use a cURL like options (for example: `cucumber --out 'http://example.com -X POST -H Content-Type: json`)
+
+## [4.0.0.rc.5](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...4.0.0.rc.5)
+
+### Added
+
+* New html formatter enabled by option `--format html --out report.html`.
+
+* Accept `--out URL` to POST results to a web server
+  If a URL is used as output, the output will be sent with a POST request.
+  This can be overridden by specifying e.g. `http-method=PUT` as a query parameter.
+  Other `http-` prefixed query parameters will be converted to request headers
+  (with the `http-` prefix stripped off).
+
 
 ## [4.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.3...4.0.0.rc.4)
 

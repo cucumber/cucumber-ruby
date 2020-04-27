@@ -47,11 +47,13 @@ module Cucumber
         }
 
         if media_type.start_with?('text/')
-          attachment_data[:text] = src
-        elsif src.respond_to? :read
-          attachment_data[:binary] = Base64.encode64(src.read)
+          attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::IDENTITY
+          attachment_data[:body] = src
         else
-          attachment_data[:binary] = Base64.encode64(src)
+          body = src.respond_to?(:read) ? src.read : src
+
+          attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::BASE64
+          attachment_data[:body] = Base64.strict_encode64(body)
         end
 
         message = Cucumber::Messages::Envelope.new(
@@ -124,7 +126,7 @@ module Cucumber
 
       def step_match_arguments(step)
         @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
-          Cucumber::Messages::StepMatchArgument.new(
+          Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: argument.parameter_type.name
           )
@@ -132,7 +134,7 @@ module Cucumber
       end
 
       def argument_group_to_message(group)
-        Cucumber::Messages::StepMatchArgument::Group.new(
+        Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList::StepMatchArgument::Group.new(
           start: group.start,
           value: group.value,
           children: group.children.map { |child| argument_group_to_message(child) }
@@ -187,7 +189,7 @@ module Cucumber
 
         result_message = result.to_message
         if result.failed? || result.pending?
-          result_message = Cucumber::Messages::TestStepResult.new(
+          result_message = Cucumber::Messages::TestStepFinished::TestStepResult.new(
             status: result_message.status,
             duration: result_message.duration,
             message: create_error_message(result)
