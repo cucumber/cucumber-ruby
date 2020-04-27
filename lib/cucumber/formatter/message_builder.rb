@@ -29,6 +29,7 @@ module Cucumber
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
         @current_test_case_started_id = nil
@@ -229,6 +230,17 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_run_finished: Cucumber::Messages::TestRunFinished.new(
             timestamp: time_to_timestamp(Time.now)
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_undefined_parameter_type(event)
+        message = Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
+            name: event.type_name,
+            expression: event.expression
           )
         )
 

@@ -36,6 +36,7 @@ module Cucumber
         @config = config
         @options = config.to_hash
         @snippets_input = []
+        @undefined_parameter_types = []
         @total_duration = 0
         @exceptions = []
         @gherkin_sources = {}
@@ -54,6 +55,11 @@ module Cucumber
         @passed_test_cases = []
         @source_indent = 0
         @next_comment_to_be_printed = 0
+
+        bind_events(config)
+      end
+
+      def bind_events(config)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :test_case_started, &method(:on_test_case_started)
@@ -61,6 +67,7 @@ module Cucumber
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :undefined_parameter_type, &method(:collect_undefined_parameter_type_names)
       end
 
       def on_gherkin_source_read(event)

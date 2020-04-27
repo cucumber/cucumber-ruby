@@ -38,7 +38,8 @@ module Cucumber
         TestStepCreated,
         TestStepFinished,
         TestStepStarted,
-        Envelope
+        Envelope,
+        UndefinedParameterType
       )
     end
   end
