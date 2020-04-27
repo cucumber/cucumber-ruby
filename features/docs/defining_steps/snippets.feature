@@ -82,7 +82,7 @@ Feature: Snippets
       end
       """
 
-  Scenario: Snippet for undefined step with undefined parameter type
+  Scenario: Snippet for step definition with undefined parameter type
     Given a file named "features/undefined_parameter_type.feature" with:
       """
       Feature:
