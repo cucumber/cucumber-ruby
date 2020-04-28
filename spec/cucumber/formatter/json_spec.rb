@@ -775,6 +775,33 @@ module Cucumber
                                   "duration": 1}}]}]}]})
           end
         end
+
+        describe 'with a scenario embedding bytes' do
+          define_feature <<-FEATURE
+          Feature: Embeddings
+
+            Scenario: Bytes embedded
+              Given 10 bytes are embedded
+            FEATURE
+
+          define_steps do
+            Given('{int} bytes are embedded') do |size|
+              data = (0..size - 1).map { |i| [i].pack('C') }.join
+              embed(data, 'mime-type;base64')
+            end
+          end
+
+          it 'does not fail' do
+            json = load_normalised_json(@out)
+            json_step = json[0]['elements'][0]['steps'][0]
+
+            expect(json_step['result']['status']).to eq('passed')
+            expect(json_step['embeddings'][0]).to eq(
+              'data' => "\u0000\u0001\u0002\u0003\u0004\u0005\u0006\a\b\t",
+              'mime_type' => 'mime-type'
+            )
+          end
+        end
       end
 
       def load_normalised_json(out)

@@ -10,6 +10,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
+## [In GIT]((https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...prepare-release-3.2.0))
+
+### Fixed
+
+ * JSON report: Do not fail when trying to embed bytes [#1388](https://github.com/cucumber/cucumber-ruby/issues/1388)
+
 ## [3.1.2](https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...v3.1.2) (2018-07-13)
 
 ### Changed
