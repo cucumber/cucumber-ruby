@@ -191,11 +191,12 @@ module Cucumber
           run_step 'Loud'
         end
 
-        it 'raises an exception if the message is not a String' do
+        it 'calls `to_s` if the message is not a String' do
+          expect(user_interface).to receive(:attach).with('["Not", 1, "string"]', 'text/x.cucumber.log+plain')
           dsl.Given(/Loud/) do
             log ['Not', 1, 'string']
           end
-          expect { run_step 'Loud' }.to raise_exception(Cucumber::LogTypeInvalid)
+          run_step 'Loud'
         end
       end
 
