@@ -311,8 +311,8 @@ TEXT
           "formatter's docs to see whether to pass a file, dir or URL.",
           "\n",
           'When using a URL, the output of the formatter will be sent as the HTTP request body.',
-          'HTTP headers and request method can be set with cURL like options,',
-          'for example --out "http://example.com -X POST -H Content-Type:text/json"'
+          'HTTP headers and request method can be set with cURL like options.',
+          'Example: --out "http://example.com -X POST -H Content-Type:text/json"'
         ]
       end
 
