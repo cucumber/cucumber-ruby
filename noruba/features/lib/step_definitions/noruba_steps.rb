@@ -122,7 +122,6 @@ Given('a directory named {string}') do |path|
   FileUtils.mkdir_p(path)
 end
 
-
 Given('a directory without standard Cucumber project directory structure') do
 end
 
