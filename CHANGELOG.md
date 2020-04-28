@@ -12,6 +12,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [In GIT]((https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...prepare-release-3.2.0))
 
+### Added
+
+ * `--out` option now supports URL:
+   * default method is `PUT`
+   * you can ussed cURL like options, for example: `--out "http://example.com -X POST -H Content-Type:text/json"` (Backport of [#1395](https://github.com/cucumber/cucumber-ruby/pull/1395) and [#1406](https://github.com/cucumber/cucumber-ruby/pull/1406))
+
 ### Fixed
 
  * JSON report: Do not fail when trying to embed bytes [#1388](https://github.com/cucumber/cucumber-ruby/issues/1388)
