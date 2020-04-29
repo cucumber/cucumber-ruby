@@ -40,7 +40,7 @@ commands:
           name: run tests
           command: |
             bundle exec rake
-      - run_noruba:
+      - run:
           name: run cucumber without Aruba
           command: |
             cd noruba
