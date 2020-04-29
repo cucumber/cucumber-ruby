@@ -114,8 +114,12 @@ Before do
   @cucumber = CucumberCommand.new()
 end
 
-After do
+After do |scenario|
   Dir.chdir(@original_cwd)
+
+  if scenario.status != :failed
+    FileUtils.rm_rf(@tmp_working_directory)
+  end
 end
 
 Given('a directory named {string}') do |path|
