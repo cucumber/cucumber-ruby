@@ -40,6 +40,11 @@ commands:
           name: run tests
           command: |
             bundle exec rake
+      - run_noruba:
+          name: run cucumber without Aruba
+          command: |
+            cd noruba
+            bundle exec cucumber
 
   test_allow_failure:
     description: "Run tests (allow failure so workflow is not marked as failed)"
@@ -63,6 +68,19 @@ jobs:
           command: |
             bundle exec rspec
             bundle exec cucumber --retry 8 --no-strict-flaky
+
+  build_windows_noruba:
+    executor: win/default
+    working_directory: ~/repo
+    steps:
+      - add_windows_dependencies
+      - build
+      - run:
+          name: run tests
+          command: |
+            cd noruba
+            bundle exec cucumber
+
 
   build-ruby-2_3:
     docker:
@@ -192,6 +210,7 @@ workflows:
   build:
     jobs:
       - build_windows
+      - build_windows_noruba
       - build-ruby-2_3
       - build-ruby-2_4
       - build-ruby-2_5
