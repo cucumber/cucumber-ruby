@@ -39,12 +39,12 @@ commands:
       - run:
           name: run tests
           command: |
-            bundle exec rake
-      - run:
-          name: run cucumber without Aruba
-          command: |
+            bundle exec rspec
+            bundle exec cucumber
             cd noruba
             bundle exec cucumber
+            cd ..
+            bundle exec rubocop
 
   test_allow_failure:
     description: "Run tests (allow failure so workflow is not marked as failed)"
