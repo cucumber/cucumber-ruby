@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
+
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
 require 'cucumber/gherkin/i18n'
@@ -116,14 +118,21 @@ module Cucumber
         @snippets_input << Console::SnippetData.new(keyword, test_step)
       end
 
+      def collect_undefined_parameter_type_names(undefined_parameter_type)
+        @undefined_parameter_types << undefined_parameter_type.type_name
+      end
+
       def print_snippets(options)
         return unless options[:snippets]
-        return if @snippets_input.empty?
 
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
           snippet_text(step_keyword, step_name, multiline_arg)
         end
-        do_print_snippets(snippet_text_proc)
+        do_print_snippets(snippet_text_proc) unless @snippets_input.empty?
+
+        @undefined_parameter_types.map do |type_name|
+          do_print_undefined_parameter_type_snippet(type_name)
+        end
       end
 
       def do_print_snippets(snippet_text_proc)
@@ -181,6 +190,24 @@ module Cucumber
         @io.puts "Using the #{profiles_sentence} profile#{'s' if profiles.size > 1}..."
       end
 
+      def do_print_undefined_parameter_type_snippet(type_name)
+        camelized = type_name.split(/_|-/).collect(&:capitalize).join
+
+        @io.puts [
+          "The parameter #{type_name} is not defined. You can define a new one with:",
+          '',
+          'ParameterType(',
+          "  name:        '#{type_name}',",
+          '  regexp:      /some regexp here/,',
+          "  type:        #{camelized},",
+          '  # The transformer takes as many arguments as there are capture groups in the regexp,',
+          '  # or just one if there are none.',
+          "  transformer: ->(s) { #{camelized}.new(s) }",
+          ')',
+          ''
+        ].join("\n")
+      end
+
       private
 
       FORMATS = Hash.new { |hash, format| hash[format] = method(format).to_proc }
@@ -219,3 +246,4 @@ module Cucumber
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength

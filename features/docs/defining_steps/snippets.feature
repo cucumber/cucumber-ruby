@@ -81,3 +81,31 @@ Feature: Snippets
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
+
+  Scenario: Snippet for step definition with undefined parameter type
+    Given a file named "features/undefined_parameter_type.feature" with:
+      """
+      Feature:
+        Scenario: Delayed flight
+          Given leg LHR-OSL is cancelled
+      """
+    And a file named "features/steps.rb" with:
+      """
+      Given('leg {flight-leg} is cancelled') do |flight|
+        log flight.to_s
+      end
+      """
+    When I run `cucumber features/undefined_parameter_type.feature -s`
+    Then the output should contain:
+      """
+      The parameter flight-leg is not defined. You can define a new one with:
+
+      ParameterType(
+        name:        'flight-leg',
+        regexp:      /some regexp here/,
+        type:        FlightLeg,
+        # The transformer takes as many arguments as there are capture groups in the regexp,
+        # or just one if there are none.
+        transformer: ->(s) { FlightLeg.new(s) }
+      )
+      """

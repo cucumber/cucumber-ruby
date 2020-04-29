@@ -18,7 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* N/A
+* `log` method can now be called with non-string objects and will run `.to_s` on them. [#1410](https://github.com/cucumber/cucumber-ruby/issues/1410)
 
 ### Removed
 
@@ -26,7 +26,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
-* N/A
+* Display snippet when using undefined parameter type [#1411](https://github.com/cucumber/cucumber-ruby/issues/1411)
 
 ## [4.0.0.rc.6](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...4.0.0.rc.6)
 
