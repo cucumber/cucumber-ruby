@@ -31,6 +31,17 @@ After do |scenario|
   end
 end
 
+Before('@global_state') do
+  # Ok, this one is tricky but kinda make sense.
+  # So, we need to share state between some sub-scenarios (the ones executed by
+  # CucumberCommand). But we don't want those to leak between the "real" scenarios
+  # (the ones ran by Cucumber itself).
+  # This should reset data hopefully (and make clear why we do that)
+
+  $global_cukes = 0
+  $scenario_runs = 0
+end
+
 Given('a directory named {string}') do |path|
   FileUtils.mkdir_p(path)
 end
