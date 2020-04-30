@@ -79,7 +79,7 @@ Given('log only formatter is declared') do
     '    @io.puts src',
     '  end',
     'end'
-].join("\n"))
+  ].join("\n"))
 end
 
 When('I run `cucumber{}`') do |args|
