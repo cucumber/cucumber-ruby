@@ -4,103 +4,12 @@ require 'nokogiri'
 require 'cucumber/rspec/doubles'
 require 'cucumber/cli/main'
 
+require_relative './output'
+require_relative './command_line'
+require_relative './filesystem'
+
+
 NORUBA_PATH = 'noruba/features/lib'
-
-def write_file(path, content)
-  FileUtils.mkdir_p(File.dirname(path))
-  File.open(path, 'w') { |file| file.write(content) }
-end
-
-def clean_output(output)
-  output.split("\n").map do |line|
-    next if line.include?(NORUBA_PATH)
-    line
-      .gsub(/\e\[([;\d]+)?m/, '')                  # Drop colors
-      .gsub(/^.*cucumber_process\.rb.*$\n/, '')
-      .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s')         # Make duration predictable
-      .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
-      .sub(/\s*$/, '')                             # Drop trailing whitespaces
-  end.compact.join("\n")
-end
-
-def remove_self_ref(output)
-  output.split("\n")
-    .reject { |line| line.include?(NORUBA_PATH) }
-    .join("\n")
-end
-
-def output_starts_with(source, expected)
-  expect(clean_output(source)).to start_with(clean_output(expected))
-end
-
-def output_equals(source, expected)
-  expect(clean_output(source)).to eq(clean_output(expected))
-end
-
-def output_include(source, expected)
-  expect(clean_output(source)).to include(clean_output(expected))
-end
-
-def output_include_not(source, expected)
-  expect(clean_output(source)).not_to include(clean_output(expected))
-end
-
-class MockKernel
-  attr_reader :exit_status
-
-  def exit(status)
-    @exit_status  = status
-  end
-end
-
-class CucumberCommand
-  attr_reader :args
-
-  def initialize()
-    @stdout = StringIO.new
-    @stderr = StringIO.new
-    @kernel = MockKernel.new
-  end
-
-  def execute(args)
-    @args = args
-    argument_list = make_arg_list(args)
-
-    Cucumber::Cli::Main.new(
-      argument_list,
-      nil,
-      @stdout,
-      @stderr,
-      @kernel
-    ).execute!
-  end
-
-  def stderr
-    @stderr.string
-  end
-
-  def stdout
-    @stdout.string
-  end
-
-  def all_output
-    [stdout, stderr].reject(&:empty?).join("\n")
-  end
-
-  def exit_status
-    @kernel.exit_status
-  end
-
-  private
-
-  def make_arg_list(args)
-    index = -1
-    args.split(/'|"/).map do |chunk|
-      index += 1
-      index % 2 == 0 ? chunk.split(' ') : chunk
-    end.flatten
-  end
-end
 
 Before do
   @original_cwd = Dir.pwd
@@ -127,6 +36,7 @@ Given('a directory named {string}') do |path|
 end
 
 Given('a directory without standard Cucumber project directory structure') do
+  # A new temp dir is created for each running scenario, so it will be empty
 end
 
 Given('the standard step definitions') do
