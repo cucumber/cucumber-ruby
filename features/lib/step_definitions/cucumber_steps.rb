@@ -80,6 +80,22 @@ Then(/the output of both commands should be the same/) do
   expect(first_output).to eq(last_output)
 end
 
+Given('log only formatter is declared') do
+  write_file('features/support/log_only_formatter.rb', [
+    'class LogOnlyFormatter',
+    '  attr_reader :io',
+    '',
+    '  def initialize(config)',
+    '    @io = config.out_stream',
+    '  end',
+    '',
+    '  def attach(src, media_type)',
+    '    @io.puts src',
+    '  end',
+    'end'
+  ].join("\n"))
+end
+
 module CucumberHelper
   def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
     run_command_and_stop "#{Cucumber::BINARY} #{filename} --format #{formatter}", exit_timeout: 5
