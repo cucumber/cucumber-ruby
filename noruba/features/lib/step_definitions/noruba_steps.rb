@@ -38,6 +38,7 @@ Before('@global_state') do
   # (the ones ran by Cucumber itself).
   # This should reset data hopefully (and make clear why we do that)
 
+  $global_state = nil
   $global_cukes = 0
   $scenario_runs = 0
 end
