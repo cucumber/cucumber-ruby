@@ -66,6 +66,22 @@ Given('the following profile is defined:') do |profile|
   write_file('cucumber.yml', profile)
 end
 
+Given('log only formatter is declared') do
+  write_file('features/support/log_only_formatter.rb', [
+    'class LogOnlyFormatter',
+    '  attr_reader :io',
+    '',
+    '  def initialize(config)',
+    '    @io = config.out_stream',
+    '  end',
+    '',
+    '  def attach(src, media_type)',
+    '    @io.puts src',
+    '  end',
+    'end'
+].join("\n"))
+end
+
 When('I run `cucumber{}`') do |args|
   @cucumber.execute(args)
 end
