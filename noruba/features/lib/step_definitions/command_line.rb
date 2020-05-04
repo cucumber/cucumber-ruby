@@ -38,14 +38,18 @@ class CommandLine
   end
 
   def capture_stdout
-    old_stdout = $stdout
-    $stdout = @stdout
-    old_stderr = $stderr
-    $stderr = @stderr
+    allow(STDOUT)
+      .to receive(:puts)
+      .and_wrap_original do |m, *args|
+        @stdout.puts(*args)
+      end
+
+    allow(STDERR)
+      .to receive(:puts)
+      .and_wrap_original do |m, *args|
+        @stderr.puts(*args)
+      end
     yield
-  ensure
-    $stdout = old_stdout
-    $stderr = old_stderr
   end
 
   def destroy_mocks
@@ -85,6 +89,10 @@ end
 class RubyCommand < CommandLine
   def execute(file)
     capture_stdout { require file }
+  rescue RuntimeError => err
+    # no-op: this is raissed when Cucumber fails
+  rescue SystemExit => err
+    # No-op: well, we are ssupposed to exit the rake task
   rescue
     @kernel.exit(1)
   end
@@ -109,7 +117,9 @@ class RakeCommand < CommandLine
       end
 
     Rake.application.load_rakefile()
-    Rake.application[task.strip].invoke
+    capture_stdout {
+      Rake.application[task.strip].invoke
+    }
   rescue RuntimeError => err
     # no-op: this is raissed when Cucumber fails
   rescue SystemExit => err

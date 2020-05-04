@@ -1,4 +1,3 @@
-@wip @spawn
 Feature: Run Cli::Main with existing Runtime
 
   This is the API that Spork uses. It creates an existing runtime.
