@@ -19,8 +19,6 @@ Before do
   FileUtils.mkdir_p(@tmp_working_directory)
 
   Dir.chdir(@tmp_working_directory)
-
-  @cucumber = CucumberCommand.new()
 end
 
 After do |scenario|
@@ -95,10 +93,22 @@ Given('log only formatter is declared') do
 end
 
 When('I run `cucumber{}`') do |args|
-  @cucumber.execute(args)
+  @command_line = CucumberCommand.new()
+  @command_line.execute(args)
 end
 
-When('I run `bundle{}`') do |args|
+When('I run `bundle exec ruby {}`') do |filename|
+  @command_line = RubyCommand.new()
+
+  # TODO: extract this to RubyCommand
+  allow($stdout).to receive(:puts).and_wrap_original { |m, *args|
+    @command_line.puts(*args)
+  }
+
+  @command_line.execute("#{Dir.pwd}/#{filename}")
+end
+
+When('I run `bundle exec rake{}`') do |args|
   pending
 end
 
@@ -107,99 +117,100 @@ When('I run `rake{}`') do |args|
 end
 
 When('I run the feature with the progress formatter') do
-  @cucumber.execute("features/ --format progress")
+  @command_line = CucumberCommand.new()
+  @command_line.execute("features/ --format progress")
 end
 
 Then('the exit status should be {int}') do |status|
-  expect(@cucumber.exit_status).to eq(status)
+  expect(@command_line.exit_status).to eq(status)
 end
 
 Then('it should fail') do
-  expect(@cucumber.exit_status).not_to eq(0)
+  expect(@command_line.exit_status).not_to eq(0)
 end
 
 Then('it should fail with:') do |output|
-  #expect(@cucumber.exit_status).not_to eq(0)
-  output_include(@cucumber.all_output, output)
+  #expect(@command_line.exit_status).not_to eq(0)
+  output_include(@command_line.all_output, output)
 end
 
 Then('it should fail with exactly:') do |output|
-  #expect(@cucumber.exit_status).not_to eq(0)
-  output_equals(@cucumber.all_output, output)
+  #expect(@command_line.exit_status).not_to eq(0)
+  output_equals(@command_line.all_output, output)
 end
 
 Then('it should pass') do
-  expect(@cucumber.exit_status).to eq(0)
+  expect(@command_line.exit_status).to eq(0)
 end
 
 Then('it should pass with:') do |output|
-  #expect(@cucumber.exit_status).to eq(0)
-  output_include(@cucumber.all_output, output)
+  #expect(@command_line.exit_status).to eq(0)
+  output_include(@command_line.all_output, output)
 end
 
 Then('it should pass with exactly:') do |output|
-  output_equals(@cucumber.all_output, output)
+  output_equals(@command_line.all_output, output)
 end
 
 Then('the output should contain:') do |output|
-  output_include(@cucumber.all_output, output)
+  output_include(@command_line.all_output, output)
 end
 
 Then('the output should contain {string}') do |output|
-  output_include(@cucumber.all_output, output)
+  output_include(@command_line.all_output, output)
 end
 
 Then('the output includes the message {string}') do |message|
-  expect(@cucumber.all_output).to include(message)
+  expect(@command_line.all_output).to include(message)
 end
 
 Then('the output should not contain:') do |output|
-  output_include_not(@cucumber.all_output, output)
+  output_include_not(@command_line.all_output, output)
 end
 
 Then('the output should not contain {string}') do |output|
-  output_include_not(@cucumber.all_output, output)
+  output_include_not(@command_line.all_output, output)
 end
 
 Then('the stdout should contain exactly:') do |output|
-  output_equals(@cucumber.stdout, output)
+  output_equals(@command_line.stdout, output)
 end
 
 Then('the stderr should contain:') do |output|
-  output_include(@cucumber.stderr, output)
+  output_include(@command_line.stderr, output)
 end
 
 Then('the stderr should not contain:') do |output|
-  output_include_not(@cucumber.stderr, output)
+  output_include_not(@command_line.stderr, output)
 end
 
 Then('the stderr should not contain anything') do
-  expect(@cucumber.stderr).to be_empty
+  expect(@command_line.stderr).to be_empty
 end
 
 Then('the {word} profile should be used') do |profile|
-  output_include(@cucumber.all_output, profile)
+  output_include(@command_line.all_output, profile)
 end
 
 Then('exactly these files should be loaded: {list}') do |files|
-  expect(@cucumber.stdout.scan(/^  \* (.*\.rb)$/).flatten).to eq files
+  expect(@command_line.stdout.scan(/^  \* (.*\.rb)$/).flatten).to eq files
 end
 
 Then('exactly these features should be run: {list}') do |files|
-  expect(@cucumber.stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files
+  expect(@command_line.stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files
 end
 
 Then('{string} should not be required') do |file_name|
-  expect(@cucumber.stdout).not_to include("* #{file_name}")
+  expect(@command_line.stdout).not_to include("* #{file_name}")
 end
 
 Then('{string} should be required') do |file_name|
-  expect(@cucumber.stdout).to include("* #{file_name}")
+  expect(@command_line.stdout).to include("* #{file_name}")
 end
 
 Then('it fails before running features with:') do |expected|
-  output_starts_with(@cucumber.all_output, expected)
-  expect(@cucumber.exit_status).not_to eq(0)
+  output_starts_with(@command_line.all_output, expected)
+  expect(@command_line.exit_status).not_to eq(0)
 end
 
 Given('a scenario with a step that looks like this:') do |content|
@@ -319,18 +330,18 @@ Then('the file {string} should contain:') do |path, content|
 end
 
 Then('output should be html with title {string}') do |title|
-  document = Nokogiri::HTML.parse(@cucumber.stdout)
+  document = Nokogiri::HTML.parse(@command_line.stdout)
   expect(document.xpath('//title').text).to eq(title)
 end
 
 Then('output should be valid NDJSON') do
-  @cucumber.stdout.split("\n").map do |line|
+  @command_line.stdout.split("\n").map do |line|
     expect { JSON.parse(line) }.not_to raise_exception
   end
 end
 
 Then('messages types should be:') do |expected_types|
-  parsed_json = @cucumber.stdout.split("\n").map { |line| JSON.parse(line) }
+  parsed_json = @command_line.stdout.split("\n").map { |line| JSON.parse(line) }
   message_types = parsed_json.map(&:keys).flatten.compact
 
   expect(expected_types.split("\n").map(&:strip)).to contain_exactly(*message_types)
@@ -348,16 +359,16 @@ def replace_junit_time(time)
 end
 
 Then('it should fail with JSON:') do |json|
-  #expect(@cucumber.exit_status).not_to eq(0)
-  actual = normalise_json(JSON.parse(@cucumber.stdout))
+  #expect(@command_line.exit_status).not_to eq(0)
+  actual = normalise_json(JSON.parse(@command_line.stdout))
   expected = JSON.parse(json)
 
   expect(actual).to eq expected
 end
 
 Then('it should pass with JSON:') do |json|
-  #expect(@cucumber.exit_status).to eq(0)
-  actual = normalise_json(JSON.parse(@cucumber.stdout))
+  #expect(@command_line.exit_status).to eq(0)
+  actual = normalise_json(JSON.parse(@command_line.stdout))
   expected = JSON.parse(json)
 
   expect(actual).to eq expected
@@ -399,27 +410,27 @@ def normalise_json_step_or_hook(step_or_hook)
 end
 
 Then('I should see the CLI help') do
-  expect(@cucumber.stdout).to include('Usage:')
+  expect(@command_line.stdout).to include('Usage:')
 end
 
 Then('cucumber lists all the supported languages') do
   sample_languages = %w[Arabic български Pirate English 日本語]
   sample_languages.each do |language|
-    expect(@cucumber.stdout.force_encoding('utf-8')).to include(language)
+    expect(@command_line.stdout.force_encoding('utf-8')).to include(language)
   end
 end
 
 Then('the output should contain NDJSON with key {string} and value {string}') do |key, value|
-  expect(@cucumber.stdout).to match(/"#{key}": ?"#{value}"/)
+  expect(@command_line.stdout).to match(/"#{key}": ?"#{value}"/)
 end
 
 When('I rerun the previous command with the same seed') do
-  previous_seed = @cucumber.stdout.match(/with seed (\d+)/)[1]
+  previous_seed = @command_line.stdout.match(/with seed (\d+)/)[1]
 
-  @cucumber2 = CucumberCommand.new()
-  @cucumber2.execute(@cucumber.args.gsub(/random/, "random:#{previous_seed}"))
+  @command_line2 = CucumberCommand.new()
+  @command_line2.execute(@command_line.args.gsub(/random/, "random:#{previous_seed}"))
 end
 
 Then('the output of both commands should be the same') do
-  output_equals(@cucumber.stdout, @cucumber2.stdout)
+  output_equals(@command_line.stdout, @command_line2.stdout)
 end
