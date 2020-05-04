@@ -41,6 +41,10 @@ Before('@global_state') do
   $scenario_runs = 0
 end
 
+After do
+  @command_line&.destroy_mocks
+end
+
 Given('a directory named {string}') do |path|
   FileUtils.mkdir_p(path)
 end
@@ -100,20 +104,17 @@ end
 When('I run `bundle exec ruby {}`') do |filename|
   @command_line = RubyCommand.new()
 
-  # TODO: extract this to RubyCommand
-  allow($stdout).to receive(:puts).and_wrap_original { |m, *args|
-    @command_line.puts(*args)
-  }
-
   @command_line.execute("#{Dir.pwd}/#{filename}")
 end
 
-When('I run `bundle exec rake{}`') do |args|
-  pending
+When('I run `bundle exec rake{}`') do |task|
+  @command_line = RakeCommand.new()
+  @command_line.execute(task)
 end
 
-When('I run `rake{}`') do |args|
-  pending
+When('I run `rake{}`') do |task|
+  @command_line = RakeCommand.new()
+  @command_line.execute(task)
 end
 
 When('I run the feature with the progress formatter') do

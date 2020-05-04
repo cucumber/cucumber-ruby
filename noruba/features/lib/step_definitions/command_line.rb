@@ -1,4 +1,6 @@
 require 'rspec/mocks'
+require 'rake'
+require 'cucumber/rake/task'
 
 class MockKernel
   attr_reader :exit_status
@@ -9,7 +11,11 @@ class MockKernel
 end
 
 class CommandLine
+  include ::RSpec::Mocks::ExampleMethods
+
   def initialize()
+    ::RSpec::Mocks.setup
+
     @stdout = StringIO.new
     @stderr = StringIO.new
     @kernel = MockKernel.new
@@ -28,7 +34,24 @@ class CommandLine
   end
 
   def exit_status
-    @kernel.exit_status
+    @kernel.exit_status || 0
+  end
+
+  def capture_stdout
+    old_stdout = $stdout
+    $stdout = @stdout
+    old_stderr = $stderr
+    $stderr = @stderr
+    yield
+  ensure
+    $stdout = old_stdout
+    $stderr = old_stderr
+  end
+
+  def destroy_mocks
+    ::RSpec::Mocks.verify
+  ensure
+    ::RSpec::Mocks.teardown
   end
 end
 
@@ -61,14 +84,35 @@ end
 
 class RubyCommand < CommandLine
   def execute(file)
-    require file
+    capture_stdout { require file }
+  rescue
+    @kernel.exit(1)
   end
+end
 
-  def puts(*msg)
-    @stdout.puts(*msg)
-  end
+class RakeCommand < CommandLine
+  def execute task
+    allow_any_instance_of(Cucumber::Rake::Task)
+      .to receive(:fork)
+      .and_return(false)
 
-  def exit_status
-    @exit_status || 0
+    allow(Cucumber::Cli::Main)
+      .to receive(:execute)
+      .and_wrap_original do |m, *args|
+        Cucumber::Cli::Main.new(
+          args[0],
+          nil,
+          @stdout,
+          @stderr,
+          @kernel
+        ).execute!
+      end
+
+    Rake.application.load_rakefile()
+    Rake.application[task.strip].invoke
+  rescue RuntimeError => err
+    # no-op: this is raissed when Cucumber fails
+  rescue SystemExit => err
+    # No-op: well, we are ssupposed to exit the rake task
   end
 end
