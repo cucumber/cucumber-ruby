@@ -92,7 +92,7 @@ class RubyCommand < CommandLine
   rescue RuntimeError => err
     # no-op: this is raised when Cucumber fails
   rescue SystemExit => err
-    # No-op: well, we are ssupposed to exit the rake task
+    # No-op: well, we are supposed to exit the rake task
   rescue
     @kernel.exit(1)
   end
