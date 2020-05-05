@@ -45,6 +45,10 @@ After do
   @command_line&.destroy_mocks
 end
 
+After('@disable_fail_fast') do
+  Cucumber.wants_to_quit = false
+end
+
 Given('a directory named {string}') do |path|
   FileUtils.mkdir_p(path)
 end
