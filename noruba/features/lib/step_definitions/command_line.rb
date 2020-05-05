@@ -90,7 +90,7 @@ class RubyCommand < CommandLine
   def execute(file)
     capture_stdout { require file }
   rescue RuntimeError => err
-    # no-op: this is raissed when Cucumber fails
+    # no-op: this is raised when Cucumber fails
   rescue SystemExit => err
     # No-op: well, we are ssupposed to exit the rake task
   rescue
