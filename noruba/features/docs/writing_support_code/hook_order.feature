@@ -1,4 +1,3 @@
-  @spawn
   Feature: Hooks execute in defined order
 
   Background:

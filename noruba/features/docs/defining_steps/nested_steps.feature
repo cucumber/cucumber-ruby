@@ -103,7 +103,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn @todo-jruby @wip-jruby
+  @todo-jruby @wip-jruby
   Scenario: Backtrace doesn't skip nested steps
     Given a file named "features/nested_steps.feature" with:
       """gherkin

@@ -1,4 +1,3 @@
-@wip @spawn
 Feature: List step defs as json
 
   In order to build tools on top of Cucumber
