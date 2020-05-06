@@ -55,9 +55,11 @@ class CommandLine
   end
 
   def destroy_mocks
-    ::RSpec::Mocks.verify
-  ensure
-    ::RSpec::Mocks.teardown
+    begin
+      ::RSpec::Mocks.verify
+    ensure
+      ::RSpec::Mocks.teardown
+    end
   end
 end
 

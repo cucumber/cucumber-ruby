@@ -11,22 +11,24 @@ require_relative './filesystem'
 NORUBA_PATH = 'noruba/features/lib'
 
 Around do |scenario, block|
-  original_cwd = Dir.pwd
-  scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')
-  tmp_working_directory = File.join('tmp', "noruba-#{scenario_name}-#{SecureRandom.uuid}")
+  begin
+    original_cwd = Dir.pwd
+    scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')
+    tmp_working_directory = File.join('tmp', "noruba-#{scenario_name}-#{SecureRandom.uuid}")
 
-  FileUtils.rm_rf(tmp_working_directory)
-  FileUtils.mkdir_p(tmp_working_directory)
-
-  Dir.chdir(tmp_working_directory)
-
-  block.call
-ensure
-  @command_line&.destroy_mocks
-
-  Dir.chdir(original_cwd)
-  if scenario.status != :failed
     FileUtils.rm_rf(tmp_working_directory)
+    FileUtils.mkdir_p(tmp_working_directory)
+
+    Dir.chdir(tmp_working_directory)
+
+    block.call
+  ensure
+    @command_line&.destroy_mocks
+
+    Dir.chdir(original_cwd)
+    if scenario.status != :failed
+      FileUtils.rm_rf(tmp_working_directory)
+    end
   end
 end
 
