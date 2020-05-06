@@ -129,7 +129,7 @@ Then('it should fail') do
 end
 
 Then('it should fail with:') do |output|
-  #expect(command_line.exit_status).not_to eq(0)
+  expect(command_line.exit_status).not_to eq(0)
   expect(command_line.all_output).to include_output(output)
 end
 
@@ -142,7 +142,7 @@ Then('it should pass') do
 end
 
 Then('it should pass with:') do |output|
-  #expect(command_line.exit_status).to eq(0)
+  expect(command_line.exit_status).to eq(0)
   expect(command_line.all_output).to include_output(output)
 end
 
@@ -357,7 +357,7 @@ def replace_junit_time(time)
 end
 
 Then('it should fail with JSON:') do |json|
-  #expect(command_line.exit_status).not_to eq(0)
+  expect(command_line.exit_status).not_to eq(0)
   actual = normalise_json(JSON.parse(command_line.stdout))
   expected = JSON.parse(json)
 
@@ -365,7 +365,7 @@ Then('it should fail with JSON:') do |json|
 end
 
 Then('it should pass with JSON:') do |json|
-  #expect(command_line.exit_status).to eq(0)
+  expect(command_line.exit_status).to eq(0)
   actual = normalise_json(JSON.parse(command_line.stdout))
   expected = JSON.parse(json)
 
