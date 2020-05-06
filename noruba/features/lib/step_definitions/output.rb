@@ -1,4 +1,4 @@
-NORUBA_PATH = 'noruba/features/lib'
+require 'rspec/expectations'
 
 def clean_output(output)
   output.split("\n").map do |line|
@@ -18,18 +18,32 @@ def remove_self_ref(output)
     .join("\n")
 end
 
-def output_starts_with(source, expected)
-  expect(clean_output(source)).to start_with(clean_output(expected))
+RSpec::Matchers.define :be_similar_output_than do |expected|
+  match do |actual|
+    @actual = clean_output(actual)
+    @expected = clean_output(expected)
+    @actual == @expected
+  end
+
+  diffable
 end
 
-def output_equals(source, expected)
-  expect(clean_output(source)).to eq(clean_output(expected))
+RSpec::Matchers.define :start_with_output do |expected|
+  match do |actual|
+    @actual = clean_output(actual)
+    @expected = clean_output(expected)
+    @actual.start_with?(@expected)
+  end
+
+  diffable
 end
 
-def output_include(source, expected)
-  expect(clean_output(source)).to include(clean_output(expected))
-end
+RSpec::Matchers.define :include_output do |expected|
+  match do |actual|
+    @actual = clean_output(actual)
+    @expected = clean_output(expected)
+    @actual.include?(@expected)
+  end
 
-def output_include_not(source, expected)
-  expect(clean_output(source)).not_to include(clean_output(expected))
+  diffable
 end

@@ -135,12 +135,11 @@ end
 
 Then('it should fail with:') do |output|
   #expect(@command_line.exit_status).not_to eq(0)
-  output_include(@command_line.all_output, output)
+  expect(@command_line.all_output).to include_output(output)
 end
 
 Then('it should fail with exactly:') do |output|
-  #expect(@command_line.exit_status).not_to eq(0)
-  output_equals(@command_line.all_output, output)
+  expect(@command_line.all_output).to be_similar_output_than(output)
 end
 
 Then('it should pass') do
@@ -149,19 +148,19 @@ end
 
 Then('it should pass with:') do |output|
   #expect(@command_line.exit_status).to eq(0)
-  output_include(@command_line.all_output, output)
+  expect(@command_line.all_output).to include_output(output)
 end
 
 Then('it should pass with exactly:') do |output|
-  output_equals(@command_line.all_output, output)
+  expect(@command_line.all_output).to be_similar_output_than(output)
 end
 
 Then('the output should contain:') do |output|
-  output_include(@command_line.all_output, output)
+  expect(@command_line.all_output).to include_output(output)
 end
 
 Then('the output should contain {string}') do |output|
-  output_include(@command_line.all_output, output)
+  expect(@command_line.all_output).to include_output(output)
 end
 
 Then('the output includes the message {string}') do |message|
@@ -169,23 +168,23 @@ Then('the output includes the message {string}') do |message|
 end
 
 Then('the output should not contain:') do |output|
-  output_include_not(@command_line.all_output, output)
+  expect(@command_line.all_output).not_to include_output(output)
 end
 
 Then('the output should not contain {string}') do |output|
-  output_include_not(@command_line.all_output, output)
+  expect(@command_line.all_output).not_to include_output(output)
 end
 
 Then('the stdout should contain exactly:') do |output|
-  output_equals(@command_line.stdout, output)
+  expect(@command_line.stdout).to be_similar_output_than(output)
 end
 
 Then('the stderr should contain:') do |output|
-  output_include(@command_line.stderr, output)
+  expect(@command_line.stderr).to include_output(output)
 end
 
 Then('the stderr should not contain:') do |output|
-  output_include_not(@command_line.stderr, output)
+  expect(@command_line.stderr).not_to include_output(output)
 end
 
 Then('the stderr should not contain anything') do
@@ -193,7 +192,7 @@ Then('the stderr should not contain anything') do
 end
 
 Then('the {word} profile should be used') do |profile|
-  output_include(@command_line.all_output, profile)
+  expect(@command_line.all_output).to include_output(profile)
 end
 
 Then('exactly these files should be loaded: {list}') do |files|
@@ -213,7 +212,7 @@ Then('{string} should be required') do |file_name|
 end
 
 Then('it fails before running features with:') do |expected|
-  output_starts_with(@command_line.all_output, expected)
+  expect(@command_line.all_output).to start_with_output(expected)
   expect(@command_line.exit_status).not_to eq(0)
 end
 
@@ -355,7 +354,7 @@ Then('the junit output file {string} should contain:') do |actual_file, text|
   actual = IO.read(File.expand_path('.') + '/' + actual_file)
   actual = remove_self_ref(replace_junit_time(actual))
 
-  output_equals(actual, text)
+  expect(actual).to be_similar_output_than(text)
 end
 
 def replace_junit_time(time)
@@ -436,5 +435,5 @@ When('I rerun the previous command with the same seed') do
 end
 
 Then('the output of both commands should be the same') do
-  output_equals(@command_line.stdout, @command_line2.stdout)
+  expect(@command_line.stdout).to be_similar_output_than(@command_line2.stdout)
 end
