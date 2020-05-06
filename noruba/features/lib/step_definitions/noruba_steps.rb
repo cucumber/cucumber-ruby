@@ -13,6 +13,8 @@ NORUBA_PATH = 'noruba/features/lib'
 Around do |scenario, block|
   begin
     original_cwd = Dir.pwd
+    # We limit the length to avoid issues on Windows where sometimes the creation
+    # of the temporary directory fails due to the length of the scenario name.
     scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')[0..100]
     tmp_working_directory = File.join('tmp', "noruba-#{scenario_name}-#{SecureRandom.uuid}")
 
