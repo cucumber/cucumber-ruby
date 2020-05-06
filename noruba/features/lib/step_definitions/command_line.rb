@@ -1,3 +1,4 @@
+require 'rspec/expectations'
 require 'rspec/mocks'
 require 'rake'
 require 'cucumber/rake/task'
@@ -155,3 +156,20 @@ module CLIWorld
 end
 
 World(CLIWorld)
+
+
+RSpec::Matchers.define :have_succeded do
+  match do |cli|
+    @actual = cli.exit_status
+    @expected = '0 exit code'
+    @actual == 0
+  end
+end
+
+RSpec::Matchers.define :have_failed do
+  match do |cli|
+    @actual = cli.exit_status
+    @expected = 'non-0 exit code'
+    @actual > 0
+  end
+end

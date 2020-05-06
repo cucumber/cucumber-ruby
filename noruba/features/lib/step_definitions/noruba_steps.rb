@@ -125,11 +125,11 @@ Then('the exit status should be {int}') do |status|
 end
 
 Then('it should fail') do
-  expect(command_line.exit_status).not_to eq(0)
+  expect(command_line).to have_failed
 end
 
 Then('it should fail with:') do |output|
-  expect(command_line.exit_status).not_to eq(0)
+  expect(command_line).to have_failed
   expect(command_line.all_output).to include_output(output)
 end
 
@@ -138,11 +138,11 @@ Then('it should fail with exactly:') do |output|
 end
 
 Then('it should pass') do
-  expect(command_line.exit_status).to eq(0)
+  expect(command_line).to have_succeded
 end
 
 Then('it should pass with:') do |output|
-  expect(command_line.exit_status).to eq(0)
+  expect(command_line).to have_succeded
   expect(command_line.all_output).to include_output(output)
 end
 
@@ -208,7 +208,7 @@ end
 
 Then('it fails before running features with:') do |expected|
   expect(command_line.all_output).to start_with_output(expected)
-  expect(command_line.exit_status).not_to eq(0)
+  expect(command_line).to have_failed
 end
 
 Given('a scenario with a step that looks like this:') do |content|
@@ -357,7 +357,7 @@ def replace_junit_time(time)
 end
 
 Then('it should fail with JSON:') do |json|
-  expect(command_line.exit_status).not_to eq(0)
+  expect(command_line).to have_failed
   actual = normalise_json(JSON.parse(command_line.stdout))
   expected = JSON.parse(json)
 
@@ -365,7 +365,7 @@ Then('it should fail with JSON:') do |json|
 end
 
 Then('it should pass with JSON:') do |json|
-  expect(command_line.exit_status).to eq(0)
+  expect(command_line).to have_succeded
   actual = normalise_json(JSON.parse(command_line.stdout))
   expected = JSON.parse(json)
 

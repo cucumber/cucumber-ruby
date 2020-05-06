@@ -34,8 +34,6 @@ RSpec::Matchers.define :start_with_output do |expected|
     @expected = clean_output(expected)
     @actual.start_with?(@expected)
   end
-
-  diffable
 end
 
 RSpec::Matchers.define :include_output do |expected|
@@ -44,6 +42,4 @@ RSpec::Matchers.define :include_output do |expected|
     @expected = clean_output(expected)
     @actual.include?(@expected)
   end
-
-  diffable
 end
