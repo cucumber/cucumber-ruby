@@ -22,14 +22,14 @@ Feature: Raketask
       """
         require 'cucumber/rake/task'
 
-        SAMPLE_FEATURE_FILE = 'features/passing_and_failing.feature'
+        $SAMPLE_FEATURE_FILE = 'features/passing_and_failing.feature'
 
         Cucumber::Rake::Task.new(:pass) do |t|
-          t.cucumber_opts = "#{SAMPLE_FEATURE_FILE}:3"
+          t.cucumber_opts = "#{$SAMPLE_FEATURE_FILE}:3"
         end
 
         Cucumber::Rake::Task.new(:fail) do |t|
-          t.cucumber_opts = "#{SAMPLE_FEATURE_FILE}:6"
+          t.cucumber_opts = "#{$SAMPLE_FEATURE_FILE}:6"
         end
       """
 
