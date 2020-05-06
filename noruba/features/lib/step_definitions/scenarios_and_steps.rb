@@ -19,8 +19,8 @@ Given('a scenario with a step that looks like this:') do |content|
   write_file(
     'features/my_feature.feature',
     feature(
-      "feature #{ SecureRandom.uuid }",
-      [scenario("scenario #{ SecureRandom.uuid }", content)]
+      "feature #{SecureRandom.uuid}",
+      [scenario("scenario #{SecureRandom.uuid}", content)]
     )
   )
 end
@@ -30,7 +30,7 @@ Given('a scenario with a step that looks like this in japanese:') do |content|
     'features/my_feature.feature',
     feature(
       SecureRandom.uuid,
-      [scenario("scenario #{ SecureRandom.uuid }", content, keyword: 'シナリオ')],
+      [scenario("scenario #{SecureRandom.uuid}", content, keyword: 'シナリオ')],
       keyword: '機能',
       language: 'ja'
     )
@@ -129,5 +129,5 @@ Given('a scenario {string} that fails') do |name|
 end
 
 Given('a step definition that looks like this:') do |content|
-  write_file("features/step_definitions/steps#{ SecureRandom.uuid }.rb", content)
+  write_file("features/step_definitions/steps#{SecureRandom.uuid}.rb", content)
 end

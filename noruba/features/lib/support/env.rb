@@ -1,1 +1,1 @@
-NORUBA_PATH = 'noruba/features/lib'
+NORUBA_PATH = 'noruba/features/lib'.freeze

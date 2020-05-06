@@ -13,11 +13,11 @@ module StepDefinitionsWorld
 
   def block_step_definition(keyword, expression, content)
     indented_content = content
-      .split("\n")
-      .map { |line| "  #{line}"}
-      .join("\n")
+                       .split("\n")
+                       .map { |line| "  #{line}" }
+                       .join("\n")
 
-      "#{keyword}(#{expression}) do\n#{indented_content}\nend"
+    "#{keyword}(#{expression}) do\n#{indented_content}\nend"
   end
 end
 

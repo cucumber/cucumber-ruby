@@ -10,7 +10,7 @@ module GherkinWorld
   end
 
   def indent(content, indent: '  ')
-    content.split("\n").map {|line| "#{indent}#{line}"}.join("\n")
+    content.split("\n").map { |line| "#{indent}#{line}" }.join("\n")
   end
 end
 

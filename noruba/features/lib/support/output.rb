@@ -13,7 +13,8 @@ def clean_output(output)
 end
 
 def remove_self_ref(output)
-  output.split("\n")
+  output
+    .split("\n")
     .reject { |line| line.include?(NORUBA_PATH) }
     .join("\n")
 end

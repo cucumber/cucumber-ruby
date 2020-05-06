@@ -7,16 +7,16 @@ class MockKernel
   attr_reader :exit_status
 
   def exit(status)
-    @exit_status  = status
+    @exit_status = status
 
-    status unless status == 0
+    status unless status.zero?
   end
 end
 
 class CommandLine
   include ::RSpec::Mocks::ExampleMethods
 
-  def initialize()
+  def initialize
     ::RSpec::Mocks.setup
 
     @stdout = StringIO.new
@@ -43,24 +43,27 @@ class CommandLine
   def capture_stdout
     allow(STDOUT)
       .to receive(:puts)
-      .and_wrap_original do |m, *args|
+      .and_wrap_original do |_, *args|
         @stdout.puts(*args)
       end
 
     allow(STDERR)
       .to receive(:puts)
-      .and_wrap_original do |m, *args|
+      .and_wrap_original do |_, *args|
         @stderr.puts(*args)
       end
     yield
   end
 
   def destroy_mocks
+    # rubocop:disable Style/RedundantBegin
+    # TODO: remove the begin/end block when we drop 2.3 uport and CI job.
     begin
       ::RSpec::Mocks.verify
     ensure
       ::RSpec::Mocks.teardown
     end
+    # rubocop:enable Style/RedundantBegin
   end
 end
 
@@ -86,7 +89,7 @@ class CucumberCommand < CommandLine
     index = -1
     args.split(/'|"/).map do |chunk|
       index += 1
-      index % 2 == 0 ? chunk.split(' ') : chunk
+      index.even? ? chunk.split(' ') : chunk
     end.flatten
   end
 end
@@ -94,24 +97,26 @@ end
 class RubyCommand < CommandLine
   def execute(file)
     capture_stdout { require file }
-  rescue RuntimeError => err
+  # rubocop:disable Lint/HandleExceptions
+  rescue RuntimeError
     # no-op: this is raised when Cucumber fails
-  rescue SystemExit => err
+  rescue SystemExit
     # No-op: well, we are supposed to exit the rake task
-  rescue
+  rescue StandardError
     @kernel.exit(1)
   end
+  # rubocop:enable Lint/HandleExceptions
 end
 
 class RakeCommand < CommandLine
-  def execute task
+  def execute(task)
     allow_any_instance_of(Cucumber::Rake::Task)
       .to receive(:fork)
       .and_return(false)
 
     allow(Cucumber::Cli::Main)
       .to receive(:execute)
-      .and_wrap_original do |m, *args|
+      .and_wrap_original do |_, *args|
         Cucumber::Cli::Main.new(
           args[0],
           nil,
@@ -122,31 +127,31 @@ class RakeCommand < CommandLine
       end
 
     Rake.with_application do |rake|
-      rake.load_rakefile()
-      capture_stdout {
-          rake[task.strip].invoke
-      }
+      rake.load_rakefile
+      capture_stdout { rake[task.strip].invoke }
     end
-  rescue RuntimeError => err
+  # rubocop:disable Lint/HandleExceptions
+  rescue RuntimeError
     # no-op: this is raised when Cucumber fails
-  rescue SystemExit => err
+  rescue SystemExit
     # No-op: well, we are supposed to exit the rake task
   end
+  # rubocop:enable Lint/HandleExceptions
 end
 
 module CLIWorld
   def execute_cucumber(args)
-    @command_line = CucumberCommand.new()
+    @command_line = CucumberCommand.new
     @command_line.execute(args)
   end
 
   def execute_ruby(filename)
-    @command_line = RubyCommand.new()
+    @command_line = RubyCommand.new
     @command_line.execute("#{Dir.pwd}/#{filename}")
   end
 
   def execute_rake(task)
-    @command_line = RakeCommand.new()
+    @command_line = RakeCommand.new
     @command_line.execute(task)
   end
 
@@ -157,12 +162,11 @@ end
 
 World(CLIWorld)
 
-
 RSpec::Matchers.define :have_succeded do
   match do |cli|
     @actual = cli.exit_status
     @expected = '0 exit code'
-    @actual == 0
+    @actual.zero?
   end
 end
 
@@ -170,6 +174,6 @@ RSpec::Matchers.define :have_failed do
   match do |cli|
     @actual = cli.exit_status
     @expected = 'non-0 exit code'
-    @actual > 0
+    @actual.positive?
   end
 end

@@ -11,7 +11,7 @@ When('I run `(bundle exec )rake {word}`') do |task|
 end
 
 When('I run the feature with the progress formatter') do
-  execute_cucumber("features/ --format progress")
+  execute_cucumber('features/ --format progress')
 end
 
 Then('the exit status should be {int}') do |status|

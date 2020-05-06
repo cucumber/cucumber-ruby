@@ -9,7 +9,6 @@ Around do |scenario, block|
     scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')[0..100]
     tmp_working_directory = File.join('tmp', "noruba-#{scenario_name}-#{SecureRandom.uuid}")
 
-
     FileUtils.rm_rf(tmp_working_directory)
     FileUtils.mkdir_p(tmp_working_directory)
 
@@ -20,12 +19,9 @@ Around do |scenario, block|
     command_line&.destroy_mocks
 
     Dir.chdir(original_cwd)
-    if scenario.status != :failed
-      FileUtils.rm_rf(tmp_working_directory)
-    end
+    FileUtils.rm_rf(tmp_working_directory) unless scenario.status == :failed
   end
 end
-
 
 Before('@global_state') do
   # Ok, this one is tricky but kinda make sense.
@@ -34,9 +30,11 @@ Before('@global_state') do
   # (the ones ran by Cucumber itself).
   # This should reset data hopefully (and make clear why we do that)
 
+  # rubocop:disable Style/GlobalVars
   $global_state = nil
   $global_cukes = 0
   $scenario_runs = 0
+  # rubocop:enable Style/GlobalVars
 end
 
 After('@disable_fail_fast') do
@@ -91,7 +89,7 @@ end
 When('I rerun the previous command with the same seed') do
   previous_seed = command_line.stdout.match(/with seed (\d+)/)[1]
 
-  @command_line2 = CucumberCommand.new()
+  @command_line2 = CucumberCommand.new
   @command_line2.execute(command_line.args.gsub(/random/, "random:#{previous_seed}"))
 end
 

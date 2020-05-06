@@ -24,9 +24,9 @@ module JSONWorld
   def normalise_json_step_or_hook(step_or_hook)
     if step_or_hook['result']['error_message']
       step_or_hook['result']['error_message'] = step_or_hook['result']['error_message']
-        .split("\n")
-        .reject { |line| line.include?(NORUBA_PATH)}
-        .join("\n")
+                                                .split("\n")
+                                                .reject { |line| line.include?(NORUBA_PATH) }
+                                                .join("\n")
     end
 
     return unless step_or_hook['result'] && step_or_hook['result']['duration']
