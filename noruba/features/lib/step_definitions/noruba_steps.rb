@@ -111,36 +111,34 @@ end
 Given('a scenario with a step that looks like this:') do |content|
   write_file(
     'features/my_feature.feature',
-     <<-FEATURE
-Feature: feature #{ SecureRandom.uuid }
-
-  Scenario: scenario #{ SecureRandom.uuid }
-  #{content}
-FEATURE
+    feature(
+      "feature #{ SecureRandom.uuid }",
+      [scenario("scenario #{ SecureRandom.uuid }", content)]
+    )
   )
 end
 
 Given('a scenario with a step that looks like this in japanese:') do |content|
   write_file(
     'features/my_feature.feature',
-     <<-FEATURE
-# language: ja
-機能: #{ SecureRandom.uuid }
-
-シナリオ: scenario #{ SecureRandom.uuid }
-#{content}
-FEATURE
+    feature(
+      SecureRandom.uuid,
+      [scenario("scenario #{ SecureRandom.uuid }", content, keyword: 'シナリオ')],
+      keyword: '機能',
+      language: 'ja'
+    )
   )
 end
 
 Given('a scenario {string} that fails once, then passes') do |full_name|
   name = snake_case(full_name)
-  write_file "features/#{name}.feature",
-             <<-FEATURE
-  Feature: #{full_name} feature
-    Scenario: #{full_name}
-      Given it fails once, then passes
-  FEATURE
+  write_file(
+    "features/#{name}.feature",
+    feature(
+      "#{full_name} feature",
+      [scenario(full_name, 'Given it fails once, then passes')]
+    )
+  )
 
   write_file "features/step_definitions/#{name}_steps.rb",
              <<-STEPS
@@ -158,12 +156,13 @@ end
 
 Given('a scenario {string} that fails twice, then passes') do |full_name|
   name = snake_case(full_name)
-  write_file "features/#{name}.feature",
-             <<-FEATURE
-  Feature: #{full_name} feature
-    Scenario: #{full_name}
-      Given it fails twice, then passes
-  FEATURE
+  write_file(
+    "features/#{name}.feature",
+    feature(
+      "#{full_name} feature",
+      [scenario(full_name, 'Given it fails twice, then passes')]
+    )
+  )
 
   write_file "features/step_definitions/#{name}_steps.rb",
              <<-STEPS
@@ -181,12 +180,13 @@ Given('a scenario {string} that fails twice, then passes') do |full_name|
 end
 
 Given('a scenario {string} that passes') do |name|
-  write_file "features/#{name}.feature",
-             <<-FEATURE
-  Feature: #{name}
-    Scenario: #{name}
-      Given it passes
-  FEATURE
+  write_file(
+    "features/#{name}.feature",
+    feature(
+      name,
+      [scenario(name, 'Given it passes')]
+    )
+  )
 
   write_file "features/step_definitions/#{name}_steps.rb",
              <<-STEPS
@@ -195,12 +195,13 @@ Given('a scenario {string} that passes') do |name|
 end
 
 Given('a scenario {string} that fails') do |name|
-  write_file "features/#{name}.feature",
-             <<-FEATURE
-  Feature: #{name}
-    Scenario: #{name}
-      Given it fails
-  FEATURE
+  write_file(
+    "features/#{name}.feature",
+    feature(
+      name,
+      [scenario(name, 'Given it fails')]
+    )
+  )
 
   write_file "features/step_definitions/#{name}_steps.rb",
              <<-STEPS
@@ -245,10 +246,6 @@ Then('the junit output file {string} should contain:') do |actual_file, text|
   expect(actual).to be_similar_output_than(text)
 end
 
-def replace_junit_time(time)
-  time.gsub(/\d+\.\d\d+/m, '0.05')
-end
-
 Then('it should fail with JSON:') do |json|
   expect(command_line).to have_failed
   actual = normalise_json(JSON.parse(command_line.stdout))
@@ -263,41 +260,6 @@ Then('it should pass with JSON:') do |json|
   expected = JSON.parse(json)
 
   expect(actual).to eq expected
-end
-
-def normalise_json(json)
-  # make sure duration was captured (should be >= 0)
-  # then set it to what is "expected" since duration is dynamic
-  json.each do |feature|
-    elements = feature.fetch('elements') { [] }
-    elements.each do |scenario|
-      scenario['steps'].each do |_step|
-        %w[steps before after].each do |type|
-          next unless scenario[type]
-          scenario[type].each do |step_or_hook|
-            normalise_json_step_or_hook(step_or_hook)
-            next unless step_or_hook['after']
-            step_or_hook['after'].each do |hook|
-              normalise_json_step_or_hook(hook)
-            end
-          end
-        end
-      end
-    end
-  end
-end
-
-def normalise_json_step_or_hook(step_or_hook)
-  if step_or_hook['result']['error_message']
-    step_or_hook['result']['error_message'] = step_or_hook['result']['error_message']
-      .split("\n")
-      .reject { |line| line.include?(NORUBA_PATH)}
-      .join("\n")
-  end
-
-  return unless step_or_hook['result'] && step_or_hook['result']['duration']
-  expect(step_or_hook['result']['duration']).to be >= 0
-  step_or_hook['result']['duration'] = 1
 end
 
 Then('I should see the CLI help') do
