@@ -7,6 +7,8 @@ class MockKernel
 
   def exit(status)
     @exit_status  = status
+
+    status unless status == 0
   end
 end
 
@@ -116,13 +118,15 @@ class RakeCommand < CommandLine
         ).execute!
       end
 
-    Rake.application.load_rakefile()
-    capture_stdout {
-      Rake.application[task.strip].invoke
-    }
+    Rake.with_application do |rake|
+      rake.load_rakefile()
+      capture_stdout {
+          rake[task.strip].invoke
+      }
+    end
   rescue RuntimeError => err
-    # no-op: this is raissed when Cucumber fails
+    # no-op: this is raised when Cucumber fails
   rescue SystemExit => err
-    # No-op: well, we are ssupposed to exit the rake task
+    # No-op: well, we are supposed to exit the rake task
   end
 end

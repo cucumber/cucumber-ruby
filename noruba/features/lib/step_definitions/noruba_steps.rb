@@ -8,26 +8,28 @@ require_relative './output'
 require_relative './command_line'
 require_relative './filesystem'
 
-
 NORUBA_PATH = 'noruba/features/lib'
 
-Before do
-  @original_cwd = Dir.pwd
-  @tmp_working_directory = File.join('tmp', "noruba-#{SecureRandom.uuid}")
+Around do |scenario, block|
+  original_cwd = Dir.pwd
+  scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')
+  tmp_working_directory = File.join('tmp', "noruba-#{scenario_name}-#{SecureRandom.uuid}")
 
-  FileUtils.rm_rf(@tmp_working_directory)
-  FileUtils.mkdir_p(@tmp_working_directory)
+  FileUtils.rm_rf(tmp_working_directory)
+  FileUtils.mkdir_p(tmp_working_directory)
 
-  Dir.chdir(@tmp_working_directory)
-end
+  Dir.chdir(tmp_working_directory)
 
-After do |scenario|
-  Dir.chdir(@original_cwd)
+  block.call
+ensure
+  @command_line&.destroy_mocks
 
+  Dir.chdir(original_cwd)
   if scenario.status != :failed
-    FileUtils.rm_rf(@tmp_working_directory)
+    FileUtils.rm_rf(tmp_working_directory)
   end
 end
+
 
 Before('@global_state') do
   # Ok, this one is tricky but kinda make sense.
@@ -41,9 +43,6 @@ Before('@global_state') do
   $scenario_runs = 0
 end
 
-After do
-  @command_line&.destroy_mocks
-end
 
 After('@disable_fail_fast') do
   Cucumber.wants_to_quit = false
@@ -111,12 +110,7 @@ When('I run `bundle exec ruby {}`') do |filename|
   @command_line.execute("#{Dir.pwd}/#{filename}")
 end
 
-When('I run `bundle exec rake{}`') do |task|
-  @command_line = RakeCommand.new()
-  @command_line.execute(task)
-end
-
-When('I run `rake{}`') do |task|
+When('I run `(bundle exec )rake {word}`') do |task|
   @command_line = RakeCommand.new()
   @command_line.execute(task)
 end
