@@ -132,3 +132,26 @@ class RakeCommand < CommandLine
     # No-op: well, we are supposed to exit the rake task
   end
 end
+
+module CLIWorld
+  def execute_cucumber(args)
+    @command_line = CucumberCommand.new()
+    @command_line.execute(args)
+  end
+
+  def execute_ruby(filename)
+    @command_line = RubyCommand.new()
+    @command_line.execute("#{Dir.pwd}/#{filename}")
+  end
+
+  def execute_rake(task)
+    @command_line = RakeCommand.new()
+    @command_line.execute(task)
+  end
+
+  def command_line
+    @command_line
+  end
+end
+
+World(CLIWorld)
