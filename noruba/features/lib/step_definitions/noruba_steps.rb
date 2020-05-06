@@ -13,8 +13,9 @@ NORUBA_PATH = 'noruba/features/lib'
 Around do |scenario, block|
   begin
     original_cwd = Dir.pwd
-    scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')
+    scenario_name = scenario.name.downcase.gsub(/[^a-z0-9]+/, '-')[0..100]
     tmp_working_directory = File.join('tmp', "noruba-#{scenario_name}-#{SecureRandom.uuid}")
+
 
     FileUtils.rm_rf(tmp_working_directory)
     FileUtils.mkdir_p(tmp_working_directory)
