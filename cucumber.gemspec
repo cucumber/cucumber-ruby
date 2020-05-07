@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop', '~> 0.52.1'
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
-  s.add_development_dependency 'webrick', '~> 1.6', '>= 1.6.0'
 
   # For maintainer scripts
   s.add_development_dependency 'octokit'

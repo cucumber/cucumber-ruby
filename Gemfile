@@ -12,3 +12,7 @@ end
 if ENV['CUCUMBER_EXPRESSIONS_RUBY']
   gem 'cucumber-expressions', :path => ENV['CUCUMBER_EXPRESSIONS_RUBY']
 end
+
+group :development do
+  gem 'webrick', '~> 1.6', '>= 1.6.0' unless RUBY_VERSION < '2.3'
+end

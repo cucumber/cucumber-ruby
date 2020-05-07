@@ -2,11 +2,20 @@
 
 require 'stringio'
 require 'webrick'
-require 'webrick/https'
 require 'spec_helper'
 require 'cucumber/formatter/io'
 
+begin
+  require 'webrick/https'
+rescue LoadError
+  WEBRICK_DISABLED = 1
+end
+
 RSpec.shared_context 'an HTTP server accepting file requests' do
+  before do
+    skip('Not running those for Ruby < 2.3') if RUBY_VERSION < '2.3'
+  end
+
   def start_server
     uri = URI('http://localhost')
     @received_body_io = StringIO.new
