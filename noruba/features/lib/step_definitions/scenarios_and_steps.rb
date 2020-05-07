@@ -15,37 +15,53 @@ Given('the standard step definitions') do
   )
 end
 
-Given('a scenario with a step that looks like this:') do |content|
+Given('a scenario with a step that looks like this:') do |string|
+  create_feature do
+    create_scenario { string }
+  end
+end
+
+Given('a scenario with a step that looks like this in japanese:') do |string|
+  create_feature_ja do
+    create_scenario_ja { string }
+  end
+end
+
+Given('a scenario {string} that passes') do |name|
+  create_feature(name) do
+    create_scenario(name) do
+      '  Given it passes'
+    end
+  end
+
   write_file(
-    'features/my_feature.feature',
-    feature(
-      "feature #{SecureRandom.uuid}",
-      [scenario("scenario #{SecureRandom.uuid}", content)]
-    )
+    "features/step_definitions/#{name}_steps.rb",
+    step_definition('/^it passes$/', 'expect(true).to be true')
   )
 end
 
-Given('a scenario with a step that looks like this in japanese:') do |content|
+Given('a scenario {string} that fails') do |name|
+  create_feature(name) do
+    create_scenario(name) do
+      '  Given it fails'
+    end
+  end
+
   write_file(
-    'features/my_feature.feature',
-    feature(
-      SecureRandom.uuid,
-      [scenario("scenario #{SecureRandom.uuid}", content, keyword: 'シナリオ')],
-      keyword: '機能',
-      language: 'ja'
-    )
+    "features/step_definitions/#{name}_steps.rb",
+    step_definition('/^it fails$/', 'expect(false).to be true')
   )
 end
+
 
 Given('a scenario {string} that fails once, then passes') do |full_name|
   name = snake_case(full_name)
-  write_file(
-    "features/#{name}.feature",
-    feature(
-      "#{full_name} feature",
-      [scenario(full_name, 'Given it fails once, then passes')]
-    )
-  )
+
+  create_feature("#{full_name} feature") do
+    create_scenario(full_name) do
+      '  Given it fails once, then passes'
+    end
+  end
 
   write_file(
     "features/step_definitions/#{name}_steps.rb",
@@ -54,7 +70,7 @@ Given('a scenario {string} that fails once, then passes') do |full_name|
       [
         "$#{name} += 1",
         "expect($#{name}).to be > 1"
-      ].join("\n")
+      ]
     )
   )
 
@@ -66,13 +82,12 @@ end
 
 Given('a scenario {string} that fails twice, then passes') do |full_name|
   name = snake_case(full_name)
-  write_file(
-    "features/#{name}.feature",
-    feature(
-      "#{full_name} feature",
-      [scenario(full_name, 'Given it fails twice, then passes')]
-    )
-  )
+
+  create_feature("#{full_name} feature") do
+    create_scenario(full_name) do
+      '  Given it fails twice, then passes'
+    end
+  end
 
   write_file(
     "features/step_definitions/#{name}_steps.rb",
@@ -82,49 +97,13 @@ Given('a scenario {string} that fails twice, then passes') do |full_name|
         "$#{name} ||= 0",
         "$#{name} += 1",
         "expect($#{name}).to be > 2"
-      ].join("\n")
+      ]
     )
   )
 
   write_file(
     "features/support/#{name}_init.rb",
     "  $#{name} = 0"
-  )
-end
-
-Given('a scenario {string} that passes') do |name|
-  write_file(
-    "features/#{name}.feature",
-    feature(
-      name,
-      [scenario(name, 'Given it passes')]
-    )
-  )
-
-  write_file(
-    "features/step_definitions/#{name}_steps.rb",
-    step_definition(
-      '/^it passes$/',
-      'expect(true).to be true'
-    )
-  )
-end
-
-Given('a scenario {string} that fails') do |name|
-  write_file(
-    "features/#{name}.feature",
-    feature(
-      name,
-      [scenario(name, 'Given it fails')]
-    )
-  )
-
-  write_file(
-    "features/step_definitions/#{name}_steps.rb",
-    step_definition(
-      '/^it fails$/',
-      'expect(false).to be true'
-    )
   )
 end
 

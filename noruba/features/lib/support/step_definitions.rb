@@ -1,9 +1,9 @@
 module StepDefinitionsWorld
   def step_definition(expression, content, keyword: 'Given')
-    if content.include?("\n")
-      block_step_definition(keyword, expression, content)
-    else
+    if content.is_a?(String)
       one_line_step_definition(keyword, expression, content)
+    else
+      block_step_definition(keyword, expression, content)
     end
   end
 
@@ -13,7 +13,6 @@ module StepDefinitionsWorld
 
   def block_step_definition(keyword, expression, content)
     indented_content = content
-                       .split("\n")
                        .map { |line| "  #{line}" }
                        .join("\n")
 
