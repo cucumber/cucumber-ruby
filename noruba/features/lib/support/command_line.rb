@@ -41,17 +41,9 @@ class CommandLine
   end
 
   def capture_stdout
-    allow(STDOUT)
-      .to receive(:puts)
-      .and_wrap_original do |_, *args|
-        @stdout.puts(*args)
-      end
+    capture_stream(STDOUT, @stdout)
+    capture_stream(STDERR, @stderr)
 
-    allow(STDERR)
-      .to receive(:puts)
-      .and_wrap_original do |_, *args|
-        @stderr.puts(*args)
-      end
     yield
   end
 
@@ -64,6 +56,28 @@ class CommandLine
       ::RSpec::Mocks.teardown
     end
     # rubocop:enable Style/RedundantBegin
+  end
+
+  private
+
+  def capture_stream(stream, redirect)
+    allow(stream)
+      .to receive(:puts)
+      .and_wrap_original do |_, *args|
+        redirect.puts(*args)
+      end
+
+    allow(stream)
+      .to receive(:print)
+      .and_wrap_original do |_, *args|
+        redirect.print(*args)
+      end
+
+      allow(stream)
+      .to receive(:flush)
+      .and_wrap_original do |_, *args|
+        redirect.flush(*args)
+      end
   end
 end
 
