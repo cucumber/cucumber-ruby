@@ -2,7 +2,7 @@ require 'rspec/expectations'
 
 def clean_output(output)
   output.split("\n").map do |line|
-    next if line.include?(NORUBA_PATH)
+    next if line.include?(CUCUMBER_FEATURES_PATH)
     line
       .gsub(/\e\[([;\d]+)?m/, '')                  # Drop colors
       .gsub(/^.*cucumber_process\.rb.*$\n/, '')
@@ -15,7 +15,7 @@ end
 def remove_self_ref(output)
   output
     .split("\n")
-    .reject { |line| line.include?(NORUBA_PATH) }
+    .reject { |line| line.include?(CUCUMBER_FEATURES_PATH) }
     .join("\n")
 end
 

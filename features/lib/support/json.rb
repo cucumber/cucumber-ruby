@@ -25,7 +25,7 @@ module JSONWorld
     if step_or_hook['result']['error_message']
       step_or_hook['result']['error_message'] = step_or_hook['result']['error_message']
                                                 .split("\n")
-                                                .reject { |line| line.include?(NORUBA_PATH) }
+                                                .reject { |line| line.include?(CUCUMBER_FEATURES_PATH) }
                                                 .join("\n")
     end
 
