@@ -104,7 +104,6 @@ Feature: JSON output formatter
       """
 
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
-  @spawn
   Scenario: one feature, one passing scenario, one failing scenario
     When I run `cucumber --format json features/one_passing_one_failing.feature`
     Then it should fail with JSON:
@@ -304,7 +303,6 @@ Feature: JSON output formatter
 
     """
 
-  @spawn
   Scenario: scenario outline
     When I run `cucumber --format json features/outline.feature`
     Then it should fail with JSON:
@@ -450,7 +448,6 @@ Feature: JSON output formatter
 
     """
 
-  @spawn
   Scenario: scenario outline expanded
     When I run `cucumber --expand --format json features/outline.feature`
     Then it should fail with JSON:

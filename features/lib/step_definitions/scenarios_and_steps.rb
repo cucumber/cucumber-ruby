@@ -53,7 +53,6 @@ Given('a scenario {string} that fails') do |name|
   )
 end
 
-
 Given('a scenario {string} that fails once, then passes') do |full_name|
   name = snake_case(full_name)
 

@@ -1,4 +1,3 @@
-@spawn
 Feature: List step defs as json
 
   In order to build tools on top of Cucumber
@@ -17,11 +16,13 @@ Feature: List step defs as json
     And a file named "list_step_definitions.rb" with:
       """
       require 'cucumber'
-      puts Cucumber::StepDefinitions.new.to_json
-
+      File.open('steps.json', 'w') do |file|
+        file.write Cucumber::StepDefinitions.new.to_json
+      end
       """
     When I run `bundle exec ruby list_step_definitions.rb`
-    Then it should pass with JSON:
+    Then it should pass
+    And file "steps.json" should contain JSON:
       """
       [
         {
@@ -44,10 +45,13 @@ Feature: List step defs as json
     And a file named "list_step_definitions.rb" with:
       """
       require 'cucumber'
-      puts Cucumber::StepDefinitions.new(:autoload_code_paths => ['my_weird']).to_json
+      File.open('steps.json', 'w') do |file|
+        file.write Cucumber::StepDefinitions.new(:autoload_code_paths => ['my_weird']).to_json
+      end
       """
     When I run `bundle exec ruby list_step_definitions.rb`
-    Then it should pass with JSON:
+    Then it should pass
+    And file "steps.json" should contain JSON:
       """
       [
         {
