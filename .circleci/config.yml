@@ -80,7 +80,75 @@ jobs:
           command: |
             cd noruba
             bundle exec cucumber
-
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
 
   build-ruby-2_3:
     docker:
@@ -125,7 +193,80 @@ jobs:
     working_directory: ~/repo
     steps:
       - build
-      - test
+      - run:
+          name: run tests
+          command: |
+            cd noruba
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
+            bundle exec cucumber
 
   build-ruby-latest:
     docker:
