@@ -155,22 +155,38 @@ end
 
 module CLIWorld
   def execute_cucumber(args)
-    @command_line = CucumberCommand.new
-    @command_line.execute(args)
+    execute_command(CucumberCommand, args)
+  end
+
+  def execute_extra_cucumber(args)
+    execute_extra_command(CucumberCommand, args)
   end
 
   def execute_ruby(filename)
-    @command_line = RubyCommand.new
-    @command_line.execute("#{Dir.pwd}/#{filename}")
+    execute_command(RubyCommand, "#{Dir.pwd}/#{filename}")
   end
 
   def execute_rake(task)
-    @command_line = RakeCommand.new
-    @command_line.execute(task)
+    execute_command(RakeCommand, task)
+  end
+
+  def execute_command(cls, args)
+    @command_line = cls.new
+    @command_line.execute(args)
+  end
+
+  def execute_extra_command(cls, args)
+    @extra_commands = []
+    @extra_commands << cls.new
+    @extra_commands.last.execute(args)
   end
 
   def command_line
     @command_line
+  end
+
+  def last_extra_command
+    @extra_commands&.last
   end
 end
 

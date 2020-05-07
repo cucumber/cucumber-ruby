@@ -51,10 +51,9 @@ end
 When('I rerun the previous command with the same seed') do
   previous_seed = command_line.stdout.match(/with seed (\d+)/)[1]
 
-  @command_line2 = CucumberCommand.new
-  @command_line2.execute(command_line.args.gsub(/random/, "random:#{previous_seed}"))
+  execute_extra_cucumber(command_line.args.gsub(/random/, "random:#{previous_seed}"))
 end
 
 Then('the output of both commands should be the same') do
-  expect(command_line.stdout).to be_similar_output_than(@command_line2.stdout)
+  expect(command_line.stdout).to be_similar_output_than(last_extra_command.stdout)
 end
