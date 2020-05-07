@@ -1,6 +1,8 @@
 require 'securerandom'
 require 'nokogiri'
 
+require 'cucumber/formatter/ansicolor'
+
 Before do |scenario|
   @original_cwd = Dir.pwd
   # We limit the length to avoid issues on Windows where sometimes the creation
@@ -18,6 +20,12 @@ After do |scenario|
   command_line&.destroy_mocks
   Dir.chdir(@original_cwd)
   FileUtils.rm_rf(@tmp_working_directory) unless scenario.failed?
+end
+
+Around do |scenario, block|
+  original_coloring = Cucumber::Term::ANSIColor.coloring?
+  block.call
+  Cucumber::Term::ANSIColor.coloring = original_coloring
 end
 
 Before('@global_state') do

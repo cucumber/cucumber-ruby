@@ -13,3 +13,10 @@ Then('it should pass with JSON:') do |json|
 
   expect(actual).to eq expected
 end
+
+Then('file {string} should contain JSON:') do |filename, json|
+  actual = normalise_json(JSON.parse(File.read(filename)))
+  expected = JSON.parse(json)
+
+  expect(actual).to eq expected
+end
