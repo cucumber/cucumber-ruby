@@ -14,35 +14,21 @@ When('I run the feature with the progress formatter') do
   execute_cucumber('features/ --format progress')
 end
 
-Then('the exit status should be {int}') do |status|
-  expect(command_line.exit_status).to eq(status)
+Then('the exit status should be {int}') do |exit_code|
+  expect(command_line).to have_exited_with(exit_code)
 end
 
-Then('it should fail') do
-  expect(command_line).to have_failed
+Then('it should {status}') do |status|
+  expect(command_line).to have_exited_with(status)
 end
 
-Then('it should fail with:') do |output|
-  expect(command_line).to have_failed
+Then('it should {status} with:') do |status, output|
+  expect(command_line).to have_exited_with(status)
   expect(command_line.all_output).to include_output(output)
 end
 
-Then('it should fail with exactly:') do |output|
-  expect(command_line).to have_failed
-  expect(command_line.all_output).to be_similar_output_than(output)
-end
-
-Then('it should pass') do
-  expect(command_line).to have_succeded
-end
-
-Then('it should pass with:') do |output|
-  expect(command_line).to have_succeded
-  expect(command_line.all_output).to include_output(output)
-end
-
-Then('it should pass with exactly:') do |output|
-  expect(command_line).to have_succeded
+Then('it should {status} with exactly:') do |status, output|
+  expect(command_line).to have_exited_with(status)
   expect(command_line.all_output).to be_similar_output_than(output)
 end
 

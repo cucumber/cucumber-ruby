@@ -191,3 +191,15 @@ RSpec::Matchers.define :have_failed do
     @actual.positive?
   end
 end
+
+RSpec::Matchers.define :have_exited_with do |expected|
+  match do |cli|
+    @actual = cli.exit_status
+
+    if expected.is_a?(ExecutionStatus)
+      expected.validates?(@actual)
+    else
+      @actual == expected
+    end
+  end
+end
