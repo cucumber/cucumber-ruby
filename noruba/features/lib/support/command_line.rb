@@ -73,7 +73,7 @@ class CommandLine
         redirect.print(*args)
       end
 
-      allow(stream)
+    allow(stream)
       .to receive(:flush)
       .and_wrap_original do |_, *args|
         redirect.flush(*args)
