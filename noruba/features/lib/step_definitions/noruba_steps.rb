@@ -22,10 +22,17 @@ After do |scenario|
   FileUtils.rm_rf(@tmp_working_directory) unless scenario.failed?
 end
 
-Around do |scenario, block|
+Around do |_, block|
   original_coloring = Cucumber::Term::ANSIColor.coloring?
   block.call
   Cucumber::Term::ANSIColor.coloring = original_coloring
+end
+
+Around('@force_legacy_loader') do |_, block|
+  original_loader = Cucumber.use_legacy_autoloader
+  Cucumber.use_legacy_autoloader = true
+  block.call
+  Cucumber.use_legacy_autoloader = original_loader
 end
 
 Before('@global_state') do
