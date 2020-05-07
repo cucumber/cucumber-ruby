@@ -101,6 +101,11 @@ Feature: Randomize
 
       """
 
+  Scenario: Rerun scenarios randomized
+    When I run `cucumber --order random --format summary`
+    And I rerun the previous command with the same seed
+    Then the output of both commands should be the same
+
   @spawn
   Scenario: Run scenarios randomized with some skipped
     When I run `cucumber --tags "not @skipme" --order random:41544 -q`
