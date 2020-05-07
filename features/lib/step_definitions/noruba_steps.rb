@@ -2,7 +2,9 @@ require 'securerandom'
 require 'nokogiri'
 
 Given('a directory without standard Cucumber project directory structure') do
-  # A new temp dir is created for each running scenario, so it will be empty
+  FileUtils.cd('.') do
+    FileUtils.rm_rf 'features' if File.directory?('features')
+  end
 end
 
 Given('log only formatter is declared') do
