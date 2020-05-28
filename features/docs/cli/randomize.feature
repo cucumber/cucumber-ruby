@@ -57,7 +57,7 @@ Feature: Randomize
     When I run `cucumber`
     Then it should pass
 
-  @spawn
+  @global_state
   Scenario: Run scenarios randomized
     When I run `cucumber --order random:41544 -q`
     Then it should fail
@@ -98,15 +98,15 @@ Feature: Randomize
       4 steps (2 failed, 2 passed)
 
       Randomized with seed 41544
-
       """
 
+  @force_legacy_loader
   Scenario: Rerun scenarios randomized
     When I run `cucumber --order random --format summary`
     And I rerun the previous command with the same seed
     Then the output of both commands should be the same
 
-  @spawn
+  @global_state
   Scenario: Run scenarios randomized with some skipped
     When I run `cucumber --tags "not @skipme" --order random:41544 -q`
     Then it should fail with exactly:

@@ -1,4 +1,3 @@
-@spawn
 Feature: Cucumber --work-in-progress switch
   In order to ensure that feature scenarios do not pass until they are expected to
   Developers should be able to run cucumber in a mode that
@@ -132,7 +131,7 @@ Feature: Cucumber --work-in-progress switch
         Scenario Outline: Passing
           Given this step <what>
 
-          Examples: 
+          Examples:
             | what   |
             | passes |
 

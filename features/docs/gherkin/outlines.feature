@@ -1,4 +1,3 @@
-@spawn
 Feature: Scenario outlines
 
   Copying and pasting scenarios to use different values quickly

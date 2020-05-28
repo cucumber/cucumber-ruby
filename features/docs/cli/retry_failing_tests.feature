@@ -28,9 +28,6 @@ Feature: Retry failing tests
         Fails-forever ✗
         Fails-forever ✗
 
-      Solid
-        Solid ✓
-
       Fails-once feature
         Fails-once ✗
         Fails-once ✓
@@ -38,6 +35,9 @@ Feature: Retry failing tests
       Fails-twice feature
         Fails-twice ✗
         Fails-twice ✗
+
+      Solid
+        Solid ✓
       """
 
   Scenario: Retry twice, so Fails-twice starts to pass too
@@ -54,9 +54,6 @@ Feature: Retry failing tests
         Fails-forever ✗
         Fails-forever ✗
 
-      Solid
-        Solid ✓
-
       Fails-once feature
         Fails-once ✗
         Fails-once ✓
@@ -65,6 +62,9 @@ Feature: Retry failing tests
         Fails-twice ✗
         Fails-twice ✗
         Fails-twice ✓
+
+      Solid
+        Solid ✓
       """
 
   Scenario: Flaky scenarios gives exit code zero in non-strict mode
@@ -90,8 +90,8 @@ Feature: Retry failing tests
     Then it should fail with:
       """
       Flaky Scenarios:
-      cucumber features/fails_once.feature:2
-      cucumber features/fails_twice.feature:2
+      cucumber features/fails-once_feature.feature:2
+      cucumber features/fails-twice_feature.feature:2
 
       3 scenarios (2 flaky, 1 passed)
       """

@@ -1,21 +1,36 @@
-@spawn
 Feature: Around hooks
 
   In order to support transactional scenarios for database libraries
   that provide only a block syntax for transactions, Cucumber should
   permit definition of Around hooks.
 
+  Background:
+    Given a file named "features/support/env.rb" with:
+      """
+      module HookLoggerWorld
+        def logged_hooks
+          @logged_hooks ||= []
+        end
+
+        def log_hook(name)
+          logged_hooks << name
+        end
+      end
+
+      World(HookLoggerWorld)
+      """
+
   Scenario: A single Around hook
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hook is called$/ do
-        expect($hook_called).to be true
+        expect(logged_hooks).to eq(['Around'])
       end
       """
     And a file named "features/support/hooks.rb" with:
       """
       Around do |scenario, block|
-        $hook_called = true
+        log_hook('Around')
         block.call
       end
       """
@@ -42,26 +57,23 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hooks are called in the correct order$/ do
-        expect($hooks_called).to eq ['A', 'B', 'C']
+        expect(logged_hooks).to eq(['A', 'B', 'C'])
       end
       """
     And a file named "features/support/hooks.rb" with:
       """
       Around do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'A'
+        log_hook('A')
         block.call
       end
 
       Around do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'B'
+        log_hook('B')
         block.call
       end
 
       Around do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'C'
+        log_hook('C')
         block.call
       end
       """
@@ -88,28 +100,25 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the Around hook is called around Before and After hooks$/ do
-        expect($hooks_called).to eq ['Around', 'Before']
+        expect(logged_hooks).to eq(['Around', 'Before'])
       end
       """
     And a file named "features/support/hooks.rb" with:
       """
       Around do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'Around'
+        log_hook 'Around'
         block.call
-        $hooks_called << 'Around'
-        $hooks_called.should == ['Around', 'Before', 'After', 'Around'] #TODO: Find out why this fails using the new rspec expect syntax.
+        log_hook 'Around'
+        expect(logged_hooks).to eq(['Around', 'Before', 'After', 'Around'])
       end
 
       Before do |scenario|
-        $hooks_called ||= []
-        $hooks_called << 'Before'
+        log_hook 'Before'
       end
 
       After do |scenario|
-        $hooks_called ||= []
-        $hooks_called << 'After'
-        expect($hooks_called).to eq ['Around', 'Before', 'After']
+        log_hook 'After'
+        expect(logged_hooks).to eq(['Around', 'Before', 'After'])
       end
       """
     And a file named "features/f.feature" with:
@@ -135,32 +144,28 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the Around hooks with matching tags are called$/ do
-        expect($hooks_called).to eq ['one', 'one or two']
+        expect(logged_hooks).to eq(['one', 'one or two'])
       end
       """
     And a file named "features/support/hooks.rb" with:
       """
       Around('@one') do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'one'
+        log_hook('one')
         block.call
       end
 
       Around('@one or @two') do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'one or two'
+        log_hook('one or two')
         block.call
       end
 
       Around('@one and @two') do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'one and two'
+        log_hook('one and two')
         block.call
       end
 
       Around('@two') do |scenario, block|
-        $hooks_called ||= []
-        $hooks_called << 'two'
+        log_hook('two')
         block.call
       end
       """
@@ -189,13 +194,13 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hook is called$/ do
-        expect($hook_called).to be true
+        expect(logged_hooks).to eq(['Around'])
       end
       """
     And a file named "features/support/hooks.rb" with:
       """
       Around do |scenario, block|
-        $hook_called = true
+        log_hook('Around')
         block.call
       end
       """
@@ -218,7 +223,7 @@ Feature: Around hooks
         Scenario Outline: using hook # features/f.feature:2
           Then the hook is called    # features/f.feature:3
 
-          Examples: 
+          Examples:
             | Number |
             | one    |
             | two    |

@@ -1,4 +1,3 @@
-@spawn
 Feature: Running multiple formatters
 
   When running cucumber, you are able to using multiple different

@@ -1,4 +1,4 @@
-# encoding: iso-8859-1
+# encoding: iso-8859-10
 # frozen_string_literal: true
 
 # Ideally we would use Norwegian keywords here, but that won't work unless this
@@ -9,9 +9,9 @@
 # In both cases, stepdef arguments will be sent in as UTF-8, regardless of what
 # encoding is used.
 Given(/^jeg drikker en "([^"]*)"$/) do |drink|
-  expect(drink).to eq 'Ã¸l'.encode('UTF-8')
+  expect(drink).to eq 'øl'.encode('UTF-8')
 end
 
 When(/^skal de andre si "([^"]*)"$/) do |greeting|
-  expect(greeting).to eq 'skÃ¥l'.encode('UTF-8')
+  expect(greeting).to eq 'skål'.encode('UTF-8')
 end

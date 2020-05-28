@@ -62,7 +62,7 @@ jobs:
           name: run tests
           command: |
             bundle exec rspec
-            bundle exec cucumber --retry 8 --no-strict-flaky
+            bundle exec cucumber
 
   build-ruby-2_3:
     docker:
