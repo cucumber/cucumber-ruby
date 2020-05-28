@@ -1,89 +1,59 @@
-# frozen_string_literal: true
+require 'securerandom'
+require 'nokogiri'
 
 Given('a directory without standard Cucumber project directory structure') do
-  cd('.') do
+  FileUtils.cd('.') do
     FileUtils.rm_rf 'features' if File.directory?('features')
   end
 end
 
-Given('a scenario with a step that looks like this:') do |string|
-  create_feature do
-    create_scenario { string }
-  end
+Given('log only formatter is declared') do
+  write_file('features/support/log_only_formatter.rb', [
+    'class LogOnlyFormatter',
+    '  attr_reader :io',
+    '',
+    '  def initialize(config)',
+    '    @io = config.out_stream',
+    '  end',
+    '',
+    '  def attach(src, media_type)',
+    '    @io.puts src',
+    '  end',
+    'end'
+  ].join("\n"))
 end
 
-Given('a scenario with a step that looks like this in japanese:') do |string|
-  create_feature_ja do
-    create_scenario_ja { string }
-  end
+Then('exactly these files should be loaded: {list}') do |files|
+  expect(command_line.stdout.scan(/^  \* (.*\.rb)$/).flatten).to eq files
 end
 
-Given('the standard step definitions') do
-  write_file 'features/step_definitions/steps.rb',
-             <<-STEPS
-  Given(/^this step passes$/)          { }
-  Given(/^this step raises an error$/) { raise 'error' }
-  Given(/^this step is pending$/)      { pending }
-  Given(/^this step fails$/)           { fail }
-  Given(/^this step is a table step$/) {|t| }
-  STEPS
+Then('exactly these features should be run: {list}') do |files|
+  expect(command_line.stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files
 end
 
-Given('a step definition that looks like this:') do |string|
-  create_step_definition { string }
+Then('{string} should not be required') do |file_name|
+  expect(command_line.stdout).not_to include("* #{file_name}")
 end
 
-Given('a scenario {string} that passes') do |name|
-  write_file "features/#{name}.feature",
-             <<-FEATURE
-  Feature: #{name}
-    Scenario: #{name}
-      Given it passes
-  FEATURE
-
-  write_file "features/step_definitions/#{name}_steps.rb",
-             <<-STEPS
-  Given(/^it passes$/) { expect(true).to be true }
-  STEPS
+Then('{string} should be required') do |file_name|
+  expect(command_line.stdout).to include("* #{file_name}")
 end
 
-Given('a scenario {string} that fails') do |name|
-  write_file "features/#{name}.feature",
-             <<-FEATURE
-  Feature: #{name}
-    Scenario: #{name}
-      Given it fails
-  FEATURE
-
-  write_file "features/step_definitions/#{name}_steps.rb",
-             <<-STEPS
-  Given(/^it fails$/) { expect(false).to be true }
-  STEPS
+Then('it fails before running features with:') do |expected|
+  expect(command_line.all_output).to start_with_output(expected)
+  expect(command_line).to have_failed
 end
 
-When(/^I run the feature with the (\w+) formatter$/) do |formatter|
-  expect(features.length).to eq 1
-  run_feature features.first, formatter
+Then('the file {string} should contain:') do |path, content|
+  expect(File.read(path)).to include(content)
 end
 
-When(/^I rerun the previous command with the same seed$/) do
-  previous_seed = last_command_started.output.match(/with seed (\d+)/)[1]
-  second_command = all_commands.last.commandline.gsub(/random/, "random:#{previous_seed}")
+When('I rerun the previous command with the same seed') do
+  previous_seed = command_line.stdout.match(/with seed (\d+)/)[1]
 
-  step "I run `#{second_command}`"
+  execute_extra_cucumber(command_line.args.gsub(/random/, "random:#{previous_seed}"))
 end
 
-Then(/the output of both commands should be the same/) do
-  first_output = all_commands.first.output.gsub(/\d+m\d+\.\d+s/, '')
-  last_output = all_commands.last.output.gsub(/\d+m\d+\.\d+s/, '')
-
-  expect(first_output).to eq(last_output)
+Then('the output of both commands should be the same') do
+  expect(command_line.stdout).to be_similar_output_than(last_extra_command.stdout)
 end
-
-module CucumberHelper
-  def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
-    run_command_and_stop "#{Cucumber::BINARY} #{filename} --format #{formatter}", exit_timeout: 5
-  end
-end
-
-World(CucumberHelper)

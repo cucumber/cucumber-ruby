@@ -103,7 +103,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn @todo-jruby @wip-jruby
+  @todo-jruby @wip-jruby
   Scenario: Backtrace doesn't skip nested steps
     Given a file named "features/nested_steps.feature" with:
       """gherkin
@@ -112,7 +112,7 @@ Feature: Nested Steps
         Scenario: Test Scenario 1
           Given two turtles
       """
-    Given a step definition that looks like this:
+    Given a file named "features/step_definitions/step_definition.rb" with:
       """ruby
       Given /two turtles/ do
         step "I have a couple turtles"
@@ -124,8 +124,8 @@ Feature: Nested Steps
     Then it should fail with:
       """
       error (RuntimeError)
-      ./features/step_definitions/steps2.rb:5:in `/I have a couple turtles/'
-      ./features/step_definitions/steps2.rb:2:in `/two turtles/'
+      ./features/step_definitions/step_definition.rb:5:in `/I have a couple turtles/'
+      ./features/step_definitions/step_definition.rb:2:in `/two turtles/'
       features/nested_steps.feature:4:in `two turtles'
 
       Failing Scenarios:

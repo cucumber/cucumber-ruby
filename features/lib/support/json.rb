@@ -1,31 +1,4 @@
-# frozen_string_literal: true
-
-# override aruba to filter out some stuff
-module NormaliseArubaOutput
-  def all_stdout
-    all_commands.map(&:stdout).join("\n")
-  end
-
-  def all_output
-    all_commands.map(&:output).join("\n")
-  end
-
-  def sanitize_text(text)
-    normalise_output(super)
-  end
-
-  # Rubocop doesn't handle the regex values below appropriately,
-  # so disabling here.
-  # rubocop:disable Style/RegexpLiteral
-  def normalise_output(out)
-    out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
-       .gsub(/tmp\/aruba\//, '')            # Fix aruba path
-       .gsub(/^.*cucumber_process\.rb.*$\n/, '')
-       .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
-       .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
-  end
-  # rubocop:enable Style/RegexpLiteral
-
+module JSONWorld
   def normalise_json(json)
     # make sure duration was captured (should be >= 0)
     # then set it to what is "expected" since duration is dynamic
@@ -49,10 +22,17 @@ module NormaliseArubaOutput
   end
 
   def normalise_json_step_or_hook(step_or_hook)
+    if step_or_hook['result']['error_message']
+      step_or_hook['result']['error_message'] = step_or_hook['result']['error_message']
+                                                .split("\n")
+                                                .reject { |line| line.include?(CUCUMBER_FEATURES_PATH) }
+                                                .join("\n")
+    end
+
     return unless step_or_hook['result'] && step_or_hook['result']['duration']
     expect(step_or_hook['result']['duration']).to be >= 0
     step_or_hook['result']['duration'] = 1
   end
 end
 
-World(NormaliseArubaOutput)
+World(JSONWorld)
