@@ -10,19 +10,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...master)
-
-### Added
-
-* N/A
+## [4.0.0](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...v4.0.0)
 
 ### Changed
 
 * `log` method can now be called with non-string objects and will run `.to_s` on them. [#1410](https://github.com/cucumber/cucumber-ruby/issues/1410)
-
-### Removed
-
-* N/A
 
 ### Improved
 
