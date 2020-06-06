@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 **Your Environment**
  - Versions used [e.g 5.0.0]
  - Operating System and version [e.g. * Operating System and version:]
- - Build tool [e.g. Apache Maven 3.6.0]
+ - Build tool (if applicable)
 
 **Additional context**
 Add any other context about the problem here
