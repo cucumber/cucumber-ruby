@@ -109,7 +109,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
    * If you wish to alter this, then you can set a top level config option: `Cucumber.use_legacy_autoloader`
    * Like most config options, setting this inside a `spec_helper.rb` or `env.rb` file is advised
    * For more information on this change, including why it was made. Please read this
-   [Blog Post](www.google.com)
+   [Blog Post](https://cucumber.io/blog/open-source/tweaking-cucumber-rubys-auto-loader/)
    ([#1349](https://github.com/cucumber/cucumber-ruby/pull/1349),
     [#1043](https://github.com/cucumber/cucumber-ruby/issues/1043)
     [luke-hill](https://github.com/luke-hill))
