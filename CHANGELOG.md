@@ -28,6 +28,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 * N/A
 
+### Fixed
+
+* force reference to `diff-lcs` to 1.3 as 1.4 introduced breaking changes.
+
 ## [4.0.0](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...v4.0.0)
 
 ### Changed
