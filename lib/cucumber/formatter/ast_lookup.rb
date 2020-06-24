@@ -8,14 +8,15 @@ module Cucumber
       def initialize(config)
         @gherkin_documents = {}
         @scenario_by_ids = {}
+        @example_row_by_ids = {}
+        @example_table_by_row_id = {}
+        @pickle_by_test = Query::PickleByTest.new(config)
+
+        config.on_event :envelope, &method(:on_envelope)
 
         @test_case_lookups = {}
         @test_step_lookups = {}
         @step_keyword_lookups = {}
-
-        @pickle_by_test = Query::PickleByTest.new(config)
-
-        config.on_event :envelope, &method(:on_envelope)
       end
 
       def gherkin_document(uri)
@@ -31,9 +32,12 @@ module Cucumber
           )
         end
 
-        uri = test_case.location.file
-        @test_case_lookups[uri] ||= TestCaseLookupBuilder.new(gherkin_document(uri)).lookup_hash
-        @test_case_lookups[uri][test_case.location.lines.max]
+        ScenarioOutlineSource.new(
+          :ScenarioOutline,
+          @scenario_by_ids[pickle.ast_node_ids[0]],
+          @example_table_by_row_id[pickle.ast_node_ids[1]],
+          @example_row_by_ids[pickle.ast_node_ids[1]]
+        )
       end
 
       def step_source(test_step)
@@ -81,18 +85,25 @@ module Cucumber
         return unless gherkin_document.feature
 
         gherkin_document.feature.children.each do |child|
-          store_rule_information(child.rule) if child.rule
-          store_scenario_information(child.scenario) if child.scenario
+          walk_rule(child.rule) if child.rule
+          walk_scenario(child.scenario) if child.scenario
         end
       end
 
-      def store_scenario_information(scenario)
+      def walk_scenario(scenario)
         @scenario_by_ids[scenario.id] = scenario
+
+        scenario.examples.each do |example_table|
+          example_table.table_body.each do |row|
+            @example_row_by_ids[row.id] = row
+            @example_table_by_row_id[row.id] = example_table
+          end
+        end
       end
 
-      def store_rule_information(rule)
+      def walk_rule(rule)
         rule.children.each do |rule_child|
-          store_scenario_information(rule_child.scenario) if rule_child.scenario
+          walk_scenario(rule_child.scenario) if rule_child.scenario
         end
       end
 
