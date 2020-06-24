@@ -19,7 +19,7 @@ end
 gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUMBER_EXPRESSIONS_RUBY']
 gem 'cucumber-html-formatter', path: ENV['CUCUMBER_HTML_FORMATTER_RUBY'] if ENV['CUCUMBER_HTML_FORMATTER_RUBY']
 gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_MESSAGES_RUBY']
-gem 'gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
+gem 'cucumber-gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
 
 require 'rbconfig'
 # rubocop:disable Style/DoubleNegation
