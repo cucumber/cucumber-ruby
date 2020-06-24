@@ -30,7 +30,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
-* N/A
+* `AfterStep` hook do not cause issue when running `message` formatter. [#1433](https://github.com/cucumber/cucumber-ruby/issues/1433) - [#1434](https://github.com/cucumber/cucumber-ruby/pull/1434)
 
 
 ## [4.0.1](https://github.com/cucumber/cucumber-ruby/compare/v4.0.0...v4.0.1)
