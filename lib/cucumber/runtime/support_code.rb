@@ -104,7 +104,7 @@ module Cucumber
       def find_after_step_hooks(test_case)
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:after_step, scenario)
-        StepHooks.new(@configuration.id_generator, hooks)
+        StepHooks.new(@configuration.id_generator, hooks, @configuration.event_bus)
       end
 
       def apply_before_hooks(test_case)
