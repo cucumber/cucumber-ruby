@@ -64,6 +64,25 @@ module Cucumber
           expect(source.scenario).to eq(@gherkin_documents.first.feature.children.first.scenario)
         end
 
+        context 'when the scenario is scoped in a Rule' do
+          @feature = <<-FEATURE
+          Feature: some feature
+
+            Rule: 1 - do not talk about this feature
+              Scenario: a simple scenario
+                Given a step
+          FEATURE
+
+          define_feature(@feature, 'path/to/the.feature')
+
+          it 'returns the scenario' do
+            source = @formatter.scenario_source(@test_cases.first)
+
+            expect(source.type).to eq(:Scenario)
+            expect(source.scenario).to eq(@gherkin_documents.first.feature.children.first.rule.children.first.scenario)
+          end
+        end
+
         context 'when the test case comes from a scenario + example' do
           @feature = <<-FEATURE
           Feature: some feature

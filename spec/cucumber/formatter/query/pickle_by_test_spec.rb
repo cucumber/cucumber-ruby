@@ -23,10 +23,12 @@ module Cucumber
             @test_cases << event.test_case
           end
 
+          @pickles = []
           @pickle_ids = []
           @config.on_event :envelope do |event|
             next unless event.envelope.pickle
 
+            @pickles << event.envelope.pickle
             @pickle_ids << event.envelope.pickle.id
           end
         end
@@ -54,6 +56,26 @@ module Cucumber
                 allow(test_case).to receive(:id).and_return('whatever-id')
 
                 expect { @formatter.pickle_id(test_case) }.to raise_error(Cucumber::Formatter::TestCaseUnknownError)
+              end
+            end
+
+            context '#pickle' do
+              define_feature <<-FEATURE
+                Feature: Banana party
+
+                  Scenario: Monkey eats banana
+                    Given there are bananas
+              FEATURE
+
+              it 'provides the pickle used to generate the Test::Case' do
+                expect(@formatter.pickle(@test_cases.first)).to eq(@pickles.first)
+              end
+
+              it 'raises an error when the Test::Case is unknown' do
+                test_case = double
+                allow(test_case).to receive(:id).and_return('whatever-id')
+
+                expect { @formatter.pickle(test_case) }.to raise_error(Cucumber::Formatter::TestCaseUnknownError)
               end
             end
           end
