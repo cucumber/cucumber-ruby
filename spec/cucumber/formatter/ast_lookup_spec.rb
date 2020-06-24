@@ -47,6 +47,49 @@ module Cucumber
         end
       end
 
+      context 'scenario_source(test_case)' do
+        @feature = <<-FEATURE
+        Feature: some feature
+
+        Scenario: a simple scenario
+          Given a step
+        FEATURE
+
+        define_feature(@feature, 'path/to/the.feature')
+
+        it 'returns the scenario' do
+          source = @formatter.scenario_source(@test_cases.first)
+
+          expect(source.type).to eq(:Scenario)
+          expect(source.scenario).to eq(@gherkin_documents.first.feature.children.first.scenario)
+        end
+
+        context 'when the test case comes from a scenario + example' do
+          @feature = <<-FEATURE
+          Feature: some feature
+
+          Scenario: with examples
+            Given a <status> step
+
+            Examples:
+              | status |
+              | passed |
+              | failed |
+          FEATURE
+
+          define_feature(@feature, 'path/to/the.feature')
+
+          it 'returns some extra information about the example used' do
+            source = @formatter.scenario_source(@test_cases.last)
+
+            expect(source.type).to eq(:ScenarioOutline)
+            expect(source.scenario_outline).to eq(@gherkin_documents.first.feature.children.last.scenario)
+            expect(source.examples).to eq(@gherkin_documents.first.feature.children.last.scenario.examples.first)
+            expect(source.row).to eq(@gherkin_documents.first.feature.children.last.scenario.examples.first.table_body.last)
+          end
+        end
+      end
+
       context 'step_source(test_step)' do
         @feature = <<-FEATURE
         Feature: some feature
