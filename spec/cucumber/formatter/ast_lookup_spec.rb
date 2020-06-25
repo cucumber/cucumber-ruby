@@ -125,6 +125,24 @@ module Cucumber
           expect(source.type).to eq(:Step)
           expect(source.step).to eq(@gherkin_documents.first.feature.children.first.scenario.steps.first)
         end
+
+        context 'when a background is defined' do
+          @feature = <<-FEATURE
+          Feature: some feature
+            Background:
+              Given things are done before
+
+            Scenario: a simple scenario
+              Given a step
+          FEATURE
+          define_feature(@feature, 'path/to/the.feature')
+
+          it 'can find Before Hooks' do
+            source = @formatter.step_source(@test_cases.first.test_steps.first)
+            expect(source.type).to eq(:Step)
+            expect(source.step).to eq(@gherkin_documents.first.feature.children.first.background.steps.first)
+          end
+        end
       end
 
       context 'snippet_step_keyword(test_step)' do

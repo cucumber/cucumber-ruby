@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'cucumber/formatter/query/pickle_by_test'
+require 'cucumber/formatter/query/pickle_step_by_test_step'
 
 module Cucumber
   module Formatter
@@ -8,9 +9,11 @@ module Cucumber
       def initialize(config)
         @gherkin_documents = {}
         @scenario_by_ids = {}
+        @step_by_ids = {}
         @example_row_by_ids = {}
         @example_table_by_row_id = {}
         @pickle_by_test = Query::PickleByTest.new(config)
+        @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
 
         config.on_event :envelope, &method(:on_envelope)
 
@@ -41,9 +44,11 @@ module Cucumber
       end
 
       def step_source(test_step)
-        uri = test_step.location.file
-        @test_step_lookups[uri] ||= TestStepLookupBuilder.new(gherkin_document(uri)).lookup_hash
-        @test_step_lookups[uri][test_step.location.lines.min]
+        pickle_step = @pickle_step_by_test_step.pickle_step(test_step)
+        StepSource.new(
+          :Step,
+          @step_by_ids[pickle_step.ast_node_ids[0]]
+        )
       end
 
       def snippet_step_keyword(test_step)
@@ -68,9 +73,7 @@ module Cucumber
       end
 
       ScenarioSource = Struct.new(:type, :scenario)
-
       ScenarioOutlineSource = Struct.new(:type, :scenario_outline, :examples, :row)
-
       StepSource = Struct.new(:type, :step)
 
       private
@@ -85,13 +88,19 @@ module Cucumber
         return unless gherkin_document.feature
 
         gherkin_document.feature.children.each do |child|
-          walk_rule(child.rule) if child.rule
+          walk_background(child.background) if child.background
           walk_scenario(child.scenario) if child.scenario
+          walk_rule(child.rule) if child.rule
         end
+      end
+
+      def walk_background(background)
+        walk_steps(background.steps)
       end
 
       def walk_scenario(scenario)
         @scenario_by_ids[scenario.id] = scenario
+        walk_steps(scenario.steps)
 
         scenario.examples.each do |example_table|
           example_table.table_body.each do |row|
@@ -103,7 +112,14 @@ module Cucumber
 
       def walk_rule(rule)
         rule.children.each do |rule_child|
+          walk_background(rule_child.background) if rule_child.background
           walk_scenario(rule_child.scenario) if rule_child.scenario
+        end
+      end
+
+      def walk_steps(steps)
+        steps.each do |step|
+          @step_by_ids[step.id] = step
         end
       end
 

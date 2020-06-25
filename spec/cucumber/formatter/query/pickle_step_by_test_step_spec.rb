@@ -23,11 +23,13 @@ module Cucumber
             @test_cases << event.test_case
           end
 
+          @pickle_steps = []
           @pickle_step_ids = []
           @config.on_event :envelope do |event|
             next unless event.envelope.pickle
 
             event.envelope.pickle.steps.each do |step|
+              @pickle_steps << step
               @pickle_step_ids << step.id
             end
           end
@@ -59,6 +61,29 @@ module Cucumber
                 allow(test_step).to receive(:id).and_return('whatever-id')
 
                 expect { @formatter.pickle_step_id(test_step) }.to raise_error(Cucumber::Formatter::TestStepUnknownError)
+              end
+            end
+
+            context '#pickle_step' do
+              define_feature <<-FEATURE
+                Feature: Banana party
+
+                  Scenario: Monkey eats banana
+                    Given there are bananas
+              FEATURE
+
+              it 'provides the PickleStep used to generate the Test::Step' do
+                test_case = @test_cases.first
+                test_step = test_case.test_steps.first
+
+                expect(@formatter.pickle_step(test_step)).to eq(@pickle_steps.first)
+              end
+
+              it 'raises an exception when the test_step is unknown' do
+                test_step = double
+                allow(test_step).to receive(:id).and_return('whatever-id')
+
+                expect { @formatter.pickle_step(test_step) }.to raise_error(Cucumber::Formatter::TestStepUnknownError)
               end
             end
           end
