@@ -8,18 +8,15 @@ module Cucumber
     class AstLookup
       def initialize(config)
         @gherkin_documents = {}
-        @scenario_by_ids = {}
+        @scenario_by_id = {}
         @step_by_ids = {}
-        @example_row_by_ids = {}
+        @step_keyword_by_id = {}
+        @example_row_by_id = {}
         @example_table_by_row_id = {}
         @pickle_by_test = Query::PickleByTest.new(config)
         @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
 
         config.on_event :envelope, &method(:on_envelope)
-
-        @test_case_lookups = {}
-        @test_step_lookups = {}
-        @step_keyword_lookups = {}
       end
 
       def gherkin_document(uri)
@@ -31,15 +28,15 @@ module Cucumber
         if pickle.ast_node_ids.count == 1
           return ScenarioSource.new(
             :Scenario,
-            @scenario_by_ids[pickle.ast_node_ids[0]]
+            @scenario_by_id[pickle.ast_node_ids[0]]
           )
         end
 
         ScenarioOutlineSource.new(
           :ScenarioOutline,
-          @scenario_by_ids[pickle.ast_node_ids[0]],
+          @scenario_by_id[pickle.ast_node_ids[0]],
           @example_table_by_row_id[pickle.ast_node_ids[1]],
-          @example_row_by_ids[pickle.ast_node_ids[1]]
+          @example_row_by_id[pickle.ast_node_ids[1]]
         )
       end
 
@@ -52,24 +49,8 @@ module Cucumber
       end
 
       def snippet_step_keyword(test_step)
-        uri = test_step.location.file
-        document = gherkin_document(uri)
-        dialect = ::Gherkin::Dialect.for(document.feature.language)
-        given_when_then_keywords = [dialect.given_keywords, dialect.when_keywords, dialect.then_keywords].flatten.uniq.reject { |kw| kw == '* ' }
-        keyword_lookup = step_keyword_lookup(uri)
-        keyword = nil
-        node = keyword_lookup[test_step.location.lines.min]
-        while keyword.nil?
-          if given_when_then_keywords.include?(node.keyword)
-            keyword = node.keyword
-            break
-          end
-          break if node.previous_node.nil?
-          node = node.previous_node
-        end
-        keyword = dialect.given_keywords.reject { |kw| kw == '* ' }[0] if keyword.nil?
-        keyword = Cucumber::Gherkin::I18n.code_keyword_for(keyword)
-        keyword
+        pickle_step = @pickle_step_by_test_step.pickle_step(test_step)
+        Cucumber::Gherkin::I18n.code_keyword_for(@step_keyword_by_id[pickle_step.ast_node_ids[0]])
       end
 
       ScenarioSource = Struct.new(:type, :scenario)
@@ -86,12 +67,24 @@ module Cucumber
         @gherkin_documents[gherkin_document.uri] = gherkin_document
 
         return unless gherkin_document.feature
+        dialect = ::Gherkin::Dialect.for(gherkin_document.feature.language)
+        @given_when_then_keywords = [
+          dialect.given_keywords,
+          dialect.when_keywords,
+          dialect.then_keywords
+        ].flatten.uniq.reject { |kw| kw == '* ' }
 
-        gherkin_document.feature.children.each do |child|
-          walk_background(child.background) if child.background
+        walk_feature(gherkin_document.feature)
+      end
+
+      def walk_feature(feature)
+        feature.children.each do |child|
+          @feature_background_keyword = walk_background(child.background) if child.background
           walk_scenario(child.scenario) if child.scenario
           walk_rule(child.rule) if child.rule
         end
+
+        @feature_background_keyword = nil
       end
 
       def walk_background(background)
@@ -99,12 +92,12 @@ module Cucumber
       end
 
       def walk_scenario(scenario)
-        @scenario_by_ids[scenario.id] = scenario
+        @scenario_by_id[scenario.id] = scenario
         walk_steps(scenario.steps)
 
         scenario.examples.each do |example_table|
           example_table.table_body.each do |row|
-            @example_row_by_ids[row.id] = row
+            @example_row_by_id[row.id] = row
             @example_table_by_row_id[row.id] = example_table
           end
         end
@@ -112,56 +105,23 @@ module Cucumber
 
       def walk_rule(rule)
         rule.children.each do |rule_child|
-          walk_background(rule_child.background) if rule_child.background
+          @rule_background_keyword = walk_background(rule_child.background) if rule_child.background
           walk_scenario(rule_child.scenario) if rule_child.scenario
         end
+        @rule_background_keyword = nil
       end
 
       def walk_steps(steps)
+        current_keyword = @rule_background_keyword || @feature_background_keyword || @given_when_then_keywords.first
+
         steps.each do |step|
+          current_keyword = step.keyword if @given_when_then_keywords.include?(step.keyword)
+
           @step_by_ids[step.id] = step
-        end
-      end
-
-      def step_keyword_lookup(uri)
-        @step_keyword_lookups[uri] ||= KeywordLookupBuilder.new(gherkin_document(uri)).lookup_hash
-      end
-
-      KeywordSearchNode = Struct.new(:keyword, :previous_node)
-
-      class KeywordLookupBuilder
-        attr_reader :lookup_hash
-
-        def initialize(gherkin_document)
-          @lookup_hash = {}
-          process_scenario_container(gherkin_document.feature, nil)
+          @step_keyword_by_id[step.id] = current_keyword
         end
 
-        private
-
-        # rubocop:disable Metrics/PerceivedComplexity
-        def process_scenario_container(container, original_previous_node)
-          container.children.each do |child|
-            previous_node = original_previous_node
-            if child.respond_to?(:rule) && child.rule
-              process_scenario_container(child.rule, original_previous_node)
-            elsif child.respond_to?(:scenario) && child.scenario
-              child.scenario.steps.each do |step|
-                node = KeywordSearchNode.new(step.keyword, previous_node)
-                @lookup_hash[step.location.line] = node
-                previous_node = node
-              end
-            elsif child.respond_to?(:background) && child.background
-              child.background.steps.each do |step|
-                node = KeywordSearchNode.new(step.keyword, previous_node)
-                @lookup_hash[step.location.line] = node
-                previous_node = node
-                original_previous_node = previous_node
-              end
-            end
-          end
-        end
-        # rubocop:enable Metrics/PerceivedComplexity
+        current_keyword
       end
     end
   end

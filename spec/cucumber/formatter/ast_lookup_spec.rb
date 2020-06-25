@@ -161,6 +161,83 @@ module Cucumber
 
           expect(keyword).to eq('When')
         end
+
+        context 'when no keywords where defined at all' do
+          @feature = <<-FEATURE
+          Feature: some feature
+
+          Scenario: a simple scenario
+            * a step
+          FEATURE
+          define_feature(@feature, 'path/to/the.feature')
+
+          it 'returns the keyword for the snippet' do
+            keyword = @formatter.snippet_step_keyword(@test_cases.first.test_steps.last)
+
+            expect(keyword).to eq('Given')
+          end
+        end
+
+        context 'when the keyword comes from the background' do
+          @feature = <<-FEATURE
+          Feature: some feature
+
+          Background:
+            When a situation
+
+          Scenario: a simple scenario
+            And a step
+          FEATURE
+          define_feature(@feature, 'path/to/the.feature')
+
+          it 'returns the keyword for the snippet' do
+            keyword = @formatter.snippet_step_keyword(@test_cases.first.test_steps.last)
+
+            expect(keyword).to eq('When')
+          end
+
+          context 'which is in a Rule' do
+            @feature = <<-FEATURE
+            Feature: some feature
+
+            Background:
+              When a situation
+
+            Rule: there is some extra context
+              Background:
+                Then something else
+
+              Scenario: a simple scenario
+                And a step
+            FEATURE
+            define_feature(@feature, 'path/to/the.feature')
+
+            it 'returns the keyword for the snippet' do
+              keyword = @formatter.snippet_step_keyword(@test_cases.first.test_steps.last)
+
+              expect(keyword).to eq('Then')
+            end
+          end
+        end
+
+        context 'when using another language than english' do
+          @feature = <<-FEATURE
+          #language: fr
+          Fonctionnalité: une fonctionnalité
+
+          Scénario: un scénario simple
+            Soit une étape
+            Quand une autre étape
+            Et une troisième étape
+          FEATURE
+          define_feature(@feature, 'path/to/the.feature')
+
+          it 'returns the translated keyword for the snippet' do
+            keyword = @formatter.snippet_step_keyword(@test_cases.first.test_steps.last)
+
+            expect(keyword).to eq('Quand')
+          end
+        end
       end
     end
   end
