@@ -127,33 +127,6 @@ module Cucumber
         @step_keyword_lookups[uri] ||= KeywordLookupBuilder.new(gherkin_document(uri)).lookup_hash
       end
 
-      class TestStepLookupBuilder
-        attr_reader :lookup_hash
-
-        def initialize(gherkin_document)
-          @lookup_hash = {}
-          process_scenario_container(gherkin_document.feature)
-        end
-
-        private
-
-        def process_scenario_container(container)
-          container.children.each do |child|
-            if child.respond_to?(:rule) && child.rule
-              process_scenario_container(child.rule)
-            elsif child.respond_to?(:scenario) && child.scenario
-              child.scenario.steps.each do |step|
-                @lookup_hash[step.location.line] = StepSource.new(:Step, step)
-              end
-            elsif !child.background.nil?
-              child.background.steps.each do |step|
-                @lookup_hash[step.location.line] = StepSource.new(:Step, step)
-              end
-            end
-          end
-        end
-      end
-
       KeywordSearchNode = Struct.new(:keyword, :previous_node)
 
       class KeywordLookupBuilder
