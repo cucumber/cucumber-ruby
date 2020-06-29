@@ -13,9 +13,7 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -25,11 +23,11 @@ jobs:
       uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
       with:
         ruby-version: 2.6
+      env:
+        REPORTS_REPOSITORY_TOKEN: ${{ secrets.CUCUMBER_REPORTS_REPOSITORY }}
     - name: Install dependencies
       run: bundle install
     - name: Run tests
       run: bundle exec cucumber -f message -o results.ndjson
-    -name: Publish documentation
-      env:
-        REPORTS_REPOSITORY_TOKEN: ${{ secrets.CUCUMBER_REPORTS_REPOSITORY }}
+    - name: Publish documentation
       run: curl -L -X PUT "https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com/api/repository/$REPORTS_REPOSITORY_TOKEN" --data results.ndjson
