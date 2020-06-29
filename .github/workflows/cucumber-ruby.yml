@@ -30,4 +30,4 @@ jobs:
     - name: Run tests
       run: bundle exec cucumber -f message -o results.ndjson
     - name: Publish documentation
-      run: curl -L -X PUT "https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com/api/repository/$REPORTS_REPOSITORY_TOKEN" --data @results.ndjson
+      run: curl -v -L -X PUT "https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com/api/repository/$REPORTS_REPOSITORY_TOKEN" --data-binary @results.ndjson
