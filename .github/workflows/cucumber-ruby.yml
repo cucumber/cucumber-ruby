@@ -29,5 +29,7 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec cucumber -f message -o results.ndjson
+    - name: Debugging
+      run: echo "Hello $REPORTS_REPOSITORY_TOKEN"
     - name: Publish documentation
       run: curl --verbose -L -X PUT "https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com/api/repository/$REPORTS_REPOSITORY_TOKEN" --upload-file results.ndjson
