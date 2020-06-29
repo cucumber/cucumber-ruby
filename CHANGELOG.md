@@ -18,7 +18,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* N/A
+* Updated gems:
+  * `cucumber-gherkin` ~> 14.0.1
+  * `cucumber-messages` ~> 12.2.0
+  * `cucumber-html-formatter` ~> 7.0.0
 
 ### Removed
 
