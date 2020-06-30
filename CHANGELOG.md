@@ -18,6 +18,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* Use [`cucumber-create-meta`](https://rubygems.org/gems/cucumber-create-meta) to produce the `Meta` message before the run.
+
 * Updated gems:
   * `cucumber-gherkin` ~> 14.0.1
   * `cucumber-messages` ~> 12.2.0

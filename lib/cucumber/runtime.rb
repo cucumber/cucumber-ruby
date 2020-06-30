@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'cucumber/configuration'
+require 'cucumber/create_meta'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
@@ -65,7 +66,7 @@ module Cucumber
     require 'cucumber/wire/plugin'
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
-        meta: make_meta
+        meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
       )
 
       load_step_definitions
@@ -103,27 +104,6 @@ module Cucumber
     #
     def doc_string(string_without_triple_quotes, content_type = '', _line_offset = 0)
       Core::Test::DocString.new(string_without_triple_quotes, content_type)
-    end
-
-    def make_meta
-      Cucumber::Messages::Meta.new(
-        protocol_version: Cucumber::Messages::VERSION,
-        implementation: Cucumber::Messages::Meta::Product.new(
-          name: 'cucumber-ruby',
-          version: Cucumber::VERSION
-        ),
-        runtime: Cucumber::Messages::Meta::Product.new(
-          name: RUBY_ENGINE,
-          version: RUBY_VERSION
-        ),
-        os: Cucumber::Messages::Meta::Product.new(
-          name: RbConfig::CONFIG['target_os'],
-          version: Sys::Uname.uname.version
-        ),
-        cpu: Cucumber::Messages::Meta::Product.new(
-          name: RbConfig::CONFIG['target_cpu']
-        )
-      )
     end
 
     private
