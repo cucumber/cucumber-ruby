@@ -10,28 +10,20 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.0.1...master)
-
-### Added
-
-* N/A
+## [4.1.0](https://github.com/cucumber/cucumber-ruby/compare/v4.0.1...v4.1.0)
 
 ### Changed
 
 * Use [`cucumber-create-meta`](https://rubygems.org/gems/cucumber-create-meta) to produce the `Meta` message before the run.
 
 * Updated gems:
+  * `cucumber-wire` ~> 3.1.0
+  * `cucumber-core` ~> 7.1.0
   * `cucumber-gherkin` ~> 14.0.1
+    * Fix issue with empty feature files [#1427](https://github.com/cucumber/cucumber-ruby/issues/1427)
   * `cucumber-messages` ~> 12.2.0
   * `cucumber-html-formatter` ~> 7.0.0
-
-### Removed
-
-* N/A
-
-### Improved
-
-* N/A
+    * Fix issue with Hook attachments [#1420](https://github.com/cucumber/cucumber-ruby/issues/1420)
 
 ### Fixed
 
