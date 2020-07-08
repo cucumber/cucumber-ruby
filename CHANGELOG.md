@@ -26,7 +26,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Improved
 
-* N/A
+* Update code to be compatible with `diff-lcs` versions 1.3 and 1.4
 
 ### Fixed
 
