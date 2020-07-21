@@ -124,5 +124,13 @@ module Cucumber::Formatter
         $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
       end
     end
+
+    describe 'when calling `puts` on the stream' do
+      it 'does not raise errors' do
+        wrapped = Interceptor::Pipe.wrap(:stderr)
+
+        expect { $stderr.puts('Oh, hi here !') }.not_to raise_exception(NoMethodError)
+      end
+    end
   end
 end
