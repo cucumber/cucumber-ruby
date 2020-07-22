@@ -5,6 +5,7 @@ module Cucumber
     module Interceptor
       class Pipe
         attr_reader :pipe
+
         def initialize(pipe)
           @pipe = pipe
           @buffer = StringIO.new
@@ -31,7 +32,8 @@ module Cucumber
         end
 
         def method_missing(method, *args, &blk)
-          @pipe.send(method, *args, &blk) || super
+          return @pipe.send(method, *args, &blk) if @pipe.respond_to?(method)
+          super
         end
 
         def respond_to_missing?(method, include_private = false)

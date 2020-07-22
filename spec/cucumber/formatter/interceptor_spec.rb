@@ -125,11 +125,15 @@ module Cucumber::Formatter
       end
     end
 
-    describe 'when calling `puts` on the stream' do
+    describe 'when calling `methods` on the stream' do
       it 'does not raise errors' do
-        wrapped = Interceptor::Pipe.wrap(:stderr)
-
+        Interceptor::Pipe.wrap(:stderr)
         expect { $stderr.puts('Oh, hi here !') }.not_to raise_exception(NoMethodError)
+      end
+
+      it 'does not shadow errors when method do not exist on the stream' do
+        Interceptor::Pipe.wrap(:stderr)
+        expect { $stderr.not_really_puts('Oh, hi here !') }.to raise_exception(NoMethodError)
       end
     end
   end
