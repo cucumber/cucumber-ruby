@@ -127,6 +127,8 @@ module Cucumber::Formatter
 
     describe 'when calling `methods` on the stream' do
       it 'does not raise errors' do
+        allow($stderr).to receive(:puts)
+
         Interceptor::Pipe.wrap(:stderr)
         expect { $stderr.puts('Oh, hi here !') }.not_to raise_exception(NoMethodError)
       end
