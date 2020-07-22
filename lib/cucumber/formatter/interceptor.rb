@@ -32,8 +32,7 @@ module Cucumber
         end
 
         def method_missing(method, *args, &blk)
-          return @pipe.send(method, *args, &blk) if @pipe.respond_to?(method)
-          super
+          @pipe.respond_to?(method) ? @pipe.send(method, *args, &blk) : super
         end
 
         def respond_to_missing?(method, include_private = false)
