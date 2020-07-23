@@ -14,7 +14,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
-* N/A
+* `--publish` automatically publishes reports to [reports.cucumber.io](https://reports.cucumber.io)
 
 ### Changed
 
