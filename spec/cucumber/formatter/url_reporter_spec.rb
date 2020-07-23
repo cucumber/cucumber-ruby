@@ -1,10 +1,13 @@
+require 'stringio'
 require 'uri'
 require 'cucumber/formatter/url_reporter'
 
 module Cucumber
   module Formatter
     describe URLReporter do
-      subject { URLReporter.new }
+      let(:io) { StringIO.new }
+
+      subject { URLReporter.new(io) }
 
       context '#report' do
         it 'prints the corresponding reports.cucumber.io URL' do
