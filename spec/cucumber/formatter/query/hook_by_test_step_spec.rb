@@ -73,6 +73,26 @@ module Cucumber
               end
             end
           end
+
+          describe 'with AfterStep hooks' do
+            context '#pickle_step_id' do
+              define_feature <<-FEATURE
+                Feature: Banana party
+
+                  Scenario: Monkey eats banana
+                    Given there are bananas
+              FEATURE
+
+              define_steps do
+                AfterStep() {}
+              end
+
+              it 'provides the ID of the AfterStepHook used to generate the Test::Step' do
+                test_case = @test_cases.first
+                expect(@formatter.hook_id(test_case.test_steps.last)).to eq(@hook_ids.first)
+              end
+            end
+          end
         end
       end
     end

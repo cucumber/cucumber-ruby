@@ -124,5 +124,19 @@ module Cucumber::Formatter
         $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
       end
     end
+
+    describe 'when calling `methods` on the stream' do
+      it 'does not raise errors' do
+        allow($stderr).to receive(:puts)
+
+        Interceptor::Pipe.wrap(:stderr)
+        expect { $stderr.puts('Oh, hi here !') }.not_to raise_exception(NoMethodError)
+      end
+
+      it 'does not shadow errors when method do not exist on the stream' do
+        Interceptor::Pipe.wrap(:stderr)
+        expect { $stderr.not_really_puts('Oh, hi here !') }.to raise_exception(NoMethodError)
+      end
+    end
   end
 end

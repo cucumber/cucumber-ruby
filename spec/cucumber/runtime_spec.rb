@@ -20,19 +20,5 @@ module Cucumber
         expect(subject.doc_string('Text')).to eq 'Text'
       end
     end
-
-    describe '#make_meta' do
-      it 'generates a Meta message with platform information' do
-        meta = subject.make_meta
-        expect(meta.protocol_version).to match(/\d+\.\d+\.\d+/)
-        expect(meta.implementation.name).to eq('cucumber-ruby')
-        expect(meta.implementation.version).to eq(Cucumber::VERSION)
-        expect(meta.runtime.name).to match(/(jruby|ruby)/)
-        expect(meta.runtime.version).to eq(RUBY_VERSION)
-        expect(meta.os.name).to match(/.+/)
-        expect(meta.os.version).to match(/.+/)
-        expect(meta.cpu.name).to match(/.+/)
-      end
-    end
   end
 end
