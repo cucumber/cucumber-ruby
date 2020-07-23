@@ -9,7 +9,7 @@ require 'cucumber/core/test/result'
 module Cucumber
   module Cli
     class Options
-      CUCUMBER_MESSAGE_STORE_URL = 'https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com'
+      CUCUMBER_MESSAGE_STORE_URL = ENV['CUCUMBER_MESSAGE_STORE_URL'] || 'https://messages.cucumber.io'
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
