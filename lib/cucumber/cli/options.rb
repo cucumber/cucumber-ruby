@@ -9,6 +9,7 @@ require 'cucumber/core/test/result'
 module Cucumber
   module Cli
     class Options
+      CUCUMBER_MESSAGE_STORE_URL = 'https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com'
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
@@ -93,6 +94,7 @@ module Cucumber
 
         @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
+          opts.on('--publish', 'Publish a report to https://reports.cucumber.io') { @options[:formats] << ['message', {}, "#{CUCUMBER_MESSAGE_STORE_URL}/api/reports"] }
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
           opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) } if Cucumber::JRUBY
