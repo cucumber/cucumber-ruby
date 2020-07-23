@@ -6,10 +6,12 @@ module Cucumber
     class HTTPIO
       class << self
         # Returns an IO that will write to a HTTP request's body
-        def open(url, https_verify_mode = nil)
+        # https_verify_mode can be set to OpenSSL::SSL::VERIFY_NONE
+        # to ignore unsigned certificate - setting to nil will verify the certificate
+        def open(url, https_verify_mode = nil, reporter = nil)
           @https_verify_mode = https_verify_mode
           uri, method, headers = CurlOptionParser.parse(url)
-          IOHTTPBuffer.new(uri, method, headers, https_verify_mode)
+          IOHTTPBuffer.new(uri, method, headers, https_verify_mode, reporter)
         end
       end
     end
@@ -64,16 +66,18 @@ module Cucumber
     class IOHTTPBuffer
       attr_reader :uri, :method, :headers
 
-      def initialize(uri, method, headers = {}, https_verify_mode = nil)
+      def initialize(uri, method, headers = {}, https_verify_mode = nil, reporter = nil)
         @uri = URI(uri)
         @method = method
         @headers = headers
         @write_io = Tempfile.new('cucumber', encoding: 'UTF-8')
         @https_verify_mode = https_verify_mode
+        @reporter = reporter
       end
 
       def close
-        post_content(@uri, @method, @headers)
+        resource_uri = post_content(@uri, @method, @headers)
+        @reporter.report(resource_uri) if @reporter
         @write_io.close
       end
 

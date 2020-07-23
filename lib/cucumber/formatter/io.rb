@@ -2,6 +2,12 @@
 
 require 'cucumber/formatter/http_io'
 
+class ReportsReporter
+  def report(uri)
+    puts "Message file located at: #{uri}"
+  end
+end
+
 module Cucumber
   module Formatter
     module Io
@@ -11,7 +17,8 @@ module Cucumber
         return nil if path_or_url_or_io.nil?
         return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
         io = if path_or_url_or_io.match(%r{^https?://})
-               HTTPIO.open(path_or_url_or_io)
+               reporter = uri.start_with(MESSAGE_STORE) ? ReportsReporter.new : nil
+               HTTPIO.open(path_or_url_or_io, nil, reporter)
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end
