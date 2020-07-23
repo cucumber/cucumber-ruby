@@ -4,7 +4,7 @@ require 'cucumber/formatter/url_reporter'
 module Cucumber
   module Formatter
     describe URLReporter do
-      subject {URLReporter.new}
+      subject { URLReporter.new }
 
       context '#report' do
         it 'prints the corresponding reports.cucumber.io URL' do

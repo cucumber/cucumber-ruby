@@ -77,7 +77,8 @@ module Cucumber
 
       def close
         resource_uri = post_content(@uri, @method, @headers)
-        @reporter.report(resource_uri) if @reporter
+
+        @reporter&.report(resource_uri)
         @write_io.close
       end
 
