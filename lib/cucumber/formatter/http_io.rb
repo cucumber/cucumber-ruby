@@ -116,7 +116,7 @@ module Cucumber
 
         case response
         when Net::HTTPSuccess
-          response
+          uri
         when Net::HTTPRedirection
           post_content(URI(response['Location']), method, headers, attempt - 1)
         else
