@@ -9,7 +9,7 @@ name: Ruby
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, publish-option ]
 
 jobs:
   test:
