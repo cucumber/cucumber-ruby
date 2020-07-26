@@ -12,10 +12,10 @@ module Cucumber
       def report(url)
         uri = URI(url)
         path_length = uri.path.length
-        @io.puts blue("┌─────────────────────────────#{'─' * path_length}┐")
-        @io.puts "#{blue('│')} View your report at:        #{' ' * path_length}#{blue('│')}"
-        @io.puts "#{blue('│')} https://reports.cucumber.io#{uri.path} #{blue('│')}"
-        @io.puts blue("└─────────────────────────────#{'─' * path_length}┘")
+        @io.puts cyan("┌─────────────────────────────#{'─' * path_length}┐")
+        @io.puts "#{cyan('│')} View your Cucumber Report at:#{' ' * (path_length-1)}#{cyan('│')}"
+        @io.puts "#{cyan('│')} https://reports.cucumber.io#{uri.path} #{cyan('│')}"
+        @io.puts cyan("└─────────────────────────────#{'─' * path_length}┘")
       end
     end
   end
