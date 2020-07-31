@@ -11,7 +11,13 @@ module Cucumber
 
       def report(url)
         uri = URI(url)
-        display_banner("View your Cucumber Report at:\nhttps://reports.cucumber.io#{uri.path}", @io)
+        display_banner(
+          [
+            'View your Cucumber Report at:',
+            [["https://reports.cucumber.io#{uri.path}", :blue, :underline]]
+          ],
+          @io
+        )
       end
     end
   end
