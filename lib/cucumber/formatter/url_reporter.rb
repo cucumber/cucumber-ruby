@@ -1,9 +1,9 @@
-require 'cucumber/term/ansicolor'
+require 'cucumber/term/banner'
 
 module Cucumber
   module Formatter
     class URLReporter
-      include Term::ANSIColor
+      include Term::Banner
 
       def initialize(io)
         @io = io
@@ -11,11 +11,7 @@ module Cucumber
 
       def report(url)
         uri = URI(url)
-        path_length = uri.path.length
-        @io.puts cyan("┌─────────────────────────────#{'─' * path_length}┐")
-        @io.puts "#{cyan('│')} View your Cucumber Report at:#{' ' * (path_length-1)}#{cyan('│')}"
-        @io.puts "#{cyan('│')} https://reports.cucumber.io#{uri.path} #{cyan('│')}"
-        @io.puts cyan("└─────────────────────────────#{'─' * path_length}┘")
+        display_banner("View your Cucumber Report at:\nhttps://reports.cucumber.io#{uri.path}", @io)
       end
     end
   end
