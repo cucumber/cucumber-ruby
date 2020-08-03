@@ -72,5 +72,21 @@ describe Cucumber::Term::Banner do
         end
       end
     end
+
+    context 'with custom borders' do
+      it 'process the border with the provided attributes' do
+        display_banner('this is a banner', io, %i[bold blue])
+
+        io.rewind
+        expect(io.read).to eq(
+          [
+            "\e[34m\e[1m┌──────────────────┐\e[0m\e[0m",
+            "\e[34m\e[1m│\e[0m\e[0m this is a banner \e[34m\e[1m│\e[0m\e[0m",
+            "\e[34m\e[1m└──────────────────┘\e[0m\e[0m",
+            ''
+          ].join("\n")
+        )
+      end
+    end
   end
 end
