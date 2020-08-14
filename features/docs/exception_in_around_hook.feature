@@ -27,21 +27,21 @@ Feature: Exceptions in Around Hooks
         Scenario:
           Given this step passes
       """
-    When I run `cucumber -q`
+    When I run `cucumber -q --publish-quiet`
     Then it should fail with exactly:
       """
-      Feature: 
+      Feature:
 
-        Scenario: 
+        Scenario:
             this should be reported (RuntimeError)
             ./features/support/env.rb:2:in `Around'
-      
+
       Failing Scenarios:
       cucumber features/test.feature:2
-      
+
       1 scenario (1 failed)
       0 steps
-      
+
       """
 
   Scenario: Exception after the test case is run
@@ -59,20 +59,20 @@ Feature: Exceptions in Around Hooks
         Scenario:
           Given this step passes
       """
-    When I run `cucumber -q`
+    When I run `cucumber -q --publish-quiet --publish-quiet`
     Then it should fail with exactly:
       """
-      Feature: 
+      Feature:
 
-        Scenario: 
+        Scenario:
           Given this step passes
             this should be reported (RuntimeError)
             ./features/support/env.rb:3:in `Around'
 
       Failing Scenarios:
       cucumber features/test.feature:2
-      
+
       1 scenario (1 failed)
       1 step (1 passed)
-      
+
       """

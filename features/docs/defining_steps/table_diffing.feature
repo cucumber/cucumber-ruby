@@ -22,7 +22,7 @@ Feature: Table diffing
         }))
       end
       """
-    When I run `cucumber features/tables.feature`
+    When I run `cucumber features/tables.feature --publish-quiet`
     Then it should fail with exactly:
       """
       Feature: Tables
@@ -32,7 +32,7 @@ Feature: Table diffing
             | x | y |
             | a | b |
             Tables were not identical:
-            
+
               |     x |     y |
               | (-) a | (-) b |
               | (+) a | (+) c |

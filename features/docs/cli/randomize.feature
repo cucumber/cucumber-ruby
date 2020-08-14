@@ -108,7 +108,7 @@ Feature: Randomize
 
   @global_state
   Scenario: Run scenarios randomized with some skipped
-    When I run `cucumber --tags "not @skipme" --order random:41544 -q`
+    When I run `cucumber --tags "not @skipme" --order random:41544 -q --publish-quiet`
     Then it should fail with exactly:
       """
       Feature: Bad practice, part 1

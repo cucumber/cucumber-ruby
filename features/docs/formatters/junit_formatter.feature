@@ -337,7 +337,7 @@ You *must* specify --out DIR for the junit formatter
       """
 
   Scenario: strict mode with --expand option, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
-    When I run `cucumber --strict --expand --format junit --out tmp/ features/scenario_outline.feature`
+    When I run `cucumber --strict --expand --format junit --out tmp/ features/scenario_outline.feature --publish-quiet`
     Then it should fail with exactly:
       """
 

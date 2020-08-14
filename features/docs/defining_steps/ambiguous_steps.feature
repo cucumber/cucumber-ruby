@@ -35,16 +35,16 @@ Feature: Ambiguous Steps
     Then it should fail with:
     """
           Ambiguous match of "an ambiguous step":
-          
+
           features/step_definitions.rb:1:in `/^a.*step$/'
           features/step_definitions.rb:5:in `/^an ambiguous step$/'
-          
+
           You can run again with --guess to make Cucumber be more smart about it
            (Cucumber::Ambiguous)
           features/ambiguous.feature:5:in `an ambiguous step'
 
     Failing Scenarios:
-    cucumber features/ambiguous.feature:3 # Scenario: 
+    cucumber features/ambiguous.feature:3 # Scenario:
 
     1 scenario (1 failed)
     2 steps (1 failed, 1 passed)
@@ -72,10 +72,10 @@ Feature: Ambiguous Steps
         'bar'
       end
     """
-    When I run `cucumber -g`
+    When I run `cucumber -g --publish-quiet`
     Then it should pass with exactly:
     """
-    Feature: 
+    Feature:
 
       Scenario:                # features/ambiguous.feature:3
         When a step            # features/step_definitions.rb:1

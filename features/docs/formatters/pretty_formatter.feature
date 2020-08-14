@@ -51,23 +51,23 @@ Feature: Pretty output formatter
 	raise "error"
       end
       """
-    When I run `cucumber -q -f pretty features/test.feature`
+    When I run `cucumber -q -f pretty features/test.feature --publish-quiet`
     Then the stderr should not contain anything
     Then it should fail with:
       """
-      Feature: 
-      
-        Scenario: 
+      Feature:
+
+        Scenario:
             Before hook
           Given this step passes
             AfterStep hook
             After hook
             error (RuntimeError)
             ./features/step_definitions/output_steps.rb:11:in `After'
-      
+
       Failing Scenarios:
       cucumber features/test.feature:2
-      
+
       1 scenario (1 failed)
       1 step (1 passed)
       """

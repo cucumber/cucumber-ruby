@@ -17,7 +17,7 @@ Feature: Post Configuration Hook [#423]
         Scenario:
           Given a step
       """
-    When I run `cucumber features`
+    When I run `cucumber features --publish-quiet`
     Then the stderr should not contain anything
     And the output should contain NDJSON with key "uri" and value "features/simple_scenario.feature"
 
@@ -28,7 +28,7 @@ Feature: Post Configuration Hook [#423]
         config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs.join(', ')}"
       end
       """
-    When I run `cucumber features`
+    When I run `cucumber features --publish-quiet`
     Then the stderr should not contain anything
     And the output should contain:
       """

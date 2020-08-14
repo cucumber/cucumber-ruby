@@ -49,7 +49,7 @@ Feature: Using descriptions to give features context
           | state  |
           | passes |
     """
-    When I run `cucumber -q`
+    When I run `cucumber -q --publish-quiet`
     Then the stderr should not contain anything
     Then it should pass with exactly:
     """
@@ -57,7 +57,7 @@ Feature: Using descriptions to give features context
       We can put a useful description here of the feature, which can
       span multiple lines.
 
-      Background: 
+      Background:
         We can also put in descriptions showing what the background is
         doing.
         Given this step passes

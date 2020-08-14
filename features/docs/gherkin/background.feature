@@ -209,7 +209,7 @@ Feature: Background
       """
 
   Scenario: run a specific scenario with a background
-    When I run `cucumber -q features/passing_background.feature:9`
+    When I run `cucumber -q features/passing_background.feature:9 --publish-quiet`
     Then it should pass with exactly:
     """
     Feature: Passing background sample
@@ -226,7 +226,7 @@ Feature: Background
     """
 
   Scenario: run a feature with a background that passes
-    When I run `cucumber -q features/passing_background.feature`
+    When I run `cucumber -q features/passing_background.feature --publish-quiet`
     Then it should pass with exactly:
     """
     Feature: Passing background sample
@@ -246,7 +246,7 @@ Feature: Background
     """
 
   Scenario: run a feature with scenario outlines that has a background that passes
-    When I run `cucumber -q features/scenario_outline_passing_background.feature`
+    When I run `cucumber -q features/scenario_outline_passing_background.feature --publish-quiet`
     Then it should pass with exactly:
     """
     Feature: Passing background with scenario outlines sample
@@ -274,7 +274,7 @@ Feature: Background
     """
 
   Scenario: run a feature with scenario outlines that has a background that passes
-    When I run `cucumber -q features/background_tagged_before_on_outline.feature`
+    When I run `cucumber -q features/background_tagged_before_on_outline.feature --publish-quiet`
     Then it should pass with exactly:
     """
     @background_tagged_before_on_outline
@@ -296,7 +296,7 @@ Feature: Background
     """
 
   Scenario: run a feature with a background that fails
-    When I run `cucumber -q features/failing_background.feature`
+    When I run `cucumber -q features/failing_background.feature --publish-quiet`
     Then it should fail with exactly:
     """
     Feature: Failing background sample
@@ -324,7 +324,7 @@ Feature: Background
     """
 
   Scenario: run a feature with scenario outlines that has a background that fails
-    When I run `cucumber -q features/scenario_outline_failing_background.feature`
+    When I run `cucumber -q features/scenario_outline_failing_background.feature --publish-quiet`
     Then it should fail with exactly:
     """
     Feature: Failing background with scenario outlines sample
@@ -359,7 +359,7 @@ Feature: Background
     """
 
   Scenario: run a feature with a background that is pending
-    When I run `cucumber -q features/pending_background.feature`
+    When I run `cucumber -q features/pending_background.feature --publish-quiet`
     Then it should pass with exactly:
     """
     Feature: Pending background sample
@@ -379,7 +379,7 @@ Feature: Background
     """
 
   Scenario: background passes with first scenario but fails with second
-    When I run `cucumber -q features/failing_background_after_success.feature`
+    When I run `cucumber -q features/failing_background_after_success.feature --publish-quiet`
     Then it should fail with exactly:
     """
     Feature: Failing background after previously successful background sample
@@ -408,7 +408,7 @@ Feature: Background
 
   @global_state
   Scenario: background passes with first outline scenario but fails with second
-    When I run `cucumber -q features/failing_background_after_success_outline.feature`
+    When I run `cucumber -q features/failing_background_after_success_outline.feature --publish-quiet`
     Then it should fail with exactly:
     """
     Feature: Failing background after previously successful background sample
@@ -444,7 +444,7 @@ Feature: Background
 
   @global_state
   Scenario: background passes with first outline scenario but fails with second (--expand)
-    When I run `cucumber -x -q features/failing_background_after_success_outline.feature`
+    When I run `cucumber -x -q features/failing_background_after_success_outline.feature --publish-quiet`
     Then it should fail with exactly:
     """
     Feature: Failing background after previously successful background sample
@@ -500,7 +500,7 @@ Feature: Background
         expect(@multiline).to eq string
       end
       """
-    When I run `cucumber -q features/multiline_args_background.feature`
+    When I run `cucumber -q features/multiline_args_background.feature --publish-quiet`
     Then it should pass with exactly:
       """
       Feature: Passing background with multiline args
@@ -539,4 +539,3 @@ Feature: Background
       8 steps (8 passed)
 
       """
-

@@ -15,7 +15,7 @@ Feature: Skip Scenario
         skip_this_scenario
       end
       """
-    When I run `cucumber -q`
+    When I run `cucumber -q --publish-quiet`
     Then it should pass with exactly:
       """
       Feature: test
