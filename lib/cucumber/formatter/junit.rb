@@ -132,9 +132,10 @@ module Cucumber
         duration = ResultBuilder.new(result).test_case_duration
         @current_feature_data[:time] += duration
         classname = @current_feature_data[:feature].name
+        filename = @current_feature_data[:uri]
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%<duration>.6f', duration: duration)) do
+        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%<duration>.6f', duration: duration), file: filename) do
           if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1

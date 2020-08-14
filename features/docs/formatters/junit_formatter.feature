@@ -83,7 +83,7 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="One passing scenario, one failing scenario">
-      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05">
+      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05" file="features/one_passing_one_failing.feature">
         <system-out>
           <![CDATA[]]>
         </system-out>
@@ -91,7 +91,7 @@ Feature: JUnit output formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05">
+      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05" file="features/one_passing_one_failing.feature">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
@@ -124,7 +124,7 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="Subdirectory - One passing scenario, one failing scenario">
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Passing" time="0.05">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Passing" time="0.05" file="features/some_subdirectory/one_passing_one_failing.feature">
         <system-out>
           <![CDATA[]]>
         </system-out>
@@ -132,7 +132,7 @@ Feature: JUnit output formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.05">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.05" file="features/some_subdirectory/one_passing_one_failing.feature">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
@@ -165,7 +165,7 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="0" errors="0" skipped="2" tests="2" time="0.05" name="Pending step">
-      <testcase classname="Pending step" name="Pending" time="0.05">
+      <testcase classname="Pending step" name="Pending" time="0.05" file="features/pending.feature">
         <skipped/>
         <system-out>
           <![CDATA[]]>
@@ -174,7 +174,7 @@ Feature: JUnit output formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Pending step" name="Undefined" time="0.05">
+      <testcase classname="Pending step" name="Undefined" time="0.05" file="features/pending.feature">
         <skipped/>
         <system-out>
           <![CDATA[]]>
@@ -197,7 +197,7 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="2" errors="0" skipped="0" tests="2" time="0.05" name="Pending step">
-      <testcase classname="Pending step" name="Pending" time="0.05">
+      <testcase classname="Pending step" name="Pending" time="0.05" file="features/pending.feature">
         <failure message="pending Pending" type="pending">
           <![CDATA[Scenario: Pending
 
@@ -216,7 +216,7 @@ Feature: JUnit output formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Pending step" name="Undefined" time="0.05">
+      <testcase classname="Pending step" name="Undefined" time="0.05" file="features/pending.feature">
         <failure message="undefined Undefined" type="undefined">
           <![CDATA[Scenario: Undefined
 
@@ -268,7 +268,7 @@ You *must* specify --out DIR for the junit formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="3" errors="0" skipped="0" tests="4" time="0.05" name="Scenario outlines">
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05" file="features/scenario_outline.feature">
         <system-out>
           <![CDATA[]]>
         </system-out>
@@ -276,7 +276,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05" file="features/scenario_outline.feature">
         <failure message="failed Using scenario outlines (outline example : | fails |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
 
@@ -295,7 +295,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is pending |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is pending |)" time="0.05" file="features/scenario_outline.feature">
         <failure message="pending Using scenario outlines (outline example : | is pending |)" type="pending">
           <![CDATA[Scenario Outline: Using scenario outlines
 
@@ -314,7 +314,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is undefined |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is undefined |)" time="0.05" file="features/scenario_outline.feature">
         <failure message="undefined Using scenario outlines (outline example : | is undefined |)" type="undefined">
           <![CDATA[Scenario Outline: Using scenario outlines
 
@@ -346,7 +346,7 @@ You *must* specify --out DIR for the junit formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="3" errors="0" skipped="0" tests="4" time="0.05" name="Scenario outlines">
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05" file="features/scenario_outline.feature">
         <system-out>
           <![CDATA[]]>
         </system-out>
@@ -354,7 +354,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05" file="features/scenario_outline.feature">
         <failure message="failed Using scenario outlines (outline example : | fails |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
 
@@ -373,7 +373,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is pending |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is pending |)" time="0.05" file="features/scenario_outline.feature">
         <failure message="pending Using scenario outlines (outline example : | is pending |)" type="pending">
           <![CDATA[Scenario Outline: Using scenario outlines
 
@@ -392,7 +392,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is undefined |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is undefined |)" time="0.05" file="features/scenario_outline.feature">
         <failure message="undefined Using scenario outlines (outline example : | is undefined |)" type="undefined">
           <![CDATA[Scenario Outline: Using scenario outlines
 
@@ -424,7 +424,7 @@ You *must* specify --out DIR for the junit formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="One passing scenario, one failing scenario">
-      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05">
+      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05" file="features/one_passing_one_failing.feature">
         <system-out>
           <![CDATA[]]>
         </system-out>
@@ -432,7 +432,7 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05">
+      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05" file="features/one_passing_one_failing.feature">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
