@@ -27,6 +27,3 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec cucumber --publish
-      env:
-        # Remove this when the messages.cucumber.io domain is available
-        CUCUMBER_MESSAGE_STORE_URL: https://b1f2yk58d8.execute-api.eu-west-3.amazonaws.com
