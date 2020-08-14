@@ -9,7 +9,7 @@ require 'cucumber/core/test/result'
 module Cucumber
   module Cli
     class Options
-      CUCUMBER_PLUGIN_PUBLISH_URL = ENV['CUCUMBER_PLUGIN_PUBLISH_URL'] || 'https://messages.cucumber.io'
+      CUCUMBER_PLUGIN_PUBLISH_URL = ENV['CUCUMBER_PLUGIN_PUBLISH_URL'] || 'https://messages.cucumber.io/api/reports'
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
