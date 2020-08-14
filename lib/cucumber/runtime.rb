@@ -166,11 +166,13 @@ module Cucumber
 
     require 'cucumber/formatter/ignore_missing_messages'
     require 'cucumber/formatter/fail_fast'
+    require 'cucumber/formatter/publish_banner_printer'
     require 'cucumber/core/report/summary'
     def report
       return @report if @report
       reports = [summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
+      reports << publish_banner_printer
       @report ||= Formatter::Fanout.new(reports)
     end
 
@@ -180,6 +182,10 @@ module Cucumber
 
     def fail_fast_report
       @fail_fast_report ||= Formatter::FailFast.new(@configuration)
+    end
+
+    def publish_banner_printer
+      @publish_banner_printer ||= Formatter::PublishBannerPrinter.new(@configuration)
     end
 
     def formatters
