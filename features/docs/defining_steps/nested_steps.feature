@@ -156,7 +156,7 @@ Feature: Nested Steps
         step 'a step that calls an undefined step'
       end
       """
-    When I run `cucumber -q features/call_undefined_step_from_step_def.feature --publish-quiet`
+    When I run `cucumber -q features/call_undefined_step_from_step_def.feature`
     Then it should fail with exactly:
       """
       Feature: Calling undefined step

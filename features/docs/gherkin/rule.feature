@@ -41,7 +41,7 @@ Feature: Rule
 
   Rule: I use Gherkin 6+
     Example: I can use the Rule keyword
-      When I run `cucumber -q features/rule.feature --publish-quiet`
+      When I run `cucumber -q features/rule.feature`
       Then it should pass with exactly:
       """
       Feature: Rule Sample

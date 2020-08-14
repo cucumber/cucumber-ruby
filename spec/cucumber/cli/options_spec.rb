@@ -324,6 +324,7 @@ module Cucumber
             given_cucumber_yml_defined_as('foo' => '-q')
             options.parse!(%w[-p foo])
 
+            expect(options[:publish_quiet]).to be true
             expect(options[:snippets]).to be false
             expect(options[:source]).to be false
             expect(options[:duration]).to be false

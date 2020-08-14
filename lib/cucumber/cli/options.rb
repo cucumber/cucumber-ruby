@@ -120,7 +120,7 @@ module Cucumber
           opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
           opts.on('-i', '--no-snippets', "Don't print snippets for pending steps.") { set_option :snippets, false }
           opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) { |v| set_option :snippet_type, v.to_sym }
-          opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
+          opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source --no-duration --publish-quiet.') { shut_up }
           opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
           opts.on('-S', '--[no-]strict', *strict_msg) { |setting| set_strict(setting) }
@@ -418,6 +418,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def shut_up
+        @options[:publish_quiet] = true
         @options[:snippets] = false
         @options[:source] = false
         @options[:duration] = false

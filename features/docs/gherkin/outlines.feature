@@ -127,7 +127,7 @@ Feature: Scenario outlines
       """
 
   Scenario: Run all with progress formatter
-    When I run `cucumber -q --format progress features/outline_sample.feature --publish-quiet`
+    When I run `cucumber -q --format progress features/outline_sample.feature`
     Then it should fail with exactly:
       """
       U-..F-..

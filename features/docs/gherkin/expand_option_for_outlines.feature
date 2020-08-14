@@ -18,7 +18,7 @@ Feature: Scenario outlines --expand option
           | blue | blue  | right   |
           | red  | blue  | wrong   |
       """
-    When I run `cucumber -i -q --expand --publish-quiet`
+    When I run `cucumber -i -q --expand`
     Then the stderr should not contain anything
     And it should pass with:
       """

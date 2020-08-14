@@ -49,7 +49,7 @@ Feature: Using descriptions to give features context
           | state  |
           | passes |
     """
-    When I run `cucumber -q --publish-quiet`
+    When I run `cucumber -q`
     Then the stderr should not contain anything
     Then it should pass with exactly:
     """

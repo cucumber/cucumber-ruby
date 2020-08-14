@@ -51,7 +51,7 @@ Feature: Pretty output formatter
 	raise "error"
       end
       """
-    When I run `cucumber -q -f pretty features/test.feature --publish-quiet`
+    When I run `cucumber -q -f pretty features/test.feature`
     Then the stderr should not contain anything
     Then it should fail with:
       """

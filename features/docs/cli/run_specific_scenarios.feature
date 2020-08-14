@@ -23,7 +23,7 @@ Feature: Run specific scenarios
         Scenario: Hit
           Given this step passes
       """
-    When I run `cucumber features/test.feature:6 --format pretty --quiet  --publish-quiet`
+    When I run `cucumber features/test.feature:6 --format pretty --quiet `
     Then it should pass with exactly:
       """
       Feature:

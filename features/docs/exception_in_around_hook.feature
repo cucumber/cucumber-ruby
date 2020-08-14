@@ -27,7 +27,7 @@ Feature: Exceptions in Around Hooks
         Scenario:
           Given this step passes
       """
-    When I run `cucumber -q --publish-quiet`
+    When I run `cucumber -q`
     Then it should fail with exactly:
       """
       Feature:
@@ -59,7 +59,7 @@ Feature: Exceptions in Around Hooks
         Scenario:
           Given this step passes
       """
-    When I run `cucumber -q --publish-quiet --publish-quiet`
+    When I run `cucumber -q`
     Then it should fail with exactly:
       """
       Feature:

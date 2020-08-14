@@ -76,7 +76,7 @@ Feature: Pretty formatter - Printing messages
       """
 
     Scenario: Delayed messages feature
-      When I run `cucumber --quiet --format pretty features/f.feature --publish-quiet`
+      When I run `cucumber --quiet --format pretty features/f.feature`
       Then the stderr should not contain anything
       And the output should contain:
       """

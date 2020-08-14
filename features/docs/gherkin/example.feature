@@ -29,7 +29,7 @@ Feature: Example
       """
 
   Example: I can use the Example keyword
-    When I run `cucumber -q features/example.feature --publish-quiet`
+    When I run `cucumber -q features/example.feature`
     Then it should pass with exactly:
     """
     Feature: A simple example
