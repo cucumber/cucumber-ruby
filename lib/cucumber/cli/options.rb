@@ -95,6 +95,7 @@ module Cucumber
         @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
           opts.on('--publish', 'Publish a report to https://reports.cucumber.io') { @options[:formats] << ['message', {}, "#{CUCUMBER_MESSAGE_STORE_URL}/api/reports"] }
+          opts.on('--publish-quiet', 'Don\'t print information banner about publishing reports') { set_option :publish_quiet }
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
           opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) } if Cucumber::JRUBY

@@ -15,6 +15,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Added
 
 * `--publish` automatically publishes reports to [reports.cucumber.io](https://reports.cucumber.io)
+* `--publish-quiet` does not print information banner about [reports.cucumber.io](https://reports.cucumber.io)
 
 ### Changed
 

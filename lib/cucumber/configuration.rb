@@ -62,6 +62,10 @@ module Cucumber
       @options[:dry_run]
     end
 
+    def publish_quiet?
+      @options[:publish_quiet]
+    end
+
     def fail_fast?
       @options[:fail_fast]
     end
@@ -256,6 +260,7 @@ module Cucumber
         strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
         require: [],
         dry_run: false,
+        publish_quiet: false,
         fail_fast: false,
         formats: [],
         excludes: [],
