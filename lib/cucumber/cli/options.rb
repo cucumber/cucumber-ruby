@@ -94,7 +94,7 @@ module Cucumber
 
         @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
-          opts.on('--publish', 'Publish a report to https://reports.cucumber.io') { @options[:formats] << ['message', {}, CUCUMBER_PUBLISH_URL] }
+          opts.on('--publish', 'Publish a report to https://reports.cucumber.io') { @options[:formats] << publisher }
           opts.on('--no-publish-ad', 'Don\'t print advertisement banner about publishing reports') { set_option :publish_ad, false }
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
@@ -352,6 +352,12 @@ Specify SEED to reproduce the shuffling from a previous run.
 
       def require_jars(jars)
         Dir["#{jars}/**/*.jar"].each { |jar| require jar }
+      end
+
+      def publisher
+        url = CUCUMBER_PUBLISH_URL
+        url += %( -H "Authorization: Bearer #{ENV['CUCUMBER_PUBLISH_TOKEN']}") if ENV['CUCUMBER_PUBLISH_TOKEN']
+        ['message', {}, url]
       end
 
       def language(lang)
