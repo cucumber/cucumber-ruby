@@ -17,7 +17,9 @@ module Cucumber
           expect(io.read).to eq([
             "\e[36m┌──────────────────────────────────────────────────────────────────────────┐\e[0m",
             "\e[36m│\e[0m View your Cucumber Report at:                                            \e[36m│\e[0m",
-            "\e[36m│\e[0m \e[4m\e[34mhttps://reports.cucumber.io/reports/8519cb24-d177-40f8-8484-3237532f7772\e[0m\e[0m \e[36m│\e[0m",
+            "\e[36m│\e[0m \e[4m\e[1m\e[36mhttps://reports.cucumber.io/reports/8519cb24-d177-40f8-8484-3237532f7772\e[0m\e[0m\e[0m \e[36m│\e[0m",
+            "\e[36m│\e[0m                                                                          \e[36m│\e[0m",
+            "\e[36m│\e[0m \e[1m\e[32mThis report will self-destruct in 24h unless it is claimed or deleted.\e[0m\e[0m   \e[36m│\e[0m",
             "\e[36m└──────────────────────────────────────────────────────────────────────────┘\e[0m",
             ''
           ].join("\n"))

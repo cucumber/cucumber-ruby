@@ -14,7 +14,9 @@ module Cucumber
         display_banner(
           [
             'View your Cucumber Report at:',
-            [["https://reports.cucumber.io#{uri.path}", :blue, :underline]]
+            [["https://reports.cucumber.io#{uri.path}", :cyan, :bold, :underline]],
+            '',
+            [['This report will self-destruct in 24h unless it is claimed or deleted.', :green, :bold]]
           ],
           @io
         )
