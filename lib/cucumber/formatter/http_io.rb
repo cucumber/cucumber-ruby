@@ -76,7 +76,7 @@ module Cucumber
       end
 
       def close
-        resource_uri = post_content(@uri, @method, @headers)
+        resource_uri = put_content(@uri, @method, @headers)
 
         @reporter&.report(resource_uri)
         @write_io.close
@@ -96,7 +96,7 @@ module Cucumber
 
       private
 
-      def post_content(uri, method, headers, attempt = 10)
+      def put_content(uri, method, headers, attempt = 10)
         content = @write_io
         http = build_client(uri, @https_verify_mode)
 
@@ -123,7 +123,7 @@ module Cucumber
         when Net::HTTPSuccess
           uri
         when Net::HTTPRedirection
-          post_content(URI(response['Location']), method, headers, attempt - 1)
+          put_content(URI(response['Location']), method, headers, attempt - 1)
         else
           raise StandardError, "request to #{uri} failed with status #{response.code}"
         end
