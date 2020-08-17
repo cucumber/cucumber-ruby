@@ -62,6 +62,10 @@ module Cucumber
       @options[:dry_run]
     end
 
+    def publish_enabled?
+      @options[:publish_enabled]
+    end
+
     def publish_quiet?
       @options[:publish_quiet]
     end

@@ -8,6 +8,8 @@ module Cucumber
       include Term::Banner
 
       def initialize(configuration)
+        return if configuration.publish_enabled?
+
         configuration.on_event :test_run_finished do |_event|
           display_publish_ad(configuration.error_stream)
         end
