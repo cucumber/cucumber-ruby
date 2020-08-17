@@ -59,6 +59,7 @@ help us to correct style violations reported here:
 
 ## Release Process
 
+* Upgrade gems with `scripts/update-gemspec`
 * Bump the version number in `lib/cucumber/version`.
 * Make sure `CHANGELOG.md` is updated with the upcoming version number, and has entries for all fixes.
 
