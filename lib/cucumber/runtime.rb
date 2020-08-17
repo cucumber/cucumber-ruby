@@ -172,7 +172,7 @@ module Cucumber
       return @report if @report
       reports = [summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
-      reports << publish_banner_printer unless @configuration.publish_quiet?
+      reports << publish_banner_printer if @configuration.publish_ad?
       @report ||= Formatter::Fanout.new(reports)
     end
 

@@ -46,11 +46,11 @@ module Cucumber
               ' or use the '
             ],
             [
-              pre('--publish-quiet'),
+              pre('--no-publish-ad'),
               ' option. You can also add this to your ',
               pre('cucumber.yml:')
             ],
-            [pre('default: --publish-quiet')]
+            [pre('default: --no-publish-ad')]
           ],
           io
         )

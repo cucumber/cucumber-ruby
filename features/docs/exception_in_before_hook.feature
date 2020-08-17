@@ -51,7 +51,7 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step passes
       """
-    When I run `cucumber features --publish-quiet`
+    When I run `cucumber features --no-publish-ad`
     Then it should fail with exactly:
       """
       Feature: Sample

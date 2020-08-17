@@ -15,7 +15,7 @@ Feature: Using star notation instead of Given/When/Then
         Scenario: S
           * I have some cukes
       """
-    When I run `cucumber features/f.feature --publish-quiet`
+    When I run `cucumber features/f.feature --no-publish-ad`
     Then the stderr should not contain anything
     And it should pass with:
       """

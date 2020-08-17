@@ -34,7 +34,7 @@ Feature: Rerun formatter
 
       """
 
-    When I run `cucumber --publish-quiet -f rerun`
+    When I run `cucumber --no-publish-ad -f rerun`
     Then it should pass with exactly:
       """
       """
@@ -65,7 +65,7 @@ Feature: Rerun formatter
           Given this step passes
       """
 
-    When I run `cucumber --publish-quiet -f rerun --dry-run`
+    When I run `cucumber --no-publish-ad -f rerun --dry-run`
     Then it should pass with exactly:
       """
       """
@@ -96,7 +96,7 @@ Feature: Rerun formatter
           Given this step passes
       """
 
-    When I run `cucumber --publish-quiet -f rerun --strict`
+    When I run `cucumber --no-publish-ad -f rerun --strict`
     Then it should fail with exactly:
       """
       features/mixed.feature:3:6:9

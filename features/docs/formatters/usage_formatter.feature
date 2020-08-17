@@ -31,7 +31,7 @@ Feature: Usage formatter
       """
 
   Scenario: Run with --format usage
-    When I run `cucumber -f usage --dry-run --publish-quiet`
+    When I run `cucumber -f usage --dry-run --no-publish-ad`
     Then it should pass with exactly:
       """
       -----------
@@ -56,7 +56,7 @@ Feature: Usage formatter
       """
 
   Scenario: Run with --expand --format usage
-    When I run `cucumber -x -f usage --dry-run --publish-quiet`
+    When I run `cucumber -x -f usage --dry-run --no-publish-ad`
     Then it should pass with exactly:
       """
       -----------
@@ -81,7 +81,7 @@ Feature: Usage formatter
       """
 
       Scenario: Run with --format stepdefs
-      When I run `cucumber -f stepdefs --dry-run --publish-quiet`
+      When I run `cucumber -f stepdefs --dry-run --no-publish-ad`
       Then it should pass with exactly:
         """
         -----------

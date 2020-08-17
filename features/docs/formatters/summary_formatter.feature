@@ -16,7 +16,7 @@ Feature: Spec formatter
       Scenario: Failing
         Given this step fails
     """
-    When I run `cucumber --format summary --publish-quiet`
+    When I run `cucumber --format summary --no-publish-ad`
     Then it should fail with exactly:
     """
     Test
