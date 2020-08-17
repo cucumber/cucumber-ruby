@@ -28,7 +28,7 @@ module Cucumber
             ],
             [
               'Environment variable:   ',
-              ['CUCUMBER_PLUGIN_PUBLISH_ENABLED=true', :cyan]
+              ['CUCUMBER_PUBLISH_ENABLED=true', :cyan]
             ],
             '',
             [

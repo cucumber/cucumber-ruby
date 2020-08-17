@@ -13,7 +13,7 @@ module Cucumber
         return nil if path_or_url_or_io.nil?
         return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
         io = if path_or_url_or_io.match(%r{^https?://})
-               reporter = path_or_url_or_io.start_with?(Cucumber::Cli::Options::CUCUMBER_PLUGIN_PUBLISH_URL) ? URLReporter.new($stdout) : nil
+               reporter = path_or_url_or_io.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new($stdout) : nil
                HTTPIO.open(path_or_url_or_io, nil, reporter)
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))

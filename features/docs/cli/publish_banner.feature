@@ -15,7 +15,7 @@ Feature: Publish banner
     │ Share your Cucumber Report with your team at https://reports.cucumber.io │
     │                                                                          │
     │ Command line option:    --publish                                        │
-    │ Environment variable:   CUCUMBER_PLUGIN_PUBLISH_ENABLED=true             │
+    │ Environment variable:   CUCUMBER_PUBLISH_ENABLED=true                    │
     │                                                                          │
     │ More information at https://reports.cucumber.io/docs/cucumber-ruby       │
     │                                                                          │

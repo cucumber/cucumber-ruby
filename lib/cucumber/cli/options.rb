@@ -9,7 +9,7 @@ require 'cucumber/core/test/result'
 module Cucumber
   module Cli
     class Options
-      CUCUMBER_PLUGIN_PUBLISH_URL = ENV['CUCUMBER_PLUGIN_PUBLISH_URL'] || 'https://messages.cucumber.io/api/reports'
+      CUCUMBER_PUBLISH_URL = ENV['CUCUMBER_PUBLISH_URL'] || 'https://messages.cucumber.io/api/reports'
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
@@ -94,7 +94,7 @@ module Cucumber
 
         @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
-          opts.on('--publish', 'Publish a report to https://reports.cucumber.io') { @options[:formats] << ['message', {}, CUCUMBER_PLUGIN_PUBLISH_URL] }
+          opts.on('--publish', 'Publish a report to https://reports.cucumber.io') { @options[:formats] << ['message', {}, CUCUMBER_PUBLISH_URL] }
           opts.on('--publish-quiet', 'Don\'t print information banner about publishing reports') { set_option :publish_quiet }
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
