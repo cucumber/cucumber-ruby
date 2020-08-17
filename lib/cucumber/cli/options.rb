@@ -150,7 +150,7 @@ Specify SEED to reproduce the shuffling from a previous run.
           opts.on_tail('-h', '--help', "You're looking at it.") { exit_ok(opts.help) }
         end.parse!
 
-        @options[:publish_enabled] = true if ENV['CUCUMBER_PUBLISH_ENABLED'] || ENV['CUCUMBER_PUBLISH_TOKEN']
+        @options[:publish_enabled] = true if truthy_string?(ENV['CUCUMBER_PUBLISH_ENABLED']) || ENV['CUCUMBER_PUBLISH_TOKEN']
         @options[:formats] << publisher if @options[:publish_enabled]
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
@@ -189,6 +189,11 @@ Specify SEED to reproduce the shuffling from a previous run.
       protected :options, :profiles, :expanded_args
 
       private
+
+      def truthy_string?(s)
+        return false if s.nil?
+        !(s =~ /^(false|no|0)$/i)
+      end
 
       def color_msg
         [

@@ -465,6 +465,14 @@ module Cucumber
             end
           end
 
+          it 'does not enable publishing when CUCUMBER_PUBLISH_ENABLED=false' do
+            with_env('CUCUMBER_PUBLISH_ENABLED', 'false') do
+              after_parsing('') do
+                expect(@options[:publish_enabled]).to be_falsy
+              end
+            end
+          end
+
           it 'adds authentication header with CUCUMBER_PUBLISH_TOKEN environment variable value if set' do
             with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
               after_parsing('--publish') do
