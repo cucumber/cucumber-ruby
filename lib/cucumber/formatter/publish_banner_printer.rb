@@ -19,39 +19,55 @@ module Cucumber
           [
             [
               'Share your Cucumber Report with your team at ',
-              ['https://reports.cucumber.io', :cyan, :bold]
+              link('https://reports.cucumber.io')
             ],
             '',
             [
               'Command line option:    ',
-              ['--publish', :cyan]
+              highlight('--publish')
             ],
             [
               'Environment variable:   ',
-              ['CUCUMBER_PUBLISH_ENABLED=true', :cyan]
+              highlight('CUCUMBER_PUBLISH_ENABLED=true')
+            ],
+            [
+              'cucumber.yml:           ',
+              highlight('default: --publish')
             ],
             '',
             [
               'More information at ',
-              ['https://reports.cucumber.io/docs/cucumber-ruby', :cyan]
+              link('https://reports.cucumber.io/docs/cucumber-ruby')
             ],
             '',
             [
               'To disable this message, specify ',
-              ['CUCUMBER_PUBLISH_QUIET=true', :dark],
+              pre('CUCUMBER_PUBLISH_QUIET=true'),
               ' or use the '
             ],
             [
-              ['--publish-quiet', :dark],
+              pre('--publish-quiet'),
               ' option. You can also add this to your ',
-              ['cucumber.yml:', :dark]
+              pre('cucumber.yml:')
             ],
-            'default: --publish-quiet'
+            [pre('default: --publish-quiet')]
           ],
           io
         )
       end
       # rubocop:enable Metrics/MethodLength
+
+      def highlight(text)
+        [text, :cyan]
+      end
+
+      def link(text)
+        [text, :cyan, :bold, :underline]
+      end
+
+      def pre(text)
+        [text, :bold]
+      end
     end
   end
 end

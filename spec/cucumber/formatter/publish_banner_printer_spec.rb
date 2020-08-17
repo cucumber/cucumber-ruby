@@ -29,6 +29,7 @@ module Cucumber
             │                                                                          │
             │ Command line option:    --publish                                        │
             │ Environment variable:   CUCUMBER_PUBLISH_ENABLED=true                    │
+            │ cucumber.yml:           default: --publish                               │
             │                                                                          │
             │ More information at https://reports.cucumber.io/docs/cucumber-ruby       │
             │                                                                          │
