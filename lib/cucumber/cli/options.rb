@@ -96,7 +96,6 @@ module Cucumber
           opts.banner = banner
           opts.on('--publish', 'Publish a report to https://reports.cucumber.io') do
             set_option :publish_enabled, true
-            @options[:formats] << publisher
           end
           opts.on('--publish-quiet', 'Don\'t print information banner about publishing reports') { set_option :publish_quiet }
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
@@ -150,6 +149,9 @@ Specify SEED to reproduce the shuffling from a previous run.
           opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
           opts.on_tail('-h', '--help', "You're looking at it.") { exit_ok(opts.help) }
         end.parse!
+
+        @options[:publish_enabled] = true if ENV['CUCUMBER_PUBLISH_ENABLED'] || ENV['CUCUMBER_PUBLISH_TOKEN']
+        @options[:formats] << publisher if @options[:publish_enabled]
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 

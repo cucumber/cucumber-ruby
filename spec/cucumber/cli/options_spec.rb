@@ -456,11 +456,29 @@ module Cucumber
             end
           end
 
+          it 'enables publishing when CUCUMBER_PUBLISH_ENABLED=true' do
+            with_env('CUCUMBER_PUBLISH_ENABLED', 'true') do
+              after_parsing('') do
+                expect(@options[:formats]).to include(['message', {}, Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL])
+                expect(@options[:publish_enabled]).to be true
+              end
+            end
+          end
+
           it 'adds authentication header with CUCUMBER_PUBLISH_TOKEN environment variable value if set' do
             with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
               after_parsing('--publish') do
-                publishing_url = @options[:formats][0][2]
-                expect(publishing_url).to include(' -H "Authorization: Bearer abcd1234"')
+                expect(@options[:formats]).to include(['message', {}, %(#{Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL} -H "Authorization: Bearer abcd1234")])
+                expect(@options[:publish_enabled]).to be true
+              end
+            end
+          end
+
+          it 'adds authentication header with CUCUMBER_PUBLISH_TOKEN environment variable value if set and no --publish' do
+            with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
+              after_parsing('') do
+                expect(@options[:formats]).to include(['message', {}, %(#{Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL} -H "Authorization: Bearer abcd1234")])
+                expect(@options[:publish_enabled]).to be true
               end
             end
           end
