@@ -22,7 +22,7 @@ Feature: Table diffing
         }))
       end
       """
-    When I run `cucumber features/tables.feature --no-publish-ad`
+    When I run `cucumber features/tables.feature --publish-quiet`
     Then it should fail with exactly:
       """
       Feature: Tables

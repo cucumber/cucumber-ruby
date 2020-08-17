@@ -30,7 +30,7 @@ Feature: Custom Formatter
         end
       end
       """
-    When I run `cucumber features/f.feature --format MyCustom::Formatter --no-publish-ad`
+    When I run `cucumber features/f.feature --format MyCustom::Formatter --publish-quiet`
     Then it should pass with exactly:
       """
         JUST PRINT ME
@@ -51,7 +51,7 @@ Feature: Custom Formatter
         end
       end
       """
-    When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two --no-publish-ad`
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two --publish-quiet`
     Then it should pass with exactly:
     """
     {"foo"=>"bar", "one"=>"two"}

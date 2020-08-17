@@ -18,7 +18,7 @@ Feature: Running multiple formatters
     """
 
   Scenario: Multiple formatters and outputs
-    When I run `cucumber --no-color --format progress --out progress.txt --format pretty --out pretty.txt --no-source --dry-run --no-snippets features/test.feature --no-publish-ad`
+    When I run `cucumber --no-color --format progress --out progress.txt --format pretty --out pretty.txt --no-source --dry-run --no-snippets features/test.feature --publish-quiet`
     Then the stderr should not contain anything
     Then the file "progress.txt" should contain:
       """

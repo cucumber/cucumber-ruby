@@ -13,7 +13,7 @@ Feature: Dry Run
           Given this step fails
       """
     And the standard step definitions
-    When I run `cucumber --dry-run --no-publish-ad`
+    When I run `cucumber --dry-run --publish-quiet`
     Then it should pass with exactly:
       """
       Feature: test
@@ -34,7 +34,7 @@ Feature: Dry Run
           Given this step fails
       """
     And the standard step definitions
-    When I run `cucumber --dry-run --strict --no-publish-ad`
+    When I run `cucumber --dry-run --strict --publish-quiet`
     Then it should pass with exactly:
       """
       Feature: test

@@ -34,8 +34,8 @@ module Cucumber
             │ More information at https://reports.cucumber.io/docs/cucumber-ruby       │
             │                                                                          │
             │ To disable this message, specify CUCUMBER_PUBLISH_QUIET=true or use the  │
-            │ --no-publish-ad option. You can also add this to your cucumber.yml:      │
-            │ default: --no-publish-ad                                                 │
+            │ --publish-quiet option. You can also add this to your cucumber.yml:      │
+            │ default: --publish-quiet                                                 │
             └──────────────────────────────────────────────────────────────────────────┘
           BANNER
         end

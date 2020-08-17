@@ -32,7 +32,7 @@ Feature: Tagged hooks
       """
 
   Scenario: omit tagged hook
-    When I run `cucumber features/f.feature:2 --no-publish-ad`
+    When I run `cucumber features/f.feature:2 --publish-quiet`
     Then it should fail with exactly:
       """
       Feature: With and without hooks
@@ -52,7 +52,7 @@ Feature: Tagged hooks
       """
 
     Scenario: omit tagged hook
-      When I run `cucumber features/f.feature:6 --no-publish-ad`
+      When I run `cucumber features/f.feature:6 --publish-quiet`
       Then it should pass with exactly:
         """
         Feature: With and without hooks
@@ -67,7 +67,7 @@ Feature: Tagged hooks
 
         """
     Scenario: Omit example hook
-      When I run `cucumber features/f.feature:14 --no-publish-ad`
+      When I run `cucumber features/f.feature:14 --publish-quiet`
       Then it should fail with exactly:
         """
         Feature: With and without hooks

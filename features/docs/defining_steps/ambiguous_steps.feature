@@ -72,7 +72,7 @@ Feature: Ambiguous Steps
         'bar'
       end
     """
-    When I run `cucumber -g --no-publish-ad`
+    When I run `cucumber -g --publish-quiet`
     Then it should pass with exactly:
     """
     Feature:
