@@ -491,6 +491,22 @@ module Cucumber
             end
           end
         end
+
+        context '--publish-quiet' do
+          it 'silences publish banner' do
+            after_parsing('--publish-quiet') do
+              expect(@options[:publish_quiet]).to eq true
+            end
+          end
+
+          it 'enables publishing when CUCUMBER_PUBLISH_QUIET=true' do
+            with_env('CUCUMBER_PUBLISH_QUIET', 'true') do
+              after_parsing('') do
+                expect(@options[:publish_quiet]).to be true
+              end
+            end
+          end
+        end
       end
 
       describe 'dry-run' do
