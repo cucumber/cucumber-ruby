@@ -20,10 +20,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* Updated gems:
-  * `cucumber-expressions` ~> 10.2.2
-  * `cucumber-gherkin` ~> 14.1.0
-  * `cucumber-messages` ~> 12.3.2
+* Updated gems (see git diff for details)
+  * `cucumber-expressions`
+  * `cucumber-gherkin`
+  * `cucumber-create-meta`
+  * `cucumber-messages`
     * Fix issue with timestamp nanos [#1438](https://github.com/cucumber/cucumber-ruby/issues/1438)
   * `cucumber-html-formatter` ~> 7.1.0
     * Add filtering capabilities [#1444](https://github.com/cucumber/cucumber-ruby/issues/1444)
