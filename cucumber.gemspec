@@ -19,35 +19,35 @@ Gem::Specification.new do |s|
 
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.3'
-  s.add_dependency 'builder', '~> 3.2', '>= 3.2.3'
+  s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
   s.add_dependency 'cucumber-core', '~> 7.1', '>= 7.1.0'
-  s.add_dependency 'cucumber-create-meta', '~> 1.0.0', '>= 1.0.0'
-  s.add_dependency 'cucumber-cucumber-expressions', '~> 10.2', '>= 10.2.2'
-  s.add_dependency 'cucumber-gherkin', '~> 14.1', '>= 14.1.0'
-  s.add_dependency 'cucumber-html-formatter', '~> 7.1', '>= 7.1.0'
-  s.add_dependency 'cucumber-messages', '~> 12.3', '>= 12.3.2'
+  s.add_dependency 'cucumber-create-meta', '~> 2.0', '>= 2.0.0'
+  s.add_dependency 'cucumber-cucumber-expressions', '~> 10.3', '>= 10.3.0'
+  s.add_dependency 'cucumber-gherkin', '~> 15.0', '>= 15.0.2'
+  s.add_dependency 'cucumber-html-formatter', '~> 9.0', '>= 9.0.0'
+  s.add_dependency 'cucumber-messages', '~> 13.0', '>= 13.0.1'
   s.add_dependency 'cucumber-wire', '~> 3.1', '>= 3.1.0'
-  s.add_dependency 'diff-lcs', '~> 1.3', '>= 1.3'
+  s.add_dependency 'diff-lcs', '~> 1.4', '>= 1.4.4'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
-  s.add_dependency 'sys-uname', '~> 1.0', '>= 1.0.2'
+  s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.1'
 
-  s.add_development_dependency 'nokogiri', '~> 1.10', '>= 1.10.4'
-  s.add_development_dependency 'pry', '~> 0.12', '>= 0.12.2'
-  s.add_development_dependency 'rake', '~> 12.3', '>= 12.3.3'
-  s.add_development_dependency 'rspec', '~> 3.8', '>= 3.8.0'
-  s.add_development_dependency 'simplecov', '~> 0.17', '>= 0.17.0'
+  s.add_development_dependency 'nokogiri', '~> 1.10', '>= 1.10.10'
+  s.add_development_dependency 'pry', '~> 0.13', '>= 0.13.1'
+  s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.1'
+  s.add_development_dependency 'rspec', '~> 3.9', '>= 3.9.0'
+  s.add_development_dependency 'simplecov', '~> 0.19', '>= 0.19.0'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
-  s.add_development_dependency 'test-unit', '~> 1.2', '>= 1.2.3'
+  s.add_development_dependency 'test-unit', '~> 3.3', '>= 3.3.6'
   s.add_development_dependency 'webrick', '~> 1.6', '>= 1.6.0'
 
   # For maintainer scripts
-  s.add_development_dependency 'octokit', '~> 4.14', '>= 4.14.0'
+  s.add_development_dependency 'octokit', '~> 4.18', '>= 4.18.0'
 
   # Needed for examples (rake examples)
   s.add_development_dependency 'rack-test', '~> 1.1', '>= 1.1.0'
-  s.add_development_dependency 'sinatra', '~> 2.0', '>= 2.0.5'
+  s.add_development_dependency 'sinatra', '~> 2.0', '>= 2.0.8.1'
   # Capybara dropped support for Ruby 2.3 in 3.16.0 - keep 3.15.0 while we're still supporting ruby 2.3
-  s.add_development_dependency 'capybara', '= 3.15.0'
+  s.add_development_dependency 'capybara', '~> 3.33', '>= 3.33.0'
 
   s.rubygems_version = '>= 1.6.1'
   s.files            = Dir[

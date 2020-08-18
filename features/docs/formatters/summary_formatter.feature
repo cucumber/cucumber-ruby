@@ -16,7 +16,7 @@ Feature: Spec formatter
       Scenario: Failing
         Given this step fails
     """
-    When I run `cucumber --format summary`
+    When I run `cucumber --format summary --publish-quiet`
     Then it should fail with exactly:
     """
     Test
@@ -31,4 +31,3 @@ Feature: Spec formatter
     0m0.012s
 
     """
-

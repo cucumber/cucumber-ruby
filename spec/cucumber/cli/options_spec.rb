@@ -47,6 +47,17 @@ module Cucumber
           yield
         end
 
+        def with_env(name, value)
+          previous_value = ENV[name]
+          ENV[name] = value.to_s
+          yield
+          if previous_value.nil?
+            ENV.delete(name)
+          else
+            ENV[name] = previous_value
+          end
+        end
+
         context '-r or --require' do
           it 'collects all specified files into an array' do
             after_parsing('--require some_file.rb -r another_file.rb') do
@@ -324,6 +335,7 @@ module Cucumber
             given_cucumber_yml_defined_as('foo' => '-q')
             options.parse!(%w[-p foo])
 
+            expect(options[:publish_quiet]).to be true
             expect(options[:snippets]).to be false
             expect(options[:source]).to be false
             expect(options[:duration]).to be false
@@ -433,6 +445,65 @@ module Cucumber
           it 'parses the snippet type argument' do
             after_parsing('--snippet-type classic') do
               expect(options[:snippet_type]).to eq :classic
+            end
+          end
+        end
+
+        context '--publish' do
+          it 'adds message formatter with output to default reports publishing url' do
+            after_parsing('--publish') do
+              expect(@options[:formats]).to include(['message', {}, Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL])
+            end
+          end
+
+          it 'enables publishing when CUCUMBER_PUBLISH_ENABLED=true' do
+            with_env('CUCUMBER_PUBLISH_ENABLED', 'true') do
+              after_parsing('') do
+                expect(@options[:formats]).to include(['message', {}, Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL])
+                expect(@options[:publish_enabled]).to be true
+              end
+            end
+          end
+
+          it 'does not enable publishing when CUCUMBER_PUBLISH_ENABLED=false' do
+            with_env('CUCUMBER_PUBLISH_ENABLED', 'false') do
+              after_parsing('') do
+                expect(@options[:publish_enabled]).to be_falsy
+              end
+            end
+          end
+
+          it 'adds authentication header with CUCUMBER_PUBLISH_TOKEN environment variable value if set' do
+            with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
+              after_parsing('--publish') do
+                expect(@options[:formats]).to include(['message', {}, %(#{Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL} -H "Authorization: Bearer abcd1234")])
+                expect(@options[:publish_enabled]).to be true
+              end
+            end
+          end
+
+          it 'adds authentication header with CUCUMBER_PUBLISH_TOKEN environment variable value if set and no --publish' do
+            with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
+              after_parsing('') do
+                expect(@options[:formats]).to include(['message', {}, %(#{Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL} -H "Authorization: Bearer abcd1234")])
+                expect(@options[:publish_enabled]).to be true
+              end
+            end
+          end
+        end
+
+        context '--publish-quiet' do
+          it 'silences publish banner' do
+            after_parsing('--publish-quiet') do
+              expect(@options[:publish_quiet]).to eq true
+            end
+          end
+
+          it 'enables publishing when CUCUMBER_PUBLISH_QUIET=true' do
+            with_env('CUCUMBER_PUBLISH_QUIET', 'true') do
+              after_parsing('') do
+                expect(@options[:publish_quiet]).to be true
+              end
             end
           end
         end

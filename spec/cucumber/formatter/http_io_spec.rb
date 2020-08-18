@@ -7,6 +7,14 @@ require 'spec_helper'
 require 'cucumber/formatter/io'
 
 RSpec.shared_context 'an HTTP server accepting file requests' do
+  module WEBrick
+    module HTTPServlet
+      class ProcHandler < AbstractServlet
+        alias do_PUT do_GET # Webrick #mount_proc only works with GET,HEAD,POST,OPTIONS by default
+      end
+    end
+  end
+
   # rubocop:disable Metrics/MethodLength
   def start_server
     uri = URI('http://localhost')
@@ -30,7 +38,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     end
 
     @server = WEBrick::HTTPServer.new(webrick_options)
-    @server.mount_proc '/' do |req, _res|
+    @server.mount_proc '/s3' do |req, _res|
       @request_count += 1
       IO.copy_stream(req.body_reader, @received_body_io)
     end
@@ -40,11 +48,11 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       res.status = 404
     end
 
-    @server.mount_proc '/redirect' do |_req, res|
+    @server.mount_proc '/putreport' do |_req, res|
       @request_count += 1
       res.set_redirect(
         WEBrick::HTTPStatus::TemporaryRedirect,
-        '/'
+        '/s3'
       )
     end
 
@@ -80,16 +88,16 @@ module Cucumber
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
           url = start_server
-          io = ensure_io("#{url}/ -X POST")
+          io = ensure_io("#{url}/s3 -X PUT")
           expect(io).to be_a(Cucumber::Formatter::IOHTTPBuffer)
           io.close # Close during the test so the request is done while server still runs
         end
 
         it 'uses CurlOptionParser to pass correct options to IOHTTPBuffer' do
           url = start_server
-          io = ensure_io("#{url}/ -X GET -H 'Content-Type: text/json'")
+          io = ensure_io("#{url}/s3 -X GET -H 'Content-Type: text/json'")
 
-          expect(io.uri).to eq(URI(url))
+          expect(io.uri).to eq(URI("#{url}/s3"))
           expect(io.method).to eq('GET')
           expect(io.headers).to eq('Content-Type' => 'text/json')
           io.close # Close during the test so the request is done while server still runs
@@ -119,6 +127,9 @@ module Cucumber
         it 'detects the HTTP method with the flag -X' do
           expect(CurlOptionParser.parse('http://whatever.ltd -X POST')).to eq(
             ['http://whatever.ltd', 'POST', {}]
+          )
+          expect(CurlOptionParser.parse('http://whatever.ltd -X PUT')).to eq(
+            ['http://whatever.ltd', 'PUT', {}]
           )
         end
 
@@ -221,28 +232,28 @@ module Cucumber
 
       let(:url) { start_server }
       # JRuby seems to have some issues with huge reports. At least during tests
-      # M/aybe something to see with Webrick configuration.
+      # Maybe something to see with Webrick configuration.
       let(:report_size) { RUBY_PLATFORM == 'java' ? 8_000 : 10_000_000 }
       let(:sent_body) { 'X' * report_size }
 
       it 'raises an error on close when server in unreachable' do
-        io = IOHTTPBuffer.new("#{url}/404", 'POST')
+        io = IOHTTPBuffer.new("#{url}/404", 'PUT')
 
         expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
       end
 
       it 'raises an error on close when the server is unreachable' do
-        io = IOHTTPBuffer.new('http://localhost:9987', 'POST')
+        io = IOHTTPBuffer.new('http://localhost:9987', 'PUT')
         expect { io.close }.to(raise_error(/Failed to open TCP connection to localhost:9987/))
       end
 
       it 'raises an error on close when there is too many redirect attempts' do
-        io = IOHTTPBuffer.new("#{url}/loop_redirect", 'POST')
+        io = IOHTTPBuffer.new("#{url}/loop_redirect", 'PUT')
         expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
       end
 
       it 'sends the content over HTTP' do
-        io = IOHTTPBuffer.new("#{url}/", 'POST')
+        io = IOHTTPBuffer.new("#{url}/s3", 'PUT')
         io.write(sent_body)
         io.flush
         io.close
@@ -252,7 +263,7 @@ module Cucumber
       end
 
       it 'sends the content over HTTPS' do
-        io = IOHTTPBuffer.new("#{url}/", 'POST', {}, OpenSSL::SSL::VERIFY_NONE)
+        io = IOHTTPBuffer.new("#{url}/s3", 'PUT', {}, OpenSSL::SSL::VERIFY_NONE)
         io.write(sent_body)
         io.flush
         io.close
@@ -262,7 +273,7 @@ module Cucumber
       end
 
       it 'follows redirections' do
-        io = IOHTTPBuffer.new("#{url}/redirect", 'POST')
+        io = IOHTTPBuffer.new("#{url}/putreport", 'PUT')
         io.write(sent_body)
         io.flush
         io.close

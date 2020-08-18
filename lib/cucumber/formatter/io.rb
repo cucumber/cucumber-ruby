@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'cucumber/formatter/http_io'
+require 'cucumber/formatter/url_reporter'
+require 'cucumber/cli/options'
 
 module Cucumber
   module Formatter
@@ -9,11 +11,15 @@ module Cucumber
 
       def ensure_io(path_or_url_or_io)
         return nil if path_or_url_or_io.nil?
-        return path_or_url_or_io if path_or_url_or_io.respond_to?(:write)
-        io = if path_or_url_or_io.match(%r{^https?://})
-               HTTPIO.open(path_or_url_or_io)
+        return path_or_url_or_io if io?(path_or_url_or_io)
+
+        io = if url?(path_or_url_or_io)
+               url = path_or_url_or_io
+               reporter = url.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new($stdout) : NoReporter.new
+               HTTPIO.open(url, nil, reporter)
              else
-               File.open(path_or_url_or_io, Cucumber.file_mode('w'))
+               path = path_or_url_or_io
+               File.open(path, Cucumber.file_mode('w'))
              end
         at_exit do
           unless io.closed?
@@ -22,6 +28,14 @@ module Cucumber
           end
         end
         io
+      end
+
+      def io?(path_or_url_or_io)
+        path_or_url_or_io.respond_to?(:write)
+      end
+
+      def url?(path_or_url_or_io)
+        path_or_url_or_io.match(%r{^https?://})
       end
 
       def ensure_file(path, name)

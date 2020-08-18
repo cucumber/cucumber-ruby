@@ -539,4 +539,3 @@ Feature: Background
       8 steps (8 passed)
 
       """
-

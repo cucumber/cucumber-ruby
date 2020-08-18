@@ -32,7 +32,7 @@ Feature: Tagged hooks
       """
 
   Scenario: omit tagged hook
-    When I run `cucumber features/f.feature:2`
+    When I run `cucumber features/f.feature:2 --publish-quiet`
     Then it should fail with exactly:
       """
       Feature: With and without hooks
@@ -52,7 +52,7 @@ Feature: Tagged hooks
       """
 
     Scenario: omit tagged hook
-      When I run `cucumber features/f.feature:6`
+      When I run `cucumber features/f.feature:6 --publish-quiet`
       Then it should pass with exactly:
         """
         Feature: With and without hooks
@@ -67,7 +67,7 @@ Feature: Tagged hooks
 
         """
     Scenario: Omit example hook
-      When I run `cucumber features/f.feature:14`
+      When I run `cucumber features/f.feature:14 --publish-quiet`
       Then it should fail with exactly:
         """
         Feature: With and without hooks
@@ -75,7 +75,7 @@ Feature: Tagged hooks
           Scenario Outline: omitting hook on specified examples # features/f.feature:9
             Given this step passes                              # features/f.feature:10
 
-            Examples: 
+            Examples:
               | Value      |
               | Irrelevant |
               boom (RuntimeError)

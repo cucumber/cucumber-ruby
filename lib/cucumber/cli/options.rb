@@ -9,6 +9,7 @@ require 'cucumber/core/test/result'
 module Cucumber
   module Cli
     class Options
+      CUCUMBER_PUBLISH_URL = ENV['CUCUMBER_PUBLISH_URL'] || 'https://messages.cucumber.io/api/reports'
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
@@ -93,6 +94,10 @@ module Cucumber
 
         @args.options do |opts| # rubocop:disable Metrics/BlockLength
           opts.banner = banner
+          opts.on('--publish', 'Publish a report to https://reports.cucumber.io') do
+            set_option :publish_enabled, true
+          end
+          opts.on('--publish-quiet', 'Don\'t print information banner about publishing reports') { set_option :publish_quiet }
           opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) { |lib| require_files(lib) }
 
           opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) } if Cucumber::JRUBY
@@ -117,7 +122,7 @@ module Cucumber
           opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
           opts.on('-i', '--no-snippets', "Don't print snippets for pending steps.") { set_option :snippets, false }
           opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) { |v| set_option :snippet_type, v.to_sym }
-          opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
+          opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source --no-duration --publish-quiet.') { shut_up }
           opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
           opts.on('-S', '--[no-]strict', *strict_msg) { |setting| set_strict(setting) }
@@ -144,6 +149,8 @@ Specify SEED to reproduce the shuffling from a previous run.
           opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
           opts.on_tail('-h', '--help', "You're looking at it.") { exit_ok(opts.help) }
         end.parse!
+
+        process_publish_options
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 
@@ -181,6 +188,18 @@ Specify SEED to reproduce the shuffling from a previous run.
       protected :options, :profiles, :expanded_args
 
       private
+
+      def process_publish_options
+        @options[:publish_enabled] = true if truthy_string?(ENV['CUCUMBER_PUBLISH_ENABLED']) || ENV['CUCUMBER_PUBLISH_TOKEN']
+        @options[:formats] << publisher if @options[:publish_enabled]
+
+        @options[:publish_quiet] = true if truthy_string?(ENV['CUCUMBER_PUBLISH_QUIET'])
+      end
+
+      def truthy_string?(str)
+        return false if str.nil?
+        str !~ /^(false|no|0)$/i
+      end
 
       def color_msg
         [
@@ -351,6 +370,12 @@ Specify SEED to reproduce the shuffling from a previous run.
         Dir["#{jars}/**/*.jar"].each { |jar| require jar }
       end
 
+      def publisher
+        url = CUCUMBER_PUBLISH_URL
+        url += %( -H "Authorization: Bearer #{ENV['CUCUMBER_PUBLISH_TOKEN']}") if ENV['CUCUMBER_PUBLISH_TOKEN']
+        ['message', {}, url]
+      end
+
       def language(lang)
         require 'gherkin/dialect'
 
@@ -415,6 +440,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def shut_up
+        @options[:publish_quiet] = true
         @options[:snippets] = false
         @options[:source] = false
         @options[:duration] = false

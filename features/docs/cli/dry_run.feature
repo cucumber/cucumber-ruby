@@ -13,7 +13,7 @@ Feature: Dry Run
           Given this step fails
       """
     And the standard step definitions
-    When I run `cucumber --dry-run`
+    When I run `cucumber --dry-run --publish-quiet`
     Then it should pass with exactly:
       """
       Feature: test
@@ -34,7 +34,7 @@ Feature: Dry Run
           Given this step fails
       """
     And the standard step definitions
-    When I run `cucumber --dry-run --strict`
+    When I run `cucumber --dry-run --strict --publish-quiet`
     Then it should pass with exactly:
       """
       Feature: test
@@ -65,7 +65,7 @@ Feature: Dry Run
             features/test.feature:3:in `this step is undefined'
 
       Undefined Scenarios:
-      cucumber features/test.feature:2 # Scenario: 
+      cucumber features/test.feature:2 # Scenario:
 
       1 scenario (1 undefined)
       1 step (1 undefined)

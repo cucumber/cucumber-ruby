@@ -15,7 +15,7 @@ Feature: Run specific scenarios
   Scenario: Two scenarios, run just one of them
     Given a file named "features/test.feature" with:
       """
-      Feature: 
+      Feature:
 
         Scenario: Miss
           Given this step is undefined
@@ -23,17 +23,17 @@ Feature: Run specific scenarios
         Scenario: Hit
           Given this step passes
       """
-    When I run `cucumber features/test.feature:6 --format pretty --quiet`
+    When I run `cucumber features/test.feature:6 --format pretty --quiet `
     Then it should pass with exactly:
       """
-      Feature: 
+      Feature:
 
         Scenario: Hit
           Given this step passes
 
       1 scenario (1 passed)
       1 step (1 passed)
-      
+
       """
 
   Scenario: Use @-notation to specify a file containing feature file list
@@ -62,7 +62,7 @@ Feature: Run specific scenarios
   Scenario: Specify order of scenarios
     Given a file named "features/test.feature" with:
       """
-      Feature: 
+      Feature:
         Scenario:
           Given this step passes
 
@@ -74,4 +74,3 @@ Feature: Run specific scenarios
       """
       F.
       """
-

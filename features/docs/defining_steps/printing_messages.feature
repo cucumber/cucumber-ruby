@@ -141,4 +141,3 @@ Feature: Pretty formatter - Printing messages
         Line: 2: anno2
         .
         """
-
