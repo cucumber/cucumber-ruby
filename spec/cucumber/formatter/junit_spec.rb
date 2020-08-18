@@ -123,6 +123,10 @@ module Cucumber
             it 'writes the filename with absolute path' do
               expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')
             end
+
+            it 'includes the filename in the document' do
+              expect(@doc.xpath('//testcase/@file').to_s).to match(%r{features/some/path/spec.feature})
+            end
           end
 
           describe 'with a scenario outline table' do
