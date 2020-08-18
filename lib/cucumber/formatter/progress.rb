@@ -74,6 +74,9 @@ module Cucumber
         @io.puts
         @io.puts
         print_summary
+
+        @io.flush
+        @io.close
       end
 
       private

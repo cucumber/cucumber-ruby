@@ -20,12 +20,12 @@ module Cucumber
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end
-        at_exit do
-          unless io.closed?
-            io.flush
-            io.close
-          end
-        end
+        # at_exit do
+        #   unless io.closed?
+        #     io.flush
+        #     io.close
+        #   end
+        # end
         io
       end
 

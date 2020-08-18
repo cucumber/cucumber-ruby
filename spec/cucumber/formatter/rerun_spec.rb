@@ -16,6 +16,10 @@ module Cucumber
       let(:config) { Cucumber::Configuration.new(out_stream: io) }
       let(:io) { StringIO.new }
 
+      after(:each) do
+        expect(io).to be_closed
+      end
+
       # after_test_case
       context 'when 2 scenarios fail in the same file' do
         it 'Prints the locations of the failed scenarios' do

@@ -17,7 +17,11 @@ module Cucumber
 
       def output_envelope(envelope)
         @html_formatter.write_message(envelope)
-        @html_formatter.write_post_message if envelope.test_run_finished
+        if envelope.test_run_finished
+          @html_formatter.write_post_message
+          @io.flush
+          @io.close
+        end
       end
     end
   end

@@ -19,6 +19,10 @@ module Cucumber
           run_defined_feature
         end
 
+        after(:each) do
+          expect(@out).to be_closed
+        end
+
         describe 'with a scenario with an undefined step' do
           define_feature <<-FEATURE
           Feature: Banana party

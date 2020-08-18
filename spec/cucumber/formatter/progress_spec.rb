@@ -17,6 +17,10 @@ module Cucumber
         @formatter = Progress.new(actual_runtime.configuration.with_options(out_stream: @out))
       end
 
+      after(:each) do
+        expect(@out).to be_closed
+      end
+
       describe 'given a single feature' do
         before(:each) do
           run_defined_feature
@@ -39,7 +43,7 @@ module Cucumber
           define_feature <<-FEATURE
             Feature: Banana party
 
-              Background: 
+              Background:
                 Given a tree
 
               Scenario: Monkey eats banana

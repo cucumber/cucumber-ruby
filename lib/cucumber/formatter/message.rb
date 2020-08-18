@@ -14,6 +14,13 @@ module Cucumber
         super(config)
       end
 
+      def on_test_run_finished(event)
+        super
+
+        @io.flush
+        @io.close
+      end
+
       def output_envelope(envelope)
         envelope.write_ndjson_to(@io)
       end
