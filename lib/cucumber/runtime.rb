@@ -168,6 +168,7 @@ module Cucumber
     require 'cucumber/formatter/fail_fast'
     require 'cucumber/formatter/publish_banner_printer'
     require 'cucumber/core/report/summary'
+
     def report
       return @report if @report
       reports = [summary_report] + formatters

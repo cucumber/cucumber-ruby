@@ -41,12 +41,10 @@ module Cucumber
 
         def line_length(line)
           if line.is_a?(Array)
-            length = 0
-            line.each { |span| length += span_length(span) }
-            return length
+            line.map { |span| span_length(span) }.sum
+          else
+            line.length
           end
-
-          line.length
         end
 
         def span_length(span)

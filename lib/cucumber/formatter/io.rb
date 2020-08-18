@@ -18,8 +18,7 @@ module Cucumber
                reporter = url.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new($stdout) : NoReporter.new
                HTTPIO.open(url, nil, reporter)
              else
-               path = path_or_url_or_io
-               File.open(path, Cucumber.file_mode('w'))
+               File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end
         at_exit do
           unless io.closed?
