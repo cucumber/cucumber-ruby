@@ -22,5 +22,9 @@ module Cucumber
         )
       end
     end
+
+    class NoReporter
+      def report(url); end
+    end
   end
 end

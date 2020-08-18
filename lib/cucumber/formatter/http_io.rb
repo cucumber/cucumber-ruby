@@ -72,13 +72,13 @@ module Cucumber
         @headers = headers
         @write_io = Tempfile.new('cucumber', encoding: 'UTF-8')
         @https_verify_mode = https_verify_mode
-        @reporter = reporter
+        @reporter = reporter || NoReporter.new
       end
 
       def close
         resource_uri = put_content(@uri, @method, @headers)
 
-        @reporter&.report(resource_uri)
+        @reporter.report(resource_uri)
         @write_io.close
       end
 
