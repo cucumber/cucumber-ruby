@@ -22,6 +22,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
+* Dropped support for Ruby [2.3](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/) 
+  and [2.4](https://www.ruby-lang.org/en/news/2020/04/05/support-of-ruby-2-4-has-ended/)
+
 ### Improved
 
 * Update code to be compatible with `diff-lcs` versions 1.3 and 1.4

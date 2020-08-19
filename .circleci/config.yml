@@ -187,10 +187,10 @@ workflows:
       - build-ruby-2_7
       - build-ruby-latest
       - build-jruby-9_2
-      - build_monorepo
-      - validate-cck:
-          requires:
-            - build_monorepo
-      - validate-messages:
-          requires:
-            - build_monorepo
+      # - build_monorepo
+      # - validate-cck:
+      #     requires:
+      #       - build_monorepo
+      # - validate-messages:
+      #     requires:
+      #       - build_monorepo
