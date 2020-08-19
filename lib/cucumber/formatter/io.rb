@@ -11,9 +11,9 @@ module Cucumber
 
       def ensure_io(path_or_url_or_io)
         return nil if path_or_url_or_io.nil?
-        io = if io?(path_or_url_or_io)
-               path_or_url_or_io
-             elsif url?(path_or_url_or_io)
+        return path_or_url_or_io if io?(path_or_url_or_io)
+
+        io = if url?(path_or_url_or_io)
                url = path_or_url_or_io
                reporter = url.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new($stdout) : NoReporter.new
                HTTPIO.open(url, nil, reporter)
