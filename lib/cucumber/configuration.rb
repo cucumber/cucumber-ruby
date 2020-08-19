@@ -205,14 +205,12 @@ module Cucumber
 
     def formatter_factories
       formats.map do |format, formatter_options, path_or_io|
-        begin
-          factory = formatter_class(format)
-          yield factory,
-                formatter_options,
-                path_or_io
-        rescue Exception => e # rubocop:disable Lint/RescueException
-          raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
-        end
+        factory = formatter_class(format)
+        yield factory,
+              formatter_options,
+              path_or_io
+      rescue Exception => e # rubocop:disable Lint/RescueException
+        raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
       end
     end
 

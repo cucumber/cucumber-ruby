@@ -24,23 +24,21 @@ module Autotest::CucumberMixin
     add_sigint_handler
 
     loop do # ^c handler
-      begin
-        get_to_green
-        if tainted
-          rerun_all_tests
-          rerun_all_features if all_good
-        else
-          hook :all_good
-        end
-        wait_for_changes
-        # Once tests and features are green, reset features every
-        # time a file is changed to see if anything breaks.
-        reset_features
-      rescue Interrupt
-        break if wants_to_quit
-        reset
-        reset_features
+      get_to_green
+      if tainted
+        rerun_all_tests
+        rerun_all_features if all_good
+      else
+        hook :all_good
       end
+      wait_for_changes
+      # Once tests and features are green, reset features every
+      # time a file is changed to see if anything breaks.
+      reset_features
+    rescue Interrupt
+      break if wants_to_quit
+      reset
+      reset_features
     end
     hook :quit
   end

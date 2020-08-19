@@ -13,9 +13,7 @@ Before do
 end
 
 After do
-  begin
-    RSpec::Mocks.verify
-  ensure
-    RSpec::Mocks.teardown
-  end
+  RSpec::Mocks.verify
+ensure
+  RSpec::Mocks.teardown
 end
