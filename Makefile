@@ -53,9 +53,10 @@ release:
 		--volume "${shell pwd}/../secrets/.ssh":/home/cukebot/.ssh \
 		--volume "${shell pwd}/../secrets/.gem":/home/cukebot/.gem \
 		--volume "${HOME}/.gitconfig":/home/cukebot/.gitconfig \
+		--env CUCUMBER_USE_RELEASED_GEMS=1 \
 		--env-file ../secrets/secrets.list \
 		--user 1000 \
 		--rm \
 		-it cucumber/cucumber-build:latest \
-		bundle && bundle exec rake && bundle exec rake release
+		bash -c "rm Gemfile.lock && bundle && bundle exec rake && bundle exec rake release"
 .PHONY: release
