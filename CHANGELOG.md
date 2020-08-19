@@ -39,6 +39,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* Defer registration of `at_exit` hook that flushes and closes formatter streams
+  ([#1458](https://github.com/cucumber/cucumber-ruby/pull/1458))
 * Fix Interceptor that was raising exception when calling `puts` on the wrapped stream ([#1445](https://github.com/cucumber/cucumber-ruby/issues/1445))
 
 ## [4.1.0](https://github.com/cucumber/cucumber-ruby/compare/v4.0.1...v4.1.0)
