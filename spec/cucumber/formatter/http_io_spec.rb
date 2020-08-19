@@ -81,21 +81,32 @@ end
 
 module Cucumber
   module Formatter
+    class DummyFormatter
+      include Io
+
+      def initialize(config = nil)
+      end
+
+      def ensure_io(path_or_url_or_io)
+        super
+      end
+    end
+
     describe HTTPIO do
       include_context 'an HTTP server accepting file requests'
-      include Io
 
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
+
           url = start_server
-          io = ensure_io("#{url}/s3 -X PUT")
+          io = DummyFormatter.new.ensure_io("#{url}/s3 -X PUT")
           expect(io).to be_a(Cucumber::Formatter::IOHTTPBuffer)
           io.close # Close during the test so the request is done while server still runs
         end
 
         it 'uses CurlOptionParser to pass correct options to IOHTTPBuffer' do
           url = start_server
-          io = ensure_io("#{url}/s3 -X GET -H 'Content-Type: text/json'")
+          io = DummyFormatter.new.ensure_io("#{url}/s3 -X GET -H 'Content-Type: text/json'")
 
           expect(io.uri).to eq(URI("#{url}/s3"))
           expect(io.method).to eq('GET')
