@@ -20,13 +20,36 @@ module Cucumber
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end
-        at_exit do
-          unless io.closed?
-            io.flush
-            io.close
-          end
-        end
+        @io_objects_to_close ||= []
+        @io_objects_to_close.push(io)
         io
+      end
+
+      module ClassMethods
+        def new(*args, &block)
+          instance = super
+
+          config = args[0]
+          if config.respond_to? :on_event
+            config.on_event :test_run_finished do
+              ios = instance.instance_variable_get(:@io_objects_to_close) || []
+              ios.each do |io|
+                at_exit do
+                  unless io.closed?
+                    io.flush
+                    io.close
+                  end
+                end
+              end
+            end
+          end
+
+          instance
+        end
+      end
+
+      def self.included(formatter_class)
+        formatter_class.extend(ClassMethods)
       end
 
       def io?(path_or_url_or_io)

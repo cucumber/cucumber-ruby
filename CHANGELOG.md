@@ -31,6 +31,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+
+* Defer registration of `at_exit` hook that flushes and closes formatter streams
+  ([#1458](https://github.com/cucumber/cucumber-ruby/pull/1458))
 * Updated gems (see git diff for details)
   * `cucumber-expressions`
   * `cucumber-gherkin`
