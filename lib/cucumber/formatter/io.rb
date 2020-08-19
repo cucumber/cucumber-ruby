@@ -9,8 +9,6 @@ module Cucumber
     module Io
       module_function
 
-      attr_reader :ios
-
       def ensure_io(path_or_url_or_io)
         return nil if path_or_url_or_io.nil?
         io = if io?(path_or_url_or_io)
@@ -22,17 +20,10 @@ module Cucumber
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end
-        @ios ||= []
-        @ios.push(io)
+        @io_objects_to_close ||= []
+        @io_objects_to_close.push(io)
         io
       end
-
-      # at_exit do
-      #   unless io.closed?
-      #     io.flush
-      #     io.close
-      #   end
-      # end
 
       module ClassMethods
         def new(*args, &block)
@@ -41,7 +32,15 @@ module Cucumber
           config = args[0]
           if config.respond_to? :on_event
             config.on_event :test_run_finished do
-              puts "#### #{instance.ios}"
+              ios = instance.instance_variable_get(:@io_objects_to_close) || []
+              ios.each do |io|
+                at_exit do
+                  unless io.closed?
+                    io.flush
+                    io.close
+                  end
+                end
+              end
             end
           end
 
@@ -51,10 +50,6 @@ module Cucumber
 
       def self.included(formatter_class)
         formatter_class.extend(ClassMethods)
-      end
-
-      def initialize(_config)
-        puts 'io initialize called'
       end
 
       def io?(path_or_url_or_io)

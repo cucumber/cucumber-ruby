@@ -84,8 +84,7 @@ module Cucumber
     class DummyFormatter
       include Io
 
-      def initialize(config = nil)
-      end
+      def initialize(config = nil); end
 
       def ensure_io(path_or_url_or_io)
         super
@@ -97,7 +96,6 @@ module Cucumber
 
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
-
           url = start_server
           io = DummyFormatter.new.ensure_io("#{url}/s3 -X PUT")
           expect(io).to be_a(Cucumber::Formatter::IOHTTPBuffer)
