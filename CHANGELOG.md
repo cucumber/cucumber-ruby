@@ -20,6 +20,14 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+### Removed
+
+### Improved
+
+* Update code to be compatible with `diff-lcs` versions 1.3 and 1.4
+
+### Fixed
+
 * Updated gems (see git diff for details)
   * `cucumber-expressions`
   * `cucumber-gherkin`
@@ -28,17 +36,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
     * Fix issue with timestamp nanos [#1438](https://github.com/cucumber/cucumber-ruby/issues/1438)
   * `cucumber-html-formatter` ~> 7.1.0
     * Add filtering capabilities [#1444](https://github.com/cucumber/cucumber-ruby/issues/1444)
-
-### Removed
-
-* N/A
-
-### Improved
-
-* Update code to be compatible with `diff-lcs` versions 1.3 and 1.4
-
-### Fixed
-
 * Fix Interceptor that was raising exception when calling `puts` on the wrapped stream ([#1445](https://github.com/cucumber/cucumber-ruby/issues/1445))
 
 ## [4.1.0](https://github.com/cucumber/cucumber-ruby/compare/v4.0.1...v4.1.0)
