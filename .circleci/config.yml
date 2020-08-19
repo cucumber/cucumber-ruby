@@ -111,7 +111,7 @@ jobs:
 
   build_monorepo:
     docker:
-      - image: cucumber/cucumber-build:889c9aabdae3f09025837b97c358d10a
+      - image: cucumber/cucumber-build:latest
     working_directory: ~
     steps:
       - run:
