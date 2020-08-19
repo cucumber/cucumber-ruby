@@ -11,22 +11,43 @@ module Cucumber
 
       def ensure_io(path_or_url_or_io)
         return nil if path_or_url_or_io.nil?
-        return path_or_url_or_io if io?(path_or_url_or_io)
-
-        io = if url?(path_or_url_or_io)
+        io = if io?(path_or_url_or_io)
+               path_or_url_or_io
+             elsif url?(path_or_url_or_io)
                url = path_or_url_or_io
                reporter = url.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new($stdout) : NoReporter.new
                HTTPIO.open(url, nil, reporter)
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
              end
-        at_exit do
-          unless io.closed?
-            io.flush
-            io.close
+        @ios.push(io)
+        io
+      end
+
+      # at_exit do
+      #   unless io.closed?
+      #     io.flush
+      #     io.close
+      #   end
+      # end
+
+      module ClassMethods
+        def new(*args, &block)
+          super
+          config = args[0]
+          config.on_event :test_run_finished do
+            print 'something'
           end
         end
-        io
+      end
+
+      def self.included(formatter_class)
+        puts 'included'
+        formatter_class.extend(ClassMethods)
+      end
+
+      def initialize(_config)
+        puts 'io initialize called'
       end
 
       def io?(path_or_url_or_io)
