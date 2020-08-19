@@ -10,28 +10,37 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v4.1.0...master)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.0.0...master)
 
 ### Added
-
-* `--publish` automatically publishes reports to [reports.cucumber.io](https://reports.cucumber.io)
-* `--publish-quiet` does not print information banner about [reports.cucumber.io](https://reports.cucumber.io)
-* `-q, --quiet` will also imply `--publish-quiet` in addition to `--no-snippets --no-source --no-duration`
 
 ### Changed
 
 ### Removed
 
-* Dropped support for Ruby [2.3](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/) 
-  and [2.4](https://www.ruby-lang.org/en/news/2020/04/05/support-of-ruby-2-4-has-ended/)
-
-### Improved
-
-* Update code to be compatible with `diff-lcs` versions 1.3 and 1.4
+### Deprecated
 
 ### Fixed
 
+## [5.0.0](https://github.com/cucumber/cucumber-ruby/compare/v4.1.0...5.0.0)
 
+### Added
+
+* `--publish` automatically publishes reports to [reports.cucumber.io](https://reports.cucumber.io)
+* `--publish-quiet` does not print information banner about [reports.cucumber.io](https://reports.cucumber.io)
+
+### Changed
+
+* `-q, --quiet` will also imply `--publish-quiet` in addition to `--no-snippets --no-source --no-duration`
+
+### Removed
+
+* Dropped support for Ruby [2.3](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/)
+  and [2.4](https://www.ruby-lang.org/en/news/2020/04/05/support-of-ruby-2-4-has-ended/)
+
+### Fixed
+
+* Update code to be compatible with `diff-lcs` versions 1.3 and 1.4
 * Defer registration of `at_exit` hook that flushes and closes formatter streams
   ([#1458](https://github.com/cucumber/cucumber-ruby/pull/1458))
 * Updated gems (see git diff for details)
@@ -40,7 +49,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   * `cucumber-create-meta`
   * `cucumber-messages`
     * Fix issue with timestamp nanos [#1438](https://github.com/cucumber/cucumber-ruby/issues/1438)
-  * `cucumber-html-formatter` ~> 7.1.0
+  * `cucumber-html-formatter`
     * Add filtering capabilities [#1444](https://github.com/cucumber/cucumber-ruby/issues/1444)
 * Fix Interceptor that was raising exception when calling `puts` on the wrapped stream ([#1445](https://github.com/cucumber/cucumber-ruby/issues/1445))
 
