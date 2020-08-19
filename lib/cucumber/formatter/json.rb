@@ -87,6 +87,8 @@ module Cucumber
 
       def on_test_run_finished(_event)
         @io.write(JSON.generate(@feature_hashes, pretty: true))
+        @io.flush
+        @io.close
       end
 
       def attach(src, mime_type)

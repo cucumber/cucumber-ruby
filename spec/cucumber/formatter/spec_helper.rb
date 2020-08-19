@@ -33,6 +33,7 @@ module Cucumber
           Filters::ApplyBeforeHooks.new(actual_runtime.support_code),
           Filters::ApplyAfterHooks.new(actual_runtime.support_code),
           Filters::ApplyAroundHooks.new(actual_runtime.support_code),
+          Filters::BroadcastTestCaseReadyEvent.new(actual_runtime.configuration),
           Filters::PrepareWorld.new(actual_runtime)
         ]
         event_bus.gherkin_source_read(gherkin_doc.uri, gherkin_doc.body)

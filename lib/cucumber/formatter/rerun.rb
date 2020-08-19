@@ -30,8 +30,9 @@ module Cucumber
         end
         config.on_event :test_run_finished do
           add_to_failures(@latest_failed_test_case) unless @latest_failed_test_case.nil?
-          next if @failures.empty?
-          @io.print file_failures.join("\n")
+          @io.print file_failures.join("\n") unless @failures.empty?
+          @io.flush
+          @io.close
         end
       end
 

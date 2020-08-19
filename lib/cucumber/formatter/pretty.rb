@@ -136,6 +136,8 @@ module Cucumber
         print_comments(gherkin_source.split("\n").length, 0) unless current_feature_uri.empty?
         @io.puts
         print_summary
+        @io.flush
+        @io.close
       end
 
       def attach(src, media_type)

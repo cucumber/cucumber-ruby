@@ -5,6 +5,7 @@ require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
 require 'cucumber/cli/options'
 
+# rubocop:disable Lint/LiteralInInterpolation
 module Cucumber
   module Formatter
     describe Pretty do
@@ -48,7 +49,7 @@ module Cucumber
             define_feature <<-FEATURE
 Feature: Banana party
 
-  Background:
+  Background:#{' '}
     Given a tree
 
   Scenario: Monkey eats banana
@@ -300,18 +301,18 @@ OUTPUT
 
             it 'displays hook output appropriately ' do
               expect(@out.string).to include <<OUTPUT
-Feature:
+Feature:#{' '}
 
-  Scenario:
+  Scenario:#{' '}
       Before hook
     Given this step passes
       AfterStep hook
       After hook
 
-  Scenario Outline:
+  Scenario Outline:#{' '}
     Given this step <status>
 
-    Examples:
+    Examples:#{' '}
       | status |
       | passes |  Before hook, AfterStep hook, After hook
 
@@ -345,14 +346,14 @@ OUTPUT
 
             it 'displays hook output appropriately ' do
               expect(@out.string).to include <<OUTPUT
-Feature:
+Feature:#{' '}
 
-  Background:
+  Background:#{' '}
       Before hook
     Given this step passes
       AfterStep hook
 
-  Scenario:
+  Scenario:#{' '}
     Given this step passes
       AfterStep hook
       After hook
@@ -382,18 +383,18 @@ OUTPUT
             it 'includes the tags in the output ' do
               expect(@out.string).to include <<OUTPUT
 @tag1
-Feature:
+Feature:#{' '}
 
   @tag2
-  Scenario:
+  Scenario:#{' '}
     Given this step passes
 
   @tag3
-  Scenario Outline:
+  Scenario Outline:#{' '}
     Given this step passes
 
     @tag4
-    Examples:
+    Examples:#{' '}
       | dummy |
       | dummy |
 OUTPUT
@@ -430,27 +431,27 @@ OUTPUT
             it 'includes the all comments in the output' do
               expect(@out.string).to include <<OUTPUT
 #comment1
-Feature:
+Feature:#{' '}
 
   #comment2
-  Background:
+  Background:#{' '}
     #comment3
     Given this step passes
 
   #comment4
-  Scenario:
+  Scenario:#{' '}
     #comment5
     Given this step passes
       #comment6
       | dummy |
 
   #comment7
-  Scenario Outline:
+  Scenario Outline:#{' '}
     #comment8
     Given this step passes
 
     #comment9
-    Examples:
+    Examples:#{' '}
       #comment10
       | dummy |
       #comment11
@@ -950,3 +951,4 @@ OUTPUT
     end
   end
 end
+# rubocop:enable Lint/LiteralInInterpolation
