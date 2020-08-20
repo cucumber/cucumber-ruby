@@ -7,26 +7,26 @@ describe Cucumber::Term::Banner do
     let(:io) { StringIO.new }
 
     context 'when a string is provided' do
-      it 'outputs a nice banner to IO' do
+      it 'outputs a nice banner to IO surrounded by a bold green border' do
         display_banner('Oh, this is a banner', io)
         io.rewind
-        expect(io.read).to eq([
-          "\e[36m┌──────────────────────┐\e[0m",
-          "\e[36m│\e[0m Oh, this is a banner \e[36m│\e[0m",
-          "\e[36m└──────────────────────┘\e[0m\n"
-        ].join("\n"))
+        expect(io.read).to eq(<<~BANNER)
+          \e[1m\e[32m┌──────────────────────┐\e[0m\e[0m
+          \e[1m\e[32m│\e[0m\e[0m Oh, this is a banner \e[1m\e[32m│\e[0m\e[0m
+          \e[1m\e[32m└──────────────────────┘\e[0m\e[0m
+        BANNER
       end
 
       it 'supports multi-lines' do
-        display_banner("Oh, this is a banner\nwhich spreads on\nmultiple lines", io)
+        display_banner("Oh, this is a banner\nwhich spreads on\nmultiple lines", io, [])
         io.rewind
-        expect(io.read).to eq([
-          "\e[36m┌──────────────────────┐\e[0m",
-          "\e[36m│\e[0m Oh, this is a banner \e[36m│\e[0m",
-          "\e[36m│\e[0m which spreads on     \e[36m│\e[0m",
-          "\e[36m│\e[0m multiple lines       \e[36m│\e[0m",
-          "\e[36m└──────────────────────┘\e[0m\n"
-        ].join("\n"))
+        expect(io.read).to eq(<<~BANNER)
+          ┌──────────────────────┐
+          │ Oh, this is a banner │
+          │ which spreads on     │
+          │ multiple lines       │
+          └──────────────────────┘
+        BANNER
       end
     end
 
@@ -37,17 +37,16 @@ describe Cucumber::Term::Banner do
             'Oh, this is a banner',
             'It has two lines'
           ],
-          io
+          io,
+          []
         )
         io.rewind
-        expect(io.read).to eq(
-          [
-            "\e[36m┌──────────────────────┐\e[0m",
-            "\e[36m│\e[0m Oh, this is a banner \e[36m│\e[0m",
-            "\e[36m│\e[0m It has two lines     \e[36m│\e[0m",
-            "\e[36m└──────────────────────┘\e[0m\n"
-          ].join("\n")
-        )
+        expect(io.read).to eq(<<~BANNER)
+          ┌──────────────────────┐
+          │ Oh, this is a banner │
+          │ It has two lines     │
+          └──────────────────────┘
+        BANNER
       end
 
       context 'when specifying spans' do
@@ -57,18 +56,17 @@ describe Cucumber::Term::Banner do
               'Oh, this is a banner',
               ['It has ', ['two', :bold, :blue], ' lines']
             ],
-            io
+            io,
+            []
           )
 
           io.rewind
-          expect(io.read).to eq(
-            [
-              "\e[36m┌──────────────────────┐\e[0m",
-              "\e[36m│\e[0m Oh, this is a banner \e[36m│\e[0m",
-              "\e[36m│\e[0m It has \e[34m\e[1mtwo\e[0m\e[0m lines     \e[36m│\e[0m",
-              "\e[36m└──────────────────────┘\e[0m\n"
-            ].join("\n")
-          )
+          expect(io.read).to eq(<<~BANNER)
+            ┌──────────────────────┐
+            │ Oh, this is a banner │
+            │ It has \e[34m\e[1mtwo\e[0m\e[0m lines     │
+            └──────────────────────┘
+          BANNER
         end
       end
     end
@@ -78,14 +76,11 @@ describe Cucumber::Term::Banner do
         display_banner('this is a banner', io, %i[bold blue])
 
         io.rewind
-        expect(io.read).to eq(
-          [
-            "\e[34m\e[1m┌──────────────────┐\e[0m\e[0m",
-            "\e[34m\e[1m│\e[0m\e[0m this is a banner \e[34m\e[1m│\e[0m\e[0m",
-            "\e[34m\e[1m└──────────────────┘\e[0m\e[0m",
-            ''
-          ].join("\n")
-        )
+        expect(io.read).to eq(<<~BANNER)
+          \e[34m\e[1m┌──────────────────┐\e[0m\e[0m
+          \e[34m\e[1m│\e[0m\e[0m this is a banner \e[34m\e[1m│\e[0m\e[0m
+          \e[34m\e[1m└──────────────────┘\e[0m\e[0m
+        BANNER
       end
     end
   end

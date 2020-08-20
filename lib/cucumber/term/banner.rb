@@ -4,7 +4,7 @@ module Cucumber
   module Term
     module Banner
       def display_banner(lines, io, border_modifiers = nil)
-        BannerMaker.new.display_banner(lines, io, border_modifiers || [:cyan])
+        BannerMaker.new.display_banner(lines, io, border_modifiers || %i[green bold])
       end
 
       class BannerMaker
