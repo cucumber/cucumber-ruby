@@ -50,6 +50,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
     @server.mount_proc '/putreport' do |_req, res|
       @request_count += 1
+      IO.copy_stream(_req.body_reader, @received_body_io)
       res.set_redirect(
         WEBrick::HTTPStatus::TemporaryRedirect,
         '/s3'
@@ -281,8 +282,18 @@ module Cucumber
         expect(received_body).to eq(sent_body)
       end
 
-      it 'follows redirections' do
+      it 'follows redirections and sends body twice' do
         io = IOHTTPBuffer.new("#{url}/putreport", 'PUT')
+        io.write(sent_body)
+        io.flush
+        io.close
+        @received_body_io.rewind
+        received_body = @received_body_io.read
+        expect(received_body).to eq(sent_body + sent_body)
+      end
+
+      it 'only sends body once' do
+        io = IOHTTPBuffer.new("#{url}/putreport", 'GET')
         io.write(sent_body)
         io.flush
         io.close

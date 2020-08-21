@@ -97,7 +97,7 @@ module Cucumber
       private
 
       def send_content(uri, method, headers, attempt = 10)
-        content = @write_io
+        content = (method == 'GET' ? StringIO.new : @write_io)
         http = build_client(uri, @https_verify_mode)
 
         raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
