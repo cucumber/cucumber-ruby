@@ -50,10 +50,10 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       res.status = 404
     end
 
-    @server.mount_proc '/putreport' do |_req, res|
+    @server.mount_proc '/putreport' do |req, res|
       @request_count += 1
-      IO.copy_stream(_req.body_reader, @received_body_io)
-      if _req.request_method == 'GET'
+      IO.copy_stream(req.body_reader, @received_body_io)
+      if req.request_method == 'GET'
         res.status = 202 # Accepted
         res.header['location'] = putreport_returned_location if putreport_returned_location
         res.body = ''
