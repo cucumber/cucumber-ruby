@@ -120,6 +120,8 @@ module Cucumber
         end
 
         case response
+        when Net::HTTPAccepted
+          send_content(URI(response['Location']), 'PUT', headers, attempt - 1)
         when Net::HTTPSuccess
           uri
         when Net::HTTPRedirection

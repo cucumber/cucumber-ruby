@@ -51,17 +51,16 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     @server.mount_proc '/putreport' do |_req, res|
       @request_count += 1
       IO.copy_stream(_req.body_reader, @received_body_io)
-
-      if (_req.method == 'GET')
-
+      if _req.request_method == 'GET'
+        res.status = 202 # Accepted
+        res.header['location'] = URI('/s3').to_s
+        res.body = ''
       else
         res.set_redirect(
             WEBrick::HTTPStatus::TemporaryRedirect,
             '/s3'
         )
       end
-
-
     end
 
     @server.mount_proc '/loop_redirect' do |_req, res|

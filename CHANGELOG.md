@@ -14,6 +14,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
+* `-X GET` in an `--out` URL will now issue a `GET` request *without* a body. If the response is `202 Accepted` *and*
+  the `Location` header is present, a new `PUT` request will be sent *with* the body.
+  
+  The main reason for this added behaviour is to allow request bodies larger than 6Mb to be sent while using `--publish`.
+  This also improves performance since the request body is only sent once (previously it would be sent twice).
+
 ### Changed
 
 ### Removed
