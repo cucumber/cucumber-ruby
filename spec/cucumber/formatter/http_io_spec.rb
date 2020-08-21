@@ -15,6 +15,8 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     end
   end
 
+  let(:putreport_returned_location) { URI('/s3').to_s }
+
   # rubocop:disable Metrics/MethodLength
   def start_server
     uri = URI('http://localhost')
@@ -53,12 +55,12 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       IO.copy_stream(_req.body_reader, @received_body_io)
       if _req.request_method == 'GET'
         res.status = 202 # Accepted
-        res.header['location'] = URI('/s3').to_s
+        res.header['location'] = putreport_returned_location if putreport_returned_location
         res.body = ''
       else
         res.set_redirect(
-            WEBrick::HTTPStatus::TemporaryRedirect,
-            '/s3'
+          WEBrick::HTTPStatus::TemporaryRedirect,
+          '/s3'
         )
       end
     end
@@ -306,6 +308,20 @@ module Cucumber
         @received_body_io.rewind
         received_body = @received_body_io.read
         expect(received_body).to eq(sent_body)
+      end
+
+      context 'when the location http header is not set on 202 response' do
+        let(:putreport_returned_location) { nil }
+
+        it 'does not follow the location' do
+          io = IOHTTPBuffer.new("#{url}/putreport", 'GET')
+          io.write(sent_body)
+          io.flush
+          io.close
+          @received_body_io.rewind
+          received_body = @received_body_io.read
+          expect(received_body).to eq('')
+        end
       end
     end
   end

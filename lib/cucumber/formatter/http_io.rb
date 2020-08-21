@@ -121,6 +121,8 @@ module Cucumber
 
         case response
         when Net::HTTPAccepted
+          return uri unless response['Location']
+
           send_content(URI(response['Location']), 'PUT', headers, attempt - 1)
         when Net::HTTPSuccess
           uri
