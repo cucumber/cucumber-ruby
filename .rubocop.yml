@@ -32,7 +32,7 @@ Layout/EndOfLine:
 # Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
 # heredocs '<<~' were introduced then. The files below are the current ones
 # with offenses
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Exclude:
     - 'features/lib/support/feature_factory.rb'
     - 'lib/cucumber/cli/options.rb'
@@ -70,7 +70,7 @@ Metrics/ClassLength:
     - 'lib/cucumber/cli/options.rb'
 
 Metrics/CyclomaticComplexity:
-  Max: 9
+  Max: 12
 
 # A line length of 200 covers most violations in the repo while still being
 # a more up to date length given today's screen sizes
@@ -83,9 +83,11 @@ Metrics/ModuleLength:
     - './spec/**/*'
     - 'cck/spec/**/*'
 
-
 Metrics/MethodLength:
   Max: 30
+
+Metrics/PerceivedComplexity:
+  Max: 13
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
@@ -106,7 +108,7 @@ Naming/MethodName:
 
 # In most cases, being descriptive with parameter names helps a reader understand
 # what the variable is for. In some cases, shorter names are sufficient.
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   AllowedNames: _, e, n, v, id, io, gh, pr
 
 # Reviewed: these offenses look false as the variables are in cyrillic
