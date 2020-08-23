@@ -63,10 +63,10 @@ module Cucumber
           case pipe
           when :stderr
             $stderr = new($stderr)
-            return $stderr
+            $stderr
           when :stdout
             $stdout = new($stdout)
-            return $stdout
+            $stdout
           end
         end
       end

@@ -136,7 +136,6 @@ module Cucumber
 
         private
 
-        # rubocop:disable Metrics/PerceivedComplexity
         def process_scenario_container(container, original_previous_node)
           container.children.each do |child|
             previous_node = original_previous_node
@@ -158,7 +157,6 @@ module Cucumber
             end
           end
         end
-        # rubocop:enable Metrics/PerceivedComplexity
       end
     end
   end

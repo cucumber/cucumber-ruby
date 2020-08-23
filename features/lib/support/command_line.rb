@@ -111,7 +111,6 @@ end
 class RubyCommand < CommandLine
   def execute(file)
     capture_stdout { require file }
-  # rubocop:disable Lint/HandleExceptions
   rescue RuntimeError
     # no-op: this is raised when Cucumber fails
   rescue SystemExit
@@ -119,7 +118,6 @@ class RubyCommand < CommandLine
   rescue StandardError
     @kernel.exit(1)
   end
-  # rubocop:enable Lint/HandleExceptions
 end
 
 class RakeCommand < CommandLine
@@ -144,13 +142,11 @@ class RakeCommand < CommandLine
       rake.load_rakefile
       capture_stdout { rake[task.strip].invoke }
     end
-  # rubocop:disable Lint/HandleExceptions
   rescue RuntimeError
     # no-op: this is raised when Cucumber fails
   rescue SystemExit
     # No-op: well, we are supposed to exit the rake task
   end
-  # rubocop:enable Lint/HandleExceptions
 end
 
 module CLIWorld

@@ -11,7 +11,7 @@ module Cucumber
       begin
         raise new(with_prefix(step_name)) # rubocop:disable Style/RaiseArgs
       rescue StandardError => e
-        return e
+        e
       end
     end
 
