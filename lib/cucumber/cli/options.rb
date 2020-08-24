@@ -367,7 +367,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       end
 
       def require_jars(jars)
-        Dir["#{jars}/**/*.jar"].each { |jar| require jar }
+        Dir["#{jars}/**/*.jar"].sort.each { |jar| require jar }
       end
 
       def publisher

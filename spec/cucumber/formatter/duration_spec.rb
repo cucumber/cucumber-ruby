@@ -13,7 +13,7 @@ module Cucumber
       end
 
       it 'formats m' do
-        expect(format_duration(61.002503)).to eq'1m1.003s'
+        expect(format_duration(61.002503)).to eq '1m1.003s'
       end
 
       it 'formats h' do
