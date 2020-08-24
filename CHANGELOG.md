@@ -10,15 +10,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.0.0...master)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.1.0...master)
 
 ### Added
-
-* `-X GET` in an `--out` URL will now issue a `GET` request *without* a body. If the response is `202 Accepted` *and*
-  the `Location` header is present, a new `PUT` request will be sent *with* the body.
-  
-  The main reason for this added behaviour is to allow request bodies larger than 6Mb to be sent while using `--publish`.
-  This also improves performance since the request body is only sent once (previously it would be sent twice).
 
 ### Changed
 
@@ -27,6 +21,25 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Deprecated
 
 ### Fixed
+
+## [5.1.0](https://github.com/cucumber/cucumber-ruby/compare/v5.0.0...5.1.0)
+
+### Added
+
+* `-X GET` in an `--out` URL will now issue a `GET` request *without* a body. If the response is `202 Accepted` *and*
+  the `Location` header is present, a new `PUT` request will be sent *with* the body.
+
+  The main reason for this added behaviour is to allow request bodies larger than 6Mb to be sent while using `--publish`.
+  This also improves performance since the request body is only sent once (previously it would be sent twice).
+
+### Changed
+
+* Set banner border color to green when publishing reports
+* Postpone removal of `--format=json`, `embed` and `puts` to version 6.0.0 in deprecation messages
+
+### Fixed
+
+* Display banner on stderr when publishing reports [#1462](https://github.com/cucumber/cucumber-ruby/issues/1462)
 
 ## [5.0.0](https://github.com/cucumber/cucumber-ruby/compare/v4.1.0...5.0.0)
 
