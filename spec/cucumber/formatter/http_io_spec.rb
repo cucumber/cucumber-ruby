@@ -15,6 +15,8 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     end
   end
 
+  let(:putreport_returned_location) { URI('/s3').to_s }
+
   # rubocop:disable Metrics/MethodLength
   def start_server
     uri = URI('http://localhost')
@@ -48,12 +50,19 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       res.status = 404
     end
 
-    @server.mount_proc '/putreport' do |_req, res|
+    @server.mount_proc '/putreport' do |req, res|
       @request_count += 1
-      res.set_redirect(
-        WEBrick::HTTPStatus::TemporaryRedirect,
-        '/s3'
-      )
+      IO.copy_stream(req.body_reader, @received_body_io)
+      if req.request_method == 'GET'
+        res.status = 202 # Accepted
+        res.header['location'] = putreport_returned_location if putreport_returned_location
+        res.body = ''
+      else
+        res.set_redirect(
+          WEBrick::HTTPStatus::TemporaryRedirect,
+          '/s3'
+        )
+      end
     end
 
     @server.mount_proc '/loop_redirect' do |_req, res|
@@ -281,14 +290,38 @@ module Cucumber
         expect(received_body).to eq(sent_body)
       end
 
-      it 'follows redirections' do
+      it 'follows redirections and sends body twice' do
         io = IOHTTPBuffer.new("#{url}/putreport", 'PUT')
         io.write(sent_body)
         io.flush
         io.close
         @received_body_io.rewind
         received_body = @received_body_io.read
+        expect(received_body).to eq(sent_body + sent_body)
+      end
+
+      it 'only sends body once' do
+        io = IOHTTPBuffer.new("#{url}/putreport", 'GET')
+        io.write(sent_body)
+        io.flush
+        io.close
+        @received_body_io.rewind
+        received_body = @received_body_io.read
         expect(received_body).to eq(sent_body)
+      end
+
+      context 'when the location http header is not set on 202 response' do
+        let(:putreport_returned_location) { nil }
+
+        it 'does not follow the location' do
+          io = IOHTTPBuffer.new("#{url}/putreport", 'GET')
+          io.write(sent_body)
+          io.flush
+          io.close
+          @received_body_io.rewind
+          received_body = @received_body_io.read
+          expect(received_body).to eq('')
+        end
       end
     end
   end
