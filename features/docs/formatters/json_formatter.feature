@@ -677,7 +677,7 @@ Feature: JSON output formatter
     When I run `cucumber --format json`
     Then the stderr should contain:
       """
-      WARNING: --format=json is deprecated and will be removed after version 5.0.0
+      WARNING: --format=json is deprecated and will be removed after version 6.0.0
       """
     And the stderr should contain:
       """

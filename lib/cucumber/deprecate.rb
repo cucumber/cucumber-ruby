@@ -41,7 +41,7 @@ module Cucumber
 
     module ForDevelopers
       def self.call(_message, _method, remove_after_version)
-        raise "This method is due for removal after version #{remove_after_version}" if Cucumber::VERSION > remove_after_version
+        raise "This method is due for removal after version #{remove_after_version}" if Cucumber::VERSION >= remove_after_version
       end
     end
 

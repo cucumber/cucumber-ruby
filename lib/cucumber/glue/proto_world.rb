@@ -87,7 +87,7 @@ module Cucumber
           'If you simply want it in the console, '\
           'keep using "puts" (or Kernel.puts to avoid this message)',
           'puts(message)',
-          '5.0.0'
+          '6.0.0'
         )
         messages.each { |message| log(message.to_s) }
       end
@@ -102,7 +102,7 @@ module Cucumber
         Cucumber.deprecate(
           'Please use attach(file, media_type) instead',
           'embed(file, mime_type, label)',
-          '5.0.0'
+          '6.0.0'
         )
         attach(file, mime_type)
       end

@@ -19,7 +19,7 @@ module Cucumber
           '--format=json',
           "Please use --format=message and stand-alone json-formatter.\n" \
           'json-formatter homepage: https://github.com/cucumber/cucumber/tree/master/json-formatter#cucumber-json-formatter',
-          '5.0.0'
+          '6.0.0'
         )
 
         @io = ensure_io(config.out_stream)
