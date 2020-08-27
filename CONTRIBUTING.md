@@ -65,7 +65,9 @@ help us to correct style violations reported here:
 * Remove empty sections from `CHANGELOG.md`
 * Now release it:
 
-```
-git commit -am "Release X.Y.Z"
-make release
-```
+  ```
+  git commit -am "Release X.Y.Z"
+  make release
+  ```
+
+* Finally, update the cucumber-ruby version in the [documentation project](https://cucumber.io/docs/installation/) in [versions.yaml](https://github.com/cucumber/docs.cucumber.io/blob/master/data/versions.yaml) file.
