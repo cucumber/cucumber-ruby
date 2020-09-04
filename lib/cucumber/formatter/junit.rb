@@ -132,9 +132,11 @@ module Cucumber
         duration = ResultBuilder.new(result).test_case_duration
         @current_feature_data[:time] += duration
         classname = @current_feature_data[:feature].name
+        filename = @current_feature_data[:uri]
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%<duration>.6f', duration: duration)) do
+        testcase_arguments = get_testcase_arguments(classname, name, duration, filename)
+        @current_feature_data[:builder].testcase(testcase_arguments) do
           if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
@@ -153,8 +155,21 @@ module Cucumber
           @current_feature_data[:builder].tag!('system-err') do
             @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer_string)
           end
+          @current_feature_data[:tests] += 1
         end
-        @current_feature_data[:tests] += 1
+      end
+
+      def get_testcase_arguments(classname, name, duration, filename)
+        arguments = { classname: classname, name: name, time: format('%<duration>.6f', duration: duration) }
+        arguments[:file] = filename if should_add_fileattribute?
+
+        arguments
+      end
+
+      def should_add_fileattribute?
+        !!@config.formats.find do |format|
+          format[0] == 'junit' and format.dig(1, 'fileattribute') == 'true'
+        end
       end
 
       def get_backtrace_object(result)

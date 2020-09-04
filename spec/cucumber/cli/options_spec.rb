@@ -118,6 +118,18 @@ module Cucumber
               expect(options[:formats]).to eq [['pretty', { 'foo' => 'bar', 'foo2' => 'bar2' }, output_stream]]
             end
           end
+
+          it 'extracts junit formatter file attribute option' do
+            after_parsing('-f junit,file-attribute=true') do
+              expect(options[:formats]).to eq [['junit', { 'file-attribute' => 'true' }, output_stream]]
+            end
+          end
+
+          it 'extracts junit formatter file attribute option with pretty' do
+            after_parsing('-f pretty -f junit,file-attribute=true -o file.txt') do
+              expect(options[:formats]).to eq [['pretty', {}, output_stream], ['junit', { 'file-attribute' => 'true' }, 'file.txt']]
+            end
+          end
         end
 
         context '-o [FILE|DIR] or --out [FILE|DIR]' do

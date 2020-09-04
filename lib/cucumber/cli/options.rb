@@ -22,7 +22,8 @@ module Cucumber
                                                               "#{INDENT}filename instead."],
         'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" \
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
-        'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
+        'junit'       => ['Cucumber::Formatter::Junit',       "Generates a report similar to Ant+JUnit. Use\n" \
+                                                              "#{INDENT}junit,fileattribute=true to include a file attribute."],
         'json'        => ['Cucumber::Formatter::Json',        '[DEPRECATED] Prints the feature as JSON'],
         'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
         'html'        => ['Cucumber::Formatter::HTML',        'Outputs HTML report'],
