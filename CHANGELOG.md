@@ -22,6 +22,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+### Security fixes
+
+* Update `cucumber-create-meta` to 2.0.2
+
 ## [5.1.0](https://github.com/cucumber/cucumber-ruby/compare/v5.0.0...5.1.0)
 
 ### Added
