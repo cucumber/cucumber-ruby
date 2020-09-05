@@ -156,8 +156,8 @@ module Cucumber
           @current_feature_data[:builder].tag!('system-err') do
             @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer_string)
           end
-          @current_feature_data[:tests] += 1
         end
+        @current_feature_data[:tests] += 1
       end
 
       def get_testcase_attributes(classname, name, duration, filename)
