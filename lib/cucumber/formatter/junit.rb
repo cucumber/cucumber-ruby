@@ -135,8 +135,9 @@ module Cucumber
         filename = @current_feature_data[:uri]
         name = scenario_designation
 
-        testcase_arguments = get_testcase_arguments(classname, name, duration, filename)
-        @current_feature_data[:builder].testcase(testcase_arguments) do
+        testcase_attributes = get_testcase_attributes(classname, name, duration, filename)
+
+        @current_feature_data[:builder].testcase(testcase_attributes) do
           if !result.passed? && result.ok?(@config.strict)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
@@ -159,14 +160,16 @@ module Cucumber
         end
       end
 
-      def get_testcase_arguments(classname, name, duration, filename)
-        arguments = { classname: classname, name: name, time: format('%<duration>.6f', duration: duration) }
-        arguments[:file] = filename if should_add_fileattribute?
+      def get_testcase_attributes(classname, name, duration, filename)
+        attributes = { classname: classname, name: name, time: format('%<duration>.6f', duration: duration) }
+        attributes[:file] = filename if add_fileattribute?
 
-        arguments
+        attributes
       end
 
-      def should_add_fileattribute?
+      def add_fileattribute?
+        return false if @config.formats.nil? || @config.formats.empty?
+
         !!@config.formats.find do |format|
           format[0] == 'junit' and format.dig(1, 'fileattribute') == 'true'
         end
