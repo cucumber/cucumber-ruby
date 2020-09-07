@@ -30,7 +30,9 @@ module Cucumber
             ],
             [
               'Environment variable:   ',
-              highlight('CUCUMBER_PUBLISH_ENABLED=true')
+              highlight('CUCUMBER_PUBLISH_ENABLED'),
+              '=',
+              highlight('true')
             ],
             [
               'cucumber.yml:           ',
