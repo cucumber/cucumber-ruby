@@ -161,17 +161,16 @@ module Cucumber
       end
 
       def get_testcase_attributes(classname, name, duration, filename)
-        attributes = { classname: classname, name: name, time: format('%<duration>.6f', duration: duration) }
-        attributes[:file] = filename if add_fileattribute?
-
-        attributes
+        { classname: classname, name: name, time: format('%<duration>.6f', duration: duration) }.tap do |attributes|
+          attributes[:file] = filename if add_fileattribute?
+        end
       end
 
       def add_fileattribute?
         return false if @config.formats.nil? || @config.formats.empty?
 
         !!@config.formats.find do |format|
-          format[0] == 'junit' and format.dig(1, 'fileattribute') == 'true'
+          format.first == 'junit' && format.dig(1, 'fileattribute') == 'true'
         end
       end
 
