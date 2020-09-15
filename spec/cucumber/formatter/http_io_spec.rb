@@ -18,9 +18,11 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
   let(:putreport_returned_location) { URI('/s3').to_s }
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def start_server
     uri = URI('http://localhost')
     @received_body_io = StringIO.new
+    @received_headers = []
     @request_count = 0
 
     rd, wt = IO.pipe
@@ -40,19 +42,27 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     end
 
     @server = WEBrick::HTTPServer.new(webrick_options)
-    @server.mount_proc '/s3' do |req, _res|
+    @server.mount_proc '/s3' do |req, res|
       @request_count += 1
       IO.copy_stream(req.body_reader, @received_body_io)
+      @received_headers << req.header
+      if req['authroization']
+        res.status = 400
+        res.body = 'Do not send Authorization header to S3'
+      end
     end
 
-    @server.mount_proc '/404' do |_req, res|
+    @server.mount_proc '/404' do |req, res|
       @request_count += 1
+      @received_headers << req.header
       res.status = 404
     end
 
     @server.mount_proc '/putreport' do |req, res|
       @request_count += 1
       IO.copy_stream(req.body_reader, @received_body_io)
+      @received_headers << req.header
+
       if req.request_method == 'GET'
         res.status = 202 # Accepted
         res.header['location'] = putreport_returned_location if putreport_returned_location
@@ -65,8 +75,9 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       end
     end
 
-    @server.mount_proc '/loop_redirect' do |_req, res|
+    @server.mount_proc '/loop_redirect' do |req, res|
       @request_count += 1
+      @received_headers << req.header
       res.set_redirect(
         WEBrick::HTTPStatus::TemporaryRedirect,
         '/loop_redirect'
@@ -308,6 +319,15 @@ module Cucumber
         @received_body_io.rewind
         received_body = @received_body_io.read
         expect(received_body).to eq(sent_body)
+      end
+
+      it 'does not send headers to 2nd PUT request' do
+        io = IOHTTPBuffer.new("#{url}/putreport", 'GET', { Authorization: 'Bearer abcdefg' })
+        io.write(sent_body)
+        io.flush
+        io.close
+        expect(@received_headers[0]['authorization']).to eq(['Bearer abcdefg'])
+        expect(@received_headers[1]['authorization']).to eq([])
       end
 
       context 'when the location http header is not set on 202 response' do
