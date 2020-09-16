@@ -92,6 +92,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
     "http://localhost:#{@server.config[:Port]}"
   end
+  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 
   after do
