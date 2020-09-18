@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-cucumber-expressions', '~> 10.3', '>= 10.3.0'
   s.add_dependency 'cucumber-gherkin', '~> 15.0', '>= 15.0.2'
   s.add_dependency 'cucumber-html-formatter', '~> 9.0', '>= 9.0.0'
-  s.add_dependency 'cucumber-messages', '~> 13.0', '>= 13.0.1'
+  s.add_dependency 'cucumber-messages', '~> 13.1', '>= 13.1.0'
   s.add_dependency 'cucumber-wire', '~> 4.0', '>= 4.0.1'
   s.add_dependency 'diff-lcs', '~> 1.4', '>= 1.4.4'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
@@ -45,7 +45,7 @@ Gem::Specification.new do |s|
 
   # Needed for examples (rake examples)
   s.add_development_dependency 'rack-test', '~> 1.1', '>= 1.1.0'
-  s.add_development_dependency 'sinatra', '~> 2.0', '>= 2.0.8.1'
+  s.add_development_dependency 'sinatra', '~> 2.1', '>= 2.1.0'
   # Capybara dropped support for Ruby 2.3 in 3.16.0 - keep 3.15.0 while we're still supporting ruby 2.3
   s.add_development_dependency 'capybara', '~> 3.33', '>= 3.33.0'
 
