@@ -22,6 +22,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* Do not send headers after following redirection [#1475](https://github.com/cucumber/cucumber-ruby/pull/1475)
+
 ### Security fixes
 
 ## [5.1.1](https://github.com/cucumber/cucumber-ruby/compare/v5.1.0...v5.1.1)

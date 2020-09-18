@@ -123,7 +123,7 @@ module Cucumber
         when Net::HTTPAccepted
           return uri unless response['Location']
 
-          send_content(URI(response['Location']), 'PUT', headers, attempt - 1)
+          send_content(URI(response['Location']), 'PUT', {}, attempt - 1)
         when Net::HTTPSuccess
           uri
         when Net::HTTPRedirection
