@@ -168,52 +168,27 @@ module Cucumber
           )
         end
 
-        it 'can recognize headers set with option -H' do
-          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json"')).to eq(
+        it 'can recognize headers set with option -H and double quote' do
+          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" -H "Authorization: Bearer abcde"')).to eq(
             [
               'http://whatever.ltd',
               'PUT',
               {
-                'Content-Type' => 'text/json'
+                'Content-Type' => 'text/json',
+                'Authorization' => 'Bearer abcde',
               }
             ]
           )
         end
 
         it 'can recognize headers set with option -H and single quote' do
-          expect(CurlOptionParser.parse("http://whatever.ltd -H 'Content-Type: text/json' 'Content-Length: 12'")).to eq(
+          expect(CurlOptionParser.parse("http://whatever.ltd -H 'Content-Type: text/json' -H 'Content-Length: 12'")).to eq(
             [
               'http://whatever.ltd',
               'PUT',
               {
                 'Content-Type' => 'text/json',
                 'Content-Length' => '12'
-              }
-            ]
-          )
-        end
-
-        it 'can recognize multiple headers set with option -H' do
-          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" "Transfer-Encoding: chunked"')).to eq(
-            [
-              'http://whatever.ltd',
-              'PUT',
-              {
-                'Content-Type' => 'text/json',
-                'Transfer-Encoding' => 'chunked'
-              }
-            ]
-          )
-        end
-
-        it 'supports multiple -H options' do
-          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" -H "Transfer-Encoding: chunked"')).to eq(
-            [
-              'http://whatever.ltd',
-              'PUT',
-              {
-                'Content-Type' => 'text/json',
-                'Transfer-Encoding' => 'chunked'
               }
             ]
           )
@@ -229,28 +204,6 @@ module Cucumber
                 'Transfer-Encoding' => 'chunked'
               }
             ]
-          )
-        end
-      end
-
-      context '.make_headers' do
-        it 'transforms a string into a hash' do
-          expect(CurlOptionParser.make_headers(%("Content-Type: text/json"))).to eq(
-            'Content-Type' => 'text/json'
-          )
-        end
-
-        it 'supports single quote too' do
-          expect(CurlOptionParser.make_headers(%('Content-Type: text/json'))).to eq(
-            'Content-Type' => 'text/json'
-          )
-        end
-
-        it 'supports mixed data' do
-          expect(CurlOptionParser.make_headers(%('Content-Type: text/json' "Content-Length:12" "Content:'bad'"))).to eq(
-            'Content-Type' => 'text/json',
-            'Content-Length' => '12',
-            'Content' => "'bad'"
           )
         end
       end
