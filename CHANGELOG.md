@@ -22,6 +22,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* The `CUCUMBER_PUBLISH_TOKEN` now sets the correct HTTP header, following a fix in the curl option parser.
+
 ### Security fixes
 
 ## [5.1.2](https://github.com/cucumber/cucumber-ruby/compare/v5.1.1...v5.1.2)

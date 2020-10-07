@@ -1,5 +1,6 @@
 require 'net/http'
 require 'tempfile'
+require 'shellwords'
 
 module Cucumber
   module Formatter
@@ -18,48 +19,43 @@ module Cucumber
 
     class CurlOptionParser
       def self.parse(options)
-        chunks = options.split(/\s/).compact
+        args = Shellwords.split(options)
+
+        url = nil
         http_method = 'PUT'
-        url = chunks[0]
-        headers = ''
+        headers = {}
 
-        last_flag = nil
-        chunks.each do |chunk|
-          if ['-X', '--request'].include?(chunk)
-            last_flag = '-X'
-            next
+        until args.empty?
+          arg = args.shift
+          case arg
+          when '-X', '--request'
+            http_method = remove_arg_for(args, arg)
+          when '-H'
+            header_arg = remove_arg_for(args, arg)
+            headers = headers.merge(parse_header(header_arg))
+          else
+            raise StandardError, "#{options} was not a valid curl command. Can't set url to #{arg} it is already set to #{url}" if url
+            url = arg
           end
-
-          if chunk == '-H'
-            last_flag = '-H'
-            next
-          end
-
-          if last_flag == '-X'
-            http_method = chunk
-            last_flag = nil
-          end
-
-          headers += chunk if last_flag == '-H'
         end
+        raise StandardError, "#{options} was not a valid curl command" unless url
 
         [
           url,
           http_method,
-          make_headers(headers)
+          headers
         ]
       end
 
-      def self.make_headers(headers)
-        hash_headers = {}
-        str_scanner = /("(?<key>[^":]+)\s*:\s*(?<value>[^":]+)")|('(?<key1>[^':]+)\s*:\s*(?<value1>[^':]+)')/
+      def self.remove_arg_for(args, arg)
+        return args.shift unless args.empty?
+        raise StandardError, "Missing argument for #{arg}"
+      end
 
-        headers.scan(str_scanner) do |header|
-          header = header.compact!
-          hash_headers[header[0]] = header[1]&.strip
-        end
-
-        hash_headers
+      def self.parse_header(header_arg)
+        parts = header_arg.split(':', 2)
+        raise StandardError, "#{header_arg} was not a valid header" unless parts.length == 2
+        { parts[0].strip => parts[1].strip }
       end
     end
 
