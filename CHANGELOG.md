@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.1.1...master)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.1.2...master)
 
 ### Added
 
@@ -25,6 +25,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * The `CUCUMBER_PUBLISH_TOKEN` now sets the correct HTTP header, following a fix in the curl option parser.
 
 ### Security fixes
+
+## [5.1.2](https://github.com/cucumber/cucumber-ruby/compare/v5.1.1...v5.1.2)
+
+### Fixed
+
+* Do not send headers after following redirection [#1475](https://github.com/cucumber/cucumber-ruby/pull/1475)
 
 ## [5.1.1](https://github.com/cucumber/cucumber-ruby/compare/v5.1.0...v5.1.1)
 

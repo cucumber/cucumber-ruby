@@ -46,7 +46,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       @request_count += 1
       IO.copy_stream(req.body_reader, @received_body_io)
       @received_headers << req.header
-      if req['authroization']
+      if req['authorization']
         res.status = 400
         res.body = 'Do not send Authorization header to S3'
       end
@@ -92,6 +92,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
     "http://localhost:#{@server.config[:Port]}"
   end
+  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
