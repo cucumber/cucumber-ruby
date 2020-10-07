@@ -137,4 +137,4 @@ module Cucumber
 end
 
 # TODO: can we avoid adding methods to the global namespace (Kernel)
-extend(Cucumber::Glue::Dsl)
+extend(Cucumber::Glue::Dsl) # rubocop:disable Style/MixinUsage
