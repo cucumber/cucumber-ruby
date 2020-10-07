@@ -41,13 +41,11 @@ module Cucumber
         raise StandardError, "#{options} was not a valid curl command" unless url
 
         [
-            url,
-            http_method,
-            headers
+          url,
+          http_method,
+          headers
         ]
       end
-
-      private
 
       def self.remove_arg_for(args, arg)
         return args.shift unless args.empty?

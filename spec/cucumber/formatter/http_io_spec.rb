@@ -93,6 +93,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     "http://localhost:#{@server.config[:Port]}"
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   after do
     @server&.shutdown
@@ -175,7 +176,7 @@ module Cucumber
               'PUT',
               {
                 'Content-Type' => 'text/json',
-                'Authorization' => 'Bearer abcde',
+                'Authorization' => 'Bearer abcde'
               }
             ]
           )
