@@ -335,7 +335,7 @@ Specify SEED to reproduce the shuffling from a previous run.
           'option is specified; all loading becomes explicit.',
           'Files in directories named "support" are still always',
           'loaded first when their parent directories are',
-          'required or if the "support" directoires themselves are',
+          'required or if the "support" directories themselves are',
           'explicitly required.',
           'This option can be specified multiple times.'
         ]
