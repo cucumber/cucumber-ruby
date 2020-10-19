@@ -16,6 +16,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+* `--publish` request errors now include the response's body in the error message
+
 ### Removed
 
 ### Deprecated

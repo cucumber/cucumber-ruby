@@ -56,6 +56,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       @request_count += 1
       @received_headers << req.header
       res.status = 404
+      res.body = 'Not found'
     end
 
     @server.mount_proc '/putreport' do |req, res|
@@ -222,7 +223,7 @@ module Cucumber
       it 'raises an error on close when server in unreachable' do
         io = IOHTTPBuffer.new("#{url}/404", 'PUT')
 
-        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
+        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404: Not found"))
       end
 
       it 'raises an error on close when the server is unreachable' do
