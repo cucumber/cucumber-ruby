@@ -72,10 +72,12 @@ module Cucumber
       end
 
       def close
-        resource_uri = send_content(@uri, @method, @headers)
-
-        @reporter.report(resource_uri)
+        response = send_content(@uri, @method, @headers)
+        @reporter.report(response.body)
         @write_io.close
+        unless response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
+          raise StandardError, "request to #{uri} failed with status #{response.code}"
+        end
       end
 
       def write(data)
@@ -117,16 +119,11 @@ module Cucumber
 
         case response
         when Net::HTTPAccepted
-          return uri unless response['Location']
-
-          send_content(URI(response['Location']), 'PUT', {}, attempt - 1)
-        when Net::HTTPSuccess
-          uri
+          send_content(URI(response['Location']), 'PUT', {}, attempt - 1) if response['Location']
         when Net::HTTPRedirection
           send_content(URI(response['Location']), method, headers, attempt - 1)
-        else
-          raise StandardError, "request to #{uri} failed with status #{response.code}"
         end
+        response
       end
 
       def build_request(uri, method, headers)
