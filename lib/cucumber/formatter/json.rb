@@ -22,7 +22,7 @@ module Cucumber
           '6.0.0'
         )
 
-        @io = ensure_io(config.out_stream)
+        @io = ensure_io(config.out_stream, config.error_stream)
         @ast_lookup = AstLookup.new(config)
         @feature_hashes = []
         @step_or_hook_hash = {}

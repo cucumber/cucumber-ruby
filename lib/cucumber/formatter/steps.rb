@@ -5,7 +5,7 @@ module Cucumber
     # The formatter used for <tt>--format steps</tt>
     class Steps
       def initialize(runtime, path_or_io, options)
-        @io = ensure_io(path_or_io)
+        @io = ensure_io(path_or_io, nil)
         @options = options
         @step_definition_files = collect_steps(runtime)
       end

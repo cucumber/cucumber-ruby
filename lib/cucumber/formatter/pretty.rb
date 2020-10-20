@@ -32,7 +32,7 @@ module Cucumber
       private :in_scenario_outline, :print_background_steps
 
       def initialize(config)
-        @io = ensure_io(config.out_stream)
+        @io = ensure_io(config.out_stream, config.error_stream)
         @config = config
         @options = config.to_hash
         @snippets_input = []

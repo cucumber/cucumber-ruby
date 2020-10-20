@@ -16,7 +16,7 @@ module Cucumber
 
       def initialize(config)
         @config = config
-        @io = ensure_io(config.out_stream)
+        @io = ensure_io(config.out_stream, config.error_stream)
         @ast_lookup = AstLookup.new(config)
         @counts = ConsoleCounts.new(@config)
         @issues = ConsoleIssues.new(@config, @ast_lookup)

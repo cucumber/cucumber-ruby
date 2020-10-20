@@ -19,7 +19,7 @@ module Cucumber
 
       def initialize(config)
         @config = config
-        @io = ensure_io(config.out_stream)
+        @io = ensure_io(config.out_stream, config.error_stream)
         @snippets_input = []
         @undefined_parameter_types = []
         @total_duration = 0

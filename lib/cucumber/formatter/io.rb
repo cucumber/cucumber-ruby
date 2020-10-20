@@ -9,13 +9,13 @@ module Cucumber
     module Io
       module_function
 
-      def ensure_io(path_or_url_or_io)
+      def ensure_io(path_or_url_or_io, error_stream)
         return nil if path_or_url_or_io.nil?
         return path_or_url_or_io if io?(path_or_url_or_io)
 
         io = if url?(path_or_url_or_io)
                url = path_or_url_or_io
-               reporter = url.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new($stderr) : NoReporter.new
+               reporter = url.start_with?(Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL) ? URLReporter.new(error_stream) : NoReporter.new
                HTTPIO.open(url, nil, reporter)
              else
                File.open(path_or_url_or_io, Cucumber.file_mode('w'))
@@ -64,7 +64,7 @@ module Cucumber
         raise "You *must* specify --out FILE for the #{name} formatter" unless String == path.class
         raise "I can't write #{name} to a directory - it has to be a file" if File.directory?(path)
         raise "I can't write #{name} to a file in the non-existing directory #{File.dirname(path)}" unless File.directory?(File.dirname(path))
-        ensure_io(path)
+        ensure_io(path, nil)
       end
 
       def ensure_dir(path, name)
