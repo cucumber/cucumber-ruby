@@ -17,16 +17,14 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
   let(:putreport_returned_location) { URI('/s3').to_s }
 
-  let(:success_banner) {
+  let(:success_banner) do
     [
-      "View your Cucumber Report at:",
-      "https://reports.cucumber.io/reports/<some-random-uid>",
+      'View your Cucumber Report at:',
+      'https://reports.cucumber.io/reports/<some-random-uid>'
     ].join("\n")
-  }
+  end
 
-  let(:failure_banner) {
-      "Oh noooo, something went horribly wrong :("
-  }
+  let(:failure_banner) { 'Oh noooo, something went horribly wrong :(' }
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
@@ -311,8 +309,8 @@ module Cucumber
       end
 
       it 'reports the body of the response to the reporter' do
-        reporter = DummyReporter.new()
-        allow(reporter).to receive (:report)
+        reporter = DummyReporter.new
+        allow(reporter).to receive(:report)
 
         io = IOHTTPBuffer.new("#{url}/putreport", 'GET', {}, nil, reporter)
         io.write(sent_body)
@@ -323,16 +321,16 @@ module Cucumber
       end
 
       it 'reports the body of the response to the reporter when request failed' do
-        reporter = DummyReporter.new()
-        allow(reporter).to receive (:report)
+        reporter = DummyReporter.new
+        allow(reporter).to receive(:report)
 
         begin
           io = IOHTTPBuffer.new("#{url}/401", 'GET', {}, nil, reporter)
           io.write(sent_body)
           io.flush
           io.close
-        rescue
-          #no-op
+        rescue StandardError
+          # no-op
         end
 
         expect(reporter).to have_received(:report).with(failure_banner)

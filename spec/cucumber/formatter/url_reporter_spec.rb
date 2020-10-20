@@ -12,12 +12,12 @@ module Cucumber
       context '#report' do
         it 'displays the provided string' do
           banner = [
-            "┌──────────────────────────────────────────────────────────────────────────┐",
-            "│ View your Cucumber Report at:                                            │",
-            "│ https://reports.cucumber.io/reports/<some-random-uid>                    │",
-            "│                                                                          │",
-            "│ This report will self-destruct in 24h unless it is claimed or deleted.   │",
-            "└──────────────────────────────────────────────────────────────────────────┘"
+            '┌──────────────────────────────────────────────────────────────────────────┐',
+            '│ View your Cucumber Report at:                                            │',
+            '│ https://reports.cucumber.io/reports/<some-random-uid>                    │',
+            '│                                                                          │',
+            '│ This report will self-destruct in 24h unless it is claimed or deleted.   │',
+            '└──────────────────────────────────────────────────────────────────────────┘'
           ].join("\n")
           subject.report(banner)
 

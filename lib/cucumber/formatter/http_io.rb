@@ -75,9 +75,8 @@ module Cucumber
         response = send_content(@uri, @method, @headers)
         @reporter.report(response.body)
         @write_io.close
-        unless response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
-          raise StandardError, "request to #{uri} failed with status #{response.code}"
-        end
+        return if response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
+        raise StandardError, "request to #{uri} failed with status #{response.code}"
       end
 
       def write(data)
