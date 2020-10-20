@@ -125,7 +125,7 @@ module Cucumber
         when Net::HTTPRedirection
           send_content(URI(response['Location']), method, headers, attempt - 1)
         else
-          raise StandardError, "request to #{uri} failed with status #{response.code}"
+          raise StandardError, "request to #{uri} failed with status #{response.code}: #{response.body}"
         end
       end
 
