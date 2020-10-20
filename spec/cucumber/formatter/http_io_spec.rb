@@ -246,7 +246,7 @@ module Cucumber
       it 'raises an error on close when server in unreachable' do
         io = IOHTTPBuffer.new("#{url}/404", 'PUT')
 
-        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404: Not found"))
+        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
       end
 
       it 'raises an error on close when the server is unreachable' do
