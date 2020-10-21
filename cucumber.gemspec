@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webrick', '~> 1.6', '>= 1.6.1'
 
   # For maintainer scripts
-  s.add_development_dependency 'octokit', '~> 4.18', '>= 4.18.0'
+  s.add_development_dependency 'octokit', '~> 4.19', '>= 4.19.0'
 
   # Needed for examples (rake examples)
   s.add_development_dependency 'rack-test', '~> 1.1', '>= 1.1.0'
