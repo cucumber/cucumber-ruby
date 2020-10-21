@@ -10,13 +10,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.1.3...master)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...master)
 
 ### Added
 
 ### Changed
-
-* `--publish` uses the response provided by the server as the banner [#1472](https://github.com/cucumber/cucumber-ruby/issues/1472)
 
 ### Removed
 
@@ -26,7 +24,13 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Security fixes
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.1.2...v5.1.3)
+## [5.2.0](https://github.com/cucumber/cucumber-ruby/compare/v5.1.3...v5.2.0)
+
+### Changed
+
+* `--publish` uses the response provided by the server as the banner [#1472](https://github.com/cucumber/cucumber-ruby/issues/1472)
+
+## [5.1.3](https://github.com/cucumber/cucumber-ruby/compare/v5.1.2...v5.1.3)
 
 ### Fixed
 
