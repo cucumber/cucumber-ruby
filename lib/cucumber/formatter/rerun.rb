@@ -8,7 +8,7 @@ module Cucumber
       include Formatter::Io
 
       def initialize(config)
-        @io = ensure_io(config.out_stream)
+        @io = ensure_io(config.out_stream, config.error_stream)
         @config = config
         @failures = {}
         config.on_event :test_case_finished do |event|

@@ -10,7 +10,7 @@ module Cucumber
       include Io
 
       def initialize(config)
-        @io = ensure_io(config.out_stream)
+        @io = ensure_io(config.out_stream, config.error_stream)
         super(config)
       end
 

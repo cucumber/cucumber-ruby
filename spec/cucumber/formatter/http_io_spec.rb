@@ -17,6 +17,15 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
   let(:putreport_returned_location) { URI('/s3').to_s }
 
+  let(:success_banner) do
+    [
+      'View your Cucumber Report at:',
+      'https://reports.cucumber.io/reports/<some-random-uid>'
+    ].join("\n")
+  end
+
+  let(:failure_banner) { 'Oh noooo, something went horribly wrong :(' }
+
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def start_server
@@ -56,7 +65,16 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       @request_count += 1
       @received_headers << req.header
       res.status = 404
-      res.body = 'Not found'
+      res.header['Content-Type'] = 'text/plain;charset=utf-8'
+      res.body = failure_banner
+    end
+
+    @server.mount_proc '/401' do |req, res|
+      @request_count += 1
+      @received_headers << req.header
+      res.status = 401
+      res.header['Content-Type'] = 'text/plain;charset=utf-8'
+      res.body = failure_banner
     end
 
     @server.mount_proc '/putreport' do |req, res|
@@ -67,7 +85,8 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       if req.request_method == 'GET'
         res.status = 202 # Accepted
         res.header['location'] = putreport_returned_location if putreport_returned_location
-        res.body = ''
+        res.header['Content-Type'] = 'text/plain;charset=utf-8'
+        res.body = success_banner
       else
         res.set_redirect(
           WEBrick::HTTPStatus::TemporaryRedirect,
@@ -108,9 +127,13 @@ module Cucumber
 
       def initialize(config = nil); end
 
-      def ensure_io(path_or_url_or_io)
+      def ensure_io(path_or_url_or_io, error_stream)
         super
       end
+    end
+
+    class DummyReporter
+      def report(banner); end
     end
 
     describe HTTPIO do
@@ -119,14 +142,14 @@ module Cucumber
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
           url = start_server
-          io = DummyFormatter.new.ensure_io("#{url}/s3 -X PUT")
+          io = DummyFormatter.new.ensure_io("#{url}/s3 -X PUT", nil)
           expect(io).to be_a(Cucumber::Formatter::IOHTTPBuffer)
           io.close # Close during the test so the request is done while server still runs
         end
 
         it 'uses CurlOptionParser to pass correct options to IOHTTPBuffer' do
           url = start_server
-          io = DummyFormatter.new.ensure_io("#{url}/s3 -X GET -H 'Content-Type: text/json'")
+          io = DummyFormatter.new.ensure_io("#{url}/s3 -X GET -H 'Content-Type: text/json'", nil)
 
           expect(io.uri).to eq(URI("#{url}/s3"))
           expect(io.method).to eq('GET')
@@ -223,7 +246,7 @@ module Cucumber
       it 'raises an error on close when server in unreachable' do
         io = IOHTTPBuffer.new("#{url}/404", 'PUT')
 
-        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404: Not found"))
+        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
       end
 
       it 'raises an error on close when the server is unreachable' do
@@ -283,6 +306,34 @@ module Cucumber
         io.close
         expect(@received_headers[0]['authorization']).to eq(['Bearer abcdefg'])
         expect(@received_headers[1]['authorization']).to eq([])
+      end
+
+      it 'reports the body of the response to the reporter' do
+        reporter = DummyReporter.new
+        allow(reporter).to receive(:report)
+
+        io = IOHTTPBuffer.new("#{url}/putreport", 'GET', {}, nil, reporter)
+        io.write(sent_body)
+        io.flush
+        io.close
+
+        expect(reporter).to have_received(:report).with(success_banner)
+      end
+
+      it 'reports the body of the response to the reporter when request failed' do
+        reporter = DummyReporter.new
+        allow(reporter).to receive(:report)
+
+        begin
+          io = IOHTTPBuffer.new("#{url}/401", 'GET', {}, nil, reporter)
+          io.write(sent_body)
+          io.flush
+          io.close
+        rescue StandardError
+          # no-op
+        end
+
+        expect(reporter).to have_received(:report).with(failure_banner)
       end
 
       context 'when the location http header is not set on 202 response' do
