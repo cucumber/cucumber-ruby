@@ -34,7 +34,7 @@ module Cucumber
       end
     end
 
-    describe 'resolving step defintion matches' do
+    describe 'resolving step definition matches' do
       it 'raises Ambiguous error with guess hint when multiple step definitions match' do
         expected_error = %{Ambiguous match of "Three blind mice":
 
