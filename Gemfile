@@ -27,6 +27,6 @@ is_windows = !!(RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
 # rubocop:enable Style/DoubleNegation
 
 install_if -> { !is_windows } do
-  gem 'rubocop', '~> 0.89', '= 0.89.1'
+  gem 'rubocop', '~> 0.89', '= 0.93.1'
   gem 'rubocop-packaging', '~> 0.3', '= 0.5.1'
 end
