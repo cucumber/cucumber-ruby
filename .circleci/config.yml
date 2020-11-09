@@ -93,7 +93,7 @@ jobs:
 
   build-jruby-9_2:
     docker:
-      - image: circleci/jruby:9.2.12.0
+      - image: circleci/jruby:9.2.13.0
 
     working_directory: ~/repo
     steps:
