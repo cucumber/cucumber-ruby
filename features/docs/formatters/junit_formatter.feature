@@ -114,6 +114,47 @@ Feature: JUnit output formatter
 
       """
 
+  Scenario: one feature, one passing scenario, one failing scenario, add file attribute
+    When I run `cucumber --format junit,fileattribute=true --out tmp/ features/one_passing_one_failing.feature`
+    Then it should fail with:
+      """
+
+      """
+    And the junit output file "tmp/TEST-features-one_passing_one_failing.xml" should contain:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="One passing scenario, one failing scenario">
+      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05" file="features/one_passing_one_failing.feature">
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testcase>
+      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05" file="features/one_passing_one_failing.feature">
+        <failure message="failed Failing" type="failed">
+          <![CDATA[Scenario: Failing
+
+      Given this step fails
+
+      Message:
+      ]]>
+          <![CDATA[ (RuntimeError)
+      ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/one_passing_one_failing.feature:7:in `this step fails']]>
+        </failure>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testcase>
+      </testsuite>
+
+      """
+
   Scenario: one feature in a subdirectory, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features`
     Then it should fail with:
@@ -175,6 +216,38 @@ Feature: JUnit output formatter
         </system-err>
       </testcase>
       <testcase classname="Pending step" name="Undefined" time="0.05">
+        <skipped/>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testcase>
+      </testsuite>
+
+      """
+
+  Scenario: pending and undefined steps add fileattribute
+    When I run `cucumber --format junit,fileattribute=true --out tmp/ features/pending.feature`
+    Then it should pass with:
+      """
+
+      """
+    And the junit output file "tmp/TEST-features-pending.xml" should contain:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <testsuite failures="0" errors="0" skipped="2" tests="2" time="0.05" name="Pending step">
+      <testcase classname="Pending step" name="Pending" time="0.05" file="features/pending.feature">
+        <skipped/>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testcase>
+      <testcase classname="Pending step" name="Undefined" time="0.05" file="features/pending.feature">
         <skipped/>
         <system-out>
           <![CDATA[]]>

@@ -39,6 +39,107 @@ module Cucumber
         end
       end
 
+      context 'With --junit,fileattribute=true option' do
+        before(:each) do
+          allow(File).to receive(:directory?) { true }
+          @formatter = TestDoubleJunitFormatter.new(
+            actual_runtime.configuration.with_options(
+              out_stream: '',
+              formats: [['junit', { 'fileattribute' => 'true' }]]
+            )
+          )
+        end
+        describe 'includes the file' do
+          before(:each) do
+            run_defined_feature
+            @doc = Nokogiri.XML(@formatter.written_files.values.first)
+          end
+
+          define_steps do
+            Given(/a passing scenario/) do
+              Kernel.puts 'foo'
+            end
+          end
+
+          define_feature <<-FEATURE
+              Feature: One passing feature
+
+                Scenario: Passing
+                  Given a passing scenario
+          FEATURE
+
+          it 'will contain the file attribute' do
+            expect(@doc.xpath('//testsuite/testcase/@file').size).to equal 1
+            expect(@doc.xpath('//testsuite/testcase/@file').first.value).to eq('spec.feature')
+          end
+        end
+      end
+
+      context 'With --junit,fileattribute=different option' do
+        before(:each) do
+          allow(File).to receive(:directory?) { true }
+          @formatter = TestDoubleJunitFormatter.new(
+            actual_runtime.configuration.with_options(
+              out_stream: '',
+              formats: [['junit', { 'fileattribute' => 'different' }]]
+            )
+          )
+        end
+        describe 'includes the file' do
+          before(:each) do
+            run_defined_feature
+            @doc = Nokogiri.XML(@formatter.written_files.values.first)
+          end
+
+          define_steps do
+            Given(/a passing scenario/) do
+              Kernel.puts 'foo'
+            end
+          end
+
+          define_feature <<-FEATURE
+              Feature: One passing feature
+
+                Scenario: Passing
+                  Given a passing scenario
+          FEATURE
+
+          it 'will not contain the file attribute' do
+            expect(@doc.xpath('//testsuite/testcase/@file').size).to equal 0
+          end
+        end
+      end
+
+      context 'With --junit no fileattribute option' do
+        before(:each) do
+          allow(File).to receive(:directory?) { true }
+          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
+        end
+        describe 'includes the file' do
+          before(:each) do
+            run_defined_feature
+            @doc = Nokogiri.XML(@formatter.written_files.values.first)
+          end
+
+          define_steps do
+            Given(/a passing scenario/) do
+              Kernel.puts 'foo'
+            end
+          end
+
+          define_feature <<-FEATURE
+              Feature: One passing scenario
+
+                Scenario: Passing
+                  Given a passing scenario
+          FEATURE
+
+          it 'will not contain the file attribute' do
+            expect(@doc.xpath('//testsuite/testcase/@file').size).to equal 0
+          end
+        end
+      end
+
       context 'With no options' do
         before(:each) do
           allow(File).to receive(:directory?) { true }
