@@ -74,3 +74,58 @@ Feature: Run specific scenarios
       """
       F.
       """
+
+  Scenario: Specify any line number of a scenario
+    Given a file named "features/test.feature" with:
+      """
+      Feature:
+
+        Scenario: Miss
+          Given this step is undefined
+
+        Scenario: Hit
+          Given this step passes
+          And this step passes
+          And this step passes
+      """
+    When I run `cucumber features/test.feature:8 --format pretty --quiet `
+    Then it should pass with exactly:
+      """
+      Feature:
+
+        Scenario: Hit
+          Given this step passes
+          And this step passes
+          And this step passes
+
+      1 scenario (1 passed)
+      3 steps (3 passed)
+
+      """
+
+  Scenario: Specify line number of a feature to run all scenarios
+    Given a file named "features/test.feature" with:
+      """
+      Feature:
+
+        Scenario: Passes
+          Given this step passes
+
+        Scenario: Passes, also
+          Given this step passes
+      """
+    When I run `cucumber features/test.feature:1 --format pretty --quiet `
+    Then it should pass with exactly:
+      """
+      Feature:
+
+        Scenario: Passes
+          Given this step passes
+
+        Scenario: Passes, also
+          Given this step passes
+
+      2 scenarios (2 passed)
+      2 steps (2 passed)
+
+      """

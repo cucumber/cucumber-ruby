@@ -154,6 +154,7 @@ Specify SEED to reproduce the shuffling from a previous run.
         process_publish_options
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
+        adjust_line_numbers
 
         extract_environment_variables
         @options[:paths] = @args.dup # whatver is left over
@@ -463,6 +464,31 @@ Specify SEED to reproduce the shuffling from a previous run.
           end
         end
       end
+
+      def adjust_line_numbers
+        @args.map! do |arg|
+          next arg unless arg =~ /:\d+$/
+          line_numbers = arg.split(':')
+          file = line_numbers.shift
+          lines = File.readlines(file)
+          line_numbers.map! do |line_number|
+            line_number.to_i.downto(1).find do |i|
+              line = lines[i - 1]
+              raise ScenarioOutlineFound if line =~ /^\s+Scenario Outline:/
+              line =~ /^\s+Scenario:/
+            end
+          rescue ScenarioOutlineFound
+            line_number
+          end
+          line_numbers.unshift(file)
+          line_numbers.compact.join(':')
+        rescue Errno::ENOENT
+          arg
+        end
+      end
+
+      class ScenarioOutlineFound < RuntimeError; end
+      private_constant :ScenarioOutlineFound
 
       def disable_profile_loading?
         @disable_profile_loading
