@@ -142,8 +142,12 @@ module Cucumber
       def needs_default_formatter?
         return true if @options[:formats].empty?
 
-        formatters = @options[:formats].uniq.map { |formatter, _, _| formatter }.uniq
-        formatters == ['message']
+        @options[:formats]
+          .uniq
+          .map { |formatter, _, stream| [formatter, stream] }
+          .uniq
+          .reject { |formatter, stream| formatter == 'message' && stream != @out_stream }
+          .empty?
       end
     end
   end

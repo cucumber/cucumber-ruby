@@ -270,6 +270,14 @@ Defined profiles in cucumber.yml:
         ]
       end
 
+      it 'does not add the default formatter with --format message' do
+        config.parse!(['--format', 'message'])
+
+        expect(config.formats).to eq [
+          ['message', {}, out]
+        ]
+      end
+
       it 'accepts --out option' do
         config.parse!(%w[--out jalla.txt])
 
