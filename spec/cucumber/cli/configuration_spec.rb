@@ -261,6 +261,15 @@ Defined profiles in cucumber.yml:
         ]
       end
 
+      it 'does not add the default formatter when a formatter is defined with --publish' do
+        config.parse!(['--publish', '--format', 'progress'])
+
+        expect(config.formats).to eq [
+          ['progress', {}, out],
+          ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
+        ]
+      end
+
       it 'accepts --out option' do
         config.parse!(%w[--out jalla.txt])
 
