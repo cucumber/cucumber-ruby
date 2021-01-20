@@ -246,6 +246,12 @@ Defined profiles in cucumber.yml:
         expect(config.options[:verbose]).to be true
       end
 
+      it 'uses the pretty formatter to stdout when no formatter is defined' do
+        config.parse!([])
+
+        expect(config.formats).to eq [['pretty', {}, out]]
+      end
+
       it 'accepts --out option' do
         config.parse!(%w[--out jalla.txt])
 
