@@ -252,6 +252,15 @@ Defined profiles in cucumber.yml:
         expect(config.formats).to eq [['pretty', {}, out]]
       end
 
+      it 'adds the default formatter when no other formatter is defined with --publish' do
+        config.parse!(['--publish'])
+
+        expect(config.formats).to eq [
+          ['pretty', {}, out],
+          ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
+        ]
+      end
+
       it 'accepts --out option' do
         config.parse!(%w[--out jalla.txt])
 
