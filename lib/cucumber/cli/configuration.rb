@@ -140,8 +140,14 @@ module Cucumber
       end
 
       def needs_default_formatter?
-        return true if @options[:formats].empty?
+        formatter_missing? || publish_only?
+      end
 
+      def formatter_missing?
+        @options[:formats].empty?
+      end
+
+      def publish_only?
         @options[:formats]
           .uniq
           .map { |formatter, _, stream| [formatter, stream] }
