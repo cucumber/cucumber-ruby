@@ -126,12 +126,34 @@ module Cucumber
       end
 
       def arrange_formats
-        @options[:formats] << ['pretty', {}, @out_stream] if @options[:formats].empty?
+        add_default_formatter if needs_default_formatter?
+
         @options[:formats] = @options[:formats].sort_by do |f|
           f[2] == @out_stream ? -1 : 1
         end
         @options[:formats].uniq!
         @options.check_formatter_stream_conflicts
+      end
+
+      def add_default_formatter
+        @options[:formats] << ['pretty', {}, @out_stream]
+      end
+
+      def needs_default_formatter?
+        formatter_missing? || publish_only?
+      end
+
+      def formatter_missing?
+        @options[:formats].empty?
+      end
+
+      def publish_only?
+        @options[:formats]
+          .uniq
+          .map { |formatter, _, stream| [formatter, stream] }
+          .uniq
+          .reject { |formatter, stream| formatter == 'message' && stream != @out_stream }
+          .empty?
       end
     end
   end

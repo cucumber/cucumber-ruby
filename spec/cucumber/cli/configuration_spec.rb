@@ -246,6 +246,38 @@ Defined profiles in cucumber.yml:
         expect(config.options[:verbose]).to be true
       end
 
+      it 'uses the pretty formatter to stdout when no formatter is defined' do
+        config.parse!([])
+
+        expect(config.formats).to eq [['pretty', {}, out]]
+      end
+
+      it 'adds the default formatter when no other formatter is defined with --publish' do
+        config.parse!(['--publish'])
+
+        expect(config.formats).to eq [
+          ['pretty', {}, out],
+          ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
+        ]
+      end
+
+      it 'does not add the default formatter when a formatter is defined with --publish' do
+        config.parse!(['--publish', '--format', 'progress'])
+
+        expect(config.formats).to eq [
+          ['progress', {}, out],
+          ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
+        ]
+      end
+
+      it 'does not add the default formatter with --format message' do
+        config.parse!(['--format', 'message'])
+
+        expect(config.formats).to eq [
+          ['message', {}, out]
+        ]
+      end
+
       it 'accepts --out option' do
         config.parse!(%w[--out jalla.txt])
 
