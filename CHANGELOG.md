@@ -20,6 +20,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 * Circle-CI windows build now silently installs MSYS2 using Chocolatey before
   setting-up the ruby devkit with ridk
+  ([#1503](https://github.com/cucumber/cucumber-ruby/pull/1503)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 
 ## [5.2.0](https://github.com/cucumber/cucumber-ruby/compare/v5.1.3...v5.2.0)
 
