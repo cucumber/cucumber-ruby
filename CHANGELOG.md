@@ -23,6 +23,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([#1503](https://github.com/cucumber/cucumber-ruby/pull/1503)
    [aurelien-reeves](https://github.com/aurelien-reeves))
 
+* `--publish` and no formatter now uses the pretty formatter per default
+  ([#1468](https://github.com/cucumber/cucumber-ruby/issues/1468)
+   [#1500](https://github.com/cucumber/cucumber-ruby/pull/1500)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 
 ## [5.2.0](https://github.com/cucumber/cucumber-ruby/compare/v5.1.3...v5.2.0)
 
