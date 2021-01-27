@@ -22,9 +22,16 @@ After do |scenario|
 end
 
 Around do |_, block|
+  original_publish_token = ENV['CUCUMBER_PUBLISH_TOKEN']
+  ENV.delete('CUCUMBER_PUBLISH_TOKEN')
+
   original_coloring = Cucumber::Term::ANSIColor.coloring?
+
   block.call
+
   Cucumber::Term::ANSIColor.coloring = original_coloring
+
+  ENV['CUCUMBER_PUBLISH_TOKEN'] = original_publish_token
 end
 
 Around('@force_legacy_loader') do |_, block|
