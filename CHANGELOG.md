@@ -16,7 +16,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 * `fileattribute` cli argument available to attach `file` to junit formatter
 
-### Fix
+### Fixed
+
+* Circle-CI windows build now silently installs MSYS2 using Chocolatey before
+  setting-up the ruby devkit with ridk
+  ([#1503](https://github.com/cucumber/cucumber-ruby/pull/1503)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 
 * `--publish` and no formatter now uses the pretty formatter per default
   ([#1468](https://github.com/cucumber/cucumber-ruby/issues/1468)

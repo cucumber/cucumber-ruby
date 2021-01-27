@@ -16,6 +16,14 @@ commands:
           name: "Add ansicon"
           command: |
             choco install ansicon
+      - run:
+          name: "Add MSYS2"
+          command: |
+            choco install msys2
+      - run:
+          name: "Set-up Ruby devkit"
+          command: |
+            ridk install 2 3
 
   build:
     description: "Build and run the tests"
