@@ -10,7 +10,19 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ----
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...master)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...master)
+
+### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+### Security fixes
+
+## [5.3.0](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0)
 
 ### Added
 
