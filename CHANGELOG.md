@@ -22,6 +22,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Security fixes
 
+### Dependencies
+
+* Updated dependencies (look at the diff for details)
+
 ## [5.3.0](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0)
 
 ### Added
