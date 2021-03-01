@@ -18,10 +18,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
-* Upgraded to `cucumber-create-meta` 3.0.0 [aurelien-reeves](https://github.com/aurelien-reeves))
-* Upgraded to `cucumber-gherkin` 17.0.2 [aurelien-reeves](https://github.com/aurelien-reeves))
-* Upgraded to `cucumber-html-formatter` 12.0.0 [aurelien-reeves](https://github.com/aurelien-reeves))
-* Upgraded to `cucumber-messages` 14.0.1 [aurelien-reeves](https://github.com/aurelien-reeves))
+* Upgraded to `cucumber-create-meta` 3.0.0 [aurelien-reeves](https://github.com/aurelien-reeves))[TimotheeVille](https://github.com/TimotheeVille))
+* Upgraded to `cucumber-gherkin` 17.0.2 [aurelien-reeves](https://github.com/aurelien-reeves))[TimotheeVille](https://github.com/TimotheeVille))
+* Upgraded to `cucumber-html-formatter` 12.0.0 [aurelien-reeves](https://github.com/aurelien-reeves))[TimotheeVille](https://github.com/TimotheeVille))
+* Upgraded to `cucumber-messages` 14.0.1 [aurelien-reeves](https://github.com/aurelien-reeves))[TimotheeVille](https://github.com/TimotheeVille))
 
 ### Removed
 
