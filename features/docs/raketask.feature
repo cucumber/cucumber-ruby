@@ -3,8 +3,8 @@ Feature: Raketask
   In order to use cucumber's rake task
   As a Cuker
   I do not want to see rake's backtraces when it fails
-  Also I want to get zero exit status code on failures
-  And non-zero exit status code when it pases
+  Also I want to get zero exit status code when it passes
+  And non-zero exit status code when it fails
 
   Background:
     Given the standard step definitions
