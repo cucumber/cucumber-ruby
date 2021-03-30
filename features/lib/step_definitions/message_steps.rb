@@ -11,6 +11,10 @@ Then('output should be valid NDJSON') do
   end
 end
 
+Then('the output should contain NDJSON with key {string}') do |key|
+  expect(command_line.stdout).to match(/"#{key}":/)
+end
+
 Then('the output should contain NDJSON with key {string} and value {string}') do |key, value|
   expect(command_line.stdout).to match(/"#{key}": ?"#{value}"/)
 end

@@ -9,26 +9,32 @@ Feature: Attachments
 
   Attachments must have a body and a media type
 
-  Scenario: Strings can be attached with a media type
-    Beware that some formatters such as @cucumber/react use the media type
-    to determine how to display an attachment.
+  Background:
+    Given a file named "features/attaching_screenshot.feature" with:
+      """
+      Feature: A screenshot feature
 
-    When the string "hello" is attached as "application/octet-stream"
+        Scenario:
+          Given I attach a screenshot
 
-  Scenario: Log JSON
-     When the following string is attached as "application/json":
-       ```
-       {"message": "The <b>big</b> question", "foo": "bar"}
-       ```
+      """
+    And a file named "features/screenshot.png" with:
+      """
+      foo
+      """
+    And a file named "features/step_definitions/attaching_screenshot_steps.rb" with:
+      """
+      Given /^I attach a screenshot/ do
+        attach "features/screenshot.png", "image/png"
+      end
+      """
 
-  Scenario: Log text
-    When the string "hello" is logged
-
-  Scenario: Log ANSI coloured text
-     When text with ANSI escapes is logged
-
-  Scenario: Byte arrays are base64-encoded regardless of media type
-    When an array with 10 bytes is attached as "text/plain"
-
-  Scenario: Streams are always base64-encoded
-    When a JPEG image is attached
+  Scenario: Files can be attached given their path using messages
+    When I run `cucumber --format message features/attaching_screenshot.feature`
+    Then output should be valid NDJSON
+    And the output should contain NDJSON with key "attachment"
+    And the output should contain NDJSON with key "body" and value "Zm9v"
+    
+  Scenario: Files can be attached given their path in json formatter
+    When I run `cucumber --format json features/attaching_screenshot.feature`
+    Then the output should contain "embeddings\":[{\"mime_type\":\"image/png\",\"data\":\"Zm9v\"}]"
