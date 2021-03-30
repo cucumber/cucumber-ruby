@@ -112,7 +112,11 @@ module Cucumber
       end
 
       def attach(file, media_type)
-        super
+        return super unless File.file?(file)
+
+        content = File.open(file, 'rb', &:read)
+
+        super(content, media_type)
       end
 
       # Mark the matched step as pending.
