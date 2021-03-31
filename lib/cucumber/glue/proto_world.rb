@@ -3,6 +3,7 @@
 require 'cucumber/gherkin/formatter/ansi_escapes'
 require 'cucumber/core/test/data_table'
 require 'cucumber/deprecate'
+require 'mime/types'
 
 module Cucumber
   module Glue
@@ -111,12 +112,13 @@ module Cucumber
         messages.each { |message| attach(message.to_s.dup, 'text/x.cucumber.log+plain') }
       end
 
-      def attach(file, media_type)
+      def attach(file, media_type = nil)
         return super unless File.file?(file)
 
         content = File.open(file, 'rb', &:read)
+        media_type = MIME::Types.type_for(file).first if media_type.nil?
 
-        super(content, media_type)
+        super(content, media_type.to_s)
       end
 
       # Mark the matched step as pending.
