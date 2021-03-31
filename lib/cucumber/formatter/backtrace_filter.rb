@@ -15,6 +15,7 @@ module Cucumber
       test/unit
       .gem/ruby
       bin/bundle
+      rdebug-ide
     ]
 
     @backtrace_filters << RbConfig::CONFIG['rubyarchdir'] if RbConfig::CONFIG['rubyarchdir']
