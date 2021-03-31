@@ -30,8 +30,3 @@ install_if -> { !is_windows } do
   gem 'rubocop', '~> 0.89', '= 0.89.1'
   gem 'rubocop-packaging', '~> 0.3', '= 0.5.1'
 end
-
-group :development do
-  gem 'debase', require: false
-  gem 'ruby-debug-ide', require: false
-end
