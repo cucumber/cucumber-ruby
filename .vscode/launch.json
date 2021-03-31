@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Cucumber",
+            "type": "Ruby",
+            "request": "launch",
+            "useBundler": true,
+            "program": "${workspaceRoot}/bin/cucumber",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Cucumber current feature file",
+            "type": "Ruby",
+            "request": "launch",
+            "useBundler": true,
+            "program": "${workspaceRoot}/bin/cucumber",
+            "args": ["${file}"],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Cucumber scenario under cursor",
+            "type": "Ruby",
+            "request": "launch",
+            "useBundler": true,
+            "program": "${workspaceRoot}/bin/cucumber",
+            "args": ["${file}:${lineNumber}"],
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
