@@ -39,6 +39,11 @@ group :development do
 end 
 ~~~
 
+## Using Visual Studio Code?
+
+Sample for launch.json configuration is available in
+[docs/vscode-example-launch-configuration.md](https://github.com/cucumber/cucumber-ruby/blob/master/docs/vscode-example-launch-configuration.md)
+
 ## Note on Patches/Pull Requests
 
 * Fork the project. Make a branch for your change.
