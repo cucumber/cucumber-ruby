@@ -115,7 +115,7 @@ module Cucumber
       def attach(file, media_type = nil)
         return super unless File.file?(file)
 
-        content = File.open(file, 'rb', &:read)
+        content = File.read(file, mode: 'rb')
         media_type = MIME::Types.type_for(file).first if media_type.nil?
 
         super(content, media_type.to_s)
