@@ -114,10 +114,10 @@ module Cucumber
       end
 
       # Attach a file to the output
-      # @param file [string|io] the file to attach. 
+      # @param file [string|io] the file to attach.
       #   It can be a string containing the file content itself,
       #   the file path, or an IO ready to be read.
-      # @param media_type [string] the media type. If file is a valid path, 
+      # @param media_type [string] the media type. If file is a valid path,
       #   media_type can be ommitted, it will then be inferred from the file name.
       def attach(file, media_type = nil)
         return super unless File.file?(file)
