@@ -3,6 +3,7 @@
 require 'cucumber/gherkin/formatter/ansi_escapes'
 require 'cucumber/core/test/data_table'
 require 'cucumber/deprecate'
+require 'mime/types'
 
 module Cucumber
   module Glue
@@ -98,6 +99,7 @@ module Cucumber
       end
 
       # Embed an image in the output
+      # @deprecated Use {#attach} instead
       def embed(file, mime_type, _label = 'Screenshot')
         Cucumber.deprecate(
           'Please use attach(file, media_type) instead',
@@ -111,8 +113,19 @@ module Cucumber
         messages.each { |message| attach(message.to_s.dup, 'text/x.cucumber.log+plain') }
       end
 
-      def attach(file, media_type)
-        super
+      # Attach a file to the output
+      # @param file [string|io] the file to attach.
+      #   It can be a string containing the file content itself,
+      #   the file path, or an IO ready to be read.
+      # @param media_type [string] the media type. If file is a valid path,
+      #   media_type can be ommitted, it will then be inferred from the file name.
+      def attach(file, media_type = nil)
+        return super unless File.file?(file)
+
+        content = File.read(file, mode: 'rb')
+        media_type = MIME::Types.type_for(file).first if media_type.nil?
+
+        super(content, media_type.to_s)
       end
 
       # Mark the matched step as pending.

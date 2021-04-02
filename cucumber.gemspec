@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-messages', '~> 14.0', '>= 14.0.1'
   s.add_dependency 'cucumber-wire', '~> 4.0', '>= 4.0.1'
   s.add_dependency 'diff-lcs', '~> 1.4', '>= 1.4.4'
+  s.add_dependency 'mime-types', '~> 3.3', '>= 3.3.1'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.1'
 

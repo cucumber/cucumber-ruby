@@ -94,10 +94,7 @@ module Cucumber
           test_step_output << src
           return
         end
-        if File.file?(src)
-          content = File.open(src, 'rb', &:read)
-          data = encode64(content)
-        elsif mime_type =~ /;base64$/
+        if mime_type =~ /;base64$/
           mime_type = mime_type[0..-8]
           data = src
         else

@@ -574,9 +574,7 @@ module Cucumber
           define_steps do
             Given(/^there are bananas$/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
-              f1 = RSpec::Mocks::Double.new
-              RSpec::Mocks.allow_message(File, :open) { |&block| block.call(f1) }
-              RSpec::Mocks.allow_message(f1, :read) { 'foo' }
+              RSpec::Mocks.allow_message(File, :read) { 'foo' }
               embed('out/snapshot.jpeg', 'image/png')
             end
           end
@@ -643,31 +641,31 @@ module Cucumber
                    "description": "",
                    "type": "scenario",
                    "before":
-                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:620"},
+                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:618"},
                       "result": {"status": "passed",
                                  "duration": 1}},
-                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:621"},
+                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:619"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:627"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:625"},
                       "result": {"status": "passed",
                                  "duration": 1},
                       "after":
-                       [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:624"},
+                       [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:622"},
                          "result": {"status": "passed",
                                     "duration": 1}},
-                        {"match": {"location": "spec/cucumber/formatter/json_spec.rb:625"},
+                        {"match": {"location": "spec/cucumber/formatter/json_spec.rb:623"},
                          "result": {"status": "passed",
                                     "duration": 1}}]}],
                    "after":
-                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:623"},
+                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:621"},
                       "result": {"status": "passed",
                                  "duration": 1}},
-                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:622"},
+                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:620"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
           end
@@ -708,13 +706,13 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:689"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:687"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "around":
                     [{"match": {"location": "unknown_hook_location:1"},
                       "result": {"status": "failed",
-                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:687:in `Around'",
+                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:685:in `Around'",
                                  "duration": 1}}]}]}]})
           end
         end
@@ -755,7 +753,7 @@ module Cucumber
                        "rows":
                          [{"cells": ["aa", "bb"]},
                           {"cells": ["cc", "dd"]}],
-                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:733"},
+                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:731"},
                        "result": {"status": "passed",
                                   "duration": 1}}]}]}]))
           end

@@ -16,6 +16,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* It is now possible to attach a file passing its path
+  ([#1506](https://github.com/cucumber/cucumber-ruby/issues/1506)
+   [#1514](https://github.com/cucumber/cucumber-ruby/pull/1514)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Changed
 
 * Upgraded to `cucumber-create-meta` 3.0.0 ([aurelien-reeves](https://github.com/aurelien-reeves), [TimotheeVille](https://github.com/TimotheeVille))
