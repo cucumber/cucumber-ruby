@@ -25,13 +25,7 @@ then `bundle install`.
 ## Sample launch.json
 
 The following `launch.json` - to be placed in the `.vscode` folder - allows to use
-VSCode debugging features like **breakpoints** and **watches**. It contains 3 configurations:
-
-- `Cucumber` is equivalent to `bundle exec cucumber`
-- `Cucumber current feature file` will execute cucumber 
-  over the currently opened file: it must be a `.feature` file
-- `Cucumber scenario under cursor` will execute cucumber over the scenario under the cursor. 
-  Caution: the cursor MUST be on the line of the name of the scenario. Refs: [#1469]
+VSCode debugging features like **breakpoints** and **watches**. 
 
 ```json
 {
@@ -42,6 +36,7 @@ VSCode debugging features like **breakpoints** and **watches**. It contains 3 co
             "type": "Ruby",
             "request": "launch",
             "useBundler": true,
+            "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/bin/cucumber",
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -50,6 +45,7 @@ VSCode debugging features like **breakpoints** and **watches**. It contains 3 co
             "type": "Ruby",
             "request": "launch",
             "useBundler": true,
+            "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/bin/cucumber",
             "args": ["${file}"],
             "internalConsoleOptions": "openOnSessionStart"
@@ -59,7 +55,37 @@ VSCode debugging features like **breakpoints** and **watches**. It contains 3 co
             "type": "Ruby",
             "request": "launch",
             "useBundler": true,
+            "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/bin/cucumber",
+            "args": ["${file}:${lineNumber}"],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Rspec",
+            "type": "Ruby",
+            "request": "launch",
+            "useBundler": true,
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rspec",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Rspec current file",
+            "type": "Ruby",
+            "request": "launch",
+            "useBundler": true,
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rspec",
+            "args": ["${file}"],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Rspec current line",
+            "type": "Ruby",
+            "request": "launch",
+            "useBundler": true,
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/bin/rspec",
             "args": ["${file}:${lineNumber}"],
             "internalConsoleOptions": "openOnSessionStart"
         }
