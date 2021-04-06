@@ -9,7 +9,7 @@ def monorepo(name)
   if File.directory?(path)
     { path: File.expand_path(path) }
   else
-    { git: "https://github.com/cucumber/cucumber.git", glob: "#{name}/ruby/cucumber-#{name}.gemspec" }
+    { git: 'https://github.com/cucumber/cucumber.git', glob: "#{name}/ruby/cucumber-#{name}.gemspec" }
   end
 end
 
