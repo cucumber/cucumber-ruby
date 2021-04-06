@@ -17,6 +17,7 @@ target
 *.tmproj
 .#*
 .idea
+.vscode
 *.pyc
 *.rbc
 rerun.txt
@@ -29,6 +30,7 @@ tags
 .ruby-version
 .project
 Gemfile.local
+Gemfile.local.lock
 .envrc
 Gemfile.lock
 bin/json-formatter

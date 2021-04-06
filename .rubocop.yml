@@ -17,6 +17,7 @@ AllCops:
   # `-S/--display-style-guide` option.
   DisplayStyleGuide: true
   Exclude:
+    - 'bin/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'temp_app/**/*'

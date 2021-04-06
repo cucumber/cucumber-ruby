@@ -21,16 +21,28 @@ You can chat with the core team on https://gitter.im/cucumber/contributors. We t
 
 ## Installing your own gems
 
-A `Gemfile.local`-file can be used to have your own gems installed to support
-your normal development workflow.
+A `Gemfile.local`-file can be used to have your own gems installed to support your normal development workflow. 
+Execute `bundle config set --local gemfile Gemfile.local` to use it per default.
 
 Example:
 
 ~~~ruby
-gem 'pry'
-gem 'pry-byebug'
-gem 'byebug'
+# Include the regular Gemfile
+eval File.read('Gemfile')
+
+group :development do
+  gem 'byebug'
+  gem 'debase', require: false
+  gem 'ruby-debug-ide', require: false
+  gem 'pry'
+  gem 'pry-byebug'
+end 
 ~~~
+
+## Using Visual Studio Code?
+
+Sample for launch.json configuration is available in
+[docs/vscode-example-launch-configuration.md](https://github.com/cucumber/cucumber-ruby/blob/master/docs/vscode-example-launch-configuration.md)
 
 ## Note on Patches/Pull Requests
 
