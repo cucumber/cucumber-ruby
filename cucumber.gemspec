@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
   s.add_dependency 'cucumber-core', '~> 8.0', '>= 8.0.1'
   s.add_dependency 'cucumber-create-meta', '~> 4.0', '>= 4.0.0'
-  s.add_dependency 'cucumber-cucumber-expressions', '~> 12.1', '>= 12.1.0'
+  s.add_dependency 'cucumber-cucumber-expressions', '~> 12.1', '>= 12.1.1'
   s.add_dependency 'cucumber-gherkin', '~> 18.1', '>= 18.1.0'
   s.add_dependency 'cucumber-html-formatter', '~> 13.0', '>= 13.0.0'
   s.add_dependency 'cucumber-messages', '~> 15.0', '>= 15.0.0'
