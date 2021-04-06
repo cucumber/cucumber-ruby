@@ -4,22 +4,34 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gemspec
 
-if ENV['CUCUMBER_RUBY_CORE']
-  gem 'cucumber-core', path: ENV['CUCUMBER_RUBY_CORE']
-elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
-  gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core'
+def monorepo(name)
+  path = "../../cucumber/#{name}/ruby"
+  if File.directory?(path)
+    { path: File.expand_path(path) }
+  else
+    { git: "https://github.com/cucumber/cucumber.git", glob: "#{name}/ruby/cucumber-#{name}.gemspec" }
+  end
 end
 
-if ENV['CUCUMBER_RUBY_WIRE']
-  gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE']
-elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
-  gem 'cucumber-wire', github: 'cucumber/cucumber-ruby-wire'
+def sibling(name)
+  path = "../#{name}"
+  if File.directory?(path)
+    { path: File.expand_path(path) }
+  else
+    # Sibling dependencies must use the same branch
+    branch = ENV['CIRCLE_BRANCH']
+    { git: "https://github.com/cucumber/#{name}.git", branch: branch }
+  end
 end
 
-gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUMBER_EXPRESSIONS_RUBY']
-gem 'cucumber-gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
-gem 'cucumber-html-formatter', path: ENV['CUCUMBER_HTML_FORMATTER_RUBY'] if ENV['CUCUMBER_HTML_FORMATTER_RUBY']
-gem 'cucumber-messages', path: ENV['CUCUMBER_MESSAGES_RUBY'] if ENV['CUCUMBER_MESSAGES_RUBY']
+gem 'cucumber-core', sibling('cucumber-ruby-core')
+gem 'cucumber-create-meta', monorepo('create-meta')
+gem 'cucumber-cucumber-expressions', monorepo('cucumber-expressions')
+gem 'cucumber-gherkin', monorepo('gherkin')
+gem 'cucumber-html-formatter', monorepo('html-formatter')
+gem 'cucumber-messages', monorepo('messages')
+gem 'cucumber-tag-expressions', monorepo('tag-expressions')
+gem 'cucumber-wire', sibling('cucumber-ruby-wire')
 
 require 'rbconfig'
 # rubocop:disable Style/DoubleNegation
