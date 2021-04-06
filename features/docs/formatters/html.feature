@@ -16,7 +16,6 @@ Feature: html formatter
       """
 
   Scenario: output html to stdout
-    When I run `cucumber features/my_feature.feature --format html`
+    When I run `cucumber features/my_feature.feature --format html --publish-quiet`
     Then the stderr should not contain anything
-    Then it should pass
     And output should be html with title "Cucumber"
