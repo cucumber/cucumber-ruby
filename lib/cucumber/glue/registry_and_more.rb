@@ -90,9 +90,7 @@ module Cucumber
         @configuration.notify :envelope, step_definition.to_envelope
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
-        # TODO: add a way to extract the parameter type directly from the error.
-        type_name = e.message.match(/^Undefined parameter type \{(.*)\}$/)[1]
-
+        type_name = e.undefined_parameter_type_name
         @configuration.notify :undefined_parameter_type, type_name, string_or_regexp
       end
 
@@ -182,9 +180,6 @@ module Cucumber
       private
 
       def parameter_type_envelope(parameter_type)
-        # TODO: should me moved to Cucumber::Expression::ParameterType#to_envelope ?
-        # Note: that would mean that cucumber-expression would depend on cucumber-messages
-
         Cucumber::Messages::Envelope.new(
           parameter_type: Cucumber::Messages::ParameterType.new(
             id: @configuration.id_generator.new_id,
