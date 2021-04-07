@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 def monorepo(name)
-  if ENV['CUCUMBER_RELEASED_GEMS'] return {}
+  return {} if ENV['CUCUMBER_RELEASED_GEMS']
   path = "../../cucumber/#{name}/ruby"
   if File.directory?(path)
     { path: File.expand_path(path) }
@@ -15,7 +15,7 @@ def monorepo(name)
 end
 
 def sibling(name)
-  if ENV['CUCUMBER_RELEASED_GEMS'] return {}
+  return {} if ENV['CUCUMBER_RELEASED_GEMS']
   path = "../#{name}"
   if File.directory?(path)
     { path: File.expand_path(path) }
