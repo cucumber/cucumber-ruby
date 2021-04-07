@@ -82,7 +82,7 @@ jobs:
       - build
       - test
 
-  build-ruby-2_5:
+  build-ruby-2_5-released-gems:
     docker:
       - image: circleci/ruby:2.5
 
