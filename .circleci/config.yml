@@ -87,7 +87,7 @@ jobs:
       - image: circleci/ruby:2.5
 
     working_directory: ~/repo
-    env:
+    environment:
       CUCUMBER_RELEASED_GEMS: yes
     steps:
       - build
@@ -213,6 +213,7 @@ workflows:
     jobs:
       - build_windows
       - build-ruby-2_5
+      - build-ruby-2_5-released-gems
       - build-ruby-2_6
       - build-ruby-2_7
       - build-ruby-3_0
