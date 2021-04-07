@@ -82,6 +82,17 @@ jobs:
       - build
       - test
 
+  build-ruby-2_5:
+    docker:
+      - image: circleci/ruby:2.5
+
+    working_directory: ~/repo
+    env:
+      CUCUMBER_RELEASED_GEMS: yes
+    steps:
+      - build
+      - test
+
   build-ruby-2_6:
     docker:
       - image: circleci/ruby:2.6
