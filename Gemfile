@@ -26,14 +26,10 @@ def sibling(name)
   end
 end
 
-gem 'cucumber-core', sibling('cucumber-ruby-core')
 gem 'cucumber-create-meta', monorepo('create-meta')
-gem 'cucumber-cucumber-expressions', monorepo('cucumber-expressions')
-gem 'cucumber-gherkin', monorepo('gherkin')
 # Uncomment the next gem line to use the latest from local filesystem or git.
 # It will fail if it isn't built (the assets folder must have the js/css/mustache.html files)
 # gem 'cucumber-html-formatter', monorepo('html-formatter')
-gem 'cucumber-messages', monorepo('messages')
 gem 'cucumber-tag-expressions', monorepo('tag-expressions')
 gem 'cucumber-wire', sibling('cucumber-ruby-wire')
 
