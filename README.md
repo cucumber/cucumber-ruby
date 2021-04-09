@@ -1,8 +1,8 @@
 [![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](https://opencollective.com/cucumber)
 [![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
-
+[![pull requests](https://oselvar.com/api/badge?label=pull%20requests&csvUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fcucumber%2Foselvar-github-metrics%2Fmain%2Fdata%2Fcucumber%2Fcucumber-ruby%2FpullRequests.csv)](https://oselvar.com/github/cucumber/oselvar-github-metrics/main/cucumber/cucumber-ruby)
+[![pull requests](https://oselvar.com/api/badge?label=issues&csvUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fcucumber%2Foselvar-github-metrics%2Fmain%2Fdata%2Fcucumber%2Fcucumber-ruby%2Fissues.csv)](https://oselvar.com/github/cucumber/oselvar-github-metrics/main/cucumber/cucumber-ruby)
 [![CircleCI](https://circleci.com/gh/cucumber/cucumber-ruby.svg?style=svg)](https://circleci.com/gh/cucumber/cucumber-ruby)
-
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master)
 
