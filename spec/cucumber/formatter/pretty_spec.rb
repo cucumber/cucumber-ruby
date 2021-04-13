@@ -283,13 +283,13 @@ OUTPUT
 
             define_steps do
               Before do
-                puts 'Before hook'
+                log 'Before hook'
               end
               AfterStep do
-                puts 'AfterStep hook'
+                log 'AfterStep hook'
               end
               After do
-                puts 'After hook'
+                log 'After hook'
               end
               Given('this step passes') {}
             end
@@ -328,13 +328,13 @@ OUTPUT
 
             define_steps do
               Before do
-                puts 'Before hook'
+                log 'Before hook'
               end
               AfterStep do
-                puts 'AfterStep hook'
+                log 'AfterStep hook'
               end
               After do
-                puts 'After hook'
+                log 'After hook'
               end
               Given('this step passes') {}
             end
