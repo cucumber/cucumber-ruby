@@ -73,40 +73,9 @@ module Cucumber
         MultilineArgument::DataTable.from(text_or_table)
       end
 
-      # Print a message to the output.
-      #
-      # @note Cucumber might surprise you with the behaviour of this method. Instead
-      #   of sending the output directly to STDOUT, Cucumber will intercept and cache
-      #   the message until the current step has finished, and then display it.
-      #
-      #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
-      def puts(*messages)
-        Cucumber.deprecate(
-          'Messages emitted with "puts" will no longer be caught by Cucumber ' \
-          'and sent to the formatter. If you want message to be in the formatted output, ' \
-          "please use log(message) instead.\n" \
-          'If you simply want it in the console, '\
-          'keep using "puts" (or Kernel.puts to avoid this message)',
-          'puts(message)',
-          '6.0.0'
-        )
-        messages.each { |message| log(message.to_s) }
-      end
-
       # Pause the tests and ask the operator for input
       def ask(question, timeout_seconds = 60)
         super
-      end
-
-      # Embed an image in the output
-      # @deprecated Use {#attach} instead
-      def embed(file, mime_type, _label = 'Screenshot')
-        Cucumber.deprecate(
-          'Please use attach(file, media_type) instead',
-          'embed(file, mime_type, label)',
-          '6.0.0'
-        )
-        attach(file, mime_type)
       end
 
       def log(*messages)

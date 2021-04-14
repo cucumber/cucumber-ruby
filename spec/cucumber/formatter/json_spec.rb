@@ -423,7 +423,7 @@ module Cucumber
           FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { puts 'from step' }
+            Given(/^there are bananas$/) { log 'from step' }
           end
 
           it 'includes the output from the step in the json data' do
@@ -533,7 +533,7 @@ module Cucumber
           FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { embed('YWJj', 'mime-type;base64') }
+            Given(/^there are bananas$/) { attach('YWJj', 'mime-type;base64') }
           end
 
           it 'includes the data from the step in the json data' do
@@ -575,7 +575,7 @@ module Cucumber
             Given(/^there are bananas$/) do
               RSpec::Mocks.allow_message(File, :file?) { true }
               RSpec::Mocks.allow_message(File, :read) { 'foo' }
-              embed('out/snapshot.jpeg', 'image/png')
+              attach('out/snapshot.jpeg', 'image/png')
             end
           end
 

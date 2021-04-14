@@ -35,6 +35,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - Upgraded dependencies (see diff)
 
+### Removed
+
+- `embed` in step definitions in favor of `attach`.
+  `embed` has been deprecated in version 4.0.
+  Simply replace `embed` with `attach`.
+- `puts` in step definitions in favor of `log`. `log` has been deprecated in version 4.0
+  `puts` has been deprecated in version 4.0.
+  Simply replace `puts` with `log`.
+
 ## [5.3.0](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0)
 
 ### Added
