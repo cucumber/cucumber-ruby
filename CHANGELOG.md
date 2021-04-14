@@ -24,6 +24,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [v6.0.0](https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...v6.0.0)
 
+### Added
+
+- Support tagged rules ([cucumber#1123](https://github.com/cucumber/cucumber/issues/1123))
+
 ### Fixed
 
 - It is now possible to attach a file passing its path
