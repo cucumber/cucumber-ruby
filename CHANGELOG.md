@@ -40,10 +40,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - `embed` in step definitions in favor of `attach`.
   `embed` has been deprecated in version 4.0.
   Simply replace `embed` with `attach`.
+  ([#1523](https://github.com/cucumber/cucumber-ruby/pull/1523)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
+  
 - `puts` in step definitions in favor of `log`. `log` has been deprecated in version 4.0
   `puts` has been deprecated in version 4.0.
   Simply replace `puts` with `log`.
-
+  ([#1523](https://github.com/cucumber/cucumber-ruby/pull/1523)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
+  
 ## [5.3.0](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0)
 
 ### Added
