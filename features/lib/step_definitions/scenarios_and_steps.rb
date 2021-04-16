@@ -109,3 +109,41 @@ end
 Given('a step definition that looks like this:') do |content|
   write_file("features/step_definitions/steps#{SecureRandom.uuid}.rb", content)
 end
+
+Given('a scenario {string} that fails three times, passes and then skips scenario') do |full_name|
+  name = snake_case(full_name)
+
+  create_feature("#{full_name} feature") do
+    create_scenario(full_name) do
+      """
+        Given it three times, then passes
+        And it skips scenario
+      """
+    end
+  end
+
+  write_file(
+    "features/step_definitions/#{name}_steps.rb",
+    step_definition('/^it skips scenario/', 'skip_this_scenario')
+  )
+
+  write_file(
+    "features/step_definitions/#{name}_steps.rb",
+    [
+      step_definition('/^it skips scenario/', 'skip_this_scenario'),
+      step_definition(
+        '/^it three times, then passes/',
+        [
+          "$#{name} ||= 0",
+          "$#{name} += 1",
+          "expect($#{name}).to be > 3"
+        ]
+      )
+    ].join("\n")
+  )
+
+  write_file(
+    "features/support/#{name}_init.rb",
+    "  $#{name} = 0"
+  )
+end
