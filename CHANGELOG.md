@@ -47,7 +47,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([#1523](https://github.com/cucumber/cucumber-ruby/pull/1523)
   [aurelien-reeves](https://github.com/aurelien-reeves))
   
-- `log` in step definitions in favor of `puts`. 
+- `puts` in step definitions in favor of `log`. 
   `puts` has been deprecated in version 4.0.
   Simply replace `puts` with `log`.
   ([#1523](https://github.com/cucumber/cucumber-ruby/pull/1523)
