@@ -18,6 +18,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+- Undeprecate the JSON formatter. It won't be removed any time soon.
+
 ### Removed
 
 ### Security fixes

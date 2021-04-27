@@ -24,7 +24,7 @@ module Cucumber
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       "Generates a report similar to Ant+JUnit. Use\n" \
                                                               "#{INDENT}junit,fileattribute=true to include a file attribute."],
-        'json'        => ['Cucumber::Formatter::Json',        '[DEPRECATED] Prints the feature as JSON'],
+        'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
         'html'        => ['Cucumber::Formatter::HTML',        'Outputs HTML report'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']

@@ -672,14 +672,3 @@ Feature: JSON output formatter
       """
     When I run `cucumber --format json features/out_scenario_out_scenario_outline.feature`
     Then it should pass
-
-  Scenario: shows a deprecation warning
-    When I run `cucumber --format json`
-    Then the stderr should contain:
-      """
-      WARNING: --format=json is deprecated and will be removed after version 6.0.0
-      """
-    And the stderr should contain:
-      """
-      Please use --format=message and stand-alone json-formatter.
-      """
