@@ -31,7 +31,7 @@ commands:
       - checkout
       - restore_cache:
           keys:
-            - bundle-{{ checksum "cucumber.gemspec" }}
+            - bundle-{{ .Environment.CACHE_VERSION }}-{{checksum "cucumber.gemspec" }}
       - run:
           name: install dependencies
           command: |
@@ -39,7 +39,7 @@ commands:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: bundle-{{ checksum "cucumber.gemspec" }}
+          key: bundle-{{ .Environment.CACHE_VERSION }}-{{ checksum "cucumber.gemspec" }}
 
   test:
     description: "Run tests"
