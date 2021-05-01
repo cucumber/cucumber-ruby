@@ -31,7 +31,7 @@ commands:
       - checkout
       - restore_cache:
           keys:
-          - bundle-{{ checksum "cucumber.gemspec" }}
+            - bundle-{{ checksum "cucumber.gemspec" }}
       - run:
           name: install dependencies
           command: |
@@ -189,7 +189,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
 
     jobs:
       - build-ruby-2_5

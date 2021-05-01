@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
 
   s.metadata    = {
     'bug_tracker_uri'   => 'https://github.com/cucumber/cucumber-ruby/issues',
-    'changelog_uri'     => 'https://github.com/cucumber/cucumber-ruby/blob/master/CHANGELOG.md',
+    'changelog_uri'     => 'https://github.com/cucumber/cucumber-ruby/blob/main/CHANGELOG.md',
     'documentation_uri' => 'https://www.rubydoc.info/github/cucumber/cucumber-ruby/',
     'mailing_list_uri'  => 'https://groups.google.com/forum/#!forum/cukes',
     'source_code_uri'   => 'https://github.com/cucumber/cucumber-ruby'

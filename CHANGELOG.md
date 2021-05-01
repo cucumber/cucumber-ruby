@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...master)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...main)
 
 ### Added
 
@@ -48,13 +48,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   Simply replace `embed` with `attach`.
   ([#1523](https://github.com/cucumber/cucumber-ruby/pull/1523)
   [aurelien-reeves](https://github.com/aurelien-reeves))
-  
-- `puts` in step definitions in favor of `log`. 
+- `puts` in step definitions in favor of `log`.
   `puts` has been deprecated in version 4.0.
   Simply replace `puts` with `log`.
   ([#1523](https://github.com/cucumber/cucumber-ruby/pull/1523)
   [aurelien-reeves](https://github.com/aurelien-reeves))
-  
+
 ## [5.3.0](https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0)
 
 ### Added
@@ -683,7 +682,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 
 ### Features
 
-- [Add custom filters from Ruby configuration code](https://github.com/cucumber/cucumber-ruby/blob/master/features/docs/extending_cucumber/custom_filter.feature) (@mattwynne)
+- [Add custom filters from Ruby configuration code](https://github.com/cucumber/cucumber-ruby/blob/main/features/docs/extending_cucumber/custom_filter.feature) (@mattwynne)
 
 ### Bugfixes
 
@@ -1088,13 +1087,13 @@ New format:
 
     [feature here]
 
-Also see [Gherkin 2.6.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) for info about new `id` and `uri` elements in the JSON.
+Also see [Gherkin 2.6.0 History](https://github.com/cucumber/cucumber/blob/master/gherkin/History.md) for info about new `id` and `uri` elements in the JSON.
 
 ## [1.1.0](https://github.com/cucumber/cucumber-ruby/compare/v1.0.6...v1.1.0)
 
 ### Changed features
 
-- The JSON formatter output has changed. See [Gherkin 2.5.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) (Aslak Hellesøy)
+- The JSON formatter output has changed. See [Gherkin 2.5.0 History](https://github.com/cucumber/gherkin/blob/master/CHANGELOG.md) (Aslak Hellesøy)
 
 ## [1.0.6](https://github.com/cucumber/cucumber-ruby/compare/v1.0.5...v1.0.6)
 
