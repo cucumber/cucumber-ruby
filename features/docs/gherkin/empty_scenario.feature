@@ -46,6 +46,14 @@ Feature: Empty scenario
         "description": "",
         "elements": [
           {
+            "description": "",
+            "keyword": "Background",
+            "line": 3,
+            "name": "",
+            "steps": [],
+            "type": "background"
+          },
+          {
             "id": "minimal;empty",
             "description": "",
             "keyword": "Scenario",

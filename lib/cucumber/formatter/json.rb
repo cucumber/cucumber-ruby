@@ -38,9 +38,9 @@ module Cucumber
           @element_hash = builder.background_hash
         else
           @in_background = false
-          feature_elements << @test_case_hash
-          @element_hash = @test_case_hash
         end
+        feature_elements << @test_case_hash
+        @element_hash = @test_case_hash
         @any_step_failed = false
       end
 
@@ -257,7 +257,8 @@ module Cucumber
             name: background.name,
             description: value_or_empty_string(background.description),
             line: background.location.line,
-            type: 'background'
+            type: 'background',
+            steps: []
           }
         end
 
@@ -269,7 +270,8 @@ module Cucumber
             name: test_case.name,
             description: value_or_empty_string(scenario.description),
             line: test_case.location.lines.max,
-            type: 'scenario'
+            type: 'scenario',
+            steps: []
           }
           @test_case_hash[:tags] = create_tags_array_from_tags_array(test_case.tags) unless test_case.tags.empty?
         end
