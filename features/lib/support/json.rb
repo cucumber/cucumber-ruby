@@ -5,7 +5,7 @@ module JSONWorld
     json.each do |feature|
       elements = feature.fetch('elements') { [] }
       elements.each do |scenario|
-        scenario['steps'].each do |_step|
+        scenario['steps']&.each do |_step|
           %w[steps before after].each do |type|
             next unless scenario[type]
             scenario[type].each do |step_or_hook|
