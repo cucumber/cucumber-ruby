@@ -32,21 +32,23 @@ module Cucumber
           @feature_hashes << @feature_hash
         end
         @test_case_hash = builder.test_case_hash
-        if builder.background?
-          @in_background = true
-          feature_elements << builder.background_hash
-          @element_hash = builder.background_hash
-        else
-          @in_background = false
-          feature_elements << @test_case_hash
-          @element_hash = @test_case_hash
-        end
+
+        @element_hash = nil
+        @element_background_hash = builder.background_hash
+        @in_background = builder.background?
+
         @any_step_failed = false
       end
 
       def on_test_step_started(event)
         test_step = event.test_step
         return if internal_hook?(test_step)
+
+        if @element_hash.nil?
+          @element_hash = create_element_hash(test_step)
+          feature_elements << @element_hash
+        end
+
         if test_step.hook?
           @step_or_hook_hash = {}
           hooks_of_type(test_step) << @step_or_hook_hash
@@ -157,6 +159,13 @@ module Cucumber
 
       def test_step_embeddings
         @step_or_hook_hash[:embeddings] ||= []
+      end
+
+      def create_element_hash(test_step)
+        return @element_background_hash if @in_background && !first_step_after_background?(test_step)
+
+        @in_background = false
+        @test_case_hash
       end
 
       def create_step_hash(test_step)
