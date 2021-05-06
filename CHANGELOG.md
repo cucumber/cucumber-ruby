@@ -18,6 +18,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+- The json formatter now reports empty scenarios. 
+  No status is reported for empty scenarios in the resulting json.
+  ([1533](https://github.com/cucumber/cucumber-ruby/pull/1533)
+   [1530](https://github.com/cucumber/cucumber-ruby/issues/1530)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 - Undeprecate the JSON formatter. It won't be removed any time soon.
 
 ### Removed
