@@ -20,6 +20,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - The json formatter now reports empty scenarios. 
   No status is reported for empty scenarios in the resulting json.
+  No more empty background is reported with empty scenarios.
   ([1533](https://github.com/cucumber/cucumber-ruby/pull/1533)
    [1530](https://github.com/cucumber/cucumber-ruby/issues/1530)
    [aurelien-reeves](https://github.com/aurelien-reeves))
