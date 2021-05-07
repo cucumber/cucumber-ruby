@@ -37,7 +37,7 @@ Feature: Empty scenario
     0 steps
     """
 
-  Scenario: reporting with the json formatter
+  Scenario: reporting with the JSON formatter
     When I run `cucumber --quiet --format json features/empty_scenario.feature`
     Then it should pass with JSON:
     """
