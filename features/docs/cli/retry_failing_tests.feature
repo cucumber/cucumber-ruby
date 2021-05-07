@@ -97,8 +97,8 @@ Feature: Retry failing tests
       """
 
     Scenario: Flaky scenario gives zero exit code in no-strict-flaky mode if flaky step fails, passes and skips scenario
-      And a scenario "Flaky-skip" that fails once, passes and then skips scenario
-      When I run `cucumber --retry 1 --no-strict-flaky --format summary`
+      And a scenario "Flaky-skip" that fails three times, passes and then skips scenario
+      When I run `cucumber --retry 3 --no-strict-flaky --format summary`
       Then it should pass with:
       """
 
