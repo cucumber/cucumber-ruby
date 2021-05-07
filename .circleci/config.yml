@@ -75,7 +75,7 @@ jobs:
 
   build-ruby-2_5:
     docker:
-      - image: circleci/ruby:2.5
+      - image: circleci/ruby:3.0
 
     working_directory: ~/repo
     steps:
@@ -84,7 +84,7 @@ jobs:
 
   build-ruby-2_6:
     docker:
-      - image: circleci/ruby:2.6
+      - image: circleci/ruby:3.0
 
     working_directory: ~/repo
     steps:
@@ -93,7 +93,7 @@ jobs:
 
   build-ruby-2_7:
     docker:
-      - image: circleci/ruby:2.7
+      - image: circleci/ruby:3.0
 
     working_directory: ~/repo
     steps:
