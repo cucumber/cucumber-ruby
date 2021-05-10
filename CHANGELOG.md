@@ -16,9 +16,14 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+- '--dry-run' now supports 'message' based-formatters
+  ([1537](https://github.com/cucumber/cucumber-ruby/pull/1537)
+   [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Changed
 
-- The JSON formatter now reports empty scenarios. 
+- The JSON formatter now reports empty scenarios.
   No status is reported for empty scenarios in the resulting JSON.
   No more empty background is reported with empty scenarios.
   ([1533](https://github.com/cucumber/cucumber-ruby/pull/1533)

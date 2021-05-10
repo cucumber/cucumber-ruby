@@ -26,6 +26,19 @@ Feature: Dry Run
 
       """
 
+  Scenario: With message formatter
+    Given a file named "features/test.feature" with:
+      """
+      Feature: test
+        Scenario:
+          Given this step passes
+      """
+    And the standard step definitions
+    When I run `cucumber --dry-run --publish-quiet --format message`
+    Then it should pass
+    And output should be valid NDJSON
+    And the output should contain NDJSON with key "status" and value "SKIPPED"
+
   Scenario: In strict mode
     Given a file named "features/test.feature" with:
       """
