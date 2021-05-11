@@ -127,6 +127,41 @@ OUTPUT
           end
         end
       end
+
+      describe 'Handling attachments in step definitions' do
+        extend Cucumber::Formatter::SpecHelperDsl
+        include Cucumber::Formatter::SpecHelper
+
+        before(:each) do
+          Cucumber::Term::ANSIColor.coloring = false
+          @out = StringIO.new
+          @formatter = Cucumber::Formatter::Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
+          run_defined_feature
+        end
+
+        describe 'when attaching data with null byte' do
+          define_feature <<-FEATURE
+            Feature: Banana party
+
+              Scenario: Monkey eats banana
+                When some data is attached
+          FEATURE
+
+          define_steps do
+            When('some data is attached') do
+              attach("'\x00'attachement", 'text/x.cucumber.log+plain')
+            end
+          end
+
+          it 'does not report an error' do
+            expect(@out.string).not_to include 'Error'
+          end
+
+          it 'properly attaches the data' do
+            expect(@out.string).to include "'\x00'attachement"
+          end
+        end
+      end
     end
   end
 end

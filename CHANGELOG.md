@@ -21,6 +21,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
    [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
    [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
    [aurelien-reeves](https://github.com/aurelien-reeves))
+- `attach` can now handle null bytes in the data.
+  ([1536](https://github.com/cucumber/cucumber-ruby/pull/1536)
+   [1529](https://github.com/cucumber/cucumber-ruby/issues/1529)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 
 ### Changed
 

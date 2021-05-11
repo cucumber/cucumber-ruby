@@ -95,6 +95,8 @@ module Cucumber
         media_type = MIME::Types.type_for(file).first if media_type.nil?
 
         super(content, media_type.to_s)
+      rescue StandardError
+        super
       end
 
       # Mark the matched step as pending.
