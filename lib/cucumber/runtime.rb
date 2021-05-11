@@ -233,6 +233,7 @@ module Cucumber
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
         # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
+        filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
         @configuration.filters.each { |filter| filters << filter }
         unless configuration.dry_run?
@@ -240,7 +241,6 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
-          filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
           filters << Filters::Quit.new
           filters << Filters::Retry.new(@configuration)
