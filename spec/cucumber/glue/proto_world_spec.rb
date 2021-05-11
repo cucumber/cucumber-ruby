@@ -149,8 +149,7 @@ OUTPUT
 
           define_steps do
             When('some data is attached') do
-              data = "'\x00'attachement"
-              attach(data, 'text/x.cucumber.log+plain')
+              attach("'\x00'attachement", 'text/x.cucumber.log+plain')
             end
           end
 
@@ -158,9 +157,8 @@ OUTPUT
             expect(@out.string).not_to include 'Error'
           end
 
-          it 'properly attach the data' do
-            data = "'\x00'attachement"
-            expect(@out.string).to include data
+          it 'properly attaches the data' do
+            expect(@out.string).to include "'\x00'attachement"
           end
         end
       end
