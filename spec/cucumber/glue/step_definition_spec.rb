@@ -178,10 +178,7 @@ module Cucumber
           dsl.ParameterType(
             name: 'actor',
             regexp: /[A-Z]{1}[a-z]+/,
-            transformer: -> (name) {
-              @actor = Actor.new(name)
-              @actor
-            }
+            transformer: ->(name) { @actor = Actor.new(name) }
           )
         end
 
@@ -191,12 +188,12 @@ module Cucumber
             expect(arg).to be @actor
           end
 
-          run_step "capture this: Anjie"
+          run_step 'capture this: Anjie'
         end
 
         it 'does not modify the step_match arg when arg is modified in a step' do
-          dsl.Given 'capture this: {actor}' do |arg|
-            arg = nil
+          dsl.Given 'capture this: {actor}' do |_arg|
+            _arg = nil
           end
 
           step_name = 'capture this: Anjie'
