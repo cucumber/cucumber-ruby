@@ -16,6 +16,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+- Step definitions now uses object instances created in the ParameterType
+  ([1538](https://github.com/cucumber/cucumber-ruby/pull/1538)
+   [1532](https://github.com/cucumber/cucumber-ruby/issues/1532)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 - `attach` can now handle null bytes in the data.
   ([1536](https://github.com/cucumber/cucumber-ruby/pull/1536)
    [1529](https://github.com/cucumber/cucumber-ruby/issues/1529)
