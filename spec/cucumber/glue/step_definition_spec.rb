@@ -167,6 +167,7 @@ module Cucumber
       context 'with ParameterType' do
         class Actor
           attr_reader :name
+          attr_writer :name
           def initialize(name)
             @name = name
           end
@@ -192,14 +193,14 @@ module Cucumber
         end
 
         it 'does not modify the step_match arg when arg is modified in a step' do
-          dsl.Given 'capture this: {actor}' do |_arg|
-            _arg = nil
+          dsl.Given 'capture this: {actor}' do |actor|
+            actor.name = 'Dave'
           end
 
-          step_name = 'capture this: Anjie'
-          step_args = step_match(step_name).args
-
-          expect(-> { run_step step_name }).not_to change { step_args.first } # rubocop:disable Lint/AmbiguousBlockAssociation
+          run_step 'capture this: Anjie'
+          step_args = step_match('capture this: Anjie').args
+          expect(step_args[0].name).to_not eq 'Dave'
+          expect(step_args[0].name).to eq 'Anjie'
         end
       end
 
