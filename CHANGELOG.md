@@ -16,9 +16,14 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+- `attach` can now handle null bytes in the data.
+  ([1536](https://github.com/cucumber/cucumber-ruby/pull/1536)
+   [1529](https://github.com/cucumber/cucumber-ruby/issues/1529)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Changed
 
-- The JSON formatter now reports empty scenarios. 
+- The JSON formatter now reports empty scenarios.
   No status is reported for empty scenarios in the resulting JSON.
   No more empty background is reported with empty scenarios.
   ([1533](https://github.com/cucumber/cucumber-ruby/pull/1533)
