@@ -18,17 +18,17 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - Step definitions now uses object instances created in the ParameterType
   ([1538](https://github.com/cucumber/cucumber-ruby/pull/1538)
-   [1532](https://github.com/cucumber/cucumber-ruby/issues/1532)
-   [aurelien-reeves](https://github.com/aurelien-reeves))
+  [1532](https://github.com/cucumber/cucumber-ruby/issues/1532)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
 - '--dry-run' now supports 'message' based-formatters
   ([1537](https://github.com/cucumber/cucumber-ruby/pull/1537)
-   [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
-   [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
-   [aurelien-reeves](https://github.com/aurelien-reeves))
+  [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
+  [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
 - `attach` can now handle null bytes in the data.
   ([1536](https://github.com/cucumber/cucumber-ruby/pull/1536)
-   [1529](https://github.com/cucumber/cucumber-ruby/issues/1529)
-   [aurelien-reeves](https://github.com/aurelien-reeves))
+  [1529](https://github.com/cucumber/cucumber-ruby/issues/1529)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
 
 ### Changed
 
@@ -36,8 +36,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   No status is reported for empty scenarios in the resulting JSON.
   No more empty background is reported with empty scenarios.
   ([1533](https://github.com/cucumber/cucumber-ruby/pull/1533)
-   [1530](https://github.com/cucumber/cucumber-ruby/issues/1530)
-   [aurelien-reeves](https://github.com/aurelien-reeves))
+  [1530](https://github.com/cucumber/cucumber-ruby/issues/1530)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
 - Undeprecate the JSON formatter. It won't be removed any time soon.
 
 ### Removed
