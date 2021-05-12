@@ -28,7 +28,7 @@ module Cucumber
     end
 
     def invoke(multiline_arg)
-      all_args = deep_clone_args
+      all_args = args
       multiline_arg.append_to(all_args)
       @step_definition.invoke(all_args)
     end
@@ -92,12 +92,6 @@ module Cucumber
 
     def inspect #:nodoc:
       "#<#{self.class}: #{location}>"
-    end
-
-    private
-
-    def deep_clone_args
-      Marshal.load(Marshal.dump(args))
     end
   end
 
