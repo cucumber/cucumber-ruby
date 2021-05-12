@@ -164,6 +164,46 @@ module Cucumber
         expect(-> { run_step step_name }).not_to change { step_args.first } # rubocop:disable Lint/AmbiguousBlockAssociation
       end
 
+      context 'with ParameterType' do
+        class Actor
+          attr_reader :name
+          attr_writer :name
+          def initialize(name)
+            @name = name
+          end
+        end
+
+        before(:each) do
+          @actor = nil
+
+          dsl.ParameterType(
+            name: 'actor',
+            regexp: /[A-Z]{1}[a-z]+/,
+            transformer: ->(name) { @actor = Actor.new(name) }
+          )
+        end
+
+        it 'uses the instance created by the ParameterType transformer proc' do
+          dsl.Given 'capture this: {actor}' do |arg|
+            expect(arg.name).to eq 'Anjie'
+            expect(arg).to be @actor
+          end
+
+          run_step 'capture this: Anjie'
+        end
+
+        it 'does not modify the step_match arg when arg is modified in a step' do
+          dsl.Given 'capture this: {actor}' do |actor|
+            actor.name = 'Dave'
+          end
+
+          run_step 'capture this: Anjie'
+          step_args = step_match('capture this: Anjie').args
+          expect(step_args[0].name).to_not eq 'Dave'
+          expect(step_args[0].name).to eq 'Anjie'
+        end
+      end
+
       context 'allows log' do
         it 'calls "attach" with the correct media type' do
           expect(user_interface).to receive(:attach).with('wasup', 'text/x.cucumber.log+plain')
