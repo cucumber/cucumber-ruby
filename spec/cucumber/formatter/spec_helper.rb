@@ -24,6 +24,7 @@ module Cucumber
         actual_runtime.visitor = Fanout.new([@formatter])
 
         receiver = Test::Runner.new(event_bus)
+        # TODO: Remove duplication with runtime.rb#filters
         filters = [
           Filters::ActivateSteps.new(
             StepMatchSearch.new(actual_runtime.support_code.registry.method(:step_matches), actual_runtime.configuration),
@@ -33,6 +34,8 @@ module Cucumber
           Filters::ApplyBeforeHooks.new(actual_runtime.support_code),
           Filters::ApplyAfterHooks.new(actual_runtime.support_code),
           Filters::ApplyAroundHooks.new(actual_runtime.support_code),
+          Filters::BroadcastTestCaseReadyEvent.new(actual_runtime.configuration),
+          Filters::BroadcastTestRunStartedEvent.new(actual_runtime.configuration),
           Filters::PrepareWorld.new(actual_runtime)
         ]
         event_bus.gherkin_source_read(gherkin_doc.uri, gherkin_doc.body)
