@@ -10,9 +10,6 @@ name: Ruby
 on:
   push:
     branches: [main, publish-option]
-  pull_request:
-    branches:
-      - main
 
 jobs:
   test:
