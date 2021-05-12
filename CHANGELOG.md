@@ -17,7 +17,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 
 - '--dry-run' now supports 'message' based-formatters
-  ([1537](https://github.com/cucumber/cucumber-ruby/pull/1537)
+  ([1540](https://github.com/cucumber/cucumber-ruby/pull/1540)
    [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
    [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
    [aurelien-reeves](https://github.com/aurelien-reeves))
