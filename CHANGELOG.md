@@ -10,13 +10,23 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...main)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...main)
 
 ### Added
 
 ### Fixed
 
-- '--dry-run' now supports 'message' based-formatters
+### Changed
+
+### Removed
+
+### Security fixes
+
+## [v6.1.0](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...v6.1.0)
+
+### Fixed
+
+- `--dry-run` now supports `message` based-formatters
   ([1540](https://github.com/cucumber/cucumber-ruby/pull/1540)
    [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
    [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
@@ -40,9 +50,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   [aurelien-reeves](https://github.com/aurelien-reeves))
 - Undeprecate the JSON formatter. It won't be removed any time soon.
 
-### Removed
+### Dependencies
 
-### Security fixes
+- Updated `cucumber-core` ~> 9.0.1
 
 ## [v6.0.0](https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...v6.0.0)
 
