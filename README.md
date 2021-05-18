@@ -143,7 +143,7 @@ You can also find documentation on the command line possibilities in
 - Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
 - Community support forum: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
 - Slack: [register for an account](https://cucumberbdd-slack-invite.herokuapp.com/) then head over to [#intro](https://cucumberbdd.slack.com/messages/C5WD8SA21/)
-- Cucumber in JavaScript, Java, and other languages: https://cucumber.io/docs/installation/
+- Cucumber in JavaScript, Java, and a lot of other languages: https://cucumber.io/docs/installation/
 
 ## Copyright
 
