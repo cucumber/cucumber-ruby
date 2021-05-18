@@ -96,6 +96,8 @@ Feature: Rule Sample
 And a file named `steps.rb` in `features/step_definitions` with:
 
 ```ruby
+# features/step_definitions/steps.rb
+
 Given("this will pass") do
   @this_will_pass = true
 end
@@ -135,15 +137,13 @@ For more command line options
 You can also find documentation on the command line possibilities in
 [features/docs/cli](features/docs/cli).
 
-## To go further
+## Documentation and support
 
-Where to get more info:
-
-- The main website: https://cucumber.io/
-- Documentation: https://cucumber.io/docs
+- Getting started, writing features, step definitions, and more: https://cucumber.io/docs
 - Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
-- Support forum: https://groups.google.com/group/cukes
-- Chat: ([Slack](https://cucumber.io/support#slack) and [Gitter](https://cucumber.io/support#gitter))
+- Community support forum: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
+- Slack: [register for an account](https://cucumberbdd-slack-invite.herokuapp.com/) then head over to [#intro](https://cucumberbdd.slack.com/messages/C5WD8SA21/)
+- Cucumber in JavaScript, Java, and other languages: https://cucumber.io/docs/installation/
 
 ## Copyright
 
