@@ -21,6 +21,9 @@ your team.
   <img src="./.github/img/gherkin-example.png" alt="Cucumber Gherkin Example" width="728" />
 </p>
 
+This is the Ruby implementation of Cucumber. Cucumber is also available for JavaScript,
+Java, and a lot of other languages. You can find a list of implementations here: https://cucumber.io/docs/installation/.
+
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber (issues, PRs, etc.).
 Everyone interacting in this codebase and issue tracker is expected to follow the
 Cucumber [code of conduct](https://cucumber.io/conduct).
@@ -38,7 +41,7 @@ then install it:
 
 or install the gem directly:
 
-    $ gem install  cucumber
+    $ gem install cucumber
 
 ### Supported platforms
 
@@ -143,7 +146,6 @@ You can also find documentation on the command line possibilities in
 - Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
 - Community support forum: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
 - Slack: [register for an account](https://cucumberbdd-slack-invite.herokuapp.com/) then head over to [#intro](https://cucumberbdd.slack.com/messages/C5WD8SA21/)
-- Cucumber in JavaScript, Java, and a lot of other languages: https://cucumber.io/docs/installation/
 
 ## Copyright
 
