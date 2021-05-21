@@ -117,7 +117,7 @@ module Cucumber
               output += "#{@failing_test_step.text} at #{@failing_test_step.location}\n"
             else
               step_source = @ast_lookup.step_source(@failing_test_step).step
-              output += "#{step_source.keyword}#{@failing_test_step.text}\n"
+              output += "#{step_source[:keyword]}#{@failing_test_step.text}\n"
             end
           else # An Around hook has failed
             output += "Around hook\n"

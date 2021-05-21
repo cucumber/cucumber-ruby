@@ -44,7 +44,7 @@ module Cucumber
           stepdef_key = StepDefKey.new(step_definition.expression.to_s, step_definition.location)
           unless @stepdef_to_match[stepdef_key].map { |key| key[:location] }.include? test_step.location
             duration = DurationExtractor.new(result).result_duration
-            keyword = @ast_lookup.step_source(test_step).step.keyword
+            keyword = @ast_lookup.step_source(test_step).step[:keyword]
 
             @stepdef_to_match[stepdef_key] << {
               keyword: keyword,
