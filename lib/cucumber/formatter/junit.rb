@@ -82,8 +82,8 @@ module Cucumber
 
       def start_feature(test_case)
         uri = test_case.location.file
-        feature = @ast_lookup.gherkin_document(uri).feature
-        raise UnNamedFeatureError, uri if feature.name.empty?
+        feature = @ast_lookup.gherkin_document(uri)[:feature]
+        raise UnNamedFeatureError, uri if feature[:name].empty?
         @current_feature_data = @features_data[uri]
         @current_feature_data[:uri] = uri unless @current_feature_data[:uri]
         @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
@@ -98,7 +98,7 @@ module Cucumber
           skipped: feature_data[:skipped],
           tests: feature_data[:tests],
           time: format('%<time>.6f', time: feature_data[:time]),
-          name: feature_data[:feature].name
+          name: feature_data[:feature][:name]
         ) do
           @testsuite << feature_data[:builder].target!
         end
@@ -108,7 +108,7 @@ module Cucumber
 
       def create_output_string(test_case, scenario, result, row_name)
         scenario_source = @ast_lookup.scenario_source(test_case)
-        keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
+        keyword = scenario_source.type == :Scenario ? scenario_source.scenario[:keyword] : scenario_source.scenario_outline[:keyword]
         output = "#{keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
         if scenario_source.type == :Scenario
@@ -131,7 +131,7 @@ module Cucumber
       def build_testcase(result, scenario_designation, output)
         duration = ResultBuilder.new(result).test_case_duration
         @current_feature_data[:time] += duration
-        classname = @current_feature_data[:feature].name
+        classname = @current_feature_data[:feature][:name]
         filename = @current_feature_data[:uri]
         name = scenario_designation
 
@@ -220,15 +220,15 @@ module Cucumber
       end
 
       def scenario(scenario)
-        @scenario_name = scenario.name.empty? ? 'Unnamed scenario' : scenario.name
+        @scenario_name = scenario[:name].empty? ? 'Unnamed scenario' : scenario[:name]
       end
 
       def scenario_outline(outline)
-        @scenario_name = outline.name.empty? ? 'Unnamed scenario outline' : outline.name
+        @scenario_name = outline[:name].empty? ? 'Unnamed scenario outline' : outline[:name]
       end
 
       def examples_table_row(row)
-        @row_name = '| ' + row.cells.map(&:value).join(' | ') + ' |'
+        @row_name = '| ' + row[:cells].map { |c| c[:value] }.join(' | ') + ' |'
         @name_suffix = " (outline example : #{@row_name})"
       end
     end

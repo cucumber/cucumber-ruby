@@ -171,27 +171,27 @@ module Cucumber
       def create_step_hash(test_step)
         step_source = @ast_lookup.step_source(test_step).step
         step_hash = {
-          keyword: step_source.keyword,
+          keyword: step_source[:keyword],
           name: test_step.text,
           line: test_step.location.lines.min
         }
-        step_hash[:doc_string] = create_doc_string_hash(step_source.doc_string) unless step_source.doc_string.nil?
-        step_hash[:rows] = create_data_table_value(step_source.data_table) unless step_source.data_table.nil?
+        step_hash[:doc_string] = create_doc_string_hash(step_source[:docString]) if step_source[:docString]
+        step_hash[:rows] = create_data_table_value(step_source[:dataTable]) if step_source[:dataTable]
         step_hash
       end
 
       def create_doc_string_hash(doc_string)
-        content_type = doc_string.media_type || ''
+        content_type = doc_string[:mediaType] || ''
         {
-          value: doc_string.content,
+          value: doc_string[:content],
           content_type: content_type,
-          line: doc_string.location.line
+          line: doc_string[:location][:line]
         }
       end
 
       def create_data_table_value(data_table)
-        data_table.rows.map do |row|
-          { cells: row.cells.map(&:value) }
+        data_table[:rows].map do |row|
+          { cells: row[:cells].map { |c| c[:value] } }
         end
       end
 
@@ -239,9 +239,9 @@ module Cucumber
         def initialize(test_case, ast_lookup)
           @background_hash = nil
           uri = test_case.location.file
-          feature = ast_lookup.gherkin_document(uri).feature
+          feature = ast_lookup.gherkin_document(uri)[:feature]
           feature(feature, uri)
-          background(feature.children.first.background) unless feature.children.first.background.nil?
+          background(feature[:children].first[:background]) if feature[:children].first[:background]
           scenario(ast_lookup.scenario_source(test_case), test_case)
         end
 
@@ -251,23 +251,23 @@ module Cucumber
 
         def feature(feature, uri)
           @feature_hash = {
-            id: create_id(feature.name),
+            id: create_id(feature[:name]),
             uri: uri,
-            keyword: feature.keyword,
-            name: feature.name,
-            description: value_or_empty_string(feature.description),
-            line: feature.location.line
+            keyword: feature[:keyword],
+            name: feature[:name],
+            description: value_or_empty_string(feature[:description]),
+            line: feature[:location][:line]
           }
-          return if feature.tags.empty?
-          @feature_hash[:tags] = create_tags_array_from_hash_array(feature.tags)
+          return if feature[:tags].empty?
+          @feature_hash[:tags] = create_tags_array_from_hash_array(feature[:tags])
         end
 
         def background(background)
           @background_hash = {
-            keyword: background.keyword,
-            name: background.name,
-            description: value_or_empty_string(background.description),
-            line: background.location.line,
+            keyword: background[:keyword],
+            name: background[:name],
+            description: value_or_empty_string(background[:description]),
+            line: background[:location][:line],
             type: 'background',
             steps: []
           }
@@ -277,9 +277,9 @@ module Cucumber
           scenario = scenario_source.type == :Scenario ? scenario_source.scenario : scenario_source.scenario_outline
           @test_case_hash = {
             id: "#{@feature_hash[:id]};#{create_id_from_scenario_source(scenario_source)}",
-            keyword: scenario.keyword,
+            keyword: scenario[:keyword],
             name: test_case.name,
-            description: value_or_empty_string(scenario.description),
+            description: value_or_empty_string(scenario[:description]),
             line: test_case.location.lines.max,
             type: 'scenario',
             steps: []
@@ -299,24 +299,24 @@ module Cucumber
 
         def create_id_from_scenario_source(scenario_source)
           if scenario_source.type == :Scenario
-            create_id(scenario_source.scenario.name)
+            create_id(scenario_source.scenario[:name])
           else
-            scenario_outline_name = scenario_source.scenario_outline.name
-            examples_name = scenario_source.examples.name
+            scenario_outline_name = scenario_source.scenario_outline[:name]
+            examples_name = scenario_source.examples[:name]
             row_number = calculate_row_number(scenario_source)
             "#{create_id(scenario_outline_name)};#{create_id(examples_name)};#{row_number}"
           end
         end
 
         def calculate_row_number(scenario_source)
-          scenario_source.examples.table_body.each_with_index do |row, index|
+          scenario_source.examples[:tableBody].each_with_index do |row, index|
             return index + 2 if row == scenario_source.row
           end
         end
 
         def create_tags_array_from_hash_array(tags)
           tags_array = []
-          tags.each { |tag| tags_array << { name: tag.name, line: tag.location.line } }
+          tags.each { |tag| tags_array << { name: tag[:name], line: tag[:location][:line] } }
           tags_array
         end
 
