@@ -25,10 +25,10 @@ module Cucumber
 
           @pickle_step_ids = []
           @config.on_event :envelope do |event|
-            next unless event.envelope.pickle
+            next unless event.envelope[:pickle]
 
-            event.envelope.pickle.steps.each do |step|
-              @pickle_step_ids << step.id
+            event.envelope[:pickle][:steps].each do |step|
+              @pickle_step_ids << step[:id]
             end
           end
         end

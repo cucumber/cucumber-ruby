@@ -18,7 +18,7 @@ module Cucumber
         private
 
         def on_test_case_created(event)
-          @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
+          @pickle_id_by_test_case_id[event.test_case.id] = event.pickle[:id]
         end
       end
     end

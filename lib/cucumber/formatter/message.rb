@@ -3,6 +3,8 @@
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/message_builder'
 
+require 'json'
+
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format message</tt>
@@ -15,7 +17,8 @@ module Cucumber
       end
 
       def output_envelope(envelope)
-        envelope.write_ndjson_to(@io)
+        @io.write(envelope.to_json(proto3: true))
+        @io.write("\n")
       end
     end
   end

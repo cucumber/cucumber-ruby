@@ -17,7 +17,7 @@ module Cucumber
         messages = ::Gherkin.from_source('dummy', feature_header(dialect) + text, gherkin_options)
 
         messages.each do |message|
-          gherkin_document = message.gherkin_document.to_hash unless message.gherkin_document.nil?
+          gherkin_document = message[:gherkinDocument] unless message[:gherkinDocument].nil?
         end
 
         @builder.steps(gherkin_document[:feature][:children][0][:scenario][:steps])

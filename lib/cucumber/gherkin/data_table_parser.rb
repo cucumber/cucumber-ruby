@@ -15,11 +15,11 @@ module Cucumber
         messages = ::Gherkin.from_source('dummy', feature_header + text, gherkin_options)
 
         messages.each do |message|
-          gherkin_document = message.gherkin_document.to_hash unless message.gherkin_document.nil?
+          gherkin_document = message[:gherkinDocument] unless message[:gherkinDocument].nil?
         end
 
         return if gherkin_document.nil?
-        gherkin_document[:feature][:children][0][:scenario][:steps][0][:data_table][:rows].each do |row|
+        gherkin_document[:feature][:children][0][:scenario][:steps][0][:dataTable][:rows].each do |row|
           @builder.row(row[:cells].map { |cell| cell[:value] })
         end
       end

@@ -74,26 +74,26 @@ module Cucumber
       end
 
       def to_envelope
-        Cucumber::Messages::Envelope.new(
-          step_definition: Cucumber::Messages::StepDefinition.new(
+        {
+          stepDefinition: {
             id: id,
-            pattern: Cucumber::Messages::StepDefinition::StepDefinitionPattern.new(
+            pattern: {
               source: expression.source.to_s,
               type: expression_type
-            ),
-            source_reference: Cucumber::Messages::SourceReference.new(
+            },
+            sourceReference: {
               uri: location.file,
-              location: Cucumber::Messages::Location.new(
+              location: {
                 line: location.lines.first
-              )
-            )
-          )
-        )
+              }
+            }
+          }
+        }
       end
 
       def expression_type
-        return Cucumber::Messages::StepDefinition::StepDefinitionPattern::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
-        Cucumber::Messages::StepDefinition::StepDefinitionPattern::StepDefinitionPatternType::REGULAR_EXPRESSION
+        return "CUCUMBER_EXPRESSION" if expression.is_a?(CucumberExpressions::CucumberExpression)
+        "REGULAR_EXPRESSION"
       end
 
       # @api private

@@ -25,9 +25,9 @@ module Cucumber
 
           @hook_ids = []
           @config.on_event :envelope do |event|
-            next unless event.envelope.hook
+            next unless event.envelope[:hook]
 
-            @hook_ids << event.envelope.hook.id
+            @hook_ids << event.envelope[:hook][:id]
           end
         end
 

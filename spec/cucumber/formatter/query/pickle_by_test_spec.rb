@@ -25,9 +25,9 @@ module Cucumber
 
           @pickle_ids = []
           @config.on_event :envelope do |event|
-            next unless event.envelope.pickle
+            next unless event.envelope[:pickle]
 
-            @pickle_ids << event.envelope.pickle.id
+            @pickle_ids << event.envelope[:pickle][:id]
           end
         end
 

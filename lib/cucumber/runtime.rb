@@ -65,9 +65,9 @@ module Cucumber
 
     require 'cucumber/wire/plugin'
     def run!
-      @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
+      @configuration.notify :envelope, {
         meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
-      )
+      }
 
       load_step_definitions
       install_wire_plugin
