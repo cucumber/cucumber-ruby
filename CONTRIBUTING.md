@@ -20,13 +20,14 @@ following first, in order to get your bearings.
 If you just want to know how to contribute to the code, go to
 [Contribute to the code](#contribute-to-the-code).
 
-### Meet the community and the mainteners
+### Meet the community, the mainteners, and other Cucumber developers
 
 Smartbear is hosting a [community message board][cucumber-smartbear-community].
 This is a good place to meet users, the community, and to ask questions.
 
 You can also join the Cucumber Community Slack team:
 [register for an account][register-slack] then head over to [#intro][slack-intro].
+This is the place to be to meet the mainteners aka the core team.
 
 ### Test Cucumber
 
@@ -35,7 +36,13 @@ cannot put a price on (early) feedback.
 
 Keep an eye on our CHANGELOGS to discover new features. Test and experiment, and
 submit your feedback through [issues](#report-bugs-and-submit-feature-requests),
-the [community message board][cucumber-smartbear-community], or [slack][community-slack].
+the [community message board][cucumber-smartbear-community], or [Slack][community-slack].
+
+### Contribute to the documentation
+
+[The documentation][cucumber-docs] is an important part of Cucumber. It is
+important that it remains simple and accurate. You can contribute to it via
+[github.com/cucumber/docs](https://github.com/cucumber/docs).
 
 ### Report bugs and submit feature requests
 
@@ -48,6 +55,7 @@ the [community message board][cucumber-smartbear-community], or [slack][communit
 [register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
 [slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
 [community-slack]: https://cucumberbdd.slack.com/
+[cucumber-docs]: https://cucumber.io/docs/cucumber
 
 
 ------------------------------------------------------------
