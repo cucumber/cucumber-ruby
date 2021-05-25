@@ -1,3 +1,59 @@
+# Contributing to Cucumber
+
+Thank you for considering contributing to Cucumber!
+
+This document will first introduce different ways to get involved before
+focusing on how to contribute to the code.
+
+## Code of Conduct
+
+Everyone interacting in this codebase and issue tracker is expected to follow
+the Cucumber [code of conduct](https://cucumber.io/conduct).
+
+## How can I contribute?
+
+If you read this, you are certainly looking to contribute to the code. Cucumber
+is not this single repository. It is made up of several packages around several
+repositories. So before going further with the code, you may consider the
+following first, in order to get your bearings.
+
+If you just want to know how to contribute to the code, go to
+[Contribute to the code](#contribute-to-the-code).
+
+### Meet the community and the mainteners
+
+Smartbear is hosting a [community message board][cucumber-smartbear-community].
+This is a good place to meet users, the community, and to ask questions.
+
+You can also join the Cucumber Community Slack team:
+[register for an account][register-slack] then head over to [#intro][slack-intro].
+
+### Test Cucumber
+
+Testing Cucumber, especially new features, is a great way to contribute. We
+cannot put a price on (early) feedback.
+
+Keep an eye on our CHANGELOGS to discover new features. Test and experiment, and
+submit your feedback through [issues](#report-bugs-and-submit-feature-requests),
+the [community message board][cucumber-smartbear-community], or [slack][community-slack].
+
+### Report bugs and submit feature requests
+
+### Promote Cucumber
+
+## Contribute to the code
+
+
+[cucumber-smartbear-community]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
+[register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
+[slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
+[community-slack]: https://cucumberbdd.slack.com/
+
+
+------------------------------------------------------------
+<!-- Below that is the former content of CONTRIBUTING.md -->
+
+
 ## About to create a new Github Issue?
 
 We appreciate that. But before you do, please learn our basic rules:
