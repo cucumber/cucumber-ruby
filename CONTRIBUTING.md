@@ -20,6 +20,9 @@ following first, in order to get your bearings.
 If you just want to know how to contribute to the code, go to
 [Contribute to the code](#contribute-to-the-code).
 
+If you want to report an issue, or suggest an enhancement, go to
+[Report bugs and submit feature requests](#report-bugs-and-submit-feature-requests).
+
 ### Meet the community, the maintainers, and other Cucumber developers
 
 Smartbear is hosting a [community message board][cucumber-smartbear-community].
@@ -41,12 +44,61 @@ the [community message board][cucumber-smartbear-community], or [Slack][communit
 ### Contribute to the documentation
 
 [The documentation][cucumber-docs] is an important part of Cucumber. It is
-important that it remains simple and accurate. You can contribute to it via
+essential that it remains simple and accurate. You can contribute to it via
 [github.com/cucumber/docs](https://github.com/cucumber/docs).
 
-### Report bugs and submit feature requests
-
 ### Promote Cucumber
+
+You don't know how to contribute but would like to help? Telling other people
+about Cucumber on the Internet - social media, reviews, blogs - but also in real
+life is already a big help! Join us on [Slack][community-slack] to share your
+publication and to discover new ones.
+
+## Report bugs and submit feature requests
+
+The short version is:
+
+- Find the appropriate repository
+- Make sure there is not already an issue or pull request that deals with your
+  bug or request
+- Consider submitting a pull request if you feel confident enough
+- Explain your issue and include as much details as possible to help other
+  people reproduce your problem or understand your request
+
+You can find more details for each of these steps in the following sections.
+
+### Find the appropriate repository
+
+The current repository, cucumber-ruby, is actually the tip of the iceberg. It
+provides a user interface through a CLI, some built-in formatters, and the
+execution environment you may know as the `World` object.
+
+An important repository is [cucumber/common]. It is a mono-repo
+with a lot of libraries. You will find there what is related to:
+
+- parsing Gherkin documents - aka `.feature` files
+- parsing tag expressions - the options you use to filter an execution with tags
+- parsing Cucumber expressions - the expressions that link a Gherkin step to a
+  step definition
+- everyting related to the HTML formatter
+
+cucumber-ruby is also composed of:
+
+- [cucumber-ruby-core]: this is the engine that will execute the test cases
+  computed from a parsed Gherkin document
+- [cucumber-ruby-wire]: everything related to the Cucumber's wire protocol
+
+Last but not least, there is also a repository for [cucumber-rails], the gem
+that brings Cucumber to Rails 5.x and 6.x.
+
+In any case, if your are not sure, the best places to open an issue are the
+current repository - cucumber-ruby - and the mono-repo at [cucumber/common].
+
+### Look for existing issues and pull requests
+
+### Submitting a pull request
+
+### Opening a new issue
 
 ## Contribute to the code
 
@@ -56,6 +108,10 @@ important that it remains simple and accurate. You can contribute to it via
 [slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
 [community-slack]: https://cucumberbdd.slack.com/
 [cucumber-docs]: https://cucumber.io/docs/cucumber
+[cucumber/common]: https://github.com/cucumber/common
+[cucumber-ruby-core]: https://github.com/cucumber/cucumber-ruby-core
+[cucumber-ruby-wire]: https://github.com/cucumber/cucumber-ruby-wire
+[cucumber-rails]: https://github.com/cucumber/cucumber-rails
 
 
 ------------------------------------------------------------
