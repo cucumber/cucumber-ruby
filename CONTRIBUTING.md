@@ -20,14 +20,14 @@ following first, in order to get your bearings.
 If you just want to know how to contribute to the code, go to
 [Contribute to the code](#contribute-to-the-code).
 
-### Meet the community, the mainteners, and other Cucumber developers
+### Meet the community, the maintainers, and other Cucumber developers
 
 Smartbear is hosting a [community message board][cucumber-smartbear-community].
 This is a good place to meet users, the community, and to ask questions.
 
 You can also join the Cucumber Community Slack team:
 [register for an account][register-slack] then head over to [#intro][slack-intro].
-This is the place to be to meet the mainteners aka the core team.
+This is the place to be to meet the maintainers aka the core team.
 
 ### Test Cucumber
 
