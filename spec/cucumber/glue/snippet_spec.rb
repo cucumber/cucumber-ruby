@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def unindented(snippet)
-        snippet.split("\n")[1..-2].join("\n").indent(-10)
+        snippet.split("\n")[1..-2].join("\n").cucumber_indent(-10)
       end
 
       describe Snippet::Regexp do

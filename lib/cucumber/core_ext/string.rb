@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class String #:nodoc:
-  def indent(n)
+  def cucumber_indent(n)
     if n >= 0
       gsub(/^/, ' ' * n)
     else

@@ -88,7 +88,7 @@ module Cucumber
         @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
         if config.source?
           indent = max_length - stepdef_key.regexp_source.unpack('U*').length
-          line_comment = "   # #{stepdef_key.location}".indent(indent)
+          line_comment = "   # #{stepdef_key.location}".cucumber_indent(indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
@@ -101,7 +101,7 @@ module Cucumber
           @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
           if config.source?
             indent = max_length - (step[:keyword].unpack('U*').length + step[:step_match].format_args.unpack('U*').length)
-            line_comment = " # #{step[:location]}".indent(indent)
+            line_comment = " # #{step[:location]}".cucumber_indent(indent)
             @io.print(format_string(line_comment, :comment))
           end
           @io.puts
