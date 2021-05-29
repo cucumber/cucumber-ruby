@@ -9,19 +9,19 @@ Feature: Tag logic
       @feature
       Feature: Sample
 
-        @one @three
+      @one @three
         Scenario: Example
           Given passing
 
-        @one
+      @one
         Scenario: Another Example
           Given passing
 
-        @three
+      @three
         Scenario: Yet another Example
           Given passing
 
-        @ignore
+      @ignore
         Scenario: And yet another Example
           Given passing
       """
@@ -33,7 +33,7 @@ Feature: Tag logic
       @feature
       Feature: Sample
 
-        @one @three
+      @one   @three
         Scenario: Example
           Given passing
 
@@ -49,15 +49,15 @@ Feature: Tag logic
       @feature
       Feature: Sample
 
-        @one @three
+      @one   @three
         Scenario: Example
           Given passing
 
-        @one
+      @one
         Scenario: Another Example
           Given passing
 
-        @three
+      @three
         Scenario: Yet another Example
           Given passing
 
@@ -73,11 +73,11 @@ Feature: Tag logic
       @feature
       Feature: Sample
 
-        @one
+      @one
         Scenario: Another Example
           Given passing
 
-        @ignore
+      @ignore
         Scenario: And yet another Example
           Given passing
 

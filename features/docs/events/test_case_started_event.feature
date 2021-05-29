@@ -45,7 +45,7 @@ Feature: Test Case Started Event
       @feature
       Feature: A feature
       
-        @scenario
+      @scenario
         Scenario: A passing scenario
           Given this is a step
       after
