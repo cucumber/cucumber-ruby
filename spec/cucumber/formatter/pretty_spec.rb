@@ -380,15 +380,15 @@ OUTPUT
 @tag1
 Feature: 
 
-  @tag2
+@tag2
   Scenario: 
     Given this step passes
 
-  @tag3
+@tag3
   Scenario Outline: 
     Given this step passes
 
-    @tag4
+@tag4
     Examples: 
       | dummy |
       | dummy |
