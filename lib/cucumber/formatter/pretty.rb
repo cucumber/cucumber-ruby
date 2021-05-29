@@ -273,7 +273,7 @@ module Cucumber
 
       def print_tags(tags, indent)
         return if !tags || tags.empty?
-        @io.puts(tags.map { |tag| format_string(tag.name, :tag) }.join(indent(' ', indent)))
+        @io.puts(tags.map { |tag| indent(format_string(tag.name, :tag), indent) }.join(' '))
       end
 
       def print_feature_line(feature)
