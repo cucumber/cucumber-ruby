@@ -43,7 +43,7 @@ Feature: Cucumber --work-in-progress switch
       """
       Feature: WIP
 
-      @failing
+        @failing
         Scenario: Failing
           Given this step raises an error
             error (RuntimeError)
@@ -68,7 +68,7 @@ Feature: Cucumber --work-in-progress switch
       """
       Feature: WIP
 
-      @undefined
+        @undefined
         Scenario: Undefined
           Given this step is undefined
 
@@ -87,7 +87,7 @@ Feature: Cucumber --work-in-progress switch
       """
       Feature: WIP
 
-      @pending
+        @pending
         Scenario: Pending
           Given this step is pending
 
@@ -106,7 +106,7 @@ Feature: Cucumber --work-in-progress switch
       """
       Feature: WIP
 
-      @passing
+        @passing
         Scenario: Passing
           Given this step passes
 

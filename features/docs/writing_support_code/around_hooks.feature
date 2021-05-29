@@ -172,7 +172,7 @@ Feature: Around hooks
     And a file named "features/f.feature" with:
       """
       Feature: Around hooks
-      @one
+        @one
         Scenario: Around hooks with tags
           Then the Around hooks with matching tags are called
       """
@@ -181,7 +181,7 @@ Feature: Around hooks
       """
       Feature: Around hooks
 
-      @one
+        @one
         Scenario: Around hooks with tags
           Then the Around hooks with matching tags are called
 

@@ -57,7 +57,7 @@ Feature: Tagged hooks
         """
         Feature: With and without hooks
 
-        @no-boom
+          @no-boom
           Scenario: omitting hook  # features/f.feature:6
             Given this step passes # features/step_definitions/steps.rb:1
 

@@ -73,7 +73,7 @@ Feature: Randomize
 
       Feature: Unrelated
 
-      @skipme
+        @skipme
         Scenario: Do something unrelated
           When I do something
 
