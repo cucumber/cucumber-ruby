@@ -11,7 +11,12 @@ module Cucumber
       end
 
       it 'indents when padding is negative' do
-        res = indent('  a line', -2)
+        res = indent('  a line', -1)
+        expect(res).to eq ' a line'
+      end
+
+      it 'handles excessive negative indentation properly' do
+        res = indent('  a line', -10)
         expect(res).to eq 'a line'
       end
     end
