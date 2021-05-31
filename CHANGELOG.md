@@ -17,7 +17,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 - Cucumber terminating with `negative argument`
   ([1546](https://github.com/cucumber/cucumber-ruby/issues/1546)
-  [Get rid of monkey patched String.indent](https://github.com/cucumber/cucumber-ruby/pull/1548))
+  [Get rid of monkey patched String.indent](https://github.com/cucumber/cucumber-ruby/pull/1548)
+  [Serghei Moret](https://github.com/JoeSSS))
 
 ### Changed
 
