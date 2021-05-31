@@ -69,7 +69,7 @@ You can find more details for each of these steps in the following sections.
 
 ### Find the appropriate repository
 
-The current repository, cucumber-ruby, is actually the tip of the iceberg. It
+The current repository, `cucumber-ruby`, is actually the tip of the iceberg. It
 provides a user interface through a CLI, some built-in formatters, and the
 execution environment you may know as the `World` object.
 
@@ -82,7 +82,7 @@ with a lot of libraries. You will find there what is related to:
   step definition
 - everyting related to the HTML formatter
 
-cucumber-ruby is also composed of:
+`cucumber-ruby` is also composed of:
 
 - [cucumber-ruby-core]: this is the engine that will execute the test cases
   computed from a parsed Gherkin document
@@ -92,13 +92,32 @@ Last but not least, there is also a repository for [cucumber-rails], the gem
 that brings Cucumber to Rails 5.x and 6.x.
 
 In any case, if your are not sure, the best places to open an issue are the
-current repository - cucumber-ruby - and the mono-repo at [cucumber/common].
+current repository - `cucumber-ruby` - and the mono-repo at [cucumber/common].
 
 ### Look for existing issues and pull requests
 
+Search in [the current repository][cucumber-ruby-issues], in the
+[mono-repo][cucumber/common-issues], but also in the
+[whole cucumber team][cucumber-issues] if the problem or feature has already
+been reported. If you find an issue or pull request which is still open, add
+comments to it instead of opening a new one.
+
 ### Submitting a pull request
 
+When submitting a pull request:
+
+- create a draft pull request
+- try to follow the instructions in the [template](.github/PULL_REQUEST_TEMPLATE.md)
+- if possible, [sign your commits][github-sign-commits]
+- update CHANGELOG.md with your changes
+- once the PR is ready, request for reviews
+
+More info on [how to contribute to the code](#contribute-to-the-code) can be
+found below.
+
 ### Opening a new issue
+
+
 
 ## Contribute to the code
 
@@ -112,6 +131,10 @@ current repository - cucumber-ruby - and the mono-repo at [cucumber/common].
 [cucumber-ruby-core]: https://github.com/cucumber/cucumber-ruby-core
 [cucumber-ruby-wire]: https://github.com/cucumber/cucumber-ruby-wire
 [cucumber-rails]: https://github.com/cucumber/cucumber-rails
+[cucumber-ruby-issues]: https://github.com/cucumber/cucumber-ruby/search?q=is%3Aissue
+[cucumber/common-issues]: https://github.com/cucumber/common/search?q=is%3Aissue
+[cucumber-issues]: https://github.com/search?q=is%3Aissue+user%3Acucumber
+[github-sign-commits]: https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/signing-commits
 
 
 ------------------------------------------------------------
