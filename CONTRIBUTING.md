@@ -117,7 +117,16 @@ found below.
 
 ### Opening a new issue
 
+To open a good issue, be clear and precise.
 
+If you report a problem, the reader must be able to reproduce it easily.
+Please do your best to create a [minimal, reproducible example][minimal-reproducible-example].
+
+Consider submitting a pull request. Even if you think you cannot fix it by
+yourself, a pull request with a failing test is always welcome.
+
+If you request for an enhancement - a new feature, be specific, support your
+request with referenced facts and include examples to illustrate your proposal.
 
 ## Contribute to the code
 
@@ -135,7 +144,7 @@ found below.
 [cucumber/common-issues]: https://github.com/cucumber/common/search?q=is%3Aissue
 [cucumber-issues]: https://github.com/search?q=is%3Aissue+user%3Acucumber
 [github-sign-commits]: https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/signing-commits
-
+[minimal-reproducible-example]: https://stackoverflow.com/help/minimal-reproducible-example
 
 ------------------------------------------------------------
 <!-- Below that is the former content of CONTRIBUTING.md -->
