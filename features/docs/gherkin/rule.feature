@@ -9,7 +9,6 @@ Feature: Rule
       Feature: Rule Sample
 
         Rule: This is a rule
-
           Example: First example
             Given some context
             When I do an action
@@ -20,9 +19,9 @@ Feature: Rule
             When I do another action
             Then some other results should be there
 
-        Rule: This is a second rule
-
-          Example: First example
+        @rule2_tag
+        Rule: This is a second rule with a tag
+          Example: Third example
             Given some other context
             When I do another action
             Then some results should be there
@@ -37,7 +36,6 @@ Feature: Rule
       Then("some other results should be there") { }
 
       """
-
 
   Rule: I use Gherkin 6+
     Example: I can use the Rule keyword
@@ -56,7 +54,7 @@ Feature: Rule
           When I do another action
           Then some other results should be there
 
-        Example: First example
+        Example: Third example
           Given some other context
           When I do another action
           Then some results should be there
