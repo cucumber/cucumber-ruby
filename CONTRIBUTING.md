@@ -130,6 +130,14 @@ request with referenced facts and include examples to illustrate your proposal.
 
 ## Contribute to the code
 
+### Development environment
+
+Development environment for `cucumber-ruby` is a simple Ruby environment with
+Bundler. Use a [supported Ruby version](./README.md#supported-platforms), make
+sure [Bundler] is set-up, and voilà!
+
+
+
 
 [cucumber-smartbear-community]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
 [register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
@@ -145,6 +153,9 @@ request with referenced facts and include examples to illustrate your proposal.
 [cucumber-issues]: https://github.com/search?q=is%3Aissue+user%3Acucumber
 [github-sign-commits]: https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/signing-commits
 [minimal-reproducible-example]: https://stackoverflow.com/help/minimal-reproducible-example
+[RVM]: https://rvm.io/
+[rbenv]: https://github.com/rbenv/rbenv
+[Bundler]: https://bundler.io/
 
 ------------------------------------------------------------
 <!-- Below that is the former content of CONTRIBUTING.md -->
