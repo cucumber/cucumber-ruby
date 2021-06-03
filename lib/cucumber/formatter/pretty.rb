@@ -259,34 +259,34 @@ module Cucumber
         end
       end
 
-      def print_comments(up_to_line, indent)
+      def print_comments(up_to_line, indent_amount)
         comments = gherkin_document.comments
         return if comments.empty? || comments.length <= @next_comment_to_be_printed
         comments[@next_comment_to_be_printed..-1].each do |comment|
           if comment.location.line <= up_to_line
-            @io.puts(indent(format_string(comment.text.strip, :comment), indent))
+            @io.puts(indent(format_string(comment.text.strip, :comment), indent_amount))
             @next_comment_to_be_printed += 1
           end
           break if @next_comment_to_be_printed >= comments.length
         end
       end
 
-      def print_tags(tags, indent)
+      def print_tags(tags, indent_amount)
         return if !tags || tags.empty?
 
-        @io.puts(indent(tags.map { |tag| format_string(tag.name, :tag) }.join(' '), indent))
+        @io.puts(indent(tags.map { |tag| format_string(tag.name, :tag) }.join(' '), indent_amount))
       end
 
       def print_feature_line(feature)
         print_keyword_name(feature.keyword, feature.name, 0)
       end
 
-      def print_keyword_name(keyword, name, indent, location = nil)
+      def print_keyword_name(keyword, name, indent_amount, location = nil)
         line = "#{keyword}:"
         line += " #{name}"
-        @io.print(indent(line, indent))
+        @io.print(indent(line, indent_amount))
         if location && options[:source]
-          line_comment = indent(format_string("# #{location}", :comment), @source_indent - line.length - indent)
+          line_comment = indent(format_string("# #{location}", :comment), @source_indent - line.length - indent_amount)
           @io.print(line_comment)
         end
         @io.puts
@@ -375,10 +375,10 @@ module Cucumber
         end
       end
 
-      def print_data_table(data_table, status, indent)
+      def print_data_table(data_table, status, indent_amount)
         data_table.rows.each do |row|
-          print_comments(row.location.line, indent)
-          @io.puts indent(format_string(gherkin_source.split("\n")[row.location.line - 1].strip, status), indent)
+          print_comments(row.location.line, indent_amount)
+          @io.puts indent(format_string(gherkin_source.split("\n")[row.location.line - 1].strip, status), indent_amount)
         end
       end
 
@@ -404,8 +404,8 @@ module Cucumber
         @io.flush
       end
 
-      def print_doc_string(content, status, indent)
-        s = indent(%("""\n#{content}\n"""), indent)
+      def print_doc_string(content, status, indent_amount)
+        s = indent(%("""\n#{content}\n"""), indent_amount)
         s = s.split("\n").map { |l| l =~ /^\s+$/ ? '' : l }.join("\n")
         @io.puts(format_string(s, status))
       end

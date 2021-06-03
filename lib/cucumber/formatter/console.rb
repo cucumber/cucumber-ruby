@@ -99,11 +99,11 @@ module Cucumber
         @io.puts(format_string(string, status))
       end
 
-      def exception_message_string(e, indent)
+      def exception_message_string(e, indent_amount)
         message = "#{e.message} (#{e.class})".dup.force_encoding('UTF-8')
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
-        indent("#{message}\n#{e.backtrace.join("\n")}", indent)
+        indent("#{message}\n#{e.backtrace.join("\n")}", indent_amount)
       end
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
