@@ -91,8 +91,8 @@ with a lot of libraries. You will find there what is related to:
 Last but not least, there is also a repository for [cucumber-rails], the gem
 that brings Cucumber to Rails 5.x and 6.x.
 
-In any case, if your are not sure, the best places to open an issue are the
-current repository - `cucumber-ruby` - and the mono-repo at [cucumber/common].
+In any case, if your are not sure, best places to open an issue are the current
+repository - `cucumber-ruby` - and the mono-repo at [cucumber/common].
 
 ### Look for existing issues and pull requests
 
@@ -136,7 +136,19 @@ Development environment for `cucumber-ruby` is a simple Ruby environment with
 Bundler. Use a [supported Ruby version](./README.md#supported-platforms), make
 sure [Bundler] is set-up, and voilà!
 
+You can then fork and clone the repository. If your environment is set-up
+properly, the following commands should install the dependencies and execute all
+the tests successfully.
 
+```shell
+bundle install
+bundle exec rake
+```
+
+You can now create a branch for your changes and [submit a pull request](#submitting-a-pull-request)!
+
+If you want to check the test code coverage during your development, execute
+`bundle exec rake cov`.
 
 
 [cucumber-smartbear-community]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
