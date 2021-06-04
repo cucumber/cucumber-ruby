@@ -25,7 +25,7 @@ If you want to report an issue, or suggest an enhancement, go to
 
 ### Meet the community, the maintainers, and other Cucumber developers
 
-Smartbear is hosting a [community message board][cucumber-smartbear-community].
+Smartbear is hosting a [community message board].
 This is a good place to meet users, the community, and to ask questions.
 
 You can also join the Cucumber Community Slack team:
@@ -39,7 +39,7 @@ cannot put a price on (early) feedback.
 
 Keep an eye on our CHANGELOGS to discover new features. Test and experiment, and
 submit your feedback through [issues](#report-bugs-and-submit-feature-requests),
-the [community message board][cucumber-smartbear-community], or [Slack][community-slack].
+the [community message board], or [Slack][community-slack].
 
 ### Contribute to the documentation
 
@@ -108,7 +108,7 @@ When submitting a pull request:
 
 - create a draft pull request
 - try to follow the instructions in the [template](.github/PULL_REQUEST_TEMPLATE.md)
-- if possible, [sign your commits][github-sign-commits]
+- if possible, [sign your commits]
 - update CHANGELOG.md with your changes
 - once the PR is ready, request for reviews
 
@@ -147,11 +147,46 @@ bundle exec rake
 
 You can now create a branch for your changes and [submit a pull request](#submitting-a-pull-request)!
 
-If you want to check the test code coverage during your development, execute
+If you want to check the code coverage during your development, execute
 `bundle exec rake cov`.
 
+### Using a local Gemfile
 
-[cucumber-smartbear-community]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
+A local Gemfile allows you to use your prefer set of gems for your own 
+development workflow, like gems dedicated to debugging. Such gems are not part
+of `cucumber-ruby` standard `Gemfile`.
+
+`Gemfile.local`, `Gemfile.local.lock` and `.bundle` have been added to
+`.gitignore` so your local gems cannot be accidentaly commited and pushed to the
+repository.
+
+A `Gemfile.local` may look like this:
+
+```ruby
+# Gemfile.local
+
+# Include the regular Gemfile
+eval File.read('Gemfile')
+
+# Include your favorites development gems
+group :development do
+  gem 'byebug'
+  gem 'pry'
+  gem 'pry-byebug'
+
+  gem 'debase', require: false
+  gem 'ruby-debug-ide', require: false
+end
+```
+
+Then you can `bundle install --gemfile Gemfile.local`, or with
+`BUNDLE_GEMFILE=Gemfile.local bundle [COMMAND]`.
+
+To use your local Gemfile per default, you can also execute
+`bundle config set --local gemfile Gemfile.local`.
+
+
+[community message board]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
 [register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
 [slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
 [community-slack]: https://cucumberbdd.slack.com/
@@ -163,7 +198,7 @@ If you want to check the test code coverage during your development, execute
 [cucumber-ruby-issues]: https://github.com/cucumber/cucumber-ruby/search?q=is%3Aissue
 [cucumber/common-issues]: https://github.com/cucumber/common/search?q=is%3Aissue
 [cucumber-issues]: https://github.com/search?q=is%3Aissue+user%3Acucumber
-[github-sign-commits]: https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/signing-commits
+[sign your commits]: https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/signing-commits
 [minimal-reproducible-example]: https://stackoverflow.com/help/minimal-reproducible-example
 [RVM]: https://rvm.io/
 [rbenv]: https://github.com/rbenv/rbenv
@@ -172,27 +207,6 @@ If you want to check the test code coverage during your development, execute
 ------------------------------------------------------------
 <!-- Below that is the former content of CONTRIBUTING.md -->
 
-
-## About to create a new Github Issue?
-
-We appreciate that. But before you do, please learn our basic rules:
-
-- This is not a support forum. If you have a question, please go to [The Cukes Google Group](http://groups.google.com/group/cukes).
-- Do you have an idea for a new feature? Then don't expect it to be implemented unless you or someone else sends a [pull request](https://help.github.com/articles/using-pull-requests). You might be better to start a discussion on [the google group](http://groups.google.com/group/cukes).
-- Reporting a bug? Please tell us:
-  - which version of Cucumber you're using
-  - which version of Ruby you're using.
-  - How to reproduce it. Bugs with a failing test in a [pull request](https://help.github.com/articles/using-pull-requests) get fixed much quicker. Some bugs may never be fixed.
-- Want to paste some code or output? Put \`\`\` on a line above and below your code/output. See [GFM](https://help.github.com/articles/github-flavored-markdown)'s _Fenced Code Blocks_ for details.
-- We love [pull requests](https://help.github.com/articles/using-pull-requests). But if you don't have a test to go with it we probably won't merge it.
-
-# Contributing to Cucumber
-
-The rest of this document is a guide for those maintaining Cucumber, and others who would like to submit patches.
-
-## Talking with other devs
-
-You can chat with the core team on https://gitter.im/cucumber/contributors. We try to have office hours on Fridays.
 
 ## Installing your own gems
 
@@ -221,21 +235,9 @@ Sample for launch.json configuration is available in
 
 ## Note on Patches/Pull Requests
 
-- Fork the project. Make a branch for your change.
-- Make your feature addition or bug fix.
-- Make sure your patch is well covered by tests. We don't accept changes to Cucumber that aren't tested.
 - Please do not change the Rakefile, version, or history.
   (if you want to have your own version, that is fine but
   bump version in a commit by itself so we can ignore when we merge your change)
-- Send us a pull request.
-
-## Running tests
-
-    gem install bundler
-    bundle install
-    bundle exec rake
-
-    To get code coverage results, run `bundle exec rake cov`
 
 ## First timer? Welcome!
 
