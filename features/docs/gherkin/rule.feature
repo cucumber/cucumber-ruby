@@ -19,8 +19,9 @@ Feature: Rule
             When I do another action
             Then some other results should be there
 
-        @rule2_tag
+
         Rule: This is a second rule with a tag
+          @rule2_tag
           Example: Third example
             Given some other context
             When I do another action
@@ -61,4 +62,21 @@ Feature: Rule
 
       3 scenarios (3 passed)
       9 steps (9 passed)
+      """
+
+  Rule: Filtering
+    Example: I can filter on tagged rules using the CLI
+      When I run `cucumber -q -t @rule2_tag`
+      Then it should pass with exactly:
+      """
+      Feature: Rule Sample
+
+        @rule2_tag
+        Example: Third example
+          Given some other context
+          When I do another action
+          Then some results should be there
+
+      1 scenario (1 passed)
+      3 steps (3 passed)
       """
