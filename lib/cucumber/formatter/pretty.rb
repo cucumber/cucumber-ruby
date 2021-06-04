@@ -181,7 +181,7 @@ module Cucumber
       end
 
       def print_step_output
-        @test_step_output.each { |message| @io.puts(format_string(message, :tag).indent(6)) }
+        @test_step_output.each { |message| @io.puts(indent(format_string(message, :tag), 6)) }
         @test_step_output = []
       end
 
@@ -259,33 +259,34 @@ module Cucumber
         end
       end
 
-      def print_comments(up_to_line, indent)
+      def print_comments(up_to_line, indent_amount)
         comments = gherkin_document.comments
         return if comments.empty? || comments.length <= @next_comment_to_be_printed
         comments[@next_comment_to_be_printed..-1].each do |comment|
           if comment.location.line <= up_to_line
-            @io.puts(format_string(comment.text.strip, :comment).indent(indent))
+            @io.puts(indent(format_string(comment.text.strip, :comment), indent_amount))
             @next_comment_to_be_printed += 1
           end
           break if @next_comment_to_be_printed >= comments.length
         end
       end
 
-      def print_tags(tags, indent)
+      def print_tags(tags, indent_amount)
         return if !tags || tags.empty?
-        @io.puts(tags.map { |tag| format_string(tag.name, :tag) }.join(' ').indent(indent))
+
+        @io.puts(indent(tags.map { |tag| format_string(tag.name, :tag) }.join(' '), indent_amount))
       end
 
       def print_feature_line(feature)
         print_keyword_name(feature.keyword, feature.name, 0)
       end
 
-      def print_keyword_name(keyword, name, indent, location = nil)
+      def print_keyword_name(keyword, name, indent_amount, location = nil)
         line = "#{keyword}:"
         line += " #{name}"
-        @io.print(line.indent(indent))
+        @io.print(indent(line, indent_amount))
         if location && options[:source]
-          line_comment = format_string("# #{location}", :comment).indent(@source_indent - line.length - indent)
+          line_comment = indent(format_string("# #{location}", :comment), @source_indent - line.length - indent_amount)
           @io.print(line_comment)
         end
         @io.puts
@@ -339,7 +340,7 @@ module Cucumber
         indent = options[:source] ? @source_indent - step_keyword.length - test_step.text.length - base_indent : nil
         print_comments(test_step.location.lines.max, base_indent)
         name_to_report = format_step(step_keyword, @step_matches.fetch(test_step.to_s) { NoStepMatch.new(test_step, test_step.text) }, result.to_sym, indent)
-        @io.puts(name_to_report.indent(base_indent))
+        @io.puts(indent(name_to_report, base_indent))
         print_multiline_argument(test_step, result, base_indent + 2) unless options[:no_multiline]
         @io.flush
       end
@@ -374,10 +375,10 @@ module Cucumber
         end
       end
 
-      def print_data_table(data_table, status, indent)
+      def print_data_table(data_table, status, indent_amount)
         data_table.rows.each do |row|
-          print_comments(row.location.line, indent)
-          @io.puts format_string(gherkin_source.split("\n")[row.location.line - 1].strip, status).indent(indent)
+          print_comments(row.location.line, indent_amount)
+          @io.puts indent(format_string(gherkin_source.split("\n")[row.location.line - 1].strip, status), indent_amount)
         end
       end
 
@@ -393,7 +394,7 @@ module Cucumber
           @io.print(format_string(step_line, :skipped))
           if options[:source]
             comment_line = format_string("# #{current_feature_uri}:#{step.location.line}", :comment)
-            @io.print(comment_line.indent(@source_indent - step_line.length))
+            @io.print(indent(comment_line, @source_indent - step_line.length))
           end
           @io.puts
           next if options[:no_multiline]
@@ -403,8 +404,8 @@ module Cucumber
         @io.flush
       end
 
-      def print_doc_string(content, status, indent)
-        s = %("""\n#{content}\n""").indent(indent)
+      def print_doc_string(content, status, indent_amount)
+        s = indent(%("""\n#{content}\n"""), indent_amount)
         s = s.split("\n").map { |l| l =~ /^\s+$/ ? '' : l }.join("\n")
         @io.puts(format_string(s, status))
       end
@@ -416,15 +417,15 @@ module Cucumber
         print_description(examples.description)
         unless options[:expand]
           print_comments(examples.table_header.location.line, 6)
-          @io.puts(gherkin_source.split("\n")[examples.table_header.location.line - 1].strip.indent(6))
+          @io.puts(indent(gherkin_source.split("\n")[examples.table_header.location.line - 1].strip, 6))
         end
         @io.flush
       end
 
       def print_row_data(test_case, result)
         print_comments(test_case.location.lines.max, 6)
-        @io.print(format_string(gherkin_source.split("\n")[test_case.location.lines.max - 1].strip, result.to_sym).indent(6))
-        @io.print(format_string(@test_step_output.join(', '), :tag).indent(2)) unless @test_step_output.empty?
+        @io.print(indent(format_string(gherkin_source.split("\n")[test_case.location.lines.max - 1].strip, result.to_sym), 6))
+        @io.print(indent(format_string(@test_step_output.join(', '), :tag), 2)) unless @test_step_output.empty?
         @test_step_output = []
         @io.puts
         if result.failed? || result.pending?
