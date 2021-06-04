@@ -19,9 +19,8 @@ Feature: Rule
             When I do another action
             Then some other results should be there
 
-
+        @rule2_tag
         Rule: This is a second rule with a tag
-          @rule2_tag
           Example: Third example
             Given some other context
             When I do another action
@@ -55,6 +54,7 @@ Feature: Rule
           When I do another action
           Then some other results should be there
 
+        @rule2_tag
         Example: Third example
           Given some other context
           When I do another action
