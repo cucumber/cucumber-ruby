@@ -152,12 +152,12 @@ If you want to check the code coverage during your development, execute
 
 ### Using a local Gemfile
 
-A local Gemfile allows you to use your prefer set of gems for your own 
+A local Gemfile allows you to use your prefer set of gems for your own
 development workflow, like gems dedicated to debugging. Such gems are not part
 of `cucumber-ruby` standard `Gemfile`.
 
 `Gemfile.local`, `Gemfile.local.lock` and `.bundle` have been added to
-`.gitignore` so your local gems cannot be accidentaly commited and pushed to the
+`.gitignore` so local changes cannot be accidentaly commited and pushed to the
 repository.
 
 A `Gemfile.local` may look like this:
@@ -179,12 +179,31 @@ group :development do
 end
 ```
 
-Then you can `bundle install --gemfile Gemfile.local`, or with
+Then you can execute bundler with the `--gemfile` flag:
+`bundle install --gemfile Gemfile.local`, or with an environment variable:
 `BUNDLE_GEMFILE=Gemfile.local bundle [COMMAND]`.
 
 To use your local Gemfile per default, you can also execute
 `bundle config set --local gemfile Gemfile.local`.
 
+### First timer? Welcome!
+
+Looking for something simple to begin with? Look at issues with the label
+'[good first issue](https://github.com/cucumber/cucumber-ruby/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)'.
+
+Remember: Cucumber is more than `cucumber-ruby`. You can look for good first
+issues in [other cucumber reporistories](#find-the-appropriate-repository).
+
+### Additional documentation and notice
+
+You can find additional documentation in the [docs](./docs) directory such as
+(non-exhaustive list):
+
+- [How to release cucumber-ruby](./docs/RELEASE_PROCESS.md) (for mainteners)
+- [How to set-up a launch.json configuration for Visual Studio Code](./docs/vscode-example-launch-configuration.md)
+
+
+<!-- Links -->
 
 [community message board]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
 [register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
@@ -203,60 +222,3 @@ To use your local Gemfile per default, you can also execute
 [RVM]: https://rvm.io/
 [rbenv]: https://github.com/rbenv/rbenv
 [Bundler]: https://bundler.io/
-
-------------------------------------------------------------
-<!-- Below that is the former content of CONTRIBUTING.md -->
-
-
-## Installing your own gems
-
-A `Gemfile.local`-file can be used to have your own gems installed to support your normal development workflow.
-Execute `bundle config set --local gemfile Gemfile.local` to use it per default.
-
-Example:
-
-```ruby
-# Include the regular Gemfile
-eval File.read('Gemfile')
-
-group :development do
-  gem 'byebug'
-  gem 'debase', require: false
-  gem 'ruby-debug-ide', require: false
-  gem 'pry'
-  gem 'pry-byebug'
-end
-```
-
-## Using Visual Studio Code?
-
-Sample for launch.json configuration is available in
-[docs/vscode-example-launch-configuration.md](https://github.com/cucumber/cucumber-ruby/blob/main/docs/vscode-example-launch-configuration.md)
-
-## Note on Patches/Pull Requests
-
-- Please do not change the Rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-  bump version in a commit by itself so we can ignore when we merge your change)
-
-## First timer? Welcome!
-
-If you are new to the project or to OSS, check the label
-[Easy](https://github.com/cucumber/cucumber-ruby/labels/Easy). Also, you can
-help us to correct style violations reported here:
-[.rubocop_todo.yml](https://github.com/cucumber/cucumber-ruby/blob/main/.rubocop_todo.yml).
-
-## Release Process
-
-- Upgrade gems with `scripts/update-gemspec`
-- Bump the version number in `lib/cucumber/version`
-- Update `CHANGELOG.md` with the upcoming version number and create a new `In Git` section
-- Remove empty sections from `CHANGELOG.md`
-- Now release it:
-
-  ```
-  git commit -am "Release X.Y.Z"
-  make release
-  ```
-
-- Finally, update the cucumber-ruby version in the [documentation project](https://cucumber.io/docs/installation/) in [versions.yaml](https://github.com/cucumber/docs/blob/master/data/versions.yaml) file.
