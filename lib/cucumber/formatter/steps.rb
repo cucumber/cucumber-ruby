@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require 'cucumber/formatter/console'
+
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format steps</tt>
     class Steps
+      include Console
       def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io, nil)
         @options = options
@@ -24,8 +27,8 @@ module Cucumber
           sources = @step_definition_files[step_definition_file]
           source_indent = source_indent(sources)
           sources.sort.each do |file_colon_line, regexp_source|
-            @io.print regexp_source.indent(2)
-            @io.print " # #{file_colon_line}".indent(source_indent - regexp_source.unpack('U*').length)
+            @io.print indent(regexp_source, 2)
+            @io.print indent(" # #{file_colon_line}", source_indent - regexp_source.unpack('U*').length)
             @io.puts
           end
           @io.puts

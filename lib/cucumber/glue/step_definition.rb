@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'cucumber/step_match'
-require 'cucumber/core_ext/string'
 require 'cucumber/glue/invoke_in_world'
 
 module Cucumber

@@ -34,7 +34,7 @@ module Cucumber
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
-                    c = ('# ' + step_match.location.to_s).indent(source_indent)
+                    c = indent(('# ' + step_match.location.to_s), source_indent)
                     format_string(c, :comment)
                   else
                     ''
@@ -99,11 +99,11 @@ module Cucumber
         @io.puts(format_string(string, status))
       end
 
-      def exception_message_string(e, indent)
+      def exception_message_string(e, indent_amount)
         message = "#{e.message} (#{e.class})".dup.force_encoding('UTF-8')
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
-        "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
+        indent("#{message}\n#{e.backtrace.join("\n")}", indent_amount)
       end
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
@@ -206,6 +206,14 @@ module Cucumber
           ')',
           ''
         ].join("\n")
+      end
+
+      def indent(string, padding)
+        if padding >= 0
+          string.gsub(/^/, ' ' * padding)
+        else
+          string.gsub(/^ {0,#{-padding}}/, '')
+        end
       end
 
       private
