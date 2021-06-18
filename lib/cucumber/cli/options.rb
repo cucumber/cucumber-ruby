@@ -29,7 +29,7 @@ module Cucumber
                                                               "#{INDENT}Please consider using the message formatter\n"\
                                                               "#{INDENT}with the standalone json-formatter\n" \
                                                               "#{INDENT}(https://github.com/cucumber/cucumber/tree/master/json-formatter)."],
-        'message'     => ['Cucumber::Formatter::Message',     'Outputs protobuf messages'],
+        'message'     => ['Cucumber::Formatter::Message',     'Prints each message in NDJSON form, which can then be consumed by other tools.'],
         'html'        => ['Cucumber::Formatter::HTML',        'Outputs HTML report'],
         'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
       }.freeze
