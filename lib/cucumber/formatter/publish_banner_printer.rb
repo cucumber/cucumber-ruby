@@ -41,7 +41,7 @@ module Cucumber
             '',
             [
               'More information at ',
-              link('https://reports.cucumber.io/docs/cucumber-ruby')
+              link('https://cucumber.io/docs/cucumber/environment-variables/')
             ],
             '',
             [
