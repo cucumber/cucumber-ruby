@@ -61,11 +61,19 @@ to bring Cucumber into your Rails project.
 
 ## Usage
 
+### Test your Gherkin specifications
+
+Once installed, you can run Cucumber from the command line like this:
+
+    $ bundle exec cucumber
+
+Cucumber will look for a `features` directory and search it for Gherkin specifications (files with a `.feature` extension) to execute.
+
 ### Initialization
 
 If you need to, initialize your `features` directory with
 
-    $ cucumber --init
+    $ bundle exec cucumber --init
 
 This will create the following directories and files if they do not exist already:
 
@@ -74,7 +82,7 @@ This will create the following directories and files if they do not exist alread
     └── support
         └── env.rb
 
-### Creating your features and step definitions
+### Create your specification
 
 Create a file named `rule.feature` in the `features` directory with:
 
@@ -97,6 +105,8 @@ Feature: Rule Sample
 
 ```
 
+### Automate your specification
+
 And a file named `steps.rb` in `features/step_definitions` with:
 
 ```ruby
@@ -118,7 +128,7 @@ Then("some results should be there") do
 end
 ```
 
-### Running Cucumber
+### Run Cucumber
 
     $ cucumber
 
