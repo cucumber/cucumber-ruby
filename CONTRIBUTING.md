@@ -201,6 +201,18 @@ Looking for something simple to begin with? Look at issues with the label
 Remember: Cucumber is more than `cucumber-ruby`. You can look for good first
 issues in [other cucumber reporistories](#find-the-appropriate-repository).
 
+### Having trouble getting started with the code? We're here to help!
+
+If you have trouble setting-up your development environment, or getting started
+with the code, you can join us on [Slack][community-slack]. You will find there
+a lot of contributors.
+
+Full-time mainteners are also available. We would be please to have 1:1 pairing
+sessions to help you getting started. Look for
+[Matt Wynne](https://cucumberbdd.slack.com/team/U590XDLF3) or
+[Aurélien Reeves](https://cucumberbdd.slack.com/team/U011BB95MC7) on
+[Slack][community-slack].
+
 ### Additional documentation and notice
 
 You can find additional documentation in the [docs](./docs) directory such as
