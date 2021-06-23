@@ -24,19 +24,19 @@ module Cucumber
         it 'prints banner' do
           run_defined_feature
           expect(@err.string).to include(<<~BANNER)
-            ┌──────────────────────────────────────────────────────────────────────────┐
-            │ Share your Cucumber Report with your team at https://reports.cucumber.io │
-            │                                                                          │
-            │ Command line option:    --publish                                        │
-            │ Environment variable:   CUCUMBER_PUBLISH_ENABLED=true                    │
-            │ cucumber.yml:           default: --publish                               │
-            │                                                                          │
-            │ More information at https://reports.cucumber.io/docs/cucumber-ruby       │
-            │                                                                          │
-            │ To disable this message, specify CUCUMBER_PUBLISH_QUIET=true or use the  │
-            │ --publish-quiet option. You can also add this to your cucumber.yml:      │
-            │ default: --publish-quiet                                                 │
-            └──────────────────────────────────────────────────────────────────────────┘
+            ┌──────────────────────────────────────────────────────────────────────────────┐
+            │ Share your Cucumber Report with your team at https://reports.cucumber.io     │
+            │                                                                              │
+            │ Command line option:    --publish                                            │
+            │ Environment variable:   CUCUMBER_PUBLISH_ENABLED=true                        │
+            │ cucumber.yml:           default: --publish                                   │
+            │                                                                              │
+            │ More information at https://cucumber.io/docs/cucumber/environment-variables/ │
+            │                                                                              │
+            │ To disable this message, specify CUCUMBER_PUBLISH_QUIET=true or use the      │
+            │ --publish-quiet option. You can also add this to your cucumber.yml:          │
+            │ default: --publish-quiet                                                     │
+            └──────────────────────────────────────────────────────────────────────────────┘
           BANNER
         end
       end

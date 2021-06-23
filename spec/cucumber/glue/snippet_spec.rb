@@ -5,10 +5,12 @@ require 'cucumber/cucumber_expressions/parameter_type_registry'
 require 'cucumber/cucumber_expressions/parameter_type'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
 require 'cucumber/glue/snippet'
+require 'cucumber/formatter/console'
 
 module Cucumber
   module Glue
     describe Snippet do
+      include Cucumber::Formatter::Console
       let(:code_keyword) { 'Given' }
 
       before do
@@ -23,7 +25,7 @@ module Cucumber
       end
 
       def unindented(snippet)
-        snippet.split("\n")[1..-2].join("\n").indent(-10)
+        indent(snippet.split("\n")[1..-2].join("\n"), -10)
       end
 
       describe Snippet::Regexp do

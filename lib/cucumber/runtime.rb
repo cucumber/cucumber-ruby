@@ -235,12 +235,17 @@ module Cucumber
         step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
         @configuration.filters.each { |filter| filters << filter }
+
         unless configuration.dry_run?
           filters << Filters::ApplyAfterStepHooks.new(@support_code)
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
-          filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
+        end
+
+        filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
+
+        unless configuration.dry_run?
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
           filters << Filters::Quit.new
           filters << Filters::Retry.new(@configuration)

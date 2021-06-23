@@ -10,20 +10,35 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...main)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...main)
 
 ### Added
 
 ### Fixed
+- Cucumber terminating with `negative argument` ArgumentError
+  ([1546](https://github.com/cucumber/cucumber-ruby/issues/1546)
+  [1548](https://github.com/cucumber/cucumber-ruby/pull/1548)
+  [Serghei Moret](https://github.com/JoeSSS))
+- Fixed reports banner to point to [new docs](https://cucumber.io/docs/cucumber/environment-variables/) about environment variables
 
+### Changed
+
+### Removed
+
+### Security fixes
+
+## [v6.1.0](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...v6.1.0)
+
+### Fixed
+
+- `--dry-run` now supports `message` based-formatters
+  ([1540](https://github.com/cucumber/cucumber-ruby/pull/1540)
+   [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
+   [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 - Step definitions now uses object instances created in the ParameterType
   ([1538](https://github.com/cucumber/cucumber-ruby/pull/1538)
   [1532](https://github.com/cucumber/cucumber-ruby/issues/1532)
-  [aurelien-reeves](https://github.com/aurelien-reeves))
-- '--dry-run' now supports 'message' based-formatters
-  ([1537](https://github.com/cucumber/cucumber-ruby/pull/1537)
-  [1496](https://github.com/cucumber/cucumber-ruby/issues/1496)
-  [1488](https://github.com/cucumber/cucumber-ruby/issues/1488)
   [aurelien-reeves](https://github.com/aurelien-reeves))
 - `attach` can now handle null bytes in the data.
   ([1536](https://github.com/cucumber/cucumber-ruby/pull/1536)
@@ -40,9 +55,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   [aurelien-reeves](https://github.com/aurelien-reeves))
 - Undeprecate the JSON formatter. It won't be removed any time soon.
 
-### Removed
+### Dependencies
 
-### Security fixes
+- Updated `cucumber-core` ~> 9.0.1
 
 ## [v6.0.0](https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...v6.0.0)
 
