@@ -150,6 +150,13 @@ You can now create a branch for your changes and [submit a pull request](#submit
 If you want to check the code coverage during your development, execute
 `bundle exec rake cov`.
 
+### Cucumber-ruby-core
+
+As seen here: [Find the appropriate repository](#find-the-appropriate-repository),
+you may need to work with other repositories in order to accomplish your
+development. Beside the mono-repo in [cucumber/common], [cucumber-ruby-core] is
+also a big piece of `cucumber-ruby`.
+
 ### Using a local Gemfile
 
 A local Gemfile allows you to use your prefer set of gems for your own
