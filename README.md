@@ -21,8 +21,8 @@ your team.
   <img src="./.github/img/gherkin-example.png" alt="Cucumber Gherkin Example" width="728" />
 </p>
 
-This is the Ruby implementation of Cucumber. Cucumber is also available for JavaScript,
-Java, and a lot of other languages. You can find a list of implementations here: https://cucumber.io/docs/installation/.
+This is the Ruby implementation of Cucumber. Cucumber is also available for [JavaScript](https://github.com/cucumber/cucumber-js),
+[Java](https://github.com/cucumber/cucumber-jvm), and a lot of other languages. You can find a list of implementations here: https://cucumber.io/docs/installation/.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber (issues, PRs, etc.).
 Everyone interacting in this codebase and issue tracker is expected to follow the
