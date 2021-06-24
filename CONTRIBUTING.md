@@ -8,16 +8,6 @@ focusing on how to contribute to the code.
 ## Code of Conduct
 
 Everyone interacting in this codebase and issue tracker is expected to follow
-<<<<<<< HEAD
-the Cucumber [code of conduct][coc].
-
-## How can I contribute?
-
-If you're reading this, you're probably looking to contribute to the code. Cucumber
-is not this single repository. It is made up of several packages around several
-repositories. So before going further with the code, you may consider the
-following first, in order to get your bearings:
-=======
 the Cucumber [code of conduct](https://cucumber.io/conduct).
 
 ## How can I contribute?
@@ -26,7 +16,6 @@ If you read this, you are certainly looking to contribute to the code. Cucumber
 is not this single repository. It is made up of several packages around several
 repositories. So before going further with the code, you may consider the
 following first, in order to get your bearings.
->>>>>>> main
 
 If you just want to know how to contribute to the code, go to
 [Contribute to the code](#contribute-to-the-code).
@@ -36,21 +25,12 @@ If you want to report an issue, or suggest an enhancement, go to
 
 ### Meet the community, the maintainers, and other Cucumber developers
 
-<<<<<<< HEAD
-Smartbear hosts a [community message board].
-This is a good place to meet users, the community, and to ask questions.
-
-You can also join the Cucumber Community Slack:
-[register for an account][register-slack] then head over to [#intro][slack-intro].
-This is the place to be to meet other contributors and find a mentor to help you get started.
-=======
 Smartbear is hosting a [community message board].
 This is a good place to meet users, the community, and to ask questions.
 
 You can also join the Cucumber Community Slack team:
 [register for an account][register-slack] then head over to [#intro][slack-intro].
 This is the place to be to meet the maintainers aka the core team.
->>>>>>> main
 
 ### Test Cucumber
 
@@ -64,12 +44,8 @@ the [community message board], or [Slack][community-slack].
 ### Contribute to the documentation
 
 [The documentation][cucumber-docs] is an important part of Cucumber. It is
-<<<<<<< HEAD
-essential that it remains simple and accurate.
-=======
 essential that it remains simple and accurate. You can contribute to it via
 [github.com/cucumber/docs](https://github.com/cucumber/docs).
->>>>>>> main
 
 ### Promote Cucumber
 
@@ -83,17 +59,10 @@ publication and to discover new ones.
 The short version is:
 
 - Find the appropriate repository
-<<<<<<< HEAD
-- Try to check there is not already an issue or pull request that deals with your
-  bug or request
-- Explain your issue and include as much details as possible to help other
-- Consider submitting a pull request if you feel confident enough
-=======
 - Make sure there is not already an issue or pull request that deals with your
   bug or request
 - Consider submitting a pull request if you feel confident enough
 - Explain your issue and include as much details as possible to help other
->>>>>>> main
   people reproduce your problem or understand your request
 
 You can find more details for each of these steps in the following sections.
@@ -129,19 +98,6 @@ repository - `cucumber-ruby` - and the mono-repo at [cucumber/common].
 
 Search in [the current repository][cucumber-ruby-issues], in the
 [mono-repo][cucumber/common-issues], but also in the
-<<<<<<< HEAD
-[whole cucumber organization][cucumber-issues] if the problem or feature has already
-been reported. If you find an issue or pull request which is still open, add
-comments to it instead of opening a new one.
-
-If you're not sure, don't hesitate to just open a new issue. We can always merge and de-duplicate later.
-
-### Submitting a pull request
-
-When submitting a pull request:
-
-- create a [draft pull request][how-to-create-a-draft-pr]
-=======
 [whole cucumber team][cucumber-issues] if the problem or feature has already
 been reported. If you find an issue or pull request which is still open, add
 comments to it instead of opening a new one.
@@ -151,7 +107,6 @@ comments to it instead of opening a new one.
 When submitting a pull request:
 
 - create a draft pull request
->>>>>>> main
 - try to follow the instructions in the [template](.github/PULL_REQUEST_TEMPLATE.md)
 - if possible, [sign your commits]
 - update CHANGELOG.md with your changes
@@ -170,11 +125,7 @@ Please do your best to create a [minimal, reproducible example][minimal-reproduc
 Consider submitting a pull request. Even if you think you cannot fix it by
 yourself, a pull request with a failing test is always welcome.
 
-<<<<<<< HEAD
-If your request is for an enhancement - a new feature - try to be specific and support your
-=======
 If you request for an enhancement - a new feature, be specific, support your
->>>>>>> main
 request with referenced facts and include examples to illustrate your proposal.
 
 ## Contribute to the code
@@ -185,11 +136,7 @@ Development environment for `cucumber-ruby` is a simple Ruby environment with
 Bundler. Use a [supported Ruby version](./README.md#supported-platforms), make
 sure [Bundler] is set-up, and voilà!
 
-<<<<<<< HEAD
-You can then [fork][how-to-fork] and clone the repository. If your environment is set-up
-=======
 You can then fork and clone the repository. If your environment is set-up
->>>>>>> main
 properly, the following commands should install the dependencies and execute all
 the tests successfully.
 
@@ -277,23 +224,20 @@ You can find additional documentation in the [docs](./docs) directory such as
 
 <!-- Links -->
 
-[Bundler]: https://bundler.io/
-[coc]: https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/about-forks
 [community message board]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
+[register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
+[slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
 [community-slack]: https://cucumberbdd.slack.com/
 [cucumber-docs]: https://cucumber.io/docs/cucumber
-[cucumber-issues]: https://github.com/search?q=is%3Aissue+user%3Acucumber
-[cucumber-rails]: https://github.com/cucumber/cucumber-rails
-[cucumber-ruby-core]: https://github.com/cucumber/cucumber-ruby-core
-[cucumber-ruby-issues]: https://github.com/cucumber/cucumber-ruby/search?q=is%3Aissue
-[cucumber-ruby-wire]: https://github.com/cucumber/cucumber-ruby-wire
-[cucumber/common-issues]: https://github.com/cucumber/common/search?q=is%3Aissue
 [cucumber/common]: https://github.com/cucumber/common
-[how-to-create-a-draft-pr]: https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests)
-[how-to-fork]: https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/about-forks
-[minimal-reproducible-example]: https://stackoverflow.com/help/minimal-reproducible-example
-[rbenv]: https://github.com/rbenv/rbenv
-[register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
-[RVM]: https://rvm.io/
+[cucumber-ruby-core]: https://github.com/cucumber/cucumber-ruby-core
+[cucumber-ruby-wire]: https://github.com/cucumber/cucumber-ruby-wire
+[cucumber-rails]: https://github.com/cucumber/cucumber-rails
+[cucumber-ruby-issues]: https://github.com/cucumber/cucumber-ruby/search?q=is%3Aissue
+[cucumber/common-issues]: https://github.com/cucumber/common/search?q=is%3Aissue
+[cucumber-issues]: https://github.com/search?q=is%3Aissue+user%3Acucumber
 [sign your commits]: https://docs.github.com/en/github/authenticating-to-github/managing-commit-signature-verification/signing-commits
-[slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
+[minimal-reproducible-example]: https://stackoverflow.com/help/minimal-reproducible-example
+[RVM]: https://rvm.io/
+[rbenv]: https://github.com/rbenv/rbenv
+[Bundler]: https://bundler.io/
