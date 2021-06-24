@@ -36,7 +36,7 @@ e.g. "Ref: cucumber/docs/pull/#99"
 Your PR is ready for review once the following checklist is
 complete. You can also add some checks if you want to.
 
-- [ ] Tests for any changes to behaviour of the code
+- [ ] Tests have been added for any changes to behaviour of the code
 - [ ] New and existing tests are passing locally and on CI
 - [ ] `bundle exec rubocop` reports no offenses
 - [ ] RDoc comments have been updated
