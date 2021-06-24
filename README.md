@@ -44,6 +44,10 @@ or install the gem directly:
 
     $ gem install cucumber
 
+Later in this document, bundler is considered being used so all commands are using
+`bundle exec`. If this is not the case for you, execute `cucumber` directly, without
+`bundle exec`.
+
 ### Supported platforms
 
 - Ruby 3.0
@@ -65,7 +69,7 @@ to bring Cucumber into your Rails project.
 
 If you need to, initialize your `features` directory with
 
-    $ cucumber --init
+    $ bundle exec cucumber --init
 
 This will create the following directories and files if they do not exist already:
 
@@ -74,7 +78,7 @@ This will create the following directories and files if they do not exist alread
     └── support
         └── env.rb
 
-### Creating your features and step definitions
+### Create your specification
 
 Create a file named `rule.feature` in the `features` directory with:
 
@@ -97,6 +101,8 @@ Feature: Rule Sample
 
 ```
 
+### Automate your specification
+
 And a file named `steps.rb` in `features/step_definitions` with:
 
 ```ruby
@@ -118,25 +124,25 @@ Then("some results should be there") do
 end
 ```
 
-### Running Cucumber
+### Run Cucumber
 
-    $ cucumber
+    $ bundle exec cucumber
 
 To execute a single feature file:
 
-    $ cucumber features/rule.feature
+    $ bundle exec cucumber features/rule.feature
 
 To execute a single example, indicates the line of the name of the example:
 
-    $ cucumber features/rule.feature:7
+    $ bundle exec cucumber features/rule.feature:7
 
 To summarize the results on the standard output, and writte a HTML report on disk:
 
-    $ cucumber --format summary --format html --out report.html
+    $ bundle exec cucumber --format summary --format html --out report.html
 
 For more command line options
 
-    $ cucumber --help
+    $ bundle exec cucumber --help
 
 You can also find documentation on the command line possibilities in
 [features/docs/cli](features/docs/cli).
