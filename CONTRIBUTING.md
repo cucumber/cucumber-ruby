@@ -212,7 +212,7 @@ If you have trouble setting-up your development environment, or getting started
 with the code, you can join us on [Slack][community-slack]. You will find there
 a lot of contributors.
 
-Full-time mainteners are also available. We would be please to have 1:1 pairing
+Full-time maintainers are also available. We would be please to have 1:1 pairing
 sessions to help you getting started. Look for
 [Matt Wynne](https://cucumberbdd.slack.com/team/U590XDLF3) or
 [Aurélien Reeves](https://cucumberbdd.slack.com/team/U011BB95MC7) on
@@ -223,7 +223,7 @@ sessions to help you getting started. Look for
 You can find additional documentation in the [docs](./docs) directory such as
 (non-exhaustive list):
 
-- [How to release cucumber-ruby](./docs/RELEASE_PROCESS.md) (for mainteners)
+- [How to release cucumber-ruby](./docs/RELEASE_PROCESS.md) (for maintainers)
 - [How to set-up a launch.json configuration for Visual Studio Code](./docs/vscode-example-launch-configuration.md)
 
 
