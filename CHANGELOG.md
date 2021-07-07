@@ -58,6 +58,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Dependencies
 
 - Updated `cucumber-core` ~> 9.0.1
+- Updated `cucumber-html-formatter` '~> 15.0
+- Updated `cucumber-messages` '~> 16.0
+
 
 ## [v6.0.0](https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...v6.0.0)
 
