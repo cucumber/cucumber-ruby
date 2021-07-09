@@ -15,7 +15,8 @@ module Cucumber
       end
 
       def output_envelope(envelope)
-        envelope.write_ndjson_to(@io)
+        @io.write(envelope.to_json)
+        @io.write("\n")
       end
     end
   end
