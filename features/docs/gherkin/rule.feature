@@ -54,7 +54,6 @@ Feature: Rule
           When I do another action
           Then some other results should be there
 
-        @rule2_tag
         Example: Third example
           Given some other context
           When I do another action
@@ -71,7 +70,6 @@ Feature: Rule
       """
       Feature: Rule Sample
 
-        @rule2_tag
         Example: Third example
           Given some other context
           When I do another action
