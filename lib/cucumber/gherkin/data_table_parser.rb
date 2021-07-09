@@ -15,7 +15,7 @@ module Cucumber
         messages = ::Gherkin.from_source('dummy', feature_header + text, gherkin_options)
 
         messages.each do |message|
-          gherkin_document = message.gherkin_document.to_hash unless message.gherkin_document.nil?
+          gherkin_document = message.gherkin_document.to_h unless message.gherkin_document.nil?
         end
 
         return if gherkin_document.nil?
