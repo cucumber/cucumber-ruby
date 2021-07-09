@@ -22,6 +22,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+- Upgrade of `cucumber-core`, `cucumber-gherkin` and `cucumber-messages`.
+  This brings some breaking changes in `Cucumber::Messages`.
+  ([1544](https://github.com/cucumber/cucumber-ruby/pull/1544)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Removed
 
 ### Security fixes
