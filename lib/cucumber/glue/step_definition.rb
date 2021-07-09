@@ -76,7 +76,7 @@ module Cucumber
         Cucumber::Messages::Envelope.new(
           step_definition: Cucumber::Messages::StepDefinition.new(
             id: id,
-            pattern: Cucumber::Messages::StepDefinition::StepDefinitionPattern.new(
+            pattern: Cucumber::Messages::StepDefinitionPattern.new(
               source: expression.source.to_s,
               type: expression_type
             ),
@@ -91,8 +91,8 @@ module Cucumber
       end
 
       def expression_type
-        return Cucumber::Messages::StepDefinition::StepDefinitionPattern::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
-        Cucumber::Messages::StepDefinition::StepDefinitionPattern::StepDefinitionPatternType::REGULAR_EXPRESSION
+        return Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
+        Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
       end
 
       # @api private
