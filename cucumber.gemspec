@@ -26,19 +26,19 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-gherkin', '~> 20.0', '>= 20.0.0'
   s.add_dependency 'cucumber-html-formatter', '~> 16.0', '>= 16.0.0'
   s.add_dependency 'cucumber-messages', '~> 17.0', '>= 17.0.0'
-  s.add_dependency 'cucumber-wire', '~> 5.0', '>= 5.0.1'
+  s.add_dependency 'cucumber-wire', '~> 6.0', '>= 6.0.0'
   s.add_dependency 'diff-lcs', '~> 1.4', '>= 1.4.4'
   s.add_dependency 'mime-types', '~> 3.3', '>= 3.3.1'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.2'
 
-  s.add_development_dependency 'nokogiri', '~> 1.11', '>= 1.11.5'
+  s.add_development_dependency 'nokogiri', '~> 1.11', '>= 1.11.7'
   s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
-  s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.3'
+  s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   s.add_development_dependency 'rspec', '~> 3.10', '>= 3.10.0'
   s.add_development_dependency 'simplecov', '~> 0.21', '>= 0.21.2'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
-  s.add_development_dependency 'test-unit', '~> 3.4', '>= 3.4.1'
+  s.add_development_dependency 'test-unit', '~> 3.4', '>= 3.4.4'
   s.add_development_dependency 'webrick', '~> 1.7', '>= 1.7.0'
 
   # For maintainer scripts
