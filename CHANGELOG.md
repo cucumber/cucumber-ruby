@@ -15,8 +15,18 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Added
 
 ### Fixed
+- Cucumber terminating with `negative argument` ArgumentError
+  ([1546](https://github.com/cucumber/cucumber-ruby/issues/1546)
+  [1548](https://github.com/cucumber/cucumber-ruby/pull/1548)
+  [Serghei Moret](https://github.com/JoeSSS))
+- Fixed reports banner to point to [new docs](https://cucumber.io/docs/cucumber/environment-variables/) about environment variables
 
 ### Changed
+
+- Upgrade of `cucumber-core`, `cucumber-gherkin` and `cucumber-messages`.
+  This brings some breaking changes in `Cucumber::Messages`.
+  ([1544](https://github.com/cucumber/cucumber-ruby/pull/1544)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
 
 ### Removed
 
