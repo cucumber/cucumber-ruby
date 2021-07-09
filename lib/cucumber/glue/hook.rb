@@ -29,18 +29,18 @@ module Cucumber
       end
 
       def to_envelope
-        {
-          hook: {
+        Cucumber::Messages::Envelope.new(
+          hook: Cucumber::Messages::Hook.new(
             id: id,
-            tagExpression: tag_expressions.join(' '),
-            sourceReference: {
+            tag_expression: tag_expressions.join(' '),
+            source_reference: Cucumber::Messages::SourceReference.new(
               uri: location.file,
-              location: {
+              location: Cucumber::Messages::Location.new(
                 line: location.lines.first
-              }
-            }
-          }
-        }
+              )
+            )
+          )
+        )
       end
 
       private

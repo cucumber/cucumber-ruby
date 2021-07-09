@@ -159,10 +159,10 @@ module Cucumber
       end
 
       def calculate_source_indent_for_ast_node(ast_node)
-        indent = 4 + ast_node[:keyword].length
-        indent += 1 + ast_node[:name].length
-        ast_node[:steps].each do |step|
-          step_indent = 5 + step[:keyword].length + step[:text].length
+        indent = 4 + ast_node.keyword.length
+        indent += 1 + ast_node.name.length
+        ast_node.steps.each do |step|
+          step_indent = 5 + step.keyword.length + step.text.length
           indent = step_indent if step_indent > indent
         end
         indent
@@ -194,9 +194,9 @@ module Cucumber
       end
 
       def feature_has_background?
-        feature_children = gherkin_document[:feature][:children]
+        feature_children = gherkin_document.feature.children
         return false if feature_children.empty?
-        !feature_children.first[:background].nil?
+        !feature_children.first.background.nil?
       end
 
       def print_step_header(test_case)
@@ -244,12 +244,12 @@ module Cucumber
       end
 
       def print_feature_data
-        feature = gherkin_document[:feature]
-        print_language_comment(feature[:location][:line])
-        print_comments(feature[:location][:line], 0)
-        print_tags(feature[:tags], 0)
+        feature = gherkin_document.feature
+        print_language_comment(feature.location.line)
+        print_comments(feature.location.line, 0)
+        print_tags(feature.tags, 0)
         print_feature_line(feature)
-        print_description(feature[:description])
+        print_description(feature.description)
         @io.flush
       end
 
@@ -260,11 +260,11 @@ module Cucumber
       end
 
       def print_comments(up_to_line, indent_amount)
-        comments = gherkin_document[:comments]
+        comments = gherkin_document.comments
         return if comments.empty? || comments.length <= @next_comment_to_be_printed
         comments[@next_comment_to_be_printed..-1].each do |comment|
-          if comment[:location][:line] <= up_to_line
-            @io.puts(indent(format_string(comment[:text].strip, :comment), indent_amount))
+          if comment.location.line <= up_to_line
+            @io.puts(indent(format_string(comment.text.strip, :comment), indent_amount))
             @next_comment_to_be_printed += 1
           end
           break if @next_comment_to_be_printed >= comments.length
@@ -274,11 +274,11 @@ module Cucumber
       def print_tags(tags, indent_amount)
         return if !tags || tags.empty?
 
-        @io.puts(indent(tags.map { |tag| format_string(tag[:name], :tag) }.join(' '), indent_amount))
+        @io.puts(indent(tags.map { |tag| format_string(tag.name, :tag) }.join(' '), indent_amount))
       end
 
       def print_feature_line(feature)
-        print_keyword_name(feature[:keyword], feature[:name], 0)
+        print_keyword_name(feature.keyword, feature.name, 0)
       end
 
       def print_keyword_name(keyword, name, indent_amount, location = nil)
@@ -301,29 +301,29 @@ module Cucumber
 
       def print_background_data
         @io.puts
-        background = gherkin_document[:feature][:children].first[:background]
+        background = gherkin_document.feature.children.first.background
         @source_indent = calculate_source_indent_for_ast_node(background) if options[:source]
-        print_comments(background[:location][:line], 2)
+        print_comments(background.location.line, 2)
         print_background_line(background)
-        print_description(background[:description])
+        print_description(background.description)
         @io.flush
       end
 
       def print_background_line(background)
-        print_keyword_name(background[:keyword], background[:name], 2, "#{current_feature_uri}:#{background[:location][:line]}")
+        print_keyword_name(background.keyword, background.name, 2, "#{current_feature_uri}:#{background.location.line}")
       end
 
       def print_scenario_data(test_case)
         scenario = scenario_source(test_case).scenario
-        print_comments(scenario[:location][:line], 2)
-        print_tags(scenario[:tags], 2)
+        print_comments(scenario.location.line, 2)
+        print_tags(scenario.tags, 2)
         print_scenario_line(scenario, test_case.location)
-        print_description(scenario[:description])
+        print_description(scenario.description)
         @io.flush
       end
 
       def print_scenario_line(scenario, location = nil)
-        print_keyword_name(scenario[:keyword], scenario[:name], 2, location)
+        print_keyword_name(scenario.keyword, scenario.name, 2, location)
       end
 
       def print_step_data?(event, exception_to_be_printed)
@@ -347,7 +347,7 @@ module Cucumber
 
       def test_step_keyword(test_step)
         step = step_source(test_step).step
-        step[:keyword]
+        step.keyword
       end
 
       def step_source(test_step)
@@ -368,38 +368,38 @@ module Cucumber
 
       def print_multiline_argument(test_step, result, indent)
         step = step_source(test_step).step
-        if step[:docString]
-          print_doc_string(step[:docString][:content], result.to_sym, indent)
-        elsif step[:dataTable]
-          print_data_table(step[:dataTable], result.to_sym, indent)
+        if !step.doc_string.nil?
+          print_doc_string(step.doc_string.content, result.to_sym, indent)
+        elsif !step.data_table.nil?
+          print_data_table(step.data_table, result.to_sym, indent)
         end
       end
 
       def print_data_table(data_table, status, indent_amount)
-        data_table[:rows].each do |row|
-          print_comments(row[:location][:line], indent_amount)
-          @io.puts indent(format_string(gherkin_source.split("\n")[row[:location][:line] - 1].strip, status), indent_amount)
+        data_table.rows.each do |row|
+          print_comments(row.location.line, indent_amount)
+          @io.puts indent(format_string(gherkin_source.split("\n")[row.location.line - 1].strip, status), indent_amount)
         end
       end
 
       def print_outline_data(scenario_outline) # rubocop:disable Metrics/AbcSize
-        print_comments(scenario_outline[:location][:line], 2)
-        print_tags(scenario_outline[:tags], 2)
+        print_comments(scenario_outline.location.line, 2)
+        print_tags(scenario_outline.tags, 2)
         @source_indent = calculate_source_indent_for_ast_node(scenario_outline) if options[:source]
-        print_scenario_line(scenario_outline, "#{current_feature_uri}:#{scenario_outline[:location][:line]}")
-        print_description(scenario_outline[:description])
-        scenario_outline[:steps].each do |step|
-          print_comments(step[:location][:line], 4)
-          step_line = "    #{step[:keyword]}#{step[:text]}"
+        print_scenario_line(scenario_outline, "#{current_feature_uri}:#{scenario_outline.location.line}")
+        print_description(scenario_outline.description)
+        scenario_outline.steps.each do |step|
+          print_comments(step.location.line, 4)
+          step_line = "    #{step.keyword}#{step.text}"
           @io.print(format_string(step_line, :skipped))
           if options[:source]
-            comment_line = format_string("# #{current_feature_uri}:#{step[:location][:line]}", :comment)
+            comment_line = format_string("# #{current_feature_uri}:#{step.location.line}", :comment)
             @io.print(indent(comment_line, @source_indent - step_line.length))
           end
           @io.puts
           next if options[:no_multiline]
-          print_doc_string(step[:docString][:content], :skipped, 6) if step[:docString]
-          print_data_table(step[:dataTable], :skipped, 6) if step[:dataTable]
+          print_doc_string(step.doc_string.content, :skipped, 6) unless step.doc_string.nil?
+          print_data_table(step.data_table, :skipped, 6) unless step.data_table.nil?
         end
         @io.flush
       end
@@ -411,13 +411,13 @@ module Cucumber
       end
 
       def print_examples_data(examples)
-        print_comments(examples[:location][:line], 4)
-        print_tags(examples[:tags], 4)
-        print_keyword_name(examples[:keyword], examples[:name], 4)
-        print_description(examples[:description])
+        print_comments(examples.location.line, 4)
+        print_tags(examples.tags, 4)
+        print_keyword_name(examples.keyword, examples.name, 4)
+        print_description(examples.description)
         unless options[:expand]
-          print_comments(examples[:tableHeader][:location][:line], 6)
-          @io.puts(indent(gherkin_source.split("\n")[examples[:tableHeader][:location][:line] - 1].strip, 6))
+          print_comments(examples.table_header.location.line, 6)
+          @io.puts(indent(gherkin_source.split("\n")[examples.table_header.location.line - 1].strip, 6))
         end
         @io.flush
       end
@@ -440,12 +440,12 @@ module Cucumber
       end
 
       def print_expanded_row_data(test_case)
-        feature = gherkin_document[:feature]
-        language_code = feature[:language] || 'en'
+        feature = gherkin_document.feature
+        language_code = feature.language || 'en'
         language = ::Gherkin::Dialect.for(language_code)
         scenario_keyword = language.scenario_keywords[0]
         row = scenario_source(test_case).row
-        expanded_name = '| ' + row[:cells].map { |c| c[:value] }.join(' | ') + ' |'
+        expanded_name = '| ' + row.cells.map(&:value).join(' | ') + ' |'
         @source_indent = calculate_source_indent_for_expanded_test_case(test_case, scenario_keyword, expanded_name)
         @io.puts
         print_keyword_name(scenario_keyword, expanded_name, 6, test_case.location)

@@ -185,16 +185,15 @@ module Cucumber
         # TODO: should me moved to Cucumber::Expression::ParameterType#to_envelope ?
         # Note: that would mean that cucumber-expression would depend on cucumber-messages
 
-        {
-          parameterType: {
+        Cucumber::Messages::Envelope.new(
+          parameter_type: Cucumber::Messages::ParameterType.new(
             id: @configuration.id_generator.new_id,
             name: parameter_type.name,
-            regularExpressions: parameter_type.regexps.map(&:to_s),
-            preferForRegularExpressionMatch: parameter_type.prefer_for_regexp_match?,
-            useForSnippets: parameter_type.use_for_snippets?,
-            children: []
-          }
-        }
+            regular_expressions: parameter_type.regexps.map(&:to_s),
+            prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match?,
+            use_for_snippets: parameter_type.use_for_snippets?
+          )
+        )
       end
 
       def available_step_definition_hash

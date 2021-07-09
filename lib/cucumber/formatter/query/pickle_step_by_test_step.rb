@@ -18,7 +18,7 @@ module Cucumber
         private
 
         def on_test_step_created(event)
-          @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step[:id]
+          @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
         end
       end
     end

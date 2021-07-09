@@ -57,9 +57,9 @@ module Cucumber
           attachment_data[:body] = Base64.strict_encode64(body)
         end
 
-        message = {
+        message = Cucumber::Messages::Envelope.new(
           attachment: Cucumber::Messages::Attachment.new(**attachment_data)
-        }
+        )
 
         output_envelope(message)
       end
@@ -71,13 +71,13 @@ module Cucumber
       end
 
       def on_gherkin_source_read(event)
-        message = {
-          source: {
+        message = Cucumber::Messages::Envelope.new(
+          source: Cucumber::Messages::Source.new(
             uri: event.path,
             data: event.body,
-            mediaType: 'text/x.cucumber.gherkin+plain'
-          }
-        }
+            media_type: 'text/x.cucumber.gherkin+plain'
+          )
+        )
 
         output_envelope(message)
       end
@@ -87,13 +87,13 @@ module Cucumber
           @test_case_by_step_id[step.id] = event.test_case
         end
 
-        message = {
-          testCase: {
+        message = Cucumber::Messages::Envelope.new(
+          test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
-            pickleId: @pickle_by_test.pickle_id(event.test_case),
-            testSteps: event.test_case.test_steps.map { |step| test_step_to_message(step) }
-          }
-        }
+            pickle_id: @pickle_by_test.pickle_id(event.test_case),
+            test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) }
+          )
+        )
 
         output_envelope(message)
       end
@@ -101,12 +101,12 @@ module Cucumber
       def test_step_to_message(step)
         return hook_step_to_message(step) if step.hook?
 
-        {
+        Cucumber::Messages::TestCase::TestStep.new(
           id: step.id,
-          pickleStepId: @pickle_step_by_test_step.pickle_step_id(step),
-          stepDefinitionIds: @step_definitions_by_test_step.step_definition_ids(step),
-          stepMatchArgumentsLists: step_match_arguments_lists(step)
-        }
+          pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
+          step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
+          step_match_arguments_lists: step_match_arguments_lists(step)
+        )
       end
 
       def hook_step_to_message(step)
@@ -143,11 +143,11 @@ module Cucumber
       end
 
       def on_test_run_started(*)
-        message = {
-          testRunStarted: {
+        message = Cucumber::Messages::Envelope.new(
+          test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now)
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end
@@ -155,14 +155,14 @@ module Cucumber
       def on_test_case_started(event)
         @current_test_case_started_id = test_case_started_id(event.test_case)
 
-        message = {
-          testCaseStarted: {
+        message = Cucumber::Messages::Envelope.new(
+          test_case_started: Cucumber::Messages::TestCaseStarted.new(
             id: test_case_started_id(event.test_case),
-            testCaseId: event.test_case.id,
+            test_case_id: event.test_case.id,
             timestamp: time_to_timestamp(Time.now),
             attempt: @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end
@@ -171,13 +171,13 @@ module Cucumber
         @current_test_step_id = event.test_step.id
         test_case = @test_case_by_step_id[event.test_step.id]
 
-        message = {
-          testStepStarted: {
-            testStepId: event.test_step.id,
-            testCaseStartedId: test_case_started_id(test_case),
+        message = Cucumber::Messages::Envelope.new(
+          test_step_started: Cucumber::Messages::TestStepStarted.new(
+            test_step_id: event.test_step.id,
+            test_case_started_id: test_case_started_id(test_case),
             timestamp: time_to_timestamp(Time.now)
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end
@@ -190,21 +190,21 @@ module Cucumber
 
         result_message = result.to_message
         if result.failed? || result.pending?
-          result_message = {
-            status: result_message[:status],
-            duration: result_message[:duration],
+          result_message = Cucumber::Messages::TestStepFinished::TestStepResult.new(
+            status: result_message.status,
+            duration: result_message.duration,
             message: create_error_message(result)
-          }
+          )
         end
 
-        message = {
-          testStepFinished: {
-            testStepId: event.test_step.id,
-            testCaseStartedId: test_case_started_id(test_case),
-            testStepResult: result_message,
+        message = Cucumber::Messages::Envelope.new(
+          test_step_finished: Cucumber::Messages::TestStepFinished.new(
+            test_step_id: event.test_step.id,
+            test_case_started_id: test_case_started_id(test_case),
+            test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end
@@ -216,33 +216,33 @@ module Cucumber
       end
 
       def on_test_case_finished(event)
-        message = {
-          testCaseFinished: {
-            testCaseStartedId: test_case_started_id(event.test_case),
+        message = Cucumber::Messages::Envelope.new(
+          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
+            test_case_started_id: test_case_started_id(event.test_case),
             timestamp: time_to_timestamp(Time.now)
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end
 
       def on_test_run_finished(*)
-        message = {
-          testRunFinished: {
+        message = Cucumber::Messages::Envelope.new(
+          test_run_finished: Cucumber::Messages::TestRunFinished.new(
             timestamp: time_to_timestamp(Time.now)
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end
 
       def on_undefined_parameter_type(event)
-        message = {
-          undefinedParameterType: {
+        message = Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
             name: event.type_name,
             expression: event.expression
-          }
-        }
+          )
+        )
 
         output_envelope(message)
       end

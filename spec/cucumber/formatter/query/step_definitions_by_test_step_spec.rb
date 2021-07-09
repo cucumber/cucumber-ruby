@@ -25,9 +25,9 @@ module Cucumber
 
           @step_definition_ids = []
           @config.on_event :envelope do |event|
-            next unless event.envelope[:stepDefinition]
+            next unless event.envelope.step_definition
 
-            @step_definition_ids << event.envelope[:stepDefinition][:id]
+            @step_definition_ids << event.envelope.step_definition.id
           end
         end
 
