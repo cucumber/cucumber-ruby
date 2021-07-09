@@ -42,23 +42,23 @@ module Cucumber
 
       def attach(src, media_type)
         attachment_data = {
-          testStepId: @current_test_step_id,
-          testCaseStartedId: @current_test_case_started_id,
-          mediaType: media_type
+          test_step_id: @current_test_step_id,
+          test_case_started_id: @current_test_case_started_id,
+          media_type: media_type
         }
 
         if media_type.start_with?('text/')
-          attachment_data[:contentEncoding] = 'IDENTITY'
+          attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::IDENTITY
           attachment_data[:body] = src
         else
           body = src.respond_to?(:read) ? src.read : src
 
-          attachment_data[:contentEncoding] = 'BASE64'
+          attachment_data[:content_encoding] = Cucumber::Messages::Attachment::ContentEncoding::BASE64
           attachment_data[:body] = Base64.strict_encode64(body)
         end
 
         message = {
-          attachment: attachment_data
+          attachment: Cucumber::Messages::Attachment.new(**attachment_data)
         }
 
         output_envelope(message)
@@ -110,36 +110,36 @@ module Cucumber
       end
 
       def hook_step_to_message(step)
-        {
+        Cucumber::Messages::TestCase::TestStep.new(
           id: step.id,
-          hookId: @hook_by_test_step.hook_id(step)
-        }
+          hook_id: @hook_by_test_step.hook_id(step)
+        )
       end
 
       def step_match_arguments_lists(step)
         match_arguments = step_match_arguments(step)
-        [{
-          stepMatchArguments: match_arguments
-        }]
+        [Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList.new(
+          step_match_arguments: match_arguments
+        )]
       rescue Cucumber::Formatter::TestStepUnknownError
         []
       end
 
       def step_match_arguments(step)
         @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
-          {
+          Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
-            parameterTypeName: argument.parameter_type.name
-          }
+            parameter_type_name: argument.parameter_type.name
+          )
         end
       end
 
       def argument_group_to_message(group)
-        {
+        Cucumber::Messages::TestCase::TestStep::StepMatchArgumentsList::StepMatchArgument::Group.new(
           start: group.start,
           value: group.value,
           children: group.children.map { |child| argument_group_to_message(child) }
-        }
+        )
       end
 
       def on_test_run_started(*)

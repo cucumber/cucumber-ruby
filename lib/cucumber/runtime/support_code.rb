@@ -27,10 +27,10 @@ module Cucumber
         end
 
         def multiline_arg(step, location)
-          if step[:docString]
-            MultilineArgument.from(step[:docString][:content], location, step[:docString][:contentType])
-          elsif step[:dataTable]
-            MultilineArgument::DataTable.from(step[:dataTable][:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
+          if !step[:doc_string].nil?
+            MultilineArgument.from(step[:doc_string][:content], location, step[:doc_string][:content_type])
+          elsif !step[:data_table].nil?
+            MultilineArgument::DataTable.from(step[:data_table][:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
           else
             MultilineArgument.from(nil)
           end

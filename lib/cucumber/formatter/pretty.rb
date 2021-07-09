@@ -382,7 +382,7 @@ module Cucumber
         end
       end
 
-      def print_outline_data(scenario_outline)
+      def print_outline_data(scenario_outline) # rubocop:disable Metrics/AbcSize
         print_comments(scenario_outline[:location][:line], 2)
         print_tags(scenario_outline[:tags], 2)
         @source_indent = calculate_source_indent_for_ast_node(scenario_outline) if options[:source]

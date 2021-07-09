@@ -91,8 +91,8 @@ module Cucumber
       end
 
       def expression_type
-        return 'CUCUMBER_EXPRESSION' if expression.is_a?(CucumberExpressions::CucumberExpression)
-        'REGULAR_EXPRESSION'
+        return "CUCUMBER_EXPRESSION" if expression.is_a?(CucumberExpressions::CucumberExpression)
+        "REGULAR_EXPRESSION"
       end
 
       # @api private

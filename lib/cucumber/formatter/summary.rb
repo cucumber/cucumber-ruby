@@ -47,7 +47,7 @@ module Cucumber
       def print_feature(test_case)
         uri = test_case.location.file
         return if @current_feature_uri == uri
-        feature_name = gherkin_document(uri)[:feature][:name]
+        feature_name = gherkin_document(uri).feature.name
         @io.puts unless @current_feature_uri.nil?
         @io.puts feature_name
         @current_feature_uri = uri

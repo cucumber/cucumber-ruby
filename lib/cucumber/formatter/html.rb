@@ -17,7 +17,7 @@ module Cucumber
 
       def output_envelope(envelope)
         @html_formatter.write_message(envelope)
-        @html_formatter.write_post_message if envelope[:testRunFinished]
+        @html_formatter.write_post_message if envelope.test_run_finished
       end
     end
   end
