@@ -4,7 +4,7 @@ require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
 if Cucumber::WINDOWS_MRI
-  unless ENV['ANSICON'] || ENV['TERM_PROGRAM'] == "vscode"
+  unless ENV['ANSICON'] || ENV['TERM_PROGRAM'] == 'vscode'
     STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (https://github.com/adoxa/ansicon/) to get coloured output on Windows}
     Cucumber::Term::ANSIColor.coloring = false
   end
