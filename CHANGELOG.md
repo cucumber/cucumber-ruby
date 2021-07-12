@@ -30,7 +30,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
-- On Windows, auto-detection of ANSICON has been removed - Windows now properly supports ANSI colors in the terminal. In case of issues on older version of Windows, execute cucumber with `--no-color`, or install [ANSICON](https://github.com/adoxa/ansicon/) globally.
+- On Windows, auto-detection of ANSICON has been removed - Windows now properly supports ANSI colors in the terminal. In case of issues on older versions of Windows, execute cucumber with `--no-color`, or install [ANSICON](https://github.com/adoxa/ansicon/) globally.
 
 ### Security fixes
 
