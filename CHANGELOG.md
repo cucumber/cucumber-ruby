@@ -10,11 +10,22 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...main)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...main)
 
 ### Added
 
 ### Fixed
+
+### Changed
+
+### Removed
+
+### Security fixes
+
+## [7.0.0](https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...v7.0.0)
+
+### Fixed
+
 - Cucumber terminating with `negative argument` ArgumentError
   ([1546](https://github.com/cucumber/cucumber-ruby/issues/1546)
   [1548](https://github.com/cucumber/cucumber-ruby/pull/1548)
@@ -24,15 +35,23 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 - Upgrade of `cucumber-core`, `cucumber-gherkin` and `cucumber-messages`.
+
   This brings some breaking changes in `Cucumber::Messages`.
   ([1544](https://github.com/cucumber/cucumber-ruby/pull/1544)
    [aurelien-reeves](https://github.com/aurelien-reeves))
 
+  This also fixes [1545](https://github.com/cucumber/cucumber-ruby/issues/1545)
+  ([1549](https://github.com/cucumber/cucumber-ruby/pull/1549)
+   [luke-hill](https://github.com/luke-hill))
+
 ### Removed
 
-- On Windows, auto-detection of ANSICON has been removed - Windows now properly supports ANSI colors in the terminal. In case of issues on older versions of Windows, execute cucumber with `--no-color`, or install [ANSICON](https://github.com/adoxa/ansicon/) globally.
-
-### Security fixes
+- On Windows, auto-detection of ANSICON has been removed - Windows now properly
+  supports ANSI colors in the terminal. In case of issues on older versions of
+  Windows, execute cucumber with `--no-color`, or install
+  [ANSICON](https://github.com/adoxa/ansicon/) globally.
+  ([1561](https://github.com/cucumber/cucumber-ruby/pull/1561)
+   [yosukei3108](https://github.com/yosukei3108))
 
 ## [v6.1.0](https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...v6.1.0)
 
