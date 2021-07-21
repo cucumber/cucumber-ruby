@@ -63,7 +63,7 @@ module Cucumber
       @support_code.configure(@configuration)
     end
 
-    require 'cucumber/wire/plugin'
+    # require 'cucumber/wire/plugin'
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
         meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
@@ -261,7 +261,8 @@ module Cucumber
     end
 
     def install_wire_plugin
-      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+      # TODO: replace with a hook for Cucumber::Wire::Plugin to install by itself
+      # Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
     end
 
     def log
