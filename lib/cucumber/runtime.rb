@@ -63,14 +63,12 @@ module Cucumber
       @support_code.configure(@configuration)
     end
 
-    # require 'cucumber/wire/plugin'
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
         meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
       )
 
       load_step_definitions
-      install_wire_plugin
       fire_after_configuration_hook
       # TODO: can we remove this state?
       self.visitor = report
@@ -109,7 +107,7 @@ module Cucumber
     private
 
     def fire_after_configuration_hook #:nodoc:
-      @support_code.fire_hook(:after_configuration, @configuration)
+      @support_code.fire_hook(:after_configuration, @configuration, @support_code.registry)
     end
 
     require 'cucumber/core/gherkin/document'
@@ -258,11 +256,6 @@ module Cucumber
     def load_step_definitions
       files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
-    end
-
-    def install_wire_plugin
-      # TODO: replace with a hook for Cucumber::Wire::Plugin to install by itself
-      # Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
     end
 
     def log

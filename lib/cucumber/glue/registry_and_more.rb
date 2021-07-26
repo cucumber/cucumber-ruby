@@ -134,9 +134,9 @@ module Cucumber
         @current_world = nil
       end
 
-      def after_configuration(configuration)
+      def after_configuration(configuration, registry)
         hooks[:after_configuration].each do |hook|
-          hook.invoke('AfterConfiguration', configuration)
+          hook.invoke('AfterConfiguration', [configuration, registry])
         end
       end
 
