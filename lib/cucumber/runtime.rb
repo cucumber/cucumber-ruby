@@ -71,8 +71,8 @@ module Cucumber
       )
 
       load_step_definitions
-      install_wire_plugin
       fire_after_configuration_hook
+      install_wire_plugin
       # TODO: can we remove this state?
       self.visitor = report
 
@@ -110,7 +110,7 @@ module Cucumber
     private
 
     def fire_after_configuration_hook #:nodoc:
-      @support_code.fire_hook(:after_configuration, @configuration)
+      @support_code.fire_hook(:after_configuration, @configuration, @support_code.registry)
     end
 
     require 'cucumber/core/gherkin/document'
@@ -262,6 +262,7 @@ module Cucumber
     end
 
     def install_wire_plugin
+      return if Cucumber::Wire::Plugin.installed?
       return unless @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
 
       Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install
