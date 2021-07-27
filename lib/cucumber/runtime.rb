@@ -3,6 +3,7 @@
 require 'fileutils'
 require 'cucumber/configuration'
 require 'cucumber/create_meta'
+require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
@@ -261,7 +262,14 @@ module Cucumber
     end
 
     def install_wire_plugin
-      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+      return unless @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+
+      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install
+      Cucumber.deprecate(
+        'See https://github.com/cucumber/cucumber-ruby-wire#migration-from-built-in-to-plugin for more info',
+        ' built-in usage of the wire protocol',
+        '9.0.0'
+      )
     end
 
     def log
