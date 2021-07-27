@@ -22,6 +22,18 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Security fixes
 
+### Deprecated
+
+- The built-in Wire protocol
+
+  The Wire protocol would still be officially supported, but as an optional plugin
+  rather than a built-in feature. See the
+  [migration guide of cucumber-ruby-wire](https://github.com/cucumber/cucumber-ruby-wire#migration-from-built-in-to-plugin)
+  to update your code accordingly.
+
+  ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ## [7.0.0](https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...v7.0.0)
 
 ### Fixed
