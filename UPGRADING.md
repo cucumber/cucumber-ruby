@@ -53,7 +53,7 @@ support code.
 
 ### Before cucumber 7.1.0
 
-```
+```ruby
 AfterConfiguration do |config|
   # your code here
 end
@@ -61,7 +61,7 @@ end
 
 ### With cucumber 7.1.0
 
-```
+```ruby
 AfterConfiguration do |config, registry|
   # your code here
 end
