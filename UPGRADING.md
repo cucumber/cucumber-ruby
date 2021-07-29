@@ -48,7 +48,7 @@ The wire protocol will be installed, and no deprecation message will be shown an
 ## Usage of AfterConfiguration hook
 
 The AfterConfiguration hook has a new parameter: `registry`. It is the instance of
-`Cucumber::Glue::RegistryAndMore` that has been instanciated for the `runtime`'s
+`Cucumber::Glue::RegistryAndMore` that has been instantiated for the `runtime`'s
 support code.
 
 ### Before cucumber 7.1.0

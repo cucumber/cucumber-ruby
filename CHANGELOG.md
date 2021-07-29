@@ -31,8 +31,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - The built-in Wire protocol
 
-  The Wire protocol would still be officially supported, but as an optional plugin
-  rather than a built-in feature. See the
+  The Wire protocol is still officially supported, but as an optional plugin rather
+  than a built-in feature. See the
   [UPGRADING.md](./UPGRADING.md#upgrading-to-710)
   to update your code accordingly.
 
