@@ -267,9 +267,9 @@ module Cucumber
 
       Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install
       Cucumber.deprecate(
-        'See https://github.com/cucumber/cucumber-ruby-wire#migration-from-built-in-to-plugin for more info',
+        'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info',
         ' built-in usage of the wire protocol',
-        '9.0.0'
+        '8.0.0'
       )
     end
 

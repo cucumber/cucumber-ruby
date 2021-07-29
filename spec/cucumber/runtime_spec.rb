@@ -35,8 +35,8 @@ module Cucumber
 
         expect(STDERR).to have_received(:puts).with(
           a_string_including([
-            'WARNING: # built-in usage of the wire protocol is deprecated and will be removed after version 9.0.0.',
-            'See https://github.com/cucumber/cucumber-ruby-wire#migration-from-built-in-to-plugin for more info.'
+            'WARNING: # built-in usage of the wire protocol is deprecated and will be removed after version 8.0.0.',
+            'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info.'
           ].join(' '))
         )
       end

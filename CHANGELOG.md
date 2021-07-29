@@ -28,7 +28,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
   The Wire protocol would still be officially supported, but as an optional plugin
   rather than a built-in feature. See the
-  [migration guide of cucumber-ruby-wire](https://github.com/cucumber/cucumber-ruby-wire#migration-from-built-in-to-plugin)
+  [UPGRADING.md](./UPGRADING.md#upgrading-to-710)
   to update your code accordingly.
 
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
