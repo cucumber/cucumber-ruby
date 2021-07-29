@@ -18,6 +18,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+- `AfterConfiguration` hook has a new `registry` parameter.
+  See [UPGRADING.md](./UPGRADING.md#upgrading-to-710) for more info.
+  ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Removed
 
 ### Security fixes
