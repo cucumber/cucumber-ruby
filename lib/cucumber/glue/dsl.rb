@@ -136,5 +136,7 @@ module Cucumber
   end
 end
 
-# TODO: can we avoid adding methods to the global namespace (Kernel)
-extend(Cucumber::Glue::Dsl)
+class Object
+  # TODO: can we avoid adding methods to the global namespace (Kernel)
+  prepend(Cucumber::Glue::Dsl)
+end
