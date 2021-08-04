@@ -39,11 +39,5 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: bundle exec rake
-        if: ${{ matrix.os != 'windows-latest' }}
+      - name: Run tests
         run: bundle exec rake
-      - name: bundle exec rspec && bundle exec cucumber
-        if: ${{ matrix.os == 'windows-latest' }}
-        run:
-          - bundle exec rspec
-          - bundle exec cucumber
