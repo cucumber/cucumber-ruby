@@ -27,6 +27,9 @@ jobs:
         include:
           - ruby: jruby
             os: ubuntu-latest
+        exclude:
+          - ruby: 2.5
+            os: windows-latest
 
     runs-on: ${{ matrix.os }}
     steps:
