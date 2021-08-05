@@ -41,8 +41,8 @@ class CommandLine
   end
 
   def capture_stdout
-    capture_stream(STDOUT, @stdout)
-    capture_stream(STDERR, @stderr)
+    capture_stream($stdout, @stdout)
+    capture_stream($stderr, @stderr)
 
     yield
   end

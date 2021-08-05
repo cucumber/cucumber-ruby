@@ -127,9 +127,11 @@ module Cucumber
 
       def initialize(config = nil); end
 
+      # rubocop:disable Lint/UselessMethodDefinition
       def ensure_io(path_or_url_or_io, error_stream)
         super
       end
+      # rubocop:enable Lint/UselessMethodDefinition
     end
 
     class DummyReporter

@@ -161,7 +161,7 @@ module Cucumber
       def symbolic_hashes
         @symbolic_hashes ||=
           hashes.map do |string_hash|
-            Hash[string_hash.map { |a, b| [symbolize_key(a), b] }]
+            string_hash.transform_keys { |a| symbolize_key(a) }
           end
       end
 
@@ -425,7 +425,7 @@ module Cucumber
         def to_s
           leading_row = "\n"
           end_indentation = indentation - 2
-          trailing_row = "\n" + (' ' * end_indentation)
+          trailing_row = "\n#{' ' * end_indentation}"
           table_rows = data_table.cell_matrix.map { |row| format_row(row) }
           leading_row + table_rows.join("\n") + trailing_row
         end
@@ -433,7 +433,7 @@ module Cucumber
         private
 
         def format_row(row)
-          row_start = (' ' * indentation) + '| '
+          row_start = "#{' ' * indentation}| "
           row_end = '|'
           cells = row.map.with_index do |cell, i|
             format_cell(cell, data_table.col_width(i))

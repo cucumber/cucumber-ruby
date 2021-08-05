@@ -14,7 +14,7 @@ module Cucumber
 
     def logger
       return @log if @log
-      @log = Logger.new(STDOUT)
+      @log = Logger.new($stdout)
       @log.level = Logger::INFO
       @log
     end

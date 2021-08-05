@@ -69,7 +69,7 @@ module Cucumber
         new(out_stream, error_stream, options).parse!(args)
       end
 
-      def initialize(out_stream = STDOUT, error_stream = STDERR, options = {})
+      def initialize(out_stream = $stdout, error_stream = $stderr, options = {})
         @out_stream   = out_stream
         @error_stream = error_stream
 

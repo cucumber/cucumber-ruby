@@ -33,7 +33,7 @@ end
 
 class Changelog
   def self.open(path, &block)
-    full_path = File.expand_path(File.dirname(__FILE__) + '/' + path + '/CHANGELOG.md')
+    full_path = File.expand_path("#{File.dirname(__FILE__)}/#{path}/CHANGELOG.md")
     log = new(File.read(full_path))
     log.instance_exec(&block)
     File.write(full_path, log.body)

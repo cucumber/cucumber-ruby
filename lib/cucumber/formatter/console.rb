@@ -34,7 +34,7 @@ module Cucumber
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
-                    c = indent(('# ' + step_match.location.to_s), source_indent)
+                    c = indent("# #{step_match.location}", source_indent)
                     format_string(c, :comment)
                   else
                     ''

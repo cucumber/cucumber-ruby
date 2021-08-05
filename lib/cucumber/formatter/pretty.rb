@@ -443,7 +443,7 @@ module Cucumber
         language = ::Gherkin::Dialect.for(language_code)
         scenario_keyword = language.scenario_keywords[0]
         row = scenario_source(test_case).row
-        expanded_name = '| ' + row.cells.map(&:value).join(' | ') + ' |'
+        expanded_name = "| #{row.cells.map(&:value).join(' | ')} |"
         @source_indent = calculate_source_indent_for_expanded_test_case(test_case, scenario_keyword, expanded_name)
         @io.puts
         print_keyword_name(scenario_keyword, expanded_name, 6, test_case.location)

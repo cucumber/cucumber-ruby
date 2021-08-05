@@ -133,7 +133,7 @@ module Cucumber
         when 'AfterStep hook'
           after_step_hooks
         else
-          raise 'Unknown hook type ' + hook_step.to_s
+          raise "Unknown hook type #{hook_step}"
         end
       end
 

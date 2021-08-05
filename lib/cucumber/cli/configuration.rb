@@ -17,7 +17,7 @@ module Cucumber
 
       attr_reader :out_stream
 
-      def initialize(out_stream = STDOUT, error_stream = STDERR)
+      def initialize(out_stream = $stdout, error_stream = $stderr)
         @out_stream   = out_stream
         @error_stream = error_stream
         @options = Options.new(@out_stream, @error_stream, default_profile: 'default')

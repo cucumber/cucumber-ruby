@@ -7,7 +7,7 @@ if ENV['SIMPLECOV']
 
     require 'simplecov'
 
-    SimpleCov.root(File.expand_path(File.dirname(__FILE__) + '/..'))
+    SimpleCov.root(File.expand_path("#{File.dirname(__FILE__)}/.."))
     SimpleCov.start do
       add_filter 'iso-8859-1_steps.rb'
       add_filter '.-ruby-core/'

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Dir[File.dirname(__FILE__) + '/events/*.rb'].map(&method(:require))
+Dir["#{File.dirname(__FILE__)}/events/*.rb"].map(&method(:require))
 
 module Cucumber
   # Events tell you what's happening while Cucumber runs your features.

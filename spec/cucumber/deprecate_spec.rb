@@ -15,10 +15,10 @@ module Cucumber::Deprecate
     context 'for users' do
       it 'outputs a message to STDERR' do
         stub_const('Cucumber::Deprecate::STRATEGY', ForUsers)
-        allow(STDERR).to receive(:puts)
+        allow($stderr).to receive(:puts)
 
         Cucumber.deprecate('Use some_method instead', 'someMethod', '1.0.0')
-        expect(STDERR).to have_received(:puts).with(
+        expect($stderr).to have_received(:puts).with(
           a_string_including(
             'WARNING: #someMethod is deprecated and will be removed after version 1.0.0. Use some_method instead.'
           )

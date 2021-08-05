@@ -21,8 +21,8 @@ module Cucumber
       # that makes a sound before invoking #ask.
       #
       def ask(question, timeout_seconds)
-        STDOUT.puts(question)
-        STDOUT.flush
+        $stdout.puts(question)
+        $stdout.flush
         puts(question)
 
         answer = if Cucumber::JRUBY
@@ -48,7 +48,7 @@ module Cucumber
 
       def mri_gets(timeout_seconds)
         Timeout.timeout(timeout_seconds) do
-          STDIN.gets
+          $stdin.gets
         end
       rescue Timeout::Error
         nil
@@ -57,7 +57,7 @@ module Cucumber
       def jruby_gets(timeout_seconds)
         answer = nil
         t = java.lang.Thread.new do
-          answer = STDIN.gets
+          answer = $stdin.gets
         end
         t.start
         t.join(timeout_seconds * 1000)

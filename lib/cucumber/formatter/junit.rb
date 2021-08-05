@@ -125,7 +125,7 @@ module Cucumber
         else
           output += "Example row: #{row_name}\n"
         end
-        output + "\nMessage:\n"
+        "#{output}\nMessage:\n"
       end
 
       def build_testcase(result, scenario_designation, output)
@@ -228,7 +228,7 @@ module Cucumber
       end
 
       def examples_table_row(row)
-        @row_name = '| ' + row.cells.map(&:value).join(' | ') + ' |'
+        @row_name = "| #{row.cells.map(&:value).join(' | ')} |"
         @name_suffix = " (outline example : #{@row_name})"
       end
     end

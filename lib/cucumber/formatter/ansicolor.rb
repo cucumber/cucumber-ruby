@@ -3,7 +3,7 @@
 require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
-Cucumber::Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.key?('AUTOTEST')
+Cucumber::Term::ANSIColor.coloring = false if !$stdout.tty? && !ENV.key?('AUTOTEST')
 
 module Cucumber
   module Formatter
@@ -48,7 +48,7 @@ module Cucumber
       include Cucumber::Term::ANSIColor
 
       ALIASES = Hash.new do |h, k|
-        h[Regexp.last_match(1)] + ',bold' if k.to_s =~ /(.*)_param/
+        "#{h[Regexp.last_match(1)]},bold" if k.to_s =~ /(.*)_param/
       end.merge(
         'undefined' => 'yellow',
         'pending'   => 'yellow',
@@ -83,11 +83,11 @@ module Cucumber
         next if method_name =~ /.*_param/
         code = <<-COLOR
           def #{method_name}(string=nil, &proc)
-            #{ALIASES[method_name].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name].split(',').length}
+            #{"#{ALIASES[method_name].split(',').join('(')}(string, &proc#{')' * ALIASES[method_name].split(',').length}"}
           end
           # This resets the colour to the non-param colour
           def #{method_name}_param(string=nil, &proc)
-            #{ALIASES[method_name + '_param'].split(',').join('(') + '(string, &proc' + ')' * ALIASES[method_name + '_param'].split(',').length} + #{ALIASES[method_name].split(',').join(' + ')}
+            #{"#{ALIASES["#{method_name}_param"].split(',').join('(')}(string, &proc#{')' * ALIASES["#{method_name}_param"].split(',').length}"} + #{ALIASES[method_name].split(',').join(' + ')}
           end
         COLOR
         eval(code) # rubocop:disable Security/Eval
@@ -110,10 +110,10 @@ module Cucumber
       rescue Exception => e # rubocop:disable Lint/RescueException
         # rubocop:disable Style/ClassEqualityComparison
         if e.class.name == 'TermInfo::TermInfoError'
-          STDERR.puts '*** WARNING ***'
-          STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
-          STDERR.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
-          STDERR.puts "\n"
+          $stderr.puts '*** WARNING ***'
+          $stderr.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
+          $stderr.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
+          $stderr.puts "\n"
           alias_method :grey, :white
         else
           define_real_grey

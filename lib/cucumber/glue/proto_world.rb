@@ -38,9 +38,6 @@ module Cucumber
       #     And I am logged in as "Susan"
       #   }
       # @param [String] steps_text The Gherkin snippet to run
-      def steps(steps_text)
-        super
-      end
 
       # Parse Gherkin into a {Cucumber::Ast::Table} object.
       #
@@ -117,9 +114,6 @@ module Cucumber
       end
 
       # Prints the list of modules that are included in the World
-      def inspect
-        super
-      end
 
       # see {#inspect}
       def to_s

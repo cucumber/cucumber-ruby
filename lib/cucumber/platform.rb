@@ -8,8 +8,8 @@ require 'cucumber/core/platform'
 module Cucumber
   unless defined?(Cucumber::VERSION)
     VERSION       = File.read(File.expand_path('version', __dir__)).strip
-    BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
-    LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
+    BINARY        = File.expand_path("#{File.dirname(__FILE__)}/../../bin/cucumber")
+    LIBDIR        = File.expand_path("#{File.dirname(__FILE__)}/../../lib")
     RAILS         = defined?(Rails)
     RUBY_BINARY   = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
     RUBY          = defined? RUBY_VERSION
