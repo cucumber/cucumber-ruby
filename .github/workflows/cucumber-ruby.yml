@@ -5,15 +5,33 @@
 # This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
 # For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
 
-name: Ruby
+name: Test cucumber
 
 on:
   push:
-    branches: [main, publish-option]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 5 * * *"
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
+        ruby: [2.5, 2.6, 2.7, '3.0']
+        include:
+          - os: ubuntu-latest
+            ruby: jruby
+        exclude:
+          - ruby: 2.5
+            os: windows-latest
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
@@ -22,10 +40,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         # uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
         with:
-          ruby-version: 2.6
-      - name: Install dependencies
-        run: bundle install
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Run tests
-        run: bundle exec cucumber --publish
-        env:
-          CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
+        run: bundle exec rake
