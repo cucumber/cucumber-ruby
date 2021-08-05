@@ -48,8 +48,7 @@ module Cucumber
           node = node.previous_node
         end
         keyword = dialect.given_keywords.reject { |kw| kw == '* ' }[0] if keyword.nil?
-        keyword = Cucumber::Gherkin::I18n.code_keyword_for(keyword)
-        keyword
+        Cucumber::Gherkin::I18n.code_keyword_for(keyword)
       end
 
       ScenarioSource = Struct.new(:type, :scenario)

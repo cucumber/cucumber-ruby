@@ -346,6 +346,7 @@ module Cucumber
 
       class Different < StandardError
         attr_reader :table
+
         def initialize(table)
           @table = table
           super("Tables were not identical:\n#{table}")
@@ -475,10 +476,10 @@ module Cucumber
       def create_cell_matrix(ast_table) #:nodoc:
         ast_table.raw.map do |raw_row|
           line = begin
-                   raw_row.line
-                 rescue StandardError
-                   -1
-                 end
+            raw_row.line
+          rescue StandardError
+            -1
+          end
           raw_row.map do |raw_cell|
             Cell.new(raw_cell, self, line)
           end

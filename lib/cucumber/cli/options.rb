@@ -63,7 +63,7 @@ module Cucumber
         '--lines', '--port', '-I', '--snippet-type'
       ].freeze
       ORDER_TYPES = %w[defined random].freeze
-      TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
+      TAG_LIMIT_MATCHER = /(?<tag_name>@\w+):(?<limit>\d+)/x
 
       def self.parse(args, out_stream, error_stream, options = {})
         new(out_stream, error_stream, options).parse!(args)

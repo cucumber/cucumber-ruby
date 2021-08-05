@@ -166,8 +166,8 @@ module Cucumber
 
       context 'with ParameterType' do
         class Actor
-          attr_reader :name
-          attr_writer :name
+          attr_accessor :name
+
           def initialize(name)
             @name = name
           end

@@ -91,7 +91,7 @@ module Cucumber
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
         # TODO: add a way to extract the parameter type directly from the error.
-        type_name = e.message.match(/^Undefined parameter type ['|\{](.*)['|\}].?$/)[1]
+        type_name = e.message.match(/^Undefined parameter type ['|{](.*)['|}].?$/)[1]
 
         @configuration.notify :undefined_parameter_type, type_name, string_or_regexp
       end

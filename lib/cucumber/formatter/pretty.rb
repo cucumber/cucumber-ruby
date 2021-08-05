@@ -24,11 +24,9 @@ module Cucumber
       include Console
       include Io
       include Cucumber::Gherkin::Formatter::Escaping
-      attr_reader :config, :options
+      attr_reader :config, :options, :current_feature_uri, :current_scenario_outline, :current_examples, :current_test_case, :in_scenario_outline, :print_background_steps
       private :config, :options
-      attr_reader :current_feature_uri, :current_scenario_outline, :current_examples, :current_test_case
       private :current_feature_uri, :current_scenario_outline, :current_examples, :current_test_case
-      attr_reader :in_scenario_outline, :print_background_steps
       private :in_scenario_outline, :print_background_steps
 
       def initialize(config)

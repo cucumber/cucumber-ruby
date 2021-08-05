@@ -235,6 +235,7 @@ module Cucumber
 
     class ResultBuilder
       attr_reader :test_case_duration
+
       def initialize(result)
         @test_case_duration = 0
         result.describe_to(self)

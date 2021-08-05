@@ -122,9 +122,8 @@ module Cucumber
 
       # @api private
       def arguments_from(step_name)
-        args = @expression.match(step_name)
+        @expression.match(step_name)
         # @registry.invoked_step_definition(regexp_source, location) if args
-        args
       end
 
       # @api private
