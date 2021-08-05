@@ -19,7 +19,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 
 - `AfterConfiguration` hook has a new `registry` parameter.
-  See [UPGRADING.md](./UPGRADING.md#upgrading-to-710) for more info.
+  See [UPGRADING.md](./UPGRADING.md#upgrading-to-800) for more info.
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
    [aurelien-reeves](https://github.com/aurelien-reeves))
 
@@ -33,7 +33,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
   The Wire protocol is still officially supported, but as an optional plugin rather
   than a built-in feature. See the
-  [UPGRADING.md](./UPGRADING.md#upgrading-to-710)
+  [UPGRADING.md](./UPGRADING.md#upgrading-to-800)
   to update your code accordingly.
 
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)

@@ -1,19 +1,19 @@
-# Upgrading to 7.1.0
+# Upgrading to 8.0.0
 
 ## The wire protocol
 
 Usage of built-in wire protocol with `cucumber-ruby` will be deprecated in cucumber
-7.1.0, and removed in cucumber 8.0.0.
+8.0.0, and removed in cucumber 9.0.0.
 
 The wire protocol will still be available by explicitely using the `cucumber-wire`
 gem.
 
-### Before cucumber 7.1.0
+### Before cucumber 8.0.0
 
-Before cucumber 7.1.0, the wire protocol was automatically installed with cucumber,
+Before cucumber 8.0.0, the wire protocol was automatically installed with cucumber,
 and automatically activated when it had detected a `.wire` file.
 
-### With cucumber 7.1.0
+### With cucumber 8.0.0
 
 The wire protocol will work as before, but you will notice a deprecation message.
 
@@ -47,11 +47,11 @@ The wire protocol will be installed, and no deprecation message will be shown an
 
 ## Usage of AfterConfiguration hook
 
-The AfterConfiguration hook has a new parameter: `registry`. It is the instance of
-`Cucumber::Glue::RegistryAndMore` that has been instantiated for the `runtime`'s
-support code.
+The AfterConfiguration hook has a new parameter: `registry`. It is an instance of
+`Cucumber::Glue::RegistryWrapper` that wraps some methods of the registry that has
+been instantiated for the `runtime`'s support code.
 
-### Before cucumber 7.1.0
+### Before cucumber 8.0.0
 
 ```ruby
 AfterConfiguration do |config|
@@ -59,7 +59,7 @@ AfterConfiguration do |config|
 end
 ```
 
-### With cucumber 7.1.0
+### With cucumber 8.0.0
 
 ```ruby
 AfterConfiguration do |config, registry|
