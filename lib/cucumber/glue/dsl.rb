@@ -136,7 +136,8 @@ module Cucumber
   end
 end
 
-class Object
-  # TODO: can we avoid adding methods to the global namespace (Kernel)
-  prepend(Cucumber::Glue::Dsl)
-end
+# rubocop:disable Style/MixinUsage
+# This "should" always be present, because it allows users to write `Before` and `After`
+# See. https://github.com/cucumber/cucumber-ruby/pull/1566#discussion_r683235396
+extend(Cucumber::Glue::Dsl)
+# rubocop:enable Style/MixinUsage
