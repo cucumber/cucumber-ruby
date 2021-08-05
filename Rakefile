@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'bundler'
-require 'rbconfig'
 
 Bundler::GemHelper.install_tasks
 
