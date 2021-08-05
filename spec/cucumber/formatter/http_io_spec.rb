@@ -6,15 +6,15 @@ require 'webrick/https'
 require 'spec_helper'
 require 'cucumber/formatter/io'
 
-RSpec.shared_context 'an HTTP server accepting file requests' do
-  module WEBrick
-    module HTTPServlet
-      class ProcHandler < AbstractServlet
-        alias do_PUT do_GET # Webrick #mount_proc only works with GET,HEAD,POST,OPTIONS by default
-      end
+module WEBrick
+  module HTTPServlet
+    class ProcHandler < AbstractServlet
+      alias do_PUT do_GET # Webrick #mount_proc only works with GET,HEAD,POST,OPTIONS by default
     end
   end
+end
 
+RSpec.shared_context 'an HTTP server accepting file requests' do
   let(:putreport_returned_location) { URI('/s3').to_s }
 
   let(:success_banner) do
@@ -288,7 +288,7 @@ module Cucumber
         io.close
         @received_body_io.rewind
         received_body = @received_body_io.read
-        expect(received_body).to eq(sent_body + sent_body)
+        expect(received_body).to eq("#{sent_body}#{sent_body}")
       end
 
       it 'only sends body once' do

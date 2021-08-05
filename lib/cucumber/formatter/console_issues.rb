@@ -54,7 +54,9 @@ module Cucumber
 
       def profiles_string
         return if @config.custom_profiles.empty?
-        @config.custom_profiles.map { |profile| "-p #{profile}" }.join(' ') + ' '
+        profiles = @config.custom_profiles.map { |profile| "-p #{profile}" }.join(' ')
+
+        "#{profiles} "
       end
     end
   end

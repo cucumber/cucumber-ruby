@@ -3,6 +3,7 @@
 # rubocop:disable Style/ClassVars
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
+require 'support/fake_objects'
 
 module Cucumber
   module Glue
@@ -165,21 +166,13 @@ module Cucumber
       end
 
       context 'with ParameterType' do
-        class Actor
-          attr_accessor :name
-
-          def initialize(name)
-            @name = name
-          end
-        end
-
         before(:each) do
           @actor = nil
 
           dsl.ParameterType(
             name: 'actor',
             regexp: /[A-Z]{1}[a-z]+/,
-            transformer: ->(name) { @actor = Actor.new(name) }
+            transformer: ->(name) { @actor = FakeObjects::Actor.new(name) }
           )
         end
 

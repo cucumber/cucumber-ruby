@@ -14,6 +14,8 @@ module Cucumber
       # _@private
       def initialize(step_definition)
         @step_definition = step_definition
+
+        super
       end
     end
   end

@@ -5,11 +5,11 @@ require 'yaml'
 
 module Cucumber
   module Cli
-    describe Configuration do
-      module ExposesOptions
-        attr_reader :options
-      end
+    module ExposesOptions
+      attr_reader :options
+    end
 
+    describe Configuration do
       def given_cucumber_yml_defined_as(hash_or_string)
         allow(File).to receive(:exist?) { true }
 

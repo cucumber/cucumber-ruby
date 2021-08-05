@@ -40,9 +40,8 @@ module Cucumber
 
       def self.cucumber_compatible_arity?(args, block)
         return true if block.arity == args.length
-        if block.arity < 0
-          return true if args.length >= (block.arity.abs - 1)
-        end
+        return true if block.arity.negative? && args.length >= (block.arity.abs - 1)
+
         false
       end
 

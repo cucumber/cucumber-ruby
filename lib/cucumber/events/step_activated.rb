@@ -20,6 +20,8 @@ module Cucumber
       def initialize(test_step, step_match)
         @test_step = test_step
         @step_match = step_match
+
+        super
       end
     end
   end

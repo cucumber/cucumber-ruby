@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
+require 'support/fake_objects'
 
 module Cucumber
   module Glue
@@ -148,17 +149,8 @@ module Cucumber
           end
         end
 
-        module ModuleOne
-        end
-
-        module ModuleTwo
-        end
-
-        class ClassOne
-        end
-
         it 'implicitlys extend world with modules' do
-          dsl.World(ModuleOne, ModuleTwo)
+          dsl.World(FakeObjects::ModuleOne, FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -187,32 +179,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
       end
 
       describe 'Handling namespaced World' do
-        module ModuleOne
-          def method_one
-            1
-          end
-        end
-
-        module ModuleMinusOne
-          def method_one
-            -1
-          end
-        end
-
-        module ModuleTwo
-          def method_two
-            2
-          end
-        end
-
-        module ModuleThree
-          def method_three
-            3
-          end
-        end
-
         it 'extends the world with namespaces' do
-          dsl.World(ModuleOne, module_two: ModuleTwo, module_three: ModuleThree)
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -229,7 +197,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
 
         it 'allows to inspect the included modules' do
-          dsl.World(ModuleOne, module_two: ModuleTwo, module_three: ModuleThree)
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -240,8 +208,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
 
         it 'merges methods when assigning different modules to the same namespace' do
-          dsl.World(namespace: ModuleOne)
-          dsl.World(namespace: ModuleTwo)
+          dsl.World(namespace: FakeObjects::ModuleOne)
+          dsl.World(namespace: FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -251,8 +219,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
 
         it 'resolves conflicts when assigning different modules to the same namespace' do
-          dsl.World(namespace: ModuleOne)
-          dsl.World(namespace: ModuleMinusOne)
+          dsl.World(namespace: FakeObjects::ModuleOne)
+          dsl.World(namespace: FakeObjects::ModuleMinusOne)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers

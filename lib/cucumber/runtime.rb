@@ -34,6 +34,7 @@ module Cucumber
 
   class FeatureFolderNotFoundException < RuntimeError
     def initialize(path)
+      super
       @path = path
     end
 

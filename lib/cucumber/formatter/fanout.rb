@@ -20,9 +20,11 @@ module Cucumber
         end
       end
 
+      # rubocop:disable Lint/MissingSuper
       def respond_to_missing?(name, include_private = false)
         recipients.any? { |recipient| recipient.respond_to?(name, include_private) }
       end
+      # rubocop:enable Lint/MissingSuper
     end
   end
 end
