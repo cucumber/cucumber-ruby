@@ -11,16 +11,17 @@ class Calculator
     @stack.last
   end
 
-  # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands
   def +
-    @stack.push @stack.pop + @stack.pop
+    number_1 = @stack.pop
+    number_2 = @stack.pop
+
+    @stack.push number_1 + number_2
   end
-  # rubocop:enable Lint/BinaryOperatorWithIdenticalOperands
 
   def /
     divisor = @stack.pop
     dividend = @stack.pop
-    # Hm, @stack.pop(2) doesn't work
+
     @stack.push dividend / divisor
   end
 end
