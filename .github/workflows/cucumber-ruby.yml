@@ -20,6 +20,7 @@ on:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
