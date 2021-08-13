@@ -1,0 +1,57 @@
+name: Pre-release
+
+# Prepares a new releas
+#
+# To trigger it, simply change the CHANGELOG.md file, replacing the
+# "Unreleased" header text with the new release's version number.
+#
+# The workflow will automatically prepare a pull request for the release.
+#
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+  versions:
+    runs-on: ubuntu-latest
+    name: Get version numbers
+    outputs:
+      released-version: ${{ steps.current-release.outputs.number }}
+      next-version: ${{ steps.next-release.outputs.result }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: read the current release version from git tags
+        uses: cucumber-actions/get-released-version@v1.0.0
+        id: current-release
+      - name: read latest version from the changelog
+        uses: cucumber-actions/changelog-action@v1.3
+        with:
+          args: latest
+        id: next-release
+      - name: Report version numbers detected
+        run: |
+          echo "Released: ${{ steps.current-release.outputs.number }}"
+          echo "Next:     ${{ steps.next-release.outputs.result }}"
+
+  create-release-pr:
+    runs-on: ubuntu-latest
+    name: Create / Update Release PR
+    needs: versions
+    if: needs.versions.outputs.released-version != needs.versions.outputs.next-version
+    env:
+      next_version: ${{ needs.versions.outputs.next-version }}
+      released_version: ${{ needs.versions.outputs.released-version }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: cucumber-actions/create-release-pr@v1.0.0
+        with:
+          current_release: ${{ env.released_version }}
+          next_version: ${{ env.next_version }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
