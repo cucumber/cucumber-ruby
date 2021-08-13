@@ -17,16 +17,19 @@ need to update and release `cucumber-ruby-core` first, then `cucumber-ruby-wire`
 
 - Upgrade gems with `scripts/update-gemspec`
 - Bump the version number in `lib/cucumber/version`
-- Update `CHANGELOG.md` with the upcoming version number and create a new `In Git` section
-- Remove empty sections from `CHANGELOG.md`
-- Commit the changes using a verified signature
+- Update `CHANGELOG.md` with the upcoming version number and create a new `Unreleased` section at the top
+- Commit the changes:
   ```shell
-  git commit --gpg-sign -am "Release X.Y.Z"
+  git commit -am "Release X.Y.Z"
+  git push
   ```
-- Now release it:
-  ```shell
-  make release
-  ```
+
+This will trigger the `[pre-release](../.github/workflows/pre-release.yaml)` workflow which will create a pull request to a new `release/vX.Y.Z` branch.
+
+Once that PR is merged by a member of the `[@cucumber/cucumber-ruby](https://github.com/orgs/cucumber/teams/cucumber-ruby)` team, the `[release](../.github/workflows/release.yaml)` workflow will kick in and release the new version of the gem.
+
+Once the PR has been merged:
+
 - Check the release has been successfully pushed to [rubygems](https://rubygems.org/gems/cucumber)
 - Finally, update the `cucumber-ruby` version in the
   [documentation project](https://cucumber.io/docs/installation/) in
