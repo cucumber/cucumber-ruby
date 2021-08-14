@@ -23,13 +23,9 @@ jobs:
         with:
           ruby-version: 3.0.2
           bundler-cache: true
-      - run: |
-          bundle exec gem build --output release.gem
-      - name: Release to Rubygems
-        env:
-          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-        run: |
-          bundle exec gem push release.gem
+      - uses: cucumber-actions/publish-rubygem@v1.0.0
+        with:
+          rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
       - name: read release notes from the changelog
         id: release-notes
         uses: cucumber-actions/changelog-action@v1.3
