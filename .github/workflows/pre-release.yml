@@ -1,6 +1,6 @@
 name: Pre-release
 
-# Prepares a new releas
+# Prepares a new release
 #
 # To trigger it, simply change the CHANGELOG.md file, replacing the
 # "Unreleased" header text with the new release's version number.
