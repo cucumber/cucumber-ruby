@@ -1,4 +1,9 @@
-Feature: Protobuf message output formatter
+Feature: Message output formatter
+
+  This formatter emits a stream of Newline-Delimited JSON (NDJSON) documents
+  as events occur during the test run.
+
+  You can read more about the message protocol [here](https://github.com/cucumber/common/tree/main/messages).
 
   Background:
     Given a file named "features/my_feature.feature" with:
