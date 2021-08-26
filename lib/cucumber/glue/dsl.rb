@@ -113,6 +113,11 @@ module Cucumber
         Dsl.register_rb_hook('after_configuration', [], proc)
       end
 
+      # Registers a proc that will run after Cucumber is configured in order to install an external plugin.
+      def InstallPlugin(&proc)
+        Dsl.register_rb_hook('install_plugin', [], proc)
+      end
+
       # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
       # also to the i18n translations whenever a feature of a

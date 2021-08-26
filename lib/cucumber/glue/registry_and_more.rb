@@ -134,9 +134,15 @@ module Cucumber
         @current_world = nil
       end
 
-      def after_configuration(configuration, registry)
+      def after_configuration(configuration)
         hooks[:after_configuration].each do |hook|
-          hook.invoke('AfterConfiguration', [configuration, registry])
+          hook.invoke('AfterConfiguration', [configuration])
+        end
+      end
+
+      def install_plugin(configuration, registry)
+        hooks[:install_plugin].each do |hook|
+          hook.invoke('InstallPlugin', [configuration, registry])
         end
       end
 

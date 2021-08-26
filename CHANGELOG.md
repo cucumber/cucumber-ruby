@@ -14,14 +14,24 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
+- New hook: `InstallPlugin`
+
+  It is intended to be used to install an external plugin, like cucumber-ruby-wire.
+
+  It is fired just after the `AfterConfiguration` one. Two parameters are given:
+  the same `configuration` instance that is given to `AfterConfiguration`,
+  and a [`registry_wrapper`](./lib/cucumber/glue/registry_wrapper.rb) which allows
+  plugins to have access to specific internal methods.
+
+  See [cucumber-ruby-wire](https://github.com/cucumber/cucumber-ruby-wire/) for a
+  usage example.
+
+  ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Fixed
 
 ### Changed
-
-- `AfterConfiguration` hook has a new `registry` parameter.
-  See [UPGRADING.md](./UPGRADING.md#upgrading-to-800) for more info.
-  ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
-   [aurelien-reeves](https://github.com/aurelien-reeves))
 
 ### Removed
 
@@ -33,7 +43,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
   The Wire protocol is still officially supported, but as an optional plugin rather
   than a built-in feature. See the
-  [UPGRADING.md](./UPGRADING.md#upgrading-to-800)
+  [UPGRADING.md](./UPGRADING.md#upgrading-to-710)
   to update your code accordingly.
 
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
