@@ -136,7 +136,7 @@ module Cucumber
 
       def after_configuration(configuration)
         hooks[:after_configuration].each do |hook|
-          hook.invoke('AfterConfiguration', [configuration])
+          hook.invoke('AfterConfiguration', configuration)
         end
       end
 
