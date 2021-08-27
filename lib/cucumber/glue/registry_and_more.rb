@@ -140,6 +140,12 @@ module Cucumber
         end
       end
 
+      def install_plugin(configuration, registry)
+        hooks[:install_plugin].each do |hook|
+          hook.invoke('InstallPlugin', [configuration, registry])
+        end
+      end
+
       def add_hook(phase, hook)
         hooks[phase.to_sym] << hook
         hook

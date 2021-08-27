@@ -3,12 +3,14 @@
 require 'fileutils'
 require 'cucumber/configuration'
 require 'cucumber/create_meta'
+require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
 require 'cucumber/gherkin/i18n'
+require 'cucumber/glue/registry_wrapper'
 require 'cucumber/step_match_search'
 require 'cucumber/messages'
 require 'sys/uname'
@@ -70,8 +72,9 @@ module Cucumber
       )
 
       load_step_definitions
-      install_wire_plugin
       fire_after_configuration_hook
+      fire_install_plugin_hook
+      install_wire_plugin
       # TODO: can we remove this state?
       self.visitor = report
 
@@ -110,6 +113,10 @@ module Cucumber
 
     def fire_after_configuration_hook #:nodoc:
       @support_code.fire_hook(:after_configuration, @configuration)
+    end
+
+    def fire_install_plugin_hook #:nodoc:
+      @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
     end
 
     require 'cucumber/core/gherkin/document'
@@ -261,7 +268,19 @@ module Cucumber
     end
 
     def install_wire_plugin
-      Cucumber::Wire::Plugin.new(@configuration, @support_code.registry).install if @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+      return if Cucumber::Wire::Plugin.installed?
+      return unless @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
+
+      Cucumber::Wire::Plugin.new(@configuration, registry_wrapper).install
+      Cucumber.deprecate(
+        'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info',
+        ' built-in usage of the wire protocol',
+        '8.0.0'
+      )
+    end
+
+    def registry_wrapper
+      Cucumber::Glue::RegistryWrapper.new(@support_code.registry)
     end
 
     def log
