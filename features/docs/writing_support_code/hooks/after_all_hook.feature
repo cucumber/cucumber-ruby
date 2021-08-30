@@ -49,3 +49,32 @@ Feature: AfterAll Hooks
       """
       AfterAll hook error has been raised (RuntimeError)
       """
+
+  Scenario: It is invoked also when scenario has failed
+
+    Given a file named "features/f.feature" with:
+      """
+      Feature: AfterAll hook
+        Scenario: failed
+          Given a failed step
+      """
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      AfterAll do
+        raise "AfterAll hook error has been raised"
+      end
+
+      Given /^a failed step$/ do
+        expect(0).to eq 1
+      end
+      """
+    When I run `cucumber features/f.feature --publish-quiet`
+    Then it should fail with:
+      """
+      1 scenario (1 failed)
+      1 step (1 failed)
+      """
+    And the output should contain:
+      """
+      AfterAll hook error has been raised (RuntimeError)
+      """
