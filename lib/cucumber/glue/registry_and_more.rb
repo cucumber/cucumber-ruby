@@ -152,6 +152,12 @@ module Cucumber
         end
       end
 
+      def after_all
+        hooks[:after_all].each do |hook|
+          hook.invoke('AfterAll', [])
+        end
+      end
+
       def add_hook(phase, hook)
         hooks[phase.to_sym] << hook
         hook
