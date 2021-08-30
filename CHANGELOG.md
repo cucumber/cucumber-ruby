@@ -14,6 +14,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
+- New `BeforeAll` and `AfterAll` hooks
+
+  ([1569](https://github.com/cucumber/cucumber-ruby/pull/1569)
+   [aurelien-reeves](https://github.com/aurelien-reeves))
+
 - New hook: `InstallPlugin`
 
   It is intended to be used to install an external plugin, like cucumber-ruby-wire.
