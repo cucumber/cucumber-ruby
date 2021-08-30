@@ -75,6 +75,7 @@ module Cucumber
       fire_after_configuration_hook
       fire_install_plugin_hook
       install_wire_plugin
+      fire_before_all_hook
       # TODO: can we remove this state?
       self.visitor = report
 
@@ -117,6 +118,10 @@ module Cucumber
 
     def fire_install_plugin_hook #:nodoc:
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
+    end
+
+    def fire_before_all_hook #:nodoc:
+      @support_code.fire_hook(:before_all)
     end
 
     require 'cucumber/core/gherkin/document'
