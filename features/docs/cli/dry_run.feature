@@ -84,3 +84,34 @@ Feature: Dry Run
       1 step (1 undefined)
 
       """
+
+  Scenario: With BeforeAll and AfterAll hooks
+    Given a file named "features/test.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given this step fails
+      """
+    And the standard step definitions
+    And a file named "features/step_definitions/support.rb" with:
+      """
+      BeforeAll do
+        raise "BeforeAll hook error has been raised"
+      end
+
+      AfterAll do
+        raise "AfterAll hook error has been raised"
+      end
+      """
+    When I run `cucumber features/test.feature --publish-quiet --dry-run`
+    Then it should pass with exactly:
+      """
+      Feature:
+
+        Scenario:               # features/test.feature:2
+          Given this step fails # features/step_definitions/steps.rb:4
+
+      1 scenario (1 skipped)
+      1 step (1 skipped)
+
+      """

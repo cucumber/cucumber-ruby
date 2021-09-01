@@ -75,7 +75,7 @@ module Cucumber
       fire_after_configuration_hook
       fire_install_plugin_hook
       install_wire_plugin
-      fire_before_all_hook
+      fire_before_all_hook unless dry_run?
       # TODO: can we remove this state?
       self.visitor = report
 
@@ -83,7 +83,7 @@ module Cucumber
       compile features, receiver, filters, @configuration.event_bus
       @configuration.notify :test_run_finished
 
-      fire_after_all_hook
+      fire_after_all_hook unless dry_run?
     end
 
     def features_paths
