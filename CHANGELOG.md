@@ -16,6 +16,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - New `BeforeAll` and `AfterAll` hooks
 
+  More information about hooks can be found in
+  [features/docs/writing_support_code/hooks/README.md](./features/docs/writing_support_code/hooks/README.md).
+
   ([1569](https://github.com/cucumber/cucumber-ruby/pull/1569)
    [aurelien-reeves](https://github.com/aurelien-reeves))
 
@@ -30,6 +33,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
   See [cucumber-ruby-wire](https://github.com/cucumber/cucumber-ruby-wire/) for a
   usage example.
+
+  More information about hooks can be found in
+  [features/docs/writing_support_code/hooks/README.md](./features/docs/writing_support_code/hooks/README.md).
 
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
    [aurelien-reeves](https://github.com/aurelien-reeves))
