@@ -32,7 +32,7 @@ allows to have some code that would have deeper impact on the execution.
 
 ### AfterConfiguration
 
-**Note:** this is a legacy hook. You may consider using InstallPlugin instead.
+**Note:** this is a legacy hook. You may consider using [`InstallPlugin`](#installplugin) instead.
 
 ```ruby
 AfterConfiguration do |configuration|
@@ -45,7 +45,7 @@ end
 
 In addition of the configuration, `IntallPlugin` also has access to some of Cucumber
 internals through a `RegistryWrapper`, defined in
-[lib/cucumber/glue/registry_wrapper.rb](./lib/cucumber/glue/registry_wrapper.rb).
+[lib/cucumber/glue/registry_wrapper.rb](../../../../lib/cucumber/glue/registry_wrapper.rb).
 
 ```ruby
 InstallPlugin do |configuration, registry|
@@ -64,7 +64,7 @@ You can see an example in the [Cucumber Wire plugin](https://github.com/cucumber
 `BeforeAll` is executed once before the execution of the first scenario. `AfterAll`
 is executed once after the execution of the last scenario.
 
-They have no parameters. Their purpose is to set-up and/or clean-up your environment
+They have no parameter. Their purpose is to set-up and/or clean-up your environment
 not related to Cucumber, like a database or a browser.
 
 ```ruby
