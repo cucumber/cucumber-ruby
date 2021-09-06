@@ -17,7 +17,7 @@ Feature: Listen for events
       """
     And a file named "features/support/my_listener.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         io = config.out_stream
         config.on_event :step_activated do |event|
           io.puts "Success!"
@@ -44,7 +44,7 @@ Feature: Listen for events
     And the standard step definitions
     And a file named "features/support/my_listener.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         io = config.out_stream
         config.on_event :test_step_finished do |event|
           io.puts event.result.passed?

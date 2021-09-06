@@ -1,7 +1,7 @@
 Feature: Test Case Finished Event
 
-  This event is fired after each scenario or examples table row (generally named a 
-  Test Case) has finished executing. You can use the event to learn about the 
+  This event is fired after each scenario or examples table row (generally named a
+  Test Case) has finished executing. You can use the event to learn about the
   result of the test case.
 
   See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestCaseFinished) for more information about the data available on this event.
@@ -16,7 +16,7 @@ Feature: Test Case Finished Event
       """
     And a file named "features/support/events.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.on_event :test_case_finished do |event|
           config.out_stream.puts "Results"
           config.out_stream.puts "-------"

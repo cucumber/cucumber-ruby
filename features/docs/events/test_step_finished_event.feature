@@ -1,7 +1,7 @@
 Feature: Test Step Finished Event
 
-  This event is fired after each step in a scenario or scenario outline example 
-  (generally named a Test Step) has finished executing. You can use the event to learn about the 
+  This event is fired after each step in a scenario or scenario outline example
+  (generally named a Test Step) has finished executing. You can use the event to learn about the
   result of the test step.
 
   See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestStepFinished) for more information about the data available on this event and the result object.
@@ -22,7 +22,7 @@ Feature: Test Step Finished Event
       """
     And a file named "features/support/events.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.on_event :test_step_finished do |event|
           config.out_stream.puts "Test step: #{event.test_step}"
           config.out_stream.puts "The result is: #{event.result}"

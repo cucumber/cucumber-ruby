@@ -20,7 +20,7 @@ Feature: Gherkin Source Read Event
       """
     And a file named "features/support/events.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.on_event :gherkin_source_read do |event|
           config.out_stream.puts "path: #{event.path}"
           config.out_stream.puts "body:\n#{event.body}"
