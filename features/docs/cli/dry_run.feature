@@ -90,7 +90,7 @@ Feature: Dry Run
       """
       Feature:
         Scenario:
-          Given this step fails
+          Given this step passes
       """
     And the standard step definitions
     And a file named "features/step_definitions/support.rb" with:
@@ -108,8 +108,8 @@ Feature: Dry Run
       """
       Feature:
 
-        Scenario:               # features/test.feature:2
-          Given this step fails # features/step_definitions/steps.rb:4
+        Scenario:                # features/test.feature:2
+          Given this step passes # features/step_definitions/steps.rb:1
 
       1 scenario (1 skipped)
       1 step (1 skipped)
