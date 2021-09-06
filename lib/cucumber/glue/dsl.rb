@@ -109,6 +109,8 @@ module Cucumber
 
       # Registers a proc that will run after Cucumber is configured. You can register as
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
+      #
+      # DEPRECATED: please use InstallPlugin or BeforeAll instead
       def AfterConfiguration(&proc)
         Dsl.register_rb_hook('after_configuration', [], proc)
       end
