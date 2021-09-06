@@ -120,6 +120,18 @@ module Cucumber
         Dsl.register_rb_hook('install_plugin', [], proc)
       end
 
+      # Registers a proc that will run before the execution of the scenarios.
+      # Use it for your final set-ups
+      def BeforeAll(&proc)
+        Dsl.register_rb_hook('before_all', [], proc)
+      end
+
+      # Registers a proc that will run after the execution of the scenarios.
+      # Use it for your final clean-ups
+      def AfterAll(&proc)
+        Dsl.register_rb_hook('after_all', [], proc)
+      end
+
       # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
       # also to the i18n translations whenever a feature of a
