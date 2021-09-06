@@ -39,6 +39,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Deprecated
 
+- `AfterConfiguration` is deprecated. Please use `InstallPlugin` or `BeforeAll` instead.
+  See the [UPGRADING.md](./UPGRADING.md#upgrading-to-710) to update your code accordingly.
+  ([1570](https://github.com/cucumber/cucumber-ruby/pull/1570))
+
 - The built-in Wire protocol
 
   The Wire protocol is still officially supported, but as an optional plugin rather
