@@ -1,7 +1,7 @@
 # Cucumber Hooks
 
 Cucumber proposes several hooks to let you specify some code to be executed at
-different stage of the test execution, like before or after the execution of a
+different stages of test execution, like before or after the execution of a
 scenario.
 
 Hooks are part of your support code.
@@ -21,6 +21,10 @@ They are executed in the following order:
 
 You can define as many hooks as you want. If you have several hooks of the same
 types - for example, several `BeforeAll` hooks - they will be all executed once.
+
+Multiple hooks of the same type are executed in the order that they were defined.
+If you wish to control this order, use manual requires in `env.rb` - This file is
+loaded first - or migrate them all to one `hooks.rb` file.
 
 ## AfterConfiguration and InstallPlugin
 
@@ -43,7 +47,7 @@ end
 
 ### InstallPlugin
 
-In addition of the configuration, `IntallPlugin` also has access to some of Cucumber
+In addition to the configuration, `IntallPlugin` also has access to some of Cucumber
 internals through a `RegistryWrapper`, defined in
 [lib/cucumber/glue/registry_wrapper.rb](../../../../lib/cucumber/glue/registry_wrapper.rb).
 
@@ -64,8 +68,8 @@ You can see an example in the [Cucumber Wire plugin](https://github.com/cucumber
 `BeforeAll` is executed once before the execution of the first scenario. `AfterAll`
 is executed once after the execution of the last scenario.
 
-They have no parameter. Their purpose is to set-up and/or clean-up your environment
-not related to Cucumber, like a database or a browser.
+These two types of hooks have no parameters. Their purpose is to set-up and/or clean-up
+your environment not related to Cucumber, like a database or a browser.
 
 ```ruby
 BeforeAll do
@@ -95,18 +99,18 @@ end
 
 ## Before and After
 
-`Before` is executed before each scenario. `After` is executed after each scenario.
-They both have the scenario being executed as a parameter. Within the `After` hook,
-the scenario status is also available.
+`Before` is executed before each test case. `After` is executed after each test case.
+They both have the test case being executed as a parameter. Within the `After` hook,
+the status of the test case is also available.
 
 ```ruby
-Before do |scenario|
-  log scenario.name
+Before do |test_case|
+  log test_case.name
 end
 
-After do |scenario|
-  log scenario.failed?
-  log scenario.status
+After do |test_case|
+  log test_case.failed?
+  log test_case.status
 end
 ```
 

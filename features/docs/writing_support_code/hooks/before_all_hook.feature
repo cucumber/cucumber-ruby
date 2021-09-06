@@ -15,10 +15,10 @@ Feature: BeforeAll Hooks
       """
       Feature: BeforeAll hook
         Scenario: #1
-          Then the BeforeAll hook have been called
+          Then the BeforeAll hook has been called
 
         Scenario: #2
-          Then the BeforeAll hook have been called
+          Then the BeforeAll hook has been called
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
@@ -28,7 +28,7 @@ Feature: BeforeAll Hooks
         hookCalled += 1
       end
 
-      Then /^the BeforeAll hook have been called$/ do
+      Then /^the BeforeAll hook has been called$/ do
         expect(hookCalled).to eq 1
       end
       """
@@ -37,11 +37,11 @@ Feature: BeforeAll Hooks
       """
       Feature: BeforeAll hook
 
-        Scenario: #1                               # features/f.feature:2
-          Then the BeforeAll hook have been called # features/step_definitions/steps.rb:7
+        Scenario: #1                              # features/f.feature:2
+          Then the BeforeAll hook has been called # features/step_definitions/steps.rb:7
 
-        Scenario: #2                               # features/f.feature:5
-          Then the BeforeAll hook have been called # features/step_definitions/steps.rb:7
+        Scenario: #2                              # features/f.feature:5
+          Then the BeforeAll hook has been called # features/step_definitions/steps.rb:7
 
       2 scenarios (2 passed)
       2 steps (2 passed)
