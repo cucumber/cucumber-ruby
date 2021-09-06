@@ -47,7 +47,7 @@ end
 
 ### InstallPlugin
 
-In addition to the configuration, `IntallPlugin` also has access to some of Cucumber
+In addition to the configuration, `InstallPlugin` also has access to some of Cucumber
 internals through a `RegistryWrapper`, defined in
 [lib/cucumber/glue/registry_wrapper.rb](../../../../lib/cucumber/glue/registry_wrapper.rb).
 
