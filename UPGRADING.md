@@ -44,3 +44,13 @@ require 'cucumber/wire'
 ```
 
 The wire protocol will be installed, and no deprecation message will be shown anymore.
+
+## AfterConfiguration hook
+
+Usage of `AfterConfiguration` hook will be deprecated in 7.1.0.
+
+Use the new `InstallPlugin` hook if you need the `configuration` parameter.
+
+Use the new `BeforeAll` hook if you don't need the `configuration` parameter.
+
+More information about hooks can be found in [features/docs/writing_support_code/hooks/README.md](./features/docs/writing_support_code/hooks/README.md).

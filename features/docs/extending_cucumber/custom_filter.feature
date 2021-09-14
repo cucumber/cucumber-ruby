@@ -1,6 +1,6 @@
 Feature: Custom filter
 
-  Scenario: Add a custom filter via AfterConfiguration hook
+  Scenario: Add a custom filter via InstallPlugin hook
     Given a file named "features/test.feature" with:
       """
       Feature:
@@ -20,7 +20,7 @@ Feature: Custom filter
         end
       end
 
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.filters << MakeAnythingPass.new
       end
       """

@@ -21,7 +21,7 @@ Feature: Test Run Started Event
       """
     And a file named "features/support/events.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.on_event :test_run_started do |event|
           config.out_stream.puts "test run started"
           config.out_stream.puts event.test_cases.map(&:location)

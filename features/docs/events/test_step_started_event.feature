@@ -1,6 +1,6 @@
 Feature: Test Step Started Event
 
-  This event is fired just before each step in a scenario or scenario outline example 
+  This event is fired just before each step in a scenario or scenario outline example
   (generally named a Test Step) starts to be executed. This event is read-only, so there
   is no way to prevent the test step from running, but you can use it for logging or user
   notification.
@@ -19,7 +19,7 @@ Feature: Test Step Started Event
     And a file named "features/support/events.rb" with:
       """
       stdout = nil
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         stdout = config.out_stream # make sure all the `puts` calls can write to the same output
         config.on_event :test_step_started do |event|
           stdout.puts "before"
