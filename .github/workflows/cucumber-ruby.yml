@@ -20,13 +20,14 @@ on:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
         ruby: [2.5, 2.6, 2.7, '3.0']
         include:
           - os: ubuntu-latest
-            ruby: jruby
+            ruby: [jruby-9.1, jruby-9.3]
         exclude:
           - ruby: 2.5
             os: windows-latest
