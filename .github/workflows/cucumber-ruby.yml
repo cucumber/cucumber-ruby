@@ -26,7 +26,7 @@ jobs:
         ruby: [2.5, 2.6, 2.7, '3.0']
         include:
           - os: ubuntu-latest
-            ruby: jruby
+            ruby: jruby-9.2
         exclude:
           - ruby: 2.5
             os: windows-latest
