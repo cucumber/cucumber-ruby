@@ -64,6 +64,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
    [aurelien-reeves](https://github.com/aurelien-reeves))
 
+### Known issue
+
+- There is a known issue with JRuby 9.3. For more info, see
+  [PR#1571](https://github.com/cucumber/cucumber-ruby/pull/1571).
+
 ## [7.0.0](https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...v7.0.0)
 
 ### Fixed
