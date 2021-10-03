@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...main) (2021-07-19)
+## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...main)
 
 ### Added
 
@@ -43,6 +43,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 
 ### Changed
+
+- Added release dates to CHANGELOG.md.
+  ([1543](https://github.com/cucumber/cucumber-ruby/pull/1573)
+  [AudTheCodeWitch](https://github.com/AudTheCodeWitch))
 
 ### Removed
 
