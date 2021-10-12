@@ -20,13 +20,13 @@ Gem::Specification.new do |s|
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.5'
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
-  s.add_dependency 'cucumber-core', '~> 10.0', '>= 10.0.1'
+  s.add_dependency 'cucumber-core', '~> 10.1', '>= 10.1.0'
   s.add_dependency 'cucumber-create-meta', '~> 6.0', '>= 6.0.1'
-  s.add_dependency 'cucumber-cucumber-expressions', '~> 12.1', '>= 12.1.1'
+  s.add_dependency 'cucumber-cucumber-expressions', '~> 14.0', '>= 14.0.0'
   s.add_dependency 'cucumber-gherkin', '~> 22.0', '>= 22.0.0'
   s.add_dependency 'cucumber-html-formatter', '~> 17.0', '>= 17.0.0'
   s.add_dependency 'cucumber-messages', '~> 17.1', '>= 17.1.1'
-  s.add_dependency 'cucumber-wire', '~> 6.1', '>= 6.1.1'
+  s.add_dependency 'cucumber-wire', '~> 6.2', '>= 6.2.0'
   s.add_dependency 'diff-lcs', '~> 1.4', '>= 1.4.4'
   s.add_dependency 'mime-types', '~> 3.3', '>= 3.3.1'
   s.add_dependency 'multi_test', '~> 0.1', '>= 0.1.2'
@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.10', '>= 3.10.0'
   s.add_development_dependency 'simplecov', '~> 0.21', '>= 0.21.2'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
-  s.add_development_dependency 'test-unit', '~> 3.4', '>= 3.4.7'
+  s.add_development_dependency 'test-unit', '~> 3.4', '>= 3.4.8'
   s.add_development_dependency 'webrick', '~> 1.7', '>= 1.7.0'
 
   # For maintainer scripts
