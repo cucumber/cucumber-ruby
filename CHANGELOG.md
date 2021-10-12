@@ -10,7 +10,21 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [In GIT](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...main)
+## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...main)
+
+### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+### Security fixes
+
+### Deprecated
+
+## [7.1.0](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0) (2021-10-12)
 
 ### Added
 
@@ -40,17 +54,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([1564](https://github.com/cucumber/cucumber-ruby/pull/1564)
   [aurelien-reeves](https://github.com/aurelien-reeves))
 
-### Fixed
-
 ### Changed
 
 - Added release dates to CHANGELOG.md.
   ([1543](https://github.com/cucumber/cucumber-ruby/pull/1573)
   [AudTheCodeWitch](https://github.com/AudTheCodeWitch))
-
-### Removed
-
-### Security fixes
 
 ### Deprecated
 
