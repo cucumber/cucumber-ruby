@@ -1,0 +1,69 @@
+name: Release RubyGems
+
+on:
+  push:
+    branches:
+      - release/*
+
+jobs:
+
+  pre-release-check:
+    name: Perform checks before releasing
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check commit has been pushed on origin/main
+        run: |
+          git fetch --quiet origin main
+          git merge-base --is-ancestor HEAD origin/main
+
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        ruby: ['2.5', '2.6', '2.7', '3.0']
+        include:
+          - os: ubuntu-latest
+            ruby: jruby-9.2
+        exclude:
+          - ruby: '2.5'
+            os: windows-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run ruby tests
+        uses: ./.github/actions/test-ruby
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+  publish-rubygem:
+    name: Publish Ruby Gem
+    needs: [pre-release-check, tests]
+    runs-on: ubuntu-latest
+    environment: Release
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish ruby gem
+        uses: cucumber/action-publish-rubygem@v1.0.0
+        with:
+          rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
+
+  create-github-release:
+    name: Create GitHub Release and Git tag
+    needs: publish-rubygem
+    runs-on: ubuntu-latest
+    environment: Release
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cucumber/action-create-github-release@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
