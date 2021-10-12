@@ -23,7 +23,7 @@ need to update and release `cucumber-ruby-core` first, then `cucumber-ruby-wire`
 
 - Upgrade gems with `scripts/update-gemspec`
 - Bump the version number in `lib/cucumber/version`
-- Update `CHANGELOG.md` with the upcoming version number and create a new `In Git` section
+- Update `CHANGELOG.md` with the upcoming version number and create a new `Unreleased` section
 - Remove empty sections from `CHANGELOG.md`
 - Commit the changes using a verified signature
   ```shell
