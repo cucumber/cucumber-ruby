@@ -73,7 +73,6 @@ module Cucumber
       load_step_definitions
       fire_after_configuration_hook
       fire_install_plugin_hook
-      install_wire_plugin
       fire_before_all_hook unless dry_run?
       # TODO: can we remove this state?
       self.visitor = report
