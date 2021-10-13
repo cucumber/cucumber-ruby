@@ -8,7 +8,7 @@
 [![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
 [![pull requests](https://oselvar.com/api/badge?label=pull%20requests&csvUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fcucumber%2Foselvar-github-metrics%2Fmain%2Fdata%2Fcucumber%2Fcucumber-ruby%2FpullRequests.csv)](https://oselvar.com/github/cucumber/oselvar-github-metrics/main/cucumber/cucumber-ruby)
 [![issues](https://oselvar.com/api/badge?label=issues&csvUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fcucumber%2Foselvar-github-metrics%2Fmain%2Fdata%2Fcucumber%2Fcucumber-ruby%2Fissues.csv)](https://oselvar.com/github/cucumber/oselvar-github-metrics/main/cucumber/cucumber-ruby)
-[![CircleCI](https://circleci.com/gh/cucumber/cucumber-ruby.svg?style=svg)](https://circleci.com/gh/cucumber/cucumber-ruby)
+[![Test cucumber](https://github.com/cucumber/cucumber-ruby/actions/workflows/cucumber-ruby.yml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions/workflows/cucumber-ruby.yml)
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=main)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=main)
 
@@ -57,6 +57,9 @@ Later in this document, bundler is considered being used so all commands are usi
 - Ruby 2.4
 - Ruby 2.3
 - JRuby 9.2 (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
+
+JRuby 9.3 is not supported yet due to a known issue. More info can
+be found in the [PR#1571](https://github.com/cucumber/cucumber-ruby/pull/1571).
 
 ### Ruby on Rails
 

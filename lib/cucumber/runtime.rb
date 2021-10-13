@@ -3,12 +3,14 @@
 require 'fileutils'
 require 'cucumber/configuration'
 require 'cucumber/create_meta'
+require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
 require 'cucumber/gherkin/i18n'
+require 'cucumber/glue/registry_wrapper'
 require 'cucumber/step_match_search'
 require 'cucumber/messages'
 require 'sys/uname'
@@ -70,12 +72,17 @@ module Cucumber
 
       load_step_definitions
       fire_after_configuration_hook
+      fire_install_plugin_hook
+      install_wire_plugin
+      fire_before_all_hook unless dry_run?
       # TODO: can we remove this state?
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
       @configuration.notify :test_run_finished
+
+      fire_after_all_hook unless dry_run?
     end
 
     def features_paths
@@ -108,6 +115,18 @@ module Cucumber
 
     def fire_after_configuration_hook #:nodoc:
       @support_code.fire_hook(:after_configuration, @configuration, @support_code.registry)
+    end
+
+    def fire_install_plugin_hook #:nodoc:
+      @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
+    end
+
+    def fire_before_all_hook #:nodoc:
+      @support_code.fire_hook(:before_all)
+    end
+
+    def fire_after_all_hook #:nodoc:
+      @support_code.fire_hook(:after_all)
     end
 
     require 'cucumber/core/gherkin/document'
@@ -256,6 +275,10 @@ module Cucumber
     def load_step_definitions
       files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
+    end
+
+    def registry_wrapper
+      Cucumber::Glue::RegistryWrapper.new(@support_code.registry)
     end
 
     def log
