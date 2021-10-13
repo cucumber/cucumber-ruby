@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.5'
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
   s.add_dependency 'cucumber-core', '~> 10.1', '>= 10.1.0'
-  s.add_dependency 'cucumber-create-meta', '~> 6.0', '>= 6.0.1
+  s.add_dependency 'cucumber-create-meta', '~> 6.0', '>= 6.0.1'
   s.add_dependency 'cucumber-cucumber-expressions', '~> 14.0', '>= 14.0.0'
   s.add_dependency 'cucumber-gherkin', '~> 22.0', '>= 22.0.0'
   s.add_dependency 'cucumber-html-formatter', '~> 17.0', '>= 17.0.0'
