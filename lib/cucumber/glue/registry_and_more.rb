@@ -139,7 +139,7 @@ module Cucumber
         deprecate_after_configuration_hook if hooks[:after_configuration].any?
 
         hooks[:after_configuration].each do |hook|
-          hook.invoke('AfterConfiguration', [configuration])
+          hook.invoke('AfterConfiguration', configuration)
         end
       end
 
