@@ -114,7 +114,7 @@ module Cucumber
     private
 
     def fire_after_configuration_hook #:nodoc:
-      @support_code.fire_hook(:after_configuration, @configuration, @support_code.registry)
+      @support_code.fire_hook(:after_configuration, @configuration)
     end
 
     def fire_install_plugin_hook #:nodoc:
