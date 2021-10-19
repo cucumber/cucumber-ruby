@@ -12,7 +12,7 @@ RuboCop::RakeTask.new
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new
 
-default_tasks = %i[spec cucumber rubocop cck]
+default_tasks = %i[spec cucumber cck rubocop]
 
 default_tasks << :examples if ENV['CI']
 
