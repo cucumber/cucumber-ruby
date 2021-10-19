@@ -42,7 +42,7 @@ end
 describe 'Cucumber Compatibility Kit', cck: true do
   let(:cucumber_bin) { './bin/cucumber' }
   let(:cucumber_common_args) { '--publish-quiet --profile none --format message' }
-  let(:cucumber_command) { "#{cucumber_bin} #{cucumber_common_args}" }
+  let(:cucumber_command) { "bundle exec #{cucumber_bin} #{cucumber_common_args}" }
 
   examples = Cucumber::CompatibilityKit.gherkin_examples.reject { |example| example == 'retry' }
 
