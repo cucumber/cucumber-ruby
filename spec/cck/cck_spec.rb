@@ -3,10 +3,10 @@ require 'cucumber-compatibility-kit'
 module KeysCheckerExtensions
   def compare(found, expected)
     super(found, expected)
-  rescue => error
-    puts found
-    puts expected
-    [error]
+  rescue StandardError => e
+    puts "found: #{found.inspect}"
+    puts "expected: #{expected.inspect}"
+    [e.message]
   end
 end
 
