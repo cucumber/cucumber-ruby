@@ -40,7 +40,7 @@ class CCK::MessagesComparator
 end
 
 describe 'Cucumber Compatibility Kit', cck: true do
-  let(:cucumber_bin) { './bin/cucumber' }
+  let(:cucumber_bin) { 'cucumber' }
   let(:cucumber_common_args) { '--publish-quiet --profile none --format message' }
   let(:cucumber_command) { "bundle exec #{cucumber_bin} #{cucumber_common_args}" }
 
