@@ -24,6 +24,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Deprecated
 
+### Dependencies
+
+- Updated `cucumber-create-meta` ~> 6.0.2
+
 ## [7.1.0](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0) (2021-10-12)
 
 ### Added
