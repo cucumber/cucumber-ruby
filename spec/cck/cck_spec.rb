@@ -1,5 +1,19 @@
 require 'cucumber-compatibility-kit'
 
+module KeysCheckerExtensions
+  def compare(found, expected)
+    super(found, expected)
+  rescue => error
+    puts found
+    puts expected
+    [error]
+  end
+end
+
+class CCK::KeysChecker
+  prepend KeysCheckerExtensions
+end
+
 describe 'Cucumber Compatibility Kit', cck: true do
   let(:cucumber_bin) { './bin/cucumber' }
   let(:cucumber_common_args) { '--publish-quiet --profile none --format message' }
