@@ -24,7 +24,7 @@ module Autotest::CucumberMixin
     add_sigint_handler
 
     loop do # ^c handler
-      get_to_green
+      wait_for_green
       if tainted
         rerun_all_tests
         rerun_all_features if all_good
@@ -47,7 +47,7 @@ module Autotest::CucumberMixin
     features_to_run == ''
   end
 
-  def get_to_green # rubocop:disable Naming/AccessorMethodName
+  def wait_for_green
     loop do
       super
       run_features
