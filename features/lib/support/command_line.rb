@@ -48,14 +48,9 @@ class CommandLine
   end
 
   def destroy_mocks
-    # rubocop:disable Style/RedundantBegin
-    # TODO: remove the begin/end block when we drop 2.3 uport and CI job.
-    begin
-      ::RSpec::Mocks.verify
-    ensure
-      ::RSpec::Mocks.teardown
-    end
-    # rubocop:enable Style/RedundantBegin
+    ::RSpec::Mocks.verify
+  ensure
+    ::RSpec::Mocks.teardown
   end
 
   private
