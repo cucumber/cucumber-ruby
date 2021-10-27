@@ -4,6 +4,8 @@ Feature: Post Configuration Hook [#423]
   As a developer
   I want to manipulate the Cucumber configuration after it has been created
 
+  Note: This hook has been deprecated in favor of InstallPlugin.
+
   Scenario: Changing the output format
     Given a file named "features/support/env.rb" with:
       """

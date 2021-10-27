@@ -20,7 +20,7 @@ Feature: Step Activated Event
       """
     And a file named "features/support/events.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.on_event :step_activated do |event|
           config.out_stream.puts "The step: #{event.test_step.location}"
           config.out_stream.puts "The step definition: #{event.step_match.location}"

@@ -109,8 +109,27 @@ module Cucumber
 
       # Registers a proc that will run after Cucumber is configured. You can register as
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
+      #
+      # DEPRECATED: please use InstallPlugin or BeforeAll instead
       def AfterConfiguration(&proc)
         Dsl.register_rb_hook('after_configuration', [], proc)
+      end
+
+      # Registers a proc that will run after Cucumber is configured in order to install an external plugin.
+      def InstallPlugin(&proc)
+        Dsl.register_rb_hook('install_plugin', [], proc)
+      end
+
+      # Registers a proc that will run before the execution of the scenarios.
+      # Use it for your final set-ups
+      def BeforeAll(&proc)
+        Dsl.register_rb_hook('before_all', [], proc)
+      end
+
+      # Registers a proc that will run after the execution of the scenarios.
+      # Use it for your final clean-ups
+      def AfterAll(&proc)
+        Dsl.register_rb_hook('after_all', [], proc)
       end
 
       # Registers a new Ruby StepDefinition. This method is aliased

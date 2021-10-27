@@ -1,0 +1,21 @@
+name: Run ruby tests
+
+inputs:
+  ruby-version:
+    description: Version of ruby to use with ruby/setup-ruby@v1
+    required: false
+    default: '3.0'
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+
+    - name: Run tests
+      run: bundle exec rake
+      shell: bash

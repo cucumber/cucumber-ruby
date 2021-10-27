@@ -15,7 +15,7 @@ Feature: Step definition registered
       """
     And a file named "features/support/events.rb" with:
       """
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         config.on_event :step_definition_registered do |event|
           config.out_stream.puts "The step definition: #{event.step_definition.location}"
         end

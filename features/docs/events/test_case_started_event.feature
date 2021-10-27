@@ -19,7 +19,7 @@ Feature: Test Case Started Event
     And a file named "features/support/events.rb" with:
       """
       stdout = nil
-      AfterConfiguration do |config|
+      InstallPlugin do |config|
         stdout = config.out_stream # make sure all the `puts` calls can write to the same output
         config.on_event :test_case_started do |event|
           stdout.puts "before"
@@ -30,7 +30,7 @@ Feature: Test Case Started Event
         end
       end
 
-      Given(/this is a step/) do 
+      Given(/this is a step/) do
       end
 
       """
@@ -44,7 +44,7 @@ Feature: Test Case Started Event
       @scenario
       @feature
       Feature: A feature
-      
+
         @scenario
         Scenario: A passing scenario
           Given this is a step

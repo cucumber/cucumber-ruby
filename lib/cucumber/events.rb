@@ -11,7 +11,7 @@ module Cucumber
   # To subscribe to an event, use {Cucumber::Configuration#on_event}
   #
   # @example
-  #   AfterConfiguration do |config|
+  #   InstallPlugin do |config|
   #     config.on_event :test_case_finished do |event|
   #       puts event.result
   #     end
