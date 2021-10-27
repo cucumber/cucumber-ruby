@@ -127,11 +127,9 @@ module Cucumber
 
       def initialize(config = nil); end
 
-      # rubocop:disable Lint/UselessMethodDefinition
-      def ensure_io(path_or_url_or_io, error_stream)
-        super
+      def io(path_or_url_or_io, error_stream)
+        ensure_io(path_or_url_or_io, error_stream)
       end
-      # rubocop:enable Lint/UselessMethodDefinition
     end
 
     class DummyReporter
@@ -144,14 +142,14 @@ module Cucumber
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
           url = start_server
-          io = DummyFormatter.new.ensure_io("#{url}/s3 -X PUT", nil)
+          io = DummyFormatter.new.io("#{url}/s3 -X PUT", nil)
           expect(io).to be_a(Cucumber::Formatter::IOHTTPBuffer)
           io.close # Close during the test so the request is done while server still runs
         end
 
         it 'uses CurlOptionParser to pass correct options to IOHTTPBuffer' do
           url = start_server
-          io = DummyFormatter.new.ensure_io("#{url}/s3 -X GET -H 'Content-Type: text/json'", nil)
+          io = DummyFormatter.new.io("#{url}/s3 -X GET -H 'Content-Type: text/json'", nil)
 
           expect(io.uri).to eq(URI("#{url}/s3"))
           expect(io.method).to eq('GET')

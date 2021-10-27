@@ -284,7 +284,7 @@ module Cucumber
       #     end
       #   end
       #
-      # rubocop:disable Style/OptionalBooleanParameter
+      # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
       def map_column!(column_name, strict = true, &conversion_proc)
         # TODO: Remove this method for 2.0
         @conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
@@ -292,8 +292,8 @@ module Cucumber
       end
       # rubocop:enable Style/OptionalBooleanParameter
 
-      # rubocop:disable Style/OptionalBooleanParameter
       # Returns a new Table with an additional column mapping. See #map_column!
+      # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
         conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
