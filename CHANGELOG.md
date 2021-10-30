@@ -18,6 +18,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - Do not serialize Messages::Hook#tag_expression if it is empty.
   ([PR#1579](https://github.com/cucumber/cucumber-ruby/pull/1579))
+  
+- JSON Formatter uses "pretty" output format
 
 ### Changed
 
