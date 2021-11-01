@@ -21,6 +21,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   
 - JSON Formatter uses "pretty" output format
 
+- Fixed JSON Formatter "end of background" detection.
+
 ### Changed
 
 ### Removed
