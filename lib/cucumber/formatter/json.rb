@@ -105,7 +105,7 @@ module Cucumber
       end
 
       def first_step_after_background?(test_step)
-        @in_background && test_step.location.lines.max >= @test_case_hash[:line]
+        @in_background && test_step.location.file == @feature_hash[:uri] && test_step.location.lines.max >= @test_case_hash[:line]
       end
 
       def internal_hook?(test_step)
