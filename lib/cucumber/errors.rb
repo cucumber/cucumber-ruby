@@ -9,7 +9,7 @@ module Cucumber
       return result.with_message(with_prefix(result.message)) if result.is_a?(self)
 
       begin
-        raise new(with_prefix(step_name)) # rubocop:disable Style/RaiseArgs
+        raise self, with_prefix(step_name)
       rescue StandardError => e
         e
       end
