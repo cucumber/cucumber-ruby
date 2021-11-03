@@ -27,7 +27,7 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      def self.default_arg_name #:nodoc:
+      def self.default_arg_name # :nodoc:
         'table'
       end
 
@@ -199,7 +199,7 @@ module Cucumber
         end
       end
 
-      def column_names #:nodoc:
+      def column_names # :nodoc:
         @column_names ||= cell_matrix[0].map(&:value)
       end
 
@@ -209,7 +209,7 @@ module Cucumber
         end
       end
 
-      def each_cells_row(&proc) #:nodoc:
+      def each_cells_row(&proc) # :nodoc:
         cells_rows.each(&proc)
       end
 
@@ -361,7 +361,7 @@ module Cucumber
         cells_rows.map { |cells| cells.map(&:value) }
       end
 
-      def cells_to_hash(cells) #:nodoc:
+      def cells_to_hash(cells) # :nodoc:
         hash = Hash.new do |hash_inner, key|
           hash_inner[key.to_s] if key.is_a?(Symbol)
         end
@@ -371,51 +371,51 @@ module Cucumber
         hash
       end
 
-      def index(cells) #:nodoc:
+      def index(cells) # :nodoc:
         cells_rows.index(cells)
       end
 
-      def verify_column(column_name) #:nodoc:
+      def verify_column(column_name) # :nodoc:
         raise %(The column named "#{column_name}" does not exist) unless raw[0].include?(column_name)
       end
 
-      def verify_table_width(width) #:nodoc:
+      def verify_table_width(width) # :nodoc:
         raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
       # TODO: remove the below function if it's not actually being used.
       # Nothing else in this repo calls it.
-      def text?(text) #:nodoc:
+      def text?(text) # :nodoc:
         raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 
-      def cells_rows #:nodoc:
+      def cells_rows # :nodoc:
         @rows ||= cell_matrix.map do |cell_row| # rubocop:disable Naming/MemoizedInstanceVariableName
           Cells.new(self, cell_row)
         end
       end
 
-      def headers #:nodoc:
+      def headers # :nodoc:
         raw.first
       end
 
-      def header_cell(col) #:nodoc:
+      def header_cell(col) # :nodoc:
         cells_rows[0][col]
       end
 
       attr_reader :cell_matrix
 
-      def col_width(col) #:nodoc:
+      def col_width(col) # :nodoc:
         columns[col].__send__(:width)
       end
 
-      def to_s(options = {}) #:nodoc:
+      def to_s(options = {}) # :nodoc:
         indentation = options.key?(:indent) ? options[:indent] : 2
         prefixes = options.key?(:prefixes) ? options[:prefixes] : TO_S_PREFIXES
         DataTablePrinter.new(self, indentation, prefixes).to_s
       end
 
-      class DataTablePrinter #:nodoc:
+      class DataTablePrinter # :nodoc:
         include Cucumber::Gherkin::Formatter::Escaping
         attr_reader :data_table, :indentation, :prefixes
         private :data_table, :indentation, :prefixes
@@ -454,7 +454,7 @@ module Cucumber
         end
       end
 
-      def columns #:nodoc:
+      def columns # :nodoc:
         @columns ||= cell_matrix.transpose.map do |cell_row|
           Cells.new(self, cell_row)
         end
@@ -477,7 +477,7 @@ module Cucumber
         cells_rows[1..-1].map(&:to_hash)
       end
 
-      def create_cell_matrix(ast_table) #:nodoc:
+      def create_cell_matrix(ast_table) # :nodoc:
         ast_table.raw.map do |raw_row|
           line = begin
             raw_row.line
@@ -490,7 +490,7 @@ module Cucumber
         end
       end
 
-      def convert_columns! #:nodoc:
+      def convert_columns! # :nodoc:
         @conversion_procs.each do |column_name, conversion_proc|
           verify_column(column_name) if conversion_proc[:strict]
         end
@@ -504,7 +504,7 @@ module Cucumber
         end
       end
 
-      def convert_headers! #:nodoc:
+      def convert_headers! # :nodoc:
         header_cells = cell_matrix[0]
 
         if @header_conversion_proc
@@ -521,11 +521,11 @@ module Cucumber
         end
       end
 
-      def clear_cache! #:nodoc:
+      def clear_cache! # :nodoc:
         @hashes = @rows_hash = @column_names = @rows = @columns = nil
       end
 
-      def ensure_table(table_or_array) #:nodoc:
+      def ensure_table(table_or_array) # :nodoc:
         return table_or_array if DataTable == table_or_array.class
         DataTable.from(table_or_array)
       end
@@ -535,7 +535,7 @@ module Cucumber
       end
 
       # Represents a row of cells or columns of cells
-      class Cells #:nodoc:
+      class Cells # :nodoc:
         include Enumerable
         include Cucumber::Gherkin::Formatter::Escaping
 
@@ -555,15 +555,15 @@ module Cucumber
         end
 
         # For testing only
-        def to_sexp #:nodoc:
+        def to_sexp # :nodoc:
           [:row, line, *@cells.map(&:to_sexp)]
         end
 
-        def to_hash #:nodoc:
+        def to_hash # :nodoc:
           @to_hash ||= @table.cells_to_hash(self)
         end
 
-        def value(n) #:nodoc:
+        def value(n) # :nodoc:
           self[n].value
         end
 
@@ -594,7 +594,7 @@ module Cucumber
         end
       end
 
-      class Cell #:nodoc:
+      class Cell # :nodoc:
         attr_reader :line, :table
         attr_accessor :status, :value
 
@@ -621,12 +621,12 @@ module Cucumber
         end
 
         # For testing only
-        def to_sexp #:nodoc:
+        def to_sexp # :nodoc:
           [:cell, @value]
         end
       end
 
-      class SurplusCell < Cell #:nodoc:
+      class SurplusCell < Cell # :nodoc:
         def status
           :comment
         end

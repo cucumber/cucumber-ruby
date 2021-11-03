@@ -93,7 +93,7 @@ module Cucumber
         eval(code) # rubocop:disable Security/Eval
       end
 
-      def self.define_grey #:nodoc:
+      def self.define_grey # :nodoc:
         gem 'genki-ruby-terminfo'
         require 'terminfo'
         case TermInfo.default_object.tigetnum('colors')
@@ -121,7 +121,7 @@ module Cucumber
         # rubocop:enable Style/ClassEqualityComparison
       end
 
-      def self.define_real_grey #:nodoc:
+      def self.define_real_grey # :nodoc:
         define_method :grey do |string|
           ::Cucumber::Term::ANSIColor.coloring? ? "\e[90m#{string}\e[0m" : string
         end

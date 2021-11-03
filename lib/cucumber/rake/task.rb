@@ -30,7 +30,7 @@ module Cucumber
       include Cucumber::Gherkin::Formatter::AnsiEscapes
       include ::Rake::DSL if defined?(::Rake::DSL)
 
-      class InProcessCucumberRunner #:nodoc:
+      class InProcessCucumberRunner # :nodoc:
         include ::Rake::DSL if defined?(::Rake::DSL)
 
         attr_reader :args
@@ -51,7 +51,7 @@ module Cucumber
         end
       end
 
-      class ForkedCucumberRunner #:nodoc:
+      class ForkedCucumberRunner # :nodoc:
         include ::Rake::DSL if defined?(::Rake::DSL)
 
         def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files)
@@ -111,7 +111,7 @@ module Cucumber
       # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
       attr_reader :cucumber_opts
 
-      def cucumber_opts=(opts) #:nodoc:
+      def cucumber_opts=(opts) # :nodoc:
         @cucumber_opts = String == opts.class ? opts.split(' ') : opts
       end
 
@@ -146,24 +146,24 @@ module Cucumber
         define_task
       end
 
-      def define_task #:nodoc:
+      def define_task # :nodoc:
         desc @desc
         task @task_name do
           runner.run
         end
       end
 
-      def runner(_task_args = nil) #:nodoc:
+      def runner(_task_args = nil) # :nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) if fork
         InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
       end
 
-      def cucumber_opts_with_profile #:nodoc:
+      def cucumber_opts_with_profile # :nodoc:
         Array(cucumber_opts).concat(Array(@profile).flat_map { |p| ['--profile', p] })
       end
 
-      def feature_files #:nodoc:
+      def feature_files # :nodoc:
         make_command_line_safe(FileList[ENV['FEATURE'] || []])
       end
 

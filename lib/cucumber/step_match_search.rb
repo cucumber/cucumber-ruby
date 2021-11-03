@@ -35,7 +35,7 @@ module Cucumber
 
       private
 
-      def best_matches(_step_name, step_matches) #:nodoc:
+      def best_matches(_step_name, step_matches) # :nodoc:
         no_groups      = step_matches.select { |step_match| step_match.args.empty? }
         max_arg_length = step_matches.map { |step_match| step_match.args.length }.max
         top_groups     = step_matches.select { |step_match| step_match.args.length == max_arg_length }
@@ -54,7 +54,7 @@ module Cucumber
 
     require 'delegate'
     class CachesStepMatch < SimpleDelegator
-      def call(step_name) #:nodoc:
+      def call(step_name) # :nodoc:
         @match_cache ||= {}
 
         matches = @match_cache[step_name]

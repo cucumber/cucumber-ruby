@@ -5,7 +5,7 @@ require 'cucumber/core/test/location'
 
 module Cucumber
   class FileSpecs
-    FILE_COLON_LINE_PATTERN = /^([\w\W]*?)(?::([\d:]+))?$/ #:nodoc:
+    FILE_COLON_LINE_PATTERN = /^([\w\W]*?)(?::([\d:]+))?$/ # :nodoc:
 
     def initialize(file_specs)
       Cucumber.logger.debug("Features:\n")

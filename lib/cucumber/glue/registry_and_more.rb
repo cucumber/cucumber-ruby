@@ -170,7 +170,7 @@ module Cucumber
         @hooks = nil
       end
 
-      def hooks_for(phase, scenario) #:nodoc:
+      def hooks_for(phase, scenario) # :nodoc:
         hooks[phase.to_sym].select { |hook| scenario.accept_hook?(hook) }
       end
 

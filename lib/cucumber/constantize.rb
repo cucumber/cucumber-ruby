@@ -2,7 +2,7 @@
 
 require 'cucumber/platform'
 module Cucumber
-  module Constantize #:nodoc:
+  module Constantize # :nodoc:
     def constantize(camel_cased_word)
       try = 0
       begin

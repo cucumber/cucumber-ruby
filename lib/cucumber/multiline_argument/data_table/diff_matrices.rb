@@ -1,7 +1,7 @@
 module Cucumber
   module MultilineArgument
     class DataTable
-      class DiffMatrices #:nodoc:
+      class DiffMatrices # :nodoc:
         attr_accessor :cell_matrix, :other_table_cell_matrix, :options
 
         def initialize(cell_matrix, other_table_cell_matrix, options)
