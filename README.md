@@ -56,10 +56,10 @@ Later in this document, bundler is considered being used so all commands are usi
 - Ruby 2.5
 - Ruby 2.4
 - Ruby 2.3
-- JRuby 9.2 (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
-
-JRuby 9.3 is not supported yet due to a known issue. More info can
-be found in the [PR#1571](https://github.com/cucumber/cucumber-ruby/pull/1571).
+- JRuby (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
+  - 9.2
+  - 9.3 >= 9.3.1 (there is a known issue with JRuby 9.3.0. More info can
+    be found in the [PR#1571](https://github.com/cucumber/cucumber-ruby/pull/1571).)
 
 ### Ruby on Rails
 
