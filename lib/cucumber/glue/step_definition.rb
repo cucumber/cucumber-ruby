@@ -42,14 +42,6 @@ module Cucumber
         end
 
         def patch_location_onto(block)
-          puts Core::Test::Location.of_caller(0)
-          puts Core::Test::Location.of_caller(1)
-          puts Core::Test::Location.of_caller(2)
-          puts Core::Test::Location.of_caller(3)
-          puts Core::Test::Location.of_caller(4)
-          puts Core::Test::Location.of_caller(5)
-          puts Core::Test::Location.of_caller(6)
-          puts Core::Test::Location.of_caller(7)
           location = Core::Test::Location.of_caller(5)
           block.define_singleton_method(:source_location) { [location.file, location.line] }
           block
