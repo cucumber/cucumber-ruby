@@ -14,7 +14,12 @@ module Cucumber
         end
       end
 
-      def initialize(args, _ = nil, out = $stdout, err = $stderr, kernel = Kernel)
+      # The second argument is there for retrocompatibility
+      # Removing it will require a breaking change
+      # But it is actually responsible for a rubycop offense: too many optional parameters
+      # As we don't want to deactivate that cop globally, we disable it just for the
+      # following.
+      def initialize(args, _ = nil, out = $stdout, err = $stderr, kernel = Kernel) # rubocop:disable Metrics/ParameterLists
         @args   = args
         @out    = out
         @err    = err
