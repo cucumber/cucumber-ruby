@@ -83,11 +83,8 @@ with a lot of libraries. You will find there what is related to:
   step definition
 - everyting related to the HTML formatter
 
-`cucumber-ruby` is also composed of:
-
-- [cucumber-ruby-core]: this is the engine that will execute the test cases
-  computed from a parsed Gherkin document
-- [cucumber-ruby-wire]: everything related to the Cucumber's wire protocol
+`cucumber-ruby` is also composed of [cucumber-ruby-core]: this is the engine that
+will execute the test cases computed from a parsed Gherkin document
 
 Last but not least, there is also a repository for [cucumber-rails], the gem
 that brings Cucumber to Rails 5.x and 6.x.
@@ -236,7 +233,6 @@ You can find additional documentation in the [docs](./docs) directory such as
 [cucumber-docs]: https://cucumber.io/docs/cucumber
 [cucumber/common]: https://github.com/cucumber/common
 [cucumber-ruby-core]: https://github.com/cucumber/cucumber-ruby-core
-[cucumber-ruby-wire]: https://github.com/cucumber/cucumber-ruby-wire
 [cucumber-rails]: https://github.com/cucumber/cucumber-rails
 [cucumber-ruby-issues]: https://github.com/cucumber/cucumber-ruby/search?q=is%3Aissue
 [cucumber/common-issues]: https://github.com/cucumber/common/search?q=is%3Aissue
