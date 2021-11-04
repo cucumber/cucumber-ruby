@@ -20,6 +20,16 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
+- The built-in Wire protocol
+
+  The Wire protocol is still officially supported, but as an optional plugin rather
+  than a built-in feature. See the
+  [UPGRADING.md](./UPGRADING.md#upgrading-to-800)
+  to update your code accordingly.
+
+  ([1562](https://github.com/cucumber/cucumber-ruby/pull/1562)
+  [aurelien-reeves](https://github.com/aurelien-reeves))
+
 ### Security fixes
 
 ### Deprecated
