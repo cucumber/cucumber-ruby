@@ -23,6 +23,9 @@ AllCops:
     - 'temp_app/**/*'
     - 'cck/features/**/*'
 
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
 # Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
 # heredocs '<<~' were introduced then. The files below are the current ones
 # with offenses
