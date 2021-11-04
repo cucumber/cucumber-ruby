@@ -26,8 +26,8 @@ module Cucumber
     attr_reader :path
 
     def initialize(original_exception, path)
-      super(original_exception)
       @path = path
+      super(original_exception)
     end
   end
 
@@ -36,8 +36,8 @@ module Cucumber
 
   class FeatureFolderNotFoundException < RuntimeError
     def initialize(path)
-      super
       @path = path
+      super
     end
 
     def message
