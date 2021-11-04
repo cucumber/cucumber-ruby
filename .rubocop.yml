@@ -23,13 +23,6 @@ AllCops:
     - 'temp_app/**/*'
     - 'cck/features/**/*'
 
-# Reviewed: we need to specify 'cucumber-core' and 'cucumber-wire' twice
-# to be able to build using git on CI, but also using local repos locally.
-Bundler/DuplicatedGem:
-  Exclude:
-  - 'Gemfile'
-  - 'cck/Gemfile'
-
 # Disabling for appveyor
 Layout/EndOfLine:
   Enabled: false
