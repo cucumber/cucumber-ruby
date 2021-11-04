@@ -12,6 +12,7 @@ module Cucumber
 
         instance_exec_pos = backtrace.index(instance_exec_invocation_line)
         return unless instance_exec_pos
+
         replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
         backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
 

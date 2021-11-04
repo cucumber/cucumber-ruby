@@ -103,16 +103,19 @@ module Cucumber
 
       def on_test_step_started(event)
         return if event.test_step.hook?
+
         print_step_header(current_test_case) if first_step_after_printing_background_steps?(event.test_step)
       end
 
       def on_test_step_finished(event)
         collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         return if in_scenario_outline && !options[:expand]
+
         exception_to_be_printed = find_exception_to_be_printed(event.result)
         print_step_data(event.test_step, event.result) if print_step_data?(event, exception_to_be_printed)
         print_step_output
         return unless exception_to_be_printed
+
         print_exception(exception_to_be_printed, event.result.to_sym, 6)
         @exceptions << exception_to_be_printed
       end
@@ -125,6 +128,7 @@ module Cucumber
         else
           exception_to_be_printed = find_exception_to_be_printed(event.result)
           return unless exception_to_be_printed
+
           print_exception(exception_to_be_printed, event.result.to_sym, 6)
           @exceptions << exception_to_be_printed
         end
@@ -138,6 +142,7 @@ module Cucumber
 
       def attach(src, media_type)
         return unless media_type == 'text/x.cucumber.log+plain'
+
         @test_step_output.push src
       end
 
@@ -145,9 +150,11 @@ module Cucumber
 
       def find_exception_to_be_printed(result)
         return nil if result.ok?(options[:strict])
+
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         exception = result.failed? ? result.exception : result
         return nil if @exceptions.include?(exception)
+
         exception
       end
 
@@ -194,6 +201,7 @@ module Cucumber
       def feature_has_background?
         feature_children = gherkin_document.feature.children
         return false if feature_children.empty?
+
         !feature_children.first.background.nil?
       end
 
@@ -237,6 +245,7 @@ module Cucumber
       def first_step_after_printing_background_steps?(test_step)
         return false unless print_background_steps
         return false unless test_step.location.lines.max >= current_test_case.location.lines.max
+
         @print_background_steps = false
         true
       end
@@ -260,6 +269,7 @@ module Cucumber
       def print_comments(up_to_line, indent_amount)
         comments = gherkin_document.comments
         return if comments.empty? || comments.length <= @next_comment_to_be_printed
+
         comments[@next_comment_to_be_printed..-1].each do |comment|
           if comment.location.line <= up_to_line
             @io.puts(indent(format_string(comment.text.strip, :comment), indent_amount))
@@ -292,6 +302,7 @@ module Cucumber
 
       def print_description(description)
         return unless description
+
         description.split("\n").each do |line|
           @io.puts(line)
         end
@@ -396,6 +407,7 @@ module Cucumber
           end
           @io.puts
           next if options[:no_multiline]
+
           print_doc_string(step.doc_string.content, :skipped, 6) unless step.doc_string.nil?
           print_data_table(step.data_table, :skipped, 6) unless step.data_table.nil?
         end

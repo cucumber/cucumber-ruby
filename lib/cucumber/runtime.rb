@@ -190,6 +190,7 @@ module Cucumber
 
     def report
       return @report if @report
+
       reports = [summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
       reports << publish_banner_printer unless @configuration.publish_quiet?
@@ -218,10 +219,12 @@ module Cucumber
     def create_formatter(factory, formatter_options, path_or_io)
       if accept_options?(factory)
         return factory.new(@configuration, formatter_options) if path_or_io.nil?
+
         factory.new(@configuration.with_options(out_stream: path_or_io),
                     formatter_options)
       else
         return factory.new(@configuration) if path_or_io.nil?
+
         factory.new(@configuration.with_options(out_stream: path_or_io))
       end
     end

@@ -37,6 +37,7 @@ module Autotest::CucumberMixin
       reset_features
     rescue Interrupt
       break if wants_to_quit
+
       reset
       reset_features
     end
@@ -70,6 +71,7 @@ module Autotest::CucumberMixin
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
       cmd = make_cucumber_cmd(features_to_run, dirty_features_file.path)
       break if cmd.empty?
+
       old_sync = $stdout.sync
       $stdout.sync = true
       self.results = []
@@ -81,6 +83,7 @@ module Autotest::CucumberMixin
             print(c)
             line << c
             next unless c == "\n"
+
             results << line.join
             line.clear
           end

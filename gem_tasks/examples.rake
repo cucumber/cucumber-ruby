@@ -8,6 +8,7 @@ task :examples do
     puts "Running #{example_dir}"
     Dir.chdir(example_dir) do
       raise "No Rakefile in #{Dir.pwd}" unless File.file?('Rakefile')
+
       sh 'rake cucumber'
     end
   end

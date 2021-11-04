@@ -180,6 +180,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def check_formatter_stream_conflicts
         streams = @options[:formats].uniq.map { |(_, _, stream)| stream }
         return if streams == streams.uniq
+
         raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
       end
 
@@ -203,6 +204,7 @@ Specify SEED to reproduce the shuffling from a previous run.
 
       def truthy_string?(str)
         return false if str.nil?
+
         str !~ /^(false|no|0)$/i
       end
 
@@ -367,6 +369,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def require_files(v)
         @options[:require] << v
         return unless Cucumber::JRUBY && File.directory?(v)
+
         require 'java'
         $CLASSPATH << v
       end
@@ -385,6 +388,7 @@ Specify SEED to reproduce the shuffling from a previous run.
         require 'gherkin/dialect'
 
         return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.key?(lang)
+
         list_keywords_and_exit(lang)
       end
 
@@ -403,6 +407,7 @@ Specify SEED to reproduce the shuffling from a previous run.
       def add_tag(value)
         raise("Found tags option '#{value}'. '~@tag' is no longer supported, use 'not @tag' instead.") if value.include?('~')
         raise("Found tags option '#{value}'. '@tag1,@tag2' is no longer supported, use '@tag or @tag2' instead.") if value.include?(',')
+
         @options[:tag_expressions] << value.gsub(/(@\w+)(:\d+)?/, '\1')
         add_tag_limits(value)
       end
@@ -415,6 +420,7 @@ Specify SEED to reproduce the shuffling from a previous run.
 
       def add_tag_limit(tag_limits, tag_name, limit)
         raise "Inconsistent tag limits for #{tag_name}: #{tag_limits[tag_name]} and #{limit}" if tag_limits[tag_name] && tag_limits[tag_name] != limit
+
         tag_limits[tag_name] = limit
       end
 

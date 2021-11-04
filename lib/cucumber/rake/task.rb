@@ -37,6 +37,7 @@ module Cucumber
 
         def initialize(libs, cucumber_opts, feature_files)
           raise 'libs must be an Array when running in-process' unless Array == libs.class
+
           libs.reverse_each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
             cucumber_opts +
@@ -156,6 +157,7 @@ module Cucumber
       def runner(_task_args = nil) # :nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) if fork
+
         InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
       end
 

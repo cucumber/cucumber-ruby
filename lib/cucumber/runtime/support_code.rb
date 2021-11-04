@@ -72,6 +72,7 @@ module Cucumber
       def invoke_dynamic_step(step_name, multiline_argument, _location = nil)
         matches = step_matches(step_name)
         raise UndefinedDynamicStep, step_name if matches.empty?
+
         matches.first.invoke(multiline_argument)
       end
 
@@ -109,6 +110,7 @@ module Cucumber
 
       def apply_before_hooks(test_case)
         return test_case if test_case.test_steps.empty?
+
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:before, scenario)
         BeforeHooks.new(@configuration.id_generator, hooks, scenario, @configuration.event_bus).apply_to(test_case)
@@ -116,6 +118,7 @@ module Cucumber
 
       def apply_after_hooks(test_case)
         return test_case if test_case.test_steps.empty?
+
         scenario = RunningTestCase.new(test_case)
         hooks = registry.hooks_for(:after, scenario)
         AfterHooks.new(@configuration.id_generator, hooks, scenario, @configuration.event_bus).apply_to(test_case)

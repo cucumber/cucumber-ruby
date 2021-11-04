@@ -58,6 +58,7 @@ module Cucumber
         progress(result.to_sym) if !test_step.hook? || result.failed?
 
         return if test_step.hook?
+
         collect_snippet_data(test_step, @ast_lookup) if result.undefined?
         @pending_step_matches << @matches[test_step.to_s] if result.pending?
         @failed_results << result if result.failed?

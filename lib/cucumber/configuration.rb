@@ -283,6 +283,7 @@ module Cucumber
 
     def with_default_features_path(paths)
       return default_features_paths if paths.empty?
+
       paths
     end
 

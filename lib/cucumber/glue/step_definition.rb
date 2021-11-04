@@ -25,6 +25,7 @@ module Cucumber
       class << self
         def new(id, registry, string_or_regexp, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
+
           super id, registry, registry.create_expression(string_or_regexp), create_proc(proc_or_sym, options)
         end
 
@@ -33,6 +34,7 @@ module Cucumber
         def create_proc(proc_or_sym, options)
           return proc_or_sym if proc_or_sym.is_a?(Proc)
           raise ArgumentError unless proc_or_sym.is_a?(Symbol)
+
           message = proc_or_sym
           target_proc = parse_target_proc_from(options)
           patch_location_onto lambda { |*args|
@@ -49,6 +51,7 @@ module Cucumber
 
         def parse_target_proc_from(options)
           return -> { self } unless options.key?(:on)
+
           target = options[:on]
           case target
           when Proc
@@ -65,6 +68,7 @@ module Cucumber
 
       def initialize(id, registry, expression, proc)
         raise 'No regexp' if expression.is_a?(Regexp)
+
         @id = id
         @registry = registry
         @expression = expression
@@ -92,6 +96,7 @@ module Cucumber
 
       def expression_type
         return Cucumber::Messages::StepDefinitionPatternType::CUCUMBER_EXPRESSION if expression.is_a?(CucumberExpressions::CucumberExpression)
+
         Cucumber::Messages::StepDefinitionPatternType::REGULAR_EXPRESSION
       end
 

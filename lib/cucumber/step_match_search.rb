@@ -20,6 +20,7 @@ module Cucumber
       def call(step_name)
         result = @search.call(step_name)
         raise Cucumber::Ambiguous.new(step_name, result, @configuration.guess?) if result.length > 1
+
         result
       end
     end

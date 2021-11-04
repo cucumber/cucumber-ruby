@@ -20,6 +20,7 @@ module Cucumber
     class CliOption
       def self.deprecate(stream, option, message, remove_after_version)
         return if stream.nil?
+
         stream.puts(
           AnsiString.failure_message(
             "\nWARNING: #{option} is deprecated" \

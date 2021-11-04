@@ -84,6 +84,7 @@ module Cucumber
         uri = test_case.location.file
         feature = @ast_lookup.gherkin_document(uri).feature
         raise UnNamedFeatureError, uri if feature.name.empty?
+
         @current_feature_data = @features_data[uri]
         @current_feature_data[:uri] = uri unless @current_feature_data[:uri]
         @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
@@ -111,6 +112,7 @@ module Cucumber
         keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
         output = "#{keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
+
         if scenario_source.type == :Scenario
           if @failing_test_step
             if @failing_test_step.hook?

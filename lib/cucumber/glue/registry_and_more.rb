@@ -100,6 +100,7 @@ module Cucumber
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
         if proc
           raise MultipleWorld.new(@world_proc, proc) if @world_proc
+
           @world_proc = proc
         end
         @world_modules ||= []
@@ -189,6 +190,7 @@ module Cucumber
       def create_expression(string_or_regexp)
         return CucumberExpressions::CucumberExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(String)
         return CucumberExpressions::RegularExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(Regexp)
+
         raise ArgumentError, 'Expression must be a String or Regexp'
       end
 

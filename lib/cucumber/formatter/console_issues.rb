@@ -23,6 +23,7 @@ module Cucumber
 
       def to_s
         return if @issues.empty?
+
         result = Core::Test::Result::TYPES.map { |type| scenario_listing(type, @issues[type]) }
         result.flatten.join("\n")
       end
@@ -35,6 +36,7 @@ module Cucumber
 
       def scenario_listing(type, test_cases)
         return [] if test_cases.empty?
+
         [format_string("#{type_heading(type)} Scenarios:", type)] + test_cases.map do |test_case|
           scenario_source = @ast_lookup.scenario_source(test_case)
           keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
@@ -54,6 +56,7 @@ module Cucumber
 
       def profiles_string
         return if @config.custom_profiles.empty?
+
         profiles = @config.custom_profiles.map { |profile| "-p #{profile}" }.join(' ')
 
         "#{profiles} "

@@ -68,6 +68,7 @@ module Cucumber
         test_step, result = *event.attributes
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         return if internal_hook?(test_step)
+
         add_match_and_result(test_step, result)
         @any_step_failed = true if result.failed?
       end
@@ -259,6 +260,7 @@ module Cucumber
             line: feature.location.line
           }
           return if feature.tags.empty?
+
           @feature_hash[:tags] = create_tags_array_from_hash_array(feature.tags)
         end
 

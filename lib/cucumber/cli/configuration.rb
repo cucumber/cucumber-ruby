@@ -30,6 +30,7 @@ module Cucumber
         @options.parse!(args)
         arrange_formats
         raise("You can't use both --strict and --wip") if strict.strict? && wip?
+
         set_environment_variables
       end
 

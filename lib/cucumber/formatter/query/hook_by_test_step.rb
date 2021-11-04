@@ -13,6 +13,7 @@ module Cucumber
 
         def hook_id(test_step)
           return @hook_id_by_test_step_id[test_step.id] if @hook_id_by_test_step_id.key?(test_step.id)
+
           raise TestStepUnknownError, "No hook found for #{test_step.id} }. Known: #{@hook_id_by_test_step_id.keys}"
         end
 

@@ -83,6 +83,7 @@ module Cucumber
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
         raise ArgumentError, 'data must be a Core::Test::DataTable' unless data.is_a? Core::Test::DataTable
+
         ast_table = data
         # Verify that it's square
         ast_table.transpose
@@ -179,6 +180,7 @@ module Cucumber
       #
       def rows_hash
         return @rows_hash if @rows_hash
+
         verify_table_width(2)
         @rows_hash = transpose.hashes[0]
       end
@@ -516,6 +518,7 @@ module Cucumber
           mapped_cells = header_cells.reject { |cell| cell.value.match(pre).nil? }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
           raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
+
           mapped_cells[0].value = post
           @conversion_procs[post] = @conversion_procs.delete(pre) if @conversion_procs.key?(pre)
         end
@@ -527,6 +530,7 @@ module Cucumber
 
       def ensure_table(table_or_array) # :nodoc:
         return table_or_array if DataTable == table_or_array.class
+
         DataTable.from(table_or_array)
       end
 
@@ -548,6 +552,7 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
+
           each do |cell|
             visitor.visit_table_cell(cell)
           end

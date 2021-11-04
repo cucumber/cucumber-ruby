@@ -32,6 +32,7 @@ module Cucumber
 
       def locations
         return [Core::Test::Location.new(@file)] if @lines.empty?
+
         @lines.map { |line| Core::Test::Location.new(@file, line) }
       end
     end

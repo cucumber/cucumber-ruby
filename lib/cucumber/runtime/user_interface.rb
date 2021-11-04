@@ -32,6 +32,7 @@ module Cucumber
                  end
 
         raise("Waited for input for #{timeout_seconds} seconds, then timed out.") unless answer
+
         puts(answer)
         answer
       end

@@ -45,6 +45,7 @@ module Cucumber
             break
           end
           break if node.previous_node.nil?
+
           node = node.previous_node
         end
         keyword = dialect.given_keywords.reject { |kw| kw == '* ' }[0] if keyword.nil?

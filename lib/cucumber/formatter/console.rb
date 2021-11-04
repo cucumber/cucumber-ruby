@@ -153,6 +153,7 @@ module Cucumber
 
       def print_passing_wip(config, passed_test_cases, ast_lookup)
         return unless config.wip?
+
         messages = passed_test_cases.map do |test_case|
           scenario_source = ast_lookup.scenario_source(test_case)
           keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
@@ -173,6 +174,7 @@ module Cucumber
       def attach(src, media_type)
         return unless media_type == 'text/x.cucumber.log+plain'
         return unless @io
+
         @io.puts
         @io.puts(format_string(src, :tag))
         @io.flush
@@ -180,6 +182,7 @@ module Cucumber
 
       def print_profile_information
         return if @options[:skip_profile_information] || @options[:profiles].nil? || @options[:profiles].empty?
+
         do_print_profile_information(@options[:profiles])
       end
 
@@ -227,6 +230,7 @@ module Cucumber
         key = keys.join('_').to_sym
         fmt = FORMATS[key]
         raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+
         fmt
       end
 
