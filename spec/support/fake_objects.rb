@@ -6,7 +6,6 @@ require 'cucumber/core/filter'
 # Declaring into scope did not isolate them.
 #
 # Moving these into a dedicated support file explicitly states that these are available globally as soon as they are required once.
-# globaly as soon as they are required once.
 
 module FakeObjects
   module ModuleOne
