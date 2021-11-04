@@ -5,7 +5,7 @@ require 'cucumber/core/filter'
 # The following fake objects was previously declared within `describe` scope.
 # Declaring into scope did not isolate them.
 #
-# Moving those into a dedicated support file explitely state that those are available
+# Moving these into a dedicated support file explicitly states that these are available globally as soon as they are required once.
 # globaly as soon as they are required once.
 
 module FakeObjects
