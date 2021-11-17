@@ -47,9 +47,7 @@ module Cucumber
             locations.count
           end
 
-          attr_reader :tag_name
-          attr_reader :limit
-          attr_reader :locations
+          attr_reader :tag_name, :limit, :locations
         end
       end
     end

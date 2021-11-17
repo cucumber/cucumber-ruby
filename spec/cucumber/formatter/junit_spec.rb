@@ -2,42 +2,41 @@
 
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
-
 require 'cucumber/formatter/junit'
 require 'nokogiri'
 
 module Cucumber
   module Formatter
+    class TestDoubleJunitFormatter < ::Cucumber::Formatter::Junit
+      attr_reader :written_files
+
+      def initialize(config)
+        super
+        config.on_event :test_step_started, &method(:on_test_step_started)
+      end
+
+      def on_test_step_started(_event)
+        Interceptor::Pipe.unwrap! :stdout
+        @fake_io = $stdout = StringIO.new
+        $stdout.sync = true
+        @interceptedout = Interceptor::Pipe.wrap(:stdout)
+      end
+
+      def on_test_step_finished(event)
+        super
+        $stdout = STDOUT
+        @fake_io.close
+      end
+
+      def write_file(feature_filename, data)
+        @written_files ||= {}
+        @written_files[feature_filename] = data
+      end
+    end
+
     describe Junit do
       extend SpecHelperDsl
       include SpecHelper
-
-      class TestDoubleJunitFormatter < Junit
-        attr_reader :written_files
-
-        def initialize(config)
-          super
-          config.on_event :test_step_started, &method(:on_test_step_started)
-        end
-
-        def on_test_step_started(_event)
-          Interceptor::Pipe.unwrap! :stdout
-          @fake_io = $stdout = StringIO.new
-          $stdout.sync = true
-          @interceptedout = Interceptor::Pipe.wrap(:stdout)
-        end
-
-        def on_test_step_finished(event)
-          super
-          $stdout = STDOUT
-          @fake_io.close
-        end
-
-        def write_file(feature_filename, data)
-          @written_files ||= {}
-          @written_files[feature_filename] = data
-        end
-      end
 
       context 'With --junit,fileattribute=true option' do
         before(:each) do

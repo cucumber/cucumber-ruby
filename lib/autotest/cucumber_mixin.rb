@@ -24,7 +24,7 @@ module Autotest::CucumberMixin
     add_sigint_handler
 
     loop do # ^c handler
-      get_to_green
+      wait_for_green
       if tainted
         rerun_all_tests
         rerun_all_features if all_good
@@ -37,6 +37,7 @@ module Autotest::CucumberMixin
       reset_features
     rescue Interrupt
       break if wants_to_quit
+
       reset
       reset_features
     end
@@ -47,7 +48,7 @@ module Autotest::CucumberMixin
     features_to_run == ''
   end
 
-  def get_to_green # rubocop:disable Naming/AccessorMethodName
+  def wait_for_green
     loop do
       super
       run_features
@@ -70,6 +71,7 @@ module Autotest::CucumberMixin
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
       cmd = make_cucumber_cmd(features_to_run, dirty_features_file.path)
       break if cmd.empty?
+
       old_sync = $stdout.sync
       $stdout.sync = true
       self.results = []
@@ -81,6 +83,7 @@ module Autotest::CucumberMixin
             print(c)
             line << c
             next unless c == "\n"
+
             results << line.join
             line.clear
           end

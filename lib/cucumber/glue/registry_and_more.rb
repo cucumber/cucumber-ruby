@@ -92,7 +92,7 @@ module Cucumber
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
         # TODO: add a way to extract the parameter type directly from the error.
-        type_name = e.message.match(/^Undefined parameter type ['|\{](.*)['|\}].?$/)[1]
+        type_name = e.message.match(/^Undefined parameter type ['|{](.*)['|}].?$/)[1]
 
         @configuration.notify :undefined_parameter_type, type_name, string_or_regexp
       end
@@ -100,6 +100,7 @@ module Cucumber
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
         if proc
           raise MultipleWorld.new(@world_proc, proc) if @world_proc
+
           @world_proc = proc
         end
         @world_modules ||= []
@@ -170,7 +171,7 @@ module Cucumber
         @hooks = nil
       end
 
-      def hooks_for(phase, scenario) #:nodoc:
+      def hooks_for(phase, scenario) # :nodoc:
         hooks[phase.to_sym].select { |hook| scenario.accept_hook?(hook) }
       end
 
@@ -189,6 +190,7 @@ module Cucumber
       def create_expression(string_or_regexp)
         return CucumberExpressions::CucumberExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(String)
         return CucumberExpressions::RegularExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(Regexp)
+
         raise ArgumentError, 'Expression must be a String or Regexp'
       end
 

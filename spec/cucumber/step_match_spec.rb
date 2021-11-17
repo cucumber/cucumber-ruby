@@ -6,7 +6,7 @@ require 'cucumber/glue/registry_and_more'
 
 module Cucumber
   describe StepMatch do
-    WORD = '[[:word:]]'.freeze
+    let(:word) { '[[:word:]]' }
 
     before do
       @registry = Glue::RegistryAndMore.new(nil, Configuration.new)
@@ -28,13 +28,13 @@ module Cucumber
     end
 
     it 'formats one group when we use Unicode' do
-      m = step_match(/I (#{WORD}+) ok/, 'I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok')
+      m = step_match(/I (#{word}+) ok/, 'I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok')
 
       expect(m.format_args('<span>%s</span>')).to eq 'I <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> ok'
     end
 
     it 'formats several groups when we use Unicode' do
-      m = step_match(/I (#{WORD}+) (#{WORD}+) (#{WORD}+) this (#{WORD}+)/, 'I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning')
+      m = step_match(/I (#{word}+) (#{word}+) (#{word}+) this (#{word}+)/, 'I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning')
 
       expect(m.format_args('<span>%s</span>')).to eq 'I <span>ate</span> <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> <span>egg</span> this <span>morning</span>'
     end
@@ -42,31 +42,31 @@ module Cucumber
     it 'deals with Unicode both inside and outside arguments' do
       expect('Jæ vø ålsker døtte løndet').to match(/Jæ (.+) ålsker (.+) løndet/)
 
-      m = step_match(/Jæ (#{WORD}+) ålsker (#{WORD}+) løndet/, 'Jæ vø ålsker døtte løndet')
+      m = step_match(/Jæ (#{word}+) ålsker (#{word}+) løndet/, 'Jæ vø ålsker døtte løndet')
 
       expect(m.format_args('<span>%s</span>')).to eq 'Jæ <span>vø</span> ålsker <span>døtte</span> løndet'
     end
 
     it 'formats groups with format string' do
-      m = step_match(/I (#{WORD}+) (\d+) (#{WORD}+) this (#{WORD}+)/, 'I ate 1 egg this morning')
+      m = step_match(/I (#{word}+) (\d+) (#{word}+) this (#{word}+)/, 'I ate 1 egg this morning')
 
       expect(m.format_args('<span>%s</span>')).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
     end
 
     it 'formats groups with format string when there are dupes' do
-      m = step_match(/I (#{WORD}+) (\d+) (#{WORD}+) this (#{WORD}+)/, 'I bob 1 bo this bobs')
+      m = step_match(/I (#{word}+) (\d+) (#{word}+) this (#{word}+)/, 'I bob 1 bo this bobs')
 
       expect(m.format_args('<span>%s</span>')).to eq 'I <span>bob</span> <span>1</span> <span>bo</span> this <span>bobs</span>'
     end
 
     it 'formats groups with block' do
-      m = step_match(/I (#{WORD}+) (\d+) (#{WORD}+) this (#{WORD}+)/, 'I ate 1 egg this morning')
+      m = step_match(/I (#{word}+) (\d+) (#{word}+) this (#{word}+)/, 'I ate 1 egg this morning')
 
       expect(m.format_args(&->(msg) { "<span>#{msg}</span>" })).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
     end
 
     it 'formats groups with proc object' do
-      m = step_match(/I (#{WORD}+) (\d+) (#{WORD}+) this (#{WORD}+)/, 'I ate 1 egg this morning')
+      m = step_match(/I (#{word}+) (\d+) (#{word}+) this (#{word}+)/, 'I ate 1 egg this morning')
 
       expect(m.format_args(->(msg) { "<span>#{msg}</span>" })).to eq 'I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>'
     end

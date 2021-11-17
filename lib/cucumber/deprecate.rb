@@ -20,6 +20,7 @@ module Cucumber
     class CliOption
       def self.deprecate(stream, option, message, remove_after_version)
         return if stream.nil?
+
         stream.puts(
           AnsiString.failure_message(
             "\nWARNING: #{option} is deprecated" \
@@ -31,7 +32,7 @@ module Cucumber
 
     module ForUsers
       def self.call(message, method, remove_after_version)
-        STDERR.puts AnsiString.failure_message(
+        $stderr.puts AnsiString.failure_message(
           "\nWARNING: ##{method} is deprecated" \
           " and will be removed after version #{remove_after_version}. #{message}.\n" \
           "(Called from #{caller(3..3).first})"
