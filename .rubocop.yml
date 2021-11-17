@@ -51,6 +51,12 @@ Layout/TrailingWhitespace:
 Lint/AmbiguousOperator:
   Enabled: false
 
+# We exclude proto_world for documentation (rdoc) purpose
+Lint/UselessMethodDefinition:
+  Enabled: true
+  Exclude:
+    - 'lib/cucumber/glue/proto_world.rb'
+
 Metrics/AbcSize:
   Max: 45
 
