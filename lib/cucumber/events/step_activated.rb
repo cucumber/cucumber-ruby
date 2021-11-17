@@ -15,12 +15,6 @@ module Cucumber
       #
       # @return [Cucumber::StepMatch]
       attr_reader :step_match
-
-      # @private
-      def initialize(test_step, step_match)
-        @test_step = test_step
-        @step_match = step_match
-      end
     end
   end
 end

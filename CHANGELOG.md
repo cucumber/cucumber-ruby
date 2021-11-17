@@ -16,6 +16,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+- Do not serialize Messages::Hook#tag_expression if it is empty.
+  ([PR#1579](https://github.com/cucumber/cucumber-ruby/pull/1579))
+
 ### Changed
 
 ### Removed
@@ -33,6 +36,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Security fixes
 
 ### Deprecated
+
+### Dependencies
+
+- Updated `cucumber-create-meta` ~> 6.0.2
 
 ## [7.1.0](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0) (2021-10-12)
 

@@ -30,6 +30,7 @@ module Cucumber
 
         def display_span(span)
           return apply_modifiers(span.shift, span) if span.is_a?(Array)
+
           span
         end
 

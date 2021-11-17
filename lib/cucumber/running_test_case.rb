@@ -33,6 +33,7 @@ module Cucumber
 
       def exception
         return unless @result.failed?
+
         @result.exception
       end
 

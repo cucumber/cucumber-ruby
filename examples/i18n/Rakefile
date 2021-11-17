@@ -3,10 +3,11 @@ task :cucumber do
   dir = File.dirname(__FILE__)
   Dir["#{dir}/*"].sort.each do |f|
     next unless File.directory?(f)
+
     lang = f[dir.length + 1..-1]
     message = examples_disabled?(lang)
     unless message.nil?
-      STDERR.puts(message)
+      $stderr.puts(message)
       next
     end
 
@@ -26,6 +27,7 @@ end
 
 def jruby_disabled_examples?(lang)
   return unless RUBY_PLATFORM == 'java'
+
   %w[ru uk uz].include?(lang)
 end
 

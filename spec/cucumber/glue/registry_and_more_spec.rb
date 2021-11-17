@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
+require 'support/fake_objects'
 
 module Cucumber
   module Glue
@@ -144,21 +145,12 @@ module Cucumber
           rescue Glue::NilWorld => e
             expect(e.message).to eq 'World procs should never return nil'
             expect(e.backtrace.length).to eq 1
-            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb\:\d+\:in `World'/) # rubocop:disable Style/RegexpLiteral
+            expect(e.backtrace[0]).to match(%r{spec/cucumber/glue/registry_and_more_spec\.rb:\d+:in `World'})
           end
         end
 
-        module ModuleOne
-        end
-
-        module ModuleTwo
-        end
-
-        class ClassOne
-        end
-
         it 'implicitlys extend world with modules' do
-          dsl.World(ModuleOne, ModuleTwo)
+          dsl.World(FakeObjects::ModuleOne, FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -180,39 +172,15 @@ Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#Worl
 or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
 )
-          dsl.World { Hash.new } # rubocop:disable Style/EmptyLiteral
+          dsl.World { {} }
 
-          expect(-> { dsl.World { Array.new } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/) # rubocop:disable Style/EmptyLiteral
+          expect(-> { dsl.World { [] } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/)
         end
       end
 
       describe 'Handling namespaced World' do
-        module ModuleOne
-          def method_one
-            1
-          end
-        end
-
-        module ModuleMinusOne
-          def method_one
-            -1
-          end
-        end
-
-        module ModuleTwo
-          def method_two
-            2
-          end
-        end
-
-        module ModuleThree
-          def method_three
-            3
-          end
-        end
-
         it 'extends the world with namespaces' do
-          dsl.World(ModuleOne, module_two: ModuleTwo, module_three: ModuleThree)
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -229,7 +197,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
 
         it 'allows to inspect the included modules' do
-          dsl.World(ModuleOne, module_two: ModuleTwo, module_three: ModuleThree)
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -240,8 +208,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
 
         it 'merges methods when assigning different modules to the same namespace' do
-          dsl.World(namespace: ModuleOne)
-          dsl.World(namespace: ModuleTwo)
+          dsl.World(namespace: FakeObjects::ModuleOne)
+          dsl.World(namespace: FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -251,8 +219,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
 
         it 'resolves conflicts when assigning different modules to the same namespace' do
-          dsl.World(namespace: ModuleOne)
-          dsl.World(namespace: ModuleMinusOne)
+          dsl.World(namespace: FakeObjects::ModuleOne)
+          dsl.World(namespace: FakeObjects::ModuleMinusOne)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
             extend RSpec::Matchers
@@ -290,13 +258,13 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
         it 'shows a deprecation warning for after_configuration hooks' do
           stub_const('Cucumber::Deprecate::STRATEGY', Cucumber::Deprecate::ForUsers)
-          allow(STDERR).to receive(:puts)
+          allow($stdout).to receive(:puts)
 
           dsl.AfterConfiguration() {}
 
           registry.after_configuration(nil)
 
-          expect(STDERR).to have_received(:puts).with(
+          expect($stdout).to have_received(:puts).with(
             a_string_including([
               'WARNING: # AfterConfiguration hook is deprecated and will be removed after version 8.0.0.',
               'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info.'

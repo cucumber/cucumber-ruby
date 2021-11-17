@@ -54,7 +54,7 @@ module Cucumber
         }.freeze
 
         ALIASES = Hash.new do |h, k|
-          h[Regexp.last_match(1)] + ',bold' if k.to_s =~ /(.*)_arg/
+          "#{h[Regexp.last_match(1)]},bold" if k.to_s =~ /(.*)_arg/
         end.merge(
           'undefined' => 'yellow',
           'pending'   => 'yellow',
@@ -74,7 +74,7 @@ module Cucumber
           end
         end
 
-        ALIASES.keys.each do |key|
+        ALIASES.each_key do |key|
           define_method(key) do
             ALIASES[key].split(',').map { |color| COLORS[color] }.join('')
           end

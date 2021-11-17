@@ -84,6 +84,7 @@ module Cucumber
         uri = test_case.location.file
         feature = @ast_lookup.gherkin_document(uri).feature
         raise UnNamedFeatureError, uri if feature.name.empty?
+
         @current_feature_data = @features_data[uri]
         @current_feature_data[:uri] = uri unless @current_feature_data[:uri]
         @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
@@ -111,6 +112,7 @@ module Cucumber
         keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
         output = "#{keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict)
+
         if scenario_source.type == :Scenario
           if @failing_test_step
             if @failing_test_step.hook?
@@ -125,7 +127,7 @@ module Cucumber
         else
           output += "Example row: #{row_name}\n"
         end
-        output + "\nMessage:\n"
+        "#{output}\nMessage:\n"
       end
 
       def build_testcase(result, scenario_designation, output)
@@ -191,7 +193,7 @@ module Cucumber
       end
 
       def basename(feature_file)
-        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature') # rubocop:disable Style/RegexpLiteral
+        File.basename(feature_file.gsub(%r{[\\/]}, '-'), '.feature')
       end
 
       def write_file(feature_filename, data)
@@ -228,13 +230,14 @@ module Cucumber
       end
 
       def examples_table_row(row)
-        @row_name = '| ' + row.cells.map(&:value).join(' | ') + ' |'
+        @row_name = "| #{row.cells.map(&:value).join(' | ')} |"
         @name_suffix = " (outline example : #{@row_name})"
       end
     end
 
     class ResultBuilder
       attr_reader :test_case_duration
+
       def initialize(result)
         @test_case_duration = 0
         result.describe_to(self)

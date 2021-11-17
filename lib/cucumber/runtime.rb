@@ -26,8 +26,8 @@ module Cucumber
     attr_reader :path
 
     def initialize(original_exception, path)
-      super(original_exception)
       @path = path
+      super(original_exception)
     end
   end
 
@@ -37,6 +37,7 @@ module Cucumber
   class FeatureFolderNotFoundException < RuntimeError
     def initialize(path)
       @path = path
+      super
     end
 
     def message
@@ -112,19 +113,19 @@ module Cucumber
 
     private
 
-    def fire_after_configuration_hook #:nodoc:
+    def fire_after_configuration_hook # :nodoc:
       @support_code.fire_hook(:after_configuration, @configuration)
     end
 
-    def fire_install_plugin_hook #:nodoc:
+    def fire_install_plugin_hook # :nodoc:
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
     end
 
-    def fire_before_all_hook #:nodoc:
+    def fire_before_all_hook # :nodoc:
       @support_code.fire_hook(:before_all)
     end
 
-    def fire_after_all_hook #:nodoc:
+    def fire_after_all_hook # :nodoc:
       @support_code.fire_hook(:after_all)
     end
 
@@ -146,8 +147,8 @@ module Cucumber
     end
 
     class NormalisedEncodingFile
-      COMMENT_OR_EMPTY_LINE_PATTERN = /^\s*#|^\s*$/ #:nodoc:
-      ENCODING_PATTERN = /^\s*#\s*encoding\s*:\s*([^\s]+)/ #:nodoc:
+      COMMENT_OR_EMPTY_LINE_PATTERN = /^\s*#|^\s*$/ # :nodoc:
+      ENCODING_PATTERN = /^\s*#\s*encoding\s*:\s*([^\s]+)/ # :nodoc:
 
       def self.read(path)
         new(path).read
@@ -187,6 +188,7 @@ module Cucumber
 
     def report
       return @report if @report
+
       reports = [summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
       reports << publish_banner_printer unless @configuration.publish_quiet?
@@ -215,10 +217,12 @@ module Cucumber
     def create_formatter(factory, formatter_options, path_or_io)
       if accept_options?(factory)
         return factory.new(@configuration, formatter_options) if path_or_io.nil?
+
         factory.new(@configuration.with_options(out_stream: path_or_io),
                     formatter_options)
       else
         return factory.new(@configuration) if path_or_io.nil?
+
         factory.new(@configuration.with_options(out_stream: path_or_io))
       end
     end

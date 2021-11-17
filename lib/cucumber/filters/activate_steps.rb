@@ -52,6 +52,7 @@ module Cucumber
             end
             configuration.notify :step_activated, test_step, match
             return SkippingStepMatch.new if configuration.dry_run?
+
             match
           end
 

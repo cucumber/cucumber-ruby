@@ -78,7 +78,7 @@ module Cucumber
           if @stepdef_to_match[stepdef_key].any?
             print_steps(stepdef_key)
           else
-            @io.puts('  ' + format_string('NOT MATCHED BY ANY STEPS', :failed))
+            @io.puts("  #{format_string('NOT MATCHED BY ANY STEPS', :failed)}")
           end
         end
         @io.puts
@@ -86,7 +86,7 @@ module Cucumber
       end
 
       def print_step_definition(stepdef_key)
-        @io.print format_string(format('%<duration>.7f', duration: stepdef_key.mean_duration), :skipped) + ' ' unless config.dry_run?
+        @io.print "#{format_string(format('%<duration>.7f', duration: stepdef_key.mean_duration), :skipped)} " unless config.dry_run?
         @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
         if config.source?
           indent_amount = max_length - stepdef_key.regexp_source.unpack('U*').length
@@ -99,7 +99,7 @@ module Cucumber
       def print_steps(stepdef_key)
         @stepdef_to_match[stepdef_key].each do |step|
           @io.print '  '
-          @io.print format_string(format('%<duration>.7f', duration: step[:duration]), :skipped) + ' ' unless config.dry_run?
+          @io.print "#{format_string(format('%<duration>.7f', duration: step[:duration]), :skipped)} " unless config.dry_run?
           @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
           if config.source?
             indent_amount = max_length - (step[:keyword].unpack('U*').length + step[:step_match].format_args.unpack('U*').length)

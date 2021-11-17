@@ -12,7 +12,7 @@ module Cucumber
       end
 
       def respond_to_missing?(name, include_private = false)
-        @receiver.respond_to?(name, include_private)
+        @receiver.respond_to?(name, include_private) || super(name, include_private)
       end
     end
   end

@@ -12,6 +12,7 @@ module Cucumber
 
         instance_exec_pos = backtrace.index(instance_exec_invocation_line)
         return unless instance_exec_pos
+
         replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
         backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
 
@@ -27,7 +28,7 @@ module Cucumber
           if check_arity && !cucumber_compatible_arity?(args, block)
             world.instance_exec do
               ari = block.arity
-              ari = ari < 0 ? (ari.abs - 1).to_s + '+' : ari
+              ari = ari < 0 ? "#{ari.abs - 1}+" : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
               raise ArityMismatchError, "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
@@ -40,9 +41,8 @@ module Cucumber
 
       def self.cucumber_compatible_arity?(args, block)
         return true if block.arity == args.length
-        if block.arity < 0
-          return true if args.length >= (block.arity.abs - 1)
-        end
+        return true if block.arity.negative? && args.length >= (block.arity.abs - 1)
+
         false
       end
 

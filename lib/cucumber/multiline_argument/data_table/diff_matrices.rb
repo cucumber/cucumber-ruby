@@ -1,7 +1,7 @@
 module Cucumber
   module MultilineArgument
     class DataTable
-      class DiffMatrices #:nodoc:
+      class DiffMatrices # :nodoc:
         attr_accessor :cell_matrix, :other_table_cell_matrix, :options
 
         def initialize(cell_matrix, other_table_cell_matrix, options)
@@ -113,6 +113,7 @@ module Cucumber
             row_index = row_indices.index(i)
             row = cell_matrix[row_index] if row_index
             next unless row
+
             (original_width..padded_width).each do |col_index|
               surplus_cell = other_row[col_index]
               row[col_index].value = surplus_cell.value if row[col_index]

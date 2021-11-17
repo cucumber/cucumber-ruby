@@ -772,9 +772,11 @@ module Cucumber
           elements.each do |scenario|
             %w[steps before after around].each do |type|
               next unless scenario[type]
+
               scenario[type].each do |step_or_hook|
                 normalise_json_step_or_hook(step_or_hook)
                 next unless step_or_hook['after']
+
                 step_or_hook['after'].each do |hook|
                   normalise_json_step_or_hook(hook)
                 end

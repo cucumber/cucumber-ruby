@@ -32,7 +32,7 @@ module Cucumber
         Cucumber::Messages::Envelope.new(
           hook: Cucumber::Messages::Hook.new(
             id: id,
-            tag_expression: tag_expressions.join(' '),
+            tag_expression: tag_expressions.empty? ? nil : tag_expressions.join(' '),
             source_reference: Cucumber::Messages::SourceReference.new(
               uri: location.file,
               location: Cucumber::Messages::Location.new(
@@ -58,6 +58,7 @@ module Cucumber
           end
 
           next unless tag_expression.include?(',')
+
           warn("Found tagged hook with '#{tag_expression}'." \
             "'@tag1,@tag2' is no longer supported, use '@tag or @tag2' instead.")
         end

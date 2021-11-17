@@ -82,6 +82,7 @@ module Cucumber
 
       def self.included(klass)
         return unless klass == String
+
         ATTRIBUTES.delete(:clear)
         ATTRIBUTE_NAMES.delete(:clear)
       end

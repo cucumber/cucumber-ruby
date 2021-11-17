@@ -23,16 +23,8 @@ AllCops:
     - 'temp_app/**/*'
     - 'cck/features/**/*'
 
-# Reviewed: we need to specify 'cucumber-core' and 'cucumber-wire' twice
-# to be able to build using git on CI, but also using local repos locally.
-Bundler/DuplicatedGem:
-  Exclude:
-  - 'Gemfile'
-  - 'cck/Gemfile'
-
-# Disabling for appveyor
 Layout/EndOfLine:
-  Enabled: false
+  EnforcedStyle: lf
 
 # Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
 # heredocs '<<~' were introduced then. The files below are the current ones
@@ -58,6 +50,12 @@ Layout/TrailingWhitespace:
 # https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:
   Enabled: false
+
+# We exclude proto_world for documentation (rdoc) purpose
+Lint/UselessMethodDefinition:
+  Enabled: true
+  Exclude:
+    - 'lib/cucumber/glue/proto_world.rb'
 
 Metrics/AbcSize:
   Max: 45
@@ -150,9 +148,6 @@ Style/StderrPuts:
   Enabled: false
 
 # Slashes are by far the most used form of regex values in the project.
-# Rubocop doesn't handle all cases well (currently), so this cop has been
-# disabled in some cases.
+# But when a '/' is found in the regexp, usage of %r{} is required
 Style/RegexpLiteral:
   EnforcedStyle: slashes
-  Exclude:
-    - 'spec/cucumber/project_initializer_spec.rb'
