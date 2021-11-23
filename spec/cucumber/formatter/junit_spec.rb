@@ -313,7 +313,7 @@ module Cucumber
                   Given a passing step
               FEATURE
 
-              it { expect(@doc.to_s).to match(%r{Before hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
+              it { expect(@doc.to_s).to match(/Before hook at spec\/cucumber\/formatter\/junit_spec.rb:(\d+)/) }
             end
 
             describe 'with a failing after hook' do
@@ -331,7 +331,7 @@ module Cucumber
                   Given a passing step
               FEATURE
 
-              it { expect(@doc.to_s).to match(%r{After hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
+              it { expect(@doc.to_s).to match(/After hook at spec\/cucumber\/formatter\/junit_spec.rb:(\d+)/) }
             end
 
             describe 'with a failing after step hook' do
@@ -349,7 +349,7 @@ module Cucumber
                   Given a passing step
               FEATURE
 
-              it { expect(@doc.to_s).to match(%r{AfterStep hook at spec/cucumber/formatter/junit_spec.rb:(\d+)}) }
+              it { expect(@doc.to_s).to match(/AfterStep hook at spec\/cucumber\/formatter\/junit_spec.rb:(\d+)/) }
             end
 
             describe 'with a failing around hook' do

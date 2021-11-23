@@ -151,3 +151,4 @@ Style/StderrPuts:
 # But when a '/' is found in the regexp, usage of %r{} is required
 Style/RegexpLiteral:
   EnforcedStyle: slashes
+  AllowInnerSlashes: true
