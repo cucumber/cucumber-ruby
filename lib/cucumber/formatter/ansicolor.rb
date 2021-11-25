@@ -61,11 +61,15 @@ module Cucumber
         'tag'       => 'cyan'
       )
 
-      if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
-        ENV['CUCUMBER_COLORS'].split(':').each do |pair|
+      def set_custom_colors(colors)
+        colors.split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0]] = a[1]
         end
+      end
+
+      if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
+        set_custom_colors(ENV['CUCUMBER_COLORS'])
       end
 
       # Eval to define the color-named methods required by Term::ANSIColor.
@@ -82,16 +86,17 @@ module Cucumber
       ALIASES.each_key do |method_name|
         next if method_name =~ /.*_param/
 
-        code = <<-COLOR
-          def #{method_name}(string=nil, &proc)
-            #{"#{ALIASES[method_name].split(',').join('(')}(string, &proc#{')' * ALIASES[method_name].split(',').length}"}
+        define_method(method_name) do |string = nil, &proc|
+          ALIASES[method_name].split(',').reverse.reduce(string) do |result, method|
+            send(method, result, &proc)
           end
-          # This resets the colour to the non-param colour
-          def #{method_name}_param(string=nil, &proc)
-            #{"#{ALIASES["#{method_name}_param"].split(',').join('(')}(string, &proc#{')' * ALIASES["#{method_name}_param"].split(',').length}"} + #{ALIASES[method_name].split(',').join(' + ')}
-          end
-        COLOR
-        eval(code) # rubocop:disable Security/Eval
+        end
+
+        define_method("#{method_name}_param") do |string = nil, &proc|
+          ALIASES["#{method_name}_param"].split(',').reverse.reduce(string) do |result, method|
+            send(method, result, &proc)
+          end + send(method_name)
+        end
       end
 
       def self.define_grey # :nodoc:
