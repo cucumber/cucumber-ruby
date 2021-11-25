@@ -70,7 +70,7 @@ module Cucumber
 
       customize_colors(ENV['CUCUMBER_COLORS']) if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
 
-      # Eval to define the color-named methods required by Term::ANSIColor.
+      # Define the color-named methods required by Term::ANSIColor.
       #
       # Examples:
       #
@@ -85,15 +85,17 @@ module Cucumber
         next if method_name =~ /.*_param/
 
         define_method(method_name) do |string = nil, &proc|
-          ALIASES[method_name].split(',').reverse.reduce(string) do |result, method|
-            send(method, result, &proc)
-          end
+          apply_styles(ALIASES[method_name], string, &proc)
         end
 
         define_method("#{method_name}_param") do |string = nil, &proc|
-          ALIASES["#{method_name}_param"].split(',').reverse.reduce(string) do |result, method|
-            send(method, result, &proc)
-          end + send(method_name)
+          apply_styles(ALIASES["#{method_name}_param"], string, &proc) + apply_styles(ALIASES[method_name])
+        end
+      end
+
+      def apply_styles(styles, string = nil, &proc)
+        styles.split(',').reverse.reduce(string) do |result, method_name|
+          send(method_name, result, &proc)
         end
       end
 
