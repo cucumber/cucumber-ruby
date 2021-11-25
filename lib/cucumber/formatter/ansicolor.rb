@@ -61,16 +61,14 @@ module Cucumber
         'tag'       => 'cyan'
       )
 
-      def set_custom_colors(colors)
+      def customize_colors(colors)
         colors.split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0]] = a[1]
         end
       end
 
-      if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
-        set_custom_colors(ENV['CUCUMBER_COLORS'])
-      end
+      customize_colors(ENV['CUCUMBER_COLORS']) if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
 
       # Eval to define the color-named methods required by Term::ANSIColor.
       #
