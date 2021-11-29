@@ -31,7 +31,7 @@ module Cucumber
       end
 
       it 'works with custom colors' do
-        customize_colors('passed=red,bold')
+        apply_custom_colors('passed=red,bold')
         expect(passed('foo')).to eq "\e[31m\e[1mfoo\e[0m\e[0m"
       end
     end
