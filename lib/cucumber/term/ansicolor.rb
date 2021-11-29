@@ -5,6 +5,8 @@ module Cucumber
     # The ANSIColor module can be used for namespacing and mixed into your own
     # classes.
     module ANSIColor
+      module_function
+
       # :stopdoc:
       ATTRIBUTES = [
         [:clear,         0],
@@ -41,19 +43,29 @@ module Cucumber
       ATTRIBUTE_NAMES = ATTRIBUTES.transpose.first
       # :startdoc:
 
-      # Returns true, if the coloring function of this module
-      # is switched on, false otherwise.
-      def self.coloring?
-        @coloring
-      end
+      # Regular expression that is used to scan for ANSI-sequences while
+      # uncoloring strings.
+      COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?m/
 
-      # Turns the coloring on or off globally, so you can easily do
-      # this for example:
-      #  Cucumber::Term::ANSIColor::coloring = STDOUT.isatty
-      def self.coloring=(val)
-        @coloring = val
+      @coloring = true
+
+      class << self
+        # Turns the coloring on or off globally, so you can easily do
+        # this for example:
+        #  Cucumber::Term::ANSIColor::coloring = $stdout.isatty
+        attr_accessor :coloring
+
+        # Returns true, if the coloring function of this module
+        # is switched on, false otherwise.
+        alias coloring? :coloring
+
+        def included(klass)
+          return unless klass == String
+
+          ATTRIBUTES.delete(:clear)
+          ATTRIBUTE_NAMES.delete(:clear)
+        end
       end
-      self.coloring = true
 
       # rubocop:disable Security/Eval
       ATTRIBUTES.each do |c, v|
@@ -77,36 +89,29 @@ module Cucumber
       end
       # rubocop:enable Security/Eval
 
-      # Regular expression that is used to scan for ANSI-sequences while
-      # uncoloring strings.
-      COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?m/
-
-      def self.included(klass)
-        return unless klass == String
-
-        ATTRIBUTES.delete(:clear)
-        ATTRIBUTE_NAMES.delete(:clear)
-      end
-
       # Returns an uncolored version of the string, that is all
       # ANSI-sequences are stripped from the string.
       def uncolored(string = nil)
         if block_given?
-          yield.gsub(COLORED_REGEXP, '')
+          uncolorize(yield)
         elsif string
-          string.gsub(COLORED_REGEXP, '')
+          uncolorize(string)
         elsif respond_to?(:to_str)
-          to_str.gsub(COLORED_REGEXP, '')
+          uncolorize(to_str)
         else
           ''
         end
       end
 
-      module_function
-
       # Returns an array of all Cucumber::Term::ANSIColor attributes as symbols.
       def attributes
         ATTRIBUTE_NAMES
+      end
+
+      private
+
+      def uncolorize(string)
+        string.gsub(COLORED_REGEXP, '')
       end
     end
   end
