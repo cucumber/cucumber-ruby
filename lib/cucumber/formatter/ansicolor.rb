@@ -48,7 +48,9 @@ module Cucumber
       include Cucumber::Term::ANSIColor
 
       ALIASES = Hash.new do |h, k|
-        "#{h[Regexp.last_match(1)]},bold" if k.to_s =~ /(.*)_param/
+        next unless k.to_s =~ /(.*)_param/
+
+        "#{h[Regexp.last_match(1)]},bold"
       end.merge(
         'undefined' => 'yellow',
         'pending'   => 'yellow',
