@@ -47,42 +47,6 @@ module Cucumber
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
-      class << self
-        def define_grey # :nodoc:
-          gem 'genki-ruby-terminfo'
-          require 'terminfo'
-          case TermInfo.default_object.tigetnum('colors')
-          when 0
-            raise "Your terminal doesn't support colours."
-          when 1
-            ::Cucumber::Term::ANSIColor.coloring = false
-            alias_method :grey, :white
-          when 2..8
-            alias_method :grey, :white # rubocop:disable Lint/DuplicateMethods
-          else
-            define_real_grey
-          end
-        rescue Exception => e # rubocop:disable Lint/RescueException
-          # rubocop:disable Style/ClassEqualityComparison
-          if e.class.name == 'TermInfo::TermInfoError'
-            $stderr.puts '*** WARNING ***'
-            $stderr.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
-            $stderr.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
-            $stderr.puts "\n"
-            alias_method :grey, :white
-          else
-            define_real_grey
-          end
-          # rubocop:enable Style/ClassEqualityComparison
-        end
-
-        def define_real_grey # :nodoc:
-          define_method :grey do |string|
-            ::Cucumber::Term::ANSIColor.coloring? ? "\e[90m#{string}\e[0m" : string
-          end
-        end
-      end
-
       ALIASES = Hash.new do |h, k|
         "#{h[Regexp.last_match(1)]},bold" if k.to_s =~ /(.*)_param/
       end.merge(
@@ -134,8 +98,6 @@ module Cucumber
           send(method_name, result, &proc)
         end
       end
-
-      define_grey
 
       def cukes(n)
         ('(::) ' * n).strip

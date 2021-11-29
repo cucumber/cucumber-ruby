@@ -27,6 +27,7 @@ module Cucumber
         [:magenta,       35],
         [:cyan,          36],
         [:white,         37],
+        [:grey,          90],
         [:on_black,      40],
         [:on_red,        41],
         [:on_green,      42],
