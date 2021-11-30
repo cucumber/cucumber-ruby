@@ -67,27 +67,19 @@ module Cucumber
         end
       end
 
-      # rubocop:disable Security/Eval
-      ATTRIBUTES.each do |c, v|
-        eval <<-END_EVAL, binding, __FILE__, __LINE__ + 1
-            def #{c}(string = nil)
-              result = String.new
-              result << "\e[#{v}m" if Cucumber::Term::ANSIColor.coloring?
-              if block_given?
-                result << yield
-              elsif string
-                result << string
-              elsif respond_to?(:to_str)
-                result << to_str
-              else
-                return result #only switch on
-              end
-              result << "\e[0m" if Cucumber::Term::ANSIColor.coloring?
-              result
-            end
-        END_EVAL
+      ATTRIBUTES.each do |color_name, color_code|
+        define_method(color_name) do |text = nil|
+          if block_given?
+            colorize(yield, color_code)
+          elsif text
+            colorize(text, color_code)
+          elsif respond_to?(:to_str)
+            colorize(to_str, color_code)
+          else
+            colorize(nil, color_code) # switch on coloration
+          end
+        end
       end
-      # rubocop:enable Security/Eval
 
       # Returns an uncolored version of the string, that is all
       # ANSI-sequences are stripped from the string.
@@ -109,6 +101,13 @@ module Cucumber
       end
 
       private
+
+      def colorize(text, color_code)
+        return String.new(text || '') unless Cucumber::Term::ANSIColor.coloring?
+        return "\e[#{color_code}m" unless text
+
+        "\e[#{color_code}m#{text}\e[0m"
+      end
 
       def uncolorize(string)
         string.gsub(COLORED_REGEXP, '')
