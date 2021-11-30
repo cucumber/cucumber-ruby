@@ -68,9 +68,9 @@ module Cucumber
       end
 
       ATTRIBUTES.each do |color_name, color_code|
-        define_method(color_name) do |text = nil|
-          if block_given?
-            colorize(yield, color_code)
+        define_method(color_name) do |text = nil, &block|
+          if block
+            colorize(block.call, color_code)
           elsif text
             colorize(text, color_code)
           elsif respond_to?(:to_str)
