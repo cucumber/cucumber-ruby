@@ -94,12 +94,6 @@ module Cucumber
         end
       end
 
-      def apply_styles(styles, string = nil, &proc)
-        styles.split(',').reverse.reduce(string) do |result, method_name|
-          send(method_name, result, &proc)
-        end
-      end
-
       def cukes(n)
         ('(::) ' * n).strip
       end
@@ -114,6 +108,14 @@ module Cucumber
 
       def yellow_cukes(n)
         blink(yellow(cukes(n)))
+      end
+
+      private
+
+      def apply_styles(styles, string = nil, &proc)
+        styles.split(',').reverse.reduce(string) do |result, method_name|
+          send(method_name, result, &proc)
+        end
       end
     end
   end
