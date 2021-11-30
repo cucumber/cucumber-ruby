@@ -76,18 +76,18 @@ module Cucumber
           elsif respond_to?(:to_str)
             colorize(to_str, color_code)
           else
-            colorize(nil, color_code) # switch on coloration
+            colorize(nil, color_code) # switch coloration on
           end
         end
       end
 
       # Returns an uncolored version of the string, that is all
       # ANSI-sequences are stripped from the string.
-      def uncolored(string = nil)
+      def uncolored(text = nil)
         if block_given?
           uncolorize(yield)
-        elsif string
-          uncolorize(string)
+        elsif text
+          uncolorize(text)
         elsif respond_to?(:to_str)
           uncolorize(to_str)
         else

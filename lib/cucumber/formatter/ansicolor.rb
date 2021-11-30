@@ -85,12 +85,12 @@ module Cucumber
       ALIASES.each_key do |method_name|
         next if method_name =~ /.*_param/
 
-        define_method(method_name) do |string = nil, &proc|
-          apply_styles(ALIASES[method_name], string, &proc)
+        define_method(method_name) do |text = nil, &proc|
+          apply_styles(ALIASES[method_name], text, &proc)
         end
 
-        define_method("#{method_name}_param") do |string = nil, &proc|
-          apply_styles(ALIASES["#{method_name}_param"], string, &proc) + apply_styles(ALIASES[method_name])
+        define_method("#{method_name}_param") do |text = nil, &proc|
+          apply_styles(ALIASES["#{method_name}_param"], text, &proc) + apply_styles(ALIASES[method_name])
         end
       end
 
@@ -112,8 +112,8 @@ module Cucumber
 
       private
 
-      def apply_styles(styles, string = nil, &proc)
-        styles.split(',').reverse.reduce(string) do |result, method_name|
+      def apply_styles(styles, text = nil, &proc)
+        styles.split(',').reverse.reduce(text) do |result, method_name|
           send(method_name, result, &proc)
         end
       end
