@@ -7,17 +7,44 @@ Cucumber::Term::ANSIColor.coloring = false if !$stdout.tty? && !ENV.key?('AUTOTE
 
 module Cucumber
   module Formatter
-    # Defines aliases for coloured output. You don't invoke any methods from this
-    # module directly, but you can change the output colours by defining
-    # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like how you can
-    # tweak the familiar POSIX command <tt>ls</tt> with
-    # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
+    # This module allows to format cucumber related outputs using ANSI escape sequences.
+    #
+    # For example, it provides a `passed` method which returns the string with
+    # the ANSI escape sequence to format it green per default.
+    #
+    # To use this, include or extend it in your class.
+    #
+    # Example:
+    #
+    #   require 'cucumber/formatter/ansicolor'
+    #
+    #   class MyFormatter
+    #     extend Cucumber::Term::ANSIColor
+    #
+    #     def on_test_step_finished(event)
+    #       $stdout.puts undefined(event.test_step) if event.result.undefined?
+    #       $stdout.puts passed(event.test_step) if event.result.passed?
+    #     end
+    #   end
+    #
+    # This module also allows the user to customize the format of cucumber outputs
+    # using environment variables.
+    #
+    # For instance, if your shell has a black background and a green font (like the
+    # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
+    # steps to be white instead of green.
+    #
+    # Example:
+    #
+    #   export CUCUMBER_COLORS="passed=white,bold:passed_param=white,bold,underline"
     #
     # The colours that you can change are:
     #
     # * <tt>undefined</tt>     - defaults to <tt>yellow</tt>
     # * <tt>pending</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending_param</tt> - defaults to <tt>yellow,bold</tt>
+    # * <tt>flaky</tt>         - defaults to <tt>yellow</tt>
+    # * <tt>flaky_param</tt>   - defaults to <tt>yellow,bold</tt>
     # * <tt>failed</tt>        - defaults to <tt>red</tt>
     # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
     # * <tt>passed</tt>        - defaults to <tt>green</tt>
@@ -29,26 +56,18 @@ module Cucumber
     # * <tt>comment</tt>       - defaults to <tt>grey</tt>
     # * <tt>tag</tt>           - defaults to <tt>cyan</tt>
     #
-    # For instance, if your shell has a black background and a green font (like the
-    # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
-    # steps to be white instead of green.
-    #
-    # Although not listed, you can also use <tt>grey</tt>.
-    #
-    # Examples: (On Windows, use SET instead of export.)
-    #
-    #   export CUCUMBER_COLORS="passed=white"
-    #   export CUCUMBER_COLORS="passed=white,bold:passed_param=white,bold,underline"
-    #
     # To see what colours and effects are available, just run this in your shell:
     #
-    #   ruby -e "require 'rubygems'; require 'term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
+    #   ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
     #
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
+      # :stopdoc:
       ALIASES = Hash.new do |h, k|
-        "#{h[Regexp.last_match(1)]},bold" if k.to_s =~ /(.*)_param/
+        next unless k.to_s =~ /(.*)_param/
+
+        "#{h[Regexp.last_match(1)]},bold"
       end.merge(
         'undefined' => 'yellow',
         'pending'   => 'yellow',
@@ -60,15 +79,22 @@ module Cucumber
         'comment'   => 'grey',
         'tag'       => 'cyan'
       )
+      # :startdoc:
 
-      if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
-        ENV['CUCUMBER_COLORS'].split(':').each do |pair|
+      # Apply the custom color scheme
+      #
+      # example:
+      #
+      #   apply_custom_colors('passed=white')
+      def apply_custom_colors(colors)
+        colors.split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0]] = a[1]
         end
       end
+      apply_custom_colors(ENV['CUCUMBER_COLORS']) if ENV['CUCUMBER_COLORS']
 
-      # Eval to define the color-named methods required by Term::ANSIColor.
+      # Define the color-named methods required by Term::ANSIColor.
       #
       # Examples:
       #
@@ -80,56 +106,18 @@ module Cucumber
       #     red(bold(string, &proc)) + red
       #   end
       ALIASES.each_key do |method_name|
-        next if method_name =~ /.*_param/
+        next if method_name.end_with?('_param')
 
-        code = <<-COLOR
-          def #{method_name}(string=nil, &proc)
-            #{"#{ALIASES[method_name].split(',').join('(')}(string, &proc#{')' * ALIASES[method_name].split(',').length}"}
-          end
-          # This resets the colour to the non-param colour
-          def #{method_name}_param(string=nil, &proc)
-            #{"#{ALIASES["#{method_name}_param"].split(',').join('(')}(string, &proc#{')' * ALIASES["#{method_name}_param"].split(',').length}"} + #{ALIASES[method_name].split(',').join(' + ')}
-          end
-        COLOR
-        eval(code) # rubocop:disable Security/Eval
-      end
-
-      def self.define_grey # :nodoc:
-        gem 'genki-ruby-terminfo'
-        require 'terminfo'
-        case TermInfo.default_object.tigetnum('colors')
-        when 0
-          raise "Your terminal doesn't support colours."
-        when 1
-          ::Cucumber::Term::ANSIColor.coloring = false
-          alias_method :grey, :white
-        when 2..8
-          alias_method :grey, :white # rubocop:disable Lint/DuplicateMethods
-        else
-          define_real_grey
+        define_method(method_name) do |text = nil, &proc|
+          apply_styles(ALIASES[method_name], text, &proc)
         end
-      rescue Exception => e # rubocop:disable Lint/RescueException
-        # rubocop:disable Style/ClassEqualityComparison
-        if e.class.name == 'TermInfo::TermInfoError'
-          $stderr.puts '*** WARNING ***'
-          $stderr.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
-          $stderr.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
-          $stderr.puts "\n"
-          alias_method :grey, :white
-        else
-          define_real_grey
-        end
-        # rubocop:enable Style/ClassEqualityComparison
-      end
 
-      def self.define_real_grey # :nodoc:
-        define_method :grey do |string|
-          ::Cucumber::Term::ANSIColor.coloring? ? "\e[90m#{string}\e[0m" : string
+        define_method("#{method_name}_param") do |text = nil, &proc|
+          apply_styles(ALIASES["#{method_name}_param"], text, &proc) + apply_styles(ALIASES[method_name])
         end
       end
 
-      define_grey
-
+      # :stopdoc:
       def cukes(n)
         ('(::) ' * n).strip
       end
@@ -144,6 +132,15 @@ module Cucumber
 
       def yellow_cukes(n)
         blink(yellow(cukes(n)))
+      end
+      # :startdoc:
+
+      private
+
+      def apply_styles(styles, text = nil, &proc)
+        styles.split(',').reverse.reduce(text) do |result, method_name|
+          send(method_name, result, &proc)
+        end
       end
     end
   end

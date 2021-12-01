@@ -29,6 +29,28 @@ module Cucumber
 
         expect(passed('foo')).to eq 'foo'
       end
+
+      it 'works with a block' do
+        expect(passed { 'foo' }).to eq "\e[32mfoo\e[0m"
+      end
+
+      context 'with custom color scheme' do
+        before do
+          apply_custom_colors('passed=red,bold')
+        end
+
+        after do
+          reset_colours_to_default
+        end
+
+        it 'works with custom colors' do
+          expect(passed('foo')).to eq "\e[31m\e[1mfoo\e[0m\e[0m"
+        end
+
+        def reset_colours_to_default
+          apply_custom_colors('passed=green')
+        end
+      end
     end
   end
 end
