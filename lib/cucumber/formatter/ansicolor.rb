@@ -106,7 +106,7 @@ module Cucumber
       #     red(bold(string, &proc)) + red
       #   end
       ALIASES.each_key do |method_name|
-        next if method_name =~ /.*_param/
+        next if method_name.end_with?('_param')
 
         define_method(method_name) do |text = nil, &proc|
           apply_styles(ALIASES[method_name], text, &proc)
