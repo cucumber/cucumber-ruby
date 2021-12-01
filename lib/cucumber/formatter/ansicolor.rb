@@ -27,7 +27,7 @@ module Cucumber
     #     end
     #   end
     #
-    # This modules also allows the user to customize the format of cucumber outputs
+    # This module also allows the user to customize the format of cucumber outputs
     # using environment variables.
     #
     # For instance, if your shell has a black background and a green font (like the
