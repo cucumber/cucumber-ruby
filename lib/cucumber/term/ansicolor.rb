@@ -25,8 +25,6 @@ module Cucumber
     #   ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
     #
     module ANSIColor
-      module_function
-
       # :stopdoc:
       ATTRIBUTES = [
         [:clear,         0],
