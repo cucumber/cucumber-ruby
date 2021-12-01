@@ -2,8 +2,26 @@
 
 module Cucumber
   module Term
-    # The ANSIColor module can be used for namespacing and mixed into your own
-    # classes.
+    # This module allows to colorize text using ANSI escape sequences.
+    #
+    # Include the module in your class and use its methods to colorize text.
+    #
+    # Example:
+    #
+    #   require 'cucumber/term/ansicolor'
+    #
+    #   class MyFormatter
+    #     include Cucumber::Term::ANSIColor
+    #
+    #     def initialize(config)
+    #       $stdout.puts yellow("Initializing formatter")
+    #       $stdout.puts green("Coloring is active \o/") if Cucumber::Term::ANSIColor.coloring?
+    #       $stdout.puts grey("Feature path:") + blue(bold(config.feature_dirs))
+    #     end
+    #   end
+    #
+    # ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
+    #
     module ANSIColor
       module_function
 
@@ -81,7 +99,7 @@ module Cucumber
         end
       end
 
-      # Returns an uncolored version of the string, that is all
+      # Returns an uncolored version of the string
       # ANSI-sequences are stripped from the string.
       def uncolored(text = nil)
         if block_given?
