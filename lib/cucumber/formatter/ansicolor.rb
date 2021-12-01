@@ -7,7 +7,7 @@ Cucumber::Term::ANSIColor.coloring = false if !$stdout.tty? && !ENV.key?('AUTOTE
 
 module Cucumber
   module Formatter
-    # This modules allows to format cucumber related outputs using ANSI escape sequences.
+    # This module allows to format cucumber related outputs using ANSI escape sequences.
     #
     # For example, it provides a `passed` method which returns the string with
     # the ANSI escape sequence to format it green per default.
