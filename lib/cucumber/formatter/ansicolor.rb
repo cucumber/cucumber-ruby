@@ -7,17 +7,44 @@ Cucumber::Term::ANSIColor.coloring = false if !$stdout.tty? && !ENV.key?('AUTOTE
 
 module Cucumber
   module Formatter
-    # Defines aliases for coloured output. You don't invoke any methods from this
-    # module directly, but you can change the output colours by defining
-    # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like how you can
-    # tweak the familiar POSIX command <tt>ls</tt> with
-    # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
+    # This modules allows to format cucumber related outputs using ANSI escape sequences.
+    #
+    # For example, it provides a `passed` method which returns the string with
+    # the ANSI escape sequence to format it green per default.
+    #
+    # To use this, include or extend it in your class.
+    #
+    # Example:
+    #
+    #   require 'cucumber/formatter/ansicolor'
+    #
+    #   class MyFormatter
+    #     extend Cucumber::Term::ANSIColor
+    #
+    #     def on_test_step_finished(event)
+    #       $stdout.puts undefined(event.test_step) if event.result.undefined?
+    #       $stdout.puts passed(event.test_step) if event.result.passed?
+    #     end
+    #   end
+    #
+    # This modules also allows the user to customize the format of cucumber outputs
+    # using environment variables.
+    #
+    # For instance, if your shell has a black background and a green font (like the
+    # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
+    # steps to be white instead of green.
+    #
+    # Example:
+    #
+    #   export CUCUMBER_COLORS="passed=white,bold:passed_param=white,bold,underline"
     #
     # The colours that you can change are:
     #
     # * <tt>undefined</tt>     - defaults to <tt>yellow</tt>
     # * <tt>pending</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending_param</tt> - defaults to <tt>yellow,bold</tt>
+    # * <tt>flaky</tt>         - defaults to <tt>yellow</tt>
+    # * <tt>flaky_param</tt>   - defaults to <tt>yellow,bold</tt>
     # * <tt>failed</tt>        - defaults to <tt>red</tt>
     # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
     # * <tt>passed</tt>        - defaults to <tt>green</tt>
@@ -29,24 +56,14 @@ module Cucumber
     # * <tt>comment</tt>       - defaults to <tt>grey</tt>
     # * <tt>tag</tt>           - defaults to <tt>cyan</tt>
     #
-    # For instance, if your shell has a black background and a green font (like the
-    # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
-    # steps to be white instead of green.
-    #
-    # Although not listed, you can also use <tt>grey</tt>.
-    #
-    # Examples: (On Windows, use SET instead of export.)
-    #
-    #   export CUCUMBER_COLORS="passed=white"
-    #   export CUCUMBER_COLORS="passed=white,bold:passed_param=white,bold,underline"
-    #
     # To see what colours and effects are available, just run this in your shell:
     #
-    #   ruby -e "require 'rubygems'; require 'term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
+    #   ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
     #
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
+      # :stopdoc:
       ALIASES = Hash.new do |h, k|
         next unless k.to_s =~ /(.*)_param/
 
@@ -62,14 +79,20 @@ module Cucumber
         'comment'   => 'grey',
         'tag'       => 'cyan'
       )
+      # :startdoc:
 
+      # Apply the custom color scheme
+      #
+      # example:
+      #
+      #   apply_custom_colors('passed=white')
       def apply_custom_colors(colors)
         colors.split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0]] = a[1]
         end
       end
-      apply_custom_colors(ENV['CUCUMBER_COLORS']) if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
+      apply_custom_colors(ENV['CUCUMBER_COLORS']) if ENV['CUCUMBER_COLORS']
 
       # Define the color-named methods required by Term::ANSIColor.
       #
@@ -94,6 +117,7 @@ module Cucumber
         end
       end
 
+      # :stopdoc:
       def cukes(n)
         ('(::) ' * n).strip
       end
@@ -109,6 +133,7 @@ module Cucumber
       def yellow_cukes(n)
         blink(yellow(cukes(n)))
       end
+      # :startdoc:
 
       private
 

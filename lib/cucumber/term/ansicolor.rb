@@ -20,7 +20,9 @@ module Cucumber
     #     end
     #   end
     #
-    # ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
+    # To see what colours and effects are available, just run this in your shell:
+    #
+    #   ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
     #
     module ANSIColor
       module_function
