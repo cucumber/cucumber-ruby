@@ -20,8 +20,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([PR#1579](https://github.com/cucumber/cucumber-ruby/pull/1579))
   
 - JSON Formatter uses "pretty" output format
-
+  ([PR#1580](https://github.com/cucumber/cucumber-ruby/pull/1580))
+  
 - Fixed JSON Formatter "end of background" detection.
+  ([PR#1580](https://github.com/cucumber/cucumber-ruby/pull/1580))
 
 ### Changed
 
