@@ -176,12 +176,12 @@ module Cucumber
     end
 
     def support_to_load
-      support_files = all_files_to_load.select { |f| f =~ %r{/support/} }
+      support_files = all_files_to_load.select { |f| f =~ /\/support\// }
 
       # env_files are separated from other_files so we can ensure env files
       # load first.
       #
-      env_files = support_files.select { |f| f =~ %r{/support/env\..*} }
+      env_files = support_files.select { |f| f =~ /\/support\/env\..*/ }
       other_files = support_files - env_files
       env_files.reverse + other_files.reverse
     end
@@ -189,7 +189,7 @@ module Cucumber
     def all_files_to_load
       files = require_dirs.map do |path|
         path = path.tr('\\', '/') # In case we're on windows. Globs don't work with backslashes.
-        path = path.gsub(%r{/$}, '') # Strip trailing slash.
+        path = path.gsub(/\/$/, '') # Strip trailing slash.
         File.directory?(path) ? Dir["#{path}/**/*"] : path
       end.flatten.uniq
       remove_excluded_files_from(files)
@@ -200,7 +200,7 @@ module Cucumber
     end
 
     def step_defs_to_load
-      all_files_to_load.reject { |f| f =~ %r{/support/} }
+      all_files_to_load.reject { |f| f =~ /\/support\// }
     end
 
     def formatter_factories

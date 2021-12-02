@@ -1,6 +1,6 @@
 # Upgrading to 8.0.0
 
-## The wire protocol
+# The wire protocol
 
 The built-in wire protocol has been removed.
 
@@ -44,6 +44,39 @@ If you are still using the built-in wire protocol here the step to migrate to cu
   # features/support/wire.rb
   require 'cucumber/wire'
   ```
+
+## `Cucumber::Cli::Main` former `stdin` argument
+
+The second argument of `Cucumber::Cli::Main` - which was formerly named `stdin` -
+has been removed.
+
+### Before cucumber 8.0.0
+
+You would have used `Cucumber::Cli::Main` with a dummy parameter:
+
+```ruby
+Cucumber::Cli::Main.new(
+      argument_list,
+      nil, # <-- this is a former unused `stdin` parameter
+      @stdout,
+      @stderr,
+      @kernel
+).execute!
+```
+
+### With cucumber 8.0.0
+
+The argument has been removed from the initializer so the dummy parameter is not
+required anymore:
+
+```ruby
+Cucumber::Cli::Main.new(
+      argument_list,
+      @stdout,
+      @stderr,
+      @kernel
+).execute!
+```
 
 # Upgrading to 7.1.0
 

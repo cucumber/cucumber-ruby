@@ -19,12 +19,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Do not serialize Messages::Hook#tag_expression if it is empty.
   ([PR#1579](https://github.com/cucumber/cucumber-ruby/pull/1579))
 
+- Removed usage of `eval` in `Cucumber::Term::ANSIColor` and `Cucumber::Formatter::ANSIColor`.
+  ([PR#1589](https://github.com/cucumber/cucumber-ruby/pull/1589)
+   [Issue#1583](https://github.com/cucumber/cucumber-ruby/issues/1583))
+
 ### Changed
 
 ### Removed
 
 - The built-in Wire protocol
-
   The Wire protocol is still officially supported, but as an optional plugin rather
   than a built-in feature. See the
   [UPGRADING.md](./UPGRADING.md#upgrading-to-800)
@@ -32,6 +35,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
   ([1562](https://github.com/cucumber/cucumber-ruby/pull/1562)
   [aurelien-reeves](https://github.com/aurelien-reeves))
+
+- Removed former unused `stdin` argument from `Cli::Main`. That may impact your code
+  if you use cucumber API `Cucumber::Cli::Main`. See [UPGRADING.md](./UPGRADING.md#upgrading-to-800).
+  ([PR#1588](https://github.com/cucumber/cucumber-ruby/pull/1588)
+   [Issue#1581](https://github.com/cucumber/cucumber-ruby/issues/1581))
 
 ### Security fixes
 

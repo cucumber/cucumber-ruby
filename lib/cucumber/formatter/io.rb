@@ -57,7 +57,7 @@ module Cucumber
       end
 
       def url?(path_or_url_or_io)
-        path_or_url_or_io.match(%r{^https?://})
+        path_or_url_or_io.match(/^https?:\/\//)
       end
 
       def ensure_file(path, name)

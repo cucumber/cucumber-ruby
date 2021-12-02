@@ -147,7 +147,6 @@ Style/FloatDivision:
 Style/StderrPuts:
   Enabled: false
 
-# Slashes are by far the most used form of regex values in the project.
-# But when a '/' is found in the regexp, usage of %r{} is required
 Style/RegexpLiteral:
   EnforcedStyle: slashes
+  AllowInnerSlashes: true
