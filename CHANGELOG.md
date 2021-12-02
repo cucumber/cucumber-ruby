@@ -19,6 +19,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Do not serialize Messages::Hook#tag_expression if it is empty.
   ([PR#1579](https://github.com/cucumber/cucumber-ruby/pull/1579))
 
+- Removed usage of `eval` in `Cucumber::Term::ANSIColor` and `Cucumber::Formatter::ANSIColor`.
+  ([PR#1589](https://github.com/cucumber/cucumber-ruby/pull/1589)
+   [Issue#1583](https://github.com/cucumber/cucumber-ruby/issues/1583))
+
 ### Changed
 
 ### Removed
