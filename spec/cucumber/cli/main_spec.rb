@@ -12,11 +12,10 @@ module Cucumber
       end
 
       let(:args)   { [] }
-      let(:stdin)  { StringIO.new }
       let(:stdout) { StringIO.new }
       let(:stderr) { StringIO.new }
       let(:kernel) { double(:kernel) }
-      subject { Main.new(args, stdin, stdout, stderr, kernel) }
+      subject { Main.new(args, stdout, stderr, kernel) }
 
       describe '#execute!' do
         context 'passed an existing runtime' do
