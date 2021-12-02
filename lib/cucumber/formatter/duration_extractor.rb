@@ -4,6 +4,7 @@ module Cucumber
   module Formatter
     class DurationExtractor
       attr_reader :result_duration
+
       def initialize(result)
         @result_duration = 0
         result.describe_to(self)

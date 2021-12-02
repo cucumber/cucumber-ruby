@@ -10,11 +10,6 @@ module Cucumber
       #
       # @return [RbSupport::RbStepDefinition]
       attr_reader :step_definition
-
-      # _@private
-      def initialize(step_definition)
-        @step_definition = step_definition
-      end
     end
   end
 end

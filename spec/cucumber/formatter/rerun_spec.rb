@@ -3,9 +3,9 @@
 require 'cucumber/formatter/rerun'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
-require 'cucumber/core/filter'
 require 'support/standard_step_actions'
 require 'cucumber/configuration'
+require 'support/fake_objects'
 
 module Cucumber
   module Formatter
@@ -95,20 +95,6 @@ module Cucumber
       end
 
       context 'with only a flaky scenarios' do
-        class FlakyStepActions < Cucumber::Core::Filter.new
-          def test_case(test_case)
-            failing_test_steps = test_case.test_steps.map do |step|
-              step.with_action { raise Failure }
-            end
-            passing_test_steps = test_case.test_steps.map do |step|
-              step.with_action {}
-            end
-
-            test_case.with_steps(failing_test_steps).describe_to(receiver)
-            test_case.with_steps(passing_test_steps).describe_to(receiver)
-          end
-        end
-
         context 'with option --no-strict-flaky' do
           it 'prints nothing' do
             gherkin = gherkin('foo.feature') do
@@ -120,7 +106,7 @@ module Cucumber
             end
 
             Rerun.new(config)
-            execute [gherkin], [FlakyStepActions.new], config.event_bus
+            execute [gherkin], [FakeObjects::FlakyStepActions.new], config.event_bus
             config.event_bus.test_run_finished
 
             expect(io.string).to eq ''
@@ -139,7 +125,7 @@ module Cucumber
             end
 
             Rerun.new(config)
-            execute [foo], [FlakyStepActions.new], config.event_bus
+            execute [foo], [FakeObjects::FlakyStepActions.new], config.event_bus
             config.event_bus.test_run_finished
 
             expect(io.string).to eq 'foo.feature:3'

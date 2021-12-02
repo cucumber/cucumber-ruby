@@ -15,11 +15,13 @@ module Cucumber
 
         def attempt_by_test_case(test_case)
           raise TestCaseUnknownError, "No test case found for #{test_case.id} }. Known: #{@attempts_by_test_case_id.keys}" unless @attempts_by_test_case_id.key?(test_case.id)
+
           @attempts_by_test_case_id[test_case.id]
         end
 
         def test_case_started_id_by_test_case(test_case)
           raise TestCaseUnknownError, "No test case found for #{test_case.id} }. Known: #{@test_case_started_id_by_test_case_id.keys}" unless @test_case_started_id_by_test_case_id.key?(test_case.id)
+
           @test_case_started_id_by_test_case_id[test_case.id]
         end
 

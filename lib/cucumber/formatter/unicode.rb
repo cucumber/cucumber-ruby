@@ -17,7 +17,7 @@ if Cucumber::WINDOWS
     end
   else
     Cucumber::CODEPAGE = 'cp1252'.freeze
-    STDERR.puts("WARNING: Couldn't detect your output codepage. Assuming it is 1252. You may have to chcp 1252 or SET CUCUMBER_OUTPUT_ENCODING=cp1252.")
+    $stderr.puts("WARNING: Couldn't detect your output codepage. Assuming it is 1252. You may have to chcp 1252 or SET CUCUMBER_OUTPUT_ENCODING=cp1252.")
   end
 
   module Cucumber
@@ -28,7 +28,7 @@ if Cucumber::WINDOWS
           def cucumber_preprocess_output(*out)
             out.map { |arg| arg.to_s.encode(Encoding.default_external) }
           rescue Encoding::UndefinedConversionError => e
-            STDERR.cucumber_puts("WARNING: #{e.message}")
+            $stderr.cucumber_puts("WARNING: #{e.message}")
             out
           end
 
@@ -45,8 +45,8 @@ if Cucumber::WINDOWS
       end
 
       Kernel.extend(self)
-      STDOUT.extend(self)
-      STDERR.extend(self)
+      $stdout.extend(self)
+      $stderr.extend(self)
     end
   end
 end

@@ -19,6 +19,7 @@ module Cucumber
         end
 
         return if gherkin_document.nil?
+
         gherkin_document[:feature][:children][0][:scenario][:steps][0][:data_table][:rows].each do |row|
           @builder.row(row[:cells].map { |cell| cell[:value] })
         end

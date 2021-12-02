@@ -3,6 +3,7 @@ require 'rspec/expectations'
 def clean_output(output)
   output.split("\n").map do |line|
     next if line.include?(CUCUMBER_FEATURES_PATH)
+
     line
       .gsub(/\e\[([;\d]+)?m/, '')                  # Drop colors
       .gsub(/^.*cucumber_process\.rb.*$\n/, '')

@@ -41,21 +41,16 @@ class CommandLine
   end
 
   def capture_stdout
-    capture_stream(STDOUT, @stdout)
-    capture_stream(STDERR, @stderr)
+    capture_stream($stdout, @stdout)
+    capture_stream($stderr, @stderr)
 
     yield
   end
 
   def destroy_mocks
-    # rubocop:disable Style/RedundantBegin
-    # TODO: remove the begin/end block when we drop 2.3 uport and CI job.
-    begin
-      ::RSpec::Mocks.verify
-    ensure
-      ::RSpec::Mocks.teardown
-    end
-    # rubocop:enable Style/RedundantBegin
+    ::RSpec::Mocks.verify
+  ensure
+    ::RSpec::Mocks.teardown
   end
 
   private

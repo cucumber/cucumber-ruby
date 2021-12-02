@@ -14,7 +14,12 @@ module Cucumber
         end
       end
 
-      def initialize(args, _ = nil, out = STDOUT, err = STDERR, kernel = Kernel)
+      # The second argument is there for retrocompatibility
+      # Removing it will require a breaking change
+      # But it is actually responsible for a rubycop offense: too many optional parameters
+      # As we don't want to deactivate that cop globally, we disable it just for the
+      # following.
+      def initialize(args, _ = nil, out = $stdout, err = $stderr, kernel = Kernel) # rubocop:disable Metrics/ParameterLists
         @args   = args
         @out    = out
         @err    = err
@@ -41,7 +46,7 @@ module Cucumber
         @err.puts("Couldn't open #{e.path}")
         exit_unable_to_finish
       rescue FeatureFolderNotFoundException => e
-        @err.puts(e.message + '. You can use `cucumber --init` to get started.')
+        @err.puts("#{e.message}. You can use `cucumber --init` to get started.")
         exit_unable_to_finish
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)
@@ -85,13 +90,14 @@ module Cucumber
         trap('INT') do
           exit_unable_to_finish! if Cucumber.wants_to_quit
           Cucumber.wants_to_quit = true
-          STDERR.puts "\nExiting... Interrupt again to exit immediately."
+          $stderr.puts "\nExiting... Interrupt again to exit immediately."
           exit_unable_to_finish
         end
       end
 
       def runtime(existing_runtime)
         return Runtime.new(configuration) unless existing_runtime
+
         existing_runtime.configure(configuration)
         existing_runtime
       end

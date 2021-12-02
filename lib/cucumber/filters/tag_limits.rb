@@ -38,9 +38,7 @@ module Cucumber
 
       private
 
-      attr_reader :gated_receiver
-      attr_reader :test_case_index
-      attr_reader :verifier
+      attr_reader :gated_receiver, :test_case_index, :verifier
     end
   end
 end

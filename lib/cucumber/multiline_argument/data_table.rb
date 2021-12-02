@@ -27,7 +27,7 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      def self.default_arg_name #:nodoc:
+      def self.default_arg_name # :nodoc:
         'table'
       end
 
@@ -83,6 +83,7 @@ module Cucumber
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
         raise ArgumentError, 'data must be a Core::Test::DataTable' unless data.is_a? Core::Test::DataTable
+
         ast_table = data
         # Verify that it's square
         ast_table.transpose
@@ -161,7 +162,7 @@ module Cucumber
       def symbolic_hashes
         @symbolic_hashes ||=
           hashes.map do |string_hash|
-            Hash[string_hash.map { |a, b| [symbolize_key(a), b] }]
+            string_hash.transform_keys { |a| symbolize_key(a) }
           end
       end
 
@@ -179,6 +180,7 @@ module Cucumber
       #
       def rows_hash
         return @rows_hash if @rows_hash
+
         verify_table_width(2)
         @rows_hash = transpose.hashes[0]
       end
@@ -199,7 +201,7 @@ module Cucumber
         end
       end
 
-      def column_names #:nodoc:
+      def column_names # :nodoc:
         @column_names ||= cell_matrix[0].map(&:value)
       end
 
@@ -209,7 +211,7 @@ module Cucumber
         end
       end
 
-      def each_cells_row(&proc) #:nodoc:
+      def each_cells_row(&proc) # :nodoc:
         cells_rows.each(&proc)
       end
 
@@ -284,18 +286,22 @@ module Cucumber
       #     end
       #   end
       #
+      # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
       def map_column!(column_name, strict = true, &conversion_proc)
         # TODO: Remove this method for 2.0
         @conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self
       end
+      # rubocop:enable Style/OptionalBooleanParameter
 
       # Returns a new Table with an additional column mapping. See #map_column!
+      # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
         conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self.class.new(Core::Test::DataTable.new(raw), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
+      # rubocop:enable Style/OptionalBooleanParameter
 
       # Compares +other_table+ to self. If +other_table+ contains columns
       # and/or rows that are not in self, new columns/rows are added at the
@@ -346,6 +352,7 @@ module Cucumber
 
       class Different < StandardError
         attr_reader :table
+
         def initialize(table)
           @table = table
           super("Tables were not identical:\n#{table}")
@@ -356,7 +363,7 @@ module Cucumber
         cells_rows.map { |cells| cells.map(&:value) }
       end
 
-      def cells_to_hash(cells) #:nodoc:
+      def cells_to_hash(cells) # :nodoc:
         hash = Hash.new do |hash_inner, key|
           hash_inner[key.to_s] if key.is_a?(Symbol)
         end
@@ -366,51 +373,51 @@ module Cucumber
         hash
       end
 
-      def index(cells) #:nodoc:
+      def index(cells) # :nodoc:
         cells_rows.index(cells)
       end
 
-      def verify_column(column_name) #:nodoc:
+      def verify_column(column_name) # :nodoc:
         raise %(The column named "#{column_name}" does not exist) unless raw[0].include?(column_name)
       end
 
-      def verify_table_width(width) #:nodoc:
+      def verify_table_width(width) # :nodoc:
         raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
       # TODO: remove the below function if it's not actually being used.
       # Nothing else in this repo calls it.
-      def text?(text) #:nodoc:
+      def text?(text) # :nodoc:
         raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 
-      def cells_rows #:nodoc:
+      def cells_rows # :nodoc:
         @rows ||= cell_matrix.map do |cell_row| # rubocop:disable Naming/MemoizedInstanceVariableName
           Cells.new(self, cell_row)
         end
       end
 
-      def headers #:nodoc:
+      def headers # :nodoc:
         raw.first
       end
 
-      def header_cell(col) #:nodoc:
+      def header_cell(col) # :nodoc:
         cells_rows[0][col]
       end
 
       attr_reader :cell_matrix
 
-      def col_width(col) #:nodoc:
+      def col_width(col) # :nodoc:
         columns[col].__send__(:width)
       end
 
-      def to_s(options = {}) #:nodoc:
+      def to_s(options = {}) # :nodoc:
         indentation = options.key?(:indent) ? options[:indent] : 2
         prefixes = options.key?(:prefixes) ? options[:prefixes] : TO_S_PREFIXES
         DataTablePrinter.new(self, indentation, prefixes).to_s
       end
 
-      class DataTablePrinter #:nodoc:
+      class DataTablePrinter # :nodoc:
         include Cucumber::Gherkin::Formatter::Escaping
         attr_reader :data_table, :indentation, :prefixes
         private :data_table, :indentation, :prefixes
@@ -424,7 +431,7 @@ module Cucumber
         def to_s
           leading_row = "\n"
           end_indentation = indentation - 2
-          trailing_row = "\n" + (' ' * end_indentation)
+          trailing_row = "\n#{' ' * end_indentation}"
           table_rows = data_table.cell_matrix.map { |row| format_row(row) }
           leading_row + table_rows.join("\n") + trailing_row
         end
@@ -432,7 +439,7 @@ module Cucumber
         private
 
         def format_row(row)
-          row_start = (' ' * indentation) + '| '
+          row_start = "#{' ' * indentation}| "
           row_end = '|'
           cells = row.map.with_index do |cell, i|
             format_cell(cell, data_table.col_width(i))
@@ -449,7 +456,7 @@ module Cucumber
         end
       end
 
-      def columns #:nodoc:
+      def columns # :nodoc:
         @columns ||= cell_matrix.transpose.map do |cell_row|
           Cells.new(self, cell_row)
         end
@@ -472,20 +479,20 @@ module Cucumber
         cells_rows[1..-1].map(&:to_hash)
       end
 
-      def create_cell_matrix(ast_table) #:nodoc:
+      def create_cell_matrix(ast_table) # :nodoc:
         ast_table.raw.map do |raw_row|
           line = begin
-                   raw_row.line
-                 rescue StandardError
-                   -1
-                 end
+            raw_row.line
+          rescue StandardError
+            -1
+          end
           raw_row.map do |raw_cell|
             Cell.new(raw_cell, self, line)
           end
         end
       end
 
-      def convert_columns! #:nodoc:
+      def convert_columns! # :nodoc:
         @conversion_procs.each do |column_name, conversion_proc|
           verify_column(column_name) if conversion_proc[:strict]
         end
@@ -499,7 +506,7 @@ module Cucumber
         end
       end
 
-      def convert_headers! #:nodoc:
+      def convert_headers! # :nodoc:
         header_cells = cell_matrix[0]
 
         if @header_conversion_proc
@@ -511,17 +518,19 @@ module Cucumber
           mapped_cells = header_cells.reject { |cell| cell.value.match(pre).nil? }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
           raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
+
           mapped_cells[0].value = post
           @conversion_procs[post] = @conversion_procs.delete(pre) if @conversion_procs.key?(pre)
         end
       end
 
-      def clear_cache! #:nodoc:
+      def clear_cache! # :nodoc:
         @hashes = @rows_hash = @column_names = @rows = @columns = nil
       end
 
-      def ensure_table(table_or_array) #:nodoc:
+      def ensure_table(table_or_array) # :nodoc:
         return table_or_array if DataTable == table_or_array.class
+
         DataTable.from(table_or_array)
       end
 
@@ -530,7 +539,7 @@ module Cucumber
       end
 
       # Represents a row of cells or columns of cells
-      class Cells #:nodoc:
+      class Cells # :nodoc:
         include Enumerable
         include Cucumber::Gherkin::Formatter::Escaping
 
@@ -543,6 +552,7 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
+
           each do |cell|
             visitor.visit_table_cell(cell)
           end
@@ -550,15 +560,15 @@ module Cucumber
         end
 
         # For testing only
-        def to_sexp #:nodoc:
+        def to_sexp # :nodoc:
           [:row, line, *@cells.map(&:to_sexp)]
         end
 
-        def to_hash #:nodoc:
+        def to_hash # :nodoc:
           @to_hash ||= @table.cells_to_hash(self)
         end
 
-        def value(n) #:nodoc:
+        def value(n) # :nodoc:
           self[n].value
         end
 
@@ -589,7 +599,7 @@ module Cucumber
         end
       end
 
-      class Cell #:nodoc:
+      class Cell # :nodoc:
         attr_reader :line, :table
         attr_accessor :status, :value
 
@@ -616,12 +626,12 @@ module Cucumber
         end
 
         # For testing only
-        def to_sexp #:nodoc:
+        def to_sexp # :nodoc:
           [:cell, @value]
         end
       end
 
-      class SurplusCell < Cell #:nodoc:
+      class SurplusCell < Cell # :nodoc:
         def status
           :comment
         end

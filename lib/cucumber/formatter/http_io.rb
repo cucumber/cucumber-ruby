@@ -35,6 +35,7 @@ module Cucumber
             headers = headers.merge(parse_header(header_arg))
           else
             raise StandardError, "#{options} was not a valid curl command. Can't set url to #{arg} it is already set to #{url}" if url
+
             url = arg
           end
         end
@@ -49,12 +50,14 @@ module Cucumber
 
       def self.remove_arg_for(args, arg)
         return args.shift unless args.empty?
+
         raise StandardError, "Missing argument for #{arg}"
       end
 
       def self.parse_header(header_arg)
         parts = header_arg.split(':', 2)
         raise StandardError, "#{header_arg} was not a valid header" unless parts.length == 2
+
         { parts[0].strip => parts[1].strip }
       end
     end
@@ -76,6 +79,7 @@ module Cucumber
         @reporter.report(response.body)
         @write_io.close
         return if response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
+
         raise StandardError, "request to #{uri} failed with status #{response.code}"
       end
 
@@ -98,6 +102,7 @@ module Cucumber
         http = build_client(uri, @https_verify_mode)
 
         raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
+
         req = build_request(
           uri,
           method,

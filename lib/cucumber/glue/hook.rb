@@ -58,6 +58,7 @@ module Cucumber
           end
 
           next unless tag_expression.include?(',')
+
           warn("Found tagged hook with '#{tag_expression}'." \
             "'@tag1,@tag2' is no longer supported, use '@tag or @tag2' instead.")
         end

@@ -4,11 +4,12 @@ require 'cucumber/multiline_argument'
 
 module Cucumber
   # Represents the match found between a Test Step and its activation
-  class StepMatch #:nodoc:
+  class StepMatch # :nodoc:
     attr_reader :step_definition, :step_arguments
 
     def initialize(step_definition, step_name, step_arguments)
       raise "step_arguments can't be nil (but it can be an empty array)" if step_arguments.nil?
+
       @step_definition = step_definition
       @name_to_match = step_name
       @step_arguments = step_arguments
@@ -90,7 +91,7 @@ module Cucumber
       s
     end
 
-    def inspect #:nodoc:
+    def inspect # :nodoc:
       "#<#{self.class}: #{location}>"
     end
   end
@@ -101,7 +102,7 @@ module Cucumber
     end
   end
 
-  class NoStepMatch #:nodoc:
+  class NoStepMatch # :nodoc:
     attr_reader :step_definition, :name
 
     def initialize(step, name)
@@ -115,6 +116,7 @@ module Cucumber
 
     def location
       raise "No location for #{@step}" unless @step.location
+
       @step.location
     end
 

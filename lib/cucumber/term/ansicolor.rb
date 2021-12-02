@@ -2,8 +2,28 @@
 
 module Cucumber
   module Term
-    # The ANSIColor module can be used for namespacing and mixed into your own
-    # classes.
+    # This module allows to colorize text using ANSI escape sequences.
+    #
+    # Include the module in your class and use its methods to colorize text.
+    #
+    # Example:
+    #
+    #   require 'cucumber/term/ansicolor'
+    #
+    #   class MyFormatter
+    #     include Cucumber::Term::ANSIColor
+    #
+    #     def initialize(config)
+    #       $stdout.puts yellow("Initializing formatter")
+    #       $stdout.puts green("Coloring is active \o/") if Cucumber::Term::ANSIColor.coloring?
+    #       $stdout.puts grey("Feature path:") + blue(bold(config.feature_dirs))
+    #     end
+    #   end
+    #
+    # To see what colours and effects are available, just run this in your shell:
+    #
+    #   ruby -e "require 'rubygems'; require 'cucumber/term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
+    #
     module ANSIColor
       # :stopdoc:
       ATTRIBUTES = [
@@ -27,6 +47,7 @@ module Cucumber
         [:magenta,       35],
         [:cyan,          36],
         [:white,         37],
+        [:grey,          90],
         [:on_black,      40],
         [:on_red,        41],
         [:on_green,      42],
@@ -40,71 +61,74 @@ module Cucumber
       ATTRIBUTE_NAMES = ATTRIBUTES.transpose.first
       # :startdoc:
 
-      # Returns true, if the coloring function of this module
-      # is switched on, false otherwise.
-      def self.coloring?
-        @coloring
-      end
-
-      # Turns the coloring on or off globally, so you can easily do
-      # this for example:
-      #  Cucumber::Term::ANSIColor::coloring = STDOUT.isatty
-      def self.coloring=(val)
-        @coloring = val
-      end
-      self.coloring = true
-
-      # rubocop:disable Security/Eval
-      ATTRIBUTES.each do |c, v|
-        eval <<-END_EVAL, binding, __FILE__, __LINE__ + 1
-            def #{c}(string = nil)
-              result = String.new
-              result << "\e[#{v}m" if Cucumber::Term::ANSIColor.coloring?
-              if block_given?
-                result << yield
-              elsif string
-                result << string
-              elsif respond_to?(:to_str)
-                result << to_str
-              else
-                return result #only switch on
-              end
-              result << "\e[0m" if Cucumber::Term::ANSIColor.coloring?
-              result
-            end
-        END_EVAL
-      end
-      # rubocop:enable Security/Eval
-
       # Regular expression that is used to scan for ANSI-sequences while
       # uncoloring strings.
       COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?m/
 
-      def self.included(klass)
-        return unless klass == String
-        ATTRIBUTES.delete(:clear)
-        ATTRIBUTE_NAMES.delete(:clear)
+      @coloring = true
+
+      class << self
+        # Turns the coloring on or off globally, so you can easily do
+        # this for example:
+        #  Cucumber::Term::ANSIColor::coloring = $stdout.isatty
+        attr_accessor :coloring
+
+        # Returns true, if the coloring function of this module
+        # is switched on, false otherwise.
+        alias coloring? :coloring
+
+        def included(klass)
+          return unless klass == String
+
+          ATTRIBUTES.delete(:clear)
+          ATTRIBUTE_NAMES.delete(:clear)
+        end
       end
 
-      # Returns an uncolored version of the string, that is all
+      ATTRIBUTES.each do |color_name, color_code|
+        define_method(color_name) do |text = nil, &block|
+          if block
+            colorize(block.call, color_code)
+          elsif text
+            colorize(text, color_code)
+          elsif respond_to?(:to_str)
+            colorize(to_str, color_code)
+          else
+            colorize(nil, color_code) # switch coloration on
+          end
+        end
+      end
+
+      # Returns an uncolored version of the string
       # ANSI-sequences are stripped from the string.
-      def uncolored(string = nil)
+      def uncolored(text = nil)
         if block_given?
-          yield.gsub(COLORED_REGEXP, '')
-        elsif string
-          string.gsub(COLORED_REGEXP, '')
+          uncolorize(yield)
+        elsif text
+          uncolorize(text)
         elsif respond_to?(:to_str)
-          to_str.gsub(COLORED_REGEXP, '')
+          uncolorize(to_str)
         else
           ''
         end
       end
 
-      module_function
-
       # Returns an array of all Cucumber::Term::ANSIColor attributes as symbols.
       def attributes
         ATTRIBUTE_NAMES
+      end
+
+      private
+
+      def colorize(text, color_code)
+        return String.new(text || '') unless Cucumber::Term::ANSIColor.coloring?
+        return "\e[#{color_code}m" unless text
+
+        "\e[#{color_code}m#{text}\e[0m"
+      end
+
+      def uncolorize(string)
+        string.gsub(COLORED_REGEXP, '')
       end
     end
   end

@@ -25,6 +25,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Fixed JSON Formatter "end of background" detection.
   ([PR#1580](https://github.com/cucumber/cucumber-ruby/pull/1580))
 
+- Removed usage of `eval` in `Cucumber::Term::ANSIColor` and `Cucumber::Formatter::ANSIColor`.
+  ([PR#1589](https://github.com/cucumber/cucumber-ruby/pull/1589)
+   [Issue#1583](https://github.com/cucumber/cucumber-ruby/issues/1583))
+
 ### Changed
 
 ### Removed

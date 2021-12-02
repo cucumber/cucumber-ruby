@@ -9,7 +9,9 @@ require 'cucumber'
 module Cucumber
   module Cli
     class YmlLoadError < StandardError; end
+
     class ProfilesNotDefinedError < YmlLoadError; end
+
     class ProfileNotFound < StandardError; end
 
     class Configuration
@@ -17,7 +19,7 @@ module Cucumber
 
       attr_reader :out_stream
 
-      def initialize(out_stream = STDOUT, error_stream = STDERR)
+      def initialize(out_stream = $stdout, error_stream = $stderr)
         @out_stream   = out_stream
         @error_stream = error_stream
         @options = Options.new(@out_stream, @error_stream, default_profile: 'default')
@@ -28,6 +30,7 @@ module Cucumber
         @options.parse!(args)
         arrange_formats
         raise("You can't use both --strict and --wip") if strict.strict? && wip?
+
         set_environment_variables
       end
 
