@@ -85,7 +85,6 @@ class CucumberCommand < CommandLine
 
     Cucumber::Cli::Main.new(
       argument_list,
-      nil,
       @stdout,
       @stderr,
       @kernel
@@ -126,7 +125,6 @@ class RakeCommand < CommandLine
       .and_wrap_original do |_, *args|
         Cucumber::Cli::Main.new(
           args[0],
-          nil,
           @stdout,
           @stderr,
           @kernel
