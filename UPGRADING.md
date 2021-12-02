@@ -4,7 +4,7 @@
 
 The built-in wire protocol has been removed.
 
-The wire protocol is still available by explicitely using the `cucumber-wire` gem.
+The wire protocol is still available by explicitly using the `cucumber-wire` gem.
 
 ### Before cucumber 8.0.0
 
@@ -85,7 +85,7 @@ Cucumber::Cli::Main.new(
 Usage of built-in wire protocol with `cucumber-ruby` will be deprecated in cucumber
 7.1.0, and removed in cucumber 8.0.0.
 
-The wire protocol will still be available by explicitely using the `cucumber-wire`
+The wire protocol will still be available by explicitly using the `cucumber-wire`
 gem.
 
 ### Before cucumber 7.1.0
