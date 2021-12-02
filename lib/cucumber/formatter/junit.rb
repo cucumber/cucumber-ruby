@@ -193,7 +193,7 @@ module Cucumber
       end
 
       def basename(feature_file)
-        File.basename(feature_file.gsub(%r{[\\/]}, '-'), '.feature')
+        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature')
       end
 
       def write_file(feature_filename, data)

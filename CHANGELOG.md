@@ -33,6 +33,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
+- Removed former unused `stdin` argument from `Cli::Main`. That may impact your code
+  if you use cucumber API `Cucumber::Cli::Main`. See [UPGRADING.md](./UPGRADING.md#upgrading-to-800).
+  ([PR#1588](https://github.com/cucumber/cucumber-ruby/pull/1588)
+   [Issue#1581](https://github.com/cucumber/cucumber-ruby/issues/1581))
+
 ### Security fixes
 
 ### Deprecated
