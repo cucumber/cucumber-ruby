@@ -10,12 +10,6 @@ elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
   gem 'cucumber-core', github: 'cucumber/cucumber-ruby-core', branch: 'main'
 end
 
-if ENV['CUCUMBER_RUBY_WIRE']
-  gem 'cucumber-wire', path: ENV['CUCUMBER_RUBY_WIRE']
-elsif !ENV['CUCUMBER_USE_RELEASED_GEMS']
-  gem 'cucumber-wire', github: 'cucumber/cucumber-ruby-wire', branch: 'main'
-end
-
 gem 'cucumber-expressions', path: ENV['CUCUMBER_EXPRESSIONS_RUBY'] if ENV['CUCUMBER_EXPRESSIONS_RUBY']
 gem 'cucumber-gherkin', path: ENV['GHERKIN_RUBY'] if ENV['GHERKIN_RUBY']
 gem 'cucumber-html-formatter', path: ENV['CUCUMBER_HTML_FORMATTER_RUBY'] if ENV['CUCUMBER_HTML_FORMATTER_RUBY']

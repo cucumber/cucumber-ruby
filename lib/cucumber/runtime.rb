@@ -66,7 +66,6 @@ module Cucumber
       @support_code.configure(@configuration)
     end
 
-    require 'cucumber/wire/plugin'
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
         meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
@@ -75,7 +74,6 @@ module Cucumber
       load_step_definitions
       fire_after_configuration_hook
       fire_install_plugin_hook
-      install_wire_plugin
       fire_before_all_hook unless dry_run?
       # TODO: can we remove this state?
       self.visitor = report
@@ -280,18 +278,6 @@ module Cucumber
     def load_step_definitions
       files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
-    end
-
-    def install_wire_plugin
-      return if Cucumber::Wire::Plugin.installed?
-      return unless @configuration.all_files_to_load.any? { |f| f =~ /\.wire$/ }
-
-      Cucumber::Wire::Plugin.new(@configuration, registry_wrapper).install
-      Cucumber.deprecate(
-        'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info',
-        ' built-in usage of the wire protocol',
-        '8.0.0'
-      )
     end
 
     def registry_wrapper

@@ -11,8 +11,8 @@ else
 end
 %>
 default:     <%= std_opts %> --tags "not @jruby"
-jruby:       <%= std_opts %> --tags "not @wire"
-jruby_win:   <%= std_opts %> --tags "not @wire" CUCUMBER_FORWARD_SLASH_PATHS=true
-windows_mri: <%= std_opts %> --tags "not @jruby" --tags "not @wire" --tags "not @needs-many-fonts" --tags "not @todo-windows" CUCUMBER_FORWARD_SLASH_PATHS=true
+jruby:       <%= std_opts %>
+jruby_win:   <%= std_opts %> CUCUMBER_FORWARD_SLASH_PATHS=true
+windows_mri: <%= std_opts %> --tags "not @jruby" --tags "not @needs-many-fonts" --tags "not @todo-windows" CUCUMBER_FORWARD_SLASH_PATHS=true
 wip:         --wip <%= wip_opts %> features
 none:        --format pretty
