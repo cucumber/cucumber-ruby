@@ -8,16 +8,10 @@ To release `cucumber-ruby`, you'll need:
 - make
 - docker
 
-# Release process for cucumber-wire
-
-## Prerequisites
-
-To release `cucumber`, you'll need to be a member of the core team
-
-## cucumber-ruby-core and cucumber-ruby-wire
+## cucumber-ruby-core
 
 If internal libraries such as `cucumber-gherkin` needs to be updated, you'll
-need to update and release `cucumber-ruby-core` first, then `cucumber-ruby-wire`.
+need to update and release `cucumber-ruby-core` before releasing `cucumber-ruby`.
 
 ## Releasing cucumber-ruby
 
