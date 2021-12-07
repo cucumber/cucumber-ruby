@@ -58,52 +58,6 @@ module Cucumber
         end
       end
 
-      describe '#map_column!' do
-        it 'should allow mapping columns' do
-          @table.map_column!('one', &:to_i)
-          expect(@table.hashes.first['one']).to eq 4444
-        end
-
-        it 'applies the block once to each value' do
-          headers = ['header']
-          rows = ['value']
-          table = DataTable.from [headers, rows]
-          count = 0
-          table.map_column!('header') { |_value| count += 1 }
-          table.rows
-          expect(count).to eq rows.size
-        end
-
-        it 'should allow mapping columns and take a symbol as the column name' do
-          @table.map_column!(:one, &:to_i)
-          expect(@table.hashes.first['one']).to eq 4444
-        end
-
-        it 'should allow mapping columns and modify the rows as well' do
-          @table.map_column!(:one, &:to_i)
-          expect(@table.rows.first).to include(4444)
-          expect(@table.rows.first).to_not include('4444')
-        end
-
-        it 'should pass silently if a mapped column does not exist in non-strict mode' do
-          expect do
-            @table.map_column!('two', false, &:to_i)
-            @table.hashes
-          end.not_to raise_error
-        end
-
-        it 'should fail if a mapped column does not exist in strict mode' do
-          expect do
-            @table.map_column!('two', true, &:to_i)
-            @table.hashes
-          end.to raise_error('The column named "two" does not exist')
-        end
-
-        it 'should return the table' do
-          expect(@table.map_column!(:one, &:to_i)).to eq @table
-        end
-      end
-
       describe '#map_column' do
         it 'should allow mapping columns' do
           new_table = @table.map_column('one', &:to_i)
@@ -212,42 +166,6 @@ module Cucumber
         end
       end
 
-      describe '#map_headers!' do
-        let(:table) do
-          DataTable.from([
-                           %w[HELLO WORLD],
-                           %w[4444 55555]
-                         ])
-        end
-
-        it 'renames the columns to the specified values in the provided hash' do
-          @table.map_headers!('one' => :three)
-          expect(@table.hashes.first[:three]).to eq '4444'
-        end
-
-        it 'allows renaming columns using regexp' do
-          @table.map_headers!(/one|uno/ => :three)
-          expect(@table.hashes.first[:three]).to eq '4444'
-        end
-
-        it 'copies column mappings' do
-          @table.map_column!('one', &:to_i)
-          @table.map_headers!('one' => 'three')
-          expect(@table.hashes.first['three']).to eq 4444
-        end
-
-        it 'takes a block and operates on all the headers with it' do
-          table.map_headers!(&:downcase)
-          expect(table.hashes.first.keys).to match %w[hello world]
-        end
-
-        it 'treats the mappings in the provided hash as overrides when used with a block' do
-          table.map_headers!('WORLD' => 'foo', &:downcase)
-
-          expect(table.hashes.first.keys).to match %w[hello foo]
-        end
-      end
-
       describe '#map_headers' do
         let(:table) do
           DataTable.from([
@@ -267,8 +185,8 @@ module Cucumber
         end
 
         it 'copies column mappings' do
-          @table.map_column!('one', &:to_i)
-          table2 = @table.map_headers('one' => 'three')
+          table = @table.map_column('one', &:to_i)
+          table2 = table.map_headers('one' => 'three')
           expect(table2.hashes.first['three']).to eq 4444
         end
 
@@ -467,12 +385,11 @@ module Cucumber
                                 %w[name male],
                                 %w[aslak true]
                               ])
-          t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
                                 %w[name male],
                                 ['aslak', true]
                               ])
-          t1.diff!(t2)
+          t1.map_column('male') { |m| m == 'true' }.diff!(t2)
           expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     name  |     male |
             |     aslak |     true |
@@ -484,14 +401,11 @@ module Cucumber
                                 %w[name male],
                                 ['aslak', true]
                               ])
-          t1.map_column!('male') do
-            'true'
-          end
           t2 = DataTable.from([
                                 %w[name male],
                                 %w[aslak true]
                               ])
-          t2.diff!(t1)
+          t2.diff!(t1.map_column('male') { 'true' })
           expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     name  |     male |
             |     aslak |     true |
@@ -503,8 +417,9 @@ module Cucumber
                                 %w[Name Male],
                                 %w[aslak true]
                               ])
-          t1.map_headers!('Name' => 'name', 'Male' => 'male')
-          t1.map_column!('male') { |m| m == 'true' }
+          t1 = t1.map_headers('Name' => 'name', 'Male' => 'male')
+          t1 = t1.map_column('male') { |m| m == 'true' }
+
           t2 = DataTable.from([
                                 %w[name male],
                                 ['aslak', true]
@@ -540,7 +455,7 @@ module Cucumber
                                 %w[Foo Bar]
                               ])
           expect do
-            t1.map_headers!(/uk/ => 'u')
+            t1 = t1.map_headers(/uk/ => 'u')
             t1.hashes
           end.to raise_error(%(2 headers matched /uk/: ["Cuke", "Duke"]))
         end
