@@ -36,6 +36,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 
+- `AfterConfiguration` has been removed. Please use `InstallPlugin` or `BeforeAll` instead.
+  See the [UPGRADING.md](./UPGRADING.md#upgrading-to-800) to update your code accordingly.
+
 - The built-in Wire protocol
   The Wire protocol is still officially supported, but as an optional plugin rather
   than a built-in feature. See the

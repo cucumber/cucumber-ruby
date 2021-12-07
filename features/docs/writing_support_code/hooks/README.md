@@ -8,8 +8,7 @@ Hooks are part of your support code.
 
 They are executed in the following order:
 
-- [AfterConfiguration](#afterconfiguration-and-installplugin)
-- [InstallPlugin](#afterconfiguration-and-installplugin)
+- [InstallPlugin](#installplugin)
 - [BeforeAll](#beforeall-and-afterall)
   - Per scenario:
     - [Around](#around)
@@ -26,28 +25,16 @@ Multiple hooks of the same type are executed in the order that they were defined
 If you wish to control this order, use manual requires in `env.rb` - This file is
 loaded first - or migrate them all to one `hooks.rb` file.
 
-## AfterConfiguration and InstallPlugin
+## AfterConfigurInstallPlugin
 
-[`AfterConfiguration`](#afterconfiguration) and [`InstallPlugin`](#installplugin)
-hooks are dedicated to plugins and are meant to extend Cucumber. For example,
-[`AfterConfiguration`](#afterconfiguration) allows you to dynamically change the
-configuration before the execution of the tests, and [`InstallPlugin`](#installplugin)
-allows to have some code that would have deeper impact on the execution.
-
-### AfterConfiguration
-
-**Note:** this is a legacy hook. You may consider using [`InstallPlugin`](#installplugin) instead.
-
-```ruby
-AfterConfiguration do |configuration|
-  # configuration is an instance of Cucumber::Configuration defined in
-  # lib/cucumber/configuration.rb.
-end
-```
+[`InstallPlugin`](#installplugin) hook is dedicated to plugins and are meant to
+extend Cucumber. For example, it allows to dynamically change the configuration
+before the execution of tests or to have some code that have some impact on the
+execution itself.
 
 ### InstallPlugin
 
-In addition to the configuration, `InstallPlugin` also has access to some of Cucumber
+In addition to the configuration, `InstallPlugin` has access to some of Cucumber
 internals through a `RegistryWrapper`, defined in
 [lib/cucumber/glue/registry_wrapper.rb](../../../../lib/cucumber/glue/registry_wrapper.rb).
 

@@ -136,14 +136,6 @@ module Cucumber
         @current_world = nil
       end
 
-      def after_configuration(configuration)
-        deprecate_after_configuration_hook if hooks[:after_configuration].any?
-
-        hooks[:after_configuration].each do |hook|
-          hook.invoke('AfterConfiguration', configuration)
-        end
-      end
-
       def install_plugin(configuration, registry)
         hooks[:install_plugin].each do |hook|
           hook.invoke('InstallPlugin', [configuration, registry])
@@ -229,14 +221,6 @@ module Cucumber
 
       def hooks
         @hooks ||= Hash.new { |h, k| h[k] = [] }
-      end
-
-      def deprecate_after_configuration_hook
-        Cucumber.deprecate(
-          'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info',
-          ' AfterConfiguration hook',
-          '8.0.0'
-        )
       end
     end
 
