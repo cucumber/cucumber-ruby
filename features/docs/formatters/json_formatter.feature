@@ -389,6 +389,101 @@ Feature: JSON output formatter
 
     """
 
+  Scenario: scenario outline with docstring      
+    Given a file named "features/outline_doc_string.feature" with:
+          """
+      Feature: An outline feature with a DocString
+
+        Scenario Outline: outline
+          Then I should fail with
+            \"\"\"
+            <status>
+            \"\"\"
+
+          Examples: examples1
+            | status |
+            | passes |
+            | fails  |
+      """
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      Then /I should fail with/ do |s|
+        raise RuntimeError, s
+      end
+      """
+    When I run `cucumber --format json features/outline_doc_string.feature`
+    Then it should fail with JSON:
+      """
+      [
+        {
+          "id": "an-outline-feature-with-a-docstring",
+          "uri": "features/outline_doc_string.feature",
+          "keyword": "Feature",
+          "name": "An outline feature with a DocString",
+          "line": 1,
+          "description": "",
+          "elements": [
+            {
+              "id": "an-outline-feature-with-a-docstring;outline;examples1;2",
+              "keyword": "Scenario Outline",
+              "name": "outline",
+              "line": 11,
+              "description": "",
+              "type": "scenario",
+              "steps": [
+                {
+                  "keyword": "Then ",
+                  "name": "I should fail with",
+                  "line": 4,
+                  "doc_string": {
+                    "content_type": "",
+                    "value": "passes",
+                    "line": 5
+                  },
+                  "match": {
+                    "location": "features/step_definitions/steps.rb:1"
+                  },
+                  "result": {
+                    "status": "failed",
+                    "error_message": "passes (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/outline_doc_string.feature:11:4:in `I should fail with'",
+                    "duration": 1
+                  }
+                }
+              ]
+            },
+            {
+              "id": "an-outline-feature-with-a-docstring;outline;examples1;3",
+              "keyword": "Scenario Outline",
+              "name": "outline",
+              "line": 12,
+              "description": "",
+              "type": "scenario",
+              "steps": [
+                {
+                  "keyword": "Then ",
+                  "name": "I should fail with",
+                  "line": 4,
+                  "doc_string": {
+                    "content_type": "",
+                    "value": "fails",
+                    "line": 5
+                  },
+                  "match": {
+                    "location": "features/step_definitions/steps.rb:1"
+                  },
+                  "result": {
+                    "status": "failed",
+                    "error_message": "fails (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/outline_doc_string.feature:12:4:in `I should fail with'",
+                    "duration": 1
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+      """
+
   Scenario: print from step definition
     When I run `cucumber --format json features/print_from_step_definition.feature`
     Then it should pass with JSON:

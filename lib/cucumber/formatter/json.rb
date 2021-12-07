@@ -82,7 +82,7 @@ module Cucumber
       end
 
       def on_test_run_finished(_event)
-        @io.write(JSON.generate(@feature_hashes, pretty: true))
+        @io.write(JSON.pretty_generate(@feature_hashes))
       end
 
       def attach(src, mime_type)
@@ -106,7 +106,7 @@ module Cucumber
       end
 
       def first_step_after_background?(test_step)
-        @in_background && test_step.location.lines.max >= @test_case_hash[:line]
+        @in_background && test_step.location.file == @feature_hash[:uri] && test_step.location.lines.max >= @test_case_hash[:line]
       end
 
       def internal_hook?(test_step)
@@ -176,15 +176,15 @@ module Cucumber
           name: test_step.text,
           line: test_step.location.lines.min
         }
-        step_hash[:doc_string] = create_doc_string_hash(step_source.doc_string) unless step_source.doc_string.nil?
+        step_hash[:doc_string] = create_doc_string_hash(step_source.doc_string, test_step.multiline_arg.content) unless step_source.doc_string.nil?
         step_hash[:rows] = create_data_table_value(step_source.data_table) unless step_source.data_table.nil?
         step_hash
       end
 
-      def create_doc_string_hash(doc_string)
+      def create_doc_string_hash(doc_string, doc_string_content)
         content_type = doc_string.media_type || ''
         {
-          value: doc_string.content,
+          value: doc_string_content,
           content_type: content_type,
           line: doc_string.location.line
         }
