@@ -78,9 +78,9 @@ module Cucumber
       NULL_CONVERSIONS = Hash.new(strict: false, proc: ->(cell_value) { cell_value }).freeze
 
       # @param data [Core::Test::DataTable] the data for the table
-      # @param conversion_procs [Hash] see map_columns!
-      # @param header_mappings [Hash] see map_headers!
-      # @param header_conversion_proc [Proc] see map_headers!
+      # @param conversion_procs [Hash] see map_column
+      # @param header_mappings [Hash] see map_headers
+      # @param header_conversion_proc [Proc] see map_headers
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
         raise ArgumentError, 'data must be a Core::Test::DataTable' unless data.is_a? Core::Test::DataTable
 
@@ -106,13 +106,6 @@ module Cucumber
 
       def location
         @ast_table.location
-      end
-
-      # Creates a copy of this table, inheriting any column and header mappings
-      # registered with #map_column! and #map_headers!.
-      #
-      def dup
-        self.class.new(Core::Test::DataTable.new(raw), @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Returns a new, transposed table. Example:
@@ -142,7 +135,7 @@ module Cucumber
       #
       #   [{'a' => '2', 'b' => '3', 'sum' => '5'}, {'a' => '7', 'b' => '9', 'sum' => '16'}]
       #
-      # Use #map_column! to specify how values in a column are converted.
+      # Use #map_column to specify how values in a column are converted.
       #
       def hashes
         @hashes ||= build_hashes
@@ -230,7 +223,8 @@ module Cucumber
         pattern.match(header_to_match)
       end
 
-      # Redefines the table headers. This makes it possible to use
+      # Returns a new Table where the headers are redefined.
+      # This makes it possible to use
       # prettier and more flexible header names in the features.  The
       # keys of +mappings+ are Strings or regular expressions
       # (anything that responds to #=== will work) that may match
@@ -246,55 +240,40 @@ module Cucumber
       # A StepDefinition receiving this table can then map the columns
       # with both Regexp and String:
       #
-      #   table.map_headers!(/phone( number)?/i => :phone, 'Address' => :address)
+      #   table.map_headers(/phone( number)?/i => :phone, 'Address' => :address)
       #   table.hashes
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
       # You may also pass in a block if you wish to convert all of the headers:
       #
-      #   table.map_headers! { |header| header.downcase }
+      #   table.map_headers { |header| header.downcase }
       #   table.hashes.keys
       #   # => ['phone number', 'address']
       #
       # When a block is passed in along with a hash then the mappings in the hash take precendence:
       #
-      #   table.map_headers!('Address' => 'ADDRESS') { |header| header.downcase }
+      #   table.map_headers('Address' => 'ADDRESS') { |header| header.downcase }
       #   table.hashes.keys
       #   # => ['phone number', 'ADDRESS']
       #
-      def map_headers!(mappings = {}, &block)
-        # TODO: Remove this method for 2.0
-        clear_cache!
-        @header_mappings = mappings
-        @header_conversion_proc = block
-      end
-
-      # Returns a new Table where the headers are redefined. See #map_headers!
       def map_headers(mappings = {}, &block)
         self.class.new(Core::Test::DataTable.new(raw), @conversion_procs.dup, mappings, block)
       end
 
+      # Returns a new Table with an additional column mapping.
+      #
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
       # and +conversion_proc+ performs the conversion for each cell in that column. If +strict+ is
       # true, an error will be raised if the column named +column_name+ is not found. If +strict+
       # is false, no error will be raised. Example:
       #
       #   Given /^an expense report for (.*) with the following posts:$/ do |table|
-      #     posts_table.map_column!('amount') { |a| a.to_i }
+      #     posts_table = posts_table.map_column('amount') { |a| a.to_i }
       #     posts_table.hashes.each do |post|
       #       # post['amount'] is a Fixnum, rather than a String
       #     end
       #   end
       #
-      # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
-      def map_column!(column_name, strict = true, &conversion_proc)
-        # TODO: Remove this method for 2.0
-        @conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
-        self
-      end
-      # rubocop:enable Style/OptionalBooleanParameter
-
-      # Returns a new Table with an additional column mapping. See #map_column!
       # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
       def map_column(column_name, strict = true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
@@ -318,8 +297,8 @@ module Cucumber
       # where the difference actually is.
       #
       # Since all tables that are passed to StepDefinitions always have String
-      # objects in their cells, you may want to use #map_column! before calling
-      # #diff!. You can use #map_column! on either of the tables.
+      # objects in their cells, you may want to use #map_column before calling
+      # #diff!. You can use #map_column on either of the tables.
       #
       # A Different error is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns. An

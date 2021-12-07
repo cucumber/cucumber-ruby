@@ -1,6 +1,6 @@
 # Upgrading to 8.0.0
 
-# The wire protocol
+## The wire protocol
 
 The built-in wire protocol has been removed.
 
