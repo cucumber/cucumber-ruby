@@ -25,16 +25,13 @@ Multiple hooks of the same type are executed in the order that they were defined
 If you wish to control this order, use manual requires in `env.rb` - This file is
 loaded first - or migrate them all to one `hooks.rb` file.
 
-## AfterConfigurInstallPlugin
+## InstallPlugin
 
-[`InstallPlugin`](#installplugin) hook is dedicated to plugins and are meant to
+[`InstallPlugin`](#installplugin) hook is dedicated to using plugins and is meant to
 extend Cucumber. For example, it allows to dynamically change the configuration
-before the execution of tests or to have some code that have some impact on the
-execution itself.
+before the execution of tests or to add some code that could impact the execution itself.
 
-### InstallPlugin
-
-In addition to the configuration, `InstallPlugin` has access to some of Cucumber
+In addition to the configuration, `InstallPlugin` has access to some of the Cucumber
 internals through a `RegistryWrapper`, defined in
 [lib/cucumber/glue/registry_wrapper.rb](../../../../lib/cucumber/glue/registry_wrapper.rb).
 
