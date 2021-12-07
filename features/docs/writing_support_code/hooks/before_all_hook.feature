@@ -3,7 +3,7 @@ Feature: BeforeAll Hooks
   BeforeAll hooks can be used if you have some set-up to be done before all
   scenarios are executed.
 
-  BeforeAll hooks are not aware of your configuration. Use AfterConfiguration if
+  BeforeAll hooks are not aware of your configuration. Use InstallPlugin if
   you need it.
 
   Scenario: A single BeforeAll hook

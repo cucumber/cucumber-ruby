@@ -1,5 +1,31 @@
 # Upgrading to 8.0.0
 
+## AfterConfiguration hook
+
+`AfterConfiguration` hook has been removed in 8.0.0.
+
+Use the `InstallPlugin` hook if you need the `configuration` parameter.
+
+```ruby
+InstallPlugin do |configuration, registry|
+  # configuration is an instance of Cucumber::Configuration defined in
+  # lib/cucumber/configuration.rb
+  #
+  # registry is an instance of Cucumber::Glue::RegistryWrapper defined in
+  # lib/cucumber/glue/registry_wrapper.rb
+end
+```
+
+Use the `BeforeAll` hook if you don't need the `configuration` parameter.
+
+```ruby
+BeforeAll do
+  # snip
+end
+```
+
+More information about hooks can be found in [features/docs/writing_support_code/hooks/README.md](./features/docs/writing_support_code/hooks/README.md).
+
 ## The wire protocol
 
 The built-in wire protocol has been removed.

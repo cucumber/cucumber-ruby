@@ -255,22 +255,6 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           expect(scenario).to receive(:accept_hook?).with(b) { false }
           expect(registry.hooks_for(:around, scenario)).to eq [a]
         end
-
-        it 'shows a deprecation warning for after_configuration hooks' do
-          stub_const('Cucumber::Deprecate::STRATEGY', Cucumber::Deprecate::ForUsers)
-          allow($stdout).to receive(:puts)
-
-          dsl.AfterConfiguration() {}
-
-          registry.after_configuration(nil)
-
-          expect($stdout).to have_received(:puts).with(
-            a_string_including([
-              'WARNING: # AfterConfiguration hook is deprecated and will be removed after version 8.0.0.',
-              'See https://github.com/cucumber/cucumber-ruby/blob/main/UPGRADING.md#upgrading-to-710 for more info.'
-            ].join(' '))
-          )
-        end
       end
     end
   end
