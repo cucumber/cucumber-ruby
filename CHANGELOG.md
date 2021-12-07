@@ -52,7 +52,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - Removed `DataTable#map_column!` and `DataTable#map_headers!`.
   Those methods were error-prone and planned to be removed a long time ago. You
-  can use the imutable versions instead: `DataTable#map_column` and
+  can use the immutable versions instead: `DataTable#map_column` and
   `DataTable#map_headers`.
   ([PR#1590](https://github.com/cucumber/cucumber-ruby/pull/1590)
    [Issue#1584](https://github.com/cucumber/cucumber-ruby/issues/1584))
