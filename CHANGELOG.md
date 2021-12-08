@@ -36,7 +36,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - In `DataTable#map_column`, Changed the `strict` argument into a keyword argument.
   See [UPGRADING.md](./UPGRADING.md#upgrading-to-800).
-  ([Issue#1592](https://github.com/cucumber/cucumber-ruby/issues/1592))
+  ([PR#1594](https://github.com/cucumber/cucumber-ruby/pull/1594)
+   [Issue#1592](https://github.com/cucumber/cucumber-ruby/issues/1592))
 
 ### Removed
 
