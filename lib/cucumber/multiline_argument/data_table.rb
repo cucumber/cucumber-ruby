@@ -274,13 +274,11 @@ module Cucumber
       #     end
       #   end
       #
-      # rubocop:disable Style/OptionalBooleanParameter # the optional boolean parameter is kept for retrocompatibility
-      def map_column(column_name, strict = true, &conversion_proc)
+      def map_column(column_name, strict: true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
         conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self.class.new(Core::Test::DataTable.new(raw), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
-      # rubocop:enable Style/OptionalBooleanParameter
 
       # Compares +other_table+ to self. If +other_table+ contains columns
       # and/or rows that are not in self, new columns/rows are added at the

@@ -104,6 +104,24 @@ Cucumber::Cli::Main.new(
 ).execute!
 ```
 
+## DataTable#map_column `strict` argument
+
+The `strict` argument for the `map_column` method has changed to a keyword argument.
+
+### Before 8.0.0
+
+```ruby
+table.map_column('column', false).do |value|
+end
+```
+
+### With cucumber 8.0.0
+
+```ruby
+table.map_column('column', strict: false).do |value|
+end
+```
+
 # Upgrading to 7.1.0
 
 ## The wire protocol
