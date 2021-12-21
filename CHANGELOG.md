@@ -32,6 +32,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([PR#1589](https://github.com/cucumber/cucumber-ruby/pull/1589)
    [Issue#1583](https://github.com/cucumber/cucumber-ruby/issues/1583))
 
+- Fixed `DataTable#map_headers` when headers have the same prefix.
+  ([PR#1598](https://github.com/cucumber/cucumber-ruby/pull/1598)
+   [Issue#1450](https://github.com/cucumber/cucumber-ruby/issues/1450))
+
 ### Changed
 
 - In `DataTable#map_column`, Changed the `strict` argument into a keyword argument.
