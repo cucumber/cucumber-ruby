@@ -169,7 +169,7 @@ module Cucumber
       describe '#map_headers' do
         let(:table) do
           DataTable.from([
-                           %w[HELLO WORLD],
+                           %w[ANT ANTEATER],
                            %w[4444 55555]
                          ])
         end
@@ -193,13 +193,13 @@ module Cucumber
         it 'takes a block and operates on all the headers with it' do
           table2 = table.map_headers(&:downcase)
 
-          expect(table2.hashes.first.keys).to match %w[hello world]
+          expect(table2.hashes.first.keys).to match %w[ant anteater]
         end
 
         it 'treats the mappings in the provided hash as overrides when used with a block' do
-          table2 = table.map_headers('WORLD' => 'foo', &:downcase)
+          table2 = table.map_headers('ANT' => 'foo', &:downcase)
 
-          expect(table2.hashes.first.keys).to match %w[hello foo]
+          expect(table2.hashes.first.keys).to match %w[foo anteater]
         end
       end
 
