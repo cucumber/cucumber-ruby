@@ -492,7 +492,7 @@ module Cucumber
         end
 
         @header_mappings.each_pair do |pre, post|
-          mapped_cells = header_cells.reject { |cell| cell.value.match(pre).nil? }
+          mapped_cells = header_cells.select { |cell| pre.is_a?(Regexp) ? cell.value.match?(pre) : cell.value == pre }
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
           raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map(&:value).inspect}" if mapped_cells.length > 1
 
