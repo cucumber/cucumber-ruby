@@ -2,7 +2,6 @@
 
 require 'fileutils'
 require 'cucumber/configuration'
-require 'cucumber/ci_environment'
 require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
@@ -13,6 +12,7 @@ require 'cucumber/gherkin/i18n'
 require 'cucumber/glue/registry_wrapper'
 require 'cucumber/step_match_search'
 require 'cucumber/messages'
+require 'cucumber/runtime/meta_message_builder'
 require 'sys/uname'
 
 module Cucumber
@@ -68,7 +68,7 @@ module Cucumber
 
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
-        meta: create_meta_data
+        meta: MetaMessageBuilder.build_meta_message
       )
 
       load_step_definitions
@@ -111,54 +111,6 @@ module Cucumber
     end
 
     private
-
-    def create_meta_data
-      Cucumber::Messages::Meta.new(
-        protocol_version: Cucumber::Messages::VERSION,
-        implementation: Cucumber::Messages::Product.new(
-          name: 'cucumber-ruby',
-          version: Cucumber::VERSION
-        ),
-        runtime: Cucumber::Messages::Product.new(
-          name: RUBY_ENGINE,
-          version: RUBY_VERSION
-        ),
-        os: Cucumber::Messages::Product.new(
-          name: RbConfig::CONFIG['target_os'],
-          version: Sys::Uname.uname.version
-        ),
-        cpu: Cucumber::Messages::Product.new(
-          name: RbConfig::CONFIG['target_cpu']
-        ),
-        ci: create_ci_meta_data(ENV)
-      )
-    end
-
-    def create_ci_meta_data(env = ENV)
-      ci_system = Cucumber::CiEnvironment.detect_ci_environment(env)
-
-      return nil if ci_system.nil?
-
-      url = ci_system[:url]
-      return nil if url.nil?
-
-      git_info = nil
-      if ci_system[:git]
-        git_info = Cucumber::Messages::Git.new(
-          remote: ci_system[:git][:remote],
-          revision: ci_system[:git][:revision],
-          branch: ci_system[:git][:branch],
-          tag: ci_system[:git][:tag]
-        )
-      end
-
-      Cucumber::Messages::Ci.new(
-        url: url,
-        name: ci_system[:name],
-        build_number: ci_system[:buildNumber],
-        git: git_info
-      )
-    end
 
     def fire_install_plugin_hook # :nodoc:
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
