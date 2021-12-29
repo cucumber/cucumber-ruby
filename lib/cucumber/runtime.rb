@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'cucumber/configuration'
-require 'cucumber/create_meta'
+require 'cucumber/ci_environment'
 require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
@@ -68,7 +68,7 @@ module Cucumber
 
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
-        meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
+        meta: create_meta_data
       )
 
       load_step_definitions
@@ -111,6 +111,49 @@ module Cucumber
     end
 
     private
+
+    def create_meta_data
+      Cucumber::Messages::Meta.new(
+        protocol_version: Cucumber::Messages::VERSION,
+        implementation: Cucumber::Messages::Product.new(
+          name: 'cucumber-ruby',
+          version: Cucumber::VERSION
+        ),
+        runtime: Cucumber::Messages::Product.new(
+          name: RUBY_ENGINE,
+          version: RUBY_VERSION
+        ),
+        os: Cucumber::Messages::Product.new(
+          name: RbConfig::CONFIG['target_os'],
+          version: Sys::Uname.uname.version
+        ),
+        cpu: Cucumber::Messages::Product.new(
+          name: RbConfig::CONFIG['target_cpu']
+        ),
+        ci: create_ci_meta_data(ENV)
+      )
+    end
+
+    def create_ci_meta_data(env = ENV)
+      ci_system = Cucumber::CiEnvironment.detect_ci_environment(env)
+
+      return nil if ci_system.nil?
+
+      url = evaluate(ci_system['url'], env)
+      return nil if url.nil?
+
+      Cucumber::Messages::Ci.new(
+        url: url,
+        name: ci_name,
+        build_number: evaluate(ci_system['buildNumber'], env),
+        git: Cucumber::Messages::Git.new(
+          remote: remove_userinfo_from_url(evaluate(ci_system['git']['remote'], env)),
+          revision: evaluate(ci_system['git']['revision'], env),
+          branch: evaluate(ci_system['git']['branch'], env),
+          tag: evaluate(ci_system['git']['tag'], env)
+        )
+      )
+    end
 
     def fire_install_plugin_hook # :nodoc:
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
