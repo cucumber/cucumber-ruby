@@ -38,6 +38,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 
+- Replace dependency [cucumber-create-meta] with the new [cucumber-ci-environment]
+  ([PR#1601](https://github.com/cucumber/cucumber-ruby/pull/1601))
+
 - In `DataTable#map_column`, Changed the `strict` argument into a keyword argument.
   See [UPGRADING.md](./UPGRADING.md#upgrading-to-800).
   ([PR#1594](https://github.com/cucumber/cucumber-ruby/pull/1594)
