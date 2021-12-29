@@ -139,19 +139,24 @@ module Cucumber
 
       return nil if ci_system.nil?
 
-      url = evaluate(ci_system['url'], env)
+      url = ci_system[:url]
       return nil if url.nil?
+
+      git_info = nil
+      if ci_system[:git]
+        git_info = Cucumber::Messages::Git.new(
+          remote: ci_system[:git][:remote],
+          revision: ci_system[:git][:revision],
+          branch: ci_system[:git][:branch],
+          tag: ci_system[:git][:tag]
+        )
+      end
 
       Cucumber::Messages::Ci.new(
         url: url,
-        name: ci_name,
-        build_number: evaluate(ci_system['buildNumber'], env),
-        git: Cucumber::Messages::Git.new(
-          remote: remove_userinfo_from_url(evaluate(ci_system['git']['remote'], env)),
-          revision: evaluate(ci_system['git']['revision'], env),
-          branch: evaluate(ci_system['git']['branch'], env),
-          tag: evaluate(ci_system['git']['tag'], env)
-        )
+        name: ci_system[:name],
+        build_number: ci_system[:buildNumber],
+        git: git_info
       )
     end
 
