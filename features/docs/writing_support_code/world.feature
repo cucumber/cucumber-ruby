@@ -95,6 +95,45 @@ Feature: World
     When I run `cucumber features/f.feature`
     Then it should pass
 
+  Scenario: A world is existing over multiple scenarios
+    Given a file named "features/support/helpers.rb" with:
+      """
+      module Helpers
+        def helper_method
+          42
+        end
+      end
+
+      World(my_namespace: Helpers)
+      """
+    And a file named "features/step_definitions/step.rb" with:
+      """
+      Then /^my_namespace is not nil$/ do
+        expect(my_namespace).not_to be_nil
+      end
+
+      Then /^the helper method is called$/ do
+        expect(my_namespace.helper_method).to eql(42)
+      end
+      """
+    And a file named "features/f.feature" with:
+      """
+      Feature: Calling a method
+        Scenario: The namespace exists
+          Then my_namespace is not nil
+        Scenario: I call a method from a namespace
+          Then the helper method is called
+        Scenario: The namespace still exists
+          Then my_namespace is not nil
+        Scenario: I still call a method from a namespace
+          Then the helper method is called
+      """
+    When I run `cucumber features/f.feature`
+    Then it should pass with:
+      """
+      4 scenarios (4 passed)
+      """
+
   Scenario: A world is extended using multiple modules with different namespaces
     Given a file named "features/support/helpers.rb" with:
       """
