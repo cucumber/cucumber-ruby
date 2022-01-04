@@ -16,6 +16,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+- Fix usage of namespaced modules across multiple scenarios
+  ([PR#1603](https://github.com/cucumber/cucumber-ruby/pull/1603)
+   [Issue#1595](https://github.com/cucumber/cucumber-ruby/issues/1595))
+
 - Do not serialize Messages::Hook#tag_expression if it is empty.
   ([PR#1579](https://github.com/cucumber/cucumber-ruby/pull/1579))
 
