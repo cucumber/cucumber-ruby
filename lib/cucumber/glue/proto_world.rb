@@ -138,8 +138,8 @@ module Cucumber
           # TODO: pass these in when building the module, instead of mutating them later
           # Extend the World with user-defined modules
           def add_modules!(world_modules, namespaced_world_modules)
-            add_world_modules!(world_modules)
-            add_namespaced_modules!(namespaced_world_modules)
+            add_world_modules!(world_modules) if world_modules.any?
+            add_namespaced_modules!(namespaced_world_modules) if namespaced_world_modules.any?
           end
 
           define_method(:step) do |name, raw_multiline_arg = nil|
@@ -185,14 +185,13 @@ module Cucumber
             modules.each do |namespace, world_modules|
               world_modules.each do |world_module|
                 variable_name = "@__#{namespace}_world"
+                inner_world = instance_variable_get(variable_name) || Object.new
 
-                inner_world = if self.class.respond_to?(namespace)
-                                instance_variable_get(variable_name)
-                              else
-                                Object.new
-                              end
-                instance_variable_set(variable_name,
-                                      inner_world.extend(world_module))
+                instance_variable_set(
+                  variable_name,
+                  inner_world.extend(world_module)
+                )
+
                 self.class.send(:define_method, namespace) do
                   instance_variable_get(variable_name)
                 end
@@ -202,6 +201,8 @@ module Cucumber
 
           # @private
           def stringify_namespaced_modules
+            return '' if @__namespaced_modules.nil?
+
             @__namespaced_modules.map { |k, v| "#{v.join(',')} (as #{k})" }.join('+')
           end
         end
