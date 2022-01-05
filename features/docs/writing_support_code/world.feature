@@ -121,17 +121,15 @@ Feature: World
       Feature: Calling a method
         Scenario: The namespace exists
           Then my_namespace is not nil
-        Scenario: I call a method from a namespace
-          Then the helper method is called
+          And the helper method is called
         Scenario: The namespace still exists
           Then my_namespace is not nil
-        Scenario: I still call a method from a namespace
-          Then the helper method is called
+          And the helper method is called
       """
     When I run `cucumber features/f.feature`
     Then it should pass with:
       """
-      4 scenarios (4 passed)
+      2 scenarios (2 passed)
       """
 
   Scenario: A world is extended using multiple modules with different namespaces
