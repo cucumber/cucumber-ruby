@@ -79,7 +79,7 @@ module Cucumber
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
-      @configuration.notify :test_run_finished
+      @configuration.notify :test_run_finished, !failure?
 
       fire_after_all_hook unless dry_run?
     end
