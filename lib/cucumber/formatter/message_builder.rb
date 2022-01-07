@@ -226,10 +226,11 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_test_run_finished(*)
+      def on_test_run_finished(event)
         message = Cucumber::Messages::Envelope.new(
           test_run_finished: Cucumber::Messages::TestRunFinished.new(
-            timestamp: time_to_timestamp(Time.now)
+            timestamp: time_to_timestamp(Time.now),
+            success: event.success
           )
         )
 
