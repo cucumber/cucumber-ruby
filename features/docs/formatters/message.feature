@@ -52,19 +52,25 @@ Feature: Message output formatter
     When I run `cucumber features/my_feature.feature --format message`
     Then output should be valid NDJSON
     And the output should contain:
-    """
-    {"testRunFinished":{"success":false
-    """
+      """
+      {"testRunFinished":{"success":false
+      """
 
   Scenario: it sets "testRunFinished"."success" to true if nothing failed
-    Given a file named "features/steps.rb" with:
+    Given a file named "features/my_feature.feature" with:
+      """
+      Feature: Some feature
+
+        Scenario Outline: a scenario
+          Given a passed step
+      """
+    And a file named "features/steps.rb" with:
       """
       Given('a passed step') {}
-      Given('a failed step') { skip_this_scenario }
       """
     When I run `cucumber features/my_feature.feature --format message`
     Then output should be valid NDJSON
     And the output should contain:
-    """
-    {"testRunFinished":{"success":true
-    """
+      """
+      {"testRunFinished":{"success":true
+      """
