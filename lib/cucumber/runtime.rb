@@ -2,7 +2,6 @@
 
 require 'fileutils'
 require 'cucumber/configuration'
-require 'cucumber/create_meta'
 require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
@@ -13,6 +12,7 @@ require 'cucumber/gherkin/i18n'
 require 'cucumber/glue/registry_wrapper'
 require 'cucumber/step_match_search'
 require 'cucumber/messages'
+require 'cucumber/runtime/meta_message_builder'
 require 'sys/uname'
 
 module Cucumber
@@ -68,7 +68,7 @@ module Cucumber
 
     def run!
       @configuration.notify :envelope, Cucumber::Messages::Envelope.new(
-        meta: Cucumber::CreateMeta.create_meta('cucumber-ruby', Cucumber::VERSION)
+        meta: MetaMessageBuilder.build_meta_message
       )
 
       load_step_definitions
