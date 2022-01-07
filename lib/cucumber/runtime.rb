@@ -110,6 +110,14 @@ module Cucumber
       Core::Test::DocString.new(string_without_triple_quotes, content_type)
     end
 
+    def failure?
+      if @configuration.wip?
+        summary_report.test_cases.total_passed > 0
+      else
+        !summary_report.ok?(@configuration.strict)
+      end
+    end
+
     private
 
     def fire_install_plugin_hook # :nodoc:
@@ -225,15 +233,6 @@ module Cucumber
     def accept_options?(factory)
       factory.instance_method(:initialize).arity > 1
     end
-
-    def failure?
-      if @configuration.wip?
-        summary_report.test_cases.total_passed > 0
-      else
-        !summary_report.ok?(@configuration.strict)
-      end
-    end
-    public :failure?
 
     require 'cucumber/core/test/filters'
     def filters # rubocop:disable Metrics/AbcSize
