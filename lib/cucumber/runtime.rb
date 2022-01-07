@@ -79,7 +79,7 @@ module Cucumber
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
-      @configuration.notify :test_run_finished
+      @configuration.notify :test_run_finished, !failure?
 
       fire_after_all_hook unless dry_run?
     end
@@ -108,6 +108,14 @@ module Cucumber
     #
     def doc_string(string_without_triple_quotes, content_type = '', _line_offset = 0)
       Core::Test::DocString.new(string_without_triple_quotes, content_type)
+    end
+
+    def failure?
+      if @configuration.wip?
+        summary_report.test_cases.total_passed > 0
+      else
+        !summary_report.ok?(@configuration.strict)
+      end
     end
 
     private
@@ -225,15 +233,6 @@ module Cucumber
     def accept_options?(factory)
       factory.instance_method(:initialize).arity > 1
     end
-
-    def failure?
-      if @configuration.wip?
-        summary_report.test_cases.total_passed > 0
-      else
-        !summary_report.ok?(@configuration.strict)
-      end
-    end
-    public :failure?
 
     require 'cucumber/core/test/filters'
     def filters # rubocop:disable Metrics/AbcSize

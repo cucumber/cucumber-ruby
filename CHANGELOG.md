@@ -16,6 +16,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+- Fix TestRunFinished success property in html formatter and all formatters
+  based on the messages: it now returns true if the run has passed
+  ([PR#1606](https://github.com/cucumber/cucumber-ruby/pull/1606)
+   [Issue#1604](https://github.com/cucumber/cucumber-ruby/issues/1604))
+
 - Fix usage of namespaced modules across multiple scenarios
   ([PR#1603](https://github.com/cucumber/cucumber-ruby/pull/1603)
    [Issue#1595](https://github.com/cucumber/cucumber-ruby/issues/1595))
