@@ -25,6 +25,8 @@ jobs:
         exclude:
           - ruby: '2.5'
             os: windows-latest
+          - ruby: '3.1'
+            os: windows-latest
 
     runs-on: ${{ matrix.os }}
     steps:
