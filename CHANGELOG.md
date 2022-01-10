@@ -56,6 +56,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([PR#1594](https://github.com/cucumber/cucumber-ruby/pull/1594)
    [Issue#1592](https://github.com/cucumber/cucumber-ruby/issues/1592))
 
+- Added Ruby 3.1 to the CI matrix.
+  ([PR#1607](https://github.com/cucumber/cucumber-ruby/pull/1607))
+
 ### Removed
 
 - `AfterConfiguration` has been removed. Please use `InstallPlugin` or `BeforeAll` instead.
