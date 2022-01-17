@@ -10,9 +10,23 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...main)
+## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...main)
 
 ### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+### Security fixes
+
+### Deprecated
+
+### Dependencies
+
+## [8.0.0.RC.1](https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...v8.0.0.rc.1)
 
 ### Fixed
 
@@ -85,14 +99,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   `DataTable#map_headers`.
   ([PR#1590](https://github.com/cucumber/cucumber-ruby/pull/1590)
    [Issue#1584](https://github.com/cucumber/cucumber-ruby/issues/1584))
-
-### Security fixes
-
-### Deprecated
-
-### Dependencies
-
-- Updated `cucumber-create-meta` ~> 6.0.2
 
 ## [7.1.0](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0) (2021-10-12)
 
