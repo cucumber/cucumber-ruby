@@ -50,14 +50,11 @@ Later in this document, bundler is considered being used so all commands are usi
 
 ### Supported platforms
 
+- Ruby 3.1
 - Ruby 3.0
 - Ruby 2.7
 - Ruby 2.6
-- Ruby 2.5
-- Ruby 2.4
-- Ruby 2.3
 - JRuby (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
-  - 9.2
   - 9.3 >= 9.3.1 (there is a known issue with JRuby 9.3.0. More info can
     be found in the [PR#1571](https://github.com/cucumber/cucumber-ruby/pull/1571).)
 
