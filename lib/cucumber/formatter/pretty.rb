@@ -270,7 +270,7 @@ module Cucumber
         comments = gherkin_document.comments
         return if comments.empty? || comments.length <= @next_comment_to_be_printed
 
-        comments[@next_comment_to_be_printed..-1].each do |comment|
+        comments[@next_comment_to_be_printed..].each do |comment|
           if comment.location.line <= up_to_line
             @io.puts(indent(format_string(comment.text.strip, :comment), indent_amount))
             @next_comment_to_be_printed += 1

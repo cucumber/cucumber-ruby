@@ -131,7 +131,7 @@ module Cucumber
       end
 
       def build_request(uri, method, headers)
-        method_class_name = "#{method[0].upcase}#{method[1..-1].downcase}"
+        method_class_name = "#{method[0].upcase}#{method[1..].downcase}"
         req = Net::HTTP.const_get(method_class_name).new(uri)
         headers.each do |header, value|
           req[header] = value
