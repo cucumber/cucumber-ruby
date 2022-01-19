@@ -4,7 +4,7 @@ task :cucumber do
   Dir["#{dir}/*"].sort.each do |f|
     next unless File.directory?(f)
 
-    lang = f[dir.length + 1..-1]
+    lang = f[dir.length + 1..]
     message = examples_disabled?(lang)
     unless message.nil?
       $stderr.puts(message)

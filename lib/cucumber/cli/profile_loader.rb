@@ -75,11 +75,7 @@ Defined profiles in cucumber.yml:
       def process_configuration_file_with_erb
         require 'erb'
         begin
-          @cucumber_erb = if RUBY_VERSION >= '2.6'
-                            ERB.new(IO.read(cucumber_file), trim_mode: '%').result(binding)
-                          else
-                            ERB.new(IO.read(cucumber_file), nil, '%').result(binding)
-                          end
+          @cucumber_erb = ERB.new(IO.read(cucumber_file), trim_mode: '%').result(binding)
         rescue StandardError
           raise(YmlLoadError, "cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$ERROR_INFO.inspect}")
         end

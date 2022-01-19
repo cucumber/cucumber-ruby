@@ -10,9 +10,23 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...main)
+## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...main)
 
 ### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+### Security fixes
+
+### Deprecated
+
+### Dependencies
+
+## [8.0.0.RC.1](https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...v8.0.0.rc.1)
 
 ### Fixed
 
@@ -56,7 +70,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([PR#1594](https://github.com/cucumber/cucumber-ruby/pull/1594)
    [Issue#1592](https://github.com/cucumber/cucumber-ruby/issues/1592))
 
-- Added Ruby 3.1 to the CI matrix.
+- Added Ruby 3.1
   ([PR#1607](https://github.com/cucumber/cucumber-ruby/pull/1607))
 
 ### Removed
@@ -86,13 +100,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([PR#1590](https://github.com/cucumber/cucumber-ruby/pull/1590)
    [Issue#1584](https://github.com/cucumber/cucumber-ruby/issues/1584))
 
-### Security fixes
-
-### Deprecated
-
-### Dependencies
-
-- Updated `cucumber-create-meta` ~> 6.0.2
+- Removed support for Ruby 2.5 and JRuby 9.2.
 
 ## [7.1.0](https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0) (2021-10-12)
 

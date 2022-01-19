@@ -10,7 +10,7 @@ module Cucumber
       end
 
       def self.real_path(path)
-        path[1..-1] # remove leading @
+        path[1..]
       end
 
       def initialize(path)

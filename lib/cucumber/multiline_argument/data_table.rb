@@ -453,7 +453,7 @@ module Cucumber
       def build_hashes
         convert_headers!
         convert_columns!
-        cells_rows[1..-1].map(&:to_hash)
+        cells_rows[1..].map(&:to_hash)
       end
 
       def create_cell_matrix(ast_table) # :nodoc:
@@ -477,7 +477,7 @@ module Cucumber
         cell_matrix.transpose.each do |col|
           column_name = col[0].value
           conversion_proc = @conversion_procs[column_name][:proc]
-          col[1..-1].each do |cell|
+          col[1..].each do |cell|
             cell.value = conversion_proc.call(cell.value)
           end
         end
