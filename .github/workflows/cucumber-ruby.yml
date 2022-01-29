@@ -20,6 +20,8 @@ jobs:
         include:
           - os: ubuntu-latest
             ruby: jruby-9.3
+          - os: ubuntu-latest
+            ruby: truffleruby-head
 
     runs-on: ${{ matrix.os }}
     steps:
