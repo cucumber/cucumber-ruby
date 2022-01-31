@@ -22,7 +22,7 @@ module Cucumber
     @backtrace_filters << RbConfig::CONFIG['rubylibdir'] if RbConfig::CONFIG['rubylibdir']
 
     @backtrace_filters << 'org/jruby/' if ::Cucumber::JRUBY
-    @backtrace_filters << '<internal:core>' if RUBY_ENGINE == 'truffleruby'
+    @backtrace_filters << '^<internal:' if RUBY_ENGINE == 'truffleruby'
 
     BACKTRACE_FILTER_PATTERNS = Regexp.new(@backtrace_filters.join('|'))
 
