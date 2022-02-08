@@ -14,6 +14,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
+- Add support for TruffleRuby 
+  ([PR#1612](https://github.com/cucumber/cucumber-ruby/pull/1612) 
+   [gogainda](https://github.com/gogainda))
+
 ### Fixed
 
 ### Changed
