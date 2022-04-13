@@ -113,7 +113,15 @@ module Cucumber
       attr_reader :cucumber_opts
 
       def cucumber_opts=(opts) # :nodoc:
-        @cucumber_opts = String == opts.class ? opts.split(' ') : opts
+        unless String == opts.class
+          @cucumber_opts = opts
+          return
+        end
+
+        @cucumber_opts = opts.split(' ')
+        return if @cucumber_opts.length <= 1
+
+        $stderr.puts 'WARNING: consider using an array rather than a space-delimited string with cucumber_opts to avoid undesired behavior.'
       end
 
       # Whether or not to fork a new ruby interpreter. Defaults to true. You may gain
