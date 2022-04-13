@@ -36,7 +36,7 @@ module Cucumber
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
-          raise 'libs must be an Array when running in-process' unless Array == libs.class
+          raise 'libs must be an Array when running in-process' unless libs.instance_of? Array
 
           libs.reverse_each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
@@ -113,7 +113,15 @@ module Cucumber
       attr_reader :cucumber_opts
 
       def cucumber_opts=(opts) # :nodoc:
-        @cucumber_opts = String == opts.class ? opts.split(' ') : opts
+        unless opts.instance_of? String
+          @cucumber_opts = opts
+          return
+        end
+
+        @cucumber_opts = opts.split(' ')
+        return if @cucumber_opts.length <= 1
+
+        $stderr.puts 'WARNING: consider using an array rather than a space-delimited string with cucumber_opts to avoid undesired behavior.'
       end
 
       # Whether or not to fork a new ruby interpreter. Defaults to true. You may gain

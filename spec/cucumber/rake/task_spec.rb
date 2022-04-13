@@ -25,9 +25,23 @@ module Cucumber
           it { expect(subject.cucumber_opts).to be opts }
         end
 
+        context 'when set via string' do
+          let(:opts) { 'foo=bar' }
+          it { expect(subject.cucumber_opts).to eq %w[foo=bar] }
+        end
+
         context 'when set via space-delimited string' do
           let(:opts) { 'foo bar' }
+
           it { expect(subject.cucumber_opts).to eq %w[foo bar] }
+
+          it 'emits a warning to suggest using arrays rather than string' do
+            expect { subject.cucumber_opts = opts }.to output(
+              a_string_including(
+                'WARNING: consider using an array rather than a space-delimited string with cucumber_opts to avoid undesired behavior.'
+              )
+            ).to_stderr
+          end
         end
       end
 

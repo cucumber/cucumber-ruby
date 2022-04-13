@@ -14,8 +14,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Added
 
-- Add support for TruffleRuby 
-  ([PR#1612](https://github.com/cucumber/cucumber-ruby/pull/1612) 
+- Add a *WARNING* message when using a space-separated string with cucumber_opts
+  ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1624)
+   [Issue#1614](https://github.com/cucumber/cucumber-ruby/issues/1614))
+
+- Add support for TruffleRuby
+  ([PR#1612](https://github.com/cucumber/cucumber-ruby/pull/1612)
    [gogainda](https://github.com/gogainda))
 
 ### Fixed
