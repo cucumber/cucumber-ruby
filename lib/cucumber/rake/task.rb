@@ -36,7 +36,7 @@ module Cucumber
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
-          raise 'libs must be an Array when running in-process' unless Array == libs.class
+          raise 'libs must be an Array when running in-process' unless libs.instance_of? Array
 
           libs.reverse_each { |lib| $LOAD_PATH.unshift(lib) }
           @args = (
@@ -113,7 +113,7 @@ module Cucumber
       attr_reader :cucumber_opts
 
       def cucumber_opts=(opts) # :nodoc:
-        unless String == opts.class
+        unless opts.instance_of? String
           @cucumber_opts = opts
           return
         end
