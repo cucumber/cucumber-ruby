@@ -117,7 +117,7 @@ Defined profiles in cucumber.yml:
   * json_report
           END_OF_MESSAGE
 
-          expect(-> { config.parse!(%w[--profile i_do_not_exist]) }).to raise_error(ProfileNotFound, expected_message)
+          expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(ProfileNotFound, expected_message)
         end
 
         it 'allows profiles to be defined in arrays' do
@@ -161,7 +161,7 @@ Defined profiles in cucumber.yml:
 
             expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
 
-            expect(-> { config.parse!(%w[--profile foo]) }).to raise_error(expected_error)
+            expect { config.parse!(%w[--profile foo]) }.to raise_error(expected_error)
           end
         end
 
@@ -170,7 +170,7 @@ Defined profiles in cucumber.yml:
 
           expected_error = /cucumber\.yml was not found/
 
-          expect(-> { config.parse!(%w[--profile i_do_not_exist]) }).to raise_error(expected_error)
+          expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(expected_error)
         end
 
         it 'issues a helpful error message when cucumber.yml is blank or malformed' do
@@ -179,7 +179,7 @@ Defined profiles in cucumber.yml:
           ['', 'sfsadfs', "--- \n- an\n- array\n", '---dddfd'].each do |bad_input|
             given_cucumber_yml_defined_as(bad_input)
 
-            expect(-> { config.parse!([]) }).to raise_error(expected_error_message)
+            expect { config.parse!([]) }.to raise_error(expected_error_message)
 
             reset_config
           end
@@ -191,14 +191,14 @@ Defined profiles in cucumber.yml:
           given_cucumber_yml_defined_as('input that causes an exception in YAML loading')
 
           expect(YAML).to receive(:load).and_raise(ArgumentError)
-          expect(-> { config.parse!([]) }).to raise_error(expected_error_message)
+          expect { config.parse!([]) }.to raise_error(expected_error_message)
         end
 
         it 'issues a helpful error message when cucumber.yml can not be parsed by ERB' do
           expected_error_message = /cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./
           given_cucumber_yml_defined_as('<% this_fails %>')
 
-          expect(-> { config.parse!([]) }).to raise_error(expected_error_message)
+          expect { config.parse!([]) }.to raise_error(expected_error_message)
         end
       end
 
@@ -297,12 +297,12 @@ Defined profiles in cucumber.yml:
       end
 
       it 'does not accept multiple --format options when both use implicit STDOUT' do
-        expect(-> { config.parse!(%w[--format pretty --format progress]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect { config.parse!(%w[--format pretty --format progress]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'does not accept multiple --format options when both use implicit STDOUT (using profile with no formatters)' do
         given_cucumber_yml_defined_as('default' => ['-q'])
-        expect(-> { config.parse!(%w[--format pretty --format progress]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect { config.parse!(%w[--format pretty --format progress]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'accepts same --format options with implicit STDOUT, and keep only one' do
@@ -313,12 +313,12 @@ Defined profiles in cucumber.yml:
 
       it 'does not accept multiple --out streams pointing to the same place' do
         expected_error = 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
-        expect(-> { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }).to raise_error(expected_error)
+        expect { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }.to raise_error(expected_error)
       end
 
       it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
         given_cucumber_yml_defined_as('default' => ['-f', 'progress', '--out', 'file1'])
-        expect(-> { config.parse!(%w[--format pretty --out file1]) }).to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+        expect { config.parse!(%w[--format pretty --out file1]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
       end
 
       it 'associates --out to previous --format' do
