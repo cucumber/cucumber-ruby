@@ -49,8 +49,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack-test', '~> 1.1', '>= 1.1.0'
   s.add_development_dependency 'sinatra', '~> 2.1', '>= 2.1.0'
 
-  s.rubygems_version = '>= 1.6.1'
-  s.files            = Dir[
+  s.required_rubygems_version = '>= 1.6.1'
+  s.files = Dir[
     'CHANGELOG.md',
     'CONTRIBUTING.md',
     'README.md',
