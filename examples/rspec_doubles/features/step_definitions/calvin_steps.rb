@@ -10,7 +10,7 @@ end
 
 Given(/^I have a cardboard box$/) do
   transmogrifier = double('transmogrifier')
-  transmogrifier.should_receive(:transmogrify)
+  expect(transmogrifier).to receive(:transmogrify)
   @box = CardboardBox.new(transmogrifier)
 end
 

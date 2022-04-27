@@ -24,5 +24,5 @@ When('premo somma') do
 end
 
 Then(/il risultato deve essere (\d*)/) do |result|
-  @result.should == result.to_i
+  expect(@result).to eq(result.to_i)
 end
