@@ -174,7 +174,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 )
           dsl.World { {} }
 
-          expect(-> { dsl.World { [] } }).to raise_error(Glue::MultipleWorld, /#{expected_error}/)
+          expect { dsl.World { [] } }.to raise_error(Glue::MultipleWorld, /#{expected_error}/)
         end
       end
 

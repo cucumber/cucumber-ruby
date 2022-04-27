@@ -15,7 +15,7 @@ end
 end
 
 То('результатом должно быть число {float}') do |результат|
-  calc.result.should == результат
+  expect(calc.result).to eq(результат)
 end
 
 Допустим('я сложил {int} и {int}') do |слагаемое1, слагаемое2|

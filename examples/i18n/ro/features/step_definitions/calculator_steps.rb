@@ -21,5 +21,5 @@ Cand('apăs tasta Egal') do
 end
 
 Atunci(/ecranul trebuie să afişeze (\d*)/) do |result|
-  @result.should == result.to_i
+  expect(@result).to eq(result.to_i)
 end

@@ -11,5 +11,5 @@ Når('jeg summerer') do
 end
 
 Så(/skal resultatet være (\d*)/) do |result|
-  @result.should == result.to_i
+  expect(@result).to eq(result.to_i)
 end
