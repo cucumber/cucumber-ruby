@@ -72,8 +72,8 @@ module Cucumber
         end
       end
 
-      def register_rb_hook(phase, tag_expressions, proc)
-        hook = add_hook(phase, Hook.new(@configuration.id_generator.new_id, self, tag_expressions, proc))
+      def register_rb_hook(phase, tag_expressions, proc, name: nil)
+        hook = add_hook(phase, Hook.new(@configuration.id_generator.new_id, self, tag_expressions, proc, name: name))
         @configuration.notify :envelope, hook.to_envelope
         hook
       end
