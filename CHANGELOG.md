@@ -10,7 +10,24 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ---
 
-## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...main)
+## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...main)
+
+### Added
+
+### Fixed
+
+### Changed
+
+### Removed
+
+### Security fixes
+
+### Deprecated
+
+### Dependencies
+
+
+## [8.0.0](https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...v8.0.0)
 
 ### Added
 
@@ -30,16 +47,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Use `required_rubygems_version` instead of `rubygems_version`([PR#1629](https://github.com/cucumber/cucumber-ruby/pull/1629))
 
 - Suppress RSspec deprecation warnings([PR#1631](https://github.com/cucumber/cucumber-ruby/pull/1631))
-
-### Changed
-
-### Removed
-
-### Security fixes
-
-### Deprecated
-
-### Dependencies
 
 ## [8.0.0.RC.1](https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...v8.0.0.rc.1)
 
