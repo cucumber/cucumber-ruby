@@ -27,6 +27,8 @@ loaded first - or migrate them all to one `hooks.rb` file.
 
 Finaly, all hooks can be given a name to improve reporting and help debugging.
 
+Note: Hooks names are only reported when using the message and the html formatters.
+
 ## InstallPlugin
 
 [`InstallPlugin`](#installplugin) hook is dedicated to using plugins and is meant to

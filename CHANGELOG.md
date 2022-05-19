@@ -22,6 +22,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([PR#1612](https://github.com/cucumber/cucumber-ruby/pull/1612)
    [gogainda](https://github.com/gogainda))
 
+- Add support for named hooks
+  ([PR#1636](https://github.com/cucumber/cucumber-ruby/pull/1636))
+
 ### Fixed
 
 - Use `required_rubygems_version` instead of `rubygems_version`([PR#1629](https://github.com/cucumber/cucumber-ruby/pull/1629))
