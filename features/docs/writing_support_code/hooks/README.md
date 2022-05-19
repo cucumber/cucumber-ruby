@@ -25,6 +25,10 @@ Multiple hooks of the same type are executed in the order that they were defined
 If you wish to control this order, use manual requires in `env.rb` - This file is
 loaded first - or migrate them all to one `hooks.rb` file.
 
+Finaly, all hooks can be given a name to improve reporting and help debugging.
+
+Note: Hooks names are only reported when using the message and the html formatters.
+
 ## InstallPlugin
 
 [`InstallPlugin`](#installplugin) hook is dedicated to using plugins and is meant to
@@ -42,6 +46,12 @@ InstallPlugin do |configuration, registry|
   #
   # registry is an instance of Cucumber::Glue::RegistryWrapper defined in
   # lib/cucumber/glue/registry_wrapper.rb
+end
+
+# named hook:
+
+InstallPlugin(name: 'Installation of a plugin') do |configuration, registry|
+  # The name is optional
 end
 ```
 
@@ -63,6 +73,16 @@ end
 AfterAll do
   # snip
 end
+
+# Named hooks:
+
+BeforeAll(name: 'Name of the hook') do
+  # snip
+end
+
+AfterAll(name: 'Name of the hook') do
+  # snip
+end
 ```
 
 ## Around
@@ -78,6 +98,12 @@ Around do |scenario, block|
   SomeDatabase::begin_transaction do # this is just for illustration
     block.call
   end
+end
+
+# with a name:
+
+Around(name: 'Name of the hook') do |scenario, block|
+  # snip
 end
 ```
 
@@ -96,6 +122,16 @@ After do |test_case|
   log test_case.failed?
   log test_case.status
 end
+
+# With names:
+
+Before(name: 'Name of the hook') do |test_case|
+  # snip
+end
+
+After(name: 'Name of the hook') do |test_case|
+  # snip
+end
 ```
 
 ## AfterStep
@@ -107,5 +143,11 @@ to a previous failure, `AfterStep` won't be executed either.
 AfterStep do |result, test_step|
   log test_step.inspect # test_step is a Cucumber::Core::Test::Step
   log result.inspect # result is a Cucumber::Core::Test::Result
+end
+
+# with a name:
+
+AfterStep(name: 'Named hook') do |result, test_step|
+  # snip
 end
 ```

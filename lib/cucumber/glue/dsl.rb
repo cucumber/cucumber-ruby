@@ -19,8 +19,8 @@ module Cucumber
           @rb_language.build_rb_world_factory(world_modules, namespaced_world_modules, proc)
         end
 
-        def register_rb_hook(phase, tag_names, proc)
-          @rb_language.register_rb_hook(phase, tag_names, proc)
+        def register_rb_hook(phase, tag_names, proc, name: nil)
+          @rb_language.register_rb_hook(phase, tag_names, proc, name: name)
         end
 
         def define_parameter_type(parameter_type)
@@ -62,14 +62,14 @@ module Cucumber
 
       # Registers a proc that will run before each Scenario. You can register as many
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def Before(*tag_expressions, &proc)
-        Dsl.register_rb_hook('before', tag_expressions, proc)
+      def Before(*tag_expressions, name: nil, &proc)
+        Dsl.register_rb_hook('before', tag_expressions, proc, name: name)
       end
 
       # Registers a proc that will run after each Scenario. You can register as many
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def After(*tag_expressions, &proc)
-        Dsl.register_rb_hook('after', tag_expressions, proc)
+      def After(*tag_expressions, name: nil, &proc)
+        Dsl.register_rb_hook('after', tag_expressions, proc, name: name)
       end
 
       # Registers a proc that will be wrapped around each scenario. The proc
@@ -77,14 +77,14 @@ module Cucumber
       # argument (but passed as a regular argument, since blocks cannot accept
       # blocks in 1.8), on which it should call the .call method. You can register
       # as many  as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def Around(*tag_expressions, &proc)
-        Dsl.register_rb_hook('around', tag_expressions, proc)
+      def Around(*tag_expressions, name: nil, &proc)
+        Dsl.register_rb_hook('around', tag_expressions, proc, name: name)
       end
 
       # Registers a proc that will run after each Step. You can register as
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def AfterStep(*tag_expressions, &proc)
-        Dsl.register_rb_hook('after_step', tag_expressions, proc)
+      def AfterStep(*tag_expressions, name: nil, &proc)
+        Dsl.register_rb_hook('after_step', tag_expressions, proc, name: name)
       end
 
       def ParameterType(options)
@@ -108,20 +108,20 @@ module Cucumber
       end
 
       # Registers a proc that will run after Cucumber is configured in order to install an external plugin.
-      def InstallPlugin(&proc)
-        Dsl.register_rb_hook('install_plugin', [], proc)
+      def InstallPlugin(name: nil, &proc)
+        Dsl.register_rb_hook('install_plugin', [], proc, name: name)
       end
 
       # Registers a proc that will run before the execution of the scenarios.
       # Use it for your final set-ups
-      def BeforeAll(&proc)
-        Dsl.register_rb_hook('before_all', [], proc)
+      def BeforeAll(name: nil, &proc)
+        Dsl.register_rb_hook('before_all', [], proc, name: name)
       end
 
       # Registers a proc that will run after the execution of the scenarios.
       # Use it for your final clean-ups
-      def AfterAll(&proc)
-        Dsl.register_rb_hook('after_all', [], proc)
+      def AfterAll(name: nil, &proc)
+        Dsl.register_rb_hook('after_all', [], proc, name: name)
       end
 
       # Registers a new Ruby StepDefinition. This method is aliased
