@@ -1,7 +1,6 @@
 {
   "extends": [
     "config:base",
-    ":disableDependencyDashboard"
   ],
   "regexManagers": [
     {
