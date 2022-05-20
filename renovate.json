@@ -6,7 +6,7 @@
     {
       "fileMatch": ["\\.gemspec$"],
       "matchStrings": [
-	"^.*add.*dependency\s['\"](?<depName>[^'\"]*)['\"],\s*['\"](?<currentValue>[^'\"]*)['\"]"
+	"^.*add.*dependency\\s['\"](?<depName>[^'\"]*)['\"],\\s*['\"](?<currentValue>[^'\"]*)['\"]"
       ],
       "depNameTemplate": "gemspec",
       "datasourceTemplate": "rubygems",
