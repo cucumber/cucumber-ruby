@@ -1,11 +1,7 @@
 {
-  "automerge": false,
-  "branchConcurrentLimit": 2,
-  "branchPrefix": "renovate-",
-  "bumpVersion": "patch",
-  "dependencyDashboard": true,
-  "extends": ["config:base"],
-  "rangeStrategy": "pin",
+  "extends": [
+    "config:base"
+  ],
   "regexManagers": [
     {
       "fileMatch": ["^*.gemspec"],
