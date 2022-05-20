@@ -12,5 +12,6 @@
       "datasourceTemplate": "rubygems",
       "versioningTemplate": "ruby"
     }
-  ]
+  ],
+  "enabledManagers": ["bundler", "github-actions", "regex"]
 }
