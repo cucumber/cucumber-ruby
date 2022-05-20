@@ -8,7 +8,6 @@
       "matchStrings": [
 	"^.*add.*dependency\\s['\"](?<depName>[^'\"]*)['\"],\\s*['\"](?<currentValue>[^'\"]*)['\"]"
       ],
-      "depNameTemplate": "gemspec",
       "datasourceTemplate": "rubygems",
       "versioningTemplate": "ruby"
     }
