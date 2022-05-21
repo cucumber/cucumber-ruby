@@ -16,6 +16,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* When the environment variable CUCUMBER_COLORS is set, its value is used instead of raising a NoMethodError.
+
 ### Changed
 
 ### Removed
