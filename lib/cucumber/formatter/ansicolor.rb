@@ -94,6 +94,17 @@ module Cucumber
       end
       apply_custom_colors(ENV['CUCUMBER_COLORS']) if ENV['CUCUMBER_COLORS']
 
+      # Provide an instance method of the same name, in case users are using it.
+
+      # Apply the custom color scheme
+      #
+      # example:
+      #
+      #   apply_custom_colors('passed=white')
+      def apply_custom_colors(colors)
+        ANSIColor.apply_custom_colors(colors)
+      end
+
       # Define the color-named methods required by Term::ANSIColor.
       #
       # Examples:
