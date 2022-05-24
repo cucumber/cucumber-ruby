@@ -36,7 +36,7 @@ module Cucumber
 
       context 'with custom color scheme' do
         before do
-          apply_custom_colors('passed=red,bold')
+          ANSIColor.apply_custom_colors('passed=red,bold')
         end
 
         after do
@@ -48,7 +48,7 @@ module Cucumber
         end
 
         def reset_colours_to_default
-          apply_custom_colors('passed=green')
+          ANSIColor.apply_custom_colors('passed=green')
         end
       end
     end
