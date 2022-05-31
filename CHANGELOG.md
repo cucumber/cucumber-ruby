@@ -16,6 +16,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 
+* Cucumber may raise NoMethodError when CUCUMBER_COLORS environment was set ([PR#1641](https://github.com/cucumber/cucumber-ruby/pull/1641/) [s2k](https://github.com/s2k))
+
 ### Changed
 
 ### Removed

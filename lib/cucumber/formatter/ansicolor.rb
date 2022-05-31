@@ -86,7 +86,7 @@ module Cucumber
       # example:
       #
       #   apply_custom_colors('passed=white')
-      def apply_custom_colors(colors)
+      def self.apply_custom_colors(colors)
         colors.split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0]] = a[1]
