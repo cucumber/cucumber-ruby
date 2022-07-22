@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
 
   # Needed for examples (rake examples)
   s.add_development_dependency 'capybara', '~> 3.36', '>= 3.36.0', '< 3.37'
-  s.add_development_dependency 'rack-test', '~> 1.1', '>= 1.1.0'
+  s.add_development_dependency 'rack-test', '>= 1.1.0', '~> 2.0'
   s.add_development_dependency 'sinatra', '~> 2.2', '>= 2.2.0'
 
   s.required_rubygems_version = '>= 1.6.1'
