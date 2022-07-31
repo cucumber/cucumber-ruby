@@ -379,6 +379,26 @@ module Cucumber
               end
             end
           end
+
+          context '--retry-total TESTS' do
+            context '--retry-total option not defined on the command line' do
+              it 'uses the --retry-total option from the profile' do
+                given_cucumber_yml_defined_as('foo' => '--retry-total 2')
+                options.parse!(%w[-p foo])
+
+                expect(options[:retry_total]).to be 2
+              end
+            end
+
+            context '--retry-total option defined on the command line' do
+              it 'ignores the --retry-total option from the profile' do
+                given_cucumber_yml_defined_as('foo' => '--retry-total 2')
+                options.parse!(%w[--retry-total 1 -p foo])
+
+                expect(options[:retry_total]).to be 1
+              end
+            end
+          end
         end
 
         context '-P or --no-profile' do
@@ -437,6 +457,20 @@ module Cucumber
           it 'sets the options[:retry] value' do
             after_parsing('--retry 4') do
               expect(options[:retry]).to eql 4
+            end
+          end
+        end
+
+        context '--retry-total TESTS' do
+          it 'is INFINITY by default' do
+            after_parsing('') do
+              expect(options[:retry_total]).to eql Float::INFINITY
+            end
+          end
+
+          it 'sets the options[:retry_total] value' do
+            after_parsing('--retry 3 --retry-total 10') do
+              expect(options[:retry_total]).to eql 10
             end
           end
         end

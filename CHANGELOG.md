@@ -13,6 +13,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased](https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...main)
 
 ### Added
+* Add option `--retry-total` ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1669))
 
 ### Fixed
 
