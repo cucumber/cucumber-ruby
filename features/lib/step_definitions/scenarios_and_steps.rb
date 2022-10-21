@@ -30,26 +30,26 @@ end
 Given('a scenario {string} that passes') do |name|
   create_feature(name) do
     create_scenario(name) do
-      '  Given it passes'
+      "  Given it passes in #{name}"
     end
   end
 
   write_file(
     "features/step_definitions/#{name}_steps.rb",
-    step_definition('/^it passes$/', 'expect(true).to be true')
+    step_definition("/^it passes in #{name}$/", 'expect(true).to be true')
   )
 end
 
 Given('a scenario {string} that fails') do |name|
   create_feature(name) do
     create_scenario(name) do
-      '  Given it fails'
+      "  Given it fails in #{name}"
     end
   end
 
   write_file(
     "features/step_definitions/#{name}_steps.rb",
-    step_definition('/^it fails$/', 'expect(false).to be true')
+    step_definition("/^it fails in #{name}$/", 'expect(false).to be true')
   )
 end
 
@@ -58,14 +58,14 @@ Given('a scenario {string} that fails once, then passes') do |full_name|
 
   create_feature("#{full_name} feature") do
     create_scenario(full_name) do
-      '  Given it fails once, then passes'
+      "  Given it fails once, then passes in #{full_name}"
     end
   end
 
   write_file(
     "features/step_definitions/#{name}_steps.rb",
     step_definition(
-      '/^it fails once, then passes$/',
+      "/^it fails once, then passes in #{full_name}$/",
       [
         "$#{name} += 1",
         "expect($#{name}).to be > 1"
@@ -84,14 +84,14 @@ Given('a scenario {string} that fails twice, then passes') do |full_name|
 
   create_feature("#{full_name} feature") do
     create_scenario(full_name) do
-      '  Given it fails twice, then passes'
+      "  Given it fails twice, then passes in #{full_name}"
     end
   end
 
   write_file(
     "features/step_definitions/#{name}_steps.rb",
     step_definition(
-      '/^it fails twice, then passes$/',
+      "/^it fails twice, then passes in #{full_name}$/",
       [
         "$#{name} ||= 0",
         "$#{name} += 1",
