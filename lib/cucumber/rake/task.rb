@@ -163,7 +163,7 @@ module Cucumber
       end
 
       def runner(_task_args = nil) # :nodoc:
-        cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
+        cucumber_opts = [ENV['CUCUMBER_OPTS']&.split(/\s+/) || cucumber_opts_with_profile]
         return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files) if fork
 
         InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
