@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Added
-* Add option `--retry-total` ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1669))
+- Add option `--retry-total` ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1669))
 
 ### Changed
 
@@ -20,6 +20,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Cucumber may raise NoMethodError when CUCUMBER_COLORS environment was set ([PR#1641](https://github.com/cucumber/cucumber-ruby/pull/1641/) [s2k](https://github.com/s2k))
 
 ### Removed
+- Ruby 2.6 support
 
 ## [8.0.0]
 ### Added
@@ -759,6 +760,294 @@ All this means is we're ok to make releases while the jruby CI job is failing.
 
 ## [0.1.6]
 
+## [2.3.2]
+
+## [2.3.1]
+
+## [2.3.0]
+
+## [2.2.0]
+
+## [2.1.0]
+
+## [2.0.2]
+
+## [2.0.1]
+
+## [2.0.0]
+
+## [2.0.0.rc5]
+
+## Bugfixes
+
+## [2.0.0.rc.4]
+
+## [2.0.0.rc.3]
+
+## [2.0.0.rc.2]
+
+## [2.0.0.rc.1]
+
+## [2.0.0.beta.5]
+
+## [2.0.0.beta.4]
+
+## [2.0.0.beta.3]
+
+## [2.0.0.beta.2]
+
+## [2.0.0.beta.1]
+
+## [1.3.16]
+
+## [1.3.15]
+
+## [1.3.14]
+
+## [1.3.13]
+
+## [1.3.12]
+
+## [1.3.11]
+
+## [1.3.10]
+
+## [1.3.9]
+
+## [1.3.8]
+
+## [1.3.7]
+
+## [1.3.6]
+
+## [1.3.5]
+
+## [1.3.4]
+
+## [1.3.3]
+
+## [1.3.2]
+
+## [1.3.1]
+
+## [1.3.0]
+
+## [1.2.5]
+
+## 1.2.4
+
+## [1.2.3]
+
+## [1.2.2]
+
+## [1.2.1]
+
+## [1.2.0]
+
+## [1.1.9]
+
+## [1.1.8]
+
+## [1.1.7]
+
+## [1.1.6]
+
+## [1.1.5]
+
+## [1.1.4]
+
+## [1.1.3]
+
+## [1.1.2]
+
+## [1.1.0]
+
+## [1.0.6]
+
+## [1.0.5]
+
+## [1.0.4]
+
+## [1.0.3]
+
+## [1.0.2]
+
+## [1.0.1]
+
+## [1.0.0]
+
+## [0.10.6]
+
+## [0.10.5]
+
+## [0.10.3]
+
+## [0.10.2]
+
+## [0.10.1]
+
+## [0.10.0]
+
+## [0.9.4]
+
+## [0.9.3]
+
+## [0.9.2]
+
+## [0.9.1]
+
+## [0.9.0]
+
+## [0.8.5]
+
+## [0.8.4]
+
+## [0.8.3]
+
+## [0.8.2]
+
+## [0.8.1]
+
+## [0.8.0]
+
+## [0.7.3]
+
+## [0.7.2]
+
+## [0.7.1]
+
+## [0.7.0]
+
+## [0.7.0.beta.8]
+
+## [0.7.0.beta.7]
+
+## [0.7.0.beta.6]
+
+## [0.7.0.beta.5]
+
+## [0.7.0.beta.4]
+
+## [0.7.0.beta.3]
+
+## [0.7.0.beta.2]
+
+## [0.7.0.beta.1]
+
+## [0.6.4]
+
+## [0.6.3]
+
+## [0.6.2]
+
+## [0.6.1]
+
+## [0.6.0]
+
+## [0.5.3]
+
+## [0.5.2]
+
+## [0.5.1]
+
+## [0.5.0]
+
+## [0.4.4]
+
+## [0.4.3]
+
+## [0.4.2]
+
+## [0.4.1]
+
+## [0.4.0]
+
+## [0.3.104]
+
+## [0.3.103]
+
+## [0.3.102]
+
+## [0.3.101]
+
+## [0.3.100]
+
+## [0.3.99]
+
+## [0.3.98]
+
+## [0.3.97]
+
+## [0.3.96]
+
+## [0.3.95]
+
+## [0.3.94]
+
+## [0.3.93]
+
+## [0.3.92]
+
+## [0.3.91]
+
+## [0.3.90]
+
+## [0.3.11]
+
+## [0.3.10]
+
+## [0.3.9]
+
+## [0.3.8]
+
+## [0.3.7]
+
+## [0.3.6]
+
+## [0.3.5]
+
+## [0.3.4]
+
+## [0.3.3]
+
+## [0.3.2]
+
+## [0.3.1]
+
+## [0.3.0]
+
+## [0.2.3]
+
+## [0.2.2]
+
+## [0.2.1]
+
+## [0.2.0]
+
+## 0.1.16.4
+
+## [0.1.16]
+
+## [0.1.15]
+
+## [0.1.14]
+
+## [0.1.13]
+
+## [0.1.12]
+
+## [0.1.11]
+
+## [0.1.10]
+
+## [0.1.9]
+
+## [0.1.8]
+
+## [0.1.7]
+
+## [0.1.6]
+
 [Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...main
 [8.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...v8.0.0
 [8.0.0.RC.1]: https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...v8.0.0.rc.1
@@ -932,221 +1221,148 @@ All this means is we're ok to make releases while the jruby CI job is failing.
 [0.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/cucumber/cucumber-ruby/compare/f3292f4023a707099d02602b2bd6c4ca3cec6820...v0.1.6
-y) to the installer message. Please take a few moments to help us all learn more about how you're using Cucumber and BDD.
-
-### Bugfixes
-
-- Let the JSON formatter include data tables in the JSON file ([#948](https://github.com/cucumber/cucumber-ruby/issues/948) @brasmusson)
-- Stringifying location in the JSON formatter for more consistent json parsing ([949](https://github.com/cucumber/cucumber-ruby/pull/949), [945](https://github.com/cucumber/cucumber-ruby/issues/945) @larryprice)
-
-## [2.3.2](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2) (2016-01-21)
-
-Brought the event bus code back into Cucumber to avoid https://github.com/fedux-org/event-bus/issues/6
-
-## [2.3.1](https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1) (2016-01-20)
-
-Better deprecation warnings to help fix https://github.com/cucumber/cucumber-ruby/issues/942
-
-## [2.3.0](https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0) (2016-01-13)
-
-### New Features
-
-- Update to Gherkin v3.2.0 (@brasmusson)
-
-### Bugfixes
-
-### Refactoring
-
-## [2.2.0](https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0) (2016-01-08)
-
-Although this release is only bugfixes and refactorings, the extraction of the wire protocol is quite a significant change and
-could cause breaking changes for users of undocumented APIs. Hence the minor version bump.
-
-### Bugfixes
-
-- Let the formatters output the value of printed variables at time of the call to `#puts` ([#918](https://github.com/cucumber/cucumber-ruby/pull/918) [#915](https://github.com/cucumber/cucumber-ruby/issues/915) @enkessler @brasmusson)
-- Fix Configuration.with_options merge direction ([#922](https://github.com/cucumber/cucumber-ruby/pull/922) @limhoff-r7)
-- Consistent line breaks / truncation in backtraces ([#941](https://github.com/cucumber/cucumber-ruby/pull/941) @tooky)
-- Fix extra arg passed to ensure_io ([#939](https://github.com/cucumber/cucumber-ruby/pull/939A @benshan)
-
-### Refactoring
-
-- Remove wire protocol to plugin ([#878](https://github.com/cucumber/cucumber-ruby/pull/878) @mattwynne @tooky)
-- Remove event bus to separate gem ([#933](https://github.com/cucumber/cucumber-ruby/pull/933) @dg-ratiodata)
-
-## [2.1.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0) (2015-09-11)
-
-### New Features
-
-- Introduce EventBus ([903](https://github.com/cucumber/cucumber-ruby/pull/903) @mattwynne @tooky)
-- Fail-fast CLI switch ([906](https://github.com/cucumber/cucumber-ruby/pull/906) @danascheider)
-
-### Bugfixes
-
-- When only an around hook is failing, let the Json Formatter include the around hook result ([909](https://github.com/cucumber/cucumber-ruby/issues/909) @brasmusson).
-
-### Refactoring
-
-- Coveralls badge switch to SVG ([897](https://github.com/cucumber/cucumber-ruby/pull/897) @nickmerwin)
-- Moved simplecov_setup into lib folder ([896](https://github.com/cucumber/cucumber-ruby/pull/896) @tboerger)
-- Pass DocString as String ([891](https://github.com/cucumber/cucumber-ruby/pull/891) @aslakhellesoy)
-- Remove core_ext/proc.rb and use Proc#source_location instead ([888](https://github.com/cucumber/cucumber-ruby/pull/888) @brasmusson)
-- Move behaviour from `Cucumber::Cli::Configuration` to `Cucumber::Configuration` (@tooky, @mattwynne)
-- Integrate Gherkin3 parser ([884](https://github.com/cucumber/cucumber-ruby/pull/884) (@brasmusson)
-
-## [2.0.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2) (2015-07-15)
-
-### Bugfixes
-
-- Revert interface change in Cucumber::Formatter::Console (which can break custom formatters in v2.0.1) ([893](https://github.com/cucumber/cucumber-ruby/issues/893) @brasmusson).
-- Calculate the locations of hooks properly (so it also work between drives on Windows) ([885](https://github.com/cucumber/cucumber-ruby/issues/885) @brasmusson).
-
-## [2.0.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1) (2015-07-08)
-
-### New Features
-
-- Properly support symbol keys in table hashes ([840](https://github.com/cucumber/cucumber-ruby/issues/840) @dmorgan3405)
-- Default require path to features unless specified explicitly. ([842](https://github.com/cucumber/cucumber-ruby/issues/842) @pdswan)
-- Exit with different status codes when scenarios failed (1) vs when failed to run scenarios (2) ([#845](https://github.com/cucumber/cucumber-ruby/pull/845) @ciembor)
-- Expose #status on Cucumber::RunningTestCase ([#836](https://github.com/cucumber/cucumber-ruby/pull/846) [#836](https://github.com/cucumber/cucumber-ruby/issues/836) @pdswan)
-- New `--no-duration` flag on command-line ([#822](https://github.com/cucumber/cucumber-ruby/pull/822) @richarda)
-- Make the Rerun Formatter consistent with the exit code ([860](https://github.com/cucumber/cucumber-ruby/pull/860) @brasmusson)
-- Let the Json Formatter include results from all executed steps and hooks (and from Scenario Outlines also without the --expand option) ([851](https://github.com/cucumber/cucumber-ruby/pull/851) @brasmusson)
-
-### Bugfixes
-
-- Pass tags and comments to the legacy api formatters correctly, fixes [864](https://github.com/cucumber/cucumber-ruby/pull/864) (@brasmusson).
-- Properly close HTML formatter pre tag for leading comment ([828](https://github.com/cucumber/cucumber-ruby/issues/828), [854](https://github.com/cucumber/cucumber-ruby/pull/854) @pdswan)
-- Make the HTML formatter handle failures in hooks ([835](https://github.com/cucumber/cucumber-ruby/issues/835) @brasmusson)
-- Fix the check for multiple formatters using stdout ([826](https://github.com/cucumber/cucumber-ruby/pull/826) @brasmusson)
-- Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
-- Cucumber::Ast::Table.diff! is broken when using no headers ([832](https://github.com/cucumber/cucumber-ruby/pull/832) @roschaefer)
-- `cucumber --i18n <invalid_language>` breaks ([#869](https://github.com/cucumber/cucumber-ruby/issues/869) (@danascheider)
-
-### Refactoring
-
-- Rewrite the JUnit Formatter to the new formatter API ([855](https://github.com/cucumber/cucumber-ruby/pull/855) @brasmusson)
-- Rewrite the Progress, Usage, Stepdefs formatters to the new formatter API ([859](https://github.com/cucumber/cucumber-ruby/pull/859) @brasmusson)
-
-## [2.0.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.5...v2.0.0) (2015-03-31)
-
-### New Features
-
-- Support ruby 2.2 in master (@mattwynne, @tooky)
-- Tell users to use the `--init` command ([818](https://github.com/cucumber/cucumber-ruby/pull/818) @olleolleolle)
-
-### Bugfixes
-
-- Ensure After Hooks execute in reverse order (@tooky)
-- Make console output with embedded cr/lf look correct. ([820](https://github.com/cucumber/cucumber-ruby/pull/820) @SteveDonie)
-
-## [2.0.0.rc5](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.4...v2.0.0.rc.5) (2015-03-19)
-
-### New Features
-
-- Add `--init` command ([699](https://github.com/cucumber/cucumber-ruby/pull/699) @LGordon2)
-
-## Bugfixes
-
-- Let the JUnitFormatter handle Scenario Outlines with the --expand option ([124](https://github.com/cucumber/cucumber-ruby/issues/124), [808](https://github.com/cucumber/cucumber-ruby/pull/808) @brasmusson, @richarda)
-- Suggested regexes result in ambigous matches ([663](https://github.com/cucumber/cucumber-ruby/pull/663) @rwz)
-- Pass when using both the --dry-run and the --strict options, unless there are undefined steps ([810](https://github.com/cucumber/cucumber-ruby/issues/810) @brasmusson)
-- Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber-ruby/issues/806) @brasmusson)
-- Fix GBK and UTF-8 (Encoding::CompatibilityError) ([693](https://github.com/cucumber/cucumber-ruby/issues/693) @mattwynne)
-- Make the scenario object available in hooks compatible with v1.3.x ([814](https://github.com/cucumber/cucumber-ruby/pull/814) @brasmusson)
-- JUnit expand option ([808](https://github.com/cucumber/cucumber-ruby/pull/808) @richarda @brasmusson)
-- Around hooks not executing in correct world context ([807](https://github.com/cucumber/cucumber-ruby/pull/807) @tooky)
-
-## [2.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.3...2.0.0.rc.4) (2015-02-15)
-
-### Features
-
-- [Add custom filters from Ruby configuration code](https://github.com/cucumber/cucumber-ruby/blob/main/features/docs/extending_cucumber/custom_filter.feature) (@mattwynne)
-
-### Bugfixes
-
-- Fix missing `require Forwardable` (@tooky)
-- Fix snippet suggestions ([765](https://github.com/cucumber/cucumber-ruby/pull/765) @richarda), also with i18n languages (@brasmusson)
-- Fix transformation of regex with lookahead/lookbehind ([796](https://github.com/cucumber/cucumber-ruby/pull/796) @bolshakov)
-- Sort scenarios by location ([789](https://github.com/cucumber/cucumber-ruby/issues/789) @mattwynne)
-- Remove keyword from name property of test case object yielded to hooks ([768](https://github.com/cucumber/cucumber-ruby/issues/768) @richarda, @akostadinov)
-
-## [2.0.0.rc.3](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.2...v2.0.0.rc.3) (2015-01-23)
-
-### Bugfixes
-
-- MultilineArgument::DataTable#diff will correctly compare to an Array (@tooky)
-
-## [2.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.1...v2.0.0.rc.2) (2015-01-23)
-
-### Bugfixes
-
-- World#table no longer creates invalid table objects when using an Array (@tooky, @mattwynne)
-
-## [2.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1) (2015-01-23)
-
-### Removed Features
-
-- Removed support for IronRuby (@tooky @mattwynne)
-
-### New Features
-
-- Let the HTML formatter store the relative path to files in the report ([697](https://github.com/cucumber/cucumber-ruby/pull/697) @idstein, @brasmusson)
-- Allow cucumber.yml to parse % erb code lines ([755](https://github.com/cucumber/cucumber-ruby/pull/755) @snowe2010)
-- Give each step definition a unique copy of argument objects ([760](https://github.com/cucumber/cucumber-ruby/pull/760) @tooky)
-
-### Bugfixes
-
-- Add old Scenario#skip_invoke! method back (@mattwynne)
-- No links to lines in backtrace under TextMate ([548](https://github.com/cucumber/cucumber-ruby/pull/548) @bilus)
-- Using file:line CLI to select scenarios was running same scenario multiple times ([786](https://github.com/cucumber/cucumber-ruby/pull/786) @jdks)
-- Allow spaces in filenames for rerun formatter ([793](https://github.com/cucumber/cucumber-ruby/pull/793) @callahat)
-
-## [2.0.0.beta.5](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.4...v2.0.0.beta.5) (2014-12-18)
-
-- Depend on the correct version of core (@tooky)
-
-## [2.0.0.beta.4](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.3...v2.0.0.beta.4) (2014-12-18)
-
-### New Features
-
-- Support both new and legacy formatter APIs simultaneously (@mattwynne and @tooky)
-
-### Bugfixes
-
-- Localize the Scenario keyword with the --expand option ([766](https://github.com/cucumber/cucumber-ruby/pull/766) @brasmusson)
-- Handle hook output appropriately in the HTML formatter ([746](https://github.com/cucumber/cucumber-ruby/pull/746), [731](https://github.com/cucumber/cucumber-ruby/issues/731), [298](https://github.com/cucumber/cucumber-ruby/pull/298) @brasmusson)
-- Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber-ruby/pull/738) @brasmusson)
-
-### Internal changes
-
-- Re-write rerun formatter against new formatter API
-
-## [2.0.0.beta.3](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.2...v2.0.0.beta.3) (2014-09-14)
-
-### Removed Features
-
-- The `--dotcucumber` option is no longer supported and `stepdefs.json` is no longer written. (Aslak Hellesøy)
-
-### New Features
-
-- Include both outline step and expanded step in error backtrace ([730](https://github.com/cucumber/cucumber-ruby/pull/730) @brasmusson)
-- Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber-ruby/pull/728) [Erran Carey](https://github.com/erran))
-- Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber-ruby/pull/696),[695](https://github.com/cucumber/cucumber-ruby/pull/695/files) @brasmusson)
-
-### Bugfixes
-
-- Pass hook output to the formatters appropriately ([732](https://github.com/cucumber/cucumber-ruby/pull/732) @brasmusson)
-- Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
-- Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber-ruby/pull/690) @awls99)
-- Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber-ruby/pull/729) @mattwynne and @tooky)
-- Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber-ruby/issues/739) @os97673)
-
-## [2.0.0.beta.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.1...v2.0.0.beta.2) (2014-08-29)
-
-### Bugfixes
-
-- Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber-ruby/pull/723) @mattwynne)
+[2.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2
+[2.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0
+[2.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.5...v2.0.0
+[2.0.0.rc5]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.4...v2.0.0.rc.5
+[2.0.0.rc.4]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.3...2.0.0.rc.4
+[2.0.0.rc.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.2...v2.0.0.rc.3
+[2.0.0.rc.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.1...v2.0.0.rc.2
+[2.0.0.rc.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1
+[2.0.0.beta.5]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.4...v2.0.0.beta.5
+[2.0.0.beta.4]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.3...v2.0.0.beta.4
+[2.0.0.beta.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.2...v2.0.0.beta.3
+[2.0.0.beta.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.1...v2.0.0.beta.2
+[2.0.0.beta.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v2.0.0.beta.1
+[1.3.16]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.15...v1.3.16
+[1.3.15]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.14...v1.3.15
+[1.3.14]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.13...v1.3.14
+[1.3.13]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.12...v1.3.13
+[1.3.12]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.11...v1.3.12
+[1.3.11]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.10...v1.3.11
+[1.3.10]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.9...v1.3.10
+[1.3.9]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v1.3.9
+[1.3.8]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.7...v1.3.8
+[1.3.7]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.6...v1.3.7
+[1.3.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.5...v1.3.6
+[1.3.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.4...v1.3.5
+[1.3.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.3...v1.3.4
+[1.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.2...v1.3.3
+[1.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.5...v1.3.0
+[1.2.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.3...v1.2.5
+[1.2.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.9...v1.2.0
+[1.1.9]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.8...v1.1.9
+[1.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.7...v1.1.8
+[1.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.6...v1.1.7
+[1.1.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.5...v1.1.6
+[1.1.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.4...v1.1.5
+[1.1.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.3...v1.1.4
+[1.1.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.2...v1.1.3
+[1.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.1...v1.1.2
+[1.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.6...v1.1.0
+[1.0.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.5...v1.0.6
+[1.0.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.4...v1.0.5
+[1.0.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.6...v1.0.0
+[0.10.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.5...v0.10.6
+[0.10.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.3...v0.10.5
+[0.10.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.2...v0.10.3
+[0.10.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.1...v0.10.2
+[0.10.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.4...v0.10.0
+[0.9.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.3...v0.9.4
+[0.9.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.2...v0.9.3
+[0.9.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.1...v0.9.2
+[0.9.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.0...v0.9.1
+[0.9.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.5...v0.9.0
+[0.8.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.4...v0.8.5
+[0.8.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.3...v0.8.4
+[0.8.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.2...v0.8.3
+[0.8.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.0...v0.8.1
+[0.8.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.3...v0.8.0
+[0.7.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.2...v0.7.3
+[0.7.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.1...v0.7.2
+[0.7.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.8...v0.7.0
+[0.7.0.beta.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.7...v0.7.0.beta.8
+[0.7.0.beta.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.6...v0.7.0.beta.7
+[0.7.0.beta.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.5...v0.7.0.beta.6
+[0.7.0.beta.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.4...v0.7.0.beta.5
+[0.7.0.beta.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.3...v0.7.0.beta.4
+[0.7.0.beta.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.2...v0.7.0.beta.3
+[0.7.0.beta.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.1...v0.7.0.beta.2
+[0.7.0.beta.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.4...v0.7.0.beta.1
+[0.6.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.3...v0.6.4
+[0.6.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.2...v0.6.3
+[0.6.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.1...v0.6.2
+[0.6.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.3...v0.6.0
+[0.5.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.4...v0.5.0
+[0.4.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.104...v0.4.0
+[0.3.104]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.103...v0.3.104
+[0.3.103]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.102...v0.3.103
+[0.3.102]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.101...v0.3.102
+[0.3.101]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.100...v0.3.101
+[0.3.100]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.99...v0.3.100
+[0.3.99]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.98...v0.3.99
+[0.3.98]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.97...v0.3.98
+[0.3.97]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.96...v0.3.97
+[0.3.96]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.95...v0.3.96
+[0.3.95]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.94...v0.3.95
+[0.3.94]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.93...v0.3.94
+[0.3.93]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.92...v0.3.93
+[0.3.92]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.91...v0.3.92
+[0.3.91]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.90...v0.3.91
+[0.3.90]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.11...v0.3.90
+[0.3.11]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.10...v0.3.11
+[0.3.10]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.9...v0.3.10
+[0.3.9]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.8...v0.3.9
+[0.3.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.7...v0.3.8
+[0.3.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.6...v0.3.7
+[0.3.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.5...v0.3.6
+[0.3.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.4...v0.3.5
+[0.3.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.3...v0.3.4
+[0.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.2...v0.3.3
+[0.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.3...v0.3.0
+[0.2.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.16...v0.2.0
+[0.1.16]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.15...v0.1.16
+[0.1.15]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.14...v0.1.15
+[0.1.14]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.13...v0.1.14
+[0.1.13]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.12...v0.1.13
+[0.1.12]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.10...v0.1.11
+[0.1.10]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.9...v0.1.10
+[0.1.9]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.8...v0.1.9
+[0.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.6...v0.1.7
+[0.1.6]: https://github.com/cucumber/cucumber-ruby/compare/f3292f4023a707099d02602b2bd6c4ca3cec6820...v0.1.6
+hooks ([723](https://github.com/cucumber/cucumber-ruby/pull/723) @mattwynne)
 - Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
 
 ## [2.0.0.beta.1 ](https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v2.0.0.beta.1) (2014-08-22)
