@@ -20,34 +20,34 @@ Gem::Specification.new do |s|
   # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.6'
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
-  s.add_dependency 'cucumber-ci-environment', '~> 9.0', '>= 9.0.4'
+  s.add_dependency 'cucumber-ci-environment', '~> 9.1', '>= 9.1.0'
   s.add_dependency 'cucumber-core', '~> 11.0', '>= 11.0.0'
-  s.add_dependency 'cucumber-cucumber-expressions', '>= 15.1.1', '< 17.0'
-  s.add_dependency 'cucumber-gherkin', '>= 23.0.1', '< 25'
-  s.add_dependency 'cucumber-html-formatter', '>= 19.1', '< 21.0'
-  s.add_dependency 'cucumber-messages', '>= 18', '< 22'
+  s.add_dependency 'cucumber-cucumber-expressions', '~> 16.1', '>= 16.1.1'
+  s.add_dependency 'cucumber-gherkin', '~> 26.0', '>= 26.0.1'
+  s.add_dependency 'cucumber-html-formatter', '~> 20.2', '>= 20.2.1'
+  s.add_dependency 'cucumber-messages', '~> 21.0', '>= 21.0.1'
   s.add_dependency 'diff-lcs', '~> 1.5', '>= 1.5.0'
   s.add_dependency 'mime-types', '~> 3.4', '>= 3.4.1'
   s.add_dependency 'multi_test', '~> 1.1', '>= 1.1.0'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.2'
 
-  s.add_development_dependency 'cucumber-compatibility-kit', '~> 9.2', '>= 9.2.1'
-  s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.6'
+  s.add_development_dependency 'cucumber-compatibility-kit', '~> 11.0', '>= 11.0.1'
+  s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.10'
   s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
-  s.add_development_dependency 'rspec', '~> 3.11', '>= 3.11.0'
+  s.add_development_dependency 'rspec', '~> 3.12', '>= 3.12.0'
   s.add_development_dependency 'simplecov', '~> 0.21', '>= 0.21.2'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
-  s.add_development_dependency 'test-unit', '~> 3.5', '>= 3.5.3'
+  s.add_development_dependency 'test-unit', '~> 3.5', '>= 3.5.7'
   s.add_development_dependency 'webrick', '~> 1.7', '>= 1.7.0'
 
   # For maintainer scripts
-  s.add_development_dependency 'octokit', '~> 4.22', '>= 4.22.0'
+  s.add_development_dependency 'octokit', '~> 6.0', '>= 6.0.1'
 
   # Needed for examples (rake examples)
-  s.add_development_dependency 'capybara', '~> 3.36', '>= 3.36.0', '< 3.37'
-  s.add_development_dependency 'rack-test', '>= 1.1.0', '~> 2.0'
-  s.add_development_dependency 'sinatra', '>= 2.2.0', '~> 3.0'
+  s.add_development_dependency 'capybara', '~> 3.38', '>= 3.38.0'
+  s.add_development_dependency 'rack-test', '~> 2.0', '>= 2.0.2'
+  s.add_development_dependency 'sinatra', '~> 3.0', '>= 3.0.5'
 
   s.required_rubygems_version = '>= 1.6.1'
   s.files = Dir[
