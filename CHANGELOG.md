@@ -10,6 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Added
+* Add option `--retry-total` ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1669))
 
 ### Changed
 

@@ -95,3 +95,31 @@ Feature: Retry failing tests
 
       3 scenarios (2 flaky, 1 passed)
       """
+
+  Scenario: Retry each test but suspend retrying after 2 failing tests, so later tests are not retried
+    Given a scenario "Fails-forever-1" that fails
+    And a scenario "Fails-forever-2" that fails
+    When I run `cucumber -q --retry 1 --retry-total 2 --format summary`
+    Then it should fail with:
+      """
+      5 scenarios (4 failed, 1 passed)
+      """
+    And it should fail with:
+      """
+      Fails-forever-1
+        Fails-forever-1 ✗
+        Fails-forever-1 ✗
+
+      Fails-forever-2
+        Fails-forever-2 ✗
+        Fails-forever-2 ✗
+
+      Fails-once feature
+        Fails-once ✗
+
+      Fails-twice feature
+        Fails-twice ✗
+
+      Solid
+        Solid ✓
+      """

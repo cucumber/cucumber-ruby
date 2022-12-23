@@ -56,11 +56,12 @@ module Cucumber
       NO_PROFILE_LONG_FLAG = '--no-profile'.freeze
       FAIL_FAST_FLAG = '--fail-fast'.freeze
       RETRY_FLAG = '--retry'.freeze
+      RETRY_TOTAL_FLAG = '--retry-total'.freeze
       OPTIONS_WITH_ARGS = [
         '-r', '--require', '--i18n-keywords', '-f', '--format', '-o',
         '--out', '-t', '--tags', '-n', '--name', '-e', '--exclude',
-        PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, '-l',
-        '--lines', '--port', '-I', '--snippet-type'
+        PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, RETRY_TOTAL_FLAG,
+        '-l', '--lines', '--port', '-I', '--snippet-type'
       ].freeze
       ORDER_TYPES = %w[defined random].freeze
       TAG_LIMIT_MATCHER = /(?<tag_name>@\w+):(?<limit>\d+)/x
@@ -108,6 +109,7 @@ module Cucumber
           opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') { |jars| load_jars(jars) } if Cucumber::JRUBY
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) { |v| set_option :retry, v.to_i }
+          opts.on("#{RETRY_TOTAL_FLAG} TESTS", *retry_total_msg) { |v| set_option :retry_total, v.to_i }
           opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
           opts.on('--i18n-keywords LANG', *i18n_keywords_msg) { |lang| language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
@@ -269,6 +271,13 @@ Specify SEED to reproduce the shuffling from a previous run.
 
       def retry_msg
         ['Specify the number of times to retry failing tests (default: 0)']
+      end
+
+      def retry_total_msg
+        [
+          'The total number of failing test after which retrying of tests is suspended.',
+          'Example: --retry-total 10 -> Will stop retrying tests after 10 failing tests.'
+        ]
       end
 
       def name_msg
@@ -543,6 +552,7 @@ Specify SEED to reproduce the shuffling from a previous run.
         end
 
         @options[:retry] = other_options[:retry] if @options[:retry].zero?
+        @options[:retry_total] = other_options[:retry_total] if @options[:retry_total].infinite?
 
         self
       end
@@ -616,7 +626,8 @@ Specify SEED to reproduce the shuffling from a previous run.
           snippets: true,
           source: true,
           duration: true,
-          retry: 0
+          retry: 0,
+          retry_total: Float::INFINITY
         }
       end
     end
