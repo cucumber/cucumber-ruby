@@ -78,6 +78,10 @@ module Cucumber
       @options[:retry]
     end
 
+    def retry_total_tests
+      @options[:retry_total]
+    end
+
     def guess?
       @options[:guess]
     end
@@ -273,7 +277,8 @@ module Cucumber
         snippets: true,
         source: true,
         duration: true,
-        event_bus: Cucumber::Events.make_event_bus
+        event_bus: Cucumber::Events.make_event_bus,
+        retry_total: Float::INFINITY
       }
     end
 

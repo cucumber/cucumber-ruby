@@ -13,7 +13,8 @@ describe Cucumber::Filters::Retry do
   include Cucumber::Core
   include Cucumber::Events
 
-  let(:configuration) { Cucumber::Configuration.new(retry: 2) }
+  let(:configuration) { Cucumber::Configuration.new(retry: 2, retry_total: retry_total) }
+  let(:retry_total) { Float::INFINITY }
   let(:id) { double }
   let(:name) { double }
   let(:location) { double }
@@ -55,12 +56,32 @@ describe Cucumber::Filters::Retry do
   context 'consistently failing test case' do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
-    it 'describes the test case the specified number of times' do
-      expect(receiver).to receive(:test_case) { |test_case|
-        configuration.notify :test_case_finished, test_case, result
-      }.exactly(3).times
+    shared_examples 'retries the test case the specified number of times' do |expected_nr_of_times|
+      it 'describes the test case the specified number of times' do
+        expect(receiver).to receive(:test_case) { |test_case|
+          configuration.notify :test_case_finished, test_case, result
+        }.exactly(expected_nr_of_times).times
 
-      filter.test_case(test_case)
+        filter.test_case(test_case)
+      end
+    end
+
+    context 'when retry_total infinit' do
+      let(:retry_total) { Float::INFINITY }
+
+      include_examples 'retries the test case the specified number of times', 3
+    end
+
+    context 'when retry_total 1' do
+      let(:retry_total) { 1 }
+
+      include_examples 'retries the test case the specified number of times', 3
+    end
+
+    context 'when retry_total 0' do
+      let(:retry_total) { 0 }
+
+      include_examples 'retries the test case the specified number of times', 1
     end
   end
 
@@ -98,6 +119,30 @@ describe Cucumber::Filters::Retry do
 
         filter.test_case(test_case)
       end
+    end
+  end
+
+  context 'too many failing tests' do
+    let(:retry_total) { 1 }
+    let(:always_failing_test_case1) do
+      Cucumber::Core::Test::Case.new(id, name, [double('test steps')], 'test.rb:1', tags, language)
+    end
+    let(:always_failing_test_case2) do
+      Cucumber::Core::Test::Case.new(id, name, [double('test steps')], 'test.rb:9', tags, language)
+    end
+    let(:fail_result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
+
+    it 'stops retrying tests' do
+      expect(receiver).to receive(:test_case).with(always_failing_test_case1) { |test_case|
+        configuration.notify :test_case_finished, test_case, fail_result
+      }.ordered.exactly(3).times
+
+      expect(receiver).to receive(:test_case).with(always_failing_test_case2) { |test_case|
+        configuration.notify :test_case_finished, test_case, fail_result
+      }.ordered.exactly(1).times
+
+      filter.test_case(always_failing_test_case1)
+      filter.test_case(always_failing_test_case2)
     end
   end
 end
