@@ -1,15 +1,6 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
-  ],
-  "regexManagers": [
-    {
-      "fileMatch": ["\\.gemspec$"],
-      "matchStrings": [
-	"^.*add.*dependency\\s['\"](?<depName>[^'\"]*)['\"],\\s*['\"](?<currentValue>[^'\"]*)['\"]"
-      ],
-      "datasourceTemplate": "rubygems",
-      "versioningTemplate": "ruby"
-    }
+    "local>cucumber/renovate-config"
   ]
 }
