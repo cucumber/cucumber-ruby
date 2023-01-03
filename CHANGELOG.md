@@ -13,6 +13,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 * Add option `--retry-total` ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1669))
 
 ### Changed
+* Update dependency cucumber-gherkin to v26 ([#1688](https://github.com/cucumber/cucumber-ruby/pull/1688))
 
 ### Deprecated
 
