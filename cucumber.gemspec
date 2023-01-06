@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-html-formatter', '>= 19.1', '< 21.0'
   s.add_dependency 'cucumber-messages', '>= 18', '< 22'
   s.add_dependency 'diff-lcs', '~> 1.5', '>= 1.5.0'
-  s.add_dependency 'mime-types', '~> 3.4', '>= 3.4.1'
+  s.add_dependency 'mini_mime', '~> 1.0'
   s.add_dependency 'multi_test', '~> 1.1', '>= 1.1.0'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.2'
 

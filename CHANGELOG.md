@@ -14,6 +14,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 * Update dependency cucumber-gherkin to v26 ([#1688](https://github.com/cucumber/cucumber-ruby/pull/1688))
+* Replace dependency [mime-types](https://rubygems.org/gems/mime-types)
+  with [mini_mime](https://rubygems.org/gems/mini_mime)
+  ([#1695](https://github.com/cucumber/cucumber-ruby/pull/1695))
 
 ### Deprecated
 
