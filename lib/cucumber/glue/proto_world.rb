@@ -3,7 +3,7 @@
 require 'cucumber/gherkin/formatter/ansi_escapes'
 require 'cucumber/core/test/data_table'
 require 'cucumber/deprecate'
-require 'mime/types'
+require 'mini_mime'
 
 module Cucumber
   module Glue
@@ -92,7 +92,7 @@ module Cucumber
         return super unless File.file?(file)
 
         content = File.read(file, mode: 'rb')
-        media_type = MIME::Types.type_for(file).first if media_type.nil?
+        media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
 
         super(content, media_type.to_s)
       rescue StandardError
