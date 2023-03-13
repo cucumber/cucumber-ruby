@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_test', '~> 1.1', '>= 1.1.0'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.2'
 
-  s.add_development_dependency 'cucumber-compatibility-kit', '~> 9.2', '>= 9.2.1'
+  s.add_development_dependency 'cucumber-compatibility-kit', '~> 11.0', '>= 11.2.0'
   s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.6'
   s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
