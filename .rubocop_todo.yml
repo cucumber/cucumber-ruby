@@ -71,13 +71,13 @@ Style/MutableConstant:
 #    - 'lib/cucumber/glue/invoke_in_world.rb'
 #    - 'lib/cucumber/runtime.rb'
 
-# Offense count: 10
-# Cop supports --auto-correct.
-Style/RedundantFreeze:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/unicode.rb'
-    - 'spec/cucumber/step_match_spec.rb'
+## Offense count: 10
+## Cop supports --auto-correct.
+#Style/RedundantFreeze:
+#  Exclude:
+#    - 'lib/cucumber/cli/options.rb'
+#    - 'lib/cucumber/formatter/unicode.rb'
+#    - 'spec/cucumber/step_match_spec.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
