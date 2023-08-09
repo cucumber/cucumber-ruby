@@ -36,6 +36,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   s.add_development_dependency 'rspec', '~> 3.12', '>= 3.12.0'
+  s.add_development_dependency 'rubocop', '1.43.0'
+  s.add_development_dependency 'rubocop-packaging', '0.5.2'
   s.add_development_dependency 'simplecov', '~> 0.22', '>= 0.22.0'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
   s.add_development_dependency 'test-unit', '~> 3.6', '>= 3.6.1'
