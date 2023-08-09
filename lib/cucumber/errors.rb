@@ -35,7 +35,8 @@ module Cucumber
   # Raised when a step matches 2 or more StepDefinitions
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions, used_guess)
-      message = String.new # rubocop:disable Style/EmptyLiteral
+      # TODO: [LH] - Just use a heredoc here to fix this up
+      message = String.new
       message << "Ambiguous match of \"#{step_name}\":\n\n"
       message << step_definitions.map(&:backtrace_line).join("\n")
       message << "\n\n"

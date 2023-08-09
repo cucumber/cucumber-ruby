@@ -61,7 +61,8 @@ module Cucumber
         end
 
         def do_block
-          do_block = String.new # rubocop:disable Style/EmptyLiteral
+          # TODO: [LH] - Just use a heredoc here to fix this up
+          do_block = String.new
           do_block << "do#{parameters}\n"
           multiline_argument.append_comment_to(do_block)
           do_block << "  pending # Write code here that turns the phrase above into concrete actions\n"
@@ -95,7 +96,8 @@ module Cucumber
             "#{prefix}#{code_keyword}('#{expr.source}') do#{parameters(expr)}"
           end.join("\n")
 
-          body = String.new # rubocop:disable Style/EmptyLiteral
+          # TODO: [LH] - Just use a heredoc here to fix this up
+          body = String.new
           multiline_argument.append_comment_to(body)
           body << "  pending # Write code here that turns the phrase above into concrete actions\n"
           body << 'end'

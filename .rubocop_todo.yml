@@ -19,14 +19,14 @@ Layout/HashAlignment:
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'lib/cucumber/errors.rb'
-    - 'lib/cucumber/glue/proto_world.rb'
-    - 'lib/cucumber/glue/registry_and_more.rb'
-    - 'lib/cucumber/glue/snippet.rb'
+## Offense count: 5
+## Cop supports --auto-correct.
+#Lint/RedundantCopDisableDirective:
+#  Exclude:
+#    - 'lib/cucumber/errors.rb'
+#    - 'lib/cucumber/glue/proto_world.rb'
+#    - 'lib/cucumber/glue/registry_and_more.rb'
+#    - 'lib/cucumber/glue/snippet.rb'
 
 # Offense count: 1
 # Configuration parameters: AllowComments.
