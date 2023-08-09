@@ -59,17 +59,17 @@ Style/MutableConstant:
     - 'lib/cucumber/runtime.rb'
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/formatter/console_counts.rb'
-    - 'lib/cucumber/glue/invoke_in_world.rb'
-    - 'lib/cucumber/runtime.rb'
+## Offense count: 5
+## Cop supports --auto-correct.
+## Configuration parameters: AutoCorrect, EnforcedStyle, IgnoredMethods.
+## SupportedStyles: predicate, comparison
+#Style/NumericPredicate:
+#  Exclude:
+#    - 'spec/**/*'
+#    - 'lib/cucumber/formatter/console.rb'
+#    - 'lib/cucumber/formatter/console_counts.rb'
+#    - 'lib/cucumber/glue/invoke_in_world.rb'
+#    - 'lib/cucumber/runtime.rb'
 
 # Offense count: 10
 # Cop supports --auto-correct.
