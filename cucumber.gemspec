@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
     'source_code_uri'   => 'https://github.com/cucumber/cucumber-ruby'
   }
 
-  # Keep in sync with .circleci/config.yml & .rubocop.yml
   s.required_ruby_version = '>= 2.7'
+
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
   s.add_dependency 'cucumber-ci-environment', '~> 9.0', '>= 9.0.4'
   s.add_dependency 'cucumber-core', '~> 11.0', '>= 11.0.0'
@@ -44,12 +44,12 @@ Gem::Specification.new do |s|
   # For maintainer scripts
   s.add_development_dependency 'octokit', '~> 6.0', '>= 6.1.0'
 
-  # Needed for examples (rake examples)
-  s.add_development_dependency 'capybara', '~> 3.36', '>= 3.36.0', '< 3.37'
+  # Needed for rake examples
+  s.add_development_dependency 'capybara', '~> 3.36', '>= 3.36.0'
   s.add_development_dependency 'rack-test', '>= 1.1.0', '~> 2.0'
   s.add_development_dependency 'sinatra', '>= 2.2.0', '~> 3.0'
 
-  s.required_rubygems_version = '>= 1.6.1'
+  s.required_rubygems_version = '>= 3.0.1'
   s.files = Dir[
     'CHANGELOG.md',
     'CONTRIBUTING.md',
