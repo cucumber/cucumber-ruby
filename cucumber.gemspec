@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-ci-environment', '~> 9.2', '>= 9.2.0'
   s.add_dependency 'cucumber-core', '~> 11.0', '>= 11.0.0'
   s.add_dependency 'cucumber-cucumber-expressions', '~> 16.1', '>= 16.1.2'
-  s.add_dependency 'cucumber-gherkin', '>= 23', '< 26.2.1'
+  s.add_dependency 'cucumber-gherkin', '>= 23.0.1', '< 26.2.1'
   s.add_dependency 'cucumber-html-formatter', '~> 20.4', '>= 20.4.0'
   s.add_dependency 'cucumber-messages', '>= 18', '< 23'
   s.add_dependency 'diff-lcs', '~> 1.5', '>= 1.5.0'
