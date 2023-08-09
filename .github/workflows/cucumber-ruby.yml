@@ -22,12 +22,9 @@ jobs:
             ruby: jruby-9.4
           - os: ubuntu-latest
             ruby: truffleruby-head
-
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-
-      - name: Run ruby tests
-        uses: ./.github/actions/test-ruby
+      - uses: ./.github/actions/test-ruby
         with:
           ruby-version: ${{ matrix.ruby }}
