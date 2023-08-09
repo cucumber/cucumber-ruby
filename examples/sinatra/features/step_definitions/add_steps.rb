@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given(/^I visit the calculator page$/) do
   visit '/add'
 end

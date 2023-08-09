@@ -41,12 +41,12 @@ Naming/FileName:
   Exclude:
     - 'features/lib/step_definitions/iso-8859-1_steps.rb'
 
-# Offense count: 197
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
+## Offense count: 197
+## Cop supports --auto-correct.
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: always, always_true, never
+#Style/FrozenStringLiteralComment:
+#  Enabled: false
 
 # Offense count: 5
 # Cop supports --auto-correct.

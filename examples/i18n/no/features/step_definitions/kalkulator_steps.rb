@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Before do
   @calc = Kalkulator.new
 end

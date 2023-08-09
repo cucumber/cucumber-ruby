@@ -78,7 +78,7 @@ module Cucumber
 
         replacement = if block_given?
                         yield(group.value)
-                      elsif Proc == format.class
+                      elsif format.instance_of?(Proc)
                         format.call(group.value)
                       else
                         format % group.value

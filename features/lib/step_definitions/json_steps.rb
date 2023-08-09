@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then('it should fail with JSON:') do |json|
   expect(command_line).to have_failed
   actual = normalise_json(JSON.parse(command_line.stdout))

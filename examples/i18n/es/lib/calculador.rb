@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Calculador
   def push(n)
     @args ||= []

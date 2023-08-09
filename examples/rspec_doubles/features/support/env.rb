@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # If you want to use a different mock framework than
 # RSpec-Mocks - just set configure that accordingly
 #

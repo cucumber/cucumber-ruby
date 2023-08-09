@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/query/hook_by_test_step'

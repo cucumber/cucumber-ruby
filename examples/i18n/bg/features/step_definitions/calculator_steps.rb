@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Дадено('е че съм въвел {int}') do |int|
   calc.push int
 end

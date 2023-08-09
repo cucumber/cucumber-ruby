@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ICANHAZ(/^IN TEH BEGINNIN (\d+) CUCUMBRZ$/) do |n|
   @basket = Basket.new(n.to_i)
 end

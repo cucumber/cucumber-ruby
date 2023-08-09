@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When(/^I ask Tcl to calculate fibonacci for (\d+)$/) do |n|
   @fib_result = @fib.eval("fib #{n}").to_i
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CardboardBox
   def initialize(transmogrifier)
     @transmogrifier = transmogrifier

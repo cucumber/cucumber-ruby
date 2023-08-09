@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'cucumber/formatter/ansicolor'
 
-CUCUMBER_FEATURES_PATH = 'features/lib'.freeze
+CUCUMBER_FEATURES_PATH = 'features/lib'
 
 Before do |scenario|
   @original_cwd = Dir.pwd

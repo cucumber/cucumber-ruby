@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Belly
   attr_reader :cukes
 

@@ -88,8 +88,8 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
 
         it 'picks most specific step definition when an unequal number of capture groups' do
           _general      = dsl.Given(/Three (.*) mice ran (.*)/) { |disability| }
-          _specific     = dsl.Given(/Three blind mice ran far/) { ; }
-          more_specific = dsl.Given(/^Three blind mice ran far$/) { ; }
+          _specific     = dsl.Given(/Three blind mice ran far/) {}
+          more_specific = dsl.Given(/^Three blind mice ran far$/) {}
 
           expect(search.call('Three blind mice ran far').first.step_definition).to eq more_specific
         end

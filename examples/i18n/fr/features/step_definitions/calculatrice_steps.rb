@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Soit(/^une calculatrice$/) do
   @calc = Calculatrice.new
 end

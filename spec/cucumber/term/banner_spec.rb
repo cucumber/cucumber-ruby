@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/term/banner'
 
 describe Cucumber::Term::Banner do

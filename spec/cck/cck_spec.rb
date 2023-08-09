@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber-compatibility-kit'
 
 describe 'Cucumber Compatibility Kit', cck: true do

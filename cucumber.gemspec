@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
   s.version     = File.read(File.expand_path('VERSION', __dir__)).strip

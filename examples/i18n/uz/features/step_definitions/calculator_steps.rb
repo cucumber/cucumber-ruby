@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Агар('{int} сонини киритсам') do |сон|
   calc.push сон
 end

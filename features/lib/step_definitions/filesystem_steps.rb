@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given('a directory named {string}') do |path|
   FileUtils.mkdir_p(path)
 end
