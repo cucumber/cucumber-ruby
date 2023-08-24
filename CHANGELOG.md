@@ -47,7 +47,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 with the new [cucumber-ci-environment](https://rubygems.org/gems/cucumber-ci-environment)
 ([PR#1601](https://github.com/cucumber/cucumber-ruby/pull/1601))
 - In `DataTable#map_column`, Changed the `strict` argument into a keyword argument.
-See [UPGRADING.md](upgrading_notes/8.0.0.md#upgrading-to-800).
+See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800).
 ([PR#1594](https://github.com/cucumber/cucumber-ruby/pull/1594)
 [Issue#1592](https://github.com/cucumber/cucumber-ruby/issues/1592))
 - Added Ruby 3.1
@@ -78,15 +78,14 @@ based on the messages: it now returns true if the run has passed
 
 ### Removed
 - `AfterConfiguration` has been removed. Please use `InstallPlugin` or `BeforeAll` instead.
-See the [UPGRADING.md](upgrading_notes/8.0.0.md#upgrading-to-800) to update your code accordingly.
+See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800) to update your code accordingly.
 ([PR#1591](https://github.com/cucumber/cucumber-ruby/pull/1591))
 - The built-in Wire protocol
 The Wire protocol is still officially supported, but as an optional plugin rather
-than a built-in feature. See the
-[UPGRADING.md](upgrading_notes/8.0.0.md#upgrading-to-800)
+than a built-in feature. See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800)
 to update your code accordingly.
 - Removed former unused `stdin` argument from `Cli::Main`. That may impact your code
-if you use cucumber API `Cucumber::Cli::Main`. See [UPGRADING.md](upgrading_notes/8.0.0.md#upgrading-to-800).
+if you use cucumber API `Cucumber::Cli::Main`. See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800).
 ([PR#1588](https://github.com/cucumber/cucumber-ruby/pull/1588)
 [Issue#1581](https://github.com/cucumber/cucumber-ruby/issues/1581))
 - Removed `DataTable#map_column!` and `DataTable#map_headers!`.
@@ -109,7 +108,7 @@ can use the immutable versions instead: `DataTable#map_column` and
 
 ### Deprecated
 - `AfterConfiguration` is deprecated. Please use `InstallPlugin` or `BeforeAll` instead.
-See the [UPGRADING.md](upgrading_notes/8.0.0.md#upgrading-to-710) to update your code accordingly.
+See upgrading notes for [7.1.0.md](upgrading_notes/7.1.0.md#upgrading-to-710). to update your code accordingly.
 ([1570](https://github.com/cucumber/cucumber-ruby/pull/1570))
 - The built-in Wire protocol
 
