@@ -16,20 +16,9 @@ Please delete options that are not relevant.
 - Breaking change (will cause existing functionality to not
   work as expected)
 - This change requires an update of [cucumber.io/docs](https://cucumber.io/docs)
+- If your change may impact future contributors, explain it here, and remember to update README.md and CONTRIBUTING.md accordingly.
 
 Please add an entry to the relevant section of CHANGELOG.md as part of this pull request.
-
-## Note to other contributors
-
-If your change may impact future contributors, explain it here, and remember to update README.md and CONTRIBUTING.md accordingly.
-
-## Update required of cucumber.io/docs
-
-If the [Cucumber documentation](https://cucumber.io/docs/) requires an update,
-submit a PR to [cucumber/docs](https://github.com/cucumber/docs/) and
-reference it here.
-
-e.g. "Ref: cucumber/docs/pull/#99"
 
 # Checklist:
 

@@ -19,16 +19,10 @@ lockComment: >
 setLockReason: true
 
 # Limit to only `issues` or `pulls`
-# only: issues
+only: issues
 
 # Optionally, specify configuration settings just for `issues` or `pulls`
 # issues:
 #   exemptLabels:
 #     - help-wanted
 #   lockLabel: outdated
-
-# pulls:
-#   daysUntilLock: 30
-
-# Repository to extend settings from
-# _extends: repo
