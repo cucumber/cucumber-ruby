@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="./.github/img/cucumber-open-logo.png" alt="Cucumber Open - Supported by Smartbear" width="428" />
-</p>
+<img src="docs/img/cucumber-open-logo.png" alt="Cucumber Open - Supported by Smartbear" width="428" />
 
 # Cucumber
 
@@ -18,9 +16,7 @@ written in plain language, they can be read by anyone on your team. Because they
 read by anyone, you can use them to help improve communication, collaboration and trust on
 your team.
 
-<p align="center">
-  <img src="./.github/img/gherkin-example.png" alt="Cucumber Gherkin Example" width="728" />
-</p>
+<img src="docs/img/gherkin-example.png" alt="Cucumber Gherkin Example" width="728" />
 
 This is the Ruby implementation of Cucumber. Cucumber is also available for [JavaScript](https://github.com/cucumber/cucumber-js),
 [Java](https://github.com/cucumber/cucumber-jvm), and a lot of other languages. You can find a list of implementations here: https://cucumber.io/docs/installation/.
