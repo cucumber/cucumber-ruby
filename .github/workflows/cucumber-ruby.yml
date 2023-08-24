@@ -26,7 +26,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-
       - name: Run ruby tests
         uses: ./.github/actions/test-ruby
         with:
