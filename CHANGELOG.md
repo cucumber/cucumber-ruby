@@ -26,7 +26,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Removed
 - Removed support for Ruby 2.6 and JRuby 9.3 ([PR#1699](https://github.com/cucumber/cucumber-ruby/pull/1699))
 
-## [8.0.0] - ADD DATE
+## [8.0.0] - 2022-05-19
 
 ### Added
 - Add a _WARNING_ message when using a space-separated string with cucumber_opts
