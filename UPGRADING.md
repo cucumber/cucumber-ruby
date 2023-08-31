@@ -55,8 +55,8 @@ If you are still using the built-in wire protocol here the step to migrate to cu
 
   # ...
 
-  gem "cucumber"
-  gem "cucumber-wire"
+  gem 'cucumber'
+  gem 'cucumber-wire'
 
   # ...
 
@@ -82,11 +82,11 @@ You would have used `Cucumber::Cli::Main` with a dummy parameter:
 
 ```ruby
 Cucumber::Cli::Main.new(
-      argument_list,
-      nil, # <-- this is a former unused `stdin` parameter
-      @stdout,
-      @stderr,
-      @kernel
+  argument_list,
+  nil, # <-- this is a former unused `stdin` parameter
+  @stdout,
+  @stderr,
+  @kernel
 ).execute!
 ```
 
@@ -97,10 +97,10 @@ required anymore:
 
 ```ruby
 Cucumber::Cli::Main.new(
-      argument_list,
-      @stdout,
-      @stderr,
-      @kernel
+  argument_list,
+  @stdout,
+  @stderr,
+  @kernel
 ).execute!
 ```
 
@@ -111,14 +111,14 @@ The `strict` argument for the `map_column` method has changed to a keyword argum
 ### Before 8.0.0
 
 ```ruby
-table.map_column('column', false).do |value|
+table.map_column('column', false) do |value|
 end
 ```
 
 ### With cucumber 8.0.0
 
 ```ruby
-table.map_column('column', strict: false).do |value|
+table.map_column('column', strict: false) do |value|
 end
 ```
 
@@ -149,8 +149,8 @@ Gemfile alongside the `cucumber` one, and install it:
 
 # ...
 
-gem "cucumber"
-gem "cucumber-wire"
+gem 'cucumber'
+gem 'cucumber-wire'
 
 # ...
 
@@ -164,6 +164,7 @@ code yet, create a new one. For example `features/support/wire.rb`.
 
 ```ruby
 # features/support/wire.rb
+
 require 'cucumber/wire'
 ```
 
