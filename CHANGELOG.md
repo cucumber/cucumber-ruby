@@ -25,3 +25,20 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 - Removed support for Ruby 2.6 and JRuby 9.3 ([PR#1699](https://github.com/cucumber/cucumber-ruby/pull/1699))
+
+## [8.0.0]
+
+### Added
+- Add a _WARNING_ message when using a space-separated string with cucumber_opts
+  ([PR#](https://github.com/cucumber/cucumber-ruby/pull/1624)
+  [Issue#1614](https://github.com/cucumber/cucumber-ruby/issues/1614))
+- Add support for TruffleRuby
+  ([PR#1612](https://github.com/cucumber/cucumber-ruby/pull/1612)
+  [gogainda](https://github.com/gogainda))
+- Add support for named hooks
+  ([PR#1636](https://github.com/cucumber/cucumber-ruby/pull/1636))
+
+### Fixed
+
+- Use `required_rubygems_version` instead of `rubygems_version`([PR#1629](https://github.com/cucumber/cucumber-ruby/pull/1629))
+- Suppress RSspec deprecation warnings([PR#1631](https://github.com/cucumber/cucumber-ruby/pull/1631))
