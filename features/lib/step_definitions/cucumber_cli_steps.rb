@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then('I should see the CLI help') do
   expect(command_line.stdout).to include('Usage:')
 end

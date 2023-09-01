@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When('I run `cucumber{}`') do |args|
   execute_cucumber(args)
 end

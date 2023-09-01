@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ParameterType(
   name: 'list',
   regexp: /.*/,

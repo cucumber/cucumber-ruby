@@ -48,7 +48,7 @@ module Cucumber
       def format_string(o, status)
         fmt = format_for(status)
         o.to_s.split("\n").map do |line|
-          if Proc == fmt.class
+          if fmt.instance_of?(Proc)
             fmt.call(line)
           else
             fmt % line
@@ -108,7 +108,7 @@ module Cucumber
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
       def linebreaks(msg, max)
-        return msg unless max && max > 0
+        return msg unless max.positive?
 
         msg.gsub(/.{1,#{max}}(?:\s|\Z)/) do
           (Regexp.last_match(0) + 5.chr).gsub(/\n\005/, "\n").gsub(/\005/, "\n")
