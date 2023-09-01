@@ -52,8 +52,7 @@ Later in this document, bundler is considered being used so all commands are usi
 - Ruby 3.0
 - Ruby 2.7
 - TruffleRuby 22.0.0+
-- JRuby (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
-  - 9.4
+- JRuby 9.4+ (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
 
 ### Ruby on Rails
 
@@ -105,19 +104,20 @@ And a file named `steps.rb` in `features/step_definitions` with:
 ```ruby
 # features/step_definitions/steps.rb
 
-Given("this will pass") do
+Given('this will pass') do
   @this_will_pass = true
 end
 
-Given("this will fail") do
+Given('this will fail') do
   @this_will_pass = false
 end
 
-When("I do an action") do
+When('I do an action') do
+  :no_op
 end
 
 Then("some results should be there") do
-  expect(@this_will_pass)
+  expect(@this_will_pass).to be true
 end
 ```
 
@@ -131,7 +131,7 @@ To execute a single feature file:
 
 To execute a single example, indicates the line of the name of the example:
 
-    $ bundle exec cucumber features/rule.feature:7
+    $ bundle exec cucumber features/rule.feature:5
 
 To summarize the results on the standard output, and writte a HTML report on disk:
 
