@@ -5,16 +5,10 @@ require:
 
 AllCops:
   NewCops: disable
-  # Keep this inline with the lowest ruby-* version in circleci/config.yml and
-  # the version in the gemspec
+  # Keep this inline with the lowest ruby version in the gemspec
   TargetRubyVersion: 2.7
-  # Cop names are not displayed in offense messages by default. Change behavior
-  # by overriding DisplayCopNames, or by giving the `-D/--display-cop-names`
-  # option.
+  # Display cop name / style guide references
   DisplayCopNames: true
-  # Style guide URLs are not displayed in offense messages by default. Change
-  # behavior by overriding `DisplayStyleGuide`, or by giving the
-  # `-S/--display-style-guide` option.
   DisplayStyleGuide: true
   Exclude:
     - 'bin/*'
@@ -23,9 +17,12 @@ AllCops:
     - 'temp_app/**/*'
     - 'cck/features/**/*'
 
+# TODO: [LH] - Candidate for phasing out in v9 patch releases. People should have this stored in editor and ideally not use windows
+# for ruby development. Where they are, their editor config should have this setting
 Layout/EndOfLine:
   EnforcedStyle: lf
 
+# TODO: [LH] - This needs removing - legacy code. Initially move to auto-gen-config and then fix
 # Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
 # heredocs '<<~' were introduced then. The files below are the current ones
 # with offenses
@@ -39,27 +36,32 @@ Layout/HeredocIndentation:
     - 'spec/cucumber/formatter/pretty_spec.rb'
 
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
-# In pretty_spec.rb, progress_spec.rb offences look false,
-# as the trailing spaces are in multiline string literals
+# In pretty_spec.rb & progress_spec.rb offences look false as the trailing spaces are in fact multiline string literals
 Layout/TrailingWhitespace:
   Exclude:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
 
+# TODO: [LH] - This needs re-reviewing and fixing, we have been partially fixing this up in 2019/2020 onwards
+# (Likely that this is primarily already fixed)
 # Reviewed: please see PR-1022 for details on why this cop is disabled:
 # https://github.com/cucumber/cucumber-ruby/pull/1022
 Lint/AmbiguousOperator:
   Enabled: false
 
+# TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 # We exclude proto_world for documentation (rdoc) purpose
 Lint/UselessMethodDefinition:
   Enabled: true
   Exclude:
     - 'lib/cucumber/glue/proto_world.rb'
 
+# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
+# to the auto-gen-config
 Metrics/AbcSize:
   Max: 45
 
+# TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 Metrics/BlockLength:
   CountComments: false
   Exclude:
@@ -67,28 +69,32 @@ Metrics/BlockLength:
     - './spec/**/*'
     - 'cck/spec/**/*'
 
+# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/ClassLength:
   Max: 375
   Exclude:
     - 'lib/cucumber/cli/options.rb'
 
+# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/CyclomaticComplexity:
   Max: 12
 
-# A line length of 200 covers most violations in the repo while still being
-# a more up to date length given today's screen sizes
+# A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
 Layout/LineLength:
   Max: 200
 
+# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/ModuleLength:
   Max: 150
   Exclude:
     - './spec/**/*'
     - 'cck/spec/**/*'
 
+# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/MethodLength:
   Max: 30
 
+# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/PerceivedComplexity:
   Max: 13
 
