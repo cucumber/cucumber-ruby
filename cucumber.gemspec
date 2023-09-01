@@ -53,10 +53,9 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 3.0.1'
   s.files = Dir[
-    'CHANGELOG.old.md',
-    'CONTRIBUTING.md',
     'README.md',
     'LICENSE',
+    'VERSION',
     'lib/**/*'
   ]
   s.executables      = ['cucumber']
