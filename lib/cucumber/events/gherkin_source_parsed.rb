@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/core/events'
 
 module Cucumber
