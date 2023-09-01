@@ -11,15 +11,10 @@ on:
 jobs:
   rubocop:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ruby-version: ["3.2"]
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby-version }}
+          ruby-version: 3.2
           bundler-cache: true
-      - name: Run tests
-        run: bundle exec rake rubocop
+      - run: bundle exec rake rubocop
