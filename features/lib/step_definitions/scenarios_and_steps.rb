@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def snake_case(name)
   name.downcase.gsub(/\W/, '_')
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
   s.version     = File.read(File.expand_path('VERSION', __dir__)).strip
@@ -37,7 +39,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   s.add_development_dependency 'rspec', '~> 3.12', '>= 3.12.0'
   s.add_development_dependency 'rubocop', '1.43.0'
+  s.add_development_dependency 'rubocop-capybara', '2.18.0'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
+  s.add_development_dependency 'rubocop-rake', '0.6'
+  s.add_development_dependency 'rubocop-rspec', '2.0.0'
   s.add_development_dependency 'simplecov', '~> 0.22', '>= 0.22.0'
   s.add_development_dependency 'syntax', '~> 1.2', '>= 1.2.2'
   s.add_development_dependency 'test-unit', '~> 3.6', '>= 3.6.1'

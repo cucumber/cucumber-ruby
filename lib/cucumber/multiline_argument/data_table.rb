@@ -506,7 +506,7 @@ module Cucumber
       end
 
       def ensure_table(table_or_array) # :nodoc:
-        return table_or_array if DataTable == table_or_array.class
+        return table_or_array if table_or_array.instance_of?(DataTable)
 
         DataTable.from(table_or_array)
       end
@@ -591,7 +591,7 @@ module Cucumber
         end
 
         def ==(other)
-          SurplusCell == other.class || value == other.value
+          other.class == SurplusCell || value == other.value
         end
 
         def eql?(other)

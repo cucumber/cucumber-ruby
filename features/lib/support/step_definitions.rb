@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StepDefinitionsWorld
   def step_definition(expression, content, keyword: 'Given')
     if content.is_a?(String)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/messages'
 require 'cucumber/ci_environment'
 

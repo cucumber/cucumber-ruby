@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Began to tidy up (Cleared some AutoFix cops), and organise rubocop tech-debt in repo (This introduced new rubocop sub-gems) ([#1716](https://github.com/cucumber/cucumber-ruby/pull/1716) [luke-hill](https://github.com/luke-hill))
 
 ## [9.0.1] - 2023-09-01
 ### Changed

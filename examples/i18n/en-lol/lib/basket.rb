@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Basket
   attr_reader :cukes
 
