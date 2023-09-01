@@ -26,7 +26,7 @@ module Cucumber
       # @example Passing a multiline string
       #   step "the email should contain:", "Dear sir,\nYou've won a prize!\n"
       # @param [String] name The name of the step
-      # @param [String,Cucumber::Test::DocString,Cucumber::Ast::Table] multiline_argument
+      # @param [String, Cucumber::Test::DocString, Cucumber::Ast::Table] multiline_argument
       def step(name, raw_multiline_arg = nil)
         super
       end
@@ -128,7 +128,7 @@ module Cucumber
 
       # Dynamially generate the API module, closuring the dependencies
       def self.for(runtime, language) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
-        Module.new do # rubocop:disable Metrics/BlockLength
+        Module.new do
           def self.extended(object)
             # wrap the dynamically generated module so that we can document the methods
             # for yardoc, which doesn't like define_method.

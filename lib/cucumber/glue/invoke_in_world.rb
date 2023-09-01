@@ -28,7 +28,7 @@ module Cucumber
           if check_arity && !cucumber_compatible_arity?(args, block)
             world.instance_exec do
               ari = block.arity
-              ari = ari < 0 ? "#{ari.abs - 1}+" : ari
+              ari = ari.negative? ? "#{ari.abs - 1}+" : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
               raise ArityMismatchError, "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."

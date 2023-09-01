@@ -9,12 +9,9 @@ jobs:
   pre-release-check:
     name: Perform checks before releasing
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Check commit has been pushed on origin/main
-        run: |
+      - run: |
           git fetch --quiet origin main
           git merge-base --is-ancestor HEAD origin/main
 
@@ -26,13 +23,10 @@ jobs:
         include:
           - os: ubuntu-latest
             ruby: jruby-9.4
-
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-
-      - name: Run ruby tests
-        uses: ./.github/actions/test-ruby
+      - uses: ./.github/actions/test-ruby
         with:
           ruby-version: ${{ matrix.ruby }}
 
@@ -41,12 +35,9 @@ jobs:
     needs: [pre-release-check, tests]
     runs-on: ubuntu-latest
     environment: Release
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Publish ruby gem
-        uses: cucumber/action-publish-rubygem@v1.0.0
+      - uses: cucumber/action-publish-rubygem@v1.0.0
         with:
           rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
 
@@ -57,7 +48,6 @@ jobs:
     environment: Release
     permissions:
       contents: write
-
     steps:
       - uses: actions/checkout@v3
       - uses: cucumber/action-create-github-release@v1.1.1

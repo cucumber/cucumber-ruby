@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # See http://wiki.github.com/cucumber/cucumber/sinatra
 # for more details about Sinatra with Cucumber
 

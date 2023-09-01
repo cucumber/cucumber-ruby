@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/formatter/io'
 require 'cucumber/html_formatter'
 require 'cucumber/formatter/message_builder'

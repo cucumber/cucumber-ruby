@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HesapMakinesi
   def push(n)
     @args ||= []

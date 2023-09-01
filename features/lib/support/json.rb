@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JSONWorld
   def normalise_json(json)
     # make sure duration was captured (should be >= 0)
