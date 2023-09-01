@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then('messages types should be:') do |expected_types|
   parsed_json = command_line.stdout.split("\n").map { |line| JSON.parse(line) }
   message_types = parsed_json.map(&:keys).flatten.compact

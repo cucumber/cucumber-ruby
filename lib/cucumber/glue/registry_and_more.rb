@@ -29,7 +29,8 @@ module Cucumber
     # Raised if there are 2 or more World blocks.
     class MultipleWorld < StandardError
       def initialize(first_proc, second_proc)
-        message = String.new # rubocop:disable Style/EmptyLiteral
+        # TODO: [LH] - Just use a heredoc here to fix this up
+        message = String.new
         message << "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
         message << Glue.backtrace_line(first_proc, 'World') << "\n"

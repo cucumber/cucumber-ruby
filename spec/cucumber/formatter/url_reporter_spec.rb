@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'stringio'
 require 'uri'
 require 'cucumber/formatter/url_reporter'

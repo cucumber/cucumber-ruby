@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Допустим('я ввожу число {int}') do |число|
   calc.push число
 end
