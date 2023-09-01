@@ -48,7 +48,7 @@ with [mini_mime](https://rubygems.org/gems/mini_mime)
 - Use `required_rubygems_version` instead of `rubygems_version`([PR#1629](https://github.com/cucumber/cucumber-ruby/pull/1629))
 - Suppress RSspec deprecation warnings([PR#1631](https://github.com/cucumber/cucumber-ruby/pull/1631))
 
-## [8.0.0.RC.1]
+## [8.0.0.RC.1] - 2022-01-19
 ### Changed
 - Replace dependency [cucumber-create-meta](https://rubygems.org/gems/cucumber-create-meta)
   with the new [cucumber-ci-environment](https://rubygems.org/gems/cucumber-ci-environment)
