@@ -51,13 +51,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 1.6.1'
   s.files = Dir[
-    'CHANGELOG.old.md',
-    'CHANGELOG.md',
-    'CONTRIBUTING.md',
     'README.md',
     'LICENSE',
-    'lib/**/*',
-    'VERSION'
+    'VERSION',
+    'lib/**/*'
   ]
   s.executables      = ['cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
