@@ -48,9 +48,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'test-unit', '~> 3.6', '>= 3.6.1'
   s.add_development_dependency 'webrick', '~> 1.8', '>= 1.8.1'
 
-  # For maintainer scripts
-  s.add_development_dependency 'octokit', '~> 6.0', '>= 6.1.0'
-
   # Needed for rake examples
   s.add_development_dependency 'capybara', '~> 3.39', '>= 3.39.2'
   s.add_development_dependency 'rack-test', '~> 2.1', '>= 2.1.0'
