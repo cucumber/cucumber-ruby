@@ -10,6 +10,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 
+### Fixed
+- Cucumber was unable to generate the correct `VERSION` constant ([PR#1729](https://github.com/cucumber/cucumber-ruby/pull/1729) [luke-hill](https://github.com/luke-hill))
+
 ## [9.0.0] - 2023-08-31
 ### Added
 - Add option `--retry-total` ([#1669](https://github.com/cucumber/cucumber-ruby/pull/1669))
@@ -19,8 +22,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Replace dependency [mime-types](https://rubygems.org/gems/mime-types)
 with [mini_mime](https://rubygems.org/gems/mini_mime)
 ([#1695](https://github.com/cucumber/cucumber-ruby/pull/1695))
-
-### Deprecated
 
 ### Fixed
 - Cucumber may raise NoMethodError when CUCUMBER_COLORS environment was set ([PR#1641](https://github.com/cucumber/cucumber-ruby/pull/1641/) [s2k](https://github.com/s2k))
