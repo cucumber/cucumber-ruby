@@ -35,7 +35,7 @@ end
 
 class Changelog
   def self.open(path, &block)
-    full_path = File.expand_path("#{File.dirname(__FILE__)}/#{path}/CHANGELOG.md")
+    full_path = File.expand_path("#{File.dirname(__FILE__)}/#{path}/CHANGELOG.old.md")
     log = new(File.read(full_path))
     log.instance_exec(&block)
     File.write(full_path, log.body)
@@ -49,7 +49,7 @@ class Changelog
 
   def insert(label, entry)
     section_index = lines.index { |line| line.strip == heading_for(label) }
-    raise("Unable to find matching heading in CHANGELOG.md for '#{label}' (#{heading_for(label)})") unless section_index
+    raise("Unable to find matching heading in CHANGELOG.old.md for '#{label}' (#{heading_for(label)})") unless section_index
 
     lines.insert(section_index + 2, "* #{entry}\n")
   end
