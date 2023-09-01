@@ -185,6 +185,7 @@ setting-up the ruby devkit with ridk
 - Do not send headers after following redirection [#1475](https://github.com/cucumber/cucumber-ruby/pull/1475)
 
 ## [5.1.1]
+- No updates
 
 ## [5.1.0]
 ### Added
@@ -380,16 +381,10 @@ All this means is we're ok to make releases while the jruby CI job is failing.
 [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ## [3.1.1]
-### Added
-- N/A
-
 ### Changed
 - Add Rubocop to default Rake task ([#1256](https://github.com/cucumber/cucumber-ruby/pull/1256) [@jaysonesmith](https://github.com/jaysonesmith))
 - Upgraded `cucumber-expressions` dependency to ~> 6.0.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
 - Upgraded to `gherkin` 5.1.0 ([#1299](https://github.com/cucumber/cucumber-ruby/pull/1299) [@aslakhellesoy](https://github.com/aslakhellesoy))
-
-### Deprecated
-- N/A
 
 ### Fixed
 - Make `--fail-fast` play nice with `--retry` ([#1283](https://github.com/cucumber/cucumber-ruby/pull/1283) [@yrral86](https://github.com/yrral86))
@@ -397,9 +392,6 @@ All this means is we're ok to make releases while the jruby CI job is failing.
 - Fix the handling of failed hooks in the JUnit Formatter ([@brasmusson](https://github.com/brasmusson))
 - Fixed lengthy stacktrace when running `cucumber -f stepdefs` when steps aren't defined. ([#1286](https://github.com/cucumber/cucumber-ruby/pull/1286) [@xtrasimplicity](https://github.com/xtrasimplicity))
 - Fixed an error with HTML snippet generation when `frozen_string_literal` is enabled and the `Syntax` gem is not installed. ([#1287](https://github.com/cucumber/cucumber-ruby/pull/1287) [@xtrasimplicity](https://github.com/xtrasimplicity))
-
-### Removed
-- N/A
 
 ## [3.1.0]
 ### Added
@@ -445,475 +437,6 @@ All this means is we're ok to make releases while the jruby CI job is failing.
 - Fix bug in DataTable#symbolic_hashes ([#1200](https://github.com/cucumber/cucumber-ruby/pull/1200) @Ben-Behar)
 - Fix typo in JSON formatter ([#1196](https://github.com/cucumber/cucumber-ruby/pull/1196) @alb-i986)
 - Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [#1113](https://github.com/cucumber/cucumber-ruby/issues/1113) @MadameSheema, @enkessler, @brasmusson)
-
-## [3.0.0.pre.2]
-
-## [2.4.0]
-
-## [2.3.3]
-
-## [2.3.2]
-
-## [2.3.1]
-
-## [2.3.0]
-
-## [2.2.0]
-
-## [2.1.0]
-
-## [2.0.2]
-
-## [2.0.1]
-
-## [2.0.0]
-
-## [2.0.0.rc5]
-
-## Bugfixes
-
-## [2.0.0.rc.4]
-
-## [2.0.0.rc.3]
-
-## [2.0.0.rc.2]
-
-## [2.0.0.rc.1]
-
-## [2.0.0.beta.5]
-
-## [2.0.0.beta.4]
-
-## [2.0.0.beta.3]
-
-## [2.0.0.beta.2]
-
-## [2.0.0.beta.1]
-
-## [1.3.16]
-
-## [1.3.15]
-
-## [1.3.14]
-
-## [1.3.13]
-
-## [1.3.12]
-
-## [1.3.11]
-
-## [1.3.10]
-
-## [1.3.9]
-
-## [1.3.8]
-
-## [1.3.7]
-
-## [1.3.6]
-
-## [1.3.5]
-
-## [1.3.4]
-
-## [1.3.3]
-
-## [1.3.2]
-
-## [1.3.1]
-
-## [1.3.0]
-
-## [1.2.5]
-
-## 1.2.4
-
-## [1.2.3]
-
-## [1.2.2]
-
-## [1.2.1]
-
-## [1.2.0]
-
-## [1.1.9]
-
-## [1.1.8]
-
-## [1.1.7]
-
-## [1.1.6]
-
-## [1.1.5]
-
-## [1.1.4]
-
-## [1.1.3]
-
-## [1.1.2]
-
-## [1.1.0]
-
-## [1.0.6]
-
-## [1.0.5]
-
-## [1.0.4]
-
-## [1.0.3]
-
-## [1.0.2]
-
-## [1.0.1]
-
-## [1.0.0]
-
-## [0.10.6]
-
-## [0.10.5]
-
-## [0.10.3]
-
-## [0.10.2]
-
-## [0.10.1]
-
-## [0.10.0]
-
-## [0.9.4]
-
-## [0.9.3]
-
-## [0.9.2]
-
-## [0.9.1]
-
-## [0.9.0]
-
-## [0.8.5]
-
-## [0.8.4]
-
-## [0.8.3]
-
-## [0.8.2]
-
-## [0.8.1]
-
-## [0.8.0]
-
-## [0.7.3]
-
-## [0.7.2]
-
-## [0.7.1]
-
-## [0.7.0]
-
-## [0.7.0.beta.8]
-
-## [0.7.0.beta.7]
-
-## [0.7.0.beta.6]
-
-## [0.7.0.beta.5]
-
-## [0.7.0.beta.4]
-
-## [0.7.0.beta.3]
-
-## [0.7.0.beta.2]
-
-## [0.7.0.beta.1]
-
-## [0.6.4]
-
-## [0.6.3]
-
-## [0.6.2]
-
-## [0.6.1]
-
-## [0.6.0]
-
-## [0.5.3]
-
-## [0.5.2]
-
-## [0.5.1]
-
-## [0.5.0]
-
-## [0.4.4]
-
-## [0.4.3]
-
-## [0.4.2]
-
-## [0.4.1]
-
-## [0.4.0]
-
-## [0.3.104]
-
-## [0.3.103]
-
-## [0.3.102]
-
-## [0.3.101]
-
-## [0.3.100]
-
-## [0.3.99]
-
-## [0.3.98]
-
-## [0.3.97]
-
-## [0.3.96]
-
-## [0.3.95]
-
-## [0.3.94]
-
-## [0.3.93]
-
-## [0.3.92]
-
-## [0.3.91]
-
-## [0.3.90]
-
-## [0.3.11]
-
-## [0.3.10]
-
-## [0.3.9]
-
-## [0.3.8]
-
-## [0.3.7]
-
-## [0.3.6]
-
-## [0.3.5]
-
-## [0.3.4]
-
-## [0.3.3]
-
-## [0.3.2]
-
-## [0.3.1]
-
-## [0.3.0]
-
-## [0.2.3]
-
-## [0.2.2]
-
-## [0.2.1]
-
-## [0.2.0]
-
-## 0.1.16.4
-
-## [0.1.16]
-
-## [0.1.15]
-
-## [0.1.14]
-
-## [0.1.13]
-
-## [0.1.12]
-
-## [0.1.11]
-
-## [0.1.10]
-
-## [0.1.9]
-
-## [0.1.8]
-
-## [0.1.7]
-
-## [0.1.6]
-
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...main
-[8.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...v8.0.0
-[8.0.0.RC.1]: https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...v8.0.0.rc.1
-[7.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0
-[7.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...v7.0.0
-[v6.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...v6.1.0
-[v6.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...v6.0.0
-[5.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0
-[5.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.3...v5.2.0
-[5.1.3]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.2...v5.1.3
-[5.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.1...v5.1.2
-[5.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.0...v5.1.1
-[5.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.0.0...5.1.0
-[5.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v4.1.0...5.0.0
-[4.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.1...v4.1.0
-[4.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0...v4.0.1
-[4.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...v4.0.0
-[4.0.0.rc.6]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...4.0.0.rc.6
-[4.0.0.rc.5]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...4.0.0.rc.5
-[4.0.0.rc.4]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.3...4.0.0.rc.4
-[4.0.0.rc.3]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...v4.0.0.rc.3
-[4.0.0.rc.2]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2
-[4.0.0.rc.1]: https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...v4.0.0.rc.1
-[3.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...v3.1.2
-[3.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...v3.1.1
-[3.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...v3.1.0
-[3.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...v3.0.2
-[3.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...3.0.1
-[3.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...v3.0.0
-[3.0.0.pre.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2
-[2.4.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0
-[2.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3
-[2.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2
-[2.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1
-[2.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0
-[2.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0
-[2.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0
-[2.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2
-[2.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.5...v2.0.0
-[2.0.0.rc5]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.4...v2.0.0.rc.5
-[2.0.0.rc.4]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.3...2.0.0.rc.4
-[2.0.0.rc.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.2...v2.0.0.rc.3
-[2.0.0.rc.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.1...v2.0.0.rc.2
-[2.0.0.rc.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1
-[2.0.0.beta.5]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.4...v2.0.0.beta.5
-[2.0.0.beta.4]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.3...v2.0.0.beta.4
-[2.0.0.beta.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.2...v2.0.0.beta.3
-[2.0.0.beta.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.1...v2.0.0.beta.2
-[2.0.0.beta.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v2.0.0.beta.1
-[1.3.16]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.15...v1.3.16
-[1.3.15]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.14...v1.3.15
-[1.3.14]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.13...v1.3.14
-[1.3.13]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.12...v1.3.13
-[1.3.12]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.11...v1.3.12
-[1.3.11]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.10...v1.3.11
-[1.3.10]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.9...v1.3.10
-[1.3.9]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v1.3.9
-[1.3.8]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.7...v1.3.8
-[1.3.7]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.6...v1.3.7
-[1.3.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.5...v1.3.6
-[1.3.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.4...v1.3.5
-[1.3.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.3...v1.3.4
-[1.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.2...v1.3.3
-[1.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.1...v1.3.2
-[1.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.0...v1.3.1
-[1.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.5...v1.3.0
-[1.2.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.3...v1.2.5
-[1.2.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.2...v1.2.3
-[1.2.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.1...v1.2.2
-[1.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.0...v1.2.1
-[1.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.9...v1.2.0
-[1.1.9]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.8...v1.1.9
-[1.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.7...v1.1.8
-[1.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.6...v1.1.7
-[1.1.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.5...v1.1.6
-[1.1.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.4...v1.1.5
-[1.1.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.3...v1.1.4
-[1.1.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.2...v1.1.3
-[1.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.1...v1.1.2
-[1.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.6...v1.1.0
-[1.0.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.5...v1.0.6
-[1.0.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.4...v1.0.5
-[1.0.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.3...v1.0.4
-[1.0.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.2...v1.0.3
-[1.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.1...v1.0.2
-[1.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.6...v1.0.0
-[0.10.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.5...v0.10.6
-[0.10.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.3...v0.10.5
-[0.10.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.2...v0.10.3
-[0.10.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.1...v0.10.2
-[0.10.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.0...v0.10.1
-[0.10.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.4...v0.10.0
-[0.9.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.3...v0.9.4
-[0.9.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.2...v0.9.3
-[0.9.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.1...v0.9.2
-[0.9.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.0...v0.9.1
-[0.9.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.5...v0.9.0
-[0.8.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.4...v0.8.5
-[0.8.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.3...v0.8.4
-[0.8.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.2...v0.8.3
-[0.8.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.1...v0.8.2
-[0.8.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.0...v0.8.1
-[0.8.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.3...v0.8.0
-[0.7.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.2...v0.7.3
-[0.7.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.1...v0.7.2
-[0.7.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0...v0.7.1
-[0.7.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.8...v0.7.0
-[0.7.0.beta.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.7...v0.7.0.beta.8
-[0.7.0.beta.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.6...v0.7.0.beta.7
-[0.7.0.beta.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.5...v0.7.0.beta.6
-[0.7.0.beta.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.4...v0.7.0.beta.5
-[0.7.0.beta.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.3...v0.7.0.beta.4
-[0.7.0.beta.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.2...v0.7.0.beta.3
-[0.7.0.beta.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.1...v0.7.0.beta.2
-[0.7.0.beta.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.4...v0.7.0.beta.1
-[0.6.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.3...v0.6.4
-[0.6.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.2...v0.6.3
-[0.6.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.1...v0.6.2
-[0.6.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.0...v0.6.1
-[0.6.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.3...v0.6.0
-[0.5.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.2...v0.5.3
-[0.5.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.1...v0.5.2
-[0.5.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.0...v0.5.1
-[0.5.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.4...v0.5.0
-[0.4.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.3...v0.4.4
-[0.4.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.2...v0.4.3
-[0.4.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.1...v0.4.2
-[0.4.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.0...v0.4.1
-[0.4.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.104...v0.4.0
-[0.3.104]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.103...v0.3.104
-[0.3.103]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.102...v0.3.103
-[0.3.102]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.101...v0.3.102
-[0.3.101]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.100...v0.3.101
-[0.3.100]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.99...v0.3.100
-[0.3.99]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.98...v0.3.99
-[0.3.98]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.97...v0.3.98
-[0.3.97]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.96...v0.3.97
-[0.3.96]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.95...v0.3.96
-[0.3.95]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.94...v0.3.95
-[0.3.94]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.93...v0.3.94
-[0.3.93]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.92...v0.3.93
-[0.3.92]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.91...v0.3.92
-[0.3.91]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.90...v0.3.91
-[0.3.90]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.11...v0.3.90
-[0.3.11]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.10...v0.3.11
-[0.3.10]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.9...v0.3.10
-[0.3.9]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.8...v0.3.9
-[0.3.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.7...v0.3.8
-[0.3.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.6...v0.3.7
-[0.3.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.5...v0.3.6
-[0.3.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.4...v0.3.5
-[0.3.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.3...v0.3.4
-[0.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.2...v0.3.3
-[0.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.1...v0.3.2
-[0.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.0...v0.3.1
-[0.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.3...v0.3.0
-[0.2.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.2...v0.2.3
-[0.2.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.1...v0.2.2
-[0.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.0...v0.2.1
-[0.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.16...v0.2.0
-[0.1.16]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.15...v0.1.16
-[0.1.15]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.14...v0.1.15
-[0.1.14]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.13...v0.1.14
-[0.1.13]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.12...v0.1.13
-[0.1.12]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.11...v0.1.12
-[0.1.11]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.10...v0.1.11
-[0.1.10]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.9...v0.1.10
-[0.1.9]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.8...v0.1.9
-[0.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.7...v0.1.8
-[0.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.6...v0.1.7
-[0.1.6]: https://github.com/cucumber/cucumber-ruby/compare/f3292f4023a707099d02602b2bd6c4ca3cec6820...v0.1.6
-y) to the installer message. Please take a few moments to help us all learn more about how you're using Cucumber and BDD.
 
 ### Bugfixes
 
@@ -3369,3 +2892,177 @@ a plain text step is defined. Not anymore! Cucumber will now output this:
 ## [0.1.6](https://github.com/cucumber/cucumber-ruby/compare/f3292f4023a707099d02602b2bd6c4ca3cec6820...v0.1.6) (2008-10-01)
 
 First gem release!
+
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...main
+[8.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.rc.1...v8.0.0
+[8.0.0.RC.1]: https://github.com/cucumber/cucumber-ruby/compare/v7.1.0...v8.0.0.rc.1
+[7.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v7.0.0...v7.1.0
+[7.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v6.1.0...v7.0.0
+[v6.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v6.0.0...v6.1.0
+[v6.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.3.0...v6.0.0
+[5.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.2.0...v5.3.0
+[5.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.3...v5.2.0
+[5.1.3]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.2...v5.1.3
+[5.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.1...v5.1.2
+[5.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v5.1.0...v5.1.1
+[5.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v5.0.0...5.1.0
+[5.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v4.1.0...5.0.0
+[4.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...v4.0.0
+[4.0.0.rc.6]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.5...4.0.0.rc.6
+[4.0.0.rc.5]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.4...4.0.0.rc.5
+[4.0.0.rc.4]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.3...4.0.0.rc.4
+[4.0.0.rc.3]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.2...v4.0.0.rc.3
+[4.0.0.rc.2]: https://github.com/cucumber/cucumber-ruby/compare/v4.0.0.rc.1...v4.0.0.rc.2
+[4.0.0.rc.1]: https://github.com/cucumber/cucumber-ruby/compare/v3.1.2...v4.0.0.rc.1
+[3.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v3.1.1...v3.1.2
+[3.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v3.1.0...v3.1.1
+[3.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.2...v3.1.0
+[3.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.1...v3.0.2
+[3.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.0...3.0.1
+[3.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...v3.0.0
+[3.0.0.pre.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2
+[2.4.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0
+[2.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3
+[2.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2
+[2.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0
+[2.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.5...v2.0.0
+[2.0.0.rc5]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.4...v2.0.0.rc.5
+[2.0.0.rc.4]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.3...2.0.0.rc.4
+[2.0.0.rc.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.2...v2.0.0.rc.3
+[2.0.0.rc.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.1...v2.0.0.rc.2
+[2.0.0.rc.1]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1
+[2.0.0.beta.5]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.4...v2.0.0.beta.5
+[2.0.0.beta.4]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.3...v2.0.0.beta.4
+[2.0.0.beta.3]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.2...v2.0.0.beta.3
+[2.0.0.beta.2]: https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.1...v2.0.0.beta.2
+[2.0.0.beta.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v2.0.0.beta.1
+[1.3.16]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.15...v1.3.16
+[1.3.15]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.14...v1.3.15
+[1.3.14]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.13...v1.3.14
+[1.3.13]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.12...v1.3.13
+[1.3.12]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.11...v1.3.12
+[1.3.11]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.10...v1.3.11
+[1.3.10]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.9...v1.3.10
+[1.3.9]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v1.3.9
+[1.3.8]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.7...v1.3.8
+[1.3.7]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.6...v1.3.7
+[1.3.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.5...v1.3.6
+[1.3.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.4...v1.3.5
+[1.3.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.3...v1.3.4
+[1.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.2...v1.3.3
+[1.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.5...v1.3.0
+[1.2.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.3...v1.2.5
+[1.2.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.9...v1.2.0
+[1.1.9]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.8...v1.1.9
+[1.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.7...v1.1.8
+[1.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.6...v1.1.7
+[1.1.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.5...v1.1.6
+[1.1.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.4...v1.1.5
+[1.1.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.3...v1.1.4
+[1.1.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.2...v1.1.3
+[1.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.1.1...v1.1.2
+[1.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.6...v1.1.0
+[1.0.6]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.5...v1.0.6
+[1.0.5]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.4...v1.0.5
+[1.0.4]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.6...v1.0.0
+[0.10.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.5...v0.10.6
+[0.10.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.3...v0.10.5
+[0.10.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.2...v0.10.3
+[0.10.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.1...v0.10.2
+[0.10.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.10.0...v0.10.1
+[0.10.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.4...v0.10.0
+[0.9.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.3...v0.9.4
+[0.9.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.2...v0.9.3
+[0.9.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.1...v0.9.2
+[0.9.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.9.0...v0.9.1
+[0.9.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.5...v0.9.0
+[0.8.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.4...v0.8.5
+[0.8.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.3...v0.8.4
+[0.8.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.2...v0.8.3
+[0.8.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.1...v0.8.2
+[0.8.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.8.0...v0.8.1
+[0.8.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.3...v0.8.0
+[0.7.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.2...v0.7.3
+[0.7.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.1...v0.7.2
+[0.7.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.8...v0.7.0
+[0.7.0.beta.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.7...v0.7.0.beta.8
+[0.7.0.beta.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.6...v0.7.0.beta.7
+[0.7.0.beta.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.5...v0.7.0.beta.6
+[0.7.0.beta.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.4...v0.7.0.beta.5
+[0.7.0.beta.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.3...v0.7.0.beta.4
+[0.7.0.beta.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.2...v0.7.0.beta.3
+[0.7.0.beta.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.7.0.beta.1...v0.7.0.beta.2
+[0.7.0.beta.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.4...v0.7.0.beta.1
+[0.6.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.3...v0.6.4
+[0.6.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.2...v0.6.3
+[0.6.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.1...v0.6.2
+[0.6.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.6.0...v0.6.1
+[0.6.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.3...v0.6.0
+[0.5.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.4...v0.5.0
+[0.4.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.104...v0.4.0
+[0.3.104]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.103...v0.3.104
+[0.3.103]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.102...v0.3.103
+[0.3.102]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.101...v0.3.102
+[0.3.101]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.100...v0.3.101
+[0.3.100]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.99...v0.3.100
+[0.3.99]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.98...v0.3.99
+[0.3.98]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.97...v0.3.98
+[0.3.97]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.96...v0.3.97
+[0.3.96]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.95...v0.3.96
+[0.3.95]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.94...v0.3.95
+[0.3.94]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.93...v0.3.94
+[0.3.93]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.92...v0.3.93
+[0.3.92]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.91...v0.3.92
+[0.3.91]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.90...v0.3.91
+[0.3.90]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.11...v0.3.90
+[0.3.11]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.10...v0.3.11
+[0.3.10]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.9...v0.3.10
+[0.3.9]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.8...v0.3.9
+[0.3.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.7...v0.3.8
+[0.3.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.6...v0.3.7
+[0.3.6]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.5...v0.3.6
+[0.3.5]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.4...v0.3.5
+[0.3.4]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.3...v0.3.4
+[0.3.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.2...v0.3.3
+[0.3.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.3...v0.3.0
+[0.2.3]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.16...v0.2.0
+[0.1.16]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.15...v0.1.16
+[0.1.15]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.14...v0.1.15
+[0.1.14]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.13...v0.1.14
+[0.1.13]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.12...v0.1.13
+[0.1.12]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.10...v0.1.11
+[0.1.10]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.9...v0.1.10
+[0.1.9]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.8...v0.1.9
+[0.1.8]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com/cucumber/cucumber-ruby/compare/v0.1.6...v0.1.7
+[0.1.6]: https://github.com/cucumber/cucumber-ruby/compare/f3292f4023a707099d02602b2bd6c4ca3cec6820...v0.1.6
