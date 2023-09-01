@@ -10,6 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 
+## [9.0.1] - 2023-09-01
 ### Changed
 - Update dependency of a few associated cucumber sub-gems ([#1715](https://github.com/cucumber/cucumber-ruby/pull/1715) [luke-hill](https://github.com/luke-hill))
 
@@ -47,6 +48,7 @@ with [mini_mime](https://rubygems.org/gems/mini_mime)
 - Use `required_rubygems_version` instead of `rubygems_version`([PR#1629](https://github.com/cucumber/cucumber-ruby/pull/1629))
 - Suppress RSspec deprecation warnings([PR#1631](https://github.com/cucumber/cucumber-ruby/pull/1631))
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.1...HEAD
+[9.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.0...v9.0.1
 [9.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...v9.0.0
 [8.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0.RC.1...v8.0.0
