@@ -118,9 +118,6 @@ Naming/VariableNumber:
 # This cop throws errors when parsing a lot of the repo's code, possibly due
 # to splat issues?
 Style/AccessModifierDeclarations:
-    Enabled: false
-
-Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/Documentation:
@@ -128,9 +125,6 @@ Style/Documentation:
 
 Style/FormatStringToken:
   EnforcedStyle: annotated
-
-Style/FloatDivision:
-  Enabled: false
 
 Style/StderrPuts:
   Enabled: false
