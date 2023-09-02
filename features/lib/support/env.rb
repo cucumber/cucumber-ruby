@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'cucumber/formatter/ansicolor'
+require 'securerandom'
+require 'nokogiri'
 
 CUCUMBER_FEATURES_PATH = 'features/lib'
 
@@ -56,4 +58,8 @@ end
 
 After('@disable_fail_fast') do
   Cucumber.wants_to_quit = false
+end
+
+def snake_case(name)
+  name.downcase.gsub(/\W/, '_')
 end

@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.3'
 
   s.add_development_dependency 'cucumber-compatibility-kit', '~> 9.2', '>= 9.2.1'
-  # Only needed whilst we support jUnit legacy formatter. Can be removed once we remove it
+  # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
   s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.6'
   s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
