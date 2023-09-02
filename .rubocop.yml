@@ -50,6 +50,10 @@ Lint/UselessMethodDefinition:
 # to the auto-gen-config
 Metrics/AbcSize:
   Max: 41
+  # TODO: Manually added! - be careful with regenning the file - this needs a fix
+  Exclude:
+    - lib/cucumber/formatter/junit.rb
+    - spec/cucumber/formatter/http_io_spec.rb
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 Metrics/BlockLength:
@@ -64,6 +68,8 @@ Metrics/ClassLength:
   Max: 375
   Exclude:
     - 'lib/cucumber/cli/options.rb'
+    # TODO: Manually added! - be careful with regenning the file - this needs a fix
+    - lib/cucumber/formatter/pretty.rb
 
 # A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
 Layout/LineLength:
@@ -75,10 +81,18 @@ Metrics/ModuleLength:
   Exclude:
     - './spec/**/*'
     - 'cck/spec/**/*'
+    # TODO: Manually added! - be careful with regenning the file - this needs a fix
+    - lib/cucumber/formatter/console.rb
 
 # TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
 Metrics/MethodLength:
   Max: 27
+  # TODO: Manually added! - be careful with regenning the file - this needs a fix
+  Exclude:
+    - lib/cucumber/cli/main.rb
+    - lib/cucumber/cli/options.rb
+    - lib/cucumber/formatter/publish_banner_printer.rb
+    - spec/cucumber/formatter/http_io_spec.rb
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
