@@ -25,19 +25,6 @@ AllCops:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-# TODO: [LH] - This needs removing - legacy code. Initially move to auto-gen-config and then fix
-# Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
-# heredocs '<<~' were introduced then. The files below are the current ones
-# with offenses
-Layout/HeredocIndentation:
-  Exclude:
-    - 'features/lib/support/feature_factory.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/cli/profile_loader.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/profile_loader_spec.rb'
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
 # In pretty_spec.rb & progress_spec.rb offences look false as the trailing spaces are in fact multiline string literals
 Layout/TrailingWhitespace:
