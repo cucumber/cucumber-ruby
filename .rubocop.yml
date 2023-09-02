@@ -123,9 +123,6 @@ Style/AccessModifierDeclarations:
 Style/ClassAndModuleChildren:
   Enabled: false
 
-Style/ClassEqualityComparison:
-  Enabled: true
-
 Style/Documentation:
   Enabled: false
 
@@ -141,6 +138,3 @@ Style/StderrPuts:
 Style/RegexpLiteral:
   EnforcedStyle: slashes
   AllowInnerSlashes: true
-
-Style/YodaCondition:
-  Enabled: true
