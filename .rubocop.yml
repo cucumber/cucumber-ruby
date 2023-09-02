@@ -65,10 +65,6 @@ Metrics/ClassLength:
   Exclude:
     - 'lib/cucumber/cli/options.rb'
 
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
-Metrics/CyclomaticComplexity:
-  Max: 12
-
 # A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
 Layout/LineLength:
   Max: 200
@@ -83,10 +79,6 @@ Metrics/ModuleLength:
 # TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/MethodLength:
   Max: 30
-
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
-Metrics/PerceivedComplexity:
-  Max: 13
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
