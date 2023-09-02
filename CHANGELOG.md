@@ -12,6 +12,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Began to tidy up (Cleared some AutoFix cops), and organise rubocop tech-debt in repo (This introduced new rubocop sub-gems) ([#1716](https://github.com/cucumber/cucumber-ruby/pull/1716) [luke-hill](https://github.com/luke-hill))
 
+- Gem update. Update rubocop gems to latest and increase minimum version of some cucumber sub-gems ([#1732](https://github.com/cucumber/cucumber-ruby/pull/1732) [luke-hill](https://github.com/luke-hill))
+
 ## [9.0.1] - 2023-09-01
 ### Changed
 - Update dependency of a few associated cucumber sub-gems ([#1715](https://github.com/cucumber/cucumber-ruby/pull/1715) [luke-hill](https://github.com/luke-hill))
