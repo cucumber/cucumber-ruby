@@ -25,19 +25,6 @@ AllCops:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-# TODO: [LH] - This needs removing - legacy code. Initially move to auto-gen-config and then fix
-# Disabling this cop until the minimum Ruby version is >= 2.3 as squiggly
-# heredocs '<<~' were introduced then. The files below are the current ones
-# with offenses
-Layout/HeredocIndentation:
-  Exclude:
-    - 'features/lib/support/feature_factory.rb'
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/cli/profile_loader.rb'
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/profile_loader_spec.rb'
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
 # In pretty_spec.rb & progress_spec.rb offences look false as the trailing spaces are in fact multiline string literals
 Layout/TrailingWhitespace:
@@ -59,10 +46,14 @@ Lint/UselessMethodDefinition:
   Exclude:
     - 'lib/cucumber/glue/proto_world.rb'
 
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
+# TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
 # to the auto-gen-config
 Metrics/AbcSize:
-  Max: 45
+  Max: 41
+  # TODO: Manually added! - be careful with regenning the file - this needs a fix
+  Exclude:
+    - lib/cucumber/formatter/junit.rb
+    - spec/cucumber/formatter/http_io_spec.rb
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 Metrics/BlockLength:
@@ -77,29 +68,31 @@ Metrics/ClassLength:
   Max: 375
   Exclude:
     - 'lib/cucumber/cli/options.rb'
-
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
-Metrics/CyclomaticComplexity:
-  Max: 12
+    # TODO: Manually added! - be careful with regenning the file - this needs a fix
+    - lib/cucumber/formatter/pretty.rb
 
 # A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
 Layout/LineLength:
   Max: 200
 
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
+# TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
 Metrics/ModuleLength:
-  Max: 150
+  Max: 135
   Exclude:
     - './spec/**/*'
     - 'cck/spec/**/*'
+    # TODO: Manually added! - be careful with regenning the file - this needs a fix
+    - lib/cucumber/formatter/console.rb
 
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
+# TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
 Metrics/MethodLength:
-  Max: 30
-
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
-Metrics/PerceivedComplexity:
-  Max: 13
+  Max: 27
+  # TODO: Manually added! - be careful with regenning the file - this needs a fix
+  Exclude:
+    - lib/cucumber/cli/main.rb
+    - lib/cucumber/cli/options.rb
+    - lib/cucumber/formatter/publish_banner_printer.rb
+    - spec/cucumber/formatter/http_io_spec.rb
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
@@ -139,13 +132,7 @@ Naming/VariableNumber:
 # This cop throws errors when parsing a lot of the repo's code, possibly due
 # to splat issues?
 Style/AccessModifierDeclarations:
-    Enabled: false
-
-Style/ClassAndModuleChildren:
   Enabled: false
-
-Style/ClassEqualityComparison:
-  Enabled: true
 
 Style/Documentation:
   Enabled: false
@@ -153,15 +140,9 @@ Style/Documentation:
 Style/FormatStringToken:
   EnforcedStyle: annotated
 
-Style/FloatDivision:
-  Enabled: false
-
 Style/StderrPuts:
   Enabled: false
 
 Style/RegexpLiteral:
   EnforcedStyle: slashes
   AllowInnerSlashes: true
-
-Style/YodaCondition:
-  Enabled: true

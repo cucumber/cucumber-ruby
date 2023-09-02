@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ModuleLength
-
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
 require 'cucumber/gherkin/i18n'
@@ -262,4 +260,3 @@ module Cucumber
     end
   end
 end
-# rubocop:enable Metrics/ModuleLength

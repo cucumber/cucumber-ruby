@@ -19,7 +19,7 @@ module Cucumber
     #
     # If the output is STDOUT (and not a file), there are bright colours to watch too.
     #
-    class Pretty # rubocop:disable Metrics/ClassLength
+    class Pretty
       include FileUtils
       include Console
       include Io
