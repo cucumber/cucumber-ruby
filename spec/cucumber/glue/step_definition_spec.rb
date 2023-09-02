@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/ClassVars
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
 require 'support/fake_objects'
@@ -162,7 +161,7 @@ module Cucumber
         step_name = 'My car is white'
         step_args = step_match(step_name).args
 
-        expect { run_step step_name }.not_to change { step_args.first } # rubocop:disable Lint/AmbiguousBlockAssociation
+        expect { run_step step_name }.not_to change { step_args.first }
       end
 
       context 'with ParameterType' do
@@ -243,4 +242,3 @@ module Cucumber
     end
   end
 end
-# rubocop:enable Style/ClassVars

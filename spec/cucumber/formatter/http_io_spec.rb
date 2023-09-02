@@ -26,8 +26,6 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
   let(:failure_banner) { 'Oh noooo, something went horribly wrong :(' }
 
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/AbcSize
   def start_server
     uri = URI('http://localhost')
     @received_body_io = StringIO.new
@@ -112,8 +110,6 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
 
     "http://localhost:#{@server.config[:Port]}"
   end
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/AbcSize
 
   after do
     @server&.shutdown

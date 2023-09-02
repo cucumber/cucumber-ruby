@@ -15,7 +15,6 @@ module Cucumber
         end
       end
 
-      # rubocop:disable Metrics/MethodLength
       def display_publish_ad(io)
         display_banner(
           [
@@ -59,7 +58,6 @@ module Cucumber
           io
         )
       end
-      # rubocop:enable Metrics/MethodLength
 
       def highlight(text)
         [text, :cyan]
