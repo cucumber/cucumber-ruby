@@ -59,7 +59,7 @@ module Cucumber
           context 'without profile' do
             let(:profile) { nil }
 
-            it 'should return just cucumber_opts' do
+            it 'returns just cucumber_opts' do
               expect(subject.cucumber_opts_with_profile).to be opts
             end
           end
@@ -67,7 +67,7 @@ module Cucumber
           context 'with profile' do
             let(:profile) { 'fancy' }
 
-            it 'should combine opts and profile into an array, prepending --profile option' do
+            it 'combines opts and profile into an array, prepending --profile option' do
               expect(subject.cucumber_opts_with_profile).to eq %w[foo bar --profile fancy]
             end
           end
@@ -75,7 +75,7 @@ module Cucumber
           context 'with multiple profiles' do
             let(:profile) { %w[fancy pants] }
 
-            it 'should combine opts and each profile into an array, prepending --profile option' do
+            it 'combines opts and each profile into an array, prepending --profile option' do
               expect(subject.cucumber_opts_with_profile).to eq %w[foo bar --profile fancy --profile pants]
             end
           end
@@ -93,7 +93,7 @@ module Cucumber
           context 'with profile' do
             let(:profile) { 'fancy' }
 
-            it 'should combine opts and profile into an array, prepending --profile option' do
+            it 'combines opts and profile into an array, prepending --profile option' do
               expect(subject.cucumber_opts_with_profile).to eq %w[--profile fancy]
             end
           end
@@ -101,7 +101,7 @@ module Cucumber
           context 'with multiple profiles' do
             let(:profile) { %w[fancy pants] }
 
-            it 'should combine opts and each profile into an array, prepending --profile option' do
+            it 'combines opts and each profile into an array, prepending --profile option' do
               expect(subject.cucumber_opts_with_profile).to eq %w[--profile fancy --profile pants]
             end
           end

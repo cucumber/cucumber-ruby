@@ -385,7 +385,7 @@ Defined profiles in cucumber.yml:
         expect(config.options[:name_regexps]).to include(/User signs up/)
       end
 
-      it 'should allow specifying environment variables on the command line' do
+      it 'allows specifying environment variables on the command line' do
         config.parse!(['foo=bar'])
 
         expect(ENV['foo']).to eq 'bar'
