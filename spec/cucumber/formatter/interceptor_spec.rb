@@ -17,15 +17,15 @@ module Cucumber::Formatter
           @stderr = $stderr
         end
 
+        after :each do
+          $stderr = @stderr
+        end
+
         it 'wraps $stderr' do
           wrapped = Interceptor::Pipe.wrap(:stderr)
 
           expect($stderr).to be_instance_of Interceptor::Pipe
           expect($stderr).to be wrapped
-        end
-
-        after :each do
-          $stderr = @stderr
         end
       end
 
@@ -34,15 +34,15 @@ module Cucumber::Formatter
           @stdout = $stdout
         end
 
+        after :each do
+          $stdout = @stdout
+        end
+
         it 'wraps $stdout' do
           wrapped = Interceptor::Pipe.wrap(:stdout)
 
           expect($stdout).to be_instance_of Interceptor::Pipe
           expect($stdout).to be wrapped
-        end
-
-        after :each do
-          $stdout = @stdout
         end
       end
     end
@@ -52,6 +52,10 @@ module Cucumber::Formatter
         @stdout = $stdout
         $stdout = pipe
         @wrapped = Interceptor::Pipe.wrap(:stdout)
+      end
+
+      after :each do
+        $stdout = @stdout
       end
 
       it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
@@ -82,10 +86,6 @@ module Cucumber::Formatter
         @wrapped.write(buffer)
 
         expect(@wrapped.buffer_string).not_to end_with(buffer)
-      end
-
-      after :each do
-        $stdout = @stdout
       end
     end
 

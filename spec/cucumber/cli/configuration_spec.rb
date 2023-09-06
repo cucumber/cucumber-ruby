@@ -357,6 +357,10 @@ Defined profiles in cucumber.yml:
           Cucumber.use_full_backtrace = false
         end
 
+        after do
+          Cucumber.use_full_backtrace = false
+        end
+
         it 'shows full backtrace when --backtrace is present' do
           Main.new(['--backtrace'])
           begin
@@ -364,10 +368,6 @@ Defined profiles in cucumber.yml:
           rescue RSpec::Expectations::ExpectationNotMetError => e
             expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
           end
-        end
-
-        after do
-          Cucumber.use_full_backtrace = false
         end
       end
 
