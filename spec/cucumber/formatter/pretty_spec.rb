@@ -629,6 +629,7 @@ OUTPUT
       | c | d |
 OUTPUT
             end
+
             it 'does not display the table for the scenario' do
               expect(@out.string).not_to include <<OUTPUT
       | e | f |
@@ -660,6 +661,7 @@ OUTPUT
       """
 OUTPUT
             end
+
             it 'does not display the scenario py string' do
               expect(@out.string).not_to include <<OUTPUT
       """
@@ -884,6 +886,7 @@ OUTPUT
           it "replaces the first step with 'Given'" do
             expect(@out.string).to include("Given('there are bananas and apples')")
           end
+
           it "uses actual keywords as the 'previous' keyword for future replacements" do
             expect(@out.string).to include("Given('other monkeys are around')")
             expect(@out.string).to include("When('the other monkeys eat all the apples')")

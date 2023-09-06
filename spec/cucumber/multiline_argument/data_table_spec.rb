@@ -115,9 +115,11 @@ module Cucumber
         it 'returns nil if headers do not match' do
           expect(@table.match('does,not,match')).to be_nil
         end
+
         it 'requires a table: prefix on match' do
           expect(@table.match('table:one,four,seven')).to_not be_nil
         end
+
         it 'does not match if no table: prefix on match' do
           expect(@table.match('one,four,seven')).to be_nil
         end
