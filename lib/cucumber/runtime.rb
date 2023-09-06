@@ -150,8 +150,8 @@ module Cucumber
     end
 
     class NormalisedEncodingFile
-      COMMENT_OR_EMPTY_LINE_PATTERN = /^\s*#|^\s*$/ # :nodoc:
-      ENCODING_PATTERN = /^\s*#\s*encoding\s*:\s*([^\s]+)/ # :nodoc:
+      COMMENT_OR_EMPTY_LINE_PATTERN = /^\s*#|^\s*$/.freeze # :nodoc:
+      ENCODING_PATTERN = /^\s*#\s*encoding\s*:\s*([^\s]+)/.freeze # :nodoc:
 
       def self.read(path)
         new(path).read
