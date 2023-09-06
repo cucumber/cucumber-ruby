@@ -12,16 +12,15 @@ module Cucumber
     describe Snippet do
       include Cucumber::Formatter::Console
       let(:code_keyword) { 'Given' }
+      let(:snippet) do
+        snippet_class.new(@cucumber_expression_generator, code_keyword, @step_text, @multiline_argument)
+      end
 
       before do
         @step_text = 'we have a missing step'
         @multiline_argument = Core::Test::EmptyMultilineArgument.new
         @registry = CucumberExpressions::ParameterTypeRegistry.new
         @cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(@registry)
-      end
-
-      let(:snippet) do
-        snippet_class.new(@cucumber_expression_generator, code_keyword, @step_text, @multiline_argument)
       end
 
       def unindented(snippet)
