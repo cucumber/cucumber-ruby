@@ -74,13 +74,13 @@ RSpec/AnyInstance:
   Exclude:
     - 'spec/cucumber/cli/main_spec.rb'
 
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEql:
-  Exclude:
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/glue/registry_and_more_spec.rb'
+## Offense count: 5
+## This cop supports unsafe autocorrection (--autocorrect-all).
+#RSpec/BeEql:
+#  Exclude:
+#    - 'spec/cucumber/cli/configuration_spec.rb'
+#    - 'spec/cucumber/cli/options_spec.rb'
+#    - 'spec/cucumber/glue/registry_and_more_spec.rb'
 
 # Offense count: 9
 # This cop supports safe autocorrection (--autocorrect).
@@ -121,12 +121,12 @@ RSpec/DescribeClass:
     - '**/spec/views/**/*'
     - 'spec/cck/cck_spec.rb'
 
-# Offense count: 167
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: SkipBlocks, EnforcedStyle.
-# SupportedStyles: described_class, explicit
-RSpec/DescribedClass:
-  Enabled: false
+## Offense count: 167
+## This cop supports unsafe autocorrection (--autocorrect-all).
+## Configuration parameters: SkipBlocks, EnforcedStyle.
+## SupportedStyles: described_class, explicit
+#RSpec/DescribedClass:
+#  Enabled: false
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -302,14 +302,14 @@ RSpec/NotToNot:
     - 'spec/cucumber/glue/step_definition_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Strict, EnforcedStyle, AllowedExplicitMatchers.
-# SupportedStyles: inflected, explicit
-RSpec/PredicateMatcher:
-  Exclude:
-    - 'spec/cucumber/hooks_spec.rb'
-    - 'spec/cucumber/running_test_case_spec.rb'
+## Offense count: 4
+## This cop supports unsafe autocorrection (--autocorrect-all).
+## Configuration parameters: Strict, EnforcedStyle, AllowedExplicitMatchers.
+## SupportedStyles: inflected, explicit
+#RSpec/PredicateMatcher:
+#  Exclude:
+#    - 'spec/cucumber/hooks_spec.rb'
+#    - 'spec/cucumber/running_test_case_spec.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -400,38 +400,38 @@ Style/ClassAndModuleChildren:
     - 'lib/autotest/cucumber_rails_rspec2.rb'
     - 'lib/autotest/cucumber_rspec.rb'
     - 'lib/autotest/cucumber_rspec2.rb'
-    - 'spec/cucumber/deprecate_spec.rb'
-    - 'spec/cucumber/formatter/fail_fast_spec.rb'
-    - 'spec/cucumber/formatter/interceptor_spec.rb'
-    - 'spec/cucumber/hooks_spec.rb'
+#    - 'spec/cucumber/deprecate_spec.rb'
+#    - 'spec/cucumber/formatter/fail_fast_spec.rb'
+#    - 'spec/cucumber/formatter/interceptor_spec.rb'
+#    - 'spec/cucumber/hooks_spec.rb'
 
 # Offense count: 3
 Style/ClassVars:
   Exclude:
     - 'spec/cucumber/glue/step_definition_spec.rb'
 
-# Offense count: 22
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: left_coerce, right_coerce, single_coerce, fdiv
-Style/FloatDivision:
-  Enabled: false
+## Offense count: 22
+## This cop supports unsafe autocorrection (--autocorrect-all).
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: left_coerce, right_coerce, single_coerce, fdiv
+#Style/FloatDivision:
+#  Enabled: false
 
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/file_specs.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
+## Offense count: 5
+## This cop supports unsafe autocorrection (--autocorrect-all).
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: literals, strict
+#Style/MutableConstant:
+#  Exclude:
+#    - 'lib/cucumber/cli/options.rb'
+#    - 'lib/cucumber/file_specs.rb'
+#    - 'lib/cucumber/runtime.rb'
+#    - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
+## Offense count: 1
+## This cop supports unsafe autocorrection (--autocorrect-all).
+## Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
+## AllowedMethods: present?, blank?, presence, try, try!
+#Style/SafeNavigation:
+#  Exclude:
+#    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
