@@ -14,6 +14,7 @@ module Cucumber::Formatter
     include Cucumber::Core::Gherkin::Writer
 
     let(:configuration) { Cucumber::Configuration.new }
+
     before { FailFast.new(configuration) }
 
     context 'failing scenario' do

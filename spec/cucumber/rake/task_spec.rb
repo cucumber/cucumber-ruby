@@ -22,11 +22,13 @@ module Cucumber
 
         context 'when set via array' do
           let(:opts) { %w[foo bar] }
+
           it { expect(subject.cucumber_opts).to be opts }
         end
 
         context 'when set via string' do
           let(:opts) { 'foo=bar' }
+
           it { expect(subject.cucumber_opts).to eq %w[foo=bar] }
         end
 
