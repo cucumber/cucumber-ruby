@@ -191,7 +191,7 @@ module Cucumber
 
           run_step 'capture this: Anjie'
           step_args = step_match('capture this: Anjie').args
-          expect(step_args[0].name).to_not eq 'Dave'
+          expect(step_args[0].name).not_to eq 'Dave'
           expect(step_args[0].name).to eq 'Anjie'
         end
       end

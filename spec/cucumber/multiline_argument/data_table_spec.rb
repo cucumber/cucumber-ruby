@@ -49,12 +49,12 @@ module Cucumber
 
         it 'is able to be accessed multiple times' do
           @table.symbolic_hashes
-          expect { @table.symbolic_hashes }.to_not raise_error
+          expect { @table.symbolic_hashes }.not_to raise_error
         end
 
         it 'does not interfere with use of #hashes' do
           @table.symbolic_hashes
-          expect { @table.hashes }.to_not raise_error
+          expect { @table.hashes }.not_to raise_error
         end
       end
 
@@ -82,7 +82,7 @@ module Cucumber
         it 'allows mapping columns and modify the rows as well' do
           new_table = @table.map_column(:one, &:to_i)
           expect(new_table.rows.first).to include(4444)
-          expect(new_table.rows.first).to_not include('4444')
+          expect(new_table.rows.first).not_to include('4444')
         end
 
         it 'passes silently if a mapped column does not exist in non-strict mode' do
@@ -100,7 +100,7 @@ module Cucumber
         end
 
         it 'returns a new table' do
-          expect(@table.map_column(:one, &:to_i)).to_not eq @table
+          expect(@table.map_column(:one, &:to_i)).not_to eq @table
         end
       end
 
@@ -117,7 +117,7 @@ module Cucumber
         end
 
         it 'requires a table: prefix on match' do
-          expect(@table.match('table:one,four,seven')).to_not be_nil
+          expect(@table.match('table:one,four,seven')).not_to be_nil
         end
 
         it 'does not match if no table: prefix on match' do
