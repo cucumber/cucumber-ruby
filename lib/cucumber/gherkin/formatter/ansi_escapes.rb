@@ -67,11 +67,10 @@ module Cucumber
           'tag'       => 'cyan'
         )
 
-        if ENV['GHERKIN_COLORS'] # Example: export GHERKIN_COLORS="passed=red:failed=yellow"
-          ENV['GHERKIN_COLORS'].split(':').each do |pair|
-            a = pair.split('=')
-            ALIASES[a[0]] = a[1]
-          end
+        # Example: export GHERKIN_COLORS="passed=red:failed=yellow"
+        ENV.fetch('GHERKIN_COLORS', '').split(':').each do |pair|
+          rule, colour = pair.split('=')
+          ALIASES[colour] = rule
         end
 
         ALIASES.each_key do |key|
