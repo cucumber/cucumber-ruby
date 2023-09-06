@@ -2,18 +2,18 @@
 
 module FeatureFactory
   def create_feature(name = generate_feature_name)
-    gherkin = <<-GHERKIN
-Feature: #{name}
-#{yield}
+    gherkin = <<~GHERKIN
+      Feature: #{name}
+      #{yield}
     GHERKIN
     write_file filename(name), gherkin
   end
 
   def create_feature_ja(name = generate_feature_name)
-    gherkin = <<-GHERKIN
-# language: ja
-機能: #{name}
-#{yield}
+    gherkin = <<~GHERKIN
+      # language: ja
+      機能: #{name}
+      #{yield}
     GHERKIN
     write_file filename(name), gherkin
   end

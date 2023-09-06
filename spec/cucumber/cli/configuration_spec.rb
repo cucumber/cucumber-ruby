@@ -96,10 +96,10 @@ module Cucumber
         end
 
         it 'parses ERB in cucumber.yml that makes uses nested ERB sessions' do
-          given_cucumber_yml_defined_as(<<ERB_YML)
-<%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
-<%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
-ERB_YML
+          given_cucumber_yml_defined_as(<<~ERB_YML)
+            <%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
+            <%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
+          ERB_YML
 
           config.parse!(%w[-p standard])
 
@@ -109,12 +109,12 @@ ERB_YML
         it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
           given_cucumber_yml_defined_as('default' => '--require from/yml', 'json_report' => '--format json')
 
-          expected_message = <<-END_OF_MESSAGE
-Could not find profile: 'i_do_not_exist'
+          expected_message = <<~END_OF_MESSAGE
+            Could not find profile: 'i_do_not_exist'
 
-Defined profiles in cucumber.yml:
-  * default
-  * json_report
+            Defined profiles in cucumber.yml:
+              * default
+              * json_report
           END_OF_MESSAGE
 
           expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(ProfileNotFound, expected_message)
