@@ -159,38 +159,38 @@ module Cucumber
       context '.parse' do
         context 'when a simple URL is given' do
           it 'returns the URL' do
-            url, = CurlOptionParser.parse('http://whatever.ltd')
+            url, = described_class.parse('http://whatever.ltd')
             expect(url).to eq('http://whatever.ltd')
           end
 
           it 'uses PUT as the default method' do
-            _, http_method = CurlOptionParser.parse('http://whatever.ltd')
+            _, http_method = described_class.parse('http://whatever.ltd')
             expect(http_method).to eq('PUT')
           end
 
           it 'does not specify any header' do
-            _, _, headers = CurlOptionParser.parse('http://whatever.ltd')
+            _, _, headers = described_class.parse('http://whatever.ltd')
             expect(headers).to eq({})
           end
         end
 
         it 'detects the HTTP method with the flag -X' do
-          expect(CurlOptionParser.parse('http://whatever.ltd -X POST')).to eq(
+          expect(described_class.parse('http://whatever.ltd -X POST')).to eq(
             ['http://whatever.ltd', 'POST', {}]
           )
-          expect(CurlOptionParser.parse('http://whatever.ltd -X PUT')).to eq(
+          expect(described_class.parse('http://whatever.ltd -X PUT')).to eq(
             ['http://whatever.ltd', 'PUT', {}]
           )
         end
 
         it 'detects the HTTP method with the flag --request' do
-          expect(CurlOptionParser.parse('http://whatever.ltd --request GET')).to eq(
+          expect(described_class.parse('http://whatever.ltd --request GET')).to eq(
             ['http://whatever.ltd', 'GET', {}]
           )
         end
 
         it 'can recognize headers set with option -H and double quote' do
-          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" -H "Authorization: Bearer abcde"')).to eq(
+          expect(described_class.parse('http://whatever.ltd -H "Content-Type: text/json" -H "Authorization: Bearer abcde"')).to eq(
             [
               'http://whatever.ltd',
               'PUT',
@@ -203,7 +203,7 @@ module Cucumber
         end
 
         it 'can recognize headers set with option -H and single quote' do
-          expect(CurlOptionParser.parse("http://whatever.ltd -H 'Content-Type: text/json' -H 'Content-Length: 12'")).to eq(
+          expect(described_class.parse("http://whatever.ltd -H 'Content-Type: text/json' -H 'Content-Length: 12'")).to eq(
             [
               'http://whatever.ltd',
               'PUT',
@@ -216,7 +216,7 @@ module Cucumber
         end
 
         it 'supports all options at once' do
-          expect(CurlOptionParser.parse('http://whatever.ltd -H "Content-Type: text/json" -X GET -H "Transfer-Encoding: chunked"')).to eq(
+          expect(described_class.parse('http://whatever.ltd -H "Content-Type: text/json" -X GET -H "Transfer-Encoding: chunked"')).to eq(
             [
               'http://whatever.ltd',
               'GET',
@@ -240,23 +240,23 @@ module Cucumber
       let(:sent_body) { 'X' * report_size }
 
       it 'raises an error on close when server in unreachable' do
-        io = IOHTTPBuffer.new("#{url}/404", 'PUT')
+        io = described_class.new("#{url}/404", 'PUT')
 
         expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
       end
 
       it 'raises an error on close when the server is unreachable' do
-        io = IOHTTPBuffer.new('http://localhost:9987', 'PUT')
+        io = described_class.new('http://localhost:9987', 'PUT')
         expect { io.close }.to(raise_error(/Failed to open TCP connection to localhost:9987/))
       end
 
       it 'raises an error on close when there is too many redirect attempts' do
-        io = IOHTTPBuffer.new("#{url}/loop_redirect", 'PUT')
+        io = described_class.new("#{url}/loop_redirect", 'PUT')
         expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
       end
 
       it 'sends the content over HTTP' do
-        io = IOHTTPBuffer.new("#{url}/s3", 'PUT')
+        io = described_class.new("#{url}/s3", 'PUT')
         io.write(sent_body)
         io.flush
         io.close
@@ -266,7 +266,7 @@ module Cucumber
       end
 
       it 'sends the content over HTTPS' do
-        io = IOHTTPBuffer.new("#{url}/s3", 'PUT', {}, OpenSSL::SSL::VERIFY_NONE)
+        io = described_class.new("#{url}/s3", 'PUT', {}, OpenSSL::SSL::VERIFY_NONE)
         io.write(sent_body)
         io.flush
         io.close
@@ -276,7 +276,7 @@ module Cucumber
       end
 
       it 'follows redirections and sends body twice' do
-        io = IOHTTPBuffer.new("#{url}/putreport", 'PUT')
+        io = described_class.new("#{url}/putreport", 'PUT')
         io.write(sent_body)
         io.flush
         io.close
@@ -286,7 +286,7 @@ module Cucumber
       end
 
       it 'only sends body once' do
-        io = IOHTTPBuffer.new("#{url}/putreport", 'GET')
+        io = described_class.new("#{url}/putreport", 'GET')
         io.write(sent_body)
         io.flush
         io.close
@@ -296,7 +296,7 @@ module Cucumber
       end
 
       it 'does not send headers to 2nd PUT request' do
-        io = IOHTTPBuffer.new("#{url}/putreport", 'GET', { Authorization: 'Bearer abcdefg' })
+        io = described_class.new("#{url}/putreport", 'GET', { Authorization: 'Bearer abcdefg' })
         io.write(sent_body)
         io.flush
         io.close
@@ -308,7 +308,7 @@ module Cucumber
         reporter = DummyReporter.new
         allow(reporter).to receive(:report)
 
-        io = IOHTTPBuffer.new("#{url}/putreport", 'GET', {}, nil, reporter)
+        io = described_class.new("#{url}/putreport", 'GET', {}, nil, reporter)
         io.write(sent_body)
         io.flush
         io.close
@@ -321,7 +321,7 @@ module Cucumber
         allow(reporter).to receive(:report)
 
         begin
-          io = IOHTTPBuffer.new("#{url}/401", 'GET', {}, nil, reporter)
+          io = described_class.new("#{url}/401", 'GET', {}, nil, reporter)
           io.write(sent_body)
           io.flush
           io.close
@@ -336,7 +336,7 @@ module Cucumber
         let(:putreport_returned_location) { nil }
 
         it 'does not follow the location' do
-          io = IOHTTPBuffer.new("#{url}/putreport", 'GET')
+          io = described_class.new("#{url}/putreport", 'GET')
           io.write(sent_body)
           io.flush
           io.close

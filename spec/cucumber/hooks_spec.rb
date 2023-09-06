@@ -19,13 +19,13 @@ module Cucumber::Hooks
 
   require 'cucumber/core/test/location'
   describe BeforeHook do
-    subject { BeforeHook.new(location) }
+    subject { described_class.new(location) }
     let(:location) { Cucumber::Core::Test::Location.new('hooks.rb', 1) }
     it_behaves_like 'a source node'
   end
 
   describe AfterHook do
-    subject { AfterHook.new(location) }
+    subject { described_class.new(location) }
     let(:location) { Cucumber::Core::Test::Location.new('hooks.rb', 1) }
     it_behaves_like 'a source node'
   end

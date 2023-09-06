@@ -3,7 +3,7 @@
 require 'cucumber/term/banner'
 
 describe Cucumber::Term::Banner do
-  include Cucumber::Term::Banner
+  include described_class
 
   context '.display_banner' do
     let(:io) { StringIO.new }

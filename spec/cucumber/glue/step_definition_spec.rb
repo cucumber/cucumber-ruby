@@ -223,7 +223,7 @@ module Cucumber
       end
 
       it 'has a JSON representation of the signature' do
-        expect(StepDefinition.new(
+        expect(described_class.new(
           id,
           registry,
           /I CAN HAZ (\d+) CUKES/i,

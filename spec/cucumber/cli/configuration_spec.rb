@@ -348,7 +348,7 @@ Defined profiles in cucumber.yml:
       it 'accepts --no-color option' do
         expect(Cucumber::Term::ANSIColor).to receive(:coloring=).with(false)
 
-        config = Configuration.new(StringIO.new)
+        config = described_class.new(StringIO.new)
         config.parse!(['--no-color'])
       end
 

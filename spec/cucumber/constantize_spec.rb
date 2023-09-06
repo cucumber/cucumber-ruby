@@ -6,7 +6,7 @@ module Html end
 
 module Cucumber
   describe Constantize do
-    include Constantize
+    include described_class
 
     it 'loads pretty formatter' do
       clazz = constantize('Cucumber::Formatter::Pretty')

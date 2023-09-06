@@ -8,7 +8,7 @@ module Cucumber
     describe ConsoleCounts do
       it 'works for zero' do
         config = Configuration.new
-        counts = ConsoleCounts.new(config)
+        counts = described_class.new(config)
         expect(counts.to_s).to eq "0 scenarios\n0 steps"
       end
     end

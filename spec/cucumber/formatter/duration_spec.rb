@@ -6,7 +6,7 @@ require 'cucumber/formatter/duration'
 module Cucumber
   module Formatter
     describe Duration do
-      include Duration
+      include described_class
 
       it 'formats ms' do
         expect(format_duration(0.002103)).to eq '0m0.002s'

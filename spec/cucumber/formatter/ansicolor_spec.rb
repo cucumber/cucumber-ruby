@@ -6,7 +6,7 @@ require 'cucumber/formatter/ansicolor'
 module Cucumber
   module Formatter
     describe ANSIColor do
-      include ANSIColor
+      include described_class
 
       it 'wraps passed_param with bold green and reset to green' do
         expect(passed_param('foo')).to eq "\e[32m\e[1mfoo\e[0m\e[0m\e[32m"
@@ -36,7 +36,7 @@ module Cucumber
 
       context 'with custom color scheme' do
         before do
-          ANSIColor.apply_custom_colors('passed=red,bold')
+          described_class.apply_custom_colors('passed=red,bold')
         end
 
         after do

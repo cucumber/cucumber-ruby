@@ -5,17 +5,17 @@ require 'spec_helper'
 module Cucumber
   module Cli
     describe RerunFile do
-      let(:rerun_file) { RerunFile.new('@rerun.txt') }
+      let(:rerun_file) { described_class.new('@rerun.txt') }
 
       it 'expects rerun files to have a leading @' do
         allow(File).to receive(:file?) { true }
-        expect(RerunFile.can_read?('rerun.txt')).to eq false
-        expect(RerunFile.can_read?('@rerun.txt')).to eq true
+        expect(described_class.can_read?('rerun.txt')).to eq false
+        expect(described_class.can_read?('@rerun.txt')).to eq true
       end
 
       it 'does not treat directories as rerun files' do
         allow(File).to receive(:file?) { false }
-        expect(RerunFile.can_read?('@rerun.txt')).to eq false
+        expect(described_class.can_read?('@rerun.txt')).to eq false
       end
 
       it 'removes leading @ character from filename' do

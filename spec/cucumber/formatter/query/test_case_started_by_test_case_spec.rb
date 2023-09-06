@@ -16,7 +16,7 @@ module Cucumber
 
           @out = StringIO.new
           @config = actual_runtime.configuration.with_options(out_stream: @out)
-          @formatter = TestCaseStartedByTestCase.new(@config)
+          @formatter = described_class.new(@config)
         end
 
         let(:unknown_test_case) do

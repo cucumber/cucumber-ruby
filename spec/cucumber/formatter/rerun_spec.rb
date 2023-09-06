@@ -34,7 +34,7 @@ module Cucumber
               end
             end
           end
-          Rerun.new(config)
+          described_class.new(config)
           execute [gherkin], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
 
@@ -68,7 +68,7 @@ module Cucumber
             end
           end
 
-          Rerun.new(config)
+          described_class.new(config)
           execute [foo, bar], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
 
@@ -86,7 +86,7 @@ module Cucumber
             end
           end
 
-          Rerun.new(config)
+          described_class.new(config)
           execute [gherkin], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
 
@@ -105,7 +105,7 @@ module Cucumber
               end
             end
 
-            Rerun.new(config)
+            described_class.new(config)
             execute [gherkin], [FakeObjects::FlakyStepActions.new], config.event_bus
             config.event_bus.test_run_finished
 
@@ -124,7 +124,7 @@ module Cucumber
               end
             end
 
-            Rerun.new(config)
+            described_class.new(config)
             execute [foo], [FakeObjects::FlakyStepActions.new], config.event_bus
             config.event_bus.test_run_finished
 
@@ -140,7 +140,7 @@ module Cucumber
               end
             end
 
-            Rerun.new(config)
+            described_class.new(config)
             execute [foo, foo], [StandardStepActions.new], config.event_bus
             config.event_bus.test_run_finished
 

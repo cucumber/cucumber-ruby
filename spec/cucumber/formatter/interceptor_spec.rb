@@ -9,7 +9,7 @@ module Cucumber::Formatter
 
     describe '#wrap!' do
       it 'raises an ArgumentError if its not passed :stderr/:stdout' do
-        expect { Interceptor::Pipe.wrap(:nonsense) }.to raise_error(ArgumentError)
+        expect { described_class.wrap(:nonsense) }.to raise_error(ArgumentError)
       end
 
       context 'when passed :stderr' do
@@ -18,9 +18,9 @@ module Cucumber::Formatter
         end
 
         it 'wraps $stderr' do
-          wrapped = Interceptor::Pipe.wrap(:stderr)
+          wrapped = described_class.wrap(:stderr)
 
-          expect($stderr).to be_instance_of Interceptor::Pipe
+          expect($stderr).to be_instance_of described_class
           expect($stderr).to be wrapped
         end
 
@@ -35,9 +35,9 @@ module Cucumber::Formatter
         end
 
         it 'wraps $stdout' do
-          wrapped = Interceptor::Pipe.wrap(:stdout)
+          wrapped = described_class.wrap(:stdout)
 
-          expect($stdout).to be_instance_of Interceptor::Pipe
+          expect($stdout).to be_instance_of described_class
           expect($stdout).to be wrapped
         end
 
@@ -51,33 +51,33 @@ module Cucumber::Formatter
       before :each do
         @stdout = $stdout
         $stdout = pipe
-        @wrapped = Interceptor::Pipe.wrap(:stdout)
+        @wrapped = described_class.wrap(:stdout)
       end
 
       it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
-        expect { Interceptor::Pipe.unwrap!(:nonsense) }.to raise_error(ArgumentError)
+        expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
       end
 
       it 'resets $stdout when #unwrap! is called' do
-        interceptor = Interceptor::Pipe.unwrap! :stdout
+        interceptor = described_class.unwrap! :stdout
 
-        expect(interceptor).to be_instance_of Interceptor::Pipe
+        expect(interceptor).to be_instance_of described_class
         expect($stdout).not_to be interceptor
       end
 
       it 'noops if $stdout or $stderr has been overwritten' do
         $stdout = StringIO.new
-        pipe = Interceptor::Pipe.unwrap! :stdout
+        pipe = described_class.unwrap! :stdout
         expect(pipe).to eq $stdout
 
         $stderr = StringIO.new
-        pipe = Interceptor::Pipe.unwrap! :stderr
+        pipe = described_class.unwrap! :stderr
         expect(pipe).to eq $stderr
       end
 
       it 'disables the pipe bypass' do
         buffer = '(::)'
-        Interceptor::Pipe.unwrap! :stdout
+        described_class.unwrap! :stdout
 
         @wrapped.write(buffer)
 
@@ -91,7 +91,7 @@ module Cucumber::Formatter
 
     describe '#write' do
       let(:buffer) { 'Some stupid buffer' }
-      let(:pi) { Interceptor::Pipe.new(pipe) }
+      let(:pi) { described_class.new(pipe) }
 
       it 'writes arguments to the original pipe' do
         expect(pipe).to receive(:write).with(buffer) { buffer.size }
@@ -109,7 +109,7 @@ module Cucumber::Formatter
     end
 
     describe '#method_missing' do
-      let(:pi) { Interceptor::Pipe.new(pipe) }
+      let(:pi) { described_class.new(pipe) }
 
       it 'passes #tty? to the original pipe' do
         expect(pipe).to receive(:tty?) { true }
@@ -118,7 +118,7 @@ module Cucumber::Formatter
     end
 
     describe '#respond_to' do
-      let(:pi) { Interceptor::Pipe.wrap(:stderr) }
+      let(:pi) { described_class.wrap(:stderr) }
 
       it 'responds to all methods $stderr has' do
         $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
@@ -129,12 +129,12 @@ module Cucumber::Formatter
       it 'does not raise errors' do
         allow($stderr).to receive(:puts)
 
-        Interceptor::Pipe.wrap(:stderr)
+        described_class.wrap(:stderr)
         expect { $stderr.puts('Oh, hi here !') }.not_to raise_exception(NoMethodError)
       end
 
       it 'does not shadow errors when method do not exist on the stream' do
-        Interceptor::Pipe.wrap(:stderr)
+        described_class.wrap(:stderr)
         expect { $stderr.not_really_puts('Oh, hi here !') }.to raise_exception(NoMethodError)
       end
     end

@@ -4,7 +4,7 @@ require 'cucumber/filters/tag_limits'
 
 describe Cucumber::Filters::TagLimits::Verifier do
   describe '#verify!' do
-    subject(:verifier) { Cucumber::Filters::TagLimits::Verifier.new(tag_limits) }
+    subject(:verifier) { described_class.new(tag_limits) }
     let(:test_case_index) { double(:test_case_index) }
 
     context 'the tag counts exceed the tag limits' do

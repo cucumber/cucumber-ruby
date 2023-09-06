@@ -17,7 +17,7 @@ module Cucumber
       receiver = double.as_null_object
       allow(receiver).to receive(:test_case) { |core_test_case|
         self.core_test_case = core_test_case
-        self.wrapped_test_case = RunningTestCase.new(core_test_case).with_result(result)
+        self.wrapped_test_case = described_class.new(core_test_case).with_result(result)
       }
       compile [gherkin_doc], receiver
     end

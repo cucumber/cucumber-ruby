@@ -7,7 +7,7 @@ require 'cucumber/configuration'
 
 module Cucumber
   describe StepMatchSearch do
-    let(:search) { StepMatchSearch.new(registry.method(:step_matches), configuration) }
+    let(:search) { described_class.new(registry.method(:step_matches), configuration) }
     let(:registry) { Glue::RegistryAndMore.new(runtime, configuration) }
     let(:runtime) do
       # TODO: break out step definitions collection from Glue::RegistryAndMore so we don't need this
