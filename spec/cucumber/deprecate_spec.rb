@@ -30,7 +30,7 @@ module Cucumber::Deprecate
   describe CliOption do
     let(:error_stream) { double }
 
-    context '.deprecate' do
+    describe '.deprecate' do
       it 'outputs a warning to the provided channel' do
         allow(error_stream).to receive(:puts)
         described_class.deprecate(error_stream, '--some-option', 'Please use --another-option instead', '1.2.3')
