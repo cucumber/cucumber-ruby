@@ -65,7 +65,7 @@ module Cucumber
       end
 
       it 'is failed?' do
-        expect(wrapped_test_case.failed?).to be_truthy
+        expect(wrapped_test_case).to be_failed
       end
 
       it 'exposes the exception' do
@@ -89,7 +89,7 @@ module Cucumber
       end
 
       it 'is not failed?' do
-        expect(wrapped_test_case.failed?).to be_falsey
+        expect(wrapped_test_case).not_to be_failed
       end
 
       it '#exception is nil' do
