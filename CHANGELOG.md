@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Removed
+- Removed a whole bunch of miscellaneous script files that are no longer used (Either in development or usage) ([#1721](https://github.com/cucumber/cucumber-ruby/pull/1721) [luke-hill](https://github.com/luke-hill))
+
 ### Changed
 - Began to tidy up (Cleared some AutoFix cops), and organise rubocop tech-debt in repo (This introduced new rubocop sub-gems) ([#1716](https://github.com/cucumber/cucumber-ruby/pull/1716) [luke-hill](https://github.com/luke-hill))
 
@@ -24,6 +27,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Cucumber was unable to generate the correct `VERSION` constant ([#1729](https://github.com/cucumber/cucumber-ruby/pull/1729) [luke-hill](https://github.com/luke-hill))
 
 ## [9.0.0] - 2023-08-31
+### Removed
+- Removed support for Ruby 2.6 and JRuby 9.3 ([#1699](https://github.com/cucumber/cucumber-ruby/pull/1699))
+
 ### Added
 - Add option `--retry-total` ([#1669](https://github.com/cucumber/cucumber-ruby/pull/1669))
 
@@ -35,9 +41,6 @@ with [mini_mime](https://rubygems.org/gems/mini_mime)
 
 ### Fixed
 - Cucumber may raise NoMethodError when CUCUMBER_COLORS environment was set ([#1641](https://github.com/cucumber/cucumber-ruby/pull/1641/) [s2k](https://github.com/s2k))
-
-### Removed
-- Removed support for Ruby 2.6 and JRuby 9.3 ([#1699](https://github.com/cucumber/cucumber-ruby/pull/1699))
 
 ## [8.0.0] - 2022-05-19
 ### Added
@@ -57,13 +60,30 @@ with [mini_mime](https://rubygems.org/gems/mini_mime)
 - Suppress RSspec deprecation warnings([#1631](https://github.com/cucumber/cucumber-ruby/pull/1631))
 
 ## [8.0.0.RC.1] - 2022-01-19
+### Removed
+- `AfterConfiguration` has been removed. Please use `InstallPlugin` or `BeforeAll` instead.
+  See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800) to update your code accordingly.
+  ([#1591](https://github.com/cucumber/cucumber-ruby/pull/1591))
+- The built-in Wire protocol
+  The Wire protocol is still officially supported, but as an optional plugin rather
+  than a built-in feature. See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800) to update your code accordingly.
+- Removed former unused `stdin` argument from `Cli::Main`. That may impact your code
+  if you use cucumber API `Cucumber::Cli::Main`. See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800).
+  ([#1588](https://github.com/cucumber/cucumber-ruby/pull/1588))
+- Removed `DataTable#map_column!` and `DataTable#map_headers!`.
+  Those methods were error-prone and planned to be removed a long time ago. You
+  can use the immutable versions instead: `DataTable#map_column` and
+  `DataTable#map_headers`.
+  ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
+- Removed support for Ruby 2.5 and JRuby 9.2.
+
 ### Changed
 - Replace dependency [cucumber-create-meta](https://rubygems.org/gems/cucumber-create-meta)
   with the new [cucumber-ci-environment](https://rubygems.org/gems/cucumber-ci-environment)
   ([#1601](https://github.com/cucumber/cucumber-ruby/pull/1601))
 
 - In `DataTable#map_column`, Changed the `strict` argument into a keyword argument.
-  See [UPGRADING.md](./UPGRADING.md#upgrading-to-800)
+  See upgrading notes for [8.0.0.md](upgrading_notes/8.0.0.md#upgrading-to-800)
   ([#1594](https://github.com/cucumber/cucumber-ruby/pull/1594))
 
 - Added Ruby 3.1 ([#1607](https://github.com/cucumber/cucumber-ruby/pull/1607))
@@ -86,25 +106,6 @@ with [mini_mime](https://rubygems.org/gems/mini_mime)
   ([#1589](https://github.com/cucumber/cucumber-ruby/pull/1589))
 - Fixed `DataTable#map_headers` when headers have the same prefix
   ([#1598](https://github.com/cucumber/cucumber-ruby/pull/1598))
-
-### Removed
-- `AfterConfiguration` has been removed. Please use `InstallPlugin` or `BeforeAll` instead.
-  See the [UPGRADING.md](./UPGRADING.md#upgrading-to-800) to update your code accordingly.
-  ([#1591](https://github.com/cucumber/cucumber-ruby/pull/1591))
-- The built-in Wire protocol
-  The Wire protocol is still officially supported, but as an optional plugin rather
-  than a built-in feature. See the
-  [UPGRADING.md](./UPGRADING.md#upgrading-to-800)
-  to update your code accordingly.
-- Removed former unused `stdin` argument from `Cli::Main`. That may impact your code
-  if you use cucumber API `Cucumber::Cli::Main`. See [UPGRADING.md](./UPGRADING.md#upgrading-to-800).
-  ([#1588](https://github.com/cucumber/cucumber-ruby/pull/1588))
-- Removed `DataTable#map_column!` and `DataTable#map_headers!`.
-  Those methods were error-prone and planned to be removed a long time ago. You
-  can use the immutable versions instead: `DataTable#map_column` and
-  `DataTable#map_headers`.
-  ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
-- Removed support for Ruby 2.5 and JRuby 9.2.
 
 [Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.1...HEAD
 [9.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.0...v9.0.1

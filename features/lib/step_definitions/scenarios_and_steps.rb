@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-def snake_case(name)
-  name.downcase.gsub(/\W/, '_')
-end
-
 Given('the standard step definitions') do
   write_file(
     'features/step_definitions/steps.rb',

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-require 'nokogiri'
-
 Given('a directory without standard Cucumber project directory structure') do
   FileUtils.cd('.') do
     FileUtils.rm_rf 'features' if File.directory?('features')
