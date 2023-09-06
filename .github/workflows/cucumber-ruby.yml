@@ -24,7 +24,7 @@ jobs:
             ruby: truffleruby-head
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/test-ruby
         with:
           ruby-version: ${{ matrix.ruby }}
