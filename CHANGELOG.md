@@ -16,6 +16,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 - Rubocop update. Massively overhauled the cucumber style / rubocop expectations and began to tackle some long-standing tech-debt ([#1733](https://github.com/cucumber/cucumber-ruby/pull/1733) [luke-hill](https://github.com/luke-hill))
 
+- Removed a whole bunch of miscellaneous files that are no longer used (Either in development or usage) ([#1721](https://github.com/cucumber/cucumber-ruby/pull/1721) [luke-hill](https://github.com/luke-hill))
+
 ## [9.0.1] - 2023-09-01
 ### Changed
 - Update dependency of a few associated cucumber sub-gems ([#1715](https://github.com/cucumber/cucumber-ruby/pull/1715) [luke-hill](https://github.com/luke-hill))
