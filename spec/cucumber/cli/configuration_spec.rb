@@ -453,26 +453,27 @@ Defined profiles in cucumber.yml:
         it 'returns the snippet type when it was set' do
           config.parse!(['--snippet-type', 'classic'])
 
-          expect(config.snippet_type).to eq :classic
+          expect(config.snippet_type).to eq(:classic)
         end
 
         it 'returns the snippet type when it was set with shorthand option' do
           config.parse!(['-I', 'classic'])
 
-          expect(config.snippet_type).to eq :classic
+          expect(config.snippet_type).to eq(:classic)
         end
 
         it 'returns the default snippet type if it was not set' do
           config.parse!([])
 
-          expect(config.snippet_type).to eq :cucumber_expression
+          expect(config.snippet_type).to eq(:cucumber_expression)
         end
       end
 
       describe '#retry_attempts' do
         it 'returns the specified number of retries' do
           config.parse!(['--retry=3'])
-          expect(config.retry_attempts).to eql 3
+
+          expect(config.retry_attempts).to eq(3)
         end
       end
     end
