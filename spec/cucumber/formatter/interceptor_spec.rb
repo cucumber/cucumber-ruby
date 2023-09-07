@@ -18,15 +18,15 @@ module Cucumber
             @stderr = $stderr
           end
 
+          after :each do
+            $stderr = @stderr
+          end
+
           it 'wraps $stderr' do
             wrapped = described_class.wrap(:stderr)
 
             expect($stderr).to be_instance_of described_class
             expect($stderr).to be wrapped
-          end
-
-          after :each do
-            $stderr = @stderr
           end
         end
 
@@ -35,15 +35,15 @@ module Cucumber
             @stdout = $stdout
           end
 
+          after :each do
+            $stdout = @stdout
+          end
+
           it 'wraps $stdout' do
             wrapped = described_class.wrap(:stdout)
 
             expect($stdout).to be_instance_of described_class
             expect($stdout).to be wrapped
-          end
-
-          after :each do
-            $stdout = @stdout
           end
         end
       end
@@ -55,39 +55,19 @@ module Cucumber
           @wrapped = described_class.wrap(:stdout)
         end
 
+        after :each do
+          $stdout = @stdout
+        end
+
         it "raises an ArgumentError if it wasn't passed :stderr/:stdout" do
           expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
         end
 
         it 'resets $stdout when #unwrap! is called' do
           interceptor = described_class.unwrap! :stdout
-        end
 
-        after :each do
-          $stdout = @stdout
-        end
-
-        it 'wraps $stdout' do
-          wrapped = Interceptor::Pipe.wrap(:stdout)
-
-          expect($stdout).to be_instance_of Interceptor::Pipe
-          expect($stdout).to be wrapped
-        end
-      end
-
-      describe '#unwrap!' do
-        before :each do
-          @stdout = $stdout
-          $stdout = pipe
-          @wrapped = Interceptor::Pipe.wrap(:stdout)
-        end
-
-        after :each do
-          $stdout = @stdout
-        end
-
-        it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
-          expect { Interceptor::Pipe.unwrap!(:nonsense) }.to raise_error(ArgumentError)
+          expect(interceptor).to be_instance_of Interceptor::Pipe
+          expect($stdout).not_to be interceptor
         end
 
         it 'noops if $stdout or $stderr has been overwritten' do
@@ -107,10 +87,6 @@ module Cucumber
           @wrapped.write(buffer)
 
           expect(@wrapped.buffer_string).not_to end_with(buffer)
-        end
-
-        after :each do
-          $stdout = @stdout
         end
       end
 
