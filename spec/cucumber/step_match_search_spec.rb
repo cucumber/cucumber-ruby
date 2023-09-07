@@ -8,11 +8,7 @@ require 'cucumber/configuration'
 module Cucumber
   describe StepMatchSearch do
     let(:search) { StepMatchSearch.new(registry.method(:step_matches), configuration) }
-    let(:registry) { Glue::RegistryAndMore.new(runtime, configuration) }
-    let(:runtime) do
-      # TODO: break out step definitions collection from Glue::RegistryAndMore so we don't need this
-      :unused
-    end
+    let(:registry) { Glue::RegistryAndMore.new(:unused, configuration) }
     let(:configuration) { Configuration.new(options) }
     let(:options) { {} }
     let(:dsl) do
@@ -33,34 +29,39 @@ module Cucumber
     end
 
     describe 'resolving step definition matches' do
-      it 'raises Ambiguous error with guess hint when multiple step definitions match' do
-        expected_error = %{Ambiguous match of "Three blind mice":
+      let(:elongated_error_message) do
+        %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three (.*) mice/'
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 }
+      end
+
+      it 'raises Ambiguous error with guess hint when multiple step definitions match' do
         dsl.Given(/Three (.*) mice/) { |disability| }
         dsl.Given(/Three blind (.*)/) { |animal| }
 
-        expect { search.call('Three blind mice').first }.to raise_error(Ambiguous, /#{expected_error}/)
+        expect { search.call('Three blind mice').first }.to raise_error(Ambiguous, /#{elongated_error_message}/)
       end
 
       describe 'when --guess is used' do
         let(:options) { { guess: true } }
-
-        it 'does not show --guess hint' do
-          expected_error = %{Ambiguous match of "Three cute mice":
+        let(:elongated_error_message) do
+          %{Ambiguous match of "Three cute mice":
 
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three (.*) mice/'
 spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
 
 }
+        end
+
+        it 'does not show --guess hint' do
           dsl.Given(/Three (.*) mice/) { |disability| }
           dsl.Given(/Three cute (.*)/) { |animal| }
 
-          expect { search.call('Three cute mice').first }.to raise_error(Ambiguous, /#{expected_error}/)
+          expect { search.call('Three cute mice').first }.to raise_error(Ambiguous, /#{elongated_error_message}/)
         end
 
         it 'does not raise Ambiguous error when multiple step definitions match' do
