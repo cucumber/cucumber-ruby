@@ -66,7 +66,7 @@ module Cucumber
         it 'resets $stdout when #unwrap! is called' do
           interceptor = described_class.unwrap! :stdout
 
-          expect(interceptor).to be_instance_of Interceptor::Pipe
+          expect(interceptor).to be_instance_of described_class
           expect($stdout).not_to be interceptor
         end
 

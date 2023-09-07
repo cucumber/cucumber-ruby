@@ -14,7 +14,7 @@ module Cucumber
       Object.new.extend(RbSupport::RbDsl)
     end
 
-    subject { Runtime::SupportCode.new(user_interface, configuration) }
+    subject { described_class.new(user_interface, configuration) }
 
     describe '#apply_before_hooks' do
       let(:test_case) { double }

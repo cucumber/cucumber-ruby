@@ -207,7 +207,7 @@ module Cucumber
 
       describe 'diff!' do
         it 'detects a complex diff' do
-          t1 = DataTable.from(%(
+          t1 = described_class.from(%(
             | 1         | 22          | 333         | 4444         |
             | 55555     | 666666      | 7777777     | 88888888     |
             | 999999999 | 0000000000  | 01010101010 | 121212121212 |
@@ -234,7 +234,7 @@ module Cucumber
         end
 
         it 'does not change table when diffed with identical' do
-          t = DataTable.from(%(
+          t = described_class.from(%(
 
             |a|b|c|
             |d|e|f|
@@ -250,13 +250,13 @@ module Cucumber
 
         context 'with empty tables' do
           it 'allows diffing empty tables' do
-            t1 = DataTable.from([[]])
-            t2 = DataTable.from([[]])
+            t1 = described_class.from([[]])
+            t2 = described_class.from([[]])
             expect { t1.diff!(t2) }.not_to raise_error
           end
 
           it 'is able to diff when the right table is empty' do
-            t1 = DataTable.from(%(
+            t1 = described_class.from(%(
               |a|b|c|
               |d|e|f|
               |g|h|i|
@@ -416,10 +416,10 @@ module Cucumber
         end
 
         it 'allows header mapping before diffing' do
-          t1 = DataTable.from([
-                                %w[Name Male],
-                                %w[aslak true]
-                              ])
+          t1 = described_class.from([
+                                      %w[Name Male],
+                                      %w[aslak true]
+                                    ])
           t1 = t1.map_headers('Name' => 'name', 'Male' => 'male')
           t1 = t1.map_column('male') { |m| m == 'true' }
 
@@ -435,14 +435,14 @@ module Cucumber
         end
 
         it 'detects seemingly identical tables as different' do
-          t1 = DataTable.from([
-                                %w[X Y],
-                                %w[2 1]
-                              ])
-          t2 = DataTable.from([
-                                %w[X Y],
-                                [2, 1]
-                              ])
+          t1 = described_class.from([
+                                      %w[X Y],
+                                      %w[2 1]
+                                    ])
+          t2 = described_class.from([
+                                      %w[X Y],
+                                      [2, 1]
+                                    ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
             expect(error.table.to_s(indent: 14, color: false)).to eq %{
               |     X       |     Y       |
@@ -453,10 +453,10 @@ module Cucumber
         end
 
         it 'does not allow mappings that match more than 1 column' do
-          t1 = DataTable.from([
-                                %w[Cuke Duke],
-                                %w[Foo Bar]
-                              ])
+          t1 = described_class.from([
+                                      %w[Cuke Duke],
+                                      %w[Foo Bar]
+                                    ])
           expect do
             t1 = t1.map_headers(/uk/ => 'u')
             t1.hashes
@@ -491,7 +491,7 @@ module Cucumber
           end
 
           it 'does not raise on surplus rows when surplus is interleaved' do
-            t1 = DataTable.from(%(
+            t1 = described_class.from(%(
               | row_1 | row_2 |
               | four  | 4     |
             ))
@@ -508,7 +508,7 @@ module Cucumber
           end
 
           it 'raises on missing columns' do
-            t = DataTable.from(%(
+            t = described_class.from(%(
               | a |
               | c |
             ))
@@ -517,7 +517,7 @@ module Cucumber
           end
 
           it 'does not raise on surplus columns' do
-            t = DataTable.from(%(
+            t = described_class.from(%(
               | a | b | x |
               | c | d | y |
             ))
@@ -526,7 +526,7 @@ module Cucumber
           end
 
           it 'does not raise on misplaced columns' do
-            t = DataTable.from(%(
+            t = described_class.from(%(
               | b | a |
               | d | c |
             ))
