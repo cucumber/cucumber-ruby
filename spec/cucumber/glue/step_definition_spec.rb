@@ -161,7 +161,7 @@ module Cucumber
         step_name = 'My car is white'
         step_args = step_match(step_name).args
 
-        expect { run_step step_name }.not_to change { step_args.first }
+        expect { run_step step_name }.not_to(change { step_args.first })
       end
 
       context 'with ParameterType' do
@@ -191,7 +191,7 @@ module Cucumber
 
           run_step 'capture this: Anjie'
           step_args = step_match('capture this: Anjie').args
-          expect(step_args[0].name).to_not eq 'Dave'
+          expect(step_args[0].name).not_to eq 'Dave'
           expect(step_args[0].name).to eq 'Anjie'
         end
       end

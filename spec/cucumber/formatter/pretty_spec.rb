@@ -41,14 +41,14 @@ module Cucumber
           end
 
           describe 'with a background' do
-            define_feature <<-FEATURE
-Feature: Banana party
-
-  Background: 
-    Given a tree
-
-  Scenario: Monkey eats banana
-    Given there are bananas
+            define_feature <<~FEATURE
+              Feature: Banana party
+              
+                Background: 
+                  Given a tree
+              
+                Scenario: Monkey eats banana
+                  Given there are bananas
             FEATURE
 
             it 'outputs the gherkin' do
@@ -295,25 +295,25 @@ OUTPUT
             end
 
             it 'displays hook output appropriately ' do
-              expect(@out.string).to include <<OUTPUT
-Feature: 
-
-  Scenario: 
-      Before hook
-    Given this step passes
-      AfterStep hook
-      After hook
-
-  Scenario Outline: 
-    Given this step <status>
-
-    Examples: 
-      | status |
-      | passes |  Before hook, AfterStep hook, After hook
-
-2 scenarios (2 passed)
-2 steps (2 passed)
-OUTPUT
+              expect(@out.string).to include <<~OUTPUT
+                Feature: 
+                
+                  Scenario: 
+                      Before hook
+                    Given this step passes
+                      AfterStep hook
+                      After hook
+                
+                  Scenario Outline: 
+                    Given this step <status>
+                
+                    Examples: 
+                      | status |
+                      | passes |  Before hook, AfterStep hook, After hook
+                
+                2 scenarios (2 passed)
+                2 steps (2 passed)
+              OUTPUT
             end
           end
 
@@ -340,22 +340,22 @@ OUTPUT
             end
 
             it 'displays hook output appropriately ' do
-              expect(@out.string).to include <<OUTPUT
-Feature: 
-
-  Background: 
-      Before hook
-    Given this step passes
-      AfterStep hook
-
-  Scenario: 
-    Given this step passes
-      AfterStep hook
-      After hook
-
-1 scenario (1 passed)
-2 steps (2 passed)
-OUTPUT
+              expect(@out.string).to include <<~OUTPUT
+                Feature: 
+                
+                  Background: 
+                      Before hook
+                    Given this step passes
+                      AfterStep hook
+                
+                  Scenario: 
+                    Given this step passes
+                      AfterStep hook
+                      After hook
+                
+                1 scenario (1 passed)
+                2 steps (2 passed)
+              OUTPUT
             end
           end
 
@@ -376,23 +376,23 @@ OUTPUT
             FEATURE
 
             it 'includes the tags in the output ' do
-              expect(@out.string).to include <<OUTPUT
-@tag1
-Feature: 
-
-  @tag2
-  Scenario: 
-    Given this step passes
-
-  @tag3
-  Scenario Outline: 
-    Given this step passes
-
-    @tag4
-    Examples: 
-      | dummy |
-      | dummy |
-OUTPUT
+              expect(@out.string).to include <<~OUTPUT
+                @tag1
+                Feature: 
+                
+                  @tag2
+                  Scenario: 
+                    Given this step passes
+                
+                  @tag3
+                  Scenario Outline: 
+                    Given this step passes
+                
+                    @tag4
+                    Examples: 
+                      | dummy |
+                      | dummy |
+              OUTPUT
             end
           end
 
@@ -424,35 +424,35 @@ OUTPUT
             FEATURE
 
             it 'includes the all comments in the output' do
-              expect(@out.string).to include <<OUTPUT
-#comment1
-Feature: 
-
-  #comment2
-  Background: 
-    #comment3
-    Given this step passes
-
-  #comment4
-  Scenario: 
-    #comment5
-    Given this step passes
-      #comment6
-      | dummy |
-
-  #comment7
-  Scenario Outline: 
-    #comment8
-    Given this step passes
-
-    #comment9
-    Examples: 
-      #comment10
-      | dummy |
-      #comment11
-      | dummy |
-#comment12
-OUTPUT
+              expect(@out.string).to include <<~OUTPUT
+                #comment1
+                Feature: 
+                
+                  #comment2
+                  Background: 
+                    #comment3
+                    Given this step passes
+                
+                  #comment4
+                  Scenario: 
+                    #comment5
+                    Given this step passes
+                      #comment6
+                      | dummy |
+                
+                  #comment7
+                  Scenario Outline: 
+                    #comment8
+                    Given this step passes
+                
+                    #comment9
+                    Examples: 
+                      #comment10
+                      | dummy |
+                      #comment11
+                      | dummy |
+                #comment12
+              OUTPUT
             end
           end
 
@@ -480,19 +480,19 @@ OUTPUT
             FEATURE
 
             it 'ignores the rule keyword' do
-              expect(@out.string).to include <<OUTPUT
-Feature: Some rules
-
-  Background: FB
-    Given fb
-    Given ab
-
-  Example: Example A
-    Given a
-
-  Example: Example B
-    Given b
-OUTPUT
+              expect(@out.string).to include <<~OUTPUT
+                Feature: Some rules
+                
+                  Background: FB
+                    Given fb
+                    Given ab
+                
+                  Example: Example A
+                    Given a
+                
+                  Example: Example B
+                    Given b
+              OUTPUT
             end
           end
         end
@@ -629,6 +629,7 @@ OUTPUT
       | c | d |
 OUTPUT
             end
+
             it 'does not display the table for the scenario' do
               expect(@out.string).not_to include <<OUTPUT
       | e | f |
@@ -660,6 +661,7 @@ OUTPUT
       """
 OUTPUT
             end
+
             it 'does not display the scenario py string' do
               expect(@out.string).not_to include <<OUTPUT
       """
@@ -673,6 +675,7 @@ OUTPUT
 
       context 'In --expand mode' do
         let(:options) { { expand: true } }
+
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
@@ -762,6 +765,7 @@ OUTPUT
 
       context 'In --expand mode with --source as an option' do
         let(:options) { { expand: true } }
+
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
@@ -884,6 +888,7 @@ OUTPUT
           it "replaces the first step with 'Given'" do
             expect(@out.string).to include("Given('there are bananas and apples')")
           end
+
           it "uses actual keywords as the 'previous' keyword for future replacements" do
             expect(@out.string).to include("Given('other monkeys are around')")
             expect(@out.string).to include("When('the other monkeys eat all the apples')")

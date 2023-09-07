@@ -11,7 +11,7 @@ module Cucumber
 
       subject { URLReporter.new(io) }
 
-      context '#report' do
+      describe '#report' do
         it 'displays the provided string' do
           banner = [
             '┌──────────────────────────────────────────────────────────────────────────┐',

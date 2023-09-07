@@ -156,7 +156,7 @@ module Cucumber
     end
 
     describe CurlOptionParser do
-      context '.parse' do
+      describe '.parse' do
         context 'when a simple URL is given' do
           it 'returns the URL' do
             url, = CurlOptionParser.parse('http://whatever.ltd')

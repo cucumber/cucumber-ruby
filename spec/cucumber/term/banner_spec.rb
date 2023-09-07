@@ -5,7 +5,7 @@ require 'cucumber/term/banner'
 describe Cucumber::Term::Banner do
   include Cucumber::Term::Banner
 
-  context '.display_banner' do
+  describe '.display_banner' do
     let(:io) { StringIO.new }
 
     context 'when a string is provided' do

@@ -21,12 +21,14 @@ module Cucumber::Hooks
   describe BeforeHook do
     subject { BeforeHook.new(location) }
     let(:location) { Cucumber::Core::Test::Location.new('hooks.rb', 1) }
+
     it_behaves_like 'a source node'
   end
 
   describe AfterHook do
     subject { AfterHook.new(location) }
     let(:location) { Cucumber::Core::Test::Location.new('hooks.rb', 1) }
+
     it_behaves_like 'a source node'
   end
 end

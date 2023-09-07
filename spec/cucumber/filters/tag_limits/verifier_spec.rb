@@ -5,6 +5,7 @@ require 'cucumber/filters/tag_limits'
 describe Cucumber::Filters::TagLimits::Verifier do
   describe '#verify!' do
     subject(:verifier) { Cucumber::Filters::TagLimits::Verifier.new(tag_limits) }
+
     let(:test_case_index) { double(:test_case_index) }
 
     context 'the tag counts exceed the tag limits' do
@@ -48,7 +49,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
       end
 
       it 'does not raise an error' do
-        expect { verifier.verify!(test_case_index) }.to_not raise_error
+        expect { verifier.verify!(test_case_index) }.not_to raise_error
       end
     end
   end

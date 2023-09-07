@@ -24,22 +24,22 @@ module Cucumber
         end
       end
 
-      it 'should create features directory' do
+      it 'creates features directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+create\s+features$/)
         command_line_config.run
       end
 
-      it 'should create step_definitions directory' do
+      it 'creates step_definitions directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+create\s+features\/step_definitions$/)
         command_line_config.run
       end
 
-      it 'should create support directory' do
+      it 'creates support directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+create\s+features\/support$/)
         command_line_config.run
       end
 
-      it 'should create env.rb directory' do
+      it 'creates env.rb directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+create\s+features\/support\/env.rb$/)
         command_line_config.run
       end
@@ -62,22 +62,22 @@ module Cucumber
         end
       end
 
-      it 'should not create features directory' do
+      it 'does not create features directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features$/)
         command_line_config.run
       end
 
-      it 'should not create step_definitions directory' do
+      it 'does not create step_definitions directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features\/step_definitions$/)
         command_line_config.run
       end
 
-      it 'should not create support directory' do
+      it 'does not create support directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features\/support$/)
         command_line_config.run
       end
 
-      it 'should not create env.rb directory' do
+      it 'does not create env.rb directory' do
         expect(command_line_config).to receive(:puts).with(/^\s+exist\s+features\/support\/env.rb$/)
         command_line_config.run
       end
