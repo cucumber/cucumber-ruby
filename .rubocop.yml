@@ -25,6 +25,10 @@ AllCops:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
+# A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
+Layout/LineLength:
+  Max: 200
+
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
 # In pretty_spec.rb & progress_spec.rb offences look false as the trailing spaces are in fact multiline string literals
 Layout/TrailingWhitespace:
@@ -70,10 +74,6 @@ Metrics/ClassLength:
     - 'lib/cucumber/cli/options.rb'
     # TODO: Manually added! - be careful with regenning the file - this needs a fix
     - lib/cucumber/formatter/pretty.rb
-
-# A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
-Layout/LineLength:
-  Max: 200
 
 # TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
 Metrics/ModuleLength:
@@ -128,6 +128,9 @@ Naming/VariableNumber:
   EnforcedStyle: normalcase
   Exclude:
     - 'examples/i18n/**/*'
+
+RSpec/ExampleLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
 
 # This cop throws errors when parsing a lot of the repo's code, possibly due
 # to splat issues?
