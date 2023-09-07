@@ -9,7 +9,7 @@ module Cucumber
     describe ProtoWorld do
       let(:runtime) { double('runtime') }
       let(:language) { double('language') }
-      let(:world) { Object.new.extend(ProtoWorld.for(runtime, language)) }
+      let(:world) { Object.new.extend(described_class.for(runtime, language)) }
 
       describe '#table' do
         it 'produces Ast::Table by #table' do

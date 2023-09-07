@@ -13,7 +13,7 @@ module Cucumber
       before do
         Cucumber::Term::ANSIColor.coloring = false
         @err = StringIO.new
-        @formatter = PublishBannerPrinter.new(actual_runtime.configuration.with_options(error_stream: @err))
+        @formatter = described_class.new(actual_runtime.configuration.with_options(error_stream: @err))
       end
 
       context 'passing scenario' do

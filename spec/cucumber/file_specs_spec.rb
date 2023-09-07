@@ -4,7 +4,7 @@ require 'cucumber/file_specs'
 
 module Cucumber
   describe FileSpecs do
-    let(:file_specs) { FileSpecs.new(['features/foo.feature:1:2:3', 'features/bar.feature:4:5:6']) }
+    let(:file_specs) { described_class.new(['features/foo.feature:1:2:3', 'features/bar.feature:4:5:6']) }
     let(:locations) { file_specs.locations }
     let(:files) { file_specs.files }
 
@@ -29,7 +29,7 @@ module Cucumber
     end
 
     context 'when files are not unique' do
-      let(:file_specs) { FileSpecs.new(['features/foo.feature:4', 'features/foo.feature:34']) }
+      let(:file_specs) { described_class.new(['features/foo.feature:4', 'features/foo.feature:34']) }
 
       it 'parses unique file names' do
         expect(files.length).to eq 1
@@ -38,7 +38,7 @@ module Cucumber
     end
 
     context 'when no line number is specified' do
-      let(:file_specs) { FileSpecs.new(['features/foo.feature', 'features/bar.feature:34']) }
+      let(:file_specs) { described_class.new(['features/foo.feature', 'features/bar.feature:34']) }
 
       it 'returns a wildcard location for that file' do
         expect(locations).to eq [
@@ -49,7 +49,7 @@ module Cucumber
     end
 
     context 'when the same file is referenced more than once' do
-      let(:file_specs) { FileSpecs.new(['features/foo.feature:10', 'features/foo.feature:1']) }
+      let(:file_specs) { described_class.new(['features/foo.feature:10', 'features/foo.feature:1']) }
 
       it 'returns locations in the order specified' do
         expect(locations).to eq [

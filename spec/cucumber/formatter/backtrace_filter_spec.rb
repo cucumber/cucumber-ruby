@@ -25,7 +25,7 @@ module Cucumber
         end
 
         it 'filters unnecessary traces' do
-          BacktraceFilter.new(@exception).exception
+          described_class.new(@exception).exception
           expect(@exception.backtrace).to eql %w[a b]
         end
       end

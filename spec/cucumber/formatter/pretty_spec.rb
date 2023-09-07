@@ -15,7 +15,7 @@ module Cucumber
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
+          @formatter = described_class.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
         end
 
         describe 'given a single feature' do
@@ -502,7 +502,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false, no_multiline: true))
+          @formatter = described_class.new(actual_runtime.configuration.with_options(out_stream: @out, source: false, no_multiline: true))
         end
 
         describe 'given a single feature' do
@@ -679,7 +679,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out))
+          @formatter = described_class.new(actual_runtime.configuration.with_options(out_stream: @out))
         end
 
         describe 'given a single feature' do
@@ -769,7 +769,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: true))
+          @formatter = described_class.new(actual_runtime.configuration.with_options(out_stream: @out, source: true))
         end
 
         describe 'given a single feature' do
@@ -846,7 +846,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, snippets: true))
+          @formatter = described_class.new(actual_runtime.configuration.with_options(out_stream: @out, snippets: true))
           run_defined_feature
         end
 

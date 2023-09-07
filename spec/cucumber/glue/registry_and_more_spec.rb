@@ -50,7 +50,7 @@ module Cucumber
             end
 
             registry.load_code_file('tmp1.rb')
-            expect($foo).to eq 1
+            expect($foo).to eq(1)
           end
 
           it 'only loads ruby files' do
@@ -144,7 +144,7 @@ module Cucumber
             raise 'Should fail'
           rescue Glue::NilWorld => e
             expect(e.message).to eq 'World procs should never return nil'
-            expect(e.backtrace.length).to eq 1
+            expect(e.backtrace.length).to eq(1)
             expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb:\d+:in `World'/)
           end
         end
@@ -158,7 +158,7 @@ module Cucumber
             expect(included_modules.inspect).to match(/ModuleOne/) # Workaround for RSpec/Ruby 1.9 issue with namespaces
             expect(included_modules.inspect).to match(/ModuleTwo/)
           end
-          expect(registry.current_world.class).to eq Object
+          expect(registry.current_world.class).to eq(Object)
         end
 
         it 'raises error when we try to register more than one World proc' do
@@ -186,13 +186,13 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             extend RSpec::Matchers
             expect(included_modules.inspect).to match(/ModuleOne/)
           end
-          expect(registry.current_world.class).to eq Object
+          expect(registry.current_world.class).to eq(Object)
           expect(registry.current_world).to respond_to(:method_one)
 
-          expect(registry.current_world.module_two.class).to eq Object
+          expect(registry.current_world.module_two.class).to eq(Object)
           expect(registry.current_world.module_two).to respond_to(:method_two)
 
-          expect(registry.current_world.module_three.class).to eq Object
+          expect(registry.current_world.module_three.class).to eq(Object)
           expect(registry.current_world.module_three).to respond_to(:method_three)
         end
 
@@ -225,8 +225,9 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           class << registry.current_world
             extend RSpec::Matchers
           end
+
           expect(registry.current_world.namespace).to respond_to(:method_one)
-          expect(registry.current_world.namespace.method_one).to eql(-1)
+          expect(registry.current_world.namespace.method_one).to eq(-1)
         end
       end
 
@@ -239,7 +240,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
           expect(scenario).to receive(:accept_hook?).with(fish) { true }
           expect(scenario).to receive(:accept_hook?).with(meat) { false }
-          expect(registry.hooks_for(:before, scenario)).to eq [fish]
+          expect(registry.hooks_for(:before, scenario)).to eq([fish])
         end
 
         it 'finds around hooks' do
@@ -253,7 +254,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
           expect(scenario).to receive(:accept_hook?).with(a) { true }
           expect(scenario).to receive(:accept_hook?).with(b) { false }
-          expect(registry.hooks_for(:around, scenario)).to eq [a]
+          expect(registry.hooks_for(:around, scenario)).to eq([a])
         end
       end
     end

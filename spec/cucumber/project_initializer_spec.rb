@@ -5,7 +5,7 @@ require 'tmpdir'
 
 module Cucumber
   describe ProjectInitializer, isolated_home: true do
-    let(:command_line_config) { ProjectInitializer.new }
+    let(:command_line_config) { described_class.new }
 
     before do
       allow(command_line_config).to receive(:puts)

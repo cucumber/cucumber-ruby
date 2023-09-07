@@ -151,21 +151,21 @@ module Cucumber
 
           it 'catches multiple profile formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-f progress -f pretty')
-            options = Options.new(output_stream, error_stream, default_profile: 'default')
+            options = described_class.new(output_stream, error_stream, default_profile: 'default')
 
             expect { options.parse!(%w[]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'profiles does not affect the catching of multiple command line formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-q')
-            options = Options.new(output_stream, error_stream, default_profile: 'default')
+            options = described_class.new(output_stream, error_stream, default_profile: 'default')
 
             expect { options.parse!(%w[-f progress -f pretty]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'merges profile formatters and command line formatters' do
             given_cucumber_yml_defined_as('default' => '-f junit -o result.xml')
-            options = Options.new(output_stream, error_stream, default_profile: 'default')
+            options = described_class.new(output_stream, error_stream, default_profile: 'default')
 
             options.parse!(%w[-f pretty])
 
@@ -219,7 +219,7 @@ module Cucumber
           it 'uses the default profile passed in during initialization if none are specified by the user' do
             given_cucumber_yml_defined_as('default' => '--require some_file')
 
-            options = Options.new(output_stream, error_stream, default_profile: 'default')
+            options = described_class.new(output_stream, error_stream, default_profile: 'default')
             options.parse!(%w[--format progress])
 
             expect(options[:require]).to include('some_file')
@@ -334,7 +334,7 @@ module Cucumber
               default: --format pretty
               YML
                                            )
-              options = Options.new(output_stream, error_stream, default_profile: 'default')
+              options = described_class.new(output_stream, error_stream, default_profile: 'default')
               options.parse!(%w[-f progress])
 
               expect($cucumber_yml_read_count).to eq 1
@@ -367,7 +367,7 @@ module Cucumber
                 given_cucumber_yml_defined_as('foo' => '--retry 2')
                 options.parse!(%w[-p foo])
 
-                expect(options[:retry]).to be 2
+                expect(options[:retry]).to eq(2)
               end
             end
 
@@ -376,7 +376,7 @@ module Cucumber
                 given_cucumber_yml_defined_as('foo' => '--retry 2')
                 options.parse!(%w[--retry 1 -p foo])
 
-                expect(options[:retry]).to be 1
+                expect(options[:retry]).to eq(1)
               end
             end
           end
@@ -387,7 +387,7 @@ module Cucumber
                 given_cucumber_yml_defined_as('foo' => '--retry-total 2')
                 options.parse!(%w[-p foo])
 
-                expect(options[:retry_total]).to be 2
+                expect(options[:retry_total]).to eq(2)
               end
             end
 
@@ -396,7 +396,7 @@ module Cucumber
                 given_cucumber_yml_defined_as('foo' => '--retry-total 2')
                 options.parse!(%w[--retry-total 1 -p foo])
 
-                expect(options[:retry_total]).to be 1
+                expect(options[:retry_total]).to eq(1)
               end
             end
           end
@@ -407,7 +407,7 @@ module Cucumber
             given_cucumber_yml_defined_as('default' => '-v --require file_specified_in_default_profile.rb')
 
             after_parsing('-P --require some_file.rb') do
-              expect(options[:require]).to eq ['some_file.rb']
+              expect(options[:require]).to eq(['some_file.rb'])
             end
           end
 
@@ -451,13 +451,13 @@ module Cucumber
         context '--retry ATTEMPTS' do
           it 'is 0 by default' do
             after_parsing('') do
-              expect(options[:retry]).to eql 0
+              expect(options[:retry]).to eq(0)
             end
           end
 
           it 'sets the options[:retry] value' do
             after_parsing('--retry 4') do
-              expect(options[:retry]).to eql 4
+              expect(options[:retry]).to eq(4)
             end
           end
         end
@@ -465,33 +465,33 @@ module Cucumber
         context '--retry-total TESTS' do
           it 'is INFINITY by default' do
             after_parsing('') do
-              expect(options[:retry_total]).to eql Float::INFINITY
+              expect(options[:retry_total]).to eq(Float::INFINITY)
             end
           end
 
           it 'sets the options[:retry_total] value' do
             after_parsing('--retry 3 --retry-total 10') do
-              expect(options[:retry_total]).to eql 10
+              expect(options[:retry_total]).to eq(10)
             end
           end
         end
 
         it 'assigns any extra arguments as paths to features' do
           after_parsing('-f pretty my_feature.feature my_other_features') do
-            expect(options[:paths]).to eq ['my_feature.feature', 'my_other_features']
+            expect(options[:paths]).to eq(['my_feature.feature', 'my_other_features'])
           end
         end
 
         it 'does not mistake environment variables as feature paths' do
           after_parsing('my_feature.feature FOO=bar') do
-            expect(options[:paths]).to eq ['my_feature.feature']
+            expect(options[:paths]).to eq(['my_feature.feature'])
           end
         end
 
         context '--snippet-type' do
           it 'parses the snippet type argument' do
             after_parsing('--snippet-type classic') do
-              expect(options[:snippet_type]).to eq :classic
+              expect(options[:snippet_type]).to eq(:classic)
             end
           end
         end
@@ -542,7 +542,7 @@ module Cucumber
         context '--publish-quiet' do
           it 'silences publish banner' do
             after_parsing('--publish-quiet') do
-              expect(@options[:publish_quiet]).to eq true
+              expect(@options[:publish_quiet]).to be true
             end
           end
 
