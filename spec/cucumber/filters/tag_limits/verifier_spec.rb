@@ -8,7 +8,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
 
     let(:test_case_index) { double(:test_case_index) }
 
-    context 'the tag counts exceed the tag limits' do
+    context 'when the tag counts exceed the tag limits' do
       let(:tag_limits) do
         {
           '@exceed_me' => 1
@@ -37,7 +37,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
       end
     end
 
-    context 'the tag counts do not exceed the tag limits' do
+    context 'when the tag counts do not exceed the tag limits' do
       let(:tag_limits) do
         {
           '@dont_exceed_me' => 2

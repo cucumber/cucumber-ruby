@@ -17,7 +17,7 @@ module Cucumber::Formatter
 
     before { FailFast.new(configuration) }
 
-    context 'failing scenario' do
+    context 'with a failing scenario' do
       before(:each) do
         @gherkin = gherkin('foo.feature') do
           feature do
@@ -42,7 +42,7 @@ module Cucumber::Formatter
       end
     end
 
-    context 'passing scenario' do
+    context 'with a passing scenario' do
       before(:each) do
         @gherkin = gherkin('foo.feature') do
           feature do
@@ -59,7 +59,7 @@ module Cucumber::Formatter
       end
     end
 
-    context 'undefined scenario' do
+    context 'with an undefined scenario' do
       before(:each) do
         @gherkin = gherkin('foo.feature') do
           feature do
@@ -75,7 +75,7 @@ module Cucumber::Formatter
         expect(Cucumber.wants_to_quit).to be_falsey
       end
 
-      context 'in strict mode' do
+      context 'when in strict mode' do
         let(:configuration) { Cucumber::Configuration.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
 
         it 'sets Cucumber.wants_to_quit' do

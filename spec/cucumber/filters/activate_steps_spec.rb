@@ -15,7 +15,7 @@ describe Cucumber::Filters::ActivateSteps do
   let(:step_match_search) { proc { [step_match] } }
   let(:configuration) { double(dry_run?: false, notify: nil) }
 
-  context 'a scenario with a single step' do
+  context 'with a scenario containing a single step' do
     let(:doc) do
       gherkin do
         feature do
@@ -43,7 +43,7 @@ describe Cucumber::Filters::ActivateSteps do
     end
   end
 
-  context 'a scenario outline' do
+  context 'with a scenario outline' do
     let(:doc) do
       gherkin do
         feature do
@@ -67,7 +67,7 @@ describe Cucumber::Filters::ActivateSteps do
     end
   end
 
-  context 'undefined step' do
+  context 'with an undefined step' do
     let(:step_match_search) { proc { [] } }
 
     let(:doc) do
@@ -93,7 +93,7 @@ describe Cucumber::Filters::ActivateSteps do
     end
   end
 
-  context 'dry run' do
+  context 'when using dry run' do
     let(:configuration) { double(dry_run?: true, notify: nil) }
 
     let(:doc) do
@@ -123,7 +123,7 @@ describe Cucumber::Filters::ActivateSteps do
     end
   end
 
-  context 'undefined step in a dry run' do
+  context 'with an undefined step in a dry run' do
     let(:step_match_search) { proc { [] } }
     let(:configuration) { double(dry_run?: true, notify: nil) }
 

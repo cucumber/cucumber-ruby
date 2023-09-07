@@ -21,17 +21,15 @@ module Cucumber
       Object.new.extend(Glue::Dsl)
     end
 
-    context 'caching' do
-      it 'caches step match results' do
-        dsl.Given(/it (.*) in (.*)/) { |what, month| }
+    it 'caches step match results' do
+      dsl.Given(/it (.*) in (.*)/) { |what, month| }
 
-        step_match = search.call('it snows in april').first
+      step_match = search.call('it snows in april').first
 
-        expect(registry).not_to receive(:step_matches)
-        second_step_match = search.call('it snows in april').first
+      expect(registry).not_to receive(:step_matches)
+      second_step_match = search.call('it snows in april').first
 
-        expect(step_match).to equal(second_step_match)
-      end
+      expect(step_match).to equal(second_step_match)
     end
 
     describe 'resolving step definition matches' do

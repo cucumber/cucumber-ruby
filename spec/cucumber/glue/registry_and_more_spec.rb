@@ -17,7 +17,6 @@ module Cucumber
         Object.new.extend(Glue::Dsl)
       end
 
-      # rubocop:disable Style/GlobalVars
       describe '#load_code_file' do
         before(:each) { $foo = nil }
 
@@ -32,7 +31,7 @@ module Cucumber
           end
         end
 
-        context 'by default' do
+        context 'when not specifying the loading strategy' do
           after(:each) do
             FileUtils.rm_rf('tmp1.rb')
           end
@@ -63,7 +62,7 @@ module Cucumber
           end
         end
 
-        context 'With `use_legacy_autoloader` set to true' do
+        context 'when using `use_legacy_autoloader`' do
           before(:each) do
             allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
           end
@@ -98,7 +97,7 @@ module Cucumber
           end
         end
 
-        context 'With `use_legacy_autoloader` set to false' do
+        context 'when explicitly NOT using `use_legacy_autoloader`' do
           before(:each) do
             allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
           end
@@ -132,7 +131,6 @@ module Cucumber
             expect($foo).to be nil
           end
         end
-        # rubocop:enable Style/GlobalVars
       end
 
       describe 'Handling the World' do
@@ -144,12 +142,12 @@ module Cucumber
             raise 'Should fail'
           rescue Glue::NilWorld => e
             expect(e.message).to eq 'World procs should never return nil'
-            expect(e.backtrace.length).to eq 1
+            expect(e.backtrace.length).to eq(1)
             expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb:\d+:in `World'/)
           end
         end
 
-        it 'implicitlys extend world with modules' do
+        it 'implicitly extends the world with modules' do
           dsl.World(FakeObjects::ModuleOne, FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world
@@ -189,10 +187,10 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           expect(registry.current_world.class).to eq Object
           expect(registry.current_world).to respond_to(:method_one)
 
-          expect(registry.current_world.module_two.class).to eq Object
+          expect(registry.current_world.module_two.class).to eq(Object)
           expect(registry.current_world.module_two).to respond_to(:method_two)
 
-          expect(registry.current_world.module_three.class).to eq Object
+          expect(registry.current_world.module_three.class).to eq(Object)
           expect(registry.current_world.module_three).to respond_to(:method_three)
         end
 

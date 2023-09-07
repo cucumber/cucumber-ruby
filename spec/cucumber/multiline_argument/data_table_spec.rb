@@ -287,7 +287,7 @@ module Cucumber
           end
         end
 
-        context 'in case of duplicate header values' do
+        context 'with duplicate header values' do
           it 'raises no error for two identical tables' do
             t = DataTable.from(%(
             |a|a|c|

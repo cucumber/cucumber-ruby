@@ -58,7 +58,7 @@ module Cucumber
           end
         end
 
-        context '-r or --require' do
+        context 'when using -r or --require' do
           it 'collects all specified files into an array' do
             after_parsing('--require some_file.rb -r another_file.rb') do
               expect(options[:require]).to eq ['some_file.rb', 'another_file.rb']
@@ -66,7 +66,7 @@ module Cucumber
           end
         end
 
-        context '--i18n-languages' do
+        context 'with --i18n-languages' do
           include RSpec::WorkInProgress
 
           it 'lists all known languages' do
@@ -82,7 +82,7 @@ module Cucumber
           end
         end
 
-        context '--i18n-keywords' do
+        context 'with --i18n-keywords' do
           context 'with invalid LANG' do
             include RSpec::WorkInProgress
 
@@ -108,7 +108,7 @@ module Cucumber
           end
         end
 
-        context '-f FORMAT or --format FORMAT' do
+        context 'when using -f FORMAT or --format FORMAT' do
           it 'defaults the output for the formatter to the output stream (STDOUT)' do
             after_parsing('-f pretty') { expect(options[:formats]).to eq [['pretty', {}, output_stream]] }
           end
@@ -132,7 +132,7 @@ module Cucumber
           end
         end
 
-        context '-o [FILE|DIR] or --out [FILE|DIR]' do
+        context 'when using -o [FILE|DIR] or --out [FILE|DIR]' do
           it "defaults the formatter to 'pretty' when not specified earlier" do
             after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', {}, 'file.txt']] }
           end
@@ -144,7 +144,7 @@ module Cucumber
           end
         end
 
-        context 'handling multiple formatters' do
+        context 'when handling multiple formatters' do
           it 'catches multiple command line formatters using the same stream' do
             expect { options.parse!(prepare_args('-f pretty -f progress')) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
@@ -173,7 +173,7 @@ module Cucumber
           end
         end
 
-        context '-t TAGS --tags TAGS' do
+        context 'when using -t TAGS or --tags TAGS' do
           it 'handles tag expressions as argument' do
             after_parsing(['--tags', 'not @foo or @bar']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
           end
@@ -195,19 +195,19 @@ module Cucumber
           end
         end
 
-        context '-n NAME or --name NAME' do
+        context 'when using -n NAME or --name NAME' do
           it 'stores the provided names as regular expressions' do
             after_parsing('-n foo --name bar') { expect(options[:name_regexps]).to eq [/foo/, /bar/] }
           end
         end
 
-        context '-e PATTERN or --exclude PATTERN' do
+        context 'when using -e PATTERN or --exclude PATTERN' do
           it 'stores the provided exclusions as regular expressions' do
             after_parsing('-e foo --exclude bar') { expect(options[:excludes]).to eq [/foo/, /bar/] }
           end
         end
 
-        context '-l LINES or --lines LINES' do
+        context 'when using -l LINES or --lines LINES' do
           it 'adds line numbers to args' do
             options.parse!(%w[-l24 FILE])
 
@@ -215,7 +215,7 @@ module Cucumber
           end
         end
 
-        context '-p PROFILE or --profile PROFILE' do
+        context 'when using -p PROFILE or --profile PROFILE' do
           it 'uses the default profile passed in during initialization if none are specified by the user' do
             given_cucumber_yml_defined_as('default' => '--require some_file')
 
@@ -361,8 +361,8 @@ module Cucumber
             expect(options[:duration]).to be false
           end
 
-          context '--retry ATTEMPTS' do
-            context '--retry option not defined on the command line' do
+          context 'with --retry ATTEMPTS' do
+            context 'when --retry option is not defined on the command line' do
               it 'uses the --retry option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry 2')
                 options.parse!(%w[-p foo])
@@ -371,7 +371,7 @@ module Cucumber
               end
             end
 
-            context '--retry option defined on the command line' do
+            context 'when --retry option is defined on the command line' do
               it 'ignores the --retry option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry 2')
                 options.parse!(%w[--retry 1 -p foo])
@@ -381,8 +381,8 @@ module Cucumber
             end
           end
 
-          context '--retry-total TESTS' do
-            context '--retry-total option not defined on the command line' do
+          context 'with --retry-total TESTS' do
+            context 'when --retry option is not defined on the command line' do
               it 'uses the --retry-total option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry-total 2')
                 options.parse!(%w[-p foo])
@@ -391,7 +391,7 @@ module Cucumber
               end
             end
 
-            context '--retry-total option defined on the command line' do
+            context 'when --retry option is defined on the command line' do
               it 'ignores the --retry-total option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry-total 2')
                 options.parse!(%w[--retry-total 1 -p foo])
@@ -402,7 +402,7 @@ module Cucumber
           end
         end
 
-        context '-P or --no-profile' do
+        context 'when using -P or --no-profile' do
           it 'disables profiles' do
             given_cucumber_yml_defined_as('default' => '-v --require file_specified_in_default_profile.rb')
 
@@ -420,7 +420,7 @@ module Cucumber
           end
         end
 
-        context '-b or --backtrace' do
+        context 'when using -b or --backtrace' do
           it "turns on cucumber's full backtrace" do
             when_parsing('-b') do
               expect(Cucumber).to receive(:use_full_backtrace=).with(true)
@@ -428,8 +428,8 @@ module Cucumber
           end
         end
 
-        context '--version' do
-          it "displays Cucumber's version" do
+        context 'with --version' do
+          it "displays the cucumber version" do
             after_parsing('--version') do
               expect(output_stream.string).to match(/#{Cucumber::VERSION}/)
             end
@@ -440,7 +440,7 @@ module Cucumber
           end
         end
 
-        context 'environment variables (i.e. MODE=webrat)' do
+        context 'for environment variables (i.e. MODE=webrat)' do
           it 'places all of the environment variables into a hash' do
             after_parsing('MODE=webrat FOO=bar') do
               expect(options[:env_vars]).to eq('MODE' => 'webrat', 'FOO' => 'bar')
@@ -448,7 +448,7 @@ module Cucumber
           end
         end
 
-        context '--retry ATTEMPTS' do
+        context 'with --retry ATTEMPTS' do
           it 'is 0 by default' do
             after_parsing('') do
               expect(options[:retry]).to eql 0
@@ -462,7 +462,7 @@ module Cucumber
           end
         end
 
-        context '--retry-total TESTS' do
+        context 'with --retry-total TESTS' do
           it 'is INFINITY by default' do
             after_parsing('') do
               expect(options[:retry_total]).to eql Float::INFINITY
@@ -488,7 +488,7 @@ module Cucumber
           end
         end
 
-        context '--snippet-type' do
+        context 'with --snippet-type' do
           it 'parses the snippet type argument' do
             after_parsing('--snippet-type classic') do
               expect(options[:snippet_type]).to eq :classic
@@ -496,7 +496,7 @@ module Cucumber
           end
         end
 
-        context '--publish' do
+        context 'with --publish' do
           it 'adds message formatter with output to default reports publishing url' do
             after_parsing('--publish') do
               expect(@options[:formats]).to include(['message', {}, Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL])
@@ -539,7 +539,7 @@ module Cucumber
           end
         end
 
-        context '--publish-quiet' do
+        context 'with --publish-quiet' do
           it 'silences publish banner' do
             after_parsing('--publish-quiet') do
               expect(@options[:publish_quiet]).to eq true

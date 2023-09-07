@@ -47,7 +47,7 @@ module Cucumber
         expect(config.options[:require]).to include('some_file')
       end
 
-      context '--profile' do
+      context 'when using the --profile flag' do
         include RSpec::WorkInProgress
 
         it 'expands args from profiles in the cucumber.yml file' do
@@ -136,7 +136,7 @@ module Cucumber
         end
 
         ['--no-profile', '-P'].each do |flag|
-          context 'when none is specified with #{flag}' do # rubocop:disable Lint/InterpolationCheck
+          context "when #{flag} is specified with none" do
             it 'disables profiles' do
               given_cucumber_yml_defined_as('default' => '-v --require file_specified_in_default_profile.rb')
 

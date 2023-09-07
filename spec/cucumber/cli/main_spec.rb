@@ -19,7 +19,7 @@ module Cucumber
       subject { Main.new(args, stdout, stderr, kernel) }
 
       describe '#execute!' do
-        context 'passed an existing runtime' do
+        context 'when passed an existing runtime' do
           let(:existing_runtime) { double('runtime').as_null_object }
 
           def do_execute
@@ -47,7 +47,7 @@ module Cucumber
           end
         end
 
-        context 'interrupted with ctrl-c' do
+        context 'when interrupted with ctrl-c' do
           after do
             Cucumber.wants_to_quit = false
           end
