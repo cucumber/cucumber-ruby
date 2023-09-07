@@ -13,53 +13,53 @@ module Cucumber
                                       ])
       end
 
-      it 'should have rows' do
+      it 'has rows' do
         expect(@table.cells_rows[0].map(&:value)).to eq %w[one four seven]
       end
 
-      it 'should have columns' do
+      it 'has columns' do
         expect(@table.columns[1].map(&:value)).to eq %w[four 55555]
       end
 
-      it 'should have same cell objects in rows and columns' do
+      it 'has same cell objects in rows and columns' do
         # 666666
         expect(@table.cells_rows[1][2]).to equal(@table.columns[2][1])
       end
 
-      it 'should be convertible to an array of hashes' do
+      it 'is convertible to an array of hashes' do
         expect(@table.hashes).to eq [
           { 'one' => '4444', 'four' => '55555', 'seven' => '666666' }
         ]
       end
 
-      it 'should accept symbols as keys for the hashes' do
+      it 'accepts symbols as keys for the hashes' do
         expect(@table.hashes.first[:one]).to eq '4444'
       end
 
-      it 'should return the row values in order' do
+      it 'returns the row values in order' do
         expect(@table.rows.first).to eq %w[4444 55555 666666]
       end
 
       describe '#symbolic_hashes' do
-        it 'should covert data table to an array of hashes with symbols as keys' do
+        it 'coverts data table to an array of hashes with symbols as keys' do
           ast_table = Cucumber::Core::Test::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w[1 22 333]])
           data_table = described_class.new(ast_table)
           expect(data_table.symbolic_hashes).to eq([{ foo: '1', bar: '22', foo_bar: '333' }])
         end
 
-        it 'should be able to be accessed multiple times' do
+        it 'is able to be accessed multiple times' do
           @table.symbolic_hashes
-          expect { @table.symbolic_hashes }.to_not raise_error
+          expect { @table.symbolic_hashes }.not_to raise_error
         end
 
-        it 'should not interfere with use of #hashes' do
+        it 'does not interfere with use of #hashes' do
           @table.symbolic_hashes
-          expect { @table.hashes }.to_not raise_error
+          expect { @table.hashes }.not_to raise_error
         end
       end
 
       describe '#map_column' do
-        it 'should allow mapping columns' do
+        it 'allows mapping columns' do
           new_table = @table.map_column('one', &:to_i)
           expect(new_table.hashes.first['one']).to eq 4444
         end
@@ -74,33 +74,33 @@ module Cucumber
           expect(count).to eq rows.size
         end
 
-        it 'should allow mapping columns and take a symbol as the column name' do
+        it 'allows mapping columns and take a symbol as the column name' do
           new_table = @table.map_column(:one, &:to_i)
           expect(new_table.hashes.first['one']).to eq 4444
         end
 
-        it 'should allow mapping columns and modify the rows as well' do
+        it 'allows mapping columns and modify the rows as well' do
           new_table = @table.map_column(:one, &:to_i)
           expect(new_table.rows.first).to include(4444)
-          expect(new_table.rows.first).to_not include('4444')
+          expect(new_table.rows.first).not_to include('4444')
         end
 
-        it 'should pass silently if a mapped column does not exist in non-strict mode' do
+        it 'passes silently if a mapped column does not exist in non-strict mode' do
           expect do
             new_table = @table.map_column('two', strict: false, &:to_i)
             new_table.hashes
           end.not_to raise_error
         end
 
-        it 'should fail if a mapped column does not exist in strict mode' do
+        it 'fails if a mapped column does not exist in strict mode' do
           expect do
             new_table = @table.map_column('two', strict: true, &:to_i)
             new_table.hashes
           end.to raise_error('The column named "two" does not exist')
         end
 
-        it 'should return a new table' do
-          expect(@table.map_column(:one, &:to_i)).to_not eq @table
+        it 'returns a new table' do
+          expect(@table.map_column(:one, &:to_i)).not_to eq @table
         end
       end
 
@@ -115,9 +115,11 @@ module Cucumber
         it 'returns nil if headers do not match' do
           expect(@table.match('does,not,match')).to be_nil
         end
+
         it 'requires a table: prefix on match' do
-          expect(@table.match('table:one,four,seven')).to_not be_nil
+          expect(@table.match('table:one,four,seven')).not_to be_nil
         end
+
         it 'does not match if no table: prefix on match' do
           expect(@table.match('one,four,seven')).to be_nil
         end
@@ -131,7 +133,7 @@ module Cucumber
                                         ])
         end
 
-        it 'should be convertible in to an array where each row is a hash' do
+        it 'is convertible in to an array where each row is a hash' do
           expect(@table.transpose.hashes[0]).to eq('one' => '1111', 'two' => '22222')
         end
       end
@@ -204,8 +206,8 @@ module Cucumber
       end
 
       describe 'diff!' do
-        it 'should detect a complex diff' do
-          t1 = described_class.from(%(
+        it 'detects a complex diff' do
+          t1 = DataTable.from(%(
             | 1         | 22          | 333         | 4444         |
             | 55555     | 666666      | 7777777     | 88888888     |
             | 999999999 | 0000000000  | 01010101010 | 121212121212 |
@@ -231,8 +233,9 @@ module Cucumber
           end
         end
 
-        it 'should not change table when diffed with identical' do
-          t = described_class.from(%(
+        it 'does not change table when diffed with identical' do
+          t = DataTable.from(%(
+
             |a|b|c|
             |d|e|f|
             |g|h|i|
@@ -246,14 +249,14 @@ module Cucumber
         end
 
         context 'with empty tables' do
-          it 'should allow diffing empty tables' do
-            t1 = described_class.from([[]])
-            t2 = described_class.from([[]])
+          it 'allows diffing empty tables' do
+            t1 = DataTable.from([[]])
+            t2 = DataTable.from([[]])
             expect { t1.diff!(t2) }.not_to raise_error
           end
 
-          it 'should be able to diff when the right table is empty' do
-            t1 = described_class.from(%(
+          it 'is able to diff when the right table is empty' do
+            t1 = DataTable.from(%(
               |a|b|c|
               |d|e|f|
               |g|h|i|
@@ -362,7 +365,7 @@ module Cucumber
           end
         end
 
-        it 'should inspect missing and surplus cells' do
+        it 'inspects missing and surplus cells' do
           t1 = described_class.from([
                                       %w[name male lastname swedish],
                                       %w[aslak true hellesøy false]
@@ -380,7 +383,7 @@ module Cucumber
           end
         end
 
-        it 'should allow column mapping of target before diffing' do
+        it 'allows column mapping of target before diffing' do
           t1 = described_class.from([
                                       %w[name male],
                                       %w[aslak true]
@@ -396,7 +399,7 @@ module Cucumber
           )
         end
 
-        it 'should allow column mapping of argument before diffing' do
+        it 'allows column mapping of argument before diffing' do
           t1 = described_class.from([
                                       %w[name male],
                                       ['aslak', true]
@@ -412,11 +415,11 @@ module Cucumber
           )
         end
 
-        it 'should allow header mapping before diffing' do
-          t1 = described_class.from([
-                                      %w[Name Male],
-                                      %w[aslak true]
-                                    ])
+        it 'allows header mapping before diffing' do
+          t1 = DataTable.from([
+                                %w[Name Male],
+                                %w[aslak true]
+                              ])
           t1 = t1.map_headers('Name' => 'name', 'Male' => 'male')
           t1 = t1.map_column('male') { |m| m == 'true' }
 
@@ -431,15 +434,15 @@ module Cucumber
           )
         end
 
-        it 'should detect seemingly identical tables as different' do
-          t1 = described_class.from([
-                                      %w[X Y],
-                                      %w[2 1]
-                                    ])
-          t2 = described_class.from([
-                                      %w[X Y],
-                                      [2, 1]
-                                    ])
+        it 'detects seemingly identical tables as different' do
+          t1 = DataTable.from([
+                                %w[X Y],
+                                %w[2 1]
+                              ])
+          t2 = DataTable.from([
+                                %w[X Y],
+                                [2, 1]
+                              ])
           expect { t1.diff!(t2) }.to raise_error(DataTable::Different) do |error|
             expect(error.table.to_s(indent: 14, color: false)).to eq %{
               |     X       |     Y       |
@@ -449,11 +452,11 @@ module Cucumber
           end
         end
 
-        it 'should not allow mappings that match more than 1 column' do
-          t1 = described_class.from([
-                                      %w[Cuke Duke],
-                                      %w[Foo Bar]
-                                    ])
+        it 'does not allow mappings that match more than 1 column' do
+          t1 = DataTable.from([
+                                %w[Cuke Duke],
+                                %w[Foo Bar]
+                              ])
           expect do
             t1 = t1.map_headers(/uk/ => 'u')
             t1.hashes
@@ -469,7 +472,7 @@ module Cucumber
             expect(@t).not_to eq nil
           end
 
-          it 'should raise on missing rows' do
+          it 'raises on missing rows' do
             t = described_class.from(%(
               | a | b |
             ))
@@ -477,7 +480,7 @@ module Cucumber
             expect { @t.dup.diff!(t, missing_row: false) }.not_to raise_error
           end
 
-          it 'should not raise on surplus rows when surplus is at the end' do
+          it 'does not raise on surplus rows when surplus is at the end' do
             t = described_class.from(%(
               | a | b |
               | c | d |
@@ -487,8 +490,8 @@ module Cucumber
             expect { @t.dup.diff!(t, surplus_row: false) }.not_to raise_error
           end
 
-          it 'should not raise on surplus rows when surplus is interleaved' do
-            t1 = described_class.from(%(
+          it 'does not raise on surplus rows when surplus is interleaved' do
+            t1 = DataTable.from(%(
               | row_1 | row_2 |
               | four  | 4     |
             ))
@@ -504,8 +507,8 @@ module Cucumber
             expect { t1.dup.diff!(t2, surplus_row: false) }.not_to raise_error
           end
 
-          it 'should raise on missing columns' do
-            t = described_class.from(%(
+          it 'raises on missing columns' do
+            t = DataTable.from(%(
               | a |
               | c |
             ))
@@ -513,8 +516,8 @@ module Cucumber
             expect { @t.dup.diff!(t, missing_col: false) }.not_to raise_error
           end
 
-          it 'should not raise on surplus columns' do
-            t = described_class.from(%(
+          it 'does not raise on surplus columns' do
+            t = DataTable.from(%(
               | a | b | x |
               | c | d | y |
             ))
@@ -522,8 +525,8 @@ module Cucumber
             expect { @t.dup.diff!(t, surplus_col: true) }.to raise_error(DataTable::Different)
           end
 
-          it 'should not raise on misplaced columns' do
-            t = described_class.from(%(
+          it 'does not raise on misplaced columns' do
+            t = DataTable.from(%(
               | b | a |
               | d | c |
             ))
@@ -544,7 +547,7 @@ module Cucumber
       end
 
       describe '#from' do
-        it 'should allow Array of Hash' do
+        it 'allows Array of Hash' do
           t1 = described_class.from([{ 'name' => 'aslak', 'male' => 'true' }])
           expect(t1.to_s(indent: 12, color: false)).to eq %(
             |     male |     name  |

@@ -22,6 +22,7 @@ describe Cucumber::Runtime::MetaMessageBuilder do
 
     context 'with overriden ENV' do
       subject { described_class.build_meta_message(env) }
+
       let(:env) { {} }
 
       it 'detects CI environment using the given env' do

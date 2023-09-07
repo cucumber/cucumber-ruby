@@ -112,6 +112,7 @@ module Cucumber
             expect(io.string).to eq ''
           end
         end
+
         context 'with option --strict-flaky' do
           let(:config) { Configuration.new(out_stream: io, strict: Core::Test::Result::StrictConfiguration.new([:flaky])) }
 

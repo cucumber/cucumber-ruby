@@ -36,7 +36,7 @@ module Cucumber
             run_defined_feature
           end
 
-          context '#step_definition_ids' do
+          describe '#step_definition_ids' do
             context 'with a matching step' do
               define_steps do
                 Given(/^there are bananas$/) {}
@@ -108,7 +108,7 @@ module Cucumber
             end
           end
 
-          context '#step_match_arguments' do
+          describe '#step_match_arguments' do
             context 'with a matching step without arguments' do
               define_steps do
                 Given(/^there are bananas$/) {}

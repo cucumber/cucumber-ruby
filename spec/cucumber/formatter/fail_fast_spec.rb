@@ -15,6 +15,7 @@ module Cucumber
       include Cucumber::Core::Gherkin::Writer
 
       let(:configuration) { Cucumber::Configuration.new }
+
       before { described_class.new(configuration) }
 
       context 'failing scenario' do

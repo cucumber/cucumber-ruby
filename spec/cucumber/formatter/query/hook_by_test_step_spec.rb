@@ -37,7 +37,7 @@ module Cucumber
           end
 
           describe 'with a scenario' do
-            context '#pickle_step_id' do
+            describe '#pickle_step_id' do
               define_feature <<-FEATURE
                 Feature: Banana party
 
@@ -75,7 +75,7 @@ module Cucumber
           end
 
           describe 'with AfterStep hooks' do
-            context '#pickle_step_id' do
+            describe '#pickle_step_id' do
               define_feature <<-FEATURE
                 Feature: Banana party
 

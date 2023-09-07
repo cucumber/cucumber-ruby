@@ -11,7 +11,7 @@ describe Cucumber::Filters::GatedReceiver do
   describe '#test_case' do
     it 'does not immediately describe the test case to the receiver' do
       test_cases.each do |test_case|
-        expect(test_case).to_not receive(:describe_to).with(receiver)
+        expect(test_case).not_to receive(:describe_to).with(receiver)
         gated_receiver.test_case(test_case)
       end
     end

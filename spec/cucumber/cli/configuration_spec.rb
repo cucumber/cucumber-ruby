@@ -96,10 +96,10 @@ module Cucumber
         end
 
         it 'parses ERB in cucumber.yml that makes uses nested ERB sessions' do
-          given_cucumber_yml_defined_as(<<ERB_YML)
-<%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
-<%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
-ERB_YML
+          given_cucumber_yml_defined_as(<<~ERB_YML)
+            <%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
+            <%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
+          ERB_YML
 
           config.parse!(%w[-p standard])
 
@@ -109,12 +109,12 @@ ERB_YML
         it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
           given_cucumber_yml_defined_as('default' => '--require from/yml', 'json_report' => '--format json')
 
-          expected_message = <<-END_OF_MESSAGE
-Could not find profile: 'i_do_not_exist'
+          expected_message = <<~END_OF_MESSAGE
+            Could not find profile: 'i_do_not_exist'
 
-Defined profiles in cucumber.yml:
-  * default
-  * json_report
+            Defined profiles in cucumber.yml:
+              * default
+              * json_report
           END_OF_MESSAGE
 
           expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(ProfileNotFound, expected_message)
@@ -357,6 +357,10 @@ Defined profiles in cucumber.yml:
           Cucumber.use_full_backtrace = false
         end
 
+        after do
+          Cucumber.use_full_backtrace = false
+        end
+
         it 'shows full backtrace when --backtrace is present' do
           Main.new(['--backtrace'])
           begin
@@ -364,10 +368,6 @@ Defined profiles in cucumber.yml:
           rescue RSpec::Expectations::ExpectationNotMetError => e
             expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
           end
-        end
-
-        after do
-          Cucumber.use_full_backtrace = false
         end
       end
 
@@ -385,7 +385,7 @@ Defined profiles in cucumber.yml:
         expect(config.options[:name_regexps]).to include(/User signs up/)
       end
 
-      it 'should allow specifying environment variables on the command line' do
+      it 'allows specifying environment variables on the command line' do
         config.parse!(['foo=bar'])
 
         expect(ENV['foo']).to eq 'bar'

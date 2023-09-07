@@ -5,7 +5,7 @@ require 'cucumber/formatter/backtrace_filter'
 module Cucumber
   module Formatter
     describe BacktraceFilter do
-      context '#exception' do
+      describe '#exception' do
         before do
           trace = %w[a b
                      _anything__/vendor/rails__anything_

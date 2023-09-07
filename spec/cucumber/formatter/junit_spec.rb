@@ -48,6 +48,7 @@ module Cucumber
             )
           )
         end
+
         describe 'includes the file' do
           before(:each) do
             run_defined_feature
@@ -84,6 +85,7 @@ module Cucumber
             )
           )
         end
+
         describe 'includes the file' do
           before(:each) do
             run_defined_feature
@@ -114,6 +116,7 @@ module Cucumber
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
         end
+
         describe 'includes the file' do
           before(:each) do
             run_defined_feature
@@ -376,6 +379,7 @@ module Cucumber
 
       context 'In --expand mode' do
         let(:runtime) { Runtime.new(expand: true) }
+
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', expand: true))

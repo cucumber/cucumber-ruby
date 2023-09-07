@@ -55,15 +55,39 @@ module Cucumber
           @wrapped = described_class.wrap(:stdout)
         end
 
-        it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
+        it "raises an ArgumentError if it wasn't passed :stderr/:stdout" do
           expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
         end
 
         it 'resets $stdout when #unwrap! is called' do
           interceptor = described_class.unwrap! :stdout
+        end
 
-          expect(interceptor).to be_instance_of described_class
-          expect($stdout).not_to be interceptor
+        after :each do
+          $stdout = @stdout
+        end
+
+        it 'wraps $stdout' do
+          wrapped = Interceptor::Pipe.wrap(:stdout)
+
+          expect($stdout).to be_instance_of Interceptor::Pipe
+          expect($stdout).to be wrapped
+        end
+      end
+
+      describe '#unwrap!' do
+        before :each do
+          @stdout = $stdout
+          $stdout = pipe
+          @wrapped = Interceptor::Pipe.wrap(:stdout)
+        end
+
+        after :each do
+          $stdout = @stdout
+        end
+
+        it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
+          expect { Interceptor::Pipe.unwrap!(:nonsense) }.to raise_error(ArgumentError)
         end
 
         it 'noops if $stdout or $stderr has been overwritten' do

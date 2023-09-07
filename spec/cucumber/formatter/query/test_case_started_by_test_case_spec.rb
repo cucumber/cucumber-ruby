@@ -25,7 +25,7 @@ module Cucumber
           test_case
         end
 
-        context '#attempt_by_test_case' do
+        describe '#attempt_by_test_case' do
           it 'raises an exception when the TestCase is unknown' do
             expect { @formatter.attempt_by_test_case(unknown_test_case) }.to raise_exception(TestCaseUnknownError)
           end
@@ -52,7 +52,7 @@ module Cucumber
           end
         end
 
-        context '#test_case_started_id_by_test_case' do
+        describe '#test_case_started_id_by_test_case' do
           it 'raises an exception when the TestCase is unknown' do
             expect { @formatter.test_case_started_id_by_test_case(unknown_test_case) }.to raise_exception(TestCaseUnknownError)
           end
