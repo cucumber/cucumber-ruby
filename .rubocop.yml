@@ -102,8 +102,6 @@ Naming/AsciiIdentifiers:
 # For the most part, the project is solid on naming. There are though, a few
 # cases where the cop doesn't need to catch.
 Naming/MethodName:
-  EnforcedStyle: snake_case
-  Enabled: true
   Exclude:
     - 'examples/i18n/ar/lib/calculator.rb'
     - 'examples/i18n/he/lib/calculator.rb'
@@ -132,23 +130,18 @@ Naming/VariableNumber:
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc']
 
+# Stylistic preference for cucumber
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# This cop throws errors when parsing a lot of the repo's code, possibly due
-# to splat issues?
-Style/AccessModifierDeclarations:
-  Enabled: false
-
+# Stylistic preference for cucumber
 Style/Documentation:
   Enabled: false
 
 Style/FormatStringToken:
   EnforcedStyle: annotated
 
-Style/StderrPuts:
-  Enabled: false
-
+# Stylistic preference for cucumber
 Style/RegexpLiteral:
   EnforcedStyle: slashes
   AllowInnerSlashes: true
