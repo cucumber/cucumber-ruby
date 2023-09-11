@@ -1,4 +1,5 @@
-name: Run ruby tests
+name: Run Ruby tests
+description: Runs Ruby tests
 
 inputs:
   ruby-version:
