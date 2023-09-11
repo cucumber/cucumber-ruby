@@ -132,6 +132,9 @@ Naming/VariableNumber:
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc']
 
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
 # This cop throws errors when parsing a lot of the repo's code, possibly due
 # to splat issues?
 Style/AccessModifierDeclarations:
