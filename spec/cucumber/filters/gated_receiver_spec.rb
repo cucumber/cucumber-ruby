@@ -28,15 +28,14 @@ describe Cucumber::Filters::GatedReceiver do
     end
 
     it 'describes all test cases to the receiver' do
-      test_cases.each do |test_case|
-        expect(test_case).to receive(:describe_to).with(receiver)
-      end
+      expect(test_cases).to all receive(:describe_to).with(receiver)
 
       gated_receiver.done
     end
 
     it 'calls done on the receiver' do
       expect(receiver).to receive(:done)
+
       gated_receiver.done
     end
   end
