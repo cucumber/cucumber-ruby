@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'cucumber-compatibility-kit', '~> 11.0'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
   s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.6'
-  s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   s.add_development_dependency 'rspec', '~> 3.12', '>= 3.12.0'
   s.add_development_dependency 'rubocop', '~> 1.56', '>= 1.56.2'

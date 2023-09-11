@@ -3,13 +3,7 @@
 ENV['CUCUMBER_COLORS'] = nil
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-# For Travis....
-require 'cucumber/encoding'
-
 require 'simplecov_setup'
-
-require 'pry'
-
 require 'cucumber'
 
 RSpec.configure do |c|
