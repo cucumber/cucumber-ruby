@@ -12,9 +12,7 @@ module Cucumber
     describe Configuration do
       def given_cucumber_yml_defined_as(hash_or_string)
         allow(File).to receive(:exist?) { true }
-
         cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
-
         allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
       end
 
@@ -24,7 +22,7 @@ module Cucumber
         allow(Dir).to receive(:[]) { files }
       end
 
-      before(:each) do
+      before do
         allow(File).to receive(:exist?) { false } # Meaning, no cucumber.yml exists
         allow(Kernel).to receive(:exit)
       end
@@ -41,7 +39,6 @@ module Cucumber
 
       it 'uses the default profile when no profile is defined' do
         given_cucumber_yml_defined_as('default' => '--require some_file')
-
         config.parse!(%w[--format progress])
 
         expect(config.options[:require]).to include('some_file')
@@ -52,7 +49,6 @@ module Cucumber
 
         it 'expands args from profiles in the cucumber.yml file' do
           given_cucumber_yml_defined_as('bongo' => '--require from/yml')
-
           config.parse!(%w[--format progress --profile bongo])
 
           expect(config.options[:formats]).to eq [['progress', {}, out]]
@@ -61,7 +57,6 @@ module Cucumber
 
         it 'expands args from the default profile when no flags are provided' do
           given_cucumber_yml_defined_as('default' => '--require from/yml')
-
           config.parse!([])
 
           expect(config.options[:require]).to eq ['from/yml']
@@ -69,7 +64,6 @@ module Cucumber
 
         it 'allows --strict to be set by a profile' do
           given_cucumber_yml_defined_as('bongo' => '--strict')
-
           config.parse!(%w[--profile bongo])
 
           expect(config.options[:strict].strict?(:undefined)).to be true
@@ -79,7 +73,6 @@ module Cucumber
 
         it 'allows --strict from a profile to be selectively overridden' do
           given_cucumber_yml_defined_as('bongo' => '--strict')
-
           config.parse!(%w[--profile bongo --no-strict-flaky])
 
           expect(config.options[:strict].strict?(:undefined)).to be true
@@ -89,7 +82,6 @@ module Cucumber
 
         it 'parses ERB syntax in the cucumber.yml file' do
           given_cucumber_yml_defined_as("---\ndefault: \"<%=\"--require some_file\"%>\"\n")
-
           config.parse!([])
 
           expect(config.options[:require]).to include('some_file')
@@ -122,7 +114,6 @@ module Cucumber
 
         it 'allows profiles to be defined in arrays' do
           given_cucumber_yml_defined_as('foo' => ['-f', 'progress'])
-
           config.parse!(%w[--profile foo])
 
           expect(config.options[:formats]).to eq [['progress', {}, out]]
@@ -139,7 +130,6 @@ module Cucumber
           context "when #{flag} is specified with none" do
             it 'disables profiles' do
               given_cucumber_yml_defined_as('default' => '-v --require file_specified_in_default_profile.rb')
-
               config.parse!("#{flag} --require some_file.rb".split(' '))
 
               expect(config.options[:require]).to eq ['some_file.rb']
@@ -147,7 +137,6 @@ module Cucumber
 
             it 'notifies the user that the profiles are being disabled' do
               given_cucumber_yml_defined_as('default' => '-v')
-
               config.parse!("#{flag} --require some_file.rb".split(' '))
 
               expect(out.string).to match(/Disabling profiles.../)
@@ -158,7 +147,6 @@ module Cucumber
         it 'issues a helpful error message when a specified profile exists but is nil or blank' do
           [nil, '   '].each do |bad_input|
             given_cucumber_yml_defined_as('foo' => bad_input)
-
             expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
 
             expect { config.parse!(%w[--profile foo]) }.to raise_error(expected_error)
@@ -168,9 +156,7 @@ module Cucumber
         it 'issues a helpful error message when no YAML file exists and a profile is specified' do
           expect(File).to receive(:exist?).with('cucumber.yml') { false }
 
-          expected_error = /cucumber\.yml was not found/
-
-          expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(expected_error)
+          expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(/cucumber\.yml was not found/)
         end
 
         it 'issues a helpful error message when cucumber.yml is blank or malformed' do
@@ -186,19 +172,16 @@ module Cucumber
         end
 
         it 'issues a helpful error message when cucumber.yml can not be parsed' do
-          expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./
-
           given_cucumber_yml_defined_as('input that causes an exception in YAML loading')
 
           expect(YAML).to receive(:load).and_raise(ArgumentError)
-          expect { config.parse!([]) }.to raise_error(expected_error_message)
+          expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./)
         end
 
         it 'issues a helpful error message when cucumber.yml can not be parsed by ERB' do
-          expected_error_message = /cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./
           given_cucumber_yml_defined_as('<% this_fails %>')
 
-          expect { config.parse!([]) }.to raise_error(expected_error_message)
+          expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./)
         end
       end
 
@@ -363,11 +346,9 @@ module Cucumber
 
         it 'shows full backtrace when --backtrace is present' do
           Main.new(['--backtrace'])
-          begin
-            expect('x').to eq 'y'
-          rescue RSpec::Expectations::ExpectationNotMetError => e
-            expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
-          end
+          expect('x').to eq('y')
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
         end
       end
 
@@ -472,6 +453,7 @@ module Cucumber
       describe '#retry_attempts' do
         it 'returns the specified number of retries' do
           config.parse!(['--retry=3'])
+
           expect(config.retry_attempts).to eql 3
         end
       end
