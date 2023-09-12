@@ -7,7 +7,7 @@ module Cucumber
   module Deprecate
     class AnsiString
       def failure_message(message)
-        "\e[31m" + message + "\e[0m"
+        message
       end
     end
   end
