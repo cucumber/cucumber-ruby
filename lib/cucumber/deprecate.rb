@@ -6,10 +6,6 @@ require 'cucumber/gherkin/formatter/ansi_escapes'
 module Cucumber
   module Deprecate
     class AnsiString
-      def self.failure_message(message)
-        AnsiString.new.failure_message(message)
-      end
-
       def failure_message(message)
         failed + message + reset
       end
@@ -17,7 +13,7 @@ module Cucumber
 
     module ForUsers
       def self.call(message, method, remove_after_version)
-        $stderr.puts AnsiString.failure_message(
+        $stderr.puts AnsiString.new.failure_message(
           "\nWARNING: ##{method} is deprecated" \
           " and will be removed after version #{remove_after_version}. #{message}.\n" \
           "(Called from #{caller(3..3).first})"
@@ -26,7 +22,7 @@ module Cucumber
     end
   end
 
-  def self.deprecate(*args)
-    ForUsers.call(*args)
+  def self.deprecate(message, method, remove_after_version)
+    ForUsers.call(message, method, remove_after_version)
   end
 end
