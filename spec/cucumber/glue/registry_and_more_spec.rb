@@ -17,13 +17,37 @@ module Cucumber
         Object.new.extend(Glue::Dsl)
       end
 
-      # rubocop:disable Style/GlobalVars
       describe '#load_code_file' do
-        before(:each) { $foo = nil }
-
         after(:each) do
-          FileUtils.rm_rf('tmp.rb')
-          FileUtils.rm_rf('docs.md')
+          FileUtils.rm_rf('tmp1.rb')
+          FileUtils.rm_rf('tmp2.rb')
+          FileUtils.rm_rf('tmp3.rb')
+          FileUtils.rm_rf('docs1.md')
+          FileUtils.rm_rf('docs2.md')
+          FileUtils.rm_rf('docs3.md')
+        end
+
+        let(:value1) do
+          <<~STRING
+            class Foo
+              def self.value; 1; end
+            end
+          STRING
+        end
+        let(:value2) do
+          <<~STRING
+            class Foo
+              def self.value; 2; end
+            end
+          STRING
+        end
+
+        let(:value3) do
+          <<~STRING
+            class Foo
+              def self.value; 3; end
+            end
+          STRING
         end
 
         def a_file_called(name)
@@ -32,73 +56,57 @@ module Cucumber
           end
         end
 
-        context 'by default' do
-          after(:each) do
-            FileUtils.rm_rf('tmp1.rb')
-          end
-
+        context 'when not specifying the loading strategy' do
           it 'does not re-load the file when called multiple times' do
-            a_file_called('tmp1.rb') do
-              '$foo = 1'
-            end
-
+            a_file_called('tmp1.rb') { value1 }
             registry.load_code_file('tmp1.rb')
-            expect($foo).to eq 1
 
-            a_file_called('tmp1.rb') do
-              '$foo = 2'
-            end
+            expect(Foo.value).to eq(1)
 
+            a_file_called('tmp1.rb') { value2 }
             registry.load_code_file('tmp1.rb')
-            expect($foo).to eq(1)
+
+            expect(Foo.value).to eq(1)
           end
 
           it 'only loads ruby files' do
-            a_file_called('docs.md') do
-              '$foo = 1'
-            end
+            a_file_called('tmp1.rb') { value1 }
+            a_file_called('docs1.md') { value3 }
+            registry.load_code_file('tmp1.rb')
+            registry.load_code_file('docs1.md')
 
-            registry.load_code_file('docs.md')
-            expect($foo).to be nil
+            expect(Foo.value).not_to eq(3)
           end
         end
 
-        context 'With `use_legacy_autoloader` set to true' do
+        context 'when using `use_legacy_autoloader`' do
           before(:each) do
             allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
           end
 
-          after(:each) do
-            FileUtils.rm_rf('tmp2.rb')
-          end
-
           it 're-loads the file when called multiple times' do
-            a_file_called('tmp2.rb') do
-              '$foo = 1'
-            end
-
+            a_file_called('tmp2.rb') { value1 }
             registry.load_code_file('tmp2.rb')
-            expect($foo).to eq 1
 
-            a_file_called('tmp2.rb') do
-              '$foo = 2'
-            end
+            expect(Foo.value).to eq(1)
 
+            a_file_called('tmp2.rb') { value2 }
             registry.load_code_file('tmp2.rb')
-            expect($foo).to eq 2
+
+            expect(Foo.value).to eq(2)
           end
 
           it 'only loads ruby files' do
-            a_file_called('docs.md') do
-              '$foo = 1'
-            end
+            a_file_called('tmp2.rb') { value1 }
+            a_file_called('docs2.md') { value3 }
+            registry.load_code_file('tmp2.rb')
+            registry.load_code_file('docs2.md')
 
-            registry.load_code_file('docs.md')
-            expect($foo).to be nil
+            expect(Foo.value).not_to eq(3)
           end
         end
 
-        context 'With `use_legacy_autoloader` set to false' do
+        context 'when explicitly NOT using `use_legacy_autoloader`' do
           before(:each) do
             allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
           end
@@ -108,31 +116,26 @@ module Cucumber
           end
 
           it 'does not re-load the file when called multiple times' do
-            a_file_called('tmp3.rb') do
-              '$foo = 1'
-            end
-
+            a_file_called('tmp3.rb') { value1 }
             registry.load_code_file('tmp3.rb')
-            expect($foo).to eq 1
 
-            a_file_called('tmp3.rb') do
-              '$foo = 2'
-            end
+            expect(Foo.value).to eq(1)
 
+            a_file_called('tmp3.rb') { value2 }
             registry.load_code_file('tmp3.rb')
-            expect($foo).to eq 1
+
+            expect(Foo.value).to eq(1)
           end
 
           it 'only loads ruby files' do
-            a_file_called('docs.md') do
-              '$foo = 1'
-            end
+            a_file_called('tmp3.rb') { value1 }
+            a_file_called('docs3.md') { value3 }
+            registry.load_code_file('tmp3.rb')
+            registry.load_code_file('docs3.md')
 
-            registry.load_code_file('docs.md')
-            expect($foo).to be nil
+            expect(Foo.value).not_to eq(3)
           end
         end
-        # rubocop:enable Style/GlobalVars
       end
 
       describe 'Handling the World' do
@@ -149,7 +152,7 @@ module Cucumber
           end
         end
 
-        it 'implicitlys extend world with modules' do
+        it 'implicitly extends the world with modules' do
           dsl.World(FakeObjects::ModuleOne, FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
           class << registry.current_world

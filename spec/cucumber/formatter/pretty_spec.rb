@@ -11,7 +11,7 @@ module Cucumber
       extend SpecHelperDsl
       include SpecHelper
 
-      context 'With no options' do
+      context 'with no options' do
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
@@ -498,7 +498,7 @@ OUTPUT
         end
       end
 
-      context 'With --no-multiline passed as an option' do
+      context 'with --no-multiline passed as an option' do
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
@@ -673,7 +673,7 @@ OUTPUT
         end
       end
 
-      context 'In --expand mode' do
+      context 'when using --expand mode' do
         let(:options) { { expand: true } }
 
         before(:each) do
@@ -763,7 +763,7 @@ OUTPUT
         end
       end
 
-      context 'In --expand mode with --source as an option' do
+      context 'when using --expand mode with --source as an option' do
         let(:options) { { expand: true } }
 
         before(:each) do
@@ -814,7 +814,7 @@ OUTPUT
               end
             end
 
-            context 'With very wide cells' do
+            context 'with very wide cells' do
               define_feature <<-FEATURE
             Feature: Monkey Business
 
@@ -842,7 +842,7 @@ OUTPUT
         end
       end
 
-      context 'snippets contain relevant keyword replacements' do
+      context 'with snippets that contain relevant keyword replacements' do
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
@@ -863,7 +863,7 @@ OUTPUT
               But there are no apples left
           FEATURE
 
-          it "containes snippets with 'And' or 'But' replaced by previous step name" do
+          it "contains snippets with 'And' or 'But' replaced by previous step name" do
             expect(@out.string).to include("Given('there are bananas and apples')")
             expect(@out.string).to include("Given('other monkeys are around')")
             expect(@out.string).to include("When('one monkey eats a banana')")

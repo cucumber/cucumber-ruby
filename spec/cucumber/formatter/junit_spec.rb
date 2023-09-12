@@ -38,7 +38,7 @@ module Cucumber
       extend SpecHelperDsl
       include SpecHelper
 
-      context 'With --junit,fileattribute=true option' do
+      context 'with --junit,fileattribute=true option' do
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(
@@ -75,7 +75,7 @@ module Cucumber
         end
       end
 
-      context 'With --junit,fileattribute=different option' do
+      context 'with --junit,fileattribute=different option' do
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(
@@ -111,7 +111,7 @@ module Cucumber
         end
       end
 
-      context 'With --junit no fileattribute option' do
+      context 'with --junit no fileattribute option' do
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
@@ -142,7 +142,7 @@ module Cucumber
         end
       end
 
-      context 'With no options' do
+      context 'with no options' do
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))

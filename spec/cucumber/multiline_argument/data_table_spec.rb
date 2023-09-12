@@ -7,53 +7,50 @@ module Cucumber
   module MultilineArgument
     describe DataTable do
       before do
-        @table = described_class.from([
-                                        %w[one four seven],
-                                        %w[4444 55555 666666]
-                                      ])
+        @table = DataTable.from([%w[one four seven], %w[4444 55555 666666]])
       end
 
       it 'has rows' do
-        expect(@table.cells_rows[0].map(&:value)).to eq %w[one four seven]
+        expect(@table.cells_rows[0].map(&:value)).to eq(%w[one four seven])
       end
 
       it 'has columns' do
-        expect(@table.columns[1].map(&:value)).to eq %w[four 55555]
+        expect(@table.columns[1].map(&:value)).to eq(%w[four 55555])
       end
 
       it 'has same cell objects in rows and columns' do
-        # 666666
-        expect(@table.cells_rows[1][2]).to equal(@table.columns[2][1])
+        expect(@table.cells_rows[1][2]).to eq(@table.columns[2][1])
       end
 
       it 'is convertible to an array of hashes' do
-        expect(@table.hashes).to eq [
-          { 'one' => '4444', 'four' => '55555', 'seven' => '666666' }
-        ]
+        expect(@table.hashes).to eq([{ 'one' => '4444', 'four' => '55555', 'seven' => '666666' }])
       end
 
       it 'accepts symbols as keys for the hashes' do
-        expect(@table.hashes.first[:one]).to eq '4444'
+        expect(@table.hashes.first[:one]).to eq('4444')
       end
 
       it 'returns the row values in order' do
-        expect(@table.rows.first).to eq %w[4444 55555 666666]
+        expect(@table.rows.first).to eq(%w[4444 55555 666666])
       end
 
       describe '#symbolic_hashes' do
         it 'coverts data table to an array of hashes with symbols as keys' do
           ast_table = Cucumber::Core::Test::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w[1 22 333]])
           data_table = described_class.new(ast_table)
+
           expect(data_table.symbolic_hashes).to eq([{ foo: '1', bar: '22', foo_bar: '333' }])
         end
 
         it 'is able to be accessed multiple times' do
           @table.symbolic_hashes
+
           expect { @table.symbolic_hashes }.not_to raise_error
         end
 
         it 'does not interfere with use of #hashes' do
           @table.symbolic_hashes
+
           expect { @table.hashes }.not_to raise_error
         end
       end
@@ -61,38 +58,40 @@ module Cucumber
       describe '#map_column' do
         it 'allows mapping columns' do
           new_table = @table.map_column('one', &:to_i)
-          expect(new_table.hashes.first['one']).to eq 4444
+
+          expect(new_table.hashes.first['one']).to eq(4444)
         end
 
-        it 'applies the block once to each value' do
-          headers = ['header']
+        it 'applies the block once to each value when #rows are interrogated' do
           rows = ['value']
-          table = described_class.from [headers, rows]
+          table = DataTable.from [['header'], rows]
           count = 0
-          new_table = table.map_column('header') { |_value| count += 1 }
-          new_table.rows
-          expect(count).to eq rows.size
+          table.map_column('header') { count += 1 }.rows
+
+          expect(count).to eq(rows.length)
         end
 
-        it 'allows mapping columns and take a symbol as the column name' do
+        it 'allows mapping columns taking a symbol as the column name' do
           new_table = @table.map_column(:one, &:to_i)
+
           expect(new_table.hashes.first['one']).to eq 4444
         end
 
         it 'allows mapping columns and modify the rows as well' do
           new_table = @table.map_column(:one, &:to_i)
+
           expect(new_table.rows.first).to include(4444)
           expect(new_table.rows.first).not_to include('4444')
         end
 
-        it 'passes silently if a mapped column does not exist in non-strict mode' do
+        it 'passes silently once #hashes are interrogated if a mapped column does not exist in non-strict mode' do
           expect do
             new_table = @table.map_column('two', strict: false, &:to_i)
             new_table.hashes
           end.not_to raise_error
         end
 
-        it 'fails if a mapped column does not exist in strict mode' do
+        it 'fails once #hashes are interrogated if a mapped column does not exist in strict mode' do
           expect do
             new_table = @table.map_column('two', strict: true, &:to_i)
             new_table.hashes
@@ -100,18 +99,11 @@ module Cucumber
         end
 
         it 'returns a new table' do
-          expect(@table.map_column(:one, &:to_i)).not_to eq @table
+          expect(@table.map_column(:one, &:to_i)).not_to eq(@table)
         end
       end
 
       describe '#match' do
-        before(:each) do
-          @table = described_class.from([
-                                          %w[one four seven],
-                                          %w[4444 55555 666666]
-                                        ])
-        end
-
         it 'returns nil if headers do not match' do
           expect(@table.match('does,not,match')).to be_nil
         end
@@ -126,70 +118,52 @@ module Cucumber
       end
 
       describe '#transpose' do
-        before(:each) do
-          @table = described_class.from([
-                                          %w[one 1111],
-                                          %w[two 22222]
-                                        ])
-        end
-
         it 'is convertible in to an array where each row is a hash' do
-          expect(@table.transpose.hashes[0]).to eq('one' => '1111', 'two' => '22222')
+          expect(@table.transpose.hashes[0]).to eq('one' => 'four', '4444' => '55555')
         end
       end
 
       describe '#rows_hash' do
-        it 'should return a hash of the rows' do
-          table = described_class.from([
-                                         %w[one 1111],
-                                         %w[two 22222]
-                                       ])
+        it 'returns a hash of the rows' do
+          table = DataTable.from([%w[one 1111], %w[two 22222]])
+
           expect(table.rows_hash).to eq('one' => '1111', 'two' => '22222')
         end
 
-        it "should fail if the table doesn't have two columns" do
-          faulty_table = described_class.from([
-                                                %w[one 1111 abc],
-                                                %w[two 22222 def]
-                                              ])
-          expect do
-            faulty_table.rows_hash
-          end.to raise_error('The table must have exactly 2 columns')
+        it "fails if the table doesn't have two columns" do
+          faulty_table = DataTable.from([%w[one 1111 abc], %w[two 22222 def]])
+
+          expect { faulty_table.rows_hash }.to raise_error('The table must have exactly 2 columns')
         end
 
-        it 'should support header and column mapping' do
-          table = described_class.from([
-                                         %w[one 1111],
-                                         %w[two 22222]
-                                       ])
-          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase)
-                    .map_column('two', strict: false, &:to_i)
+        it 'supports header and column mapping' do
+          table = DataTable.from([%w[one 1111], %w[two 22222]])
+          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase).map_column('two', strict: false, &:to_i)
+
           expect(t2.rows_hash).to eq('ONE' => '1111', 'Two' => 22_222)
         end
       end
 
       describe '#map_headers' do
-        let(:table) do
-          described_class.from([
-                                 %w[ANT ANTEATER],
-                                 %w[4444 55555]
-                               ])
-        end
+        let(:table) { DataTable.from([%w[ANT ANTEATER], %w[4444 55555]]) }
 
         it 'renames the columns to the specified values in the provided hash' do
           table2 = @table.map_headers('one' => :three)
+
           expect(table2.hashes.first[:three]).to eq '4444'
         end
 
         it 'allows renaming columns using regexp' do
           table2 = @table.map_headers(/one|uno/ => :three)
+
           expect(table2.hashes.first[:three]).to eq '4444'
         end
 
         it 'copies column mappings' do
           table = @table.map_column('one', &:to_i)
           table2 = table.map_headers('one' => 'three')
-          expect(table2.hashes.first['three']).to eq 4444
+
+          expect(table2.hashes.first['three']).to eq(4444)
         end
 
         it 'takes a block and operates on all the headers with it' do
@@ -288,7 +262,7 @@ module Cucumber
           end
         end
 
-        context 'in case of duplicate header values' do
+        context 'with duplicate header values' do
           it 'raises no error for two identical tables' do
             t = described_class.from(%(
             |a|a|c|
