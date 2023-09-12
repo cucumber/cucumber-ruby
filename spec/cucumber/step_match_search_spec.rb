@@ -93,13 +93,6 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
           expect(search.call('Three blind mice ran far').first.step_definition).to eq more_specific
         end
       end
-
-      # TODO: remove this - it's ... redundant
-      # http://railsforum.com/viewtopic.php?pid=93881
-      it "does not raise Redundant unless it's really redundant" do
-        dsl.Given(/^(.*) (.*) user named '(.*)'$/) { |a, b, c| }
-        dsl.Given(/^there is no (.*) user named '(.*)'$/) { |a, b| }
-      end
     end
   end
 end
