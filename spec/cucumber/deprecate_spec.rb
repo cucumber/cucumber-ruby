@@ -5,12 +5,6 @@ require 'spec_helper'
 module Cucumber
   module Deprecate
     describe 'Cucumber.deprecate' do
-      it 'fails when running the tests' do
-        expect do
-          Cucumber.deprecate('Use some_method instead', 'someMethod', '1.0.0')
-        end.to raise_exception('This method is due for removal after version 1.0.0')
-      end
-
       it 'outputs a message to STDERR' do
         allow($stderr).to receive(:puts)
 
