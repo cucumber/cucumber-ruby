@@ -12,7 +12,6 @@ module Cucumber
       end
 
       it 'outputs a message to STDERR' do
-        stub_const('Cucumber::Deprecate::STRATEGY', ForUsers)
         allow($stderr).to receive(:puts)
 
         Cucumber.deprecate('Use some_method instead', 'someMethod', '1.0.0')
