@@ -528,4 +528,3 @@ You *must* specify --out DIR for the junit formatter
 
       """
     And a file named "tmp/TEST-features-pending.xml" should exist
-    
