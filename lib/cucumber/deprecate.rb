@@ -6,8 +6,6 @@ require 'cucumber/gherkin/formatter/ansi_escapes'
 module Cucumber
   module Deprecate
     class AnsiString
-      include Cucumber::Gherkin::Formatter::AnsiEscapes
-
       def self.failure_message(message)
         AnsiString.new.failure_message(message)
       end
@@ -46,7 +44,7 @@ module Cucumber
       end
     end
 
-    STRATEGY = $PROGRAM_NAME =~ /rspec$/ ? ForDevelopers : ForUsers
+    STRATEGY = ForUsers
   end
 
   def self.deprecate(*args)
