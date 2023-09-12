@@ -5,7 +5,7 @@ require 'spec_helper'
 module Cucumber
   describe Configuration do
     describe '.default' do
-      subject { Configuration.default }
+      subject { described_class.default }
 
       it 'has an autoload_code_paths containing the standard support and step_definitions folders' do
         expect(subject.autoload_code_paths).to include('features/support')
@@ -15,8 +15,7 @@ module Cucumber
 
     describe 'with custom user options' do
       let(:user_options) { { autoload_code_paths: ['foo/bar/baz'] } }
-
-      subject { Configuration.new(user_options) }
+      subject { described_class.new(user_options) }
 
       it 'allows you to override the defaults' do
         expect(subject.autoload_code_paths).to eq ['foo/bar/baz']
@@ -31,7 +30,7 @@ module Cucumber
       end
 
       it 'requires env.rb files first' do
-        configuration = Configuration.new
+        configuration = described_class.new
         given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
         expect(configuration.support_to_load).to eq [
@@ -41,7 +40,7 @@ module Cucumber
       end
 
       it 'features/support/env.rb is loaded before any other features/**/support/env.rb file' do
-        configuration = Configuration.new
+        configuration = described_class.new
         given_the_following_files(
           '/features/foo/support/env.rb',
           '/features/foo/support/a_file.rb',
@@ -65,7 +64,7 @@ module Cucumber
         given_the_following_files('/vendor/gems/gem_a/cucumber/bar.rb',
                                   '/vendor/plugins/plugin_a/cucumber/foo.rb')
 
-        configuration = Configuration.new
+        configuration = described_class.new
 
         expect(configuration.step_defs_to_load).to eq [
           '/vendor/gems/gem_a/cucumber/bar.rb',
@@ -77,7 +76,7 @@ module Cucumber
         it 'excludes a ruby file from requiring when the name matches exactly' do
           given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
-          configuration = Configuration.new(excludes: [/a_file.rb/])
+          configuration = described_class.new(excludes: [/a_file.rb/])
 
           expect(configuration.all_files_to_load).to eq [
             '/features/support/env.rb'
@@ -89,7 +88,7 @@ module Cucumber
                                     '/features/support/food.rb', '/features/blah.rb',
                                     '/features/support/fooz.rb')
 
-          configuration = Configuration.new(excludes: [/foo[df]/, /blah/])
+          configuration = described_class.new(excludes: [/foo[df]/, /blah/])
 
           expect(configuration.all_files_to_load).to eq [
             '/features/support/bar.rb',
@@ -101,7 +100,7 @@ module Cucumber
 
     context 'selecting feature files' do
       it 'preserves the order of the feature files' do
-        configuration = Configuration.new(paths: %w[b.feature c.feature a.feature])
+        configuration = described_class.new(paths: %w[b.feature c.feature a.feature])
 
         expect(configuration.feature_files).to eq ['b.feature', 'c.feature', 'a.feature']
       end
@@ -110,7 +109,7 @@ module Cucumber
         allow(File).to receive(:directory?) { true }
         allow(Dir).to receive(:[]).with('feature_directory/**/*.feature') { ['cucumber.feature'] }
 
-        configuration = Configuration.new(paths: %w[feature_directory/])
+        configuration = described_class.new(paths: %w[feature_directory/])
 
         expect(configuration.feature_files).to eq ['cucumber.feature']
       end
@@ -119,7 +118,7 @@ module Cucumber
         allow(File).to receive(:directory?) { true }
         allow(Dir).to receive(:[]).with('features/**/*.feature') { ['cucumber.feature'] }
 
-        configuration = Configuration.new(paths: [])
+        configuration = described_class.new(paths: [])
 
         expect(configuration.feature_files).to eq ['cucumber.feature']
       end
@@ -133,7 +132,7 @@ module Cucumber
           'domain folder/different cuke.feature:4:5 bar.feature'
         )
 
-        configuration = Configuration.new(paths: %w[@rerun.txt])
+        configuration = described_class.new(paths: %w[@rerun.txt])
 
         expect(configuration.feature_files).to eq [
           'cucumber.feature:1:3',
@@ -151,7 +150,7 @@ module Cucumber
       it 'returns a copy of the configuration with new options' do
         old_out_stream = double('Old out_stream')
         new_out_stream = double('New out_stream')
-        config = Configuration.new(out_stream: old_out_stream).with_options(out_stream: new_out_stream)
+        config = described_class.new(out_stream: old_out_stream).with_options(out_stream: new_out_stream)
         expect(config.out_stream).to eq new_out_stream
       end
     end

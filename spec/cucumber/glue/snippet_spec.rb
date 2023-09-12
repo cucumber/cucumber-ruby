@@ -28,7 +28,7 @@ module Cucumber
       end
 
       describe Snippet::Regexp do
-        let(:snippet_class) { Snippet::Regexp }
+        let(:snippet_class) { described_class }
         let(:snippet_text) { snippet.to_s }
 
         it 'wraps snippet patterns in parentheses' do
@@ -118,7 +118,7 @@ module Cucumber
       end
 
       describe Snippet::Classic do
-        let(:snippet_class) { Snippet::Classic }
+        let(:snippet_class) { described_class }
 
         it 'renders snippet as unwrapped regular expression' do
           expect(snippet.to_s).to eq unindented(%(
@@ -130,7 +130,7 @@ module Cucumber
       end
 
       describe Snippet::Percent do
-        let(:snippet_class) { Snippet::Percent }
+        let(:snippet_class) { described_class }
 
         it 'renders snippet as percent-style regular expression' do
           expect(snippet.to_s).to eq unindented(%(
@@ -142,7 +142,7 @@ module Cucumber
       end
 
       describe Snippet::CucumberExpression do
-        let(:snippet_class) { Snippet::CucumberExpression }
+        let(:snippet_class) { described_class }
 
         it 'renders snippet as cucumber expression' do
           @step_text = 'I have 2.3 cukes in my belly'

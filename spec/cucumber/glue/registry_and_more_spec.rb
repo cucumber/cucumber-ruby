@@ -161,7 +161,7 @@ module Cucumber
             expect(included_modules.inspect).to match(/ModuleOne/) # Workaround for RSpec/Ruby 1.9 issue with namespaces
             expect(included_modules.inspect).to match(/ModuleTwo/)
           end
-          expect(registry.current_world.class).to eq Object
+          expect(registry.current_world.class).to eq(Object)
         end
 
         it 'raises error when we try to register more than one World proc' do
@@ -189,7 +189,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             extend RSpec::Matchers
             expect(included_modules.inspect).to match(/ModuleOne/)
           end
-          expect(registry.current_world.class).to eq Object
+          expect(registry.current_world.class).to eq(Object)
           expect(registry.current_world).to respond_to(:method_one)
 
           expect(registry.current_world.module_two.class).to eq(Object)
@@ -228,8 +228,9 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           class << registry.current_world
             extend RSpec::Matchers
           end
+
           expect(registry.current_world.namespace).to respond_to(:method_one)
-          expect(registry.current_world.namespace.method_one).to eql(-1)
+          expect(registry.current_world.namespace.method_one).to eq(-1)
         end
       end
 
@@ -242,7 +243,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
           expect(scenario).to receive(:accept_hook?).with(fish) { true }
           expect(scenario).to receive(:accept_hook?).with(meat) { false }
-          expect(registry.hooks_for(:before, scenario)).to eq [fish]
+          expect(registry.hooks_for(:before, scenario)).to eq([fish])
         end
 
         it 'finds around hooks' do
@@ -256,7 +257,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
           expect(scenario).to receive(:accept_hook?).with(a) { true }
           expect(scenario).to receive(:accept_hook?).with(b) { false }
-          expect(registry.hooks_for(:around, scenario)).to eq [a]
+          expect(registry.hooks_for(:around, scenario)).to eq([a])
         end
       end
     end

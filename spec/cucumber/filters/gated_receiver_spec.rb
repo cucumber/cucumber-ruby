@@ -3,7 +3,7 @@
 require 'cucumber/filters/gated_receiver'
 
 describe Cucumber::Filters::GatedReceiver do
-  subject(:gated_receiver) { Cucumber::Filters::GatedReceiver.new(receiver) }
+  subject(:gated_receiver) { described_class.new(receiver) }
 
   let(:receiver) { double(:receiver) }
   let(:test_cases) { [double(:test_case), double(:test_case)] }

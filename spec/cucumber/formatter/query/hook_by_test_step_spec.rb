@@ -17,7 +17,7 @@ module Cucumber
 
           @out = StringIO.new
           @config = actual_runtime.configuration.with_options(out_stream: @out)
-          @formatter = HookByTestStep.new(@config)
+          @formatter = described_class.new(@config)
 
           @config.on_event :test_case_started do |event|
             @test_cases << event.test_case

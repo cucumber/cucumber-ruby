@@ -11,7 +11,7 @@ describe Cucumber::Filters::ActivateSteps do
   let(:step_match) { double(activate: activated_test_step) }
   let(:activated_test_step) { double }
   let(:receiver) { double.as_null_object }
-  let(:filter) { Cucumber::Filters::ActivateSteps.new(step_match_search, configuration) }
+  let(:filter) { described_class.new(step_match_search, configuration) }
   let(:step_match_search) { proc { [step_match] } }
   let(:configuration) { double(dry_run?: false, notify: nil) }
 

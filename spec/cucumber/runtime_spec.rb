@@ -4,7 +4,7 @@ require 'spec_helper'
 
 module Cucumber
   describe Runtime do
-    subject { Runtime.new(options) }
+    subject { described_class.new(options) }
     let(:options) { {} }
 
     describe '#features_paths' do

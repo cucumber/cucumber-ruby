@@ -9,7 +9,7 @@ module Cucumber
     describe URLReporter do
       let(:io) { StringIO.new }
 
-      subject { URLReporter.new(io) }
+      subject { described_class.new(io) }
 
       describe '#report' do
         it 'displays the provided string' do

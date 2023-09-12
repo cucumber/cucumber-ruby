@@ -3,7 +3,7 @@
 require 'cucumber/filters/tag_limits'
 
 describe Cucumber::Filters::TagLimits do
-  subject(:filter) { Cucumber::Filters::TagLimits.new(tag_limits, receiver) }
+  subject(:filter) { described_class.new(tag_limits, receiver) }
 
   let(:tag_limits) { double(:tag_limits) }
   let(:receiver) { double(:receiver) }

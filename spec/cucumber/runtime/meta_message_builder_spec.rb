@@ -5,7 +5,7 @@ require 'cucumber/runtime/meta_message_builder'
 
 describe Cucumber::Runtime::MetaMessageBuilder do
   describe 'self#build_meta_message' do
-    subject { Cucumber::Runtime::MetaMessageBuilder.build_meta_message }
+    subject { described_class.build_meta_message }
 
     it { is_expected.to be_a(Cucumber::Messages::Meta) }
 
@@ -21,7 +21,7 @@ describe Cucumber::Runtime::MetaMessageBuilder do
     end
 
     context 'with overriden ENV' do
-      subject { Cucumber::Runtime::MetaMessageBuilder.build_meta_message(env) }
+      subject { described_class.build_meta_message(env) }
 
       let(:env) { {} }
 
@@ -32,7 +32,7 @@ describe Cucumber::Runtime::MetaMessageBuilder do
     end
 
     describe ':ci' do
-      subject { Cucumber::Runtime::MetaMessageBuilder.build_meta_message.ci }
+      subject { described_class.build_meta_message.ci }
 
       before do
         expect(Cucumber::CiEnvironment).to receive(:detect_ci_environment).and_return(ci_data)
@@ -56,7 +56,7 @@ describe Cucumber::Runtime::MetaMessageBuilder do
         end
 
         describe ':git field' do
-          subject { Cucumber::Runtime::MetaMessageBuilder.build_meta_message.ci.git }
+          subject { described_class.build_meta_message.ci.git }
 
           context 'with some git data' do
             let(:ci_data) do

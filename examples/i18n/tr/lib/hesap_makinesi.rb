@@ -11,6 +11,6 @@ class HesapMakinesi
   end
 
   def böl
-    @args[0].to_f / @args[1].to_f
+    @args[0].to_f / @args[1]
   end
 end

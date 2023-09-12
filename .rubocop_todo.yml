@@ -50,6 +50,12 @@ Lint/SuppressedException:
   Exclude:
     - 'lib/cucumber/rake/task.rb'
 
+# Offense count: 1
+# This cop supports unsafe autocorrection (--autocorrect-all).
+Lint/UselessAssignment:
+  Exclude:
+    - 'spec/cucumber/formatter/interceptor_spec.rb'
+
 # Offense count: 9
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
@@ -72,14 +78,6 @@ Naming/FileName:
 RSpec/AnyInstance:
   Exclude:
     - 'spec/cucumber/cli/main_spec.rb'
-
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEql:
-  Exclude:
-    - 'spec/cucumber/cli/configuration_spec.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/glue/registry_and_more_spec.rb'
 
 # Offense count: 9
 # This cop supports safe autocorrection (--autocorrect).
@@ -118,7 +116,10 @@ RSpec/DescribeClass:
 # Configuration parameters: SkipBlocks, EnforcedStyle.
 # SupportedStyles: described_class, explicit
 RSpec/DescribedClass:
-  Enabled: false
+  Exclude:
+    - 'spec/cucumber/formatter/interceptor_spec.rb'
+    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
+    - 'spec/cucumber/runtime/support_code_spec.rb'
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -131,6 +132,14 @@ RSpec/EmptyExampleGroup:
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
   Max: 58
+
+# Offense count: 4
+# This cop supports safe autocorrection (--autocorrect).
+# Configuration parameters: CustomTransform, IgnoredWords, DisallowedExamples.
+# DisallowedExamples: works
+RSpec/ExampleWording:
+  Exclude:
+    - 'spec/cucumber/multiline_argument/data_table_spec.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -146,7 +155,7 @@ RSpec/ExpectInHook:
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
     - 'spec/cucumber/runtime/meta_message_builder_spec.rb'
 
-# Offense count: 6
+# Offense count: 9
 RSpec/ExpectOutput:
   Exclude:
     - 'spec/cucumber/formatter/interceptor_spec.rb'
@@ -157,6 +166,12 @@ RSpec/ExpectOutput:
 # SupportedStyles: implicit, each, example
 RSpec/HookArgument:
   Enabled: false
+
+# Offense count: 4
+# This cop supports safe autocorrection (--autocorrect).
+RSpec/HooksBeforeExamples:
+  Exclude:
+    - 'spec/cucumber/formatter/interceptor_spec.rb'
 
 # Offense count: 15
 # Configuration parameters: AssignmentOnly.
@@ -189,6 +204,12 @@ RSpec/MultipleExpectations:
 RSpec/MultipleMemoizedHelpers:
   Max: 15
 
+# Offense count: 1
+# This cop supports safe autocorrection (--autocorrect).
+RSpec/MultipleSubjects:
+  Exclude:
+    - 'spec/cucumber/runtime/support_code_spec.rb'
+
 # Offense count: 46
 # Configuration parameters: EnforcedStyle, IgnoreSharedExamples.
 # SupportedStyles: always, named_only
@@ -208,14 +229,10 @@ RSpec/NamedSubject:
 RSpec/NestedGroups:
   Max: 6
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Strict, EnforcedStyle, AllowedExplicitMatchers.
-# SupportedStyles: inflected, explicit
-RSpec/PredicateMatcher:
+# Offense count: 1
+RSpec/OverwritingSetup:
   Exclude:
-    - 'spec/cucumber/hooks_spec.rb'
-    - 'spec/cucumber/running_test_case_spec.rb'
+    - 'spec/cucumber/runtime/support_code_spec.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -230,9 +247,10 @@ RSpec/RepeatedExample:
     - 'spec/cucumber/formatter/rerun_spec.rb'
     - 'spec/cucumber/world/pending_spec.rb'
 
-# Offense count: 2
+# Offense count: 4
 RSpec/RepeatedExampleGroupDescription:
   Exclude:
+    - 'spec/cucumber/formatter/interceptor_spec.rb'
     - 'spec/cucumber/glue/proto_world_spec.rb'
 
 # Offense count: 31
@@ -251,6 +269,18 @@ RSpec/ReturnFromStub:
     - 'spec/cucumber/formatter/interceptor_spec.rb'
     - 'spec/cucumber/formatter/junit_spec.rb'
     - 'spec/cucumber/glue/registry_and_more_spec.rb'
+
+# Offense count: 3
+# This cop supports safe autocorrection (--autocorrect).
+RSpec/ScatteredLet:
+  Exclude:
+    - 'spec/cucumber/runtime/support_code_spec.rb'
+
+# Offense count: 2
+# This cop supports safe autocorrection (--autocorrect).
+RSpec/ScatteredSetup:
+  Exclude:
+    - 'spec/cucumber/formatter/interceptor_spec.rb'
 
 # Offense count: 9
 RSpec/StubbedMock:
@@ -292,57 +322,8 @@ Style/ClassAndModuleChildren:
     - 'lib/autotest/cucumber_rails_rspec2.rb'
     - 'lib/autotest/cucumber_rspec.rb'
     - 'lib/autotest/cucumber_rspec2.rb'
-    - 'spec/cucumber/deprecate_spec.rb'
-    - 'spec/cucumber/formatter/fail_fast_spec.rb'
-    - 'spec/cucumber/formatter/interceptor_spec.rb'
-    - 'spec/cucumber/hooks_spec.rb'
 
 # Offense count: 3
 Style/ClassVars:
   Exclude:
     - 'spec/cucumber/glue/step_definition_spec.rb'
-
-# Offense count: 22
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: left_coerce, right_coerce, single_coerce, fdiv
-Style/FloatDivision:
-  Enabled: false
-
-# Offense count: 5
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/file_specs.rb'
-    - 'lib/cucumber/runtime.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-Style/StderrPuts:
-  Exclude:
-    - 'examples/i18n/Rakefile'
-    - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/deprecate.rb'
-    - 'lib/cucumber/formatter/unicode.rb'
-    - 'lib/cucumber/rake/task.rb'
-    - 'spec/cucumber/formatter/interceptor_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'spec/cucumber/cli/options_spec.rb'
