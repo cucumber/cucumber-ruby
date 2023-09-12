@@ -81,7 +81,7 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:63"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:62"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -118,9 +118,9 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:100"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:99"},
                       "result": {"status": "failed",
-                                 "error_message": "no bananas (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:100:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
+                                 "error_message": "no bananas (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:99:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
                                  "duration": 1}}]}]}]})
         end
       end
@@ -156,9 +156,9 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:138"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:137"},
                       "result": {"status": "pending",
-                                 "error_message": "TODO (Cucumber::Pending)\\n./spec/cucumber/formatter/json_spec.rb:138:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
+                                 "error_message": "TODO (Cucumber::Pending)\\n./spec/cucumber/formatter/json_spec.rb:137:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
                                  "duration": 1}}]}]}]})
         end
       end
@@ -198,7 +198,7 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:180"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:179"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -252,7 +252,7 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 6,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:228"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:227"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
                    {"id": "banana-party;monkey-eats-bananas;fruit-table;2",
@@ -271,7 +271,7 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 10,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:228"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:227"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -326,7 +326,7 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 6,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:308"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:307"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
                   {"id": "banana-party;monkey-eats-bananas",
@@ -339,7 +339,7 @@ module Cucumber
                     [{"keyword": "Then ",
                       "name": "the monkey eats bananas",
                       "line": 11,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:309"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:308"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
                   {"keyword": "Background",
@@ -351,7 +351,7 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 6,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:308"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:307"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
                    {"id": "banana-party;monkey-eats-bananas;fruit-table;2",
@@ -364,7 +364,7 @@ module Cucumber
                     [{"keyword": "Then ",
                       "name": "the monkey eats bananas",
                       "line": 16,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:309"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:308"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -407,7 +407,7 @@ module Cucumber
                       "doc_string": {"value": "the doc string",
                                      "content_type": "",
                                      "line": 5},
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:386"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:385"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -445,7 +445,7 @@ module Cucumber
                       "name": "there are bananas",
                       "line": 4,
                       "output": ["from step"],
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:426"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:425"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -556,7 +556,7 @@ module Cucumber
                       "line": 4,
                       "embeddings": [{"mime_type": "mime-type",
                                       "data": "YWJj"}],
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:536"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:535"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -599,7 +599,7 @@ module Cucumber
                       "line": 4,
                       "embeddings": [{"mime_type": "image/png",
                                       "data": "Zm9v"}],
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:575"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:574"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -640,31 +640,31 @@ module Cucumber
                    "description": "",
                    "type": "scenario",
                    "before":
-                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:618"},
+                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:617"},
                       "result": {"status": "passed",
                                  "duration": 1}},
-                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:619"},
+                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:618"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "steps":
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:625"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:624"},
                       "result": {"status": "passed",
                                  "duration": 1},
                       "after":
-                       [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:622"},
+                       [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:621"},
                          "result": {"status": "passed",
                                     "duration": 1}},
-                        {"match": {"location": "spec/cucumber/formatter/json_spec.rb:623"},
+                        {"match": {"location": "spec/cucumber/formatter/json_spec.rb:622"},
                          "result": {"status": "passed",
                                     "duration": 1}}]}],
                    "after":
-                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:621"},
+                    [{"match": {"location": "spec/cucumber/formatter/json_spec.rb:620"},
                       "result": {"status": "passed",
                                  "duration": 1}},
-                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:620"},
+                     {"match": {"location": "spec/cucumber/formatter/json_spec.rb:619"},
                       "result": {"status": "passed",
                                  "duration": 1}}]}]}]))
         end
@@ -705,13 +705,13 @@ module Cucumber
                     [{"keyword": "Given ",
                       "name": "there are bananas",
                       "line": 4,
-                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:687"},
+                      "match": {"location": "spec/cucumber/formatter/json_spec.rb:686"},
                       "result": {"status": "passed",
                                  "duration": 1}}],
                    "around":
                     [{"match": {"location": "unknown_hook_location:1"},
                       "result": {"status": "failed",
-                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:685:in `Around'",
+                                 "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:684:in `Around'",
                                  "duration": 1}}]}]}]})
         end
       end
@@ -752,7 +752,7 @@ module Cucumber
                        "rows":
                          [{"cells": ["aa", "bb"]},
                           {"cells": ["cc", "dd"]}],
-                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:731"},
+                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:730"},
                        "result": {"status": "passed",
                                   "duration": 1}}]}]}]))
         end
