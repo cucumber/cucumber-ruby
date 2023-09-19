@@ -112,14 +112,22 @@ module Cucumber
             if child.respond_to?(:rule) && child.rule
               process_scenario_container(child.rule)
             elsif child.respond_to?(:scenario) && child.scenario
-              child.scenario.steps.each do |step|
-                @lookup_hash[step.location.line] = StepSource.new(:Step, step)
-              end
+              store_scenario_source_steps(child.scenario)
             elsif !child.background.nil?
-              child.background.steps.each do |step|
-                @lookup_hash[step.location.line] = StepSource.new(:Step, step)
-              end
+              store_background_source_steps(child.background)
             end
+          end
+        end
+
+        def store_scenario_source_steps(scenario)
+          scenario.steps.each do |step|
+            @lookup_hash[step.location.line] = StepSource.new(:Step, step)
+          end
+        end
+
+        def store_background_source_steps(background)
+          background.steps.each do |step|
+            @lookup_hash[step.location.line] = StepSource.new(:Step, step)
           end
         end
       end
