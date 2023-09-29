@@ -42,11 +42,12 @@ module Cucumber
         raise 'To be implemented'
       end
 
-      def attach(src, media_type)
+      def attach(src, media_type, filename = 'jeff')
         attachment_data = {
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,
-          media_type: media_type
+          media_type: media_type,
+          file_name: filename
         }
 
         if media_type.start_with?('text/')
