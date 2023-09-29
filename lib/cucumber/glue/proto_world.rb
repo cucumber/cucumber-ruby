@@ -88,13 +88,13 @@ module Cucumber
       #   the file path, or an IO ready to be read.
       # @param media_type [string] the media type. If file is a valid path,
       #   media_type can be ommitted, it will then be inferred from the file name.
-      def attach(file, media_type = nil)
+      def attach(file, media_type = nil, filename = nil)
         return super unless File.file?(file)
 
         content = File.read(file, mode: 'rb')
         media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
 
-        super(content, media_type.to_s)
+        super(content, media_type.to_s, filename)
       rescue StandardError
         super
       end
