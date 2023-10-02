@@ -91,24 +91,6 @@ Naming/MethodName:
     - 'examples/i18n/he/lib/calculator.rb'
     - 'lib/cucumber/glue/dsl.rb'
 
-## In most cases, being descriptive with parameter names helps a reader understand
-## what the variable is for. In some cases, shorter names are sufficient.
-#Naming/MethodParameterName:
-#  AllowedNames: _, e, n, v, id, io, gh, pr
-
-# Reviewed: these offenses look false as the variables are in cyrillic
-Naming/VariableName:
-  Exclude:
-    - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
-
-# Rubocop doesn't handle some international words well for this cop
-Naming/VariableNumber:
-  EnforcedStyle: normalcase
-  Exclude:
-    - 'examples/i18n/**/*'
-
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc']
 
