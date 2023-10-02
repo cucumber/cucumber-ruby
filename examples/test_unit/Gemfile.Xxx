@@ -1,4 +1,0 @@
-source 'https://rubygems.org'
-
-gem 'cucumber', path: '../..'
-gem 'test-unit'

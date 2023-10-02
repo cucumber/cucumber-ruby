@@ -528,8 +528,3 @@ You *must* specify --out DIR for the junit formatter
 
       """
     And a file named "tmp/TEST-features-pending.xml" should exist
-
-  @wip-jruby
-  Scenario: mixed encoding outputs are handled across all supported ruby versions, failing on jruby currently
-    When I run `cucumber --format junit --out tmp/ features/encoding_output.feature`
-    Then it should pass

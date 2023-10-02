@@ -26,7 +26,7 @@ module Cucumber
       # @example Passing a multiline string
       #   step "the email should contain:", "Dear sir,\nYou've won a prize!\n"
       # @param [String] name The name of the step
-      # @param [String, Cucumber::Test::DocString, Cucumber::Ast::Table] multiline_argument
+      # @param [String, Cucumber::Test::DocString, Cucumber::Ast::Table] raw_multiline_arg
       def step(name, raw_multiline_arg = nil)
         super
       end
@@ -84,10 +84,9 @@ module Cucumber
 
       # Attach a file to the output
       # @param file [string|io] the file to attach.
-      #   It can be a string containing the file content itself,
-      #   the file path, or an IO ready to be read.
-      # @param media_type [string] the media type. If file is a valid path,
-      #   media_type can be ommitted, it will then be inferred from the file name.
+      #   It can be a string containing the file content itself, the file path, or an IO ready to be read.
+      # @param media_type [string] the media type.
+      # If file is a valid path, media_type can be omitted, it will then be inferred from the file name.
       def attach(file, media_type = nil)
         return super unless File.file?(file)
 
@@ -103,12 +102,9 @@ module Cucumber
       def pending(message = 'TODO')
         raise Pending, message unless block_given?
 
-        begin
-          yield
-        rescue Exception # rubocop:disable Lint/RescueException
-          raise Pending, message
-        end
-        raise Pending, "Expected pending '#{message}' to fail. No Error was raised. No longer pending?"
+        yield
+      rescue Exception
+        raise Pending, message
       end
 
       # Skips this step and the remaining steps in the scenario
@@ -126,8 +122,8 @@ module Cucumber
         inspect
       end
 
-      # Dynamially generate the API module, closuring the dependencies
-      def self.for(runtime, language) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+      # Dynamically generate the API module, closuring the dependencies
+      def self.for(runtime, language)
         Module.new do
           def self.extended(object)
             # wrap the dynamically generated module so that we can document the methods
@@ -172,14 +168,12 @@ module Cucumber
 
           private
 
-          # @private
           def add_world_modules!(modules)
             modules.each do |world_module|
               extend(world_module)
             end
           end
 
-          # @private
           def add_namespaced_modules!(modules)
             @__namespaced_modules = modules
             modules.each do |namespace, world_modules|
@@ -199,7 +193,6 @@ module Cucumber
             end
           end
 
-          # @private
           def stringify_namespaced_modules
             return '' if @__namespaced_modules.nil?
 
@@ -208,7 +201,6 @@ module Cucumber
         end
       end
 
-      # @private
       AnsiEscapes = Cucumber::Gherkin::Formatter::AnsiEscapes
     end
   end

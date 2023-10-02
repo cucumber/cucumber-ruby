@@ -1,5 +1,9 @@
 inherit_from: .rubocop_todo.yml
 
+inherit_mode:
+  merge:
+    - Exclude
+
 require:
   - rubocop-capybara
   - rubocop-packaging
@@ -20,11 +24,6 @@ AllCops:
     - 'temp_app/**/*'
     - 'cck/features/**/*'
 
-# TODO: [LH] - Candidate for phasing out in v9 patch releases. People should have this stored in editor and ideally not use windows
-# for ruby development. Where they are, their editor config should have this setting
-Layout/EndOfLine:
-  EnforcedStyle: lf
-
 # A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
 Layout/LineLength:
   Max: 200
@@ -35,13 +34,6 @@ Layout/TrailingWhitespace:
   Exclude:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
-
-# TODO: [LH] - This needs re-reviewing and fixing, we have been partially fixing this up in 2019/2020 onwards
-# (Likely that this is primarily already fixed)
-# Reviewed: please see PR-1022 for details on why this cop is disabled:
-# https://github.com/cucumber/cucumber-ruby/pull/1022
-Lint/AmbiguousOperator:
-  Enabled: false
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 # We exclude proto_world for documentation (rdoc) purpose
@@ -58,6 +50,7 @@ Metrics/AbcSize:
   Exclude:
     - lib/cucumber/formatter/junit.rb
     - spec/cucumber/formatter/http_io_spec.rb
+    - lib/cucumber/glue/proto_world.rb
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 Metrics/BlockLength:
@@ -93,6 +86,7 @@ Metrics/MethodLength:
     - lib/cucumber/cli/options.rb
     - lib/cucumber/formatter/publish_banner_printer.rb
     - spec/cucumber/formatter/http_io_spec.rb
+    - lib/cucumber/glue/proto_world.rb
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
