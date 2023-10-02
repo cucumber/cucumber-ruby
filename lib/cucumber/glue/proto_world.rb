@@ -156,8 +156,8 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:attach) do |file, media_type|
-            runtime.attach(file, media_type)
+          define_method(:attach) do |file, media_type, filename|
+            runtime.attach(file, media_type, filename)
           end
 
           # Prints the list of modules that are included in the World
