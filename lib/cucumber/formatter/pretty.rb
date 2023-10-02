@@ -140,10 +140,10 @@ module Cucumber
         print_summary
       end
 
-      def attach(src, media_type)
+      def attach(src, media_type, filename)
         return unless media_type == 'text/x.cucumber.log+plain'
 
-        @test_step_output.push src
+        @test_step_output.push("#{filename}: #{src}")
       end
 
       private
