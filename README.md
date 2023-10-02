@@ -56,8 +56,7 @@ Later in this document, bundler is considered being used so all commands are usi
 
 ### Ruby on Rails
 
-Using Ruby on Rails? You can use [cucumber-rails](https://github.com/cucumber/cucumber-rails)
-to bring Cucumber into your Rails project.
+Using Ruby on Rails? You can use [cucumber-rails](https://github.com/cucumber/cucumber-rails) to bring Cucumber into your Rails project.
 
 ## Usage
 
@@ -133,7 +132,7 @@ To execute a single example, indicates the line of the name of the example:
 
     $ bundle exec cucumber features/rule.feature:5
 
-To summarize the results on the standard output, and writte a HTML report on disk:
+To summarize the results on the standard output, and generate a HTML report on disk:
 
     $ bundle exec cucumber --format summary --format html --out report.html
 
@@ -141,8 +140,7 @@ For more command line options
 
     $ bundle exec cucumber --help
 
-You can also find documentation on the command line possibilities in
-[features/docs/cli](features/docs/cli).
+You can also find documentation on the command line possibilities in [features/docs/cli](features/docs/cli).
 
 ## Documentation and support
 
