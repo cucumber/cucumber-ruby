@@ -174,7 +174,12 @@ module Cucumber
         return unless @io
 
         @io.puts
-        @io.puts("#{filename}: #{format_string(src, :tag)}")
+        if filename
+          @io.puts("#{filename}: #{format_string(src, :tag)}")
+        else
+          @io.puts(format_string(src, :tag))
+        end
+
         @io.flush
       end
 
