@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
 class HesapMakinesi
-  def push(n)
-    @args ||= []
-    @args << n
+  def initialize
+    @stack = []
+  end
+
+  def push(arg)
+    @stack.push(arg)
   end
 
   def topla
-    @args.inject(0) { |n, sum| sum + n }
+    @stack.inject(0) { |n, sum| sum + n }
   end
 
   def böl
-    @args[0].to_f / @args[1]
+    @stack[0].to_f / @stack[1]
   end
 end

@@ -6,7 +6,7 @@ class Calculator
   end
 
   def push(arg)
-    @stack.push arg
+    @stack.push(arg)
   end
 
   def result

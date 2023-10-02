@@ -89,14 +89,12 @@ Naming/MethodName:
   Exclude:
     - 'examples/i18n/ar/lib/calculator.rb'
     - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
     - 'lib/cucumber/glue/dsl.rb'
 
-# In most cases, being descriptive with parameter names helps a reader understand
-# what the variable is for. In some cases, shorter names are sufficient.
-Naming/MethodParameterName:
-  AllowedNames: _, e, n, v, id, io, gh, pr
+## In most cases, being descriptive with parameter names helps a reader understand
+## what the variable is for. In some cases, shorter names are sufficient.
+#Naming/MethodParameterName:
+#  AllowedNames: _, e, n, v, id, io, gh, pr
 
 # Reviewed: these offenses look false as the variables are in cyrillic
 Naming/VariableName:
