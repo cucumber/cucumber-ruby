@@ -12,6 +12,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - First couple of passes of tidying up approximately 30% of the manual fix cops
   ([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
+- Removed a bunch of example files / sample projects from ancient projects no longer viable
+  [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
 
 ## [9.0.2] - 2023-09-11
 ### Changed
