@@ -5,7 +5,7 @@ class Laskin
     @stack = []
   end
 
-  def push(arg)
+  def pinoa(arg)
     @stack.push(arg)
   end
 
