@@ -46,6 +46,7 @@ Metrics/AbcSize:
   Exclude:
     - lib/cucumber/formatter/junit.rb
     - spec/cucumber/formatter/http_io_spec.rb
+    - lib/cucumber/glue/proto_world.rb
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 Metrics/BlockLength:
@@ -81,6 +82,7 @@ Metrics/MethodLength:
     - lib/cucumber/cli/options.rb
     - lib/cucumber/formatter/publish_banner_printer.rb
     - spec/cucumber/formatter/http_io_spec.rb
+    - lib/cucumber/glue/proto_world.rb
 
 # Rubocop doesn't like method names in other languages but as Cucumber supports
 # languages, this cop needs to be disabled.
