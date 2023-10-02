@@ -14,6 +14,6 @@ class Calculator
   end
 
   def divide
-    @stack[0].to_f / @args[1]
+    @stack[0].to_f / @stack[1]
   end
 end
