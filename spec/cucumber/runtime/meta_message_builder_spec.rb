@@ -53,79 +53,77 @@ describe Cucumber::Runtime::MetaMessageBuilder do
       end
     end
 
-    describe ':ci hash' do
+    context 'when running on a CI system without git data' do
       subject { described_class.build_meta_message.ci }
 
       before { expect(Cucumber::CiEnvironment).to receive(:detect_ci_environment).and_return(ci_data) }
 
-      context 'when running on a CI system' do
-        let(:ci_data) do
-          {
-            name: 'Jenkins',
-            url: 'http://localhost:8080',
-            buildNumber: '123'
+      let(:ci_data) do
+        {
+          name: 'Jenkins',
+          url: 'http://localhost:8080',
+          buildNumber: '123'
+        }
+      end
+
+      it { is_expected.to be_a(Cucumber::Messages::Ci) }
+
+      it 'has a populated CI name from the ci input hash' do
+        expect(subject.name).to eq(ci_data[:name])
+      end
+
+      it 'has a populated CI url from the ci input hash' do
+        expect(subject.url).to eq(ci_data[:url])
+      end
+
+      it 'has a populated CI build number from the ci input hash' do
+        expect(subject.build_number).to eq(ci_data[:buildNumber])
+      end
+    end
+
+    context 'when running on a CI system with git data' do
+      subject { described_class.build_meta_message.ci.git }
+
+      before { expect(Cucumber::CiEnvironment).to receive(:detect_ci_environment).and_return(ci_data) }
+
+      let(:ci_data) do
+        {
+          git: {
+            remote: 'origin',
+            revision: '1234567890',
+            branch: 'main',
+            tag: 'v1.0.0'
           }
-        end
-
-        it { is_expected.to be_a(Cucumber::Messages::Ci) }
-
-        it 'has a populated name from the ci input hash' do
-          expect(subject.name).to eq(ci_data[:name])
-        end
-
-        it 'has a populated url from the ci input hash' do
-          expect(subject.url).to eq(ci_data[:url])
-        end
-
-        it 'has a populated build number from the ci input hash' do
-          expect(subject.build_number).to eq(ci_data[:buildNumber])
-        end
-
-        describe ':git field' do
-          subject { described_class.build_meta_message.ci.git }
-
-          context 'with some git data' do
-            let(:ci_data) do
-              {
-                git: {
-                  remote: 'origin',
-                  revision: '1234567890',
-                  branch: 'main',
-                  tag: 'v1.0.0'
-                }
-              }
-            end
-
-            it { is_expected.to be_a(Cucumber::Messages::Git) }
-
-            it 'has a populated git remote from the git field of the ci input hash' do
-              expect(subject.remote).to eq(ci_data[:git][:remote])
-            end
-
-            it 'has a populated git revision from the git field of the ci input hash' do
-              expect(subject.revision).to eq(ci_data[:git][:revision])
-            end
-
-            it 'has a populated git branch from the git field of the ci input hash' do
-              expect(subject.branch).to eq(ci_data[:git][:branch])
-            end
-
-            it 'has a populated git tag from the git field of the ci input hash' do
-              expect(subject.tag).to eq(ci_data[:git][:tag])
-            end
-          end
-
-          context 'without any git data' do
-            it { is_expected.to be_nil }
-          end
-        end
+        }
       end
 
-      context 'when not running on a CI system' do
-        let(:ci_data) { nil }
+      it { is_expected.to be_a(Cucumber::Messages::Git) }
 
-        it { is_expected.to be_nil }
+      it 'has a populated git remote from the git field of the ci input hash' do
+        expect(subject.remote).to eq(ci_data[:git][:remote])
       end
+
+      it 'has a populated git revision from the git field of the ci input hash' do
+        expect(subject.revision).to eq(ci_data[:git][:revision])
+      end
+
+      it 'has a populated git branch from the git field of the ci input hash' do
+        expect(subject.branch).to eq(ci_data[:git][:branch])
+      end
+
+      it 'has a populated git tag from the git field of the ci input hash' do
+        expect(subject.tag).to eq(ci_data[:git][:tag])
+      end
+    end
+
+    context 'when not running on a CI system' do
+      subject { described_class.build_meta_message.ci }
+
+      before { expect(Cucumber::CiEnvironment).to receive(:detect_ci_environment).and_return(ci_data) }
+
+      let(:ci_data) { nil }
+
+      it { is_expected.to be_nil }
     end
   end
 end
