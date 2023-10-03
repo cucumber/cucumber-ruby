@@ -133,9 +133,14 @@ module Cucumber
           class << registry.current_world
             extend RSpec::Matchers
 
-            expect(included_modules.inspect).to match(/ModuleOne/) # Workaround for RSpec/Ruby 1.9 issue with namespaces
-            expect(included_modules.inspect).to match(/ModuleTwo/)
+            expect(included_modules).to include(FakeObjects::ModuleOne).and include(FakeObjects::ModuleTwo)
           end
+        end
+
+        it 'places the current world inside the `Object` superclass' do
+          dsl.World(FakeObjects::ModuleOne, FakeObjects::ModuleTwo)
+          registry.begin_scenario(double('scenario').as_null_object)
+
           expect(registry.current_world.class).to eq(Object)
         end
 
@@ -147,54 +152,47 @@ module Cucumber
       end
 
       describe 'Handling namespaced World' do
-        it 'extends the world with namespaces' do
+        it 'can still handle top level methods inside the world the world with namespaces' do
           dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-            expect(included_modules.inspect).to match(/ModuleOne/)
-          end
-          expect(registry.current_world.class).to eq(Object)
+
           expect(registry.current_world).to respond_to(:method_one)
+        end
 
-          expect(registry.current_world.module_two.class).to eq(Object)
+        it 'can scope calls to a specific namespaced module' do
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
+          registry.begin_scenario(double('scenario').as_null_object)
+
           expect(registry.current_world.module_two).to respond_to(:method_two)
+        end
 
-          expect(registry.current_world.module_three.class).to eq(Object)
+        it 'can scope calls to a different specific namespaced module' do
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
+          registry.begin_scenario(double('scenario').as_null_object)
+
           expect(registry.current_world.module_three).to respond_to(:method_three)
         end
 
-        it 'allows to inspect the included modules' do
+        it 'can show all the namespaced included modules' do
           dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-          end
-          expect(registry.current_world.inspect).to match(/ModuleOne/)
-          expect(registry.current_world.inspect).to include('ModuleTwo (as module_two)')
-          expect(registry.current_world.inspect).to include('ModuleThree (as module_three)')
+
+          expect(registry.current_world.inspect).to include('ModuleTwo (as module_two)').and include('ModuleThree (as module_three)')
         end
 
         it 'merges methods when assigning different modules to the same namespace' do
           dsl.World(namespace: FakeObjects::ModuleOne)
           dsl.World(namespace: FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-          end
-          expect(registry.current_world.namespace).to respond_to(:method_one)
-          expect(registry.current_world.namespace).to respond_to(:method_two)
+
+          expect(registry.current_world.namespace).to respond_to(:method_one).and respond_to(:method_two)
         end
 
-        it 'resolves conflicts when assigning different modules to the same namespace' do
+        it 'will resolve conflicts and use the latest defined definition when assigning different modules to the same namespace' do
           dsl.World(namespace: FakeObjects::ModuleOne)
           dsl.World(namespace: FakeObjects::ModuleMinusOne)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-          end
 
-          expect(registry.current_world.namespace).to respond_to(:method_one)
           expect(registry.current_world.namespace.method_one).to eq(-1)
         end
       end
@@ -206,22 +204,19 @@ module Cucumber
 
           scenario = double('Scenario')
 
-          expect(scenario).to receive(:accept_hook?).with(fish) { true }
-          expect(scenario).to receive(:accept_hook?).with(meat) { false }
+          allow(scenario).to receive(:accept_hook?).with(fish) { true }
+          allow(scenario).to receive(:accept_hook?).with(meat) { false }
           expect(registry.hooks_for(:before, scenario)).to eq([fish])
         end
 
         it 'finds around hooks' do
-          a = dsl.Around do |scenario, block|
-          end
-
-          b = dsl.Around('@tag') do |scenario, block|
-          end
+          a = dsl.Around {}
+          b = dsl.Around('@tag') {}
 
           scenario = double('Scenario')
 
-          expect(scenario).to receive(:accept_hook?).with(a) { true }
-          expect(scenario).to receive(:accept_hook?).with(b) { false }
+          allow(scenario).to receive(:accept_hook?).with(a) { true }
+          allow(scenario).to receive(:accept_hook?).with(b) { false }
           expect(registry.hooks_for(:around, scenario)).to eq([a])
         end
       end
