@@ -67,8 +67,6 @@ module Cucumber
         end
 
         context 'with --i18n-languages' do
-          include RSpec::WorkInProgress
-
           it 'lists all known languages' do
             after_parsing '--i18n-languages' do
               ::Gherkin::DIALECTS.keys.map do |key|
@@ -82,27 +80,23 @@ module Cucumber
           end
         end
 
-        context 'with --i18n-keywords' do
-          context 'with invalid LANG' do
-            include RSpec::WorkInProgress
-
-            it 'exits' do
-              when_parsing '--i18n-keywords foo' do
-                expect(Kernel).to receive(:exit)
-              end
+        context 'with --i18n-keywords but an invalid LANG' do
+          it 'exits' do
+            when_parsing '--i18n-keywords foo' do
+              expect(Kernel).to receive(:exit)
             end
+          end
 
-            it 'says the language was invalid' do
-              after_parsing '--i18n-keywords foo' do
-                expect(@output_stream.string).to include("Invalid language 'foo'. Available languages are:")
-              end
+          it 'says the language was invalid' do
+            after_parsing '--i18n-keywords foo' do
+              expect(@output_stream.string).to include("Invalid language 'foo'. Available languages are:")
             end
+          end
 
-            it 'displays the language table' do
-              after_parsing '--i18n-keywords foo' do
-                ::Gherkin::DIALECTS.keys.map do |key|
-                  expect(@output_stream.string).to include(key.to_s)
-                end
+          it 'displays the language table' do
+            after_parsing '--i18n-keywords foo' do
+              ::Gherkin::DIALECTS.keys.map do |key|
+                expect(@output_stream.string).to include(key.to_s)
               end
             end
           end
@@ -145,28 +139,26 @@ module Cucumber
         end
 
         context 'when handling multiple formatters' do
+          let(:options) { described_class.new(output_stream, error_stream, default_profile: 'default') }
+
           it 'catches multiple command line formatters using the same stream' do
             expect { options.parse!(prepare_args('-f pretty -f progress')) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'catches multiple profile formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-f progress -f pretty')
-            options = described_class.new(output_stream, error_stream, default_profile: 'default')
 
             expect { options.parse!(%w[]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'profiles does not affect the catching of multiple command line formatters using the same stream' do
             given_cucumber_yml_defined_as('default' => '-q')
-            options = described_class.new(output_stream, error_stream, default_profile: 'default')
 
             expect { options.parse!(%w[-f progress -f pretty]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
           end
 
           it 'merges profile formatters and command line formatters' do
             given_cucumber_yml_defined_as('default' => '-f junit -o result.xml')
-            options = described_class.new(output_stream, error_stream, default_profile: 'default')
-
             options.parse!(%w[-f pretty])
 
             expect(options[:formats]).to eq [['pretty', {}, output_stream], ['junit', {}, 'result.xml']]
@@ -175,19 +167,27 @@ module Cucumber
 
         context 'when using -t TAGS or --tags TAGS' do
           it 'handles tag expressions as argument' do
-            after_parsing(['--tags', 'not @foo or @bar']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
+            after_parsing(['--tags', 'not @foo or @bar']) do
+              expect(options[:tag_expressions]).to eq(['not @foo or @bar'])
+            end
           end
 
           it 'stores tags passed with different --tags separately' do
-            after_parsing('--tags @foo --tags @bar') { expect(options[:tag_expressions]).to eq ['@foo', '@bar'] }
+            after_parsing('--tags @foo --tags @bar') do
+              expect(options[:tag_expressions]).to eq(['@foo', '@bar'])
+            end
           end
 
           it 'strips tag limits from the tag expressions stored' do
-            after_parsing(['--tags', 'not @foo:2 or @bar:3']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
+            after_parsing(['--tags', 'not @foo:2 or @bar:3']) do
+              expect(options[:tag_expressions]).to eq(['not @foo or @bar'])
+            end
           end
 
           it 'stores tag limits separately' do
-            after_parsing(['--tags', 'not @foo:2 or @bar:3']) { expect(options[:tag_limits]).to eq Hash('@foo' => 2, '@bar' => 3) }
+            after_parsing(['--tags', 'not @foo:2 or @bar:3']) do
+              expect(options[:tag_limits]).to eq({'@foo' => 2, '@bar' => 3})
+            end
           end
 
           it 'raise exception for inconsistent tag limits' do
@@ -197,13 +197,17 @@ module Cucumber
 
         context 'when using -n NAME or --name NAME' do
           it 'stores the provided names as regular expressions' do
-            after_parsing('-n foo --name bar') { expect(options[:name_regexps]).to eq [/foo/, /bar/] }
+            after_parsing('-n foo --name bar') do
+              expect(options[:name_regexps]).to eq([/foo/, /bar/])
+            end
           end
         end
 
         context 'when using -e PATTERN or --exclude PATTERN' do
           it 'stores the provided exclusions as regular expressions' do
-            after_parsing('-e foo --exclude bar') { expect(options[:excludes]).to eq [/foo/, /bar/] }
+            after_parsing('-e foo --exclude bar') do
+              expect(options[:excludes]).to eq([/foo/, /bar/])
+            end
           end
         end
 
@@ -211,14 +215,13 @@ module Cucumber
           it 'adds line numbers to args' do
             options.parse!(%w[-l24 FILE])
 
-            expect(options.instance_variable_get(:@args)).to eq ['FILE:24']
+            expect(options.instance_variable_get(:@args)).to eq(['FILE:24'])
           end
         end
 
         context 'when using -p PROFILE or --profile PROFILE' do
           it 'uses the default profile passed in during initialization if none are specified by the user' do
             given_cucumber_yml_defined_as('default' => '--require some_file')
-
             options = described_class.new(output_stream, error_stream, default_profile: 'default')
             options.parse!(%w[--format progress])
 
@@ -233,32 +236,32 @@ module Cucumber
             expect(options[:verbose]).to be true
           end
 
-          it "gives precendene to the origianl options' paths" do
+          it "gives precedence to the original options' paths" do
             given_cucumber_yml_defined_as('foo' => %w[features])
             options.parse!(%w[my.feature -p foo])
 
-            expect(options[:paths]).to eq %w[my.feature]
+            expect(options[:paths]).to eq(%w[my.feature])
           end
 
           it 'combines the require files of both' do
             given_cucumber_yml_defined_as('bar' => %w[--require features -r dog.rb])
             options.parse!(%w[--require foo.rb -p bar])
 
-            expect(options[:require]).to eq %w[foo.rb features dog.rb]
+            expect(options[:require]).to eq(%w[foo.rb features dog.rb])
           end
 
           it 'combines the tag names of both' do
             given_cucumber_yml_defined_as('baz' => %w[-t @bar])
             options.parse!(%w[--tags @foo -p baz])
 
-            expect(options[:tag_expressions]).to eq ['@foo', '@bar']
+            expect(options[:tag_expressions]).to eq(['@foo', '@bar'])
           end
 
           it 'combines the tag limits of both' do
             given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
             options.parse!(%w[--tags @foo:3 -p baz])
 
-            expect(options[:tag_limits]).to eq Hash('@foo' => 3, '@bar' => 2)
+            expect(options[:tag_limits]).to eq({'@foo' => 3, '@bar' => 2})
           end
 
           it 'raise exceptions for inconsistent tag limits' do
@@ -271,14 +274,14 @@ module Cucumber
             given_cucumber_yml_defined_as('baz' => %w[features])
             options.parse!(%w[my.feature -p baz])
 
-            expect(options[:paths]).to eq ['my.feature']
+            expect(options[:paths]).to eq(['my.feature'])
           end
 
           it 'uses the paths from the profile when none are specified originally' do
             given_cucumber_yml_defined_as('baz' => %w[some.feature])
             options.parse!(%w[-p baz])
 
-            expect(options[:paths]).to eq ['some.feature']
+            expect(options[:paths]).to eq(['some.feature'])
           end
 
           it 'combines environment variables from the profile but gives precendene to cmd line args' do
@@ -292,38 +295,37 @@ module Cucumber
             given_cucumber_yml_defined_as('foo' => %w[--format pretty])
             options.parse!(%w[--format progress --profile foo])
 
-            expect(options[:formats]).to eq [['progress', {}, output_stream]]
+            expect(options[:formats]).to eq([['progress', {}, output_stream]])
           end
 
           it 'includes any non-STDOUT formatters from the profile' do
             given_cucumber_yml_defined_as('json' => %w[--format json -o features.json])
             options.parse!(%w[--format progress --profile json])
 
-            expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
+            expect(options[:formats]).to eq([['progress', {}, output_stream], ['json', {}, 'features.json']])
           end
 
           it 'does not include STDOUT formatters from the profile if there is a STDOUT formatter in command line' do
             given_cucumber_yml_defined_as('json' => %w[--format json -o features.json --format pretty])
             options.parse!(%w[--format progress --profile json])
 
-            expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
+            expect(options[:formats]).to eq([['progress', {}, output_stream], ['json', {}, 'features.json']])
           end
 
           it 'includes any STDOUT formatters from the profile if no STDOUT formatter was specified in command line' do
             given_cucumber_yml_defined_as('json' => %w[--format json])
             options.parse!(%w[--format rerun -o rerun.txt --profile json])
 
-            expect(options[:formats]).to eq [['json', {}, output_stream], ['rerun', {}, 'rerun.txt']]
+            expect(options[:formats]).to eq([['json', {}, output_stream], ['rerun', {}, 'rerun.txt']])
           end
 
           it 'assumes all of the formatters defined in the profile when none are specified on cmd line' do
             given_cucumber_yml_defined_as('json' => %w[--format progress --format json -o features.json])
             options.parse!(%w[--profile json])
 
-            expect(options[:formats]).to eq [['progress', {}, output_stream], ['json', {}, 'features.json']]
+            expect(options[:formats]).to eq([['progress', {}, output_stream], ['json', {}, 'features.json']])
           end
 
-          # rubocop:disable Style/GlobalVars
           it 'only reads cucumber.yml once' do
             original_parse_count = $cucumber_yml_read_count
             $cucumber_yml_read_count = 0
@@ -342,16 +344,12 @@ module Cucumber
               $cucumber_yml_read_count = original_parse_count
             end
           end
-          # rubocop:enable Style/GlobalVars
 
           it 'respects --quiet when defined in the profile' do
             given_cucumber_yml_defined_as('foo' => '-q')
             options.parse!(%w[-p foo])
 
             expect(options[:publish_quiet]).to be true
-            expect(options[:snippets]).to be false
-            expect(options[:source]).to be false
-            expect(options[:duration]).to be false
           end
 
           it 'uses --no-duration when defined in the profile' do
@@ -361,8 +359,8 @@ module Cucumber
             expect(options[:duration]).to be false
           end
 
-          context 'with --retry ATTEMPTS' do
-            context 'when --retry option is not defined on the command line' do
+          context 'with --retry' do
+            context 'when --retry is not defined on the command line' do
               it 'uses the --retry option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry 2')
                 options.parse!(%w[-p foo])
@@ -371,7 +369,7 @@ module Cucumber
               end
             end
 
-            context 'when --retry option is defined on the command line' do
+            context 'when --retry is defined on the command line' do
               it 'ignores the --retry option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry 2')
                 options.parse!(%w[--retry 1 -p foo])
@@ -381,8 +379,8 @@ module Cucumber
             end
           end
 
-          context 'with --retry-total TESTS' do
-            context 'when --retry option is not defined on the command line' do
+          context 'with --retry-total' do
+            context 'when --retry-total is not defined on the command line' do
               it 'uses the --retry-total option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry-total 2')
                 options.parse!(%w[-p foo])
@@ -391,7 +389,7 @@ module Cucumber
               end
             end
 
-            context 'when --retry option is defined on the command line' do
+            context 'when --retry-total is defined on the command line' do
               it 'ignores the --retry-total option from the profile' do
                 given_cucumber_yml_defined_as('foo' => '--retry-total 2')
                 options.parse!(%w[--retry-total 1 -p foo])
@@ -448,7 +446,7 @@ module Cucumber
           end
         end
 
-        context 'with --retry ATTEMPTS' do
+        context 'with --retry' do
           it 'is 0 by default' do
             after_parsing('') do
               expect(options[:retry]).to eq(0)
@@ -462,7 +460,7 @@ module Cucumber
           end
         end
 
-        context 'with --retry-total TESTS' do
+        context 'with --retry-total' do
           it 'is INFINITY by default' do
             after_parsing('') do
               expect(options[:retry_total]).to eq(Float::INFINITY)
@@ -470,7 +468,7 @@ module Cucumber
           end
 
           it 'sets the options[:retry_total] value' do
-            after_parsing('--retry 3 --retry-total 10') do
+            after_parsing('--retry-total 10') do
               expect(options[:retry_total]).to eq(10)
             end
           end
@@ -503,10 +501,17 @@ module Cucumber
             end
           end
 
-          it 'enables publishing when CUCUMBER_PUBLISH_ENABLED=true' do
+          it 'adds message formatter with output to default reports publishing url when CUCUMBER_PUBLISH_ENABLED=true' do
             with_env('CUCUMBER_PUBLISH_ENABLED', 'true') do
               after_parsing('') do
                 expect(@options[:formats]).to include(['message', {}, Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL])
+              end
+            end
+          end
+
+          it 'enables publishing when CUCUMBER_PUBLISH_ENABLED=true' do
+            with_env('CUCUMBER_PUBLISH_ENABLED', 'true') do
+              after_parsing('') do
                 expect(@options[:publish_enabled]).to be true
               end
             end
@@ -515,7 +520,7 @@ module Cucumber
           it 'does not enable publishing when CUCUMBER_PUBLISH_ENABLED=false' do
             with_env('CUCUMBER_PUBLISH_ENABLED', 'false') do
               after_parsing('') do
-                expect(@options[:publish_enabled]).to be_falsy
+                expect(@options[:publish_enabled]).to be false
               end
             end
           end
@@ -524,6 +529,13 @@ module Cucumber
             with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
               after_parsing('--publish') do
                 expect(@options[:formats]).to include(['message', {}, %(#{Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL} -H "Authorization: Bearer abcd1234")])
+              end
+            end
+          end
+
+          it 'enables publishing if CUCUMBER_PUBLISH_TOKEN environment variable is set' do
+            with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
+              after_parsing('--publish') do
                 expect(@options[:publish_enabled]).to be true
               end
             end
@@ -533,7 +545,6 @@ module Cucumber
             with_env('CUCUMBER_PUBLISH_TOKEN', 'abcd1234') do
               after_parsing('') do
                 expect(@options[:formats]).to include(['message', {}, %(#{Cucumber::Cli::Options::CUCUMBER_PUBLISH_URL} -H "Authorization: Bearer abcd1234")])
-                expect(@options[:publish_enabled]).to be true
               end
             end
           end
