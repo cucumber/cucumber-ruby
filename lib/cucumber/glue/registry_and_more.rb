@@ -208,16 +208,22 @@ module Cucumber
             regular_expressions: parameter_type.regexps.map(&:to_s),
             prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match?,
             use_for_snippets: parameter_type.use_for_snippets?,
-            source_reference: Cucumber::Messages::SourceReference.from_h(
-              # TODO: This needs fixing before we release the next version - this is simply put in to trick the
-              # CCK into passing the v12 specification - LH -> 26/9/23
-              {
-                uri: 'foo',
-                location: {
-                  line: 5
-                }
-              }
+            source_reference: Cucumber::Messages::SourceReference.new(
+              uri: location.file,
+              location: Cucumber::Messages::Location.new(
+                line: location.lines.first
+              )
             )
+            # source_reference: Cucumber::Messages::SourceReference.from_h(
+            #   # TODO: This needs fixing before we release the next version - this is simply put in to trick the
+            #   # CCK into passing the v12 specification - LH -> 26/9/23
+            #   {
+            #     uri: 'foo',
+            #     location: {
+            #       line: 5
+            #     }
+            #   }
+            # )
           )
         )
       end
