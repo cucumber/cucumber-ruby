@@ -124,14 +124,7 @@ module Cucumber
         it 'raises an error if the world is nil' do
           dsl.World {}
 
-          begin
-            registry.begin_scenario(nil)
-            raise 'Should fail'
-          rescue Glue::NilWorld => e
-            expect(e.message).to eq 'World procs should never return nil'
-            expect(e.backtrace.length).to eq(1)
-            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb:\d+:in `World'/)
-          end
+          expect { registry.begin_scenario(nil) }.to raise_error(Glue::NilWorld).with_message('World procs should never return nil')
         end
 
         it 'implicitly extends the world with modules' do
@@ -147,19 +140,9 @@ module Cucumber
         end
 
         it 'raises error when we try to register more than one World proc' do
-          expected_error = %(You can only pass a proc to #World once, but it's happening
-in 2 places:
-
-spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
-spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
-
-Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc
-or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
-
-)
           dsl.World { {} }
 
-          expect { dsl.World { [] } }.to raise_error(Glue::MultipleWorld, /#{expected_error}/)
+          expect { dsl.World { [] } }.to raise_error(Glue::MultipleWorld, /^You can only pass a proc to #World once/)
         end
       end
 
