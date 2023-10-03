@@ -32,11 +32,11 @@ module Cucumber
             FEATURE
 
             it 'outputs the scenario name' do
-              expect(@out.string).to include 'Scenario: Monkey eats banana'
+              expect(@out.string).to include('Scenario: Monkey eats banana')
             end
 
             it 'outputs the step' do
-              expect(@out.string).to include 'Given there are bananas'
+              expect(@out.string).to include('Given there are bananas')
             end
           end
 
@@ -56,11 +56,11 @@ module Cucumber
             end
 
             it 'outputs the scenario name' do
-              expect(@out.string).to include 'Scenario: Monkey eats banana'
+              expect(@out.string).to include('Scenario: Monkey eats banana')
             end
 
             it 'outputs the step' do
-              expect(@out.string).to include 'Given there are bananas'
+              expect(@out.string).to include('Given there are bananas')
             end
           end
 
@@ -92,17 +92,18 @@ module Cucumber
                | broccoli |
                | carrots  |
               OUTPUT
+
               lines.split("\n").each do |line|
-                expect(@out.string).to include line.strip
+                expect(@out.string).to include(line.strip)
               end
             end
 
             it 'has 4 undefined scenarios' do
-              expect(@out.string).to include '4 scenarios (4 undefined)'
+              expect(@out.string).to include('4 scenarios (4 undefined)')
             end
 
             it 'has 4 undefined steps' do
-              expect(@out.string).to include '4 steps (4 undefined)'
+              expect(@out.string).to include('4 steps (4 undefined)')
             end
 
             context 'when the examples table header is wider than the rows' do
@@ -123,6 +124,7 @@ module Cucumber
                | Types of monkey |
                | Hominidae       |
                 OUTPUT
+
                 lines.split("\n").each do |line|
                   expect(@out.string).to include line.strip
                 end
@@ -156,6 +158,7 @@ module Cucumber
                | things |
                | apples |
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -555,6 +558,7 @@ OUTPUT
                | broccoli |
                | carrots  |
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -717,6 +721,7 @@ OUTPUT
                 Example: | carrots |
                   Given there are carrots
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -755,6 +760,7 @@ OUTPUT
                   DEN I HAS 2 CUCUMBERZ IN MAH BELLY
                   AN IN TEH END 1 CUCUMBRZ KTHXBAI
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -809,6 +815,7 @@ OUTPUT
                   Example: | carrots |      # spec.feature:13
                     Given there are carrots # spec.feature:13
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -833,8 +840,9 @@ OUTPUT
                    Given there are Hominidae                     # spec.feature:8
 
                 OUTPUT
+
                 lines.split("\n").each do |line|
-                  expect(@out.string).to include line.strip
+                  expect(@out.string).to include(line.strip)
                 end
               end
             end
