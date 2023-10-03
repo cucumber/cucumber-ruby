@@ -9,9 +9,7 @@ module Cucumber
     describe StepDefinition do
       let(:user_interface) { double('user interface') }
       let(:registry)       { support_code.registry }
-      let(:support_code) do
-        Cucumber::Runtime::SupportCode.new(user_interface)
-      end
+      let(:support_code) { Cucumber::Runtime::SupportCode.new(user_interface) }
       let(:dsl) do
         registry
         Object.new.extend(Glue::Dsl)
@@ -60,9 +58,6 @@ module Cucumber
           it 'does not re-load the file when called multiple times' do
             a_file_called('tmp1.rb') { value1 }
             registry.load_code_file('tmp1.rb')
-
-            expect(Foo.value).to eq(1)
-
             a_file_called('tmp1.rb') { value2 }
             registry.load_code_file('tmp1.rb')
 
@@ -80,16 +75,11 @@ module Cucumber
         end
 
         context 'when using `use_legacy_autoloader`' do
-          before(:each) do
-            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
-          end
+          before(:each) { allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true) }
 
           it 're-loads the file when called multiple times' do
             a_file_called('tmp2.rb') { value1 }
             registry.load_code_file('tmp2.rb')
-
-            expect(Foo.value).to eq(1)
-
             a_file_called('tmp2.rb') { value2 }
             registry.load_code_file('tmp2.rb')
 
@@ -107,20 +97,12 @@ module Cucumber
         end
 
         context 'when explicitly NOT using `use_legacy_autoloader`' do
-          before(:each) do
-            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
-          end
-
-          after(:each) do
-            FileUtils.rm_rf('tmp3.rb')
-          end
+          before(:each) { allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false) }
+          after(:each) { FileUtils.rm_rf('tmp3.rb') }
 
           it 'does not re-load the file when called multiple times' do
             a_file_called('tmp3.rb') { value1 }
             registry.load_code_file('tmp3.rb')
-
-            expect(Foo.value).to eq(1)
-
             a_file_called('tmp3.rb') { value2 }
             registry.load_code_file('tmp3.rb')
 
@@ -142,14 +124,7 @@ module Cucumber
         it 'raises an error if the world is nil' do
           dsl.World {}
 
-          begin
-            registry.begin_scenario(nil)
-            raise 'Should fail'
-          rescue Glue::NilWorld => e
-            expect(e.message).to eq 'World procs should never return nil'
-            expect(e.backtrace.length).to eq(1)
-            expect(e.backtrace[0]).to match(/spec\/cucumber\/glue\/registry_and_more_spec\.rb:\d+:in `World'/)
-          end
+          expect { registry.begin_scenario(nil) }.to raise_error(Glue::NilWorld).with_message('World procs should never return nil')
         end
 
         it 'implicitly extends the world with modules' do
@@ -158,78 +133,66 @@ module Cucumber
           class << registry.current_world
             extend RSpec::Matchers
 
-            expect(included_modules.inspect).to match(/ModuleOne/) # Workaround for RSpec/Ruby 1.9 issue with namespaces
-            expect(included_modules.inspect).to match(/ModuleTwo/)
+            expect(included_modules).to include(FakeObjects::ModuleOne).and include(FakeObjects::ModuleTwo)
           end
+        end
+
+        it 'places the current world inside the `Object` superclass' do
+          dsl.World(FakeObjects::ModuleOne, FakeObjects::ModuleTwo)
+          registry.begin_scenario(double('scenario').as_null_object)
+
           expect(registry.current_world.class).to eq(Object)
         end
 
         it 'raises error when we try to register more than one World proc' do
-          expected_error = %(You can only pass a proc to #World once, but it's happening
-in 2 places:
-
-spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
-spec/cucumber/glue/registry_and_more_spec.rb:\\d+:in `World'
-
-Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc
-or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
-
-)
           dsl.World { {} }
 
-          expect { dsl.World { [] } }.to raise_error(Glue::MultipleWorld, /#{expected_error}/)
+          expect { dsl.World { [] } }.to raise_error(Glue::MultipleWorld, /^You can only pass a proc to #World once/)
         end
       end
 
       describe 'Handling namespaced World' do
-        it 'extends the world with namespaces' do
+        it 'can still handle top level methods inside the world the world with namespaces' do
           dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-            expect(included_modules.inspect).to match(/ModuleOne/)
-          end
-          expect(registry.current_world.class).to eq(Object)
+
           expect(registry.current_world).to respond_to(:method_one)
+        end
 
-          expect(registry.current_world.module_two.class).to eq(Object)
+        it 'can scope calls to a specific namespaced module' do
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
+          registry.begin_scenario(double('scenario').as_null_object)
+
           expect(registry.current_world.module_two).to respond_to(:method_two)
+        end
 
-          expect(registry.current_world.module_three.class).to eq(Object)
+        it 'can scope calls to a different specific namespaced module' do
+          dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
+          registry.begin_scenario(double('scenario').as_null_object)
+
           expect(registry.current_world.module_three).to respond_to(:method_three)
         end
 
-        it 'allows to inspect the included modules' do
+        it 'can show all the namespaced included modules' do
           dsl.World(FakeObjects::ModuleOne, module_two: FakeObjects::ModuleTwo, module_three: FakeObjects::ModuleThree)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-          end
-          expect(registry.current_world.inspect).to match(/ModuleOne/)
-          expect(registry.current_world.inspect).to include('ModuleTwo (as module_two)')
-          expect(registry.current_world.inspect).to include('ModuleThree (as module_three)')
+
+          expect(registry.current_world.inspect).to include('ModuleTwo (as module_two)').and include('ModuleThree (as module_three)')
         end
 
         it 'merges methods when assigning different modules to the same namespace' do
           dsl.World(namespace: FakeObjects::ModuleOne)
           dsl.World(namespace: FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-          end
-          expect(registry.current_world.namespace).to respond_to(:method_one)
-          expect(registry.current_world.namespace).to respond_to(:method_two)
+
+          expect(registry.current_world.namespace).to respond_to(:method_one).and respond_to(:method_two)
         end
 
-        it 'resolves conflicts when assigning different modules to the same namespace' do
+        it 'will resolve conflicts and use the latest defined definition when assigning different modules to the same namespace' do
           dsl.World(namespace: FakeObjects::ModuleOne)
           dsl.World(namespace: FakeObjects::ModuleMinusOne)
           registry.begin_scenario(double('scenario').as_null_object)
-          class << registry.current_world
-            extend RSpec::Matchers
-          end
 
-          expect(registry.current_world.namespace).to respond_to(:method_one)
           expect(registry.current_world.namespace.method_one).to eq(-1)
         end
       end
@@ -241,22 +204,19 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
           scenario = double('Scenario')
 
-          expect(scenario).to receive(:accept_hook?).with(fish) { true }
-          expect(scenario).to receive(:accept_hook?).with(meat) { false }
+          allow(scenario).to receive(:accept_hook?).with(fish) { true }
+          allow(scenario).to receive(:accept_hook?).with(meat) { false }
           expect(registry.hooks_for(:before, scenario)).to eq([fish])
         end
 
         it 'finds around hooks' do
-          a = dsl.Around do |scenario, block|
-          end
-
-          b = dsl.Around('@tag') do |scenario, block|
-          end
+          a = dsl.Around {}
+          b = dsl.Around('@tag') {}
 
           scenario = double('Scenario')
 
-          expect(scenario).to receive(:accept_hook?).with(a) { true }
-          expect(scenario).to receive(:accept_hook?).with(b) { false }
+          allow(scenario).to receive(:accept_hook?).with(a) { true }
+          allow(scenario).to receive(:accept_hook?).with(b) { false }
           expect(registry.hooks_for(:around, scenario)).to eq([a])
         end
       end

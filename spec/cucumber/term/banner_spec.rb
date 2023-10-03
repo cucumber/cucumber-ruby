@@ -44,18 +44,15 @@ describe Cucumber::Term::Banner do
         BANNER
       end
 
-      context 'when specifying spans' do
-        it 'can render special characters inside the lines' do
-          display_banner(['Oh, this is a banner', ['It has ', ['two', :bold, :blue], ' lines']], io, [])
-
-          io.rewind
-          expect(io.read).to eq(<<~BANNER)
-            ┌──────────────────────┐
-            │ Oh, this is a banner │
-            │ It has \e[34m\e[1mtwo\e[0m\e[0m lines     │
-            └──────────────────────┘
-          BANNER
-        end
+      it 'can render special characters inside the lines' do
+        display_banner(['Oh, this is a banner', ['It has ', ['two', :bold, :blue], ' lines']], io, [])
+        io.rewind
+        expect(io.read).to eq(<<~BANNER)
+          ┌──────────────────────┐
+          │ Oh, this is a banner │
+          │ It has \e[34m\e[1mtwo\e[0m\e[0m lines     │
+          └──────────────────────┘
+        BANNER
       end
     end
 

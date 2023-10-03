@@ -5,14 +5,14 @@ require 'cucumber/ci_environment'
 
 module Cucumber
   class Runtime
-    # Builder to instanciate a Cucumber::Messages::Meta message filled-in with
+    # Builder to instantiate a Cucumber::Messages::Meta message filled-in with
     # the runtime meta-data:
     # - protocol version: the version of the Cucumber::Messages protocol
     # - implementation: the name and version of the implementation (e.g. cucumber-ruby 8.0.0)
     # - runtime: the name and version of the runtime (e.g. ruby 3.0.1)
     # - os: the name and version of the operating system (e.g. linux 3.13.0-45-generic)
     # - cpu: the name of the CPU (e.g. x86_64)
-    # - ci: informtion about the CI environment if any, including:
+    # - ci: information about the CI environment if any, including:
     #   - name: the name of the CI environment (e.g. Jenkins)
     #   - url: the URL of the CI environment (e.g. https://ci.example.com)
     #   - build_number: the build number of the CI environment (e.g. 123)

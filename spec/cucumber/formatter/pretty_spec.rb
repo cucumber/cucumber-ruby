@@ -32,11 +32,11 @@ module Cucumber
             FEATURE
 
             it 'outputs the scenario name' do
-              expect(@out.string).to include 'Scenario: Monkey eats banana'
+              expect(@out.string).to include('Scenario: Monkey eats banana')
             end
 
             it 'outputs the step' do
-              expect(@out.string).to include 'Given there are bananas'
+              expect(@out.string).to include('Given there are bananas')
             end
           end
 
@@ -56,11 +56,11 @@ module Cucumber
             end
 
             it 'outputs the scenario name' do
-              expect(@out.string).to include 'Scenario: Monkey eats banana'
+              expect(@out.string).to include('Scenario: Monkey eats banana')
             end
 
             it 'outputs the step' do
-              expect(@out.string).to include 'Given there are bananas'
+              expect(@out.string).to include('Given there are bananas')
             end
           end
 
@@ -92,17 +92,18 @@ module Cucumber
                | broccoli |
                | carrots  |
               OUTPUT
+
               lines.split("\n").each do |line|
-                expect(@out.string).to include line.strip
+                expect(@out.string).to include(line.strip)
               end
             end
 
             it 'has 4 undefined scenarios' do
-              expect(@out.string).to include '4 scenarios (4 undefined)'
+              expect(@out.string).to include('4 scenarios (4 undefined)')
             end
 
             it 'has 4 undefined steps' do
-              expect(@out.string).to include '4 steps (4 undefined)'
+              expect(@out.string).to include('4 steps (4 undefined)')
             end
 
             context 'when the examples table header is wider than the rows' do
@@ -123,6 +124,7 @@ module Cucumber
                | Types of monkey |
                | Hominidae       |
                 OUTPUT
+
                 lines.split("\n").each do |line|
                   expect(@out.string).to include line.strip
                 end
@@ -156,6 +158,7 @@ module Cucumber
                | things |
                | apples |
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -555,6 +558,7 @@ OUTPUT
                | broccoli |
                | carrots  |
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -717,6 +721,7 @@ OUTPUT
                 Example: | carrots |
                   Given there are carrots
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -755,6 +760,7 @@ OUTPUT
                   DEN I HAS 2 CUCUMBERZ IN MAH BELLY
                   AN IN TEH END 1 CUCUMBRZ KTHXBAI
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -809,6 +815,7 @@ OUTPUT
                   Example: | carrots |      # spec.feature:13
                     Given there are carrots # spec.feature:13
               OUTPUT
+
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
               end
@@ -833,8 +840,9 @@ OUTPUT
                    Given there are Hominidae                     # spec.feature:8
 
                 OUTPUT
+
                 lines.split("\n").each do |line|
-                  expect(@out.string).to include line.strip
+                  expect(@out.string).to include(line.strip)
                 end
               end
             end
@@ -857,23 +865,53 @@ OUTPUT
             Scenario: many monkeys eat many things
               Given there are bananas and apples
               And other monkeys are around
+              But there was only one chimpanzee
               When one monkey eats a banana
               And the other monkeys eat all the apples
+              But the chimpanzee ate nothing 
               Then bananas remain
               But there are no apples left
+              And there was never any marshmallows
           FEATURE
 
-          it "contains snippets with 'And' or 'But' replaced by previous step name" do
+          it "offers the exact snippet of a 'Given' step name" do
             expect(@out.string).to include("Given('there are bananas and apples')")
+          end
+
+          it "replaces snippets containing 'And' to the previous 'Given' step name" do
             expect(@out.string).to include("Given('other monkeys are around')")
+          end
+
+          it "replaces snippets containing 'But' to the previous 'Given' step name" do
+            expect(@out.string).to include("Given('there was only one chimpanzee')")
+          end
+
+          it "offers the exact snippet of a 'When' step name" do
             expect(@out.string).to include("When('one monkey eats a banana')")
+          end
+
+          it "replaces snippets containing 'And' to the previous 'When' step name" do
             expect(@out.string).to include("When('the other monkeys eat all the apples')")
+          end
+
+          it "replaces snippets containing 'But' to the previous 'When' step name" do
+            expect(@out.string).to include("When('the chimpanzee ate nothing')")
+          end
+
+          it "offers the exact snippet of a 'Then' step name" do
             expect(@out.string).to include("Then('bananas remain')")
+          end
+
+          it "replaces snippets containing 'But' to the previous 'Then' step name" do
             expect(@out.string).to include("Then('there are no apples left')")
+          end
+
+          it "replaces snippets containing 'And' to the previous 'Then' step name" do
+            expect(@out.string).to include("Then('there was never any marshmallows')")
           end
         end
 
-        describe "With a scenario that uses * and 'But'" do
+        describe "With a scenario that uses *" do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -885,13 +923,20 @@ OUTPUT
               Then bananas remain
               * there are no apples left
           FEATURE
+
           it "replaces the first step with 'Given'" do
             expect(@out.string).to include("Given('there are bananas and apples')")
           end
 
-          it "uses actual keywords as the 'previous' keyword for future replacements" do
+          it "uses actual keywords as the previous 'Given' keyword for future replacements" do
             expect(@out.string).to include("Given('other monkeys are around')")
+          end
+
+          it "uses actual keywords as the previous 'When' keyword for future replacements" do
             expect(@out.string).to include("When('the other monkeys eat all the apples')")
+          end
+
+          it "uses actual keywords as the previous 'Then' keyword for future replacements" do
             expect(@out.string).to include("Then('there are no apples left')")
           end
         end
@@ -905,9 +950,11 @@ OUTPUT
               Then this step passes
               And this step is undefined
           FEATURE
+
           define_steps do
             Given('this step passes') {}
           end
+
           it 'uses actual keyword of the previous passing step for the undefined step' do
             expect(@out.string).to include("Then('this step is undefined')")
           end
@@ -925,11 +972,16 @@ OUTPUT
               * this step is also undefined
               Then this step passes
           FEATURE
+
           define_steps do
             Given('this step passes') {}
           end
-          it "uses 'Given' as actual keyword the step in each scenario" do
+
+          it "uses 'Given' as the actual keyword for the step in the first scenario" do
             expect(@out.string).to include("Given('this step is undefined')")
+          end
+
+          it "uses 'Given' as the actual keyword for the step in the last scenario" do
             expect(@out.string).to include("Given('this step is also undefined')")
           end
         end
@@ -943,6 +995,7 @@ OUTPUT
               I CAN HAZ IN TEH BEGINNIN CUCUMBRZ
               AN I EAT CUCUMBRZ
           FEATURE
+
           it 'uses actual keyword of the previous passing step for the undefined step' do
             expect(@out.string).to include("ICANHAZ('I EAT CUCUMBRZ')")
           end

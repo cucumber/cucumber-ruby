@@ -15,16 +15,12 @@ describe Cucumber::Filters::Retry do
 
   let(:configuration) { Cucumber::Configuration.new(retry: 2, retry_total: retry_total) }
   let(:retry_total) { Float::INFINITY }
-  let(:id) { double }
-  let(:name) { double }
-  let(:location) { double }
-  let(:tags) { double }
-  let(:language) { double }
-  let(:test_case) { Cucumber::Core::Test::Case.new(id, name, [double('test steps')], location, tags, language) }
+  let(:test_case) { Cucumber::Core::Test::Case.new(double, double, [double('test steps')], double, [], double) }
   let(:receiver) { double('receiver').as_null_object }
   let(:filter) { described_class.new(configuration, receiver) }
   let(:fail) { Cucumber::Events::AfterTestCase.new(test_case, double('result', failed?: true, ok?: false)) }
   let(:pass) { Cucumber::Events::AfterTestCase.new(test_case, double('result', failed?: false, ok?: true)) }
+  let(:fail_result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
   it { is_expected.to respond_to(:test_case) }
   it { is_expected.to respond_to(:with_receiver) }
@@ -35,32 +31,30 @@ describe Cucumber::Filters::Retry do
 
     it 'describes the test case once' do
       expect(receiver).to receive(:test_case).with(test_case).once
+
       test_case.describe_to filter
-      configuration.notify :test_case_finished, test_case, result
+      configuration.notify(:test_case_finished, test_case, result)
     end
   end
 
   context 'when performing retry' do
-    let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
-
     it 'describes the same test case object each time' do
-      allow(receiver).to receive(:test_case) { |tc|
+      allow(receiver).to receive(:test_case) do |tc|
         expect(tc).to equal(test_case)
-        configuration.notify :test_case_finished, tc.with_steps(tc.test_steps), result
-      }
+
+        configuration.notify(:test_case_finished, tc.with_steps(tc.test_steps), fail_result)
+      end
 
       filter.test_case(test_case)
     end
   end
 
   context 'with a consistently failing test case' do
-    let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
-
-    shared_examples 'retries the test case the specified number of times' do |expected_nr_of_times|
+    shared_examples 'retries the test case the specified number of times' do |expected_number_of_times|
       it 'describes the test case the specified number of times' do
         expect(receiver).to receive(:test_case) { |test_case|
-          configuration.notify :test_case_finished, test_case, result
-        }.exactly(expected_nr_of_times).times
+          configuration.notify(:test_case_finished, test_case, fail_result)
+        }.exactly(expected_number_of_times).times
 
         filter.test_case(test_case)
       end
@@ -86,34 +80,23 @@ describe Cucumber::Filters::Retry do
   end
 
   context 'with slighty flaky test cases' do
-    let(:results) do
-      [
-        Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
-        Cucumber::Core::Test::Result::Passed.new(0)
-      ]
-    end
+    let(:results) { [fail_result, Cucumber::Core::Test::Result::Passed.new(0)] }
 
     it 'describes the test case twice' do
       expect(receiver).to receive(:test_case) { |test_case|
-        configuration.notify :test_case_finished, test_case, results.shift
-      }.exactly(2).times
+        configuration.notify(:test_case_finished, test_case, results.shift)
+      }.twice
 
       filter.test_case(test_case)
     end
   end
 
   context 'with really flaky test cases' do
-    let(:results) do
-      [
-        Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
-        Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
-        Cucumber::Core::Test::Result::Passed.new(0)
-      ]
-    end
+    let(:results) { [fail_result, fail_result, Cucumber::Core::Test::Result::Passed.new(0)] }
 
     it 'describes the test case 3 times' do
       expect(receiver).to receive(:test_case) { |test_case|
-        configuration.notify :test_case_finished, test_case, results.shift
+        configuration.notify(:test_case_finished, test_case, results.shift)
       }.exactly(3).times
 
       filter.test_case(test_case)
@@ -123,21 +106,20 @@ describe Cucumber::Filters::Retry do
   context 'with too many failing tests' do
     let(:retry_total) { 1 }
     let(:always_failing_test_case1) do
-      Cucumber::Core::Test::Case.new(id, name, [double('test steps')], 'test.rb:1', tags, language)
+      Cucumber::Core::Test::Case.new(double, double, [double('test steps')], 'test.rb:1', [], double)
     end
     let(:always_failing_test_case2) do
-      Cucumber::Core::Test::Case.new(id, name, [double('test steps')], 'test.rb:9', tags, language)
+      Cucumber::Core::Test::Case.new(double, double, [double('test steps')], 'test.rb:9', [], double)
     end
-    let(:fail_result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
     it 'stops retrying tests' do
       expect(receiver).to receive(:test_case).with(always_failing_test_case1) { |test_case|
-        configuration.notify :test_case_finished, test_case, fail_result
+        configuration.notify(:test_case_finished, test_case, fail_result)
       }.ordered.exactly(3).times
 
       expect(receiver).to receive(:test_case).with(always_failing_test_case2) { |test_case|
-        configuration.notify :test_case_finished, test_case, fail_result
-      }.ordered.exactly(1).times
+        configuration.notify(:test_case_finished, test_case, fail_result)
+      }.ordered.once
 
       filter.test_case(always_failing_test_case1)
       filter.test_case(always_failing_test_case2)
