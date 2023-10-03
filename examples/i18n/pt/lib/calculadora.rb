@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 class Calculadora
-  def push(n)
-    @args ||= []
-    @args << n
+  def initialize
+    @stack = []
+  end
+
+  def push(arg)
+    @stack.push(arg)
   end
 
   def soma
-    @args.inject(0) { |n, sum| sum + n }
+    @stack.inject(0) { |n, sum| sum + n }
   end
 end

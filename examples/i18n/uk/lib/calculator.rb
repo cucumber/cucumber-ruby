@@ -6,7 +6,7 @@ class Calculator
   end
 
   def push(arg)
-    @stack.push arg
+    @stack.push(arg)
   end
 
   def result
@@ -17,13 +17,13 @@ class Calculator
     number_1 = @stack.pop
     number_2 = @stack.pop
 
-    @stack.push number_1 + number_2
+    @stack.push(number_1 + number_2)
   end
 
   def /
     divisor = @stack.pop
     dividend = @stack.pop
 
-    @stack.push dividend / divisor
+    @stack.push(dividend / divisor)
   end
 end

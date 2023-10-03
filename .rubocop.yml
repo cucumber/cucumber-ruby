@@ -52,14 +52,6 @@ Metrics/AbcSize:
     - spec/cucumber/formatter/http_io_spec.rb
     - lib/cucumber/glue/proto_world.rb
 
-# TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
-Metrics/BlockLength:
-  CountComments: false
-  Exclude:
-    - './cucumber.gemspec'
-    - './spec/**/*'
-    - 'cck/spec/**/*'
-
 # TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/ClassLength:
   Max: 375
@@ -73,7 +65,6 @@ Metrics/ModuleLength:
   Max: 135
   Exclude:
     - './spec/**/*'
-    - 'cck/spec/**/*'
     # TODO: Manually added! - be careful with regenning the file - this needs a fix
     - lib/cucumber/formatter/console.rb
 
@@ -88,8 +79,7 @@ Metrics/MethodLength:
     - spec/cucumber/formatter/http_io_spec.rb
     - lib/cucumber/glue/proto_world.rb
 
-# Rubocop doesn't like method names in other languages but as Cucumber supports
-# languages, this cop needs to be disabled.
+# Rubocop doesn't like method names in other languages but as Cucumber supports multiple languages, this cop needs to be disabled.
 Naming/AsciiIdentifiers:
   Enabled: false
 
@@ -99,27 +89,7 @@ Naming/MethodName:
   Exclude:
     - 'examples/i18n/ar/lib/calculator.rb'
     - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
     - 'lib/cucumber/glue/dsl.rb'
-
-# In most cases, being descriptive with parameter names helps a reader understand
-# what the variable is for. In some cases, shorter names are sufficient.
-Naming/MethodParameterName:
-  AllowedNames: _, e, n, v, id, io, gh, pr
-
-# Reviewed: these offenses look false as the variables are in cyrillic
-Naming/VariableName:
-  Exclude:
-    - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
-
-# Rubocop doesn't handle some international words well for this cop
-Naming/VariableNumber:
-  EnforcedStyle: normalcase
-  Exclude:
-    - 'examples/i18n/**/*'
 
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc']
