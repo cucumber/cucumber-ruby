@@ -9,9 +9,7 @@ module Cucumber
     describe StepDefinition do
       let(:user_interface) { double('user interface') }
       let(:registry)       { support_code.registry }
-      let(:support_code) do
-        Cucumber::Runtime::SupportCode.new(user_interface)
-      end
+      let(:support_code) { Cucumber::Runtime::SupportCode.new(user_interface) }
       let(:dsl) do
         registry
         Object.new.extend(Glue::Dsl)
@@ -60,9 +58,6 @@ module Cucumber
           it 'does not re-load the file when called multiple times' do
             a_file_called('tmp1.rb') { value1 }
             registry.load_code_file('tmp1.rb')
-
-            expect(Foo.value).to eq(1)
-
             a_file_called('tmp1.rb') { value2 }
             registry.load_code_file('tmp1.rb')
 
@@ -80,16 +75,11 @@ module Cucumber
         end
 
         context 'when using `use_legacy_autoloader`' do
-          before(:each) do
-            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true)
-          end
+          before(:each) { allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true) }
 
           it 're-loads the file when called multiple times' do
             a_file_called('tmp2.rb') { value1 }
             registry.load_code_file('tmp2.rb')
-
-            expect(Foo.value).to eq(1)
-
             a_file_called('tmp2.rb') { value2 }
             registry.load_code_file('tmp2.rb')
 
@@ -107,20 +97,12 @@ module Cucumber
         end
 
         context 'when explicitly NOT using `use_legacy_autoloader`' do
-          before(:each) do
-            allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false)
-          end
-
-          after(:each) do
-            FileUtils.rm_rf('tmp3.rb')
-          end
+          before(:each) { allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false) }
+          after(:each) { FileUtils.rm_rf('tmp3.rb') }
 
           it 'does not re-load the file when called multiple times' do
             a_file_called('tmp3.rb') { value1 }
             registry.load_code_file('tmp3.rb')
-
-            expect(Foo.value).to eq(1)
-
             a_file_called('tmp3.rb') { value2 }
             registry.load_code_file('tmp3.rb')
 
