@@ -520,7 +520,7 @@ module Cucumber
           it 'does not enable publishing when CUCUMBER_PUBLISH_ENABLED=false' do
             with_env('CUCUMBER_PUBLISH_ENABLED', 'false') do
               after_parsing('') do
-                expect(@options[:publish_enabled]).to be false
+                expect(@options[:publish_enabled]).to be nil
               end
             end
           end
