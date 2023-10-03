@@ -30,7 +30,8 @@ describe Cucumber::Filters::ActivateSteps do
       expect(step_match).to receive(:activate) do |test_step|
         expect(test_step.text).to eq 'a passing step'
       end
-      compile [doc], receiver, [filter]
+      
+      compile([doc], receiver, [filter])
     end
 
     it 'notifies with a StepActivated event' do
@@ -39,7 +40,8 @@ describe Cucumber::Filters::ActivateSteps do
         expect(test_step.text).to eq 'a passing step'
         expect(step_match).to eq step_match
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 
@@ -63,7 +65,8 @@ describe Cucumber::Filters::ActivateSteps do
       expect(step_match).to receive(:activate) do |test_step|
         expect(test_step.text).to eq 'a passing step'
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 
@@ -84,12 +87,14 @@ describe Cucumber::Filters::ActivateSteps do
       expect(receiver).to receive(:test_case) do |test_case|
         expect(test_case.test_steps[0].execute).to be_undefined
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'does not notify' do
       expect(configuration).not_to receive(:notify)
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 
@@ -110,7 +115,8 @@ describe Cucumber::Filters::ActivateSteps do
       expect(receiver).to receive(:test_case) do |test_case|
         expect(test_case.test_steps[0].execute).to be_skipped
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'notifies with a StepActivated event' do
@@ -119,7 +125,8 @@ describe Cucumber::Filters::ActivateSteps do
         expect(test_step.text).to eq 'a passing step'
         expect(step_match).to eq step_match
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 
@@ -141,12 +148,14 @@ describe Cucumber::Filters::ActivateSteps do
       expect(receiver).to receive(:test_case) do |test_case|
         expect(test_case.test_steps[0].execute).to be_undefined
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'does not notify' do
       expect(configuration).not_to receive(:notify)
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 end
