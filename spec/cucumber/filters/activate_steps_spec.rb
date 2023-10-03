@@ -15,7 +15,7 @@ describe Cucumber::Filters::ActivateSteps do
   let(:step_match_search) { proc { [step_match] } }
   let(:configuration) { double(dry_run?: false, notify: nil) }
 
-  context 'a scenario with a single step' do
+  context 'with a scenario containing a single step' do
     let(:doc) do
       gherkin do
         feature do
@@ -27,23 +27,31 @@ describe Cucumber::Filters::ActivateSteps do
     end
 
     it 'activates each step' do
-      expect(step_match).to receive(:activate) do |test_step|
-        expect(test_step.text).to eq 'a passing step'
+      allow(step_match).to receive(:activate) do |test_step|
+        expect(test_step.text).to eq('a passing step')
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'notifies with a StepActivated event' do
-      expect(configuration).to receive(:notify) do |message, test_step, step_match|
-        expect(message).to eq :step_activated
-        expect(test_step.text).to eq 'a passing step'
-        expect(step_match).to eq step_match
+      allow(configuration).to receive(:notify) do |message, _test_step, _step_match|
+        expect(message).to eq(:step_activated)
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
+    end
+
+    it 'notifies with the correct step' do
+      allow(configuration).to receive(:notify) do |_message, test_step, _step_match|
+        expect(test_step.text).to eq('a passing step')
+      end
+
+      compile([doc], receiver, [filter])
     end
   end
 
-  context 'a scenario outline' do
+  context 'with a scenario outline' do
     let(:doc) do
       gherkin do
         feature do
@@ -60,14 +68,15 @@ describe Cucumber::Filters::ActivateSteps do
     end
 
     it 'activates each step' do
-      expect(step_match).to receive(:activate) do |test_step|
-        expect(test_step.text).to eq 'a passing step'
+      allow(step_match).to receive(:activate) do |test_step|
+        expect(test_step.text).to eq('a passing step')
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 
-  context 'undefined step' do
+  context 'with an undefined step' do
     let(:step_match_search) { proc { [] } }
 
     let(:doc) do
@@ -81,19 +90,21 @@ describe Cucumber::Filters::ActivateSteps do
     end
 
     it 'does not activate the step' do
-      expect(receiver).to receive(:test_case) do |test_case|
+      allow(receiver).to receive(:test_case) do |test_case|
         expect(test_case.test_steps[0].execute).to be_undefined
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'does not notify' do
       expect(configuration).not_to receive(:notify)
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 
-  context 'dry run' do
+  context 'when using dry run' do
     let(:configuration) { double(dry_run?: true, notify: nil) }
 
     let(:doc) do
@@ -107,23 +118,31 @@ describe Cucumber::Filters::ActivateSteps do
     end
 
     it 'activates each step with a skipping action' do
-      expect(receiver).to receive(:test_case) do |test_case|
+      allow(receiver).to receive(:test_case) do |test_case|
         expect(test_case.test_steps[0].execute).to be_skipped
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'notifies with a StepActivated event' do
-      expect(configuration).to receive(:notify) do |message, test_step, step_match|
-        expect(message).to eq :step_activated
-        expect(test_step.text).to eq 'a passing step'
-        expect(step_match).to eq step_match
+      allow(configuration).to receive(:notify) do |message, _test_step, _step_match|
+        expect(message).to eq(:step_activated)
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
+    end
+
+    it 'notifies with the correct step' do
+      allow(configuration).to receive(:notify) do |_message, test_step, _step_match|
+        expect(test_step.text).to eq('a passing step')
+      end
+
+      compile([doc], receiver, [filter])
     end
   end
 
-  context 'undefined step in a dry run' do
+  context 'with an undefined step in a dry run' do
     let(:step_match_search) { proc { [] } }
     let(:configuration) { double(dry_run?: true, notify: nil) }
 
@@ -138,15 +157,17 @@ describe Cucumber::Filters::ActivateSteps do
     end
 
     it 'does not activate the step' do
-      expect(receiver).to receive(:test_case) do |test_case|
+      allow(receiver).to receive(:test_case) do |test_case|
         expect(test_case.test_steps[0].execute).to be_undefined
       end
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
 
     it 'does not notify' do
       expect(configuration).not_to receive(:notify)
-      compile [doc], receiver, [filter]
+
+      compile([doc], receiver, [filter])
     end
   end
 end

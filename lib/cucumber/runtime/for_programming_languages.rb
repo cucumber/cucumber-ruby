@@ -7,8 +7,7 @@ module Cucumber
   class Runtime
     # This is what a programming language will consider to be a runtime.
     #
-    # It's a thin class that directs the handul of methods needed by the
-    # programming languages to the right place.
+    # It's a thin class that directs the handful of methods needed by the programming languages to the right place
     class ForProgrammingLanguages
       extend Forwardable
 

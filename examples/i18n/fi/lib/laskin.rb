@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
 class Laskin
-  def pinoa(n)
-    @args ||= []
-    @args << n
+  def initialize
+    @stack = []
+  end
+
+  def pinoa(arg)
+    @stack.push(arg)
   end
 
   def summaa
-    @args.inject(0) { |n, sum| sum + n }
+    @stack.inject(0) { |n, sum| sum + n }
   end
 
   def jaa
-    @args[0].to_f / @args[1]
+    @stack[0].to_f / @stack[1]
   end
 end

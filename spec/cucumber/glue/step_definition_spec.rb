@@ -56,7 +56,7 @@ module Cucumber
         expect(@@inside).to eq 'inside'
       end
 
-      context 'mapping to world methods' do
+      context 'when mapping to world methods' do
         it 'calls a method on the world when specified with a symbol' do
           expect(registry.current_world).to receive(:with_symbol)
 

@@ -18,49 +18,50 @@ module Cucumber
 
       before { described_class.new(configuration) }
 
-      context 'failing scenario' do
-        before(:each) do
-          @gherkin = gherkin('foo.feature') do
-            feature do
-              scenario do
-                step 'failing'
-              end
+    context 'with a failing scenario' do
+      before(:each) do
+        @gherkin = gherkin('foo.feature') do
+          feature do
+            scenario do
+              step 'failing'
+            end
 
-              scenario do
-                step 'failing'
-              end
+            scenario do
+              step 'failing'
             end
           end
-        end
-
-        after(:each) do
-          Cucumber.wants_to_quit = false
-        end
-
-        it 'sets Cucumber.wants_to_quit' do
-          execute [@gherkin], [StandardStepActions.new], configuration.event_bus
-          expect(Cucumber.wants_to_quit).to be true
         end
       end
 
-      context 'passing scenario' do
-        before(:each) do
-          @gherkin = gherkin('foo.feature') do
-            feature do
-              scenario do
-                step 'passing'
-              end
+      after(:each) do
+        Cucumber.wants_to_quit = false
+      end
+
+      it 'sets Cucumber.wants_to_quit' do
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
+
+        expect(Cucumber.wants_to_quit).to be true
+      end
+    end
+
+    context 'with a passing scenario' do
+      before(:each) do
+        @gherkin = gherkin('foo.feature') do
+          feature do
+            scenario do
+              step 'passing'
             end
           end
         end
+      end
 
-        it 'doesn\'t set Cucumber.wants_to_quit' do
+        it "doesn't set Cucumber.wants_to_quit" do
           execute [@gherkin], [StandardStepActions.new], configuration.event_bus
           expect(Cucumber.wants_to_quit).to be_falsey
         end
       end
 
-      context 'undefined scenario' do
+      context 'with an undefined scenario' do
         before(:each) do
           @gherkin = gherkin('foo.feature') do
             feature do
@@ -71,12 +72,14 @@ module Cucumber
           end
         end
 
-        it 'doesn\'t set Cucumber.wants_to_quit' do
+
+        it "doesn't set Cucumber.wants_to_quit" do
           execute [@gherkin], [StandardStepActions.new], configuration.event_bus
+
           expect(Cucumber.wants_to_quit).to be_falsey
         end
 
-        context 'in strict mode' do
+        context 'when in strict mode' do
           let(:configuration) { Cucumber::Configuration.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
 
           it 'sets Cucumber.wants_to_quit' do

@@ -2,11 +2,7 @@
 
 require 'cucumber/platform'
 require 'cucumber/gherkin/formatter/ansi_escapes'
-begin
-  # Support Rake > 0.8.7
-  require 'rake/dsl_definition'
-rescue LoadError
-end
+require 'rake/dsl_definition'
 
 module Cucumber
   module Rake

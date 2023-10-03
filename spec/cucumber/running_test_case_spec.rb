@@ -22,7 +22,7 @@ module Cucumber
       compile [gherkin_doc], receiver
     end
 
-    context 'for a regular scenario' do
+    context 'with a regular scenario' do
       let(:gherkin_doc) do
         gherkin do
           feature 'feature name' do
@@ -47,7 +47,7 @@ module Cucumber
       end
     end
 
-    context 'for a failed scenario' do
+    context 'with a failing scenario' do
       let(:gherkin_doc) do
         gherkin do
           feature 'feature name' do
@@ -73,7 +73,7 @@ module Cucumber
       end
     end
 
-    context 'for a passing scenario' do
+    context 'with a passing scenario' do
       let(:gherkin_doc) do
         gherkin do
           feature 'feature name' do
@@ -97,7 +97,7 @@ module Cucumber
       end
     end
 
-    context 'for a scenario outline' do
+    context 'when using a scenario outline' do
       let(:gherkin_doc) do
         gherkin do
           feature 'feature name' do
@@ -114,12 +114,12 @@ module Cucumber
       end
 
       it "sets the test case's name correctly" do
-        expect(wrapped_test_case.name).to eq 'scenario outline name'
+        expect(wrapped_test_case.name).to eq('scenario outline name')
       end
 
       it 'exposes properties of the test_case' do
-        expect(wrapped_test_case.location).to eq core_test_case.location
-        expect(wrapped_test_case.language).to eq core_test_case.language
+        expect(wrapped_test_case.location).to eq(core_test_case.location)
+        expect(wrapped_test_case.language).to eq(core_test_case.language)
       end
     end
   end

@@ -1,5 +1,9 @@
 inherit_from: .rubocop_todo.yml
 
+inherit_mode:
+  merge:
+    - Exclude
+
 require:
   - rubocop-capybara
   - rubocop-packaging
@@ -20,10 +24,9 @@ AllCops:
     - 'temp_app/**/*'
     - 'cck/features/**/*'
 
-# TODO: [LH] - Candidate for phasing out in v9 patch releases. People should have this stored in editor and ideally not use windows
-# for ruby development. Where they are, their editor config should have this setting
-Layout/EndOfLine:
-  EnforcedStyle: lf
+# A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
+Layout/LineLength:
+  Max: 200
 
 # Reviewed: Formatters put trailing spaces after things like 'Feature: '
 # In pretty_spec.rb & progress_spec.rb offences look false as the trailing spaces are in fact multiline string literals
@@ -31,13 +34,6 @@ Layout/TrailingWhitespace:
   Exclude:
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/formatter/progress_spec.rb'
-
-# TODO: [LH] - This needs re-reviewing and fixing, we have been partially fixing this up in 2019/2020 onwards
-# (Likely that this is primarily already fixed)
-# Reviewed: please see PR-1022 for details on why this cop is disabled:
-# https://github.com/cucumber/cucumber-ruby/pull/1022
-Lint/AmbiguousOperator:
-  Enabled: false
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 # We exclude proto_world for documentation (rdoc) purpose
@@ -54,14 +50,7 @@ Metrics/AbcSize:
   Exclude:
     - lib/cucumber/formatter/junit.rb
     - spec/cucumber/formatter/http_io_spec.rb
-
-# TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
-Metrics/BlockLength:
-  CountComments: false
-  Exclude:
-    - './cucumber.gemspec'
-    - './spec/**/*'
-    - 'cck/spec/**/*'
+    - lib/cucumber/glue/proto_world.rb
 
 # TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/ClassLength:
@@ -71,16 +60,11 @@ Metrics/ClassLength:
     # TODO: Manually added! - be careful with regenning the file - this needs a fix
     - lib/cucumber/formatter/pretty.rb
 
-# A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
-Layout/LineLength:
-  Max: 200
-
 # TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
 Metrics/ModuleLength:
   Max: 135
   Exclude:
     - './spec/**/*'
-    - 'cck/spec/**/*'
     # TODO: Manually added! - be careful with regenning the file - this needs a fix
     - lib/cucumber/formatter/console.rb
 
@@ -93,56 +77,35 @@ Metrics/MethodLength:
     - lib/cucumber/cli/options.rb
     - lib/cucumber/formatter/publish_banner_printer.rb
     - spec/cucumber/formatter/http_io_spec.rb
+    - lib/cucumber/glue/proto_world.rb
 
-# Rubocop doesn't like method names in other languages but as Cucumber supports
-# languages, this cop needs to be disabled.
+# Rubocop doesn't like method names in other languages but as Cucumber supports multiple languages, this cop needs to be disabled.
 Naming/AsciiIdentifiers:
   Enabled: false
 
 # For the most part, the project is solid on naming. There are though, a few
 # cases where the cop doesn't need to catch.
 Naming/MethodName:
-  EnforcedStyle: snake_case
-  Enabled: true
   Exclude:
     - 'examples/i18n/ar/lib/calculator.rb'
     - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'examples/i18n/tr/lib/hesap_makinesi.rb'
     - 'lib/cucumber/glue/dsl.rb'
 
-# In most cases, being descriptive with parameter names helps a reader understand
-# what the variable is for. In some cases, shorter names are sufficient.
-Naming/MethodParameterName:
-  AllowedNames: _, e, n, v, id, io, gh, pr
+RSpec/ExampleLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
 
-# Reviewed: these offenses look false as the variables are in cyrillic
-Naming/VariableName:
-  Exclude:
-    - 'examples/i18n/ru/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uk/features/step_definitions/calculator_steps.rb'
-    - 'examples/i18n/uz/features/step_definitions/calculator_steps.rb'
+# Stylistic preference for cucumber
+RSpec/MessageSpies:
+  EnforcedStyle: receive
 
-# Rubocop doesn't handle some international words well for this cop
-Naming/VariableNumber:
-  EnforcedStyle: normalcase
-  Exclude:
-    - 'examples/i18n/**/*'
-
-# This cop throws errors when parsing a lot of the repo's code, possibly due
-# to splat issues?
-Style/AccessModifierDeclarations:
-  Enabled: false
-
+# Stylistic preference for cucumber
 Style/Documentation:
   Enabled: false
 
 Style/FormatStringToken:
   EnforcedStyle: annotated
 
-Style/StderrPuts:
-  Enabled: false
-
+# Stylistic preference for cucumber
 Style/RegexpLiteral:
   EnforcedStyle: slashes
   AllowInnerSlashes: true
