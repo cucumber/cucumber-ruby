@@ -28,17 +28,23 @@ describe Cucumber::Filters::ActivateSteps do
 
     it 'activates each step' do
       allow(step_match).to receive(:activate) do |test_step|
-        expect(test_step.text).to eq 'a passing step'
+        expect(test_step.text).to eq('a passing step')
       end
 
       compile([doc], receiver, [filter])
     end
 
     it 'notifies with a StepActivated event' do
-      allow(configuration).to receive(:notify) do |message, test_step, step_match|
-        expect(message).to eq :step_activated
-        expect(test_step.text).to eq 'a passing step'
-        expect(step_match).to eq step_match
+      allow(configuration).to receive(:notify) do |message, _test_step, _step_match|
+        expect(message).to eq(:step_activated)
+      end
+
+      compile([doc], receiver, [filter])
+    end
+
+    it 'notifies with the correct step' do
+      allow(configuration).to receive(:notify) do |_message, test_step, _step_match|
+        expect(test_step.text).to eq('a passing step')
       end
 
       compile([doc], receiver, [filter])
@@ -63,7 +69,7 @@ describe Cucumber::Filters::ActivateSteps do
 
     it 'activates each step' do
       allow(step_match).to receive(:activate) do |test_step|
-        expect(test_step.text).to eq 'a passing step'
+        expect(test_step.text).to eq('a passing step')
       end
 
       compile([doc], receiver, [filter])
@@ -120,10 +126,16 @@ describe Cucumber::Filters::ActivateSteps do
     end
 
     it 'notifies with a StepActivated event' do
-      allow(configuration).to receive(:notify) do |message, test_step, step_match|
-        expect(message).to eq :step_activated
-        expect(test_step.text).to eq 'a passing step'
-        expect(step_match).to eq step_match
+      allow(configuration).to receive(:notify) do |message, _test_step, _step_match|
+        expect(message).to eq(:step_activated)
+      end
+
+      compile([doc], receiver, [filter])
+    end
+
+    it 'notifies with the correct step' do
+      allow(configuration).to receive(:notify) do |_message, test_step, _step_match|
+        expect(test_step.text).to eq('a passing step')
       end
 
       compile([doc], receiver, [filter])
