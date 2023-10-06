@@ -53,7 +53,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '~> 3.39', '>= 3.39.2'
   s.add_development_dependency 'rack-test', '~> 2.1', '>= 2.1.0'
   s.add_development_dependency 'sinatra', '~> 3.1', '>= 3.1.0'
-  
+
   s.files = Dir[
     'README.md',
     'LICENSE',

@@ -88,7 +88,8 @@ module Cucumber
       # @param media_type [string] the media type.
       #   If file is a valid path, media_type can be omitted, it will then be inferred from the file name.
       # @param filename [string] the name of the file you wish to specify.
-      #   BEHAVIOUR HERE TBD
+      #   This is only needed in situations where you want to rename a PDF download e.t.c. - In most situations
+      #   you should not need to pass a filename
       def attach(file, media_type = nil, filename = nil)
         return super unless File.file?(file)
 
