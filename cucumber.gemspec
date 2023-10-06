@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   }
 
   s.required_ruby_version = '>= 2.7'
+  s.required_rubygems_version = '>= 3.0.1'
 
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
   s.add_dependency 'cucumber-ci-environment', '~> 9.2', '>= 9.2.0'
@@ -52,8 +53,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '~> 3.39', '>= 3.39.2'
   s.add_development_dependency 'rack-test', '~> 2.1', '>= 2.1.0'
   s.add_development_dependency 'sinatra', '~> 3.1', '>= 3.1.0'
-
-  s.required_rubygems_version = '>= 3.0.1'
+  
   s.files = Dir[
     'README.md',
     'LICENSE',
