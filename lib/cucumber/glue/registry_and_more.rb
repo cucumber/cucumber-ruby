@@ -198,32 +198,19 @@ module Cucumber
       private
 
       def parameter_type_envelope(parameter_type)
-        # TODO: should me moved to Cucumber::Expression::ParameterType#to_envelope ?
+        # TODO: should this be moved to Cucumber::Expression::ParameterType#to_envelope ??
         # Note: that would mean that cucumber-expression would depend on cucumber-messages
-
         Cucumber::Messages::Envelope.new(
           parameter_type: Cucumber::Messages::ParameterType.new(
             id: @configuration.id_generator.new_id,
             name: parameter_type.name,
             regular_expressions: parameter_type.regexps.map(&:to_s),
-            prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match?,
-            use_for_snippets: parameter_type.use_for_snippets?,
+            prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match,
+            use_for_snippets: parameter_type.use_for_snippets,
             source_reference: Cucumber::Messages::SourceReference.new(
-              uri: location.file,
-              location: Cucumber::Messages::Location.new(
-                line: location.lines.first
-              )
+              uri: parameter_type.transformer.source_location[0],
+              location: Cucumber::Messages::Location.new(line: parameter_type.transformer.source_location[1])
             )
-            # source_reference: Cucumber::Messages::SourceReference.from_h(
-            #   # TODO: This needs fixing before we release the next version - this is simply put in to trick the
-            #   # CCK into passing the v12 specification - LH -> 26/9/23
-            #   {
-            #     uri: 'foo',
-            #     location: {
-            #       line: 5
-            #     }
-            #   }
-            # )
           )
         )
       end
