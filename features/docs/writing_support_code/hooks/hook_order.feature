@@ -1,5 +1,4 @@
-  Feature: Hooks execute in defined order
-
+Feature: Hooks execute in defined order
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
       """
