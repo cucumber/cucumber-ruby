@@ -2,24 +2,24 @@ Feature: Hooks execute in defined order
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^background step$/ do; log(:background_step) end
-      Given /^scenario step$/ do; log(:scenario_step) end
+      Given('background step') { log(:background_step) }
+      Given('scenario step') { log(:scenario_step) }
       """
     And a file named "features/support/hooks.rb" with:
       """
       $EventOrder = []
       Around('@around') do |scenario,block|
-        log :around_begin
+        log(:around_begin)
         block.call
-        log :around_end
+        log(:around_end)
       end
 
       Before('@before') do
-        log :before
+        log(:before)
       end
 
       After('@after') do |scenario|
-        log :after
+        log(:after)
       end
       """
     And a file named "features/around_hook_covers_background.feature" with:
@@ -45,7 +45,7 @@ Feature: Hooks execute in defined order
     And log only formatter is declared
 
   Scenario: Around hooks cover background steps
-    When I run `cucumber features/around_hook_covers_background.feature --format LogOnlyFormatter`
+    When I run `cucumber features/around_hook_covers_background.feature --format LogOnlyFormatter --publish-quiet`
     Then the output should contain:
       """
       around_begin
@@ -53,9 +53,10 @@ Feature: Hooks execute in defined order
       scenario_step
       around_end
       """
+    And the exit status should be 0
 
   Scenario: All hooks execute in expected order
-    When I run `cucumber features/all_hook_order.feature --format LogOnlyFormatter`
+    When I run `cucumber features/all_hook_order.feature --format LogOnlyFormatter --publish-quiet`
     Then the output should contain:
       """
       around_begin
@@ -65,3 +66,4 @@ Feature: Hooks execute in defined order
       after
       around_end
       """
+    And the exit status should be 0
