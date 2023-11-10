@@ -16,7 +16,7 @@ module Cucumber
       end
 
       context 'when on a Windows OS' do
-        before { skip('Only run these tests on non-Windows') unless Cucumber::WINDOWS }
+        before { skip('These tests are only to be ran on Windows') unless Cucumber::WINDOWS }
 
         it 'treats backslashes as literals in rerun.txt when on Windows (JRuby or MRI)' do
           given_cucumber_yml_defined_as('default' => '--format "pretty" features\sync_imap_mailbox.feature:16:22')
@@ -54,7 +54,7 @@ module Cucumber
       end
 
       context 'when on non-Windows OS' do
-        before { skip('Only run these tests on non-Windows') if Cucumber::WINDOWS }
+        before { skip('These tests are only to be ran on a "Non-Windows" OS') if Cucumber::WINDOWS }
 
         it 'treats backslashes as literals in rerun.txt when on Windows (JRuby or MRI)' do
           given_cucumber_yml_defined_as('default' => '--format "pretty" features\sync_imap_mailbox.feature:16:22')
