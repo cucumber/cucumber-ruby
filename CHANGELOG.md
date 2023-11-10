@@ -9,11 +9,26 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Added
+- `ParameterType` message now is generated in an Envelope with an additional 6th property of `source_reference`
+  (This is a `Location` message, of where the parameter types transformer is located) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+
 ### Changed
 - First couple of passes of tidying up approximately 40% of the manual fix cops
   ([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [#1741](https://github.com/cucumber/cucumber-ruby/pull/1741) [#1742](https://github.com/cucumber/cucumber-ruby/pull/1742) [luke-hill](https://github.com/luke-hill))
 - Removed a bunch of example files / sample projects from ancient projects no longer viable
-  [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
+  ([#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
+- When a `testStepResult` is of type `FAILED` we now pass in a differently shaped message (Featuring a new exception propertu)
+  ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+- `#attach` now can take an optional filename parameter which will rename attachments like PDF's
+  ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+
+### Fixed
+- Clear up a couple of tiny "nuances" that hide lots of issues when running local vs remote (Primarily CCK tests should always be runnable)
+  ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+
+### Removed
+- Removed a variety of overrides / hacks for travis CI (No longer in use) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 
 ## [9.0.2] - 2023-09-11
 ### Changed
