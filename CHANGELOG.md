@@ -9,23 +9,25 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [9.1.0] - 2023-11-14
 ### Added
 
 ### Changed
 - First couple of passes of tidying up approximately 40% of the manual fix cops
-  ([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [#1741](https://github.com/cucumber/cucumber-ruby/pull/1741) [#1742](https://github.com/cucumber/cucumber-ruby/pull/1742) [luke-hill](https://github.com/luke-hill))
+([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [#1741](https://github.com/cucumber/cucumber-ruby/pull/1741) [#1742](https://github.com/cucumber/cucumber-ruby/pull/1742) [luke-hill](https://github.com/luke-hill))
 - Removed a bunch of example files / sample projects from ancient projects no longer viable
-  ([#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
+([#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
 - When a `testStepResult` is of type `FAILED` we now pass in a new (Exception), message property
-  ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 - `ParameterType` message now contains a new (sourceReference), property
-  (This contains a uri string and a `Location` message -> for where the ParameterType `transformer` is located) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+(This contains a uri string and a `Location` message -> for where the ParameterType `transformer` is located) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 - `#attach` now can take an optional filename parameter which will rename attachments like PDF's
-  ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 
 ### Fixed
 - Clear up a couple of tiny "nuances" that hide lots of issues when running local vs remote (Primarily CCK tests should always be runnable)
-  ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 
 ### Removed
 - Removed a variety of overrides / hacks for travis CI (No longer in use) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
@@ -125,7 +127,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.2...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.0...HEAD
+[9.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.2...v9.1.0
 [9.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.1...v9.0.2
 [9.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.0...v9.0.1
 [9.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v8.0.0...v9.0.0
