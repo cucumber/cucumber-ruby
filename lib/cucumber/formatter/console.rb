@@ -169,12 +169,17 @@ module Cucumber
         end
       end
 
-      def attach(src, media_type)
+      def attach(src, media_type, filename)
         return unless media_type == 'text/x.cucumber.log+plain'
         return unless @io
 
         @io.puts
-        @io.puts(format_string(src, :tag))
+        if filename
+          @io.puts("#{filename}: #{format_string(src, :tag)}")
+        else
+          @io.puts(format_string(src, :tag))
+        end
+
         @io.flush
       end
 

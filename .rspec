@@ -1,2 +1,2 @@
+--require spec_helper
 --color
---tag "~cck"

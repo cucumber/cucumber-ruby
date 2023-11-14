@@ -19,6 +19,3 @@ default_tasks = %i[spec cucumber cck]
 default_tasks << :examples if ENV['CI']
 
 task default: default_tasks
-
-require 'rake/clean'
-CLEAN.include %w[**/*.{log,pyc,rbc,tgz} doc]

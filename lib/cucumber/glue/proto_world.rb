@@ -7,7 +7,7 @@ require 'mini_mime'
 
 module Cucumber
   module Glue
-    # Defines the basic API methods availlable in all Cucumber step definitions.
+    # Defines the basic API methods available in all Cucumber step definitions.
     #
     # You can, and probably should, extend this API with your own methods that
     # make sense in your domain. For more on that, see {Cucumber::Glue::Dsl#World}
@@ -86,14 +86,17 @@ module Cucumber
       # @param file [string|io] the file to attach.
       #   It can be a string containing the file content itself, the file path, or an IO ready to be read.
       # @param media_type [string] the media type.
-      # If file is a valid path, media_type can be omitted, it will then be inferred from the file name.
-      def attach(file, media_type = nil)
+      #   If file is a valid path, media_type can be omitted, it will then be inferred from the file name.
+      # @param filename [string] the name of the file you wish to specify.
+      #   This is only needed in situations where you want to rename a PDF download e.t.c. - In most situations
+      #   you should not need to pass a filename
+      def attach(file, media_type = nil, filename = nil)
         return super unless File.file?(file)
 
         content = File.read(file, mode: 'rb')
         media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
 
-        super(content, media_type.to_s)
+        super(content, media_type.to_s, filename)
       rescue StandardError
         super
       end
@@ -152,8 +155,8 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:attach) do |file, media_type|
-            runtime.attach(file, media_type)
+          define_method(:attach) do |file, media_type, filename|
+            runtime.attach(file, media_type, filename)
           end
 
           # Prints the list of modules that are included in the World

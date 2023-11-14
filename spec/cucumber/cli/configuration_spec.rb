@@ -45,8 +45,6 @@ module Cucumber
       end
 
       context 'when using the --profile flag' do
-        include RSpec::WorkInProgress
-
         it 'expands args from profiles in the cucumber.yml file' do
           given_cucumber_yml_defined_as('bongo' => '--require from/yml')
           config.parse!(%w[--format progress --profile bongo])

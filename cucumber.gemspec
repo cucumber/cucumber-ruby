@@ -20,12 +20,13 @@ Gem::Specification.new do |s|
   }
 
   s.required_ruby_version = '>= 2.7'
+  s.required_rubygems_version = '>= 3.0.1'
 
   s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
   s.add_dependency 'cucumber-ci-environment', '~> 9.2', '>= 9.2.0'
-  s.add_dependency 'cucumber-core', '~> 11.1', '>= 11.1.0'
-  s.add_dependency 'cucumber-cucumber-expressions', '~> 16.1', '>= 16.1.2'
-  s.add_dependency 'cucumber-gherkin', '>= 24', '< 26.2.1'
+  s.add_dependency 'cucumber-core', '~> 12.0'
+  s.add_dependency 'cucumber-cucumber-expressions', '~> 17.0'
+  s.add_dependency 'cucumber-gherkin', '>= 24', '< 27'
   s.add_dependency 'cucumber-html-formatter', '~> 20.4', '>= 20.4.0'
   s.add_dependency 'cucumber-messages', '>= 19', '< 23'
   s.add_dependency 'diff-lcs', '~> 1.5', '>= 1.5.0'
@@ -33,10 +34,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_test', '~> 1.1', '>= 1.1.0'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.3'
 
-  s.add_development_dependency 'cucumber-compatibility-kit', '~> 10.0'
+  s.add_development_dependency 'cucumber-compatibility-kit', '~> 14.0'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
   s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.6'
-  s.add_development_dependency 'pry', '~> 0.14', '>= 0.14.1'
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   s.add_development_dependency 'rspec', '~> 3.12', '>= 3.12.0'
   s.add_development_dependency 'rubocop', '~> 1.56.4'
@@ -54,7 +54,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack-test', '~> 2.1', '>= 2.1.0'
   s.add_development_dependency 'sinatra', '~> 3.1', '>= 3.1.0'
 
-  s.required_rubygems_version = '>= 3.0.1'
   s.files = Dir[
     'README.md',
     'LICENSE',

@@ -42,11 +42,12 @@ module Cucumber
         raise 'To be implemented'
       end
 
-      def attach(src, media_type)
+      def attach(src, media_type, filename)
         attachment_data = {
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,
-          media_type: media_type
+          media_type: media_type,
+          file_name: filename
         }
 
         if media_type.start_with?('text/')
@@ -192,10 +193,13 @@ module Cucumber
 
         result_message = result.to_message
         if result.failed? || result.pending?
+          message_element = result.failed? ? result.exception : result
+
           result_message = Cucumber::Messages::TestStepResult.new(
             status: result_message.status,
             duration: result_message.duration,
-            message: create_error_message(result)
+            message: create_error_message(message_element),
+            exception: create_exception_object(result, message_element)
           )
         end
 
@@ -211,10 +215,15 @@ module Cucumber
         output_envelope(message)
       end
 
-      def create_error_message(result)
-        message_element = result.failed? ? result.exception : result
+      def create_error_message(message_element)
         message = "#{message_element.message} (#{message_element.class})"
         ([message] + message_element.backtrace).join("\n")
+      end
+
+      def create_exception_object(result, message_element)
+        return unless result.failed?
+
+        Cucumber::Messages::Exception.from_h({ type: message_element.class, message: message_element.message })
       end
 
       def on_test_case_finished(event)

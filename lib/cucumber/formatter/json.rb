@@ -85,7 +85,7 @@ module Cucumber
         @io.write(JSON.pretty_generate(@feature_hashes))
       end
 
-      def attach(src, mime_type)
+      def attach(src, mime_type, _filename)
         if mime_type == 'text/x.cucumber.log+plain'
           test_step_output << src
           return
