@@ -26,38 +26,33 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-ci-environment', '~> 9.2', '>= 9.2.0'
   s.add_dependency 'cucumber-core', '~> 12.0'
   s.add_dependency 'cucumber-cucumber-expressions', '~> 17.0'
-  s.add_dependency 'cucumber-gherkin', '>= 24', '< 27'
-  s.add_dependency 'cucumber-html-formatter', '~> 20.4', '>= 20.4.0'
-  s.add_dependency 'cucumber-messages', '>= 19', '< 23'
-  s.add_dependency 'diff-lcs', '~> 1.5', '>= 1.5.0'
+  s.add_dependency 'cucumber-gherkin', '> 24', '< 27'
+  s.add_dependency 'cucumber-html-formatter', '> 20.3', '< 22'
+  s.add_dependency 'cucumber-messages', '> 19', '< 24'
+  s.add_dependency 'diff-lcs', '~> 1.5'
   s.add_dependency 'mini_mime', '~> 1.1', '>= 1.1.5'
   s.add_dependency 'multi_test', '~> 1.1', '>= 1.1.0'
   s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.3'
 
-  s.add_development_dependency 'cucumber-compatibility-kit', '~> 14.0'
+  s.add_development_dependency 'cucumber-compatibility-kit', '~> 14.1'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
-  s.add_development_dependency 'nokogiri', '~> 1.13', '>= 1.13.6'
-  s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
-  s.add_development_dependency 'rspec', '~> 3.12', '>= 3.12.0'
+  s.add_development_dependency 'nokogiri', '~> 1.14'
+  s.add_development_dependency 'rake', '~> 13.1'
+  s.add_development_dependency 'rspec', '~> 3.12'
   s.add_development_dependency 'rubocop', '~> 1.56.4'
   s.add_development_dependency 'rubocop-capybara', '~> 2.19.0'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
   s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
-  s.add_development_dependency 'rubocop-rspec', '~> 2.24.1'
+  s.add_development_dependency 'rubocop-rspec', '~> 2.25.0'
   s.add_development_dependency 'simplecov', '~> 0.22.0'
-  s.add_development_dependency 'webrick', '~> 1.8', '>= 1.8.1'
+  s.add_development_dependency 'webrick', '~> 1.8'
 
   # Needed for rake examples
   s.add_development_dependency 'capybara', '~> 3.39', '>= 3.39.2'
-  s.add_development_dependency 'rack-test', '~> 2.1', '>= 2.1.0'
-  s.add_development_dependency 'sinatra', '~> 3.1', '>= 3.1.0'
+  s.add_development_dependency 'rack-test', '~> 2.1'
+  s.add_development_dependency 'sinatra', '~> 3.1'
 
-  s.files = Dir[
-    'README.md',
-    'LICENSE',
-    'VERSION',
-    'lib/**/*'
-  ]
+  s.files = Dir['README.md', 'LICENSE', 'VERSION', 'lib/**/*']
   s.executables      = ['cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
