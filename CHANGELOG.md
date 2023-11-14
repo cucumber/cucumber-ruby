@@ -10,8 +10,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Added
-- `ParameterType` message now contains a new (sourceReference), property
-  (This contains a uri string and a `Location` message -> for where the ParameterType `transformer` is located) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 
 ### Changed
 - First couple of passes of tidying up approximately 40% of the manual fix cops
@@ -20,6 +18,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))
 - When a `testStepResult` is of type `FAILED` we now pass in a new (Exception), message property
   ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
+- `ParameterType` message now contains a new (sourceReference), property
+  (This contains a uri string and a `Location` message -> for where the ParameterType `transformer` is located) ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 - `#attach` now can take an optional filename parameter which will rename attachments like PDF's
   ([#1738](https://github.com/cucumber/cucumber-ruby/pull/1738) [luke-hill](https://github.com/luke-hill))
 
