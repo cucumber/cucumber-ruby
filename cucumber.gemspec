@@ -48,9 +48,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webrick', '~> 1.8'
 
   # Needed for rake examples
-  s.add_development_dependency 'capybara', '~> 3.39', '>= 3.39.2'
   s.add_development_dependency 'rack-test', '~> 2.1'
-  s.add_development_dependency 'sinatra', '~> 3.1'
 
   s.files = Dir['README.md', 'LICENSE', 'VERSION', 'lib/**/*']
   s.executables      = ['cucumber']
