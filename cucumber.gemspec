@@ -47,9 +47,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0.22.0'
   s.add_development_dependency 'webrick', '~> 1.8'
 
-  # Needed for rake examples
-  s.add_development_dependency 'rack-test', '~> 2.1'
-
   s.files = Dir['README.md', 'LICENSE', 'VERSION', 'lib/**/*']
   s.executables      = ['cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
