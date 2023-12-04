@@ -9,10 +9,17 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
-
-## [9.1.0] - 2023-11-14
 ### Added
 
+### Changed
+- Updated dependencies to slightly more permissive / up to date versions ([luke-hill](https://github.com/luke-hill))
+
+### Fixed
+
+### Removed
+- The sample sinatra tests are no longer used in internal testing (This removes a bunch of superfluous dev gems) ([#1743](https://github.com/cucumber/cucumber-ruby/pull/1743) [luke-hill](https://github.com/luke-hill))
+
+## [9.1.0] - 2023-11-14
 ### Changed
 - First couple of passes of tidying up approximately 40% of the manual fix cops
 ([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [#1741](https://github.com/cucumber/cucumber-ruby/pull/1741) [#1742](https://github.com/cucumber/cucumber-ruby/pull/1742) [luke-hill](https://github.com/luke-hill))
