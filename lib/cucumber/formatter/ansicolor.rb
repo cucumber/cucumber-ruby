@@ -3,7 +3,7 @@
 require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
-Cucumber::Term::ANSIColor.coloring = false if !$stdout.tty?
+Cucumber::Term::ANSIColor.coloring = false unless $stdout.tty?
 
 module Cucumber
   module Formatter
