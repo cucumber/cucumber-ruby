@@ -70,14 +70,14 @@ module Cucumber
         "#{h[Regexp.last_match(1)]},bold"
       end.merge(
         'undefined' => 'yellow',
-        'pending'   => 'yellow',
-        'flaky'     => 'yellow',
-        'failed'    => 'red',
-        'passed'    => 'green',
-        'outline'   => 'cyan',
-        'skipped'   => 'cyan',
-        'comment'   => 'grey',
-        'tag'       => 'cyan'
+        'pending' => 'yellow',
+        'flaky' => 'yellow',
+        'failed' => 'red',
+        'passed' => 'green',
+        'outline' => 'cyan',
+        'skipped' => 'cyan',
+        'comment' => 'grey',
+        'tag' => 'cyan'
       )
       # :startdoc:
 
