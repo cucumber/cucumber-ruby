@@ -59,7 +59,7 @@ module Cucumber
           execute [@gherkin], [StandardStepActions.new], configuration.event_bus
           expect(Cucumber.wants_to_quit).to be_falsey
         end
-        end
+      end
 
       context 'with an undefined scenario' do
         before(:each) do
