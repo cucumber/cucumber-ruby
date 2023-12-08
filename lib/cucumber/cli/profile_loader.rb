@@ -11,11 +11,11 @@ module Cucumber
 
       def args_from(profile)
         unless cucumber_yml.key?(profile)
-          raise(ProfileNotFound, <<-END_OF_ERROR)
-Could not find profile: '#{profile}'
+          raise(ProfileNotFound, <<~END_OF_ERROR)
+            Could not find profile: '#{profile}'
 
-Defined profiles in cucumber.yml:
-  * #{cucumber_yml.keys.sort.join("\n  * ")}
+            Defined profiles in cucumber.yml:
+              * #{cucumber_yml.keys.sort.join("\n  * ")}
           END_OF_ERROR
         end
 
