@@ -114,7 +114,7 @@ module Cucumber
       end
 
       def current_feature
-        @feature_hash ||= {} # rubocop:disable Naming/MemoizedInstanceVariableName
+        @feature_hash ||= {}
       end
 
       def feature_elements

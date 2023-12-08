@@ -77,7 +77,7 @@ module Autotest::CucumberMixin
       self.results = []
       line = []
       begin
-        open("| #{cmd}", 'r') do |f| # rubocop:disable Security/Open
+        open("| #{cmd}", 'r') do |f|
           until f.eof?
             c = f.getc || break
             print(c)

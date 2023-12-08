@@ -48,7 +48,7 @@ module Cucumber
 
       def self.cucumber_run_with_backtrace_filtering(pseudo_method)
         yield
-      rescue Exception => e # rubocop:disable Lint/RescueException
+      rescue Exception => e
         instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
         replace_instance_exec_invocation_line!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
         raise e

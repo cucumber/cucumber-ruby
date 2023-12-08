@@ -84,7 +84,7 @@ module Cucumber
       def load_configuration
         require 'yaml'
         begin
-          @cucumber_yml = YAML.load(@cucumber_erb) # rubocop:disable Security/YAMLLoad
+          @cucumber_yml = YAML.load(@cucumber_erb)
         rescue StandardError
           raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end

@@ -92,13 +92,13 @@ module Cucumber
         @options[key] = value
       end
 
-      def parse!(args) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      def parse!(args)
         @args = args
         @expanded_args = @args.dup
 
         @args.extend(::OptionParser::Arguable)
 
-        @args.options do |opts| # rubocop:disable Metrics/BlockLength
+        @args.options do |opts|
           opts.banner = banner
           opts.on('--publish', 'Publish a report to https://reports.cucumber.io') do
             set_option :publish_enabled, true
@@ -522,7 +522,7 @@ module Cucumber
         @profile_loader ||= ProfileLoader.new
       end
 
-      def reverse_merge(other_options) # rubocop:disable Metrics/AbcSize
+      def reverse_merge(other_options)
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
         @options[:excludes] += other_options[:excludes]
