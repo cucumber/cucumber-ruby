@@ -72,7 +72,6 @@ module Cucumber
           end
         end
 
-
         it "doesn't set Cucumber.wants_to_quit" do
           execute [@gherkin], [StandardStepActions.new], configuration.event_bus
 
