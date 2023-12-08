@@ -13,6 +13,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 - Updated dependencies to slightly more permissive / up to date versions ([luke-hill](https://github.com/luke-hill))
+- Fixed most of the `Layout` cop offenses ([luke-hill](https://github.com/luke-hill))
 
 ### Fixed
 
