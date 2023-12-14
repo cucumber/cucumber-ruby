@@ -18,6 +18,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Removed
 - The sample sinatra tests are no longer used in internal testing (This removes a bunch of superfluous dev gems) ([#1743](https://github.com/cucumber/cucumber-ruby/pull/1743) [luke-hill](https://github.com/luke-hill))
+- Removed all references to autotest as this is an ancient plugin that is not correctly integrated
 
 ## [9.1.0] - 2023-11-14
 ### Changed
