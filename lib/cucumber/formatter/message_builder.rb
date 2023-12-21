@@ -132,7 +132,7 @@ module Cucumber
         @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
-            parameter_type_name: argument.parameter_type.name
+            parameter_type_name: parameter_type_name(argument)
           )
         end
       end
@@ -143,6 +143,10 @@ module Cucumber
           value: group.value,
           children: group.children.map { |child| argument_group_to_message(child) }
         )
+      end
+
+      def parameter_type_name(step_match_argument)
+        step_match_argument.parameter_type&.name if step_match_argument.respond_to?(:parameter_type)
       end
 
       def on_test_run_started(*)
