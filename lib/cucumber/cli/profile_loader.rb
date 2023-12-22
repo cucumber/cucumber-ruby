@@ -11,11 +11,11 @@ module Cucumber
 
       def args_from(profile)
         unless cucumber_yml.key?(profile)
-          raise(ProfileNotFound, <<-END_OF_ERROR)
-Could not find profile: '#{profile}'
+          raise(ProfileNotFound, <<~END_OF_ERROR)
+            Could not find profile: '#{profile}'
 
-Defined profiles in cucumber.yml:
-  * #{cucumber_yml.keys.sort.join("\n  * ")}
+            Defined profiles in cucumber.yml:
+              * #{cucumber_yml.keys.sort.join("\n  * ")}
           END_OF_ERROR
         end
 
@@ -84,7 +84,7 @@ Defined profiles in cucumber.yml:
       def load_configuration
         require 'yaml'
         begin
-          @cucumber_yml = YAML.load(@cucumber_erb) # rubocop:disable Security/YAMLLoad
+          @cucumber_yml = YAML.load(@cucumber_erb)
         rescue StandardError
           raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end

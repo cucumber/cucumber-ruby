@@ -41,30 +41,30 @@ module Cucumber
       # Although not listed, you can also use <tt>grey</tt>
       module AnsiEscapes
         COLORS = {
-          'black'   => "\e[30m",
-          'red'     => "\e[31m",
-          'green'   => "\e[32m",
-          'yellow'  => "\e[33m",
-          'blue'    => "\e[34m",
+          'black' => "\e[30m",
+          'red' => "\e[31m",
+          'green' => "\e[32m",
+          'yellow' => "\e[33m",
+          'blue' => "\e[34m",
           'magenta' => "\e[35m",
-          'cyan'    => "\e[36m",
-          'white'   => "\e[37m",
-          'grey'    => "\e[90m",
-          'bold'    => "\e[1m"
+          'cyan' => "\e[36m",
+          'white' => "\e[37m",
+          'grey' => "\e[90m",
+          'bold' => "\e[1m"
         }.freeze
 
         ALIASES = Hash.new do |h, k|
           "#{h[Regexp.last_match(1)]},bold" if k.to_s =~ /(.*)_arg/
         end.merge(
           'undefined' => 'yellow',
-          'pending'   => 'yellow',
+          'pending' => 'yellow',
           'executing' => 'grey',
-          'failed'    => 'red',
-          'passed'    => 'green',
-          'outline'   => 'cyan',
-          'skipped'   => 'cyan',
-          'comments'  => 'grey',
-          'tag'       => 'cyan'
+          'failed' => 'red',
+          'passed' => 'green',
+          'outline' => 'cyan',
+          'skipped' => 'cyan',
+          'comments' => 'grey',
+          'tag' => 'cyan'
         )
 
         # Example: export GHERKIN_COLORS="passed=red:failed=yellow"

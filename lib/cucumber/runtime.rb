@@ -235,7 +235,7 @@ module Cucumber
     end
 
     require 'cucumber/core/test/filters'
-    def filters # rubocop:disable Metrics/AbcSize
+    def filters
       tag_expressions = @configuration.tag_expressions
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits

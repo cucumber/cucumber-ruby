@@ -32,10 +32,10 @@ module Cucumber
 
         it 'treats percent sign as ERB code block after YAML directive' do
           yml = <<~HERE
-          ---
-          % x = '--format "pretty" features/sync_imap_mailbox.feature:16:22'
-          default: <%= x %>
-        HERE
+            ---
+            % x = '--format "pretty" features/sync_imap_mailbox.feature:16:22'
+            default: <%= x %>
+          HERE
           given_cucumber_yml_defined_as yml
           expect(loader.args_from('default')).to eq ['--format', 'pretty', 'features/sync_imap_mailbox.feature:16:22']
         end
@@ -70,10 +70,10 @@ module Cucumber
 
         it 'treats percent sign as ERB code block after YAML directive' do
           yml = <<~HERE
-          ---
-          % x = '--format "pretty" features/sync_imap_mailbox.feature:16:22'
-          default: <%= x %>
-        HERE
+            ---
+            % x = '--format "pretty" features/sync_imap_mailbox.feature:16:22'
+            default: <%= x %>
+          HERE
           given_cucumber_yml_defined_as yml
           expect(loader.args_from('default')).to eq ['--format', 'pretty', 'features/sync_imap_mailbox.feature:16:22']
         end

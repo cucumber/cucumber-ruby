@@ -49,11 +49,9 @@ Before('@global_state') do
   # (the ones ran by Cucumber itself).
   # This should reset data hopefully (and make clear why we do that)
 
-  # rubocop:disable Style/GlobalVars
   $global_state = nil
   $global_cukes = 0
   $scenario_runs = 0
-  # rubocop:enable Style/GlobalVars
 end
 
 After('@disable_fail_fast') do

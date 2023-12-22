@@ -19,12 +19,12 @@ module Cucumber
       end
 
       describe 'with a scenario with an undefined step' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         it 'outputs the json data' do
           expect(load_normalised_json(@out)).to eq JSON.parse(%(
@@ -51,12 +51,12 @@ module Cucumber
       end
 
       describe 'with a scenario with a passed step' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) {}
@@ -88,12 +88,12 @@ module Cucumber
       end
 
       describe 'with a scenario with a failed step' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) { raise 'no bananas' }
@@ -126,12 +126,12 @@ module Cucumber
       end
 
       describe 'with a scenario with a pending step' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) { pending }
@@ -164,7 +164,7 @@ module Cucumber
       end
 
       describe 'with a scenario outline with one example' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario Outline: Monkey eats <fruit>
@@ -173,7 +173,7 @@ module Cucumber
               Examples: Fruit Table
               |  fruit  |
               | bananas |
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) {}
@@ -205,7 +205,7 @@ module Cucumber
       end
 
       describe 'with tags in the feature file' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           @f
           Feature: Banana party
 
@@ -221,7 +221,7 @@ module Cucumber
               Examples: Fruit Table
               |  fruit  |
               | bananas |
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) {}
@@ -278,7 +278,7 @@ module Cucumber
       end
 
       describe 'with comments in the feature file' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           #feature comment
           Feature: Banana party
 
@@ -301,7 +301,7 @@ module Cucumber
               |  fruit  |
               #examples table row comment
               | bananas |
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) {}
@@ -371,7 +371,7 @@ module Cucumber
       end
 
       describe 'with a scenario with a step with a doc string' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
@@ -379,7 +379,7 @@ module Cucumber
                 """
                 the doc string
                 """
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) { |s| s }
@@ -414,12 +414,12 @@ module Cucumber
       end
 
       describe 'with a scenario with a step that use puts' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) { log 'from step' }
@@ -452,7 +452,7 @@ module Cucumber
       end
 
       describe 'with a background' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Background: There are bananas
@@ -463,7 +463,7 @@ module Cucumber
 
             Scenario: Monkey eats more bananas
               Then the monkey eats more bananas
-          FEATURE
+        FEATURE
 
         it 'includes the background in the json data each time it is executed' do
           expect(load_normalised_json(@out)).to eq JSON.parse(%(
@@ -524,12 +524,12 @@ module Cucumber
       end
 
       describe 'with a scenario with a step that embeds data directly' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) { attach('YWJj', 'mime-type;base64') }
@@ -563,12 +563,12 @@ module Cucumber
       end
 
       describe 'with a scenario with a step that embeds a file' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) do
@@ -606,12 +606,12 @@ module Cucumber
       end
 
       describe 'with a scenario with hooks' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Before() {}
@@ -671,12 +671,12 @@ module Cucumber
       end
 
       describe 'with a scenario when only an around hook is failing' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
-          FEATURE
+        FEATURE
 
         define_steps do
           Around() do |_scenario, block|
@@ -717,14 +717,14 @@ module Cucumber
       end
 
       describe 'with a scenario with a step with a data table' do
-        define_feature <<-FEATURE
+        define_feature <<~FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
               Given there are bananas
                 | aa | bb |
                 | cc | dd |
-          FEATURE
+        FEATURE
 
         define_steps do
           Given(/^there are bananas$/) { |s| s }

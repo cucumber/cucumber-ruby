@@ -186,7 +186,7 @@ module Cucumber
 
           it 'stores tag limits separately' do
             after_parsing(['--tags', 'not @foo:2 or @bar:3']) do
-              expect(options[:tag_limits]).to eq({'@foo' => 2, '@bar' => 3})
+              expect(options[:tag_limits]).to eq({ '@foo' => 2, '@bar' => 3 })
             end
           end
 
@@ -261,7 +261,7 @@ module Cucumber
             given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
             options.parse!(%w[--tags @foo:3 -p baz])
 
-            expect(options[:tag_limits]).to eq({'@foo' => 3, '@bar' => 2})
+            expect(options[:tag_limits]).to eq({ '@foo' => 3, '@bar' => 2 })
           end
 
           it 'raise exceptions for inconsistent tag limits' do

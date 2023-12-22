@@ -9,7 +9,7 @@ Feature: Step Activated Event
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /a step/ do
-        # automation goes here
+        # automation goes here
       end
       """
     And a file named "features/test.feature" with:
