@@ -7,7 +7,7 @@ describe 'Cucumber Compatibility Kit', cck: true do
   let(:cucumber_common_args) { '--publish-quiet --profile none --format message' }
   let(:cucumber_command) { "bundle exec #{cucumber_bin} #{cucumber_common_args}" }
 
-  Cucumber::CompatibilityKit.gherkin_examples.each do |example_name|
+  Cucumber::CompatibilityKit.gherkin.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }

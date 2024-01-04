@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'support/shared_examples'
-require_relative 'support/cck_new/compatibility_kit'
+require_relative 'support/cck/examples'
 
 describe 'Cucumber Compatibility Kit', cck: true do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
-  CCKNew::CompatibilityKit.gherkin_examples.each do |example_name|
+  CCK::Examples.gherkin.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
