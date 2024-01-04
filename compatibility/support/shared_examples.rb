@@ -18,7 +18,7 @@ RSpec.shared_examples 'cucumber compatibility kit' do
   let(:example) { raise '`example` missing: add `let(:example) { example_name }` to your spec' }
   let(:messages) { raise '`messages` missing: add `let(:messages) { ndjson }` to your spec' }
 
-  let(:example_path) { Cucumber::CompatibilityKit.example_path(example) }
+  let(:example_path) { CCK::CompatibilityKit.example_path(example) }
 
   let(:parsed_original) { parse_ndjson_file("#{example_path}/#{example}.feature.ndjson") }
   let(:parsed_generated) { parse_ndjson(messages) }

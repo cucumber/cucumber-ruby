@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Cucumber
+module CCK
   module CompatibilityKit
     class << self
       def all_examples
