@@ -11,9 +11,10 @@ require_relative 'cck/keys_checker'
 RSpec.shared_examples 'cucumber compatibility kit' do
   include CCK::Helpers
 
-  let(:example_path) { CCK::CompatibilityKit.example_path(example) }
+  let(:cck_implementation_path) { CCK::CompatibilityKit.example_path(example) }
+  let(:cck_features_path) { "/usr/share/rvm/gems/ruby-2.7.8/gems/cucumber-compatibility-kit-14.1.0/features/#{example}" }
 
-  let(:parsed_original) { parse_ndjson_file("#{example_path}/#{example}.feature.ndjson") }
+  let(:parsed_original) { parse_ndjson_file("#{cck_features_path}/#{example}.feature.ndjson") }
   let(:parsed_generated) { parse_ndjson(messages) }
 
   let(:original_messages_types) { parsed_original.map { |msg| message_type(msg) } }

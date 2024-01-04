@@ -13,7 +13,7 @@ describe 'Cucumber Compatibility Kit', cck: true do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
         let(:extra_args) { example == 'retry' ? '--retry 2' : '' }
-        let(:messages) { `#{cucumber_command} #{extra_args} --require #{example_path} #{example_path}` }
+        let(:messages) { `#{cucumber_command} #{extra_args} --require #{cck_implementation_path} #{cck_implementation_path}` }
       end
     end
   end
