@@ -6,7 +6,6 @@ require 'cucumber/messages'
 
 require_relative 'cck/helpers'
 require_relative 'cck/messages_comparator'
-require_relative 'cck/keys_checker'
 
 require 'cucumber-compatibility-kit'
 

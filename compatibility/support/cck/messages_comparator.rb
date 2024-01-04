@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'keys_checker'
-require_relative 'helpers'
 
 module CCK
   class MessagesComparator
