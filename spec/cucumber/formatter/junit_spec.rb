@@ -56,20 +56,19 @@ module Cucumber
           end
 
           define_steps do
-            Given(/a passing scenario/) do
+            Given('a passing scenario') do
               Kernel.puts 'foo'
             end
           end
 
-          define_feature <<-FEATURE
-              Feature: One passing feature
+          define_feature <<~FEATURE
+            Feature: One passing feature
 
-                Scenario: Passing
-                  Given a passing scenario
+              Scenario: Passing
+                Given a passing scenario
           FEATURE
 
           it 'will contain the file attribute' do
-            expect(@doc.xpath('//testsuite/testcase/@file').size).to equal 1
             expect(@doc.xpath('//testsuite/testcase/@file').first.value).to eq('spec.feature')
           end
         end
@@ -93,20 +92,20 @@ module Cucumber
           end
 
           define_steps do
-            Given(/a passing scenario/) do
+            Given('a passing scenario') do
               Kernel.puts 'foo'
             end
           end
 
-          define_feature <<-FEATURE
-              Feature: One passing feature
+          define_feature <<~FEATURE
+            Feature: One passing feature
 
-                Scenario: Passing
-                  Given a passing scenario
+              Scenario: Passing
+                Given a passing scenario
           FEATURE
 
           it 'will not contain the file attribute' do
-            expect(@doc.xpath('//testsuite/testcase/@file').size).to equal 0
+            expect(@doc.xpath('//testsuite/testcase/@file')).to be_empty
           end
         end
       end
@@ -124,20 +123,20 @@ module Cucumber
           end
 
           define_steps do
-            Given(/a passing scenario/) do
+            Given('a passing scenario') do
               Kernel.puts 'foo'
             end
           end
 
-          define_feature <<-FEATURE
-              Feature: One passing scenario
+          define_feature <<~FEATURE
+            Feature: One passing feature
 
-                Scenario: Passing
-                  Given a passing scenario
+              Scenario: Passing
+                Given a passing scenario
           FEATURE
 
           it 'will not contain the file attribute' do
-            expect(@doc.xpath('//testsuite/testcase/@file').size).to equal 0
+            expect(@doc.xpath('//testsuite/testcase/@file')).to be_empty
           end
         end
       end
@@ -155,23 +154,23 @@ module Cucumber
           end
 
           define_steps do
-            Given(/a passing ctrl scenario/) do
+            Given('a passing ctrl scenario') do
               Kernel.puts "boo\b\cx\e\a\f boo "
             end
           end
 
-          define_feature <<-FEATURE
-              Feature: One passing scenario, one failing scenario
+          define_feature <<~FEATURE
+            Feature: One passing scenario, one failing scenario
 
-                Scenario: Passing
-                  Given a passing ctrl scenario
+              Scenario: Passing
+                Given a passing ctrl scenario
           FEATURE
 
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
 
         describe 'a feature with no name' do
-          define_feature <<-FEATURE
+          define_feature <<~FEATURE
             Feature:
               Scenario: Passing
                 Given a passing scenario
@@ -189,7 +188,7 @@ module Cucumber
           end
 
           describe 'with a single scenario' do
-            define_feature <<-FEATURE
+            define_feature <<~FEATURE
               Feature: One passing scenario, one failing scenario
 
                 Scenario: Passing
@@ -199,19 +198,19 @@ module Cucumber
             it { expect(@doc.to_s).to match(/One passing scenario, one failing scenario/) }
 
             it 'has not a root system-out node' do
-              expect(@doc.xpath('//testsuite/system-out').size).to eq 0
+              expect(@doc.xpath('//testsuite/system-out')).to be_empty
             end
 
             it 'has not a root system-err node' do
-              expect(@doc.xpath('//testsuite/system-err').size).to eq 0
+              expect(@doc.xpath('//testsuite/system-err')).to be_empty
             end
 
             it 'has a system-out node under <testcase/>' do
-              expect(@doc.xpath('//testcase/system-out').size).to eq 1
+              expect(@doc.xpath('//testcase/system-out').length).to eq(1)
             end
 
             it 'has a system-err node under <testcase/>' do
-              expect(@doc.xpath('//testcase/system-err').size).to eq 1
+              expect(@doc.xpath('//testcase/system-err').length).to eq(1)
             end
           end
 
@@ -224,44 +223,45 @@ module Cucumber
             ), File.join('features', 'some', 'path', 'spec.feature')
 
             it 'writes the filename with absolute path' do
-              expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')
+              expect(@formatter.written_files.keys.first).to eq(File.absolute_path('TEST-features-some-path-spec.xml'))
             end
           end
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) {}
+              Given('{word}') {}
             end
 
-            define_feature <<-FEATURE
+            define_feature <<~FEATURE
               Feature: Eat things when hungry
 
-                Scenario Outline: Eat things
-                  Given <Things>
+                Scenario Outline: Eat variety of things
+                  Given <things>
                   And stuff:
                     | foo |
                     | bar |
 
                 Examples: Good
-                  | Things   |
+                  | things   |
                   | Cucumber |
-                  | Whisky   |
+
                 Examples: Evil
-                  | Things   |
-                  | Big Mac  |
+                  | things   |
+                  | Burger   |
+                  | Whisky   |
             FEATURE
 
             it { expect(@doc.to_s).to match(/Eat things when hungry/) }
             it { expect(@doc.to_s).to match(/Cucumber/) }
+            it { expect(@doc.to_s).to match(/Burger/) }
             it { expect(@doc.to_s).to match(/Whisky/) }
-            it { expect(@doc.to_s).to match(/Big Mac/) }
-            it { expect(@doc.to_s).not_to match(/Things/) }
+            it { expect(@doc.to_s).not_to match(/Cake/) }
             it { expect(@doc.to_s).not_to match(/Good|Evil/) }
             it { expect(@doc.to_s).not_to match(/type="skipped"/) }
           end
 
           describe 'scenario with skipped test in junit report' do
-            define_feature <<-FEATURE
+            define_feature <<~FEATURE
               Feature: junit report with skipped test
 
                 Scenario Outline: skip a test and junit report of the same
@@ -283,7 +283,7 @@ module Cucumber
               Then(/I should have visited at least/) { |table| }
             end
 
-            define_feature <<-FEATURE
+            define_feature <<~FEATURE
               Feature: Shortlist
 
                 Scenario: Procure items
@@ -306,14 +306,15 @@ module Cucumber
                 Before do
                   raise 'Before hook failed'
                 end
-                Given(/a passing step/) do
+                Given('a passing step') do
                 end
               end
-              define_feature <<-FEATURE
-              Feature: One passing scenario
 
-                Scenario: Passing
-                  Given a passing step
+              define_feature <<~FEATURE
+                Feature: One passing scenario
+  
+                  Scenario: Passing
+                    Given a passing step
               FEATURE
 
               it { expect(@doc.to_s).to match(/Before hook at spec\/cucumber\/formatter\/junit_spec.rb:(\d+)/) }
@@ -324,14 +325,14 @@ module Cucumber
                 After do
                   raise 'After hook failed'
                 end
-                Given(/a passing step/) do
+                Given('a passing step') do
                 end
               end
-              define_feature <<-FEATURE
-              Feature: One passing scenario
-
-                Scenario: Passing
-                  Given a passing step
+              define_feature <<~FEATURE
+                Feature: One passing scenario
+  
+                  Scenario: Passing
+                    Given a passing step
               FEATURE
 
               it { expect(@doc.to_s).to match(/After hook at spec\/cucumber\/formatter\/junit_spec.rb:(\d+)/) }
@@ -342,10 +343,10 @@ module Cucumber
                 AfterStep do
                   raise 'AfterStep hook failed'
                 end
-                Given(/a passing step/) do
+                Given('a passing step') do
                 end
               end
-              define_feature <<-FEATURE
+              define_feature <<~FEATURE
               Feature: One passing scenario
 
                 Scenario: Passing
@@ -361,10 +362,10 @@ module Cucumber
                   block.call
                   raise 'Around hook failed'
                 end
-                Given(/a passing step/) do
+                Given('a passing step') do
                 end
               end
-              define_feature <<-FEATURE
+              define_feature <<~FEATURE
               Feature: One passing scenario
 
                 Scenario: Passing
@@ -393,31 +394,32 @@ module Cucumber
 
           describe 'with a scenario outline table' do
             define_steps do
-              Given(/.*/) {}
+              Given('{word}') {}
             end
 
-            define_feature <<-FEATURE
+            define_feature <<~FEATURE
               Feature: Eat things when hungry
 
                 Scenario Outline: Eat things
-                  Given <Things>
+                  Given <things>
                   And stuff:
                     | foo |
                     | bar |
 
                 Examples: Good
-                  | Things   |
+                  | things   |
                   | Cucumber |
-                  | Whisky   |
+
                 Examples: Evil
-                  | Things   |
-                  | Big Mac  |
+                  | things   |
+                  | Burger   |
+                  | Whisky   |
             FEATURE
 
             it { expect(@doc.to_s).to match(/Eat things when hungry/) }
             it { expect(@doc.to_s).to match(/Cucumber/) }
             it { expect(@doc.to_s).to match(/Whisky/) }
-            it { expect(@doc.to_s).to match(/Big Mac/) }
+            it { expect(@doc.to_s).to match(/Burger/) }
             it { expect(@doc.to_s).not_to match(/Things/) }
             it { expect(@doc.to_s).not_to match(/Good|Evil/) }
             it { expect(@doc.to_s).not_to match(/type="skipped"/) }
