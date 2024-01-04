@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'support/cucumber/compatibility_kit'
-
 require_relative 'support/shared_examples'
+require_relative 'support/cucumber/compatibility_kit'
 
 describe 'Cucumber Compatibility Kit', cck: true do
   let(:cucumber_bin) { 'cucumber' }

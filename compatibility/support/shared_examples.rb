@@ -4,8 +4,9 @@ require 'json'
 require 'rspec'
 require 'cucumber/messages'
 
-require 'messages_comparator'
-require 'keys_checker'
+require_relative 'cck/helpers'
+require_relative 'cck/messages_comparator'
+require_relative 'cck/keys_checker'
 
 RSpec.shared_examples 'cucumber compatibility kit' do
   include CCK::Helpers

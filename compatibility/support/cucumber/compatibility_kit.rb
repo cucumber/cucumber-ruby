@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'shared_examples'
-
 module Cucumber
   module CompatibilityKit
     class << self
