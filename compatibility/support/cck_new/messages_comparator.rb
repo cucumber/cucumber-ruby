@@ -3,7 +3,7 @@
 require_relative 'keys_checker'
 require_relative 'helpers'
 
-module CCK
+module CCKNew
   class MessagesComparator
     include Helpers
 

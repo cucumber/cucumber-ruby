@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CCK
+module CCKNew
   module CompatibilityKit
     class << self
       def all_examples

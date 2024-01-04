@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CCK
+module CCKNew
   class KeysChecker
     def self.compare(detected, expected)
       new(detected, expected).compare

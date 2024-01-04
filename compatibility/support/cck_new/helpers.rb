@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CCK
+module CCKNew
   module Helpers
     def message_type(message)
       message.to_h.each do |key, value|
