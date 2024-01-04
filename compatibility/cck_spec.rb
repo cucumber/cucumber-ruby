@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cucumber/cucumber-compatibility-kit'
+require_relative 'support/cucumber/compatibility_kit'
 
 require_relative 'support/shared_examples'
 
