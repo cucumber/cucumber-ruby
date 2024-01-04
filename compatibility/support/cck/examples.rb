@@ -8,32 +8,32 @@ module CCK
       end
 
       def gherkin
-        Dir.entries(features_location).select do |file_or_folder|
+        Dir.entries(features_folder_location).select do |file_or_folder|
           next if file_or_folder.start_with?('.')
 
-          gherkin_example?(File.join(features_location, file_or_folder))
+          gherkin_example?(File.join(features_folder_location, file_or_folder))
         end
       end
 
       def markdown
-        Dir.entries(features_location).select do |file_or_folder|
+        Dir.entries(features_folder_location).select do |file_or_folder|
           next if file_or_folder.start_with?('.')
 
-          markdown_example?(File.join(features_location, file_or_folder))
+          markdown_example?(File.join(features_folder_location, file_or_folder))
         end
       end
 
-      def location_of_feature(example_name)
-        path = File.join(features_location, example_name)
+      def supporting_code_for(example_name)
+        path = File.join(features_folder_location, example_name)
 
         return path if File.directory?(path)
 
-        raise ArgumentError, "No CCK example exists for #{example_name}"
+        raise ArgumentError, "No supporting code directory found locally for CCK example: #{example_name}"
       end
 
       private
 
-      def features_location
+      def features_folder_location
         File.expand_path("#{File.dirname(__FILE__)}/../../features/")
       end
 

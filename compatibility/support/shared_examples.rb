@@ -12,7 +12,7 @@ require 'cucumber-compatibility-kit'
 RSpec.shared_examples 'cucumber compatibility kit' do
   include CCK::Helpers
 
-  let(:implementation_path) { CCK::Examples.location_of_feature(example) }
+  let(:support_code_path) { CCK::Examples.supporting_code_for(example) }
   let(:cck_path) { Cucumber::CompatibilityKit.example_path(example) }
 
   let(:parsed_original) { parse_ndjson_file("#{cck_path}/#{example}.feature.ndjson") }
