@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-# Cucumber-JVM needs to use a Before hook in order to create attachments
-# NB: We should probably try to remove this
-Before { nil }
-
 When('the string {string} is attached as {string}') do |text, media_type|
   attach(text, media_type)
 end
