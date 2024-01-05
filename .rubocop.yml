@@ -18,11 +18,10 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   Exclude:
-    - 'bin/*'
-    - 'tmp/**/*'
-    - 'vendor/**/*'
-    - 'temp_app/**/*'
-    - 'cck/features/**/*'
+    - bin/*
+    - tmp/**/*
+    - vendor/**/*
+    - temp_app/**/*
 
 # A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
 Layout/LineLength:
@@ -32,21 +31,21 @@ Layout/LineLength:
 # In pretty_spec.rb & progress_spec.rb offences look false as the trailing spaces are in fact multiline string literals
 Layout/TrailingWhitespace:
   Exclude:
-    - 'spec/cucumber/formatter/pretty_spec.rb'
-    - 'spec/cucumber/formatter/progress_spec.rb'
+    - spec/cucumber/formatter/pretty_spec.rb
+    - spec/cucumber/formatter/progress_spec.rb
 
 # TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
 # We exclude proto_world for documentation (rdoc) purpose
 Lint/UselessMethodDefinition:
   Enabled: true
   Exclude:
-    - 'lib/cucumber/glue/proto_world.rb'
+    - lib/cucumber/glue/proto_world.rb
 
 # TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
 Metrics/ClassLength:
   Max: 375
   Exclude:
-    - 'lib/cucumber/cli/options.rb'
+    - lib/cucumber/cli/options.rb
     # TODO: Manually added! - be careful with regenning the file - this needs a fix
     - lib/cucumber/formatter/pretty.rb
 
@@ -54,7 +53,7 @@ Metrics/ClassLength:
 Metrics/ModuleLength:
   Max: 135
   Exclude:
-    - './spec/**/*'
+    - spec/**/*
     # TODO: Manually added! - be careful with regenning the file - this needs a fix
     - lib/cucumber/formatter/console.rb
 
@@ -73,13 +72,18 @@ Metrics/MethodLength:
 Naming/AsciiIdentifiers:
   Enabled: false
 
+# These directories (And associated files), are named according to the CCK convention which is kebab-case
+Naming/FileName:
+  Exclude:
+    - compatibility/features/**/*
+
 # For the most part, the project is solid on naming. There are though, a few
 # cases where the cop doesn't need to catch.
 Naming/MethodName:
   Exclude:
-    - 'examples/i18n/ar/lib/calculator.rb'
-    - 'examples/i18n/he/lib/calculator.rb'
-    - 'lib/cucumber/glue/dsl.rb'
+    - examples/i18n/ar/lib/calculator.rb
+    - examples/i18n/he/lib/calculator.rb
+    - lib/cucumber/glue/dsl.rb
 
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc']
