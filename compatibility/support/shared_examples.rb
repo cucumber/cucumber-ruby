@@ -13,7 +13,7 @@ RSpec.shared_examples 'cucumber compatibility kit' do
   include CCK::Helpers
 
   let(:support_code_path) { CCK::Examples.supporting_code_for(example) }
-  let(:cck_path) { Cucumber::CompatibilityKit.example_path(example) }
+  let(:cck_path) { CCK::Examples.feature_code_for(example) }
 
   let(:parsed_original) { parse_ndjson_file("#{cck_path}/#{example}.feature.ndjson") }
   let(:parsed_generated) { parse_ndjson(messages) }
