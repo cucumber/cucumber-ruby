@@ -30,12 +30,4 @@ RSpec.shared_examples 'cucumber compatibility kit' do
 
     expect(comparator.errors).to be_empty, "There were comparison errors: #{comparator.errors}"
   end
-
-  def parse_ndjson_file(path)
-    parse_ndjson(File.read(path))
-  end
-
-  def parse_ndjson(ndjson)
-    Cucumber::Messages::NdjsonToMessageEnumerator.new(ndjson)
-  end
 end
