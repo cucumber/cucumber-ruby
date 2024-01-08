@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# This blank hook has been re-added in. See https://github.com/cucumber/compatibility-kit/issues/83 for more details
+Before { nil }
+
 When('the string {string} is attached as {string}') do |text, media_type|
   attach(text, media_type)
 end
