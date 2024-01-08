@@ -59,7 +59,7 @@ describe CCK::KeysChecker do
       end
 
       it 'returns the error to be debugged' do
-        expect(described_class.compare(nil, nil).first).to end_with('wrong number of arguments (given 1, expected 0)')
+        expect(described_class.compare(nil, nil)).to include(/wrong number of arguments \(given 1, expected 0\)/)
       end
     end
   end
