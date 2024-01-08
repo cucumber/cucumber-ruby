@@ -14,7 +14,7 @@ describe CCK::Examples do
 
     context 'with an example that does not exist' do
       it 'raises ArgumentError' do
-        expect { described_class.supporting_code_for('should-not-exist') }.to raise_error(ArgumentError)
+        expect { described_class.supporting_code_for('nonexistent-example') }.to raise_error(ArgumentError)
       end
     end
   end
