@@ -4,7 +4,7 @@ module CCK
   module Examples
     class << self
       def supporting_code_for(example_name)
-        path = File.join(features_folder_location, example_name)
+        path = File.join(local_features_folder_location, example_name)
 
         return path if File.directory?(path)
 
@@ -13,7 +13,7 @@ module CCK
 
       private
 
-      def features_folder_location
+      def local_features_folder_location
         File.expand_path("#{File.dirname(__FILE__)}/../../features/")
       end
     end
