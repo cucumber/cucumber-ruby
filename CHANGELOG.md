@@ -9,17 +9,20 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
-
-## [9.1.1] - 2024-01-04
 ### Added
 
 ### Changed
-- Updated dependencies to slightly more permissive / up to date versions ([luke-hill](https://github.com/luke-hill))
-- Fixed most of the `Layout` cop offenses ([luke-hill](https://github.com/luke-hill))
 - Moved all CCK step definition/miscellaneous file logic from CCK gem to this repo.
-All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
+  All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
 
 ### Fixed
+
+### Removed
+
+## [9.1.1] - 2024-01-04
+### Changed
+- Updated dependencies to slightly more permissive / up to date versions ([luke-hill](https://github.com/luke-hill))
+- Fixed most of the `Layout` cop offenses ([luke-hill](https://github.com/luke-hill))
 
 ### Removed
 - The sample sinatra tests are no longer used in internal testing (This removes a bunch of superfluous dev gems) ([#1743](https://github.com/cucumber/cucumber-ruby/pull/1743) [luke-hill](https://github.com/luke-hill))
