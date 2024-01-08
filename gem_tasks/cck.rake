@@ -5,7 +5,7 @@ require 'rspec/core/rake_task'
 desc 'Run RSpec for the gem against the cucumber compatibility kit'
 RSpec::Core::RakeTask.new(:cck) do |t|
   t.verbose = true
-  t.rspec_opts = '--tag cck --pattern ../compatibility/cck_spec.rb'
+  t.rspec_opts = '--tag cck --pattern compatibility/cck_spec.rb -f d'
 
   puts 'Testing CCK proper first'
   sh 'bundle exec rspec compatibility/spec -f d'
