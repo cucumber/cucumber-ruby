@@ -312,7 +312,7 @@ module Cucumber
 
               define_feature <<~FEATURE
                 Feature: One passing scenario
-  
+
                   Scenario: Passing
                     Given a passing step
               FEATURE
@@ -330,7 +330,7 @@ module Cucumber
               end
               define_feature <<~FEATURE
                 Feature: One passing scenario
-  
+
                   Scenario: Passing
                     Given a passing step
               FEATURE
@@ -347,10 +347,10 @@ module Cucumber
                 end
               end
               define_feature <<~FEATURE
-              Feature: One passing scenario
+                Feature: One passing scenario
 
-                Scenario: Passing
-                  Given a passing step
+                  Scenario: Passing
+                    Given a passing step
               FEATURE
 
               it { expect(@doc.to_s).to match(/AfterStep hook at spec\/cucumber\/formatter\/junit_spec.rb:(\d+)/) }
@@ -366,10 +366,10 @@ module Cucumber
                 end
               end
               define_feature <<~FEATURE
-              Feature: One passing scenario
+                Feature: One passing scenario
 
-                Scenario: Passing
-                  Given a passing step
+                  Scenario: Passing
+                    Given a passing step
               FEATURE
 
               it { expect(@doc.to_s).to match(/Around hook\n\nMessage:/) }
