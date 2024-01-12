@@ -16,6 +16,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
 
 ### Fixed
+- Fix a situation whereby the step definition message will omit the parameter-type name when it cannot be inferred
+  (This fixes an issue in cucumber-wire when passing legacy steps down the wire)
+  ([#1746](https://github.com/cucumber/cucumber-ruby/pull/1746) [luke-hill](https://github.com/luke-hill))
 
 ### Removed
 
