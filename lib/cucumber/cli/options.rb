@@ -295,9 +295,9 @@ module Cucumber
         ]
       end
 
-      def parse_formats(v)
-        formatter, *formatter_options = v.split(',')
-        options_hash = Hash[formatter_options.map { |s| s.split('=') }]
+      def parse_formats(value)
+        formatter, *formatter_options = value.split(',')
+        options_hash = Hash[formatter_options.map { |string| string.split('=') }]
         [formatter, options_hash]
       end
 
@@ -375,12 +375,12 @@ module Cucumber
         ].join("\n")
       end
 
-      def require_files(v)
-        @options[:require] << v
-        return unless Cucumber::JRUBY && File.directory?(v)
+      def require_files(filenames)
+        @options[:require] << filenames
+        return unless Cucumber::JRUBY && File.directory?(filenames)
 
         require 'java'
-        $CLASSPATH << v
+        $CLASSPATH << filenames
       end
 
       def require_jars(jars)
@@ -441,8 +441,8 @@ module Cucumber
         ProjectInitializer.new.run && Kernel.exit(0)
       end
 
-      def add_profile(p)
-        @profiles << p
+      def add_profile(profile)
+        @profiles << profile
       end
 
       def set_option(option, value = nil)

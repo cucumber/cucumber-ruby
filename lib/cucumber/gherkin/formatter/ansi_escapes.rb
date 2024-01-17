@@ -5,8 +5,7 @@ module Cucumber
     module Formatter
       # Defines aliases for ANSI coloured output. Default colours can be overridden by defining
       # a <tt>GHERKIN_COLORS</tt> variable in your shell, very much like how you can
-      # tweak the familiar POSIX command <tt>ls</tt> with
-      # $LSCOLORS: http://linux-sxs.org/housekeeping/lscolors.html
+      # tweak the familiar POSIX command <tt>ls</tt> with $LSCOLORS: http://linux-sxs.org/housekeeping/lscolors.html
       #
       # The colours that you can change are:
       #
@@ -87,8 +86,8 @@ module Cucumber
           "\e[0m"
         end
 
-        def up(n)
-          "\e[#{n}A"
+        def up(amount)
+          "\e[#{amount}A"
         end
       end
     end
