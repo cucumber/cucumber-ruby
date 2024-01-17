@@ -27,7 +27,7 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      def self.default_arg_name 
+      def self.default_arg_name
         'table'
       end
 
@@ -354,11 +354,11 @@ module Cucumber
         cells_rows.index(cells)
       end
 
-      def verify_column(column_name) 
+      def verify_column(column_name)
         raise %(The column named "#{column_name}" does not exist) unless raw[0].include?(column_name)
       end
 
-      def verify_table_width(width) 
+      def verify_table_width(width)
         raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
@@ -384,17 +384,17 @@ module Cucumber
 
       attr_reader :cell_matrix
 
-      def col_width(col) 
+      def col_width(col)
         columns[col].__send__(:width)
       end
 
-      def to_s(options = {}) 
+      def to_s(options = {})
         indentation = options.key?(:indent) ? options[:indent] : 2
         prefixes = options.key?(:prefixes) ? options[:prefixes] : TO_S_PREFIXES
         DataTablePrinter.new(self, indentation, prefixes).to_s
       end
 
-      class DataTablePrinter 
+      class DataTablePrinter
         include Cucumber::Gherkin::Formatter::Escaping
         attr_reader :data_table, :indentation, :prefixes
         private :data_table, :indentation, :prefixes
@@ -433,7 +433,7 @@ module Cucumber
         end
       end
 
-      def columns 
+      def columns
         @columns ||= cell_matrix.transpose.map do |cell_row|
           Cells.new(self, cell_row)
         end
@@ -456,7 +456,7 @@ module Cucumber
         cells_rows[1..].map(&:to_hash)
       end
 
-      def create_cell_matrix(ast_table) 
+      def create_cell_matrix(ast_table)
         ast_table.raw.map do |raw_row|
           line = begin
             raw_row.line
@@ -469,7 +469,7 @@ module Cucumber
         end
       end
 
-      def convert_columns! 
+      def convert_columns!
         @conversion_procs.each do |column_name, conversion_proc|
           verify_column(column_name) if conversion_proc[:strict]
         end
@@ -483,7 +483,7 @@ module Cucumber
         end
       end
 
-      def convert_headers! 
+      def convert_headers!
         header_cells = cell_matrix[0]
 
         if @header_conversion_proc
@@ -501,11 +501,11 @@ module Cucumber
         end
       end
 
-      def clear_cache! 
+      def clear_cache!
         @hashes = @rows_hash = @column_names = @rows = @columns = nil
       end
 
-      def ensure_table(table_or_array) 
+      def ensure_table(table_or_array)
         return table_or_array if table_or_array.instance_of?(DataTable)
 
         DataTable.from(table_or_array)
@@ -516,7 +516,7 @@ module Cucumber
       end
 
       # Represents a row of cells or columns of cells
-      class Cells 
+      class Cells
         include Enumerable
         include Cucumber::Gherkin::Formatter::Escaping
 
@@ -537,15 +537,15 @@ module Cucumber
         end
 
         # For testing only
-        def to_sexp 
+        def to_sexp
           [:row, line, *@cells.map(&:to_sexp)]
         end
 
-        def to_hash 
+        def to_hash
           @to_hash ||= @table.cells_to_hash(self)
         end
 
-        def value(n) 
+        def value(n)
           self[n].value
         end
 
@@ -576,7 +576,7 @@ module Cucumber
         end
       end
 
-      class Cell 
+      class Cell
         attr_reader :line, :table
         attr_accessor :status, :value
 
@@ -603,12 +603,12 @@ module Cucumber
         end
 
         # For testing only
-        def to_sexp 
+        def to_sexp
           [:cell, @value]
         end
       end
 
-      class SurplusCell < Cell 
+      class SurplusCell < Cell
         def status
           :comment
         end
