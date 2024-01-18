@@ -9,8 +9,8 @@ module Cucumber
       let(:loader) { ProfileLoader.new }
 
       def given_cucumber_yml_defined_as(hash_or_string)
-        allow(Dir).to receive(:glob).with('{,.config/,config/}cucumber{.yml,.yaml}') { ['cucumber.yml'] }
-        allow(File).to receive(:exist?) { true }
+        allow(Dir).to receive(:glob).with('{,.config/,config/}cucumber{.yml,.yaml}').and_return(['cucumber.yml'])
+        allow(File).to receive(:exist?).and_return(true)
         cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
         allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
       end

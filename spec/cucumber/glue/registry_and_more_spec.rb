@@ -204,8 +204,8 @@ module Cucumber
 
           scenario = double('Scenario')
 
-          allow(scenario).to receive(:accept_hook?).with(fish) { true }
-          allow(scenario).to receive(:accept_hook?).with(meat) { false }
+          allow(scenario).to receive(:accept_hook?).with(fish).and_return(true)
+          allow(scenario).to receive(:accept_hook?).with(meat).and_return(false)
           expect(registry.hooks_for(:before, scenario)).to eq([fish])
         end
 
@@ -215,8 +215,8 @@ module Cucumber
 
           scenario = double('Scenario')
 
-          allow(scenario).to receive(:accept_hook?).with(a) { true }
-          allow(scenario).to receive(:accept_hook?).with(b) { false }
+          allow(scenario).to receive(:accept_hook?).with(a).and_return(true)
+          allow(scenario).to receive(:accept_hook?).with(b).and_return(false)
           expect(registry.hooks_for(:around, scenario)).to eq([a])
         end
       end

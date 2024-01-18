@@ -24,8 +24,8 @@ module Cucumber
 
     context 'selecting files to load' do
       def given_the_following_files(*files)
-        allow(File).to receive(:directory?) { true }
-        allow(File).to receive(:file?) { true }
+        allow(File).to receive(:directory?).and_return(true)
+        allow(File).to receive(:file?).and_return(true)
         allow(Dir).to receive(:[]) { files }
       end
 
@@ -106,8 +106,8 @@ module Cucumber
       end
 
       it 'searchs for all features in the specified directory' do
-        allow(File).to receive(:directory?) { true }
-        allow(Dir).to receive(:[]).with('feature_directory/**/*.feature') { ['cucumber.feature'] }
+        allow(File).to receive(:directory?).and_return(true)
+        allow(Dir).to receive(:[]).with('feature_directory/**/*.feature').and_return(['cucumber.feature'])
 
         configuration = described_class.new(paths: %w[feature_directory/])
 
@@ -115,8 +115,8 @@ module Cucumber
       end
 
       it 'defaults to the features directory when no feature file are provided' do
-        allow(File).to receive(:directory?) { true }
-        allow(Dir).to receive(:[]).with('features/**/*.feature') { ['cucumber.feature'] }
+        allow(File).to receive(:directory?).and_return(true)
+        allow(Dir).to receive(:[]).with('features/**/*.feature').and_return(['cucumber.feature'])
 
         configuration = described_class.new(paths: [])
 

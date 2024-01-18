@@ -8,13 +8,13 @@ module Cucumber
       let(:rerun_file) { described_class.new('@rerun.txt') }
 
       it 'expects rerun files to have a leading @' do
-        allow(File).to receive(:file?) { true }
+        allow(File).to receive(:file?).and_return(true)
         expect(described_class.can_read?('rerun.txt')).to eq false
         expect(described_class.can_read?('@rerun.txt')).to eq true
       end
 
       it 'does not treat directories as rerun files' do
-        allow(File).to receive(:file?) { false }
+        allow(File).to receive(:file?).and_return(false)
         expect(described_class.can_read?('@rerun.txt')).to eq false
       end
 
