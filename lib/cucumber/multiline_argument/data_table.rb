@@ -536,7 +536,6 @@ module Cucumber
           nil
         end
 
-        # For testing only
         def to_sexp
           [:row, line, *@cells.map(&:to_sexp)]
         end
@@ -545,12 +544,12 @@ module Cucumber
           @to_hash ||= @table.cells_to_hash(self)
         end
 
-        def value(n)
-          self[n].value
+        def value(index)
+          self[index].value
         end
 
-        def [](n)
-          @cells[n]
+        def [](index)
+          @cells[index]
         end
 
         def line

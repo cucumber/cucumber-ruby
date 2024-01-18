@@ -43,9 +43,9 @@ module Cucumber
         format_string(line, status)
       end
 
-      def format_string(o, status)
+      def format_string(input, status)
         fmt = format_for(status)
-        o.to_s.split("\n").map do |line|
+        input.to_s.split("\n").map do |line|
           if fmt.instance_of?(Proc)
             fmt.call(line)
           else
@@ -92,16 +92,16 @@ module Cucumber
         @io.flush
       end
 
-      def print_exception(e, status, indent)
-        string = exception_message_string(e, indent)
+      def print_exception(exception, status, indent)
+        string = exception_message_string(exception, indent)
         @io.puts(format_string(string, status))
       end
 
-      def exception_message_string(e, indent_amount)
-        message = "#{e.message} (#{e.class})".dup.force_encoding('UTF-8')
+      def exception_message_string(exception, indent_amount)
+        message = "#{exception.message} (#{exception.class})".dup.force_encoding('UTF-8')
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
-        indent("#{message}\n#{e.backtrace.join("\n")}", indent_amount)
+        indent("#{message}\n#{exception.backtrace.join("\n")}", indent_amount)
       end
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
