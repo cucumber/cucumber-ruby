@@ -6,32 +6,33 @@ require 'cucumber/multiline_argument/data_table'
 module Cucumber
   module MultilineArgument
     describe DataTable do
+      subject(:table) { described_class.from([%w[one four seven], %w[4444 55555 666666]]) }
       before do
         @table = described_class.from([%w[one four seven], %w[4444 55555 666666]])
       end
 
       it 'has rows' do
-        expect(@table.cells_rows[0].map(&:value)).to eq(%w[one four seven])
+        expect(table.cells_rows[0].map(&:value)).to eq(%w[one four seven])
       end
 
       it 'has columns' do
-        expect(@table.columns[1].map(&:value)).to eq(%w[four 55555])
+        expect(table.columns[1].map(&:value)).to eq(%w[four 55555])
       end
 
       it 'has same cell objects in rows and columns' do
-        expect(@table.cells_rows[1][2]).to eq(@table.columns[2][1])
+        expect(table.cells_rows[1][2]).to eq(table.columns[2][1])
       end
 
       it 'is convertible to an array of hashes' do
-        expect(@table.hashes).to eq([{ 'one' => '4444', 'four' => '55555', 'seven' => '666666' }])
+        expect(table.hashes).to eq([{ 'one' => '4444', 'four' => '55555', 'seven' => '666666' }])
       end
 
       it 'accepts symbols as keys for the hashes' do
-        expect(@table.hashes.first[:one]).to eq('4444')
+        expect(table.hashes.first[:one]).to eq('4444')
       end
 
       it 'returns the row values in order' do
-        expect(@table.rows.first).to eq(%w[4444 55555 666666])
+        expect(table.rows.first).to eq(%w[4444 55555 666666])
       end
 
       describe '#symbolic_hashes' do
@@ -43,21 +44,21 @@ module Cucumber
         end
 
         it 'is able to be accessed multiple times' do
-          @table.symbolic_hashes
+          table.symbolic_hashes
 
-          expect { @table.symbolic_hashes }.not_to raise_error
+          expect { table.symbolic_hashes }.not_to raise_error
         end
 
         it 'does not interfere with use of #hashes' do
-          @table.symbolic_hashes
+          table.symbolic_hashes
 
-          expect { @table.hashes }.not_to raise_error
+          expect { table.hashes }.not_to raise_error
         end
       end
 
       describe '#map_column' do
         it 'allows mapping columns' do
-          new_table = @table.map_column('one', &:to_i)
+          new_table = table.map_column('one', &:to_i)
 
           expect(new_table.hashes.first['one']).to eq(4444)
         end
@@ -72,13 +73,13 @@ module Cucumber
         end
 
         it 'allows mapping columns taking a symbol as the column name' do
-          new_table = @table.map_column(:one, &:to_i)
+          new_table = table.map_column(:one, &:to_i)
 
           expect(new_table.hashes.first['one']).to eq 4444
         end
 
         it 'allows mapping columns and modify the rows as well' do
-          new_table = @table.map_column(:one, &:to_i)
+          new_table = table.map_column(:one, &:to_i)
 
           expect(new_table.rows.first).to include(4444)
           expect(new_table.rows.first).not_to include('4444')
@@ -86,40 +87,40 @@ module Cucumber
 
         it 'passes silently once #hashes are interrogated if a mapped column does not exist in non-strict mode' do
           expect do
-            new_table = @table.map_column('two', strict: false, &:to_i)
+            new_table = table.map_column('two', strict: false, &:to_i)
             new_table.hashes
           end.not_to raise_error
         end
 
         it 'fails once #hashes are interrogated if a mapped column does not exist in strict mode' do
           expect do
-            new_table = @table.map_column('two', strict: true, &:to_i)
+            new_table = table.map_column('two', strict: true, &:to_i)
             new_table.hashes
           end.to raise_error('The column named "two" does not exist')
         end
 
         it 'returns a new table' do
-          expect(@table.map_column(:one, &:to_i)).not_to eq(@table)
+          expect(table.map_column(:one, &:to_i)).not_to eq(table)
         end
       end
 
       describe '#match' do
         it 'returns nil if headers do not match' do
-          expect(@table.match('does,not,match')).to be_nil
+          expect(table.match('does,not,match')).to be_nil
         end
 
         it 'requires a table: prefix on match' do
-          expect(@table.match('table:one,four,seven')).not_to be_nil
+          expect(table.match('table:one,four,seven')).not_to be_nil
         end
 
         it 'does not match if no table: prefix on match' do
-          expect(@table.match('one,four,seven')).to be_nil
+          expect(table.match('one,four,seven')).to be_nil
         end
       end
 
       describe '#transpose' do
         it 'is convertible in to an array where each row is a hash' do
-          expect(@table.transpose.hashes[0]).to eq('one' => 'four', '4444' => '55555')
+          expect(table.transpose.hashes[0]).to eq('one' => 'four', '4444' => '55555')
         end
       end
 
