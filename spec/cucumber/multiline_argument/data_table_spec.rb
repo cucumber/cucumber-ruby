@@ -7,9 +7,6 @@ module Cucumber
   module MultilineArgument
     describe DataTable do
       subject(:table) { described_class.from([%w[one four seven], %w[4444 55555 666666]]) }
-      before do
-        @table = described_class.from([%w[one four seven], %w[4444 55555 666666]])
-      end
 
       it 'has rows' do
         expect(table.cells_rows[0].map(&:value)).to eq(%w[one four seven])
@@ -146,25 +143,25 @@ module Cucumber
       end
 
       describe '#map_headers' do
-        let(:table) { described_class.from([%w[ANT ANTEATER], %w[4444 55555]]) }
+        subject(:table) { described_class.from([%w[ANT ANTEATER], %w[4444 55555]]) }
 
         it 'renames the columns to the specified values in the provided hash' do
-          table2 = @table.map_headers('one' => :three)
+          table2 = table.map_headers('ANT' => :three)
 
-          expect(table2.hashes.first[:three]).to eq '4444'
+          expect(table2.hashes.first[:three]).to eq('4444')
         end
 
         it 'allows renaming columns using regexp' do
-          table2 = @table.map_headers(/one|uno/ => :three)
+          table2 = table.map_headers(/^ANT$|^BEE$/ => :three)
 
-          expect(table2.hashes.first[:three]).to eq '4444'
+          expect(table2.hashes.first[:three]).to eq('4444')
         end
 
         it 'copies column mappings' do
-          table = @table.map_column('one', &:to_i)
-          table2 = table.map_headers('one' => 'three')
+          table2 = table.map_column('ANT', &:to_i)
+          table3 = table2.map_headers('ANT' => 'three')
 
-          expect(table2.hashes.first['three']).to eq(4444)
+          expect(table3.hashes.first['three']).to eq(4444)
         end
 
         it 'takes a block and operates on all the headers with it' do
