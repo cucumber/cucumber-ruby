@@ -6,7 +6,7 @@ require 'yaml'
 module Cucumber
   module Cli
     describe ProfileLoader do
-      let(:loader) { ProfileLoader.new }
+      subject(:loader) { described_class.new }
 
       def given_cucumber_yml_defined_as(hash_or_string)
         allow(Dir).to receive(:glob).with('{,.config/,config/}cucumber{.yml,.yaml}').and_return(['cucumber.yml'])

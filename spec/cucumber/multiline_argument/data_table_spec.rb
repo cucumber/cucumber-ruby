@@ -7,7 +7,7 @@ module Cucumber
   module MultilineArgument
     describe DataTable do
       before do
-        @table = DataTable.from([%w[one four seven], %w[4444 55555 666666]])
+        @table = described_class.from([%w[one four seven], %w[4444 55555 666666]])
       end
 
       it 'has rows' do
@@ -64,7 +64,7 @@ module Cucumber
 
         it 'applies the block once to each value when #rows are interrogated' do
           rows = ['value']
-          table = DataTable.from [['header'], rows]
+          table = described_class.from [['header'], rows]
           count = 0
           table.map_column('header') { count += 1 }.rows
 
@@ -125,19 +125,19 @@ module Cucumber
 
       describe '#rows_hash' do
         it 'returns a hash of the rows' do
-          table = DataTable.from([%w[one 1111], %w[two 22222]])
+          table = described_class.from([%w[one 1111], %w[two 22222]])
 
           expect(table.rows_hash).to eq('one' => '1111', 'two' => '22222')
         end
 
         it "fails if the table doesn't have two columns" do
-          faulty_table = DataTable.from([%w[one 1111 abc], %w[two 22222 def]])
+          faulty_table = described_class.from([%w[one 1111 abc], %w[two 22222 def]])
 
           expect { faulty_table.rows_hash }.to raise_error('The table must have exactly 2 columns')
         end
 
         it 'supports header and column mapping' do
-          table = DataTable.from([%w[one 1111], %w[two 22222]])
+          table = described_class.from([%w[one 1111], %w[two 22222]])
           t2 = table.map_headers({ 'two' => 'Two' }, &:upcase).map_column('two', strict: false, &:to_i)
 
           expect(t2.rows_hash).to eq('ONE' => '1111', 'Two' => 22_222)
@@ -145,7 +145,7 @@ module Cucumber
       end
 
       describe '#map_headers' do
-        let(:table) { DataTable.from([%w[ANT ANTEATER], %w[4444 55555]]) }
+        let(:table) { described_class.from([%w[ANT ANTEATER], %w[4444 55555]]) }
 
         it 'renames the columns to the specified values in the provided hash' do
           table2 = @table.map_headers('one' => :three)
