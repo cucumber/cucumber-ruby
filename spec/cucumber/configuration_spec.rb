@@ -22,7 +22,7 @@ module Cucumber
       end
     end
 
-    context 'selecting files to load' do
+    context 'when selecting the files to load' do
       def given_the_following_files(*files)
         allow(File).to receive(:directory?).and_return(true)
         allow(File).to receive(:file?).and_return(true)
@@ -33,10 +33,7 @@ module Cucumber
         configuration = described_class.new
         given_the_following_files('/features/support/a_file.rb', '/features/support/env.rb')
 
-        expect(configuration.support_to_load).to eq [
-          '/features/support/env.rb',
-          '/features/support/a_file.rb'
-        ]
+        expect(configuration.support_to_load).to eq(%w[/features/support/env.rb /features/support/a_file.rb])
       end
 
       it 'features/support/env.rb is loaded before any other features/**/support/env.rb file' do
@@ -50,14 +47,16 @@ module Cucumber
           '/features/support/env.rb'
         )
 
-        expect(configuration.support_to_load).to eq [
-          '/features/support/env.rb',
-          '/features/foo/support/env.rb',
-          '/features/foo/bar/support/env.rb',
-          '/features/support/a_file.rb',
-          '/features/foo/support/a_file.rb',
-          '/features/foo/bar/support/a_file.rb'
-        ]
+        expect(configuration.support_to_load).to eq(
+          %w[
+            /features/support/env.rb
+            /features/foo/support/env.rb
+            /features/foo/bar/support/env.rb
+            /features/support/a_file.rb
+            /features/foo/support/a_file.rb
+            /features/foo/bar/support/a_file.rb
+          ]
+        )
       end
 
       it 'requires step defs in vendor/{plugins,gems}/*/cucumber/*.rb' do
@@ -66,10 +65,7 @@ module Cucumber
 
         configuration = described_class.new
 
-        expect(configuration.step_defs_to_load).to eq [
-          '/vendor/gems/gem_a/cucumber/bar.rb',
-          '/vendor/plugins/plugin_a/cucumber/foo.rb'
-        ]
+        expect(configuration.step_defs_to_load).to eq(%w[/vendor/gems/gem_a/cucumber/bar.rb /vendor/plugins/plugin_a/cucumber/foo.rb])
       end
 
       describe '--exclude' do
@@ -78,9 +74,7 @@ module Cucumber
 
           configuration = described_class.new(excludes: [/a_file.rb/])
 
-          expect(configuration.all_files_to_load).to eq [
-            '/features/support/env.rb'
-          ]
+          expect(configuration.all_files_to_load).to eq(['/features/support/env.rb'])
         end
 
         it 'excludes all ruby files that match the provided patterns from requiring' do
@@ -90,15 +84,12 @@ module Cucumber
 
           configuration = described_class.new(excludes: [/foo[df]/, /blah/])
 
-          expect(configuration.all_files_to_load).to eq [
-            '/features/support/bar.rb',
-            '/features/support/fooz.rb'
-          ]
+          expect(configuration.all_files_to_load).to eq(%w[/features/support/bar.rb /features/support/fooz.rb])
         end
       end
     end
 
-    context 'selecting feature files' do
+    context 'when selecting feature files' do
       it 'preserves the order of the feature files' do
         configuration = described_class.new(paths: %w[b.feature c.feature a.feature])
 

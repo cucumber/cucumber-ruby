@@ -23,7 +23,7 @@ module Cucumber
       end
 
       before do
-        allow(File).to receive(:exist?).and_return(false) # Meaning, no cucumber.yml exists
+        allow(File).to receive(:exist?).and_return(false)
         allow(Kernel).to receive(:exit)
       end
 

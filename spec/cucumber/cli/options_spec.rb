@@ -438,7 +438,7 @@ module Cucumber
           end
         end
 
-        context 'for environment variables (i.e. MODE=webrat)' do
+        context 'when using environment variables (i.e. MODE=webrat)' do
           it 'places all of the environment variables into a hash' do
             after_parsing('MODE=webrat FOO=bar') do
               expect(options[:env_vars]).to eq('MODE' => 'webrat', 'FOO' => 'bar')
