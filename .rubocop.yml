@@ -41,34 +41,7 @@ Lint/UselessMethodDefinition:
   Exclude:
     - lib/cucumber/glue/proto_world.rb
 
-# TODO: [LH] - This definitely needs a partial fix / reduction. Even if only an interim one that pushes some stuff
-Metrics/ClassLength:
-  Max: 375
-  Exclude:
-    - lib/cucumber/cli/options.rb
-    # TODO: Manually added! - be careful with regenning the file - this needs a fix
-    - lib/cucumber/formatter/pretty.rb
-
-# TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
-Metrics/ModuleLength:
-  Max: 135
-  Exclude:
-    - spec/**/*
-    # TODO: Manually added! - be careful with regenning the file - this needs a fix
-    - lib/cucumber/formatter/console.rb
-
-# TODO: [LH] - Initial 10% reduction done Aug '23 - Further reductions should happen as/when we fix a bunch of the todo
-Metrics/MethodLength:
-  Max: 27
-  # TODO: Manually added! - be careful with regenning the file - this needs a fix
-  Exclude:
-    - lib/cucumber/cli/main.rb
-    - lib/cucumber/cli/options.rb
-    - lib/cucumber/formatter/publish_banner_printer.rb
-    - spec/cucumber/formatter/http_io_spec.rb
-    - lib/cucumber/glue/proto_world.rb
-
-# Rubocop doesn't like method names in other languages but as Cucumber supports multiple languages, this cop needs to be disabled.
+# Rubocop doesn't like method names in other languages but as Cucumber supports multiple languages, this cop needs to be disabled
 Naming/AsciiIdentifiers:
   Enabled: false
 
@@ -77,8 +50,7 @@ Naming/FileName:
   Exclude:
     - compatibility/features/**/*
 
-# For the most part, the project is solid on naming. There are though, a few
-# cases where the cop doesn't need to catch.
+# For the most part, the project is solid on naming. There are though, a few cases where the cop doesn't need to catch
 Naming/MethodName:
   Exclude:
     - examples/i18n/ar/lib/calculator.rb

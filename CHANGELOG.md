@@ -14,6 +14,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Moved all CCK step definition/miscellaneous file logic from CCK gem to this repo.
   All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
+- Cleared up a few Layout/Linting cop offenses ([#1750](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
 
 ### Fixed
 - Fix a situation whereby the step definition message will omit the parameter-type name when it cannot be inferred

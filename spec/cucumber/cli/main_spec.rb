@@ -7,8 +7,8 @@ module Cucumber
   module Cli
     describe Main do
       before(:each) do
-        allow(File).to receive(:exist?) { false } # When Configuration checks for cucumber.yml
-        allow(Dir).to receive(:[]) { [] } # to prevent cucumber's features dir to being laoded
+        allow(File).to receive(:exist?).and_return(false) # When Configuration checks for cucumber.yml
+        allow(Dir).to receive(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
 
       let(:args)   { [] }

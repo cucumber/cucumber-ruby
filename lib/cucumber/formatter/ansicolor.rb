@@ -63,7 +63,6 @@ module Cucumber
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
-      # :stopdoc:
       ALIASES = Hash.new do |h, k|
         next unless k.to_s =~ /(.*)_param/
 
@@ -79,13 +78,8 @@ module Cucumber
         'comment' => 'grey',
         'tag' => 'cyan'
       )
-      # :startdoc:
 
-      # Apply the custom color scheme
-      #
-      # example:
-      #
-      #   apply_custom_colors('passed=white')
+      # Apply the custom color scheme -> i.e. apply_custom_colors('passed=white')
       def self.apply_custom_colors(colors)
         colors.split(':').each do |pair|
           a = pair.split('=')
@@ -117,23 +111,21 @@ module Cucumber
         end
       end
 
-      # :stopdoc:
-      def cukes(n)
-        ('(::) ' * n).strip
+      def cukes(amount)
+        ('(::) ' * amount).strip
       end
 
-      def green_cukes(n)
-        blink(green(cukes(n)))
+      def green_cukes(amount)
+        blink(green(cukes(amount)))
       end
 
-      def red_cukes(n)
-        blink(red(cukes(n)))
+      def red_cukes(amount)
+        blink(red(cukes(amount)))
       end
 
-      def yellow_cukes(n)
-        blink(yellow(cukes(n)))
+      def yellow_cukes(amount)
+        blink(yellow(cukes(amount)))
       end
-      # :startdoc:
 
       private
 

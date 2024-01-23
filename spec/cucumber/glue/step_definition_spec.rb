@@ -196,9 +196,10 @@ module Cucumber
         end
       end
 
-      context 'allows log' do
+      describe '#log' do
         it 'calls "attach" with the correct media type' do
           expect(user_interface).to receive(:attach).with('wasup', 'text/x.cucumber.log+plain', nil)
+
           dsl.Given(/Loud/) do
             log 'wasup'
           end
@@ -207,6 +208,7 @@ module Cucumber
 
         it 'calls `to_s` if the message is not a String' do
           expect(user_interface).to receive(:attach).with('["Not", 1, "string"]', 'text/x.cucumber.log+plain', nil)
+
           dsl.Given(/Loud/) do
             log ['Not', 1, 'string']
           end

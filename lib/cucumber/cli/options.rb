@@ -12,26 +12,26 @@ module Cucumber
       CUCUMBER_PUBLISH_URL = ENV['CUCUMBER_PUBLISH_URL'] || 'https://messages.cucumber.io/api/reports -X GET'
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
-        'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
-        'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
-        'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
-        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" \
-                                                              "#{INDENT}The slowest step definitions (with duration) are\n" \
-                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" \
-                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" \
-                                                              "#{INDENT}filename instead."],
-        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" \
-                                                              "#{INDENT}the usage formatter, except that steps are not printed."],
-        'junit'       => ['Cucumber::Formatter::Junit',       "Generates a report similar to Ant+JUnit. Use\n" \
-                                                              "#{INDENT}junit,fileattribute=true to include a file attribute."],
-        'json'        => ['Cucumber::Formatter::Json',        "Prints the feature as JSON.\n" \
-                                                              "#{INDENT}The JSON format is in maintenance mode.\n" \
-                                                              "#{INDENT}Please consider using the message formatter\n"\
-                                                              "#{INDENT}with the standalone json-formatter\n" \
-                                                              "#{INDENT}(https://github.com/cucumber/cucumber/tree/master/json-formatter)."],
-        'message'     => ['Cucumber::Formatter::Message',     'Prints each message in NDJSON form, which can then be consumed by other tools.'],
-        'html'        => ['Cucumber::Formatter::HTML',        'Outputs HTML report'],
-        'summary'     => ['Cucumber::Formatter::Summary',     'Summary output of feature and scenarios']
+        'pretty' => ['Cucumber::Formatter::Pretty', 'Prints the feature as is - in colours.'],
+        'progress' => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
+        'rerun' => ['Cucumber::Formatter::Rerun', 'Prints failing files with line numbers.'],
+        'usage' => ['Cucumber::Formatter::Usage', "Prints where step definitions are used.\n" \
+          "#{INDENT}The slowest step definitions (with duration) are\n" \
+          "#{INDENT}listed first. If --dry-run is used the duration\n" \
+          "#{INDENT}is not shown, and step definitions are sorted by\n" \
+          "#{INDENT}filename instead."],
+        'stepdefs' => ['Cucumber::Formatter::Stepdefs', "Prints All step definitions with their locations. Same as\n" \
+          "#{INDENT}the usage formatter, except that steps are not printed."],
+        'junit' => ['Cucumber::Formatter::Junit', "Generates a report similar to Ant+JUnit. Use\n" \
+          "#{INDENT}junit,fileattribute=true to include a file attribute."],
+        'json' => ['Cucumber::Formatter::Json', "Prints the feature as JSON.\n" \
+          "#{INDENT}The JSON format is in maintenance mode.\n" \
+          "#{INDENT}Please consider using the message formatter\n"\
+          "#{INDENT}with the standalone json-formatter\n" \
+          "#{INDENT}(https://github.com/cucumber/cucumber/tree/master/json-formatter)."],
+        'message' => ['Cucumber::Formatter::Message', 'Prints each message in NDJSON form, which can then be consumed by other tools.'],
+        'html' => ['Cucumber::Formatter::HTML', 'Outputs HTML report'],
+        'summary' => ['Cucumber::Formatter::Summary', 'Summary output of feature and scenarios']
       }.freeze
       max = BUILTIN_FORMATS.keys.map(&:length).max
       FORMAT_HELP_MSG = [
@@ -295,9 +295,9 @@ module Cucumber
         ]
       end
 
-      def parse_formats(v)
-        formatter, *formatter_options = v.split(',')
-        options_hash = Hash[formatter_options.map { |s| s.split('=') }]
+      def parse_formats(value)
+        formatter, *formatter_options = value.split(',')
+        options_hash = Hash[formatter_options.map { |string| string.split('=') }]
         [formatter, options_hash]
       end
 
@@ -375,12 +375,12 @@ module Cucumber
         ].join("\n")
       end
 
-      def require_files(v)
-        @options[:require] << v
-        return unless Cucumber::JRUBY && File.directory?(v)
+      def require_files(filenames)
+        @options[:require] << filenames
+        return unless Cucumber::JRUBY && File.directory?(filenames)
 
         require 'java'
-        $CLASSPATH << v
+        $CLASSPATH << filenames
       end
 
       def require_jars(jars)
@@ -441,8 +441,8 @@ module Cucumber
         ProjectInitializer.new.run && Kernel.exit(0)
       end
 
-      def add_profile(p)
-        @profiles << p
+      def add_profile(profile)
+        @profiles << profile
       end
 
       def set_option(option, value = nil)

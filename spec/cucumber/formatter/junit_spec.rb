@@ -40,7 +40,7 @@ module Cucumber
 
       context 'with --junit,fileattribute=true option' do
         before(:each) do
-          allow(File).to receive(:directory?) { true }
+          allow(File).to receive(:directory?).and_return(true)
           @formatter = TestDoubleJunitFormatter.new(
             actual_runtime.configuration.with_options(
               out_stream: '',
@@ -76,7 +76,7 @@ module Cucumber
 
       context 'with --junit,fileattribute=different option' do
         before(:each) do
-          allow(File).to receive(:directory?) { true }
+          allow(File).to receive(:directory?).and_return(true)
           @formatter = TestDoubleJunitFormatter.new(
             actual_runtime.configuration.with_options(
               out_stream: '',
@@ -112,7 +112,7 @@ module Cucumber
 
       context 'with --junit no fileattribute option' do
         before(:each) do
-          allow(File).to receive(:directory?) { true }
+          allow(File).to receive(:directory?).and_return(true)
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
         end
 
@@ -143,7 +143,7 @@ module Cucumber
 
       context 'with no options' do
         before(:each) do
-          allow(File).to receive(:directory?) { true }
+          allow(File).to receive(:directory?).and_return(true)
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
         end
 
@@ -382,7 +382,7 @@ module Cucumber
         let(:runtime) { Runtime.new(expand: true) }
 
         before(:each) do
-          allow(File).to receive(:directory?) { true }
+          allow(File).to receive(:directory?).and_return(true)
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', expand: true))
         end
 

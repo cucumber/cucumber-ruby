@@ -14,7 +14,7 @@ module Cucumber
 
       before(:each) do
         @out = StringIO.new
-        @formatter = Json.new(actual_runtime.configuration.with_options(out_stream: @out))
+        @formatter = described_class.new(actual_runtime.configuration.with_options(out_stream: @out))
         run_defined_feature
       end
 
