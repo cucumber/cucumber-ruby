@@ -47,6 +47,7 @@ module Cucumber
         ]
       end
 
+      # TODO: [LH] -> Switch below methods to private
       def self.remove_arg_for(args, arg)
         return args.shift unless args.empty?
 
@@ -131,20 +132,20 @@ module Cucumber
 
       def build_request(uri, method, headers)
         method_class_name = "#{method[0].upcase}#{method[1..].downcase}"
-        req = Net::HTTP.const_get(method_class_name).new(uri)
-        headers.each do |header, value|
-          req[header] = value
+        Net::HTTP.const_get(method_class_name).new(uri).tap do |request|
+          headers.each do |header, value|
+            request[header] = value
+          end
         end
-        req
       end
 
       def build_client(uri, https_verify_mode)
-        http = Net::HTTP.new(uri.hostname, uri.port)
-        if uri.scheme == 'https'
-          http.use_ssl = true
-          http.verify_mode = https_verify_mode if https_verify_mode
+        Net::HTTP.new(uri.hostname, uri.port).tap do |http|
+          if uri.scheme == 'https'
+            http.use_ssl = true
+            http.verify_mode = https_verify_mode if https_verify_mode
+          end
         end
-        http
       end
     end
   end
