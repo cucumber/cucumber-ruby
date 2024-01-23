@@ -75,7 +75,7 @@ module Cucumber
       end
 
       def close
-        response = send_content(@uri, @method, @headers)
+        response = send_content(uri, method, headers)
         @reporter.report(response.body)
         @write_io.close
         return if response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
@@ -97,25 +97,18 @@ module Cucumber
 
       private
 
-      def send_content(uri, method, headers, attempt = 10)
+      def send_content(uri, method, headers, attempts_remaining = 10)
         content = (method == 'GET' ? StringIO.new : @write_io)
         http = build_client(uri, @https_verify_mode)
 
-        raise StandardError, "request to #{uri} failed (too many redirections)" if attempt <= 0
+        raise StandardError, "request to #{uri} failed (too many redirections)" if attempts_remaining <= 0
 
-        req = build_request(
-          uri,
-          method,
-          headers.merge(
-            'Content-Length' => content.size.to_s
-          )
-        )
-
+        request = build_request(uri, method, headers.merge('Content-Length' => content.size.to_s))
         content.rewind
-        req.body_stream = content
+        request.body_stream = content
 
         begin
-          response = http.request(req)
+          response = http.request(request)
         rescue SystemCallError
           # We may get the redirect response before pushing the file.
           response = http.request(build_request(uri, method, headers))
@@ -123,9 +116,9 @@ module Cucumber
 
         case response
         when Net::HTTPAccepted
-          send_content(URI(response['Location']), 'PUT', {}, attempt - 1) if response['Location']
+          send_content(URI(response['Location']), 'PUT', {}, attempts_remaining - 1) if response['Location']
         when Net::HTTPRedirection
-          send_content(URI(response['Location']), method, headers, attempt - 1)
+          send_content(URI(response['Location']), method, headers, attempts_remaining - 1)
         end
         response
       end
