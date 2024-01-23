@@ -7,15 +7,12 @@ require 'shellwords'
 module Cucumber
   module Formatter
     class HTTPIO
-      class << self
-        # Returns an IO that will write to a HTTP request's body
-        # https_verify_mode can be set to OpenSSL::SSL::VERIFY_NONE
-        # to ignore unsigned certificate - setting to nil will verify the certificate
-        def open(url, https_verify_mode = nil, reporter = nil)
-          @https_verify_mode = https_verify_mode
-          uri, method, headers = CurlOptionParser.parse(url)
-          IOHTTPBuffer.new(uri, method, headers, https_verify_mode, reporter)
-        end
+      # Returns an IO that will write to a HTTP request's body
+      # https_verify_mode can be set to OpenSSL::SSL::VERIFY_NONE
+      # to ignore unsigned certificate - setting to nil will verify the certificate
+      def self.open(url, https_verify_mode = nil, reporter = nil)
+        uri, method, headers = CurlOptionParser.parse(url)
+        IOHTTPBuffer.new(uri, method, headers, https_verify_mode, reporter)
       end
     end
 
