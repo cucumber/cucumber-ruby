@@ -6,14 +6,7 @@ require 'webrick/https'
 require 'spec_helper'
 require 'cucumber/formatter/io'
 require 'spec/support/shared_context/http_server'
-
-module WEBrick
-  module HTTPServlet
-    class ProcHandler < AbstractServlet
-      alias do_PUT do_GET # Webrick #mount_proc only works with GET,HEAD,POST,OPTIONS by default
-    end
-  end
-end
+require 'spec/support/webrick_proc_handler_alias'
 
 module Cucumber
   module Formatter
