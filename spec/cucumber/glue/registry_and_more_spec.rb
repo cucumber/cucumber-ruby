@@ -190,10 +190,10 @@ module Cucumber
 
         it 'will resolve conflicts and use the latest defined definition when assigning different modules to the same namespace' do
           dsl.World(namespace: FakeObjects::ModuleOne)
-          dsl.World(namespace: FakeObjects::ModuleMinusOne)
+          dsl.World(namespace: FakeObjects::ModuleTwo)
           registry.begin_scenario(double('scenario').as_null_object)
 
-          expect(registry.current_world.namespace.method_one).to eq(-1)
+          expect(registry.current_world.namespace.method_one).to eq(2)
         end
       end
 

@@ -14,13 +14,11 @@ module FakeObjects
     end
   end
 
-  module ModuleMinusOne
-    def method_one
-      -1
-    end
-  end
-
   module ModuleTwo
+    def method_one
+      2
+    end
+
     def method_two
       2
     end
@@ -30,9 +28,6 @@ module FakeObjects
     def method_three
       3
     end
-  end
-
-  class ClassOne
   end
 
   class Actor
