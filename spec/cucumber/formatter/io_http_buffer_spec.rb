@@ -5,8 +5,8 @@ require 'webrick'
 require 'webrick/https'
 require 'spec_helper'
 require 'cucumber/formatter/io'
-require 'spec/support/shared_context/http_server'
-require 'spec/support/webrick_proc_handler_alias'
+require 'support/shared_context/http_server'
+require 'support/webrick_proc_handler_alias'
 
 module Cucumber
   module Formatter

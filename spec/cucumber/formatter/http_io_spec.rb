@@ -5,8 +5,8 @@ require 'webrick'
 require 'webrick/https'
 require 'spec_helper'
 require 'cucumber/formatter/io'
-require 'spec/support/shared_context/http_server'
-require 'spec/support/webrick_proc_handler_alias'
+require 'support/shared_context/http_server'
+require 'support/webrick_proc_handler_alias'
 
 module Cucumber
   module Formatter
@@ -30,17 +30,15 @@ module Cucumber
       # Close during the test so the request is done while server still runs
       after { io.close }
 
+      let(:io) { DummyFormatter.new.io("#{url}/s3 -X GET -H 'Content-Type: text/json'", nil) }
+      let(:url) { start_server }
+
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
-          url = start_server
-          io = DummyFormatter.new.io("#{url}/s3 -X PUT", nil)
           expect(io).to be_a(Cucumber::Formatter::IOHTTPBuffer)
         end
 
         it 'uses CurlOptionParser to pass correct options to IOHTTPBuffer' do
-          url = start_server
-          io = DummyFormatter.new.io("#{url}/s3 -X GET -H 'Content-Type: text/json'", nil)
-
           expect(io.uri).to eq(URI("#{url}/s3"))
           expect(io.method).to eq('GET')
           expect(io.headers).to eq('Content-Type' => 'text/json')
