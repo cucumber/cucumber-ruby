@@ -10,16 +10,6 @@ require 'support/webrick_proc_handler_alias'
 
 module Cucumber
   module Formatter
-    class DummyFormatter
-      include Io
-
-      def initialize(config = nil); end
-
-      def io(path_or_url_or_io, error_stream)
-        ensure_io(path_or_url_or_io, error_stream)
-      end
-    end
-
     class DummyReporter
       def report(banner); end
     end
@@ -41,11 +31,13 @@ module Cucumber
 
       it 'raises an error on close when the server is unreachable' do
         io = described_class.new('http://localhost:9987', 'PUT')
+
         expect { io.close }.to(raise_error(/Failed to open TCP connection to localhost:9987/))
       end
 
       it 'raises an error on close when there is too many redirect attempts' do
         io = described_class.new("#{url}/loop_redirect", 'PUT')
+
         expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
       end
 
@@ -56,6 +48,7 @@ module Cucumber
         io.close
         @received_body_io.rewind
         received_body = @received_body_io.read
+
         expect(received_body).to eq(sent_body)
       end
 
@@ -66,6 +59,7 @@ module Cucumber
         io.close
         @received_body_io.rewind
         received_body = @received_body_io.read
+
         expect(received_body).to eq(sent_body)
       end
 
@@ -76,6 +70,7 @@ module Cucumber
         io.close
         @received_body_io.rewind
         received_body = @received_body_io.read
+
         expect(received_body).to eq("#{sent_body}#{sent_body}")
       end
 
@@ -86,6 +81,7 @@ module Cucumber
         io.close
         @received_body_io.rewind
         received_body = @received_body_io.read
+
         expect(received_body).to eq(sent_body)
       end
 
@@ -94,6 +90,7 @@ module Cucumber
         io.write(sent_body)
         io.flush
         io.close
+
         expect(@received_headers[0]['authorization']).to eq(['Bearer abcdefg'])
         expect(@received_headers[1]['authorization']).to eq([])
       end
@@ -101,7 +98,6 @@ module Cucumber
       it 'reports the body of the response to the reporter' do
         reporter = DummyReporter.new
         allow(reporter).to receive(:report)
-
         io = described_class.new("#{url}/putreport", 'GET', {}, nil, reporter)
         io.write(sent_body)
         io.flush
@@ -136,6 +132,7 @@ module Cucumber
           io.close
           @received_body_io.rewind
           received_body = @received_body_io.read
+
           expect(received_body).to eq('')
         end
       end
