@@ -153,7 +153,7 @@ module Cucumber
       private
 
       def find_exception_to_be_printed(result)
-        return nil if result.ok?(options[:strict])
+        return nil if result.ok?(strict: options[:strict])
 
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         exception = result.failed? ? result.exception : result
