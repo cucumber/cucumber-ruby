@@ -1,4 +1,30 @@
 RSpec.shared_context 'an HTTP server accepting file requests' do
+  subject(:http_server) do
+    Class.new do
+      def initialize
+        @read_io, @write_io = IO.pipe
+      end
+
+      def webrick_options
+        @webrick_options ||= default_options
+      end
+
+      private
+
+      def default_options
+        {
+          Port: 0,
+          Logger: WEBrick::Log.new(File.open(File::NULL, 'w')),
+          AccessLog: [],
+          StartCallback: proc do
+            @write_io.write(1) # write "1", signal a server start message
+            @write_io.close
+          end
+        }
+      end
+    end
+  end
+
   let(:putreport_returned_location) { URI('/s3').to_s }
   let(:success_banner) do
     [
@@ -28,11 +54,6 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
         write_io.close
       end
     }
-    if uri.scheme == 'https'
-      webrick_options[:SSLEnable] = true
-      # Set up a self-signed cert
-      webrick_options[:SSLCertName] = [%w[CN localhost]]
-    end
 
     @server = WEBrick::HTTPServer.new(webrick_options)
     mount_s3_endpoint
