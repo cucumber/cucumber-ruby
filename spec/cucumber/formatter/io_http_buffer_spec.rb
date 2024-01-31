@@ -91,8 +91,8 @@ module Cucumber
         io.flush
         io.close
 
-        expect(@received_headers[0]['authorization']).to eq(['Bearer abcdefg'])
-        expect(@received_headers[1]['authorization']).to eq([])
+        expect(server.received_headers[0]['authorization']).to eq(['Bearer abcdefg'])
+        expect(server.received_headers[1]['authorization']).to eq([])
       end
 
       it 'reports the body of the response to the reporter' do
