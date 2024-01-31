@@ -6,7 +6,6 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       attr_reader :read_io, :write_io, :received_headers, :request_count
 
       def initialize
-        uri = URI('http://localhost')
         @read_io, @write_io = IO.pipe
         @received_headers = []
         @request_count = 0
