@@ -17,16 +17,15 @@ module Cucumber
     describe IOHTTPBuffer do
       include_context 'an HTTP server accepting file requests'
 
-      let(:url) { start_server }
       # JRuby seems to have some issues with huge reports. At least during tests
       # Maybe something to see with Webrick configuration.
       let(:report_size) { RUBY_PLATFORM == 'java' ? 8_000 : 10_000_000 }
       let(:sent_body) { 'X' * report_size }
 
       it 'raises an error on close when server in unreachable' do
-        io = described_class.new("#{url}/404", 'PUT')
+        io = described_class.new("#{server_url}/404", 'PUT')
 
-        expect { io.close }.to(raise_error("request to #{url}/404 failed with status 404"))
+        expect { io.close }.to(raise_error("request to #{server_url}/404 failed with status 404"))
       end
 
       it 'raises an error on close when the server is unreachable' do
@@ -36,13 +35,13 @@ module Cucumber
       end
 
       it 'raises an error on close when there is too many redirect attempts' do
-        io = described_class.new("#{url}/loop_redirect", 'PUT')
+        io = described_class.new("#{server_url}/loop_redirect", 'PUT')
 
-        expect { io.close }.to(raise_error("request to #{url}/loop_redirect failed (too many redirections)"))
+        expect { io.close }.to(raise_error("request to #{server_url}/loop_redirect failed (too many redirections)"))
       end
 
       it 'sends the content over HTTP' do
-        io = described_class.new("#{url}/s3", 'PUT')
+        io = described_class.new("#{server_url}/s3", 'PUT')
         io.write(sent_body)
         io.flush
         io.close
@@ -53,7 +52,7 @@ module Cucumber
       end
 
       it 'sends the content over HTTPS' do
-        io = described_class.new("#{url}/s3", 'PUT', {}, OpenSSL::SSL::VERIFY_NONE)
+        io = described_class.new("#{server_url}/s3", 'PUT', {}, OpenSSL::SSL::VERIFY_NONE)
         io.write(sent_body)
         io.flush
         io.close
@@ -64,7 +63,7 @@ module Cucumber
       end
 
       it 'follows redirections and sends body twice' do
-        io = described_class.new("#{url}/putreport", 'PUT')
+        io = described_class.new("#{server_url}/putreport", 'PUT')
         io.write(sent_body)
         io.flush
         io.close
@@ -75,7 +74,7 @@ module Cucumber
       end
 
       it 'only sends body once' do
-        io = described_class.new("#{url}/putreport", 'GET')
+        io = described_class.new("#{server_url}/putreport", 'GET')
         io.write(sent_body)
         io.flush
         io.close
@@ -86,7 +85,7 @@ module Cucumber
       end
 
       it 'does not send headers to 2nd PUT request' do
-        io = described_class.new("#{url}/putreport", 'GET', { Authorization: 'Bearer abcdefg' })
+        io = described_class.new("#{server_url}/putreport", 'GET', { Authorization: 'Bearer abcdefg' })
         io.write(sent_body)
         io.flush
         io.close
@@ -98,7 +97,7 @@ module Cucumber
       it 'reports the body of the response to the reporter' do
         reporter = DummyReporter.new
         allow(reporter).to receive(:report)
-        io = described_class.new("#{url}/putreport", 'GET', {}, nil, reporter)
+        io = described_class.new("#{server_url}/putreport", 'GET', {}, nil, reporter)
         io.write(sent_body)
         io.flush
         io.close
@@ -111,7 +110,7 @@ module Cucumber
         allow(reporter).to receive(:report)
 
         begin
-          io = described_class.new("#{url}/401", 'GET', {}, nil, reporter)
+          io = described_class.new("#{server_url}/401", 'GET', {}, nil, reporter)
           io.write(sent_body)
           io.flush
           io.close
@@ -126,7 +125,7 @@ module Cucumber
         let(:putreport_returned_location) { nil }
 
         it 'does not follow the location' do
-          io = described_class.new("#{url}/putreport", 'GET')
+          io = described_class.new("#{server_url}/putreport", 'GET')
           io.write(sent_body)
           io.flush
           io.close

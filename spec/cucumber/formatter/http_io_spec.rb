@@ -26,8 +26,7 @@ module Cucumber
       # Close during the test so the request is done while server still runs
       after { io.close }
 
-      let(:io) { DummyFormatter.new.io("#{url}/s3 -X GET -H 'Content-Type: text/json'", nil) }
-      let(:url) { start_server }
+      let(:io) { DummyFormatter.new.io("#{server_url}/s3 -X GET -H 'Content-Type: text/json'", nil) }
 
       context 'created by Io#ensure_io' do
         it 'returns a IOHTTPBuffer' do
@@ -35,7 +34,7 @@ module Cucumber
         end
 
         it 'uses CurlOptionParser to pass correct options to IOHTTPBuffer' do
-          expect(io.uri).to eq(URI("#{url}/s3"))
+          expect(io.uri).to eq(URI("#{server_url}/s3"))
           expect(io.method).to eq('GET')
           expect(io.headers).to eq('Content-Type' => 'text/json')
         end

@@ -32,7 +32,6 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
       end
     end
   end
-
   let(:putreport_returned_location) { URI('/s3').to_s }
   let(:success_banner) do
     [
@@ -41,14 +40,11 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     ].join("\n")
   end
   let(:failure_banner) { 'Oh noooo, something went horribly wrong :(' }
+  let(:server_url) { "http://localhost:#{@server.config[:Port]}" }
 
-  after do
-    @server&.shutdown
-  end
-
-  def start_server
-    @request_count = 0
+  before do
     @server = WEBrick::HTTPServer.new(server.webrick_options)
+    @request_count = 0
 
     mount_s3_endpoint
     mount_404_endpoint
@@ -59,8 +55,10 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
     Thread.new { @server.start }
     server.read_io.read(1) # read a byte for the server start signal
     server.read_io.close
+  end
 
-    "http://localhost:#{@server.config[:Port]}"
+  after do
+    @server&.shutdown
   end
 
   private
