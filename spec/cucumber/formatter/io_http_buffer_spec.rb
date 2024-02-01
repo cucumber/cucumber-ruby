@@ -46,8 +46,8 @@ module Cucumber
         io.write(sent_body)
         io.flush
         io.close
-        @received_body_io.rewind
-        received_body = @received_body_io.read
+        server.received_body_io.rewind
+        received_body = server.received_body_io.read
 
         expect(received_body).to eq(sent_body)
       end
@@ -57,8 +57,8 @@ module Cucumber
         io.write(sent_body)
         io.flush
         io.close
-        @received_body_io.rewind
-        received_body = @received_body_io.read
+        server.received_body_io.rewind
+        received_body = server.received_body_io.read
 
         expect(received_body).to eq(sent_body)
       end
@@ -68,8 +68,8 @@ module Cucumber
         io.write(sent_body)
         io.flush
         io.close
-        @received_body_io.rewind
-        received_body = @received_body_io.read
+        server.received_body_io.rewind
+        received_body = server.received_body_io.read
 
         expect(received_body).to eq("#{sent_body}#{sent_body}")
       end
@@ -79,8 +79,8 @@ module Cucumber
         io.write(sent_body)
         io.flush
         io.close
-        @received_body_io.rewind
-        received_body = @received_body_io.read
+        server.received_body_io.rewind
+        received_body = server.received_body_io.read
 
         expect(received_body).to eq(sent_body)
       end
@@ -130,8 +130,8 @@ module Cucumber
           io.write(sent_body)
           io.flush
           io.close
-          @received_body_io.rewind
-          received_body = @received_body_io.read
+          server.received_body_io.rewind
+          received_body = server.received_body_io.read
 
           expect(received_body).to eq('')
         end

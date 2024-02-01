@@ -4,11 +4,13 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
   let(:http_server_class) do
     Class.new do
       attr_reader :read_io, :write_io, :received_headers, :request_count
+      attr_accessor :received_body_io
 
       def initialize
         @read_io, @write_io = IO.pipe
         @received_headers = []
         @request_count = 0
+        @received_body_io = StringIO.new
       end
 
       def webrick_options
@@ -45,7 +47,6 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
   end
 
   def start_server
-    @received_body_io = StringIO.new
     @request_count = 0
     @server = WEBrick::HTTPServer.new(server.webrick_options)
 
@@ -67,7 +68,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
   def mount_s3_endpoint
     @server.mount_proc '/s3' do |req, res|
       @request_count += 1
-      IO.copy_stream(req.body_reader, @received_body_io)
+      IO.copy_stream(req.body_reader, server.received_body_io)
       server.received_headers << req.header
       if req['authorization']
         res.status = 400
@@ -99,7 +100,7 @@ RSpec.shared_context 'an HTTP server accepting file requests' do
   def mount_report_endpoint
     @server.mount_proc '/putreport' do |req, res|
       @request_count += 1
-      IO.copy_stream(req.body_reader, @received_body_io)
+      IO.copy_stream(req.body_reader, server.received_body_io)
       server.received_headers << req.header
 
       if req.request_method == 'GET'
