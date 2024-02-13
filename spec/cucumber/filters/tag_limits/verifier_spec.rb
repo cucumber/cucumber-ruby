@@ -23,7 +23,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
       end
 
       before do
-        allow(test_case_index).to receive(:count_by_tag_name).with('@exceed_me') { 2 }
+        allow(test_case_index).to receive(:count_by_tag_name).with('@exceed_me').and_return(2)
         allow(test_case_index).to receive(:locations_of_tag_name).with('@exceed_me') { locations }
       end
 
@@ -45,7 +45,7 @@ describe Cucumber::Filters::TagLimits::Verifier do
       end
 
       before do
-        allow(test_case_index).to receive(:count_by_tag_name).with('@dont_exceed_me') { 1 }
+        allow(test_case_index).to receive(:count_by_tag_name).with('@dont_exceed_me').and_return(1)
       end
 
       it 'does not raise an error' do

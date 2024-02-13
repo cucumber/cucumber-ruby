@@ -15,7 +15,7 @@ describe Cucumber::Filters::Retry do
 
   let(:configuration) { Cucumber::Configuration.new(retry: 2, retry_total: retry_total) }
   let(:retry_total) { Float::INFINITY }
-  let(:test_case) { Cucumber::Core::Test::Case.new(double, double, [double('test steps')], double, [], double) }
+  let(:test_case) { Cucumber::Core::Test::Case.new(double, double, [double('test steps')], double, double, [], double) }
   let(:receiver) { double('receiver').as_null_object }
   let(:filter) { described_class.new(configuration, receiver) }
   let(:fail) { Cucumber::Events::AfterTestCase.new(test_case, double('result', failed?: true, ok?: false)) }
@@ -106,10 +106,10 @@ describe Cucumber::Filters::Retry do
   context 'with too many failing tests' do
     let(:retry_total) { 1 }
     let(:always_failing_test_case1) do
-      Cucumber::Core::Test::Case.new(double, double, [double('test steps')], 'test.rb:1', [], double)
+      Cucumber::Core::Test::Case.new(double, double, [double('test steps')], 'test.rb:1', nil, [], double)
     end
     let(:always_failing_test_case2) do
-      Cucumber::Core::Test::Case.new(double, double, [double('test steps')], 'test.rb:9', [], double)
+      Cucumber::Core::Test::Case.new(double, double, [double('test steps')], 'test.rb:9', nil, [], double)
     end
 
     it 'stops retrying tests' do

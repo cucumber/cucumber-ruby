@@ -6,9 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# TODO - [LH] -> Sep 6 '23 - 370 files inspected, 983 offenses detected, 368 offenses autocorrectable
-# TODO - [LH] -> Sep 11 '23 - 370 files inspected, 825 offenses detected, 387 offenses autocorrectable
-# TODO - [LH] -> Sep 19 '23 - 370 files inspected, 640 offenses detected, 202 offenses autocorrectable
 # TODO - [LH] -> Oct '23 - 355 files inspected, 642 offenses detected, 205 offenses autocorrectable
 # TODO - [LH] -> Dec '23 - 350 files inspected, 595 offenses detected, 171 offenses autocorrectable
 # TODO - [LH] -> Feb '23 - 370 files inspected, 635 offenses detected, 166 offenses autocorrectable
@@ -57,10 +54,25 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Max: 52
 
+# Offense count: 13
+# Configuration parameters: CountComments, CountAsOne.
+Metrics/ClassLength:
+  Max: 523
+
 # Offense count: 8
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
   Max: 12
+
+# Offense count: 74
+# Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
+Metrics/MethodLength:
+  Max: 72
+
+# Offense count: 17
+# Configuration parameters: CountComments, CountAsOne.
+Metrics/ModuleLength:
+  Max: 804
 
 # Offense count: 7
 # Configuration parameters: AllowedMethods, AllowedPatterns.

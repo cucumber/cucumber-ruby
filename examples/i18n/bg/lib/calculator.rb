@@ -14,16 +14,16 @@ class Calculator
   end
 
   def +
-    number_1 = @stack.pop
-    number_2 = @stack.pop
+    number1 = @stack.pop
+    number2 = @stack.pop
 
-    @stack.push number_1 + number_2
+    @stack.push(number1 + number2)
   end
 
   def /
     divisor = @stack.pop
     dividend = @stack.pop
 
-    @stack.push dividend / divisor
+    @stack.push(dividend / divisor)
   end
 end

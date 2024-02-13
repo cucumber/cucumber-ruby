@@ -102,7 +102,7 @@ module Cucumber
       private
 
       def same_feature_as_previous_test_case?(test_case)
-        current_feature[:uri] == test_case.location.file
+        @feature_hash&.fetch(:uri, nil) == test_case.location.file
       end
 
       def first_step_after_background?(test_step)
@@ -111,10 +111,6 @@ module Cucumber
 
       def internal_hook?(test_step)
         test_step.location.file.include?('lib/cucumber/')
-      end
-
-      def current_feature
-        @feature_hash ||= {}
       end
 
       def feature_elements

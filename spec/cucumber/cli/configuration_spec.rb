@@ -11,19 +11,19 @@ module Cucumber
 
     describe Configuration do
       def given_cucumber_yml_defined_as(hash_or_string)
-        allow(File).to receive(:exist?) { true }
+        allow(File).to receive(:exist?).and_return(true)
         cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
         allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
       end
 
       def given_the_following_files(*files)
-        allow(File).to receive(:directory?) { true }
-        allow(File).to receive(:file?) { true }
+        allow(File).to receive(:directory?).and_return(true)
+        allow(File).to receive(:file?).and_return(true)
         allow(Dir).to receive(:[]) { files }
       end
 
       before do
-        allow(File).to receive(:exist?) { false } # Meaning, no cucumber.yml exists
+        allow(File).to receive(:exist?).and_return(false)
         allow(Kernel).to receive(:exit)
       end
 
@@ -152,7 +152,7 @@ module Cucumber
         end
 
         it 'issues a helpful error message when no YAML file exists and a profile is specified' do
-          expect(File).to receive(:exist?).with('cucumber.yml') { false }
+          expect(File).to receive(:exist?).with('cucumber.yml').and_return(false)
 
           expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(/cucumber\.yml was not found/)
         end

@@ -72,7 +72,7 @@ module Cucumber
 
         dsl = Object.new
         dsl.extend Glue::Dsl
-        dsl.instance_exec &step_defs
+        dsl.instance_exec(&step_defs)
       end
 
       def options

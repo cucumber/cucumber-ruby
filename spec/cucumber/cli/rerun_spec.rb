@@ -8,13 +8,13 @@ module Cucumber
       let(:rerun_file) { described_class.new('@rerun.txt') }
 
       it 'expects rerun files to have a leading @' do
-        allow(File).to receive(:file?) { true }
+        allow(File).to receive(:file?).and_return(true)
         expect(described_class.can_read?('rerun.txt')).to eq false
         expect(described_class.can_read?('@rerun.txt')).to eq true
       end
 
       it 'does not treat directories as rerun files' do
-        allow(File).to receive(:file?) { false }
+        allow(File).to receive(:file?).and_return(false)
         expect(described_class.can_read?('@rerun.txt')).to eq false
       end
 
@@ -22,7 +22,7 @@ module Cucumber
         expect(rerun_file.path).to eq 'rerun.txt'
       end
 
-      context 'rerun file containing single feature' do
+      context 'with a rerun file containing a single feature reference' do
         before(:each) do
           allow(IO).to receive(:read).and_return('cucumber.feature')
         end
@@ -32,7 +32,7 @@ module Cucumber
         end
       end
 
-      context 'contains multiple features on multiple lines' do
+      context 'with a rerun file containing multiple feature references on multiple lines' do
         before(:each) do
           allow(IO).to receive(:read).and_return("cucumber.feature\nfoo.feature")
         end
@@ -42,7 +42,7 @@ module Cucumber
         end
       end
 
-      context 'contains multiple features on same line' do
+      context 'with a rerun file containing multiple feature references on the same line' do
         before(:each) do
           allow(IO).to receive(:read).and_return('cucumber.feature foo.feature')
         end
@@ -52,7 +52,7 @@ module Cucumber
         end
       end
 
-      context 'contains multiple scenarios on same line' do
+      context 'with a rerun file containing multiple scenario references on the same line' do
         before(:each) do
           allow(IO).to receive(:read).and_return('cucumber.feature:8 foo.feature:8:16')
         end
@@ -62,7 +62,7 @@ module Cucumber
         end
       end
 
-      context 'contains features with spaces in file names' do
+      context 'with a rerun file containing multiple feature references with spaces in file names' do
         before(:each) do
           allow(IO).to receive(:read).and_return('cucumber test.feature:8 foo.feature:8:16')
         end
@@ -72,7 +72,7 @@ module Cucumber
         end
       end
 
-      context 'contains multiple scenarios without spaces between them' do
+      context 'with a rerun file containing multiple scenario references without spaces in between them' do
         before(:each) do
           allow(IO).to receive(:read).and_return('cucumber test.feature:8foo.feature:8:16')
         end

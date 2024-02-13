@@ -8,7 +8,7 @@ module Cucumber
   module Cli
     describe Options do
       def given_cucumber_yml_defined_as(hash_or_string)
-        allow(File).to receive(:exist?) { true }
+        allow(File).to receive(:exist?).and_return(true)
 
         cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
 
@@ -16,7 +16,7 @@ module Cucumber
       end
 
       before(:each) do
-        allow(File).to receive(:exist?) { false } # Meaning, no cucumber.yml exists
+        allow(File).to receive(:exist?).and_return(false) # Meaning, no cucumber.yml exists
         allow(Kernel).to receive(:exit)
       end
 
@@ -438,7 +438,7 @@ module Cucumber
           end
         end
 
-        context 'for environment variables (i.e. MODE=webrat)' do
+        context 'when using environment variables (i.e. MODE=webrat)' do
           it 'places all of the environment variables into a hash' do
             after_parsing('MODE=webrat FOO=bar') do
               expect(options[:env_vars]).to eq('MODE' => 'webrat', 'FOO' => 'bar')

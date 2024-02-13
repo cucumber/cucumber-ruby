@@ -9,16 +9,19 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [9.1.2] - 2024-01-23
 ### Added
 
 ### Changed
 - Moved all CCK step definition/miscellaneous file logic from CCK gem to this repo.
-  All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
+All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
+- Cleared up a few Layout/Linting cop offenses ([#1750](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
 
 ### Fixed
 - Fix a situation whereby the step definition message will omit the parameter-type name when it cannot be inferred
-  (This fixes an issue in cucumber-wire when passing legacy steps down the wire)
-  ([#1746](https://github.com/cucumber/cucumber-ruby/pull/1746) [luke-hill](https://github.com/luke-hill))
+(This fixes an issue in cucumber-wire when passing legacy steps down the wire)
+([#1746](https://github.com/cucumber/cucumber-ruby/pull/1746) [luke-hill](https://github.com/luke-hill))
 
 ### Removed
 
@@ -146,7 +149,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...HEAD
+[9.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.1...v9.1.2
 [9.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.0...v9.1.1
 [9.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.2...v9.1.0
 [9.0.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.1...v9.0.2

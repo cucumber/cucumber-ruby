@@ -113,7 +113,7 @@ module Cucumber
         let(:pi) { described_class.new(pipe) }
 
         it 'passes #tty? to the original pipe' do
-          expect(pipe).to receive(:tty?) { true }
+          expect(pipe).to receive(:tty?).and_return(true)
           expect(pi.tty?).to be true
         end
       end
