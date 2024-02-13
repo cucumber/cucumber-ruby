@@ -12,7 +12,7 @@ module Cucumber
           test_case, result = *event.attributes
           if test_case != @previous_test_case
             @previous_test_case = event.test_case
-            Cucumber.wants_to_quit = true unless result.ok?(configuration.strict)
+            Cucumber.wants_to_quit = true unless result.ok?(strict: configuration.strict)
           elsif result.passed?
             Cucumber.wants_to_quit = false
           end
