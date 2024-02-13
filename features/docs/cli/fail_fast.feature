@@ -1,3 +1,4 @@
+@disable_fail_fast
 Feature: Fail fast
 
   The --fail-fast flag causes Cucumber to exit immediately after the first
