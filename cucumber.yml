@@ -11,8 +11,6 @@ else
 end
 %>
 default:     <%= std_opts %> --tags "not @jruby"
-jruby:       <%= std_opts %>
-jruby_win:   <%= std_opts %>
 windows_mri: <%= std_opts %> --tags "not @jruby" --tags "not @needs-many-fonts"
 wip:         --wip <%= wip_opts %> features
 none:        --format pretty
