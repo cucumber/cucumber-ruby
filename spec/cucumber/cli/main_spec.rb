@@ -15,6 +15,7 @@ module Cucumber
       let(:stdout) { StringIO.new }
       let(:stderr) { StringIO.new }
       let(:kernel) { double(:kernel) }
+
       subject { described_class.new(args, stdout, stderr, kernel) }
 
       describe '#execute!' do

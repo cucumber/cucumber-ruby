@@ -10,8 +10,13 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Changed
+- Updated cucumber dependencies (Specifically cucumber-core) ([luke-hill](https://github.com/luke-hill))
+
 - Uncoupled a lot of dual-responsibility complexity in HTTP classes (Specifically the builders/parsers)
   ([#1752](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
+
+### Removed
+- Some legacy JRuby local testing profiles are now removed ([luke-hill](https://github.com/luke-hill))
 
 ## [9.1.2] - 2024-01-23
 ### Changed

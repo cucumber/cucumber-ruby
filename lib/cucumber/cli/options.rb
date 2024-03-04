@@ -116,10 +116,10 @@ module Cucumber
           opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
             add_option :formats, [*parse_formats(v), @out_stream]
           end
-          opts.on('--init', *init_msg) { |_v| initialize_project }
+          opts.on('--init', *init_msg) { initialize_project }
           opts.on('-o', '--out [FILE|DIR|URL]', *out_msg) { |v| out_stream v }
-          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) { |v| add_tag v }
-          opts.on('-n NAME', '--name NAME', *name_msg) { |v| add_option :name_regexps, /#{v}/ }
+          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) { |v| add_tag(v) }
+          opts.on('-n NAME', '--name NAME', *name_msg) { |v| add_option(:name_regexps, /#{v}/) }
           opts.on('-e', '--exclude PATTERN', *exclude_msg) { |v| add_option :excludes, Regexp.new(v) }
           opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) { |v| add_profile v }
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) { |_v| disable_profile_loading }
@@ -301,9 +301,9 @@ module Cucumber
         [formatter, options_hash]
       end
 
-      def out_stream(v)
+      def out_stream(value)
         @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
-        @options[:formats][-1][2] = v
+        @options[:formats][-1][2] = value
       end
 
       def tags_msg
@@ -455,7 +455,7 @@ module Cucumber
       end
 
       def exit_ok(text)
-        @out_stream.puts text
+        @out_stream.puts(text)
         Kernel.exit(0)
       end
 
@@ -483,22 +483,11 @@ module Cucumber
         end
       end
 
-      def disable_profile_loading?
-        @disable_profile_loading
-      end
-
       def merge_profiles
-        if @disable_profile_loading
-          @out_stream.puts 'Disabling profiles...'
-          return
-        end
+        return @out_stream.puts 'Disabling profiles...' if @disable_profile_loading
 
         @profiles << @default_profile if default_profile_should_be_used?
-
-        @profiles.each do |profile|
-          merge_with_profile(profile)
-        end
-
+        @profiles.each { |profile| merge_with_profile(profile) }
         @options[:profiles] = @profiles
       end
 

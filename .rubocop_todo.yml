@@ -96,16 +96,16 @@ Naming/MemoizedInstanceVariableName:
     - 'lib/cucumber/formatter/json.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
 
-# Offense count: 14
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/formatter/console.rb'
-    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
+## Offense count: 14
+## Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
+## AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
+#Naming/MethodParameterName:
+#  Exclude:
+#    - 'lib/cucumber/cli/options.rb'
+#    - 'lib/cucumber/formatter/ansicolor.rb'
+#    - 'lib/cucumber/formatter/console.rb'
+#    - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
+#    - 'lib/cucumber/multiline_argument/data_table.rb'
 
 # Offense count: 8
 # Configuration parameters: EnforcedStyle, CheckMethodNames, CheckSymbols, AllowedIdentifiers, AllowedPatterns.
