@@ -15,7 +15,6 @@ module Cucumber
       end
 
       def close
-        response = send_content(uri, method, headers)
         @reporter.report(response.body)
         @write_io.close
         return if response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
@@ -37,9 +36,13 @@ module Cucumber
 
       private
 
+      def response
+        @response ||= send_content(uri, method, headers)
+      end
+
       def send_content(uri, method, headers, attempts_remaining = 10)
         content = (method == 'GET' ? StringIO.new : @write_io)
-        http = build_client(uri, @https_verify_mode)
+        http = build_client(uri)
 
         raise StandardError, "request to #{uri} failed (too many redirections)" if attempts_remaining <= 0
 
@@ -72,11 +75,11 @@ module Cucumber
         end
       end
 
-      def build_client(uri, https_verify_mode)
+      def build_client(uri)
         Net::HTTP.new(uri.hostname, uri.port).tap do |http|
           if uri.scheme == 'https'
             http.use_ssl = true
-            http.verify_mode = https_verify_mode if https_verify_mode
+            http.verify_mode = @https_verify_mode if @https_verify_mode
           end
         end
       end

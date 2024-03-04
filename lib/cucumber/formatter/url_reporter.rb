@@ -13,7 +13,7 @@ module Cucumber
     end
 
     class NoReporter
-      def report(banner); end
+      def report(_banner); end
     end
   end
 end

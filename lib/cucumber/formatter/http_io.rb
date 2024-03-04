@@ -2,7 +2,6 @@
 
 require 'net/http'
 require 'tempfile'
-require 'shellwords'
 require_relative 'curl_option_parser'
 require_relative 'io_http_buffer'
 

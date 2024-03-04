@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'shellwords'
+
 module Cucumber
   module Formatter
     class CurlOptionParser
@@ -26,11 +28,7 @@ module Cucumber
         end
         raise StandardError, "#{options} was not a valid curl command" unless url
 
-        [
-          url,
-          http_method,
-          headers
-        ]
+        [url, http_method, headers]
       end
 
       # TODO: [LH] -> Switch below methods to private
