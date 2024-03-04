@@ -9,10 +9,11 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Uncoupled a lot of dual-responsibility complexity in HTTP classes (Specifically the builders/parsers)
+  ([#1752](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
 
 ## [9.1.2] - 2024-01-23
-### Added
-
 ### Changed
 - Moved all CCK step definition/miscellaneous file logic from CCK gem to this repo.
 All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
@@ -22,8 +23,6 @@ All logic contained in [compatibility](./compatibility) ([luke-hill](https://git
 - Fix a situation whereby the step definition message will omit the parameter-type name when it cannot be inferred
 (This fixes an issue in cucumber-wire when passing legacy steps down the wire)
 ([#1746](https://github.com/cucumber/cucumber-ruby/pull/1746) [luke-hill](https://github.com/luke-hill))
-
-### Removed
 
 ## [9.1.1] - 2024-01-04
 ### Changed
