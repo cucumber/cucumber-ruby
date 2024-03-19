@@ -9,11 +9,12 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [9.2.0] - 2024-03-19
 ### Changed
 - Updated cucumber dependencies (Specifically cucumber-core) ([luke-hill](https://github.com/luke-hill))
-
 - Uncoupled a lot of dual-responsibility complexity in HTTP classes (Specifically the builders/parsers)
-  ([#1752](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
+([#1752](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
 
 ### Removed
 - Some legacy JRuby local testing profiles are now removed ([luke-hill](https://github.com/luke-hill))
@@ -153,7 +154,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.0...HEAD
+[9.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...v9.2.0
 [9.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.1...v9.1.2
 [9.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.0...v9.1.1
 [9.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.2...v9.1.0
