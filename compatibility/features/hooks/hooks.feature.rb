@@ -9,7 +9,7 @@ Before(name: 'A named hook') do
 end
 
 def cck_asset_path
-  "#{Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path}/features/attachments"
+  "#{Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path}/features/hooks"
 end
 
 When('a step passes') do
