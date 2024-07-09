@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# This blank hook has been re-added in. See https://github.com/cucumber/compatibility-kit/issues/83 for more details
-Before { nil }
-
 def cck_asset_path
   "#{Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path}/features/attachments"
 end
