@@ -34,13 +34,6 @@ Layout/TrailingWhitespace:
     - spec/cucumber/formatter/pretty_spec.rb
     - spec/cucumber/formatter/progress_spec.rb
 
-# TODO: [LH] - This needs a re-review. I think we can pretty much delete / phase this out with incremental updates
-# We exclude proto_world for documentation (rdoc) purpose
-Lint/UselessMethodDefinition:
-  Enabled: true
-  Exclude:
-    - lib/cucumber/glue/proto_world.rb
-
 # Rubocop doesn't like method names in other languages but as Cucumber supports multiple languages, this cop needs to be disabled
 Naming/AsciiIdentifiers:
   Enabled: false

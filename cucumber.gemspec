@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nokogiri', '~> 1.14'
   s.add_development_dependency 'rake', '~> 13.1'
   s.add_development_dependency 'rspec', '~> 3.12'
-  s.add_development_dependency 'rubocop', '~> 1.56.4'
+  s.add_development_dependency 'rubocop', '~> 1.61.0'
   s.add_development_dependency 'rubocop-capybara', '~> 2.19.0'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
   s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
