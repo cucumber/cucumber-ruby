@@ -7,7 +7,7 @@ require 'cucumber/messages'
 require_relative 'cck/helpers'
 require_relative 'cck/messages_comparator'
 
-require 'cucumber-compatibility-kit'
+require 'cck/helpers'
 
 RSpec.shared_examples 'cucumber compatibility kit' do
   include CCK::Helpers
