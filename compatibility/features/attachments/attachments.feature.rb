@@ -29,7 +29,10 @@ When('a JPEG image is attached') do
 end
 
 When('a PNG image is attached') do
-  attach(File.open("#{__dir__}/cucumber.png"), 'image/png')
+  path = "#{__dir__}/cucumber.png"
+  gem_path = Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path
+  alternate_path = "#{gem_path}/features/attachments/cucumber.png"
+  attach(File.open(alternate_path), 'image/png')
 end
 
 When('a PDF document is attached and renamed') do
