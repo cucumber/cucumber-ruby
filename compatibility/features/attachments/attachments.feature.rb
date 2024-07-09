@@ -3,8 +3,8 @@
 # This blank hook has been re-added in. See https://github.com/cucumber/compatibility-kit/issues/83 for more details
 Before { nil }
 
-def gem_path
-  Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path
+def cck_asset_path
+  "#{Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path}/features/attachments"
 end
 
 When('the string {string} is attached as {string}') do |text, media_type|
@@ -29,13 +29,13 @@ When('an array with {int} bytes is attached as {string}') do |size, media_type|
 end
 
 When('a JPEG image is attached') do
-  attach(File.open("#{gem_path}/features/attachments/cucumber.jpeg"), 'image/jpeg')
+  attach(File.open("#{cck_asset_path}/cucumber.jpeg"), 'image/jpeg')
 end
 
 When('a PNG image is attached') do
-  attach(File.open("#{gem_path}/features/attachments/cucumber.png"), 'image/png')
+  attach(File.open("#{cck_asset_path}/cucumber.png"), 'image/png')
 end
 
 When('a PDF document is attached and renamed') do
-  attach(File.open("#{gem_path}/features/attachments/document.pdf"), 'document/pdf', 'renamed.pdf')
+  attach(File.open("#{cck_asset_path}/document.pdf"), 'document/pdf', 'renamed.pdf')
 end
