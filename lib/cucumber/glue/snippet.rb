@@ -61,10 +61,9 @@ module Cucumber
         end
 
         def do_block
-          <<~DOC
+          <<~DOC.chomp
             do#{parameters}
-            #{multiline_argument.comment}
-              pending # Write code here that turns the phrase above into concrete actions
+              #{multiline_argument.comment}
             end
           DOC
         end
@@ -95,9 +94,8 @@ module Cucumber
             "#{prefix}#{code_keyword}('#{expr.source}') do#{parameters(expr)}"
           end.join("\n")
 
-          body = <<~DOC
-            #{multiline_argument.comment}
-              pending # Write code here that turns the phrase above into concrete actions
+          body = <<~DOC.chomp
+              #{multiline_argument.comment}
             end
           DOC
 
@@ -179,7 +177,10 @@ module Cucumber
           end
 
           def append_comment_to(string); end
-          def comment; end
+
+          def comment
+            'pending # Write code here that turns the phrase above into concrete actions'
+          end
         end
 
         class DataTable
@@ -196,14 +197,19 @@ module Cucumber
           end
 
           def comment
-            "  # table is a #{Cucumber::MultilineArgument::DataTable}\n"
+            <<~COMMENT.chomp
+              # table is a #{Cucumber::MultilineArgument::DataTable}
+                pending # Write code here that turns the phrase above into concrete actions
+            COMMENT
           end
         end
 
         class None
           def append_block_parameter_to(array); end
           def append_comment_to(string); end
-          def comment; end
+          def comment
+            'pending # Write code here that turns the phrase above into concrete actions'
+          end
         end
       end
     end
