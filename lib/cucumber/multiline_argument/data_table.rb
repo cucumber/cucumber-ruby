@@ -4,6 +4,7 @@ require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/multiline_argument/data_table/diff_matrices'
+require 'cucumber/deprecator'
 
 module Cucumber
   module MultilineArgument
@@ -365,6 +366,11 @@ module Cucumber
       # TODO: remove the below function if it's not actually being used.
       # Nothing else in this repo calls it.
       def text?(text)
+        Cucumber.deprecate(
+          'This method is no longer supported for checking text',
+          '#text?',
+          '11.0.0'
+        )
         raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 
