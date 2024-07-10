@@ -19,6 +19,11 @@ require 'cucumber/events/step_definition_registered'
 
 module Cucumber
   module Glue
+    def self.backtrace_line(proc, name)
+      location = Cucumber::Core::Test::Location.from_source_location(*proc.source_location)
+      "#{location}:in `#{name}'"
+    end
+
     # Raised if a World block returns Nil.
     class NilWorld < StandardError
       def initialize
@@ -43,8 +48,7 @@ module Cucumber
 
     # TODO: This class has too many responsibilities, split off
     class RegistryAndMore
-      attr_reader :current_world,
-                  :step_definitions
+      attr_reader :current_world, :step_definitions
 
       all_keywords = ::Gherkin::DIALECTS.keys.map do |dialect_name|
         dialect = ::Gherkin::Dialect.for(dialect_name)
@@ -52,6 +56,14 @@ module Cucumber
       end
       Cucumber::Gherkin::I18n.code_keywords_for(all_keywords.flatten.uniq.sort).each do |adverb|
         Glue::Dsl.alias_adverb(adverb.strip)
+      end
+
+      def self.cli_snippet_type_options
+        registry = CucumberExpressions::ParameterTypeRegistry.new
+        cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
+        Snippet::SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
+          Snippet::SNIPPET_TYPES[type].cli_option_string(type, cucumber_expression_generator)
+        end
       end
 
       def initialize(runtime, configuration)
@@ -129,8 +141,7 @@ module Cucumber
         @current_world = WorldFactory.new(@world_proc).create_world
         @current_world.extend(ProtoWorld.for(@runtime, test_case.language))
         MultiTest.extend_with_best_assertion_library(@current_world)
-        @current_world.add_modules!(@world_modules || [],
-                                    @namespaced_world_modules || {})
+        @current_world.add_modules!(@world_modules || [], @namespaced_world_modules || {})
       end
 
       def end_scenario
@@ -175,14 +186,6 @@ module Cucumber
         raise ArgumentError, 'Expression must be a String or Regexp'
       end
 
-      def self.cli_snippet_type_options
-        registry = CucumberExpressions::ParameterTypeRegistry.new
-        cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
-        Snippet::SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
-          Snippet::SNIPPET_TYPES[type].cli_option_string(type, cucumber_expression_generator)
-        end
-      end
-
       private
 
       def parameter_type_envelope(parameter_type)
@@ -206,11 +209,6 @@ module Cucumber
       def hooks
         @hooks ||= Hash.new { |h, k| h[k] = [] }
       end
-    end
-
-    def self.backtrace_line(proc, name)
-      location = Cucumber::Core::Test::Location.from_source_location(*proc.source_location)
-      "#{location}:in `#{name}'"
     end
   end
 end
