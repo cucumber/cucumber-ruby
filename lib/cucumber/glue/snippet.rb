@@ -61,13 +61,12 @@ module Cucumber
         end
 
         def do_block
-          # TODO: [LH] - Just use a heredoc here to fix this up
-          do_block = String.new
-          do_block << "do#{parameters}\n"
-          multiline_argument.append_comment_to(do_block)
-          do_block << "  pending # Write code here that turns the phrase above into concrete actions\n"
-          do_block << 'end'
-          do_block
+          <<~DOC
+            do#{parameters}
+            #{multiline_argument.comment}
+              pending # Write code here that turns the phrase above into concrete actions
+            end
+          DOC
         end
 
         def parameters
@@ -96,11 +95,11 @@ module Cucumber
             "#{prefix}#{code_keyword}('#{expr.source}') do#{parameters(expr)}"
           end.join("\n")
 
-          # TODO: [LH] - Just use a heredoc here to fix this up
-          body = String.new
-          multiline_argument.append_comment_to(body)
-          body << "  pending # Write code here that turns the phrase above into concrete actions\n"
-          body << 'end'
+          body = <<~DOC
+            #{multiline_argument.comment}
+              pending # Write code here that turns the phrase above into concrete actions
+            end
+          DOC
 
           "#{header}\n#{body}"
         end
@@ -180,6 +179,7 @@ module Cucumber
           end
 
           def append_comment_to(string); end
+          def comment; end
         end
 
         class DataTable
@@ -192,14 +192,18 @@ module Cucumber
           end
 
           def append_comment_to(string)
-            string << "  # table is a #{Cucumber::MultilineArgument::DataTable}\n"
+            string << comment
+          end
+
+          def comment
+            "  # table is a #{Cucumber::MultilineArgument::DataTable}\n"
           end
         end
 
         class None
           def append_block_parameter_to(array); end
-
           def append_comment_to(string); end
+          def comment; end
         end
       end
     end
