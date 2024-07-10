@@ -73,7 +73,6 @@ module Cucumber
         @registry = registry
         @expression = expression
         @proc = proc
-        # @registry.available_step_definition(regexp_source, location)
       end
 
       def to_envelope
