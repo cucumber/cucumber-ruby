@@ -176,8 +176,6 @@ module Cucumber
             array << 'doc_string'
           end
 
-          def append_comment_to(string); end
-
           def comment
             'pending # Write code here that turns the phrase above into concrete actions'
           end
@@ -192,10 +190,6 @@ module Cucumber
             array << 'table'
           end
 
-          def append_comment_to(string)
-            string << comment
-          end
-
           def comment
             <<~COMMENT.chomp
               # table is a #{Cucumber::MultilineArgument::DataTable}
@@ -206,7 +200,6 @@ module Cucumber
 
         class None
           def append_block_parameter_to(array); end
-          def append_comment_to(string); end
           def comment
             'pending # Write code here that turns the phrase above into concrete actions'
           end
