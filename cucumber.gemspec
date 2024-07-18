@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-cucumber-expressions', '~> 17.0'
   s.add_dependency 'cucumber-gherkin', '> 24', '< 28'
   s.add_dependency 'cucumber-html-formatter', '> 20.3', '< 22'
-  s.add_dependency 'cucumber-messages', '> 19', '< 25'
+  s.add_dependency 'cucumber-messages', '> 19', '< 26'
   s.add_dependency 'diff-lcs', '~> 1.5'
   s.add_dependency 'mini_mime', '~> 1.1'
   s.add_dependency 'multi_test', '~> 1.1'
