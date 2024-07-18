@@ -51,6 +51,7 @@ module CCK
       return if ignorable?(detected)
       return if incomparable?(detected)
 
+      # TODO: This needs refactoring as it's becoming rather large and bloated
       all_errors << CCK::KeysChecker.compare(detected, expected)
       compare_sub_messages(detected, expected)
     end

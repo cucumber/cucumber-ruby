@@ -9,6 +9,15 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Updated `cucumber-compatibility-kit` to v16 ([luke-hill](https://github.com/luke-hill))
+- Changed compatibility testing to fully lean on external assets instead of duplicating them ([luke-hill](https://github.com/luke-hill))
+
+### Fixed
+- Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
+
+### Removed
+- Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))
 
 ## [9.2.0] - 2024-03-19
 ### Changed

@@ -8,6 +8,10 @@ Before(name: 'A named hook') do
   # no-op
 end
 
+def cck_asset_path
+  "#{Gem.loaded_specs['cucumber-compatibility-kit'].full_gem_path}/features/hooks"
+end
+
 When('a step passes') do
   # no-op
 end
@@ -25,5 +29,5 @@ After('@some-tag or @some-other-tag') do
 end
 
 After('@with-attachment') do
-  attach(File.open("#{__dir__}/cucumber.svg"), 'image/svg+xml')
+  attach(File.open("#{cck_asset_path}/cucumber.svg"), 'image/svg+xml')
 end
