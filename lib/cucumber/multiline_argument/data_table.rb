@@ -4,7 +4,7 @@ require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/multiline_argument/data_table/diff_matrices'
-require 'cucumber/deprecator'
+require 'cucumber/deprecate'
 
 module Cucumber
   module MultilineArgument
