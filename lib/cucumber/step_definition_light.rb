@@ -11,6 +11,11 @@ module Cucumber
     def initialize(regexp_source, location)
       @regexp_source = regexp_source
       @location = location
+      Cucumber.deprecate(
+        'StepDefinitionLight class is no longer a supported part of cucumber',
+        '#initialize',
+        '11.0.0'
+      )
     end
 
     def eql?(other)
