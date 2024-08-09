@@ -25,11 +25,11 @@ If you want to report an issue, or suggest an enhancement, go to
 
 ### Meet the community, the maintainers, and other Cucumber developers
 
-Smartbear hosts a [community message board].
+Cucumber hosts a [community message board].
 This is a good place to meet users, the community, and to ask questions.
 
-You can also join the Cucumber Community Slack:
-[register for an account][register-slack] then head over to [#intro][slack-intro].
+You can also join the Cucumber Community Discord:
+[register for an account][register-discord].
 This is the place to be to meet other contributors and find a mentor to help you
 get started.
 
@@ -40,7 +40,7 @@ cannot put a price on (early) feedback.
 
 Keep an eye on our CHANGELOGS to discover new features. Test and experiment, and
 submit your feedback through [issues](#report-bugs-and-submit-feature-requests),
-the [community message board], or [Slack][community-slack].
+the [community message board], or [Discord][community-discord].
 
 ### Contribute to the documentation
 
@@ -52,7 +52,7 @@ essential that it remains simple and accurate. You can contribute to it via
 
 You don't know how to contribute but would like to help? Telling other people
 about Cucumber on the Internet - social media, reviews, blogs - but also in real
-life is already a big help! Join us on [Slack][community-slack] to share your
+life is already a big help! Join us on [Discord][community-discord] to share your
 publication and to discover new ones.
 
 ## Report bugs and submit feature requests
@@ -206,14 +206,8 @@ issues in [other cucumber reporistories](#find-the-appropriate-repository).
 ### Having trouble getting started with the code? We're here to help!
 
 If you have trouble setting-up your development environment, or getting started
-with the code, you can join us on [Slack][community-slack]. You will find there
+with the code, you can join us on [Discord][community-discord]. You will find there
 a lot of contributors.
-
-Full-time maintainers are also available. We would be please to have 1:1 pairing
-sessions to help you getting started. Look for
-[Matt Wynne](https://cucumberbdd.slack.com/team/U590XDLF3) or
-[Aurélien Reeves](https://cucumberbdd.slack.com/team/U011BB95MC7) on
-[Slack][community-slack].
 
 ### Additional documentation and notice
 
@@ -226,10 +220,9 @@ You can find additional documentation in the [docs](./docs) directory such as
 
 <!-- Links -->
 
-[community message board]: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
-[register-slack]: https://cucumberbdd-slack-invite.herokuapp.com/
-[slack-intro]: https://cucumberbdd.slack.com/messages/C5WD8SA21/
-[community-slack]: https://cucumberbdd.slack.com/
+[community message board]: https://github.com/orgs/cucumber/discussions
+[register-discord]: https://cucumber.io/docs/community/get-in-touch#discord
+[community-discord]: https://cucumber.io/docs/community/get-in-touch#discord
 [cucumber-docs]: https://cucumber.io/docs/cucumber
 [cucumber/common]: https://github.com/cucumber/common
 [cucumber-ruby-core]: https://github.com/cucumber/cucumber-ruby-core
