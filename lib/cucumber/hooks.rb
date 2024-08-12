@@ -20,7 +20,7 @@ module Cucumber
       def after_step_hook(id, test_step, location, &block)
         raise ArgumentError if test_step.hook?
 
-        build_hook_step(id, location, block, AfterStepHook, Core::Test::Action)
+        build_hook_step(id, location, block, AfterStepHook, Core::Test::Action::Defined)
       end
 
       def around_hook(&block)
