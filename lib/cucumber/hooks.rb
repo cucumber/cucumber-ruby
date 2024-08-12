@@ -10,11 +10,11 @@ module Cucumber
   module Hooks
     class << self
       def before_hook(id, location, &block)
-        build_hook_step(id, location, block, BeforeHook, Core::Test::UnskippableAction)
+        build_hook_step(id, location, block, BeforeHook, Core::Test::Action::Unskippable)
       end
 
       def after_hook(id, location, &block)
-        build_hook_step(id, location, block, AfterHook, Core::Test::UnskippableAction)
+        build_hook_step(id, location, block, AfterHook, Core::Test::Action::Unskippable)
       end
 
       def after_step_hook(id, test_step, location, &block)
