@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
     'source_code_uri' => 'https://github.com/cucumber/cucumber-ruby'
   }
 
-  s.required_ruby_version = '>= 2.7'
-  s.required_rubygems_version = '>= 3.0.1'
+  s.required_ruby_version = '>= 3.0'
+  s.required_rubygems_version = '>= 3.2.8'
 
   s.add_dependency 'builder', '~> 3.2'
   s.add_dependency 'cucumber-ci-environment', '> 9', '< 11'
@@ -39,8 +39,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nokogiri', '~> 1.15'
   s.add_development_dependency 'rake', '~> 13.2'
   s.add_development_dependency 'rspec', '~> 3.13'
-  s.add_development_dependency 'rubocop', '~> 1.56.4'
-  s.add_development_dependency 'rubocop-capybara', '~> 2.21.0'
+  s.add_development_dependency 'rubocop', '~> 1.61.0'
+  s.add_development_dependency 'rubocop-capybara', '~> 2.19.0'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
   s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
   s.add_development_dependency 'rubocop-rspec', '~> 2.25.0'

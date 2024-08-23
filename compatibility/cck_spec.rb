@@ -3,7 +3,7 @@
 require_relative 'support/shared_examples'
 require_relative 'support/cck/examples'
 
-require 'cucumber-compatibility-kit'
+require 'cck/examples'
 
 describe 'Cucumber Compatibility Kit', type: :feature, cck: true do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }

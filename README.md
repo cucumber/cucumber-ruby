@@ -144,8 +144,8 @@ You can also find documentation on the command line possibilities in [features/d
 
 - Getting started, writing features, step definitions, and more: https://cucumber.io/docs
 - Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
-- Community support forum: https://community.smartbear.com/t5/Cucumber-Open/bd-p/CucumberOS
-- Slack: [register for an account](https://cucumberbdd-slack-invite.herokuapp.com/) then head over to [#intro](https://cucumberbdd.slack.com/messages/C5WD8SA21/)
+- Community support forum: https://github.com/orgs/cucumber/discussions
+- Discord: [register for an account](https://cucumber.io/docs/community/get-in-touch#discord)
 
 ## Copyright
 
