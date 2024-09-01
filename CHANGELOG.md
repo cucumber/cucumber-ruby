@@ -10,6 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Changed
+- Added gems `base64`, `bigdecimal` as dependencies ([olleolleolle](https://github.com/olleolleolle))
 - Updated `cucumber-compatibility-kit` to v16 ([luke-hill](https://github.com/luke-hill))
 - Changed compatibility testing to fully lean on external assets instead of duplicating them ([luke-hill](https://github.com/luke-hill))
 
