@@ -15,6 +15,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
+- Fixed a Hash.new with kwargs error on Ruby 3.4 (warning on Ruby 3.3) ([#1761](https://github.com/cucumber/cucumber-ruby/pull/1761))
 
 ### Removed
 - Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))

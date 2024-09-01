@@ -75,7 +75,7 @@ module Cucumber
         def eof; end
       end
 
-      NULL_CONVERSIONS = Hash.new(strict: false, proc: ->(cell_value) { cell_value }).freeze
+      NULL_CONVERSIONS = Hash.new({ strict: false, proc: ->(cell_value) { cell_value } }).freeze
 
       # @param data [Core::Test::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_column
