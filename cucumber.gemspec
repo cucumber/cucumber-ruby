@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0'
   s.required_rubygems_version = '>= 3.2.8'
 
+  s.add_dependency 'base64'
+  s.add_dependency 'bigdecimal'
   s.add_dependency 'builder', '~> 3.2'
   s.add_dependency 'cucumber-ci-environment', '> 9', '< 11'
   s.add_dependency 'cucumber-core', '> 13', '< 14'
