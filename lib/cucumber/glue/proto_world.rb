@@ -2,7 +2,6 @@
 
 require 'cucumber/gherkin/formatter/ansi_escapes'
 require 'cucumber/core/test/data_table'
-require 'cucumber/deprecate'
 require 'mini_mime'
 
 module Cucumber

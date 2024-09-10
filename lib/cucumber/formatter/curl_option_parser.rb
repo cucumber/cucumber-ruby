@@ -31,7 +31,8 @@ module Cucumber
         [url, http_method, headers]
       end
 
-      # TODO: [LH] -> Switch below methods to private
+      private
+
       def self.remove_arg_for(args, arg)
         return args.shift unless args.empty?
 

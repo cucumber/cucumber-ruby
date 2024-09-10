@@ -11,9 +11,7 @@ module Cucumber
       end
 
       def apply_to(test_case)
-        test_case.with_steps(
-          test_case.test_steps + after_hooks.reverse
-        )
+        test_case.with_steps(test_case.test_steps + after_hooks.reverse)
       end
 
       private
