@@ -22,6 +22,7 @@ that need to rely on procedural loading / reloading of files should use method i
 
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
+- Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
 
 ### Removed
 - `StepDefinitionLight` associated methods. The class itself is present but deprecated
