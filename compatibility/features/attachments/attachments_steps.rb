@@ -36,3 +36,7 @@ end
 When('a PDF document is attached and renamed') do
   attach(File.open("#{cck_asset_path}/document.pdf"), 'document/pdf', 'renamed.pdf')
 end
+
+When('a link to {string} is attached') do |link|
+  attach(link, 'text/uri-list')
+end
