@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Fixed
+- Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
 
 ## [9.2.0] - 2024-03-19
 ### Changed
