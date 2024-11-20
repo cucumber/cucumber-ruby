@@ -16,7 +16,8 @@ Gem::Specification.new do |s|
     'changelog_uri' => 'https://github.com/cucumber/cucumber-ruby/blob/main/CHANGELOG.md',
     'documentation_uri' => 'https://www.rubydoc.info/github/cucumber/cucumber-ruby/',
     'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/cukes',
-    'source_code_uri' => 'https://github.com/cucumber/cucumber-ruby'
+    'source_code_uri' => 'https://github.com/cucumber/cucumber-ruby',
+    'funding_uri' => 'https://opencollective.com/cucumber'
   }
 
   s.required_ruby_version = '>= 3.0'
