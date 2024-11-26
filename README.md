@@ -8,6 +8,7 @@
 [![Test cucumber](https://github.com/cucumber/cucumber-ruby/actions/workflows/test.yaml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions/workflows/test.yaml)
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=main)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=main)
+[![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20Cucumber%20Guru-006BFF)](https://gurubase.io/g/cucumber)
 
 Cucumber is a tool for running automated tests written in plain language. Because they're
 written in plain language, they can be read by anyone on your team. Because they can be
