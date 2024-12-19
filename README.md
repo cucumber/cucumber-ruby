@@ -1,4 +1,4 @@
-<img src="docs/img/cucumber-open-logo.png" alt="Cucumber Open - Supported by Smartbear" width="428" />
+<img src="docs/img/logo.svg" alt="" width="75" />
 
 # Cucumber
 
