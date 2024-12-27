@@ -14,7 +14,10 @@ module Cucumber
         return unless instance_exec_pos
 
         replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
-        backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+        if pseudo_method
+          pattern = RUBY_VERSION >= '3.4' ? /'.*'/ : /`.*'/
+          backtrace[replacement_line].gsub!(pattern, "`#{pseudo_method}'")
+        end
 
         depth = backtrace.count { |line| line == instance_exec_invocation_line }
         end_pos = depth > 1 ? instance_exec_pos : -1
@@ -49,7 +52,13 @@ module Cucumber
       def self.cucumber_run_with_backtrace_filtering(pseudo_method)
         yield
       rescue Exception => e
-        instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
+        yield_line_number = __LINE__ - 2
+        instance_exec_invocation_line =
+          if RUBY_VERSION >= '3.4'
+            "#{__FILE__}:#{yield_line_number}:in '#{name}.#{__method__}'"
+          else
+            "#{__FILE__}:#{yield_line_number}:in `#{__method__}'"
+          end
         replace_instance_exec_invocation_line!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
         raise e
       end

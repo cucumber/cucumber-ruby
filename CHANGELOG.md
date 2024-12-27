@@ -23,6 +23,7 @@ that need to rely on procedural loading / reloading of files should use method i
 
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
+- Fixed Ruby 3.4+ issue where error backtraces weren't being formatted. ([#1771](https://github.com/cucumber/cucumber-ruby/pull/1771) [orien](https://github.com/orien))
 
 ### Removed
 - `StepDefinitionLight` associated methods. The class itself is present but deprecated

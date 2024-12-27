@@ -43,8 +43,10 @@ module Cucumber
 
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
           # Strip off file locations
+          regexp = RUBY_VERSION >= '3.4' ? /(.*):in '/ : /(.*):in `/
           filtered = filtered.map do |line|
-            line =~ /(.*):in `/ ? Regexp.last_match(1) : line
+            match = regexp.match(line)
+            match ? match[1] : line
           end
         end
 
