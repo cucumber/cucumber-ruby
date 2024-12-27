@@ -45,7 +45,7 @@ Feature: Custom Formatter
           def initialize(config, options)
             @io = config.out_stream
             config.on_event :test_run_finished do |event|
-              @io.print options.inspect
+              @io.print options.to_json
             end
           end
         end
@@ -54,5 +54,5 @@ Feature: Custom Formatter
     When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two --publish-quiet`
     Then it should pass with exactly:
     """
-    {"foo"=>"bar", "one"=>"two"}
+    {"foo":"bar","one":"two"}
     """
