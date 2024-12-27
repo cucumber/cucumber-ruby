@@ -252,6 +252,18 @@ Security/YAMLLoad:
   Exclude:
     - 'lib/cucumber/cli/profile_loader.rb'
 
+# Offense count: 5
+# This cop supports unsafe autocorrection (--autocorrect-all).
+# Configuration parameters: EnforcedStyle, AllowModifiersOnSymbols.
+# SupportedStyles: inline, group
+Style/AccessModifierDeclarations:
+  Exclude:
+    - 'lib/cucumber/cli/options.rb'
+    - 'lib/cucumber/filters/activate_steps.rb'
+    - 'lib/cucumber/formatter/pretty.rb'
+    - 'lib/cucumber/formatter/progress.rb'
+    - 'lib/cucumber/multiline_argument/data_table.rb'
+
 # Offense count: 3
 Style/ClassVars:
   Exclude:
