@@ -72,8 +72,9 @@ OUTPUT
             end
           end
 
-          it 'attached the styring version on the object' do
-            expect(@out.string).to include '{:a=>1, :b=>2, :c=>3}'
+          it 'attached the string version on the object' do
+            expected_string = RUBY_VERSION >= '3.4' ? '{a: 1, b: 2, c: 3}' : '{:a=>1, :b=>2, :c=>3}'
+            expect(@out.string).to include expected_string
           end
         end
 
@@ -92,11 +93,17 @@ OUTPUT
           end
 
           it 'logs each parameter independently' do
+            expected_hash =
+              if RUBY_VERSION >= '3.4'
+                '{subject: "monkey", verb: "eats", complement: "banana"}'
+              else
+                '{:subject=>"monkey", :verb=>"eats", :complement=>"banana"}'
+              end
             expect(@out.string).to include [
               '      subject: monkey',
               '      verb: eats',
               '      complement: banana',
-              '      {:subject=>"monkey", :verb=>"eats", :complement=>"banana"}'
+              "      #{expected_hash}"
             ].join("\n")
           end
         end
