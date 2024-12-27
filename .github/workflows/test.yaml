@@ -17,12 +17,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        ruby: ['3.0', '3.1', '3.2', '3.3']
+        ruby: ['3.0', '3.1', '3.2', '3.3', '3.4']
         include:
           - os: ubuntu-latest
             ruby: jruby-9.4
           - os: ubuntu-latest
             ruby: truffleruby-head
+        exclude:
+          - os: windows-latest # Ruby 3.4 on Windows is not available on GitHub Actions, yet.
+            ruby: '3.4'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4

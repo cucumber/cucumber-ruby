@@ -17,6 +17,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
 - Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
+- Fixed Ruby 3.4+ issue where error backtraces weren't being formatted. ([#1771](https://github.com/cucumber/cucumber-ruby/pull/1771) [orien](https://github.com/orien))
 
 ### Removed
 - Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))
