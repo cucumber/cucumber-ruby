@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 
-### Chaneged
+### Changed
 - Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
 
 ## [9.2.0] - 2024-03-19
