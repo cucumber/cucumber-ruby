@@ -23,7 +23,7 @@ AllCops:
     - vendor/**/*
     - temp_app/**/*
 
-# A line length of 200 covers most violations in the repo while still being a more up to date length given today's screen sizes
+# A line length of 200 covers most violations in the repo while still being a more up-to-date length given today's screen sizes
 Layout/LineLength:
   Max: 200
 
