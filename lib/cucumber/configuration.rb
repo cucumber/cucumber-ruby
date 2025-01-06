@@ -254,7 +254,7 @@ module Cucumber
     end
 
     def id_generator
-      @id_generator ||= Cucumber::Messages::IdGenerator::UUID.new
+      @id_generator ||= Cucumber::Messages::Helpers::IdGenerator::UUID.new
     end
 
     private

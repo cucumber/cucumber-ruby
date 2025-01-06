@@ -11,7 +11,7 @@ require 'cucumber/formatter/query/test_case_started_by_test_case'
 module Cucumber
   module Formatter
     class MessageBuilder
-      include Cucumber::Messages::TimeConversion
+      include Cucumber::Messages::Helpers::TimeConversion
 
       def initialize(config)
         @config = config

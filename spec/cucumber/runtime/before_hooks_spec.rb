@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 require 'cucumber/runtime/hooks_examples'
-
 require 'cucumber/runtime/before_hooks'
 
 module Cucumber
