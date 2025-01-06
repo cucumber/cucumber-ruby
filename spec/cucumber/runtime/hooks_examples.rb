@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'cucumber/messages/id_generator'
+require 'cucumber/messages/helpers/id_generator'
 
 RSpec.shared_examples 'events are fired when applying hooks' do
-  let(:id_generator) { Cucumber::Messages::IdGenerator::Incrementing.new }
+  let(:id_generator) { Cucumber::Messages::Helpers::IdGenerator::Incrementing.new }
   let(:scenario) { double }
   let(:event_bus) { double }
   let(:hooks) { [hook] }
   let(:hook) { double }
-
   let(:test_case) { double }
 
   before do

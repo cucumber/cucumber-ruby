@@ -13,7 +13,7 @@ module CCK
     end
 
     def parse_ndjson(ndjson)
-      Cucumber::Messages::NdjsonToMessageEnumerator.new(ndjson)
+      Cucumber::Messages::Helpers::NdjsonToMessageEnumerator.new(ndjson)
     end
   end
 end

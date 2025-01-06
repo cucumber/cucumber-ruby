@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'cucumber/cucumber_expressions/parameter_type'
-require 'cucumber/deprecate'
 
 module Cucumber
   module Glue
