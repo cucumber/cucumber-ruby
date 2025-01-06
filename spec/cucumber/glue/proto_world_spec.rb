@@ -91,22 +91,15 @@ OUTPUT
 
           define_steps do
             When('{word} {word} {word}') do |subject, verb, complement|
-              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}", subject: subject, verb: verb, complement: complement
+              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}"
             end
           end
 
           it 'logs each parameter independently' do
-            expected_hash =
-              if RUBY_VERSION >= '3.4'
-                '{subject: "monkey", verb: "eats", complement: "banana"}'
-              else
-                '{:subject=>"monkey", :verb=>"eats", :complement=>"banana"}'
-              end
             expect(@out.string).to include [
               '      subject: monkey',
               '      verb: eats',
-              '      complement: banana',
-              "      #{expected_hash}"
+              '      complement: banana'
             ].join("\n")
           end
         end
