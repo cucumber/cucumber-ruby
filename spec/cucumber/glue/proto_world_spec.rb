@@ -68,13 +68,16 @@ OUTPUT
 
           define_steps do
             When('an object is logged') do
-              log(a: 1, b: 2, c: 3)
+              object = Object.new
+              def object.to_s
+                '<test-object>'
+              end
+              log(object)
             end
           end
 
-          it 'attached the string version on the object' do
-            expected_string = RUBY_VERSION >= '3.4' ? '{a: 1, b: 2, c: 3}' : '{:a=>1, :b=>2, :c=>3}'
-            expect(@out.string).to include expected_string
+          it 'prints the stringified version of the object as a log message' do
+            expect(@out.string).to include('<test-object>')
           end
         end
 
