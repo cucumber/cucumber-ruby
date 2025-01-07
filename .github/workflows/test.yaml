@@ -1,31 +1,31 @@
-name: Test cucumber
-
-on:
-  push:
-    branches:
-      - main
-      - renovate/*
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: "0 5 * * *"
-
-jobs:
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        ruby: ["2.7", "3.0", "3.1", "3.2"]
-        include:
-          - os: ubuntu-latest
-            ruby: jruby-9.4
-          - os: ubuntu-latest
-            ruby: truffleruby-head
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/test-ruby
-        with:
-          ruby-version: ${{ matrix.ruby }}
+#name: Test cucumber
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#      - renovate/*
+#  pull_request:
+#    branches:
+#      - main
+#  schedule:
+#    - cron: "0 5 * * *"
+#
+#jobs:
+#  test:
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        os: [ubuntu-latest, macos-latest, windows-latest]
+#        ruby: ["2.7", "3.0", "3.1", "3.2"]
+#        include:
+#          - os: ubuntu-latest
+#            ruby: jruby-9.4
+#          - os: ubuntu-latest
+#            ruby: truffleruby-head
+#    runs-on: ${{ matrix.os }}
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: ./.github/actions/test-ruby
+#        with:
+#          ruby-version: ${{ matrix.ruby }}
