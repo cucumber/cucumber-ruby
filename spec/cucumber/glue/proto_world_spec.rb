@@ -83,24 +83,24 @@ OUTPUT
 
         describe 'when logging multiple items on one call' do
           define_feature <<-FEATURE
-        Feature: Banana party
+        Feature: Logging multiple entries
 
-          Scenario: Monkey eats banana
-            When monkey eats banana
+          Scenario: Logging multiple entries
+            When logging multiple entries
           FEATURE
 
           define_steps do
-            When('{word} {word} {word}') do |subject, verb, complement|
-              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}"
+            When('logging multiple entries') do
+              log 'entry one', 'entry two', 'entry three'
             end
           end
 
-          it 'logs each parameter independently' do
-            expect(@out.string).to include [
-              '      subject: monkey',
-              '      verb: eats',
-              '      complement: banana'
-            ].join("\n")
+          it 'logs each entry independently' do
+            expect(@out.string).to include([
+              '      entry one',
+              '      entry two',
+              '      entry three'
+            ].join("\n"))
           end
         end
 
