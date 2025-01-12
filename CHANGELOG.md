@@ -23,7 +23,6 @@ that need to rely on procedural loading / reloading of files should use method i
 
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
-- Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
 
 ### Removed
 - `StepDefinitionLight` associated methods. The class itself is present but deprecated
@@ -35,7 +34,7 @@ that need to rely on procedural loading / reloading of files should use method i
 
 ## [9.2.1] - 2025-01-12
 ### Fixed
-- Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
+- Fixed an issue for Ruby 3.4+ where a default hash instantiation was being picked up as keyword arguments ([Jon Rowe](https://github.com/JonRowe))
 
 ## [9.2.0] - 2024-03-19
 ### Changed
@@ -181,7 +180,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.1...HEAD
+[9.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.0...v9.2.1
 [9.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...v9.2.0
 [9.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.1...v9.1.2
 [9.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.0...v9.1.1
