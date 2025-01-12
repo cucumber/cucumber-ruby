@@ -33,6 +33,10 @@ that need to rely on procedural loading / reloading of files should use method i
 (This applies to both regular usage and internal testing)
 - Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))
 
+## [9.2.1] - 2025-01-12
+### Fixed
+- Fixed an issue for Ruby 3.4.0 where a default hash instantiation was being picked up as keyword arguments  ([Jon Rowe](https://github.com/JonRowe))
+
 ## [9.2.0] - 2024-03-19
 ### Changed
 - Updated cucumber dependencies (Specifically cucumber-core) ([luke-hill](https://github.com/luke-hill))
