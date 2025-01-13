@@ -76,8 +76,8 @@ module Cucumber
         def eof; end
       end
 
-      # This is a Hash being initialized with a default value of a Hash, DO NOT REFORMAT TO REMOVE {}
-      # Future versions [3.4.0+] of ruby will interpret these as keywords and break.
+      # This is a Hash being initialized with a default value of a Hash
+      # DO NOT REFORMAT TO REMOVE {} - Ruby 3.4+ will interpret these as keywords and cucumber will not work
       NULL_CONVERSIONS = Hash.new({ strict: false, proc: ->(cell_value) { cell_value } }).freeze
 
       # @param data [Core::Test::DataTable] the data for the table

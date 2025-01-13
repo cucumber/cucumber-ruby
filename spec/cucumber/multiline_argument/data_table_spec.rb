@@ -33,7 +33,7 @@ module Cucumber
       end
 
       describe '#symbolic_hashes' do
-        it 'coverts data table to an array of hashes with symbols as keys' do
+        it 'converts data table to an array of hashes with symbols as keys' do
           ast_table = Cucumber::Core::Test::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w[1 22 333]])
           data_table = described_class.new(ast_table)
 
