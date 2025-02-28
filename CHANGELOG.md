@@ -69,7 +69,7 @@ All logic contained in [compatibility](./compatibility) ([luke-hill](https://git
 
 ## [9.1.0] - 2023-11-14
 ### Changed
-- First couple of passes of tidying up approximately 40% of the manual fix cops
+- First iteration to tidy up approximately 40% of the manual fix cops
 ([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [#1741](https://github.com/cucumber/cucumber-ruby/pull/1741) [#1742](https://github.com/cucumber/cucumber-ruby/pull/1742) [luke-hill](https://github.com/luke-hill))
 - Removed a bunch of example files / sample projects from ancient projects no longer viable
 ([#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))

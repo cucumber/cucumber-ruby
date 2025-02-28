@@ -45,10 +45,10 @@ Later in this document, bundler is considered being used so all commands are usi
 
 ### Supported platforms
 
+- Ruby 3.3
 - Ruby 3.2
 - Ruby 3.1
 - Ruby 3.0
-- Ruby 2.7
 - TruffleRuby 22.0.0+
 - JRuby 9.4+ (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
 
