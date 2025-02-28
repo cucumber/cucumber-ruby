@@ -21,6 +21,7 @@ module Cucumber
         @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
+        @test_run_started = Query::TestRunStarted.new(config)
 
         config.on_event :envelope, &method(:on_envelope)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
@@ -34,6 +35,7 @@ module Cucumber
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
+        @current_test_run_started_id = nil
         @current_test_case_started_id = nil
         @current_test_step_id = nil
       end
@@ -149,10 +151,13 @@ module Cucumber
         step_match_argument.parameter_type&.name if step_match_argument.respond_to?(:parameter_type)
       end
 
-      def on_test_run_started(*)
+      def on_test_run_started(event)
+        @current_test_run_started_id = test_case_started_id(event.test_case)
+
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
-            timestamp: time_to_timestamp(Time.now)
+            timestamp: time_to_timestamp(Time.now),
+            id: event.test_cases.first.id
           )
         )
 
@@ -265,6 +270,10 @@ module Cucumber
 
       def test_case_started_id(test_case)
         @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
+      end
+
+      def test_run_started_id(test_case)
+        @test_run_started.test_run_id(test_case)
       end
     end
   end
