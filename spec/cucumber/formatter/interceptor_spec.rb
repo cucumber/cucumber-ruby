@@ -14,13 +14,8 @@ module Cucumber
         end
 
         context 'when passed :stderr' do
-          before :each do
-            @stderr = $stderr
-          end
-
-          after :each do
-            $stderr = @stderr
-          end
+          before { @stderr = $stderr }
+          after { $stderr = @stderr }
 
           it 'wraps $stderr' do
             wrapped = described_class.wrap(:stderr)
@@ -31,13 +26,8 @@ module Cucumber
         end
 
         context 'when passed :stdout' do
-          before :each do
-            @stdout = $stdout
-          end
-
-          after :each do
-            $stdout = @stdout
-          end
+          before { @stdout = $stdout }
+          after { $stdout = @stdout }
 
           it 'wraps $stdout' do
             wrapped = described_class.wrap(:stdout)
@@ -54,10 +44,7 @@ module Cucumber
           $stdout = pipe
           @wrapped = described_class.wrap(:stdout)
         end
-
-        after :each do
-          $stdout = @stdout
-        end
+        after { $stdout = @stdout }
 
         it "raises an ArgumentError if it wasn't passed :stderr/:stdout" do
           expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
@@ -72,18 +59,17 @@ module Cucumber
 
         it 'noops if $stdout or $stderr has been overwritten' do
           $stdout = StringIO.new
-          pipe = described_class.unwrap! :stdout
+          pipe = described_class.unwrap!(:stdout)
           expect(pipe).to eq $stdout
 
           $stderr = StringIO.new
-          pipe = described_class.unwrap! :stderr
+          pipe = described_class.unwrap!(:stderr)
           expect(pipe).to eq $stderr
         end
 
         it 'disables the pipe bypass' do
           buffer = '(::)'
-          described_class.unwrap! :stdout
-
+          described_class.unwrap!(:stdout)
           @wrapped.write(buffer)
 
           expect(@wrapped.buffer_string).not_to end_with(buffer)
@@ -95,8 +81,8 @@ module Cucumber
         let(:pi) { described_class.new(pipe) }
 
         it 'writes arguments to the original pipe' do
-          expect(pipe).to receive(:write).with(buffer) { buffer.size }
-          expect(pi.write(buffer)).to eq buffer.size
+          expect(pipe).to receive(:write).with(buffer) { buffer.length }
+          expect(pi.write(buffer)).to eq(buffer.length)
         end
 
         it 'adds the buffer to its stored output' do
@@ -105,20 +91,20 @@ module Cucumber
           pi.write(buffer)
 
           expect(pi.buffer_string).not_to be_empty
-          expect(pi.buffer_string).to eq buffer
+          expect(pi.buffer_string).to eq(buffer)
         end
       end
 
       describe '#method_missing' do
         let(:pi) { described_class.new(pipe) }
 
-        it 'passes #tty? to the original pipe' do
+        it 'passes `#tty?` to the original pipe' do
           expect(pipe).to receive(:tty?).and_return(true)
           expect(pi.tty?).to be true
         end
       end
 
-      describe '#respond_to' do
+      describe '#respond_to?' do
         let(:pi) { described_class.wrap(:stderr) }
 
         it 'responds to all methods $stderr has' do
@@ -129,14 +115,15 @@ module Cucumber
       describe 'when calling `methods` on the stream' do
         it 'does not raise errors' do
           allow($stderr).to receive(:puts)
-
           described_class.wrap(:stderr)
-          expect { $stderr.puts('Oh, hi here !') }.not_to raise_exception(NoMethodError)
+
+          expect { $stderr.puts('Oh, hi here !') }.not_to raise_error
         end
 
-        it 'does not shadow errors when method do not exist on the stream' do
+        it 'does not shadow errors when the method does not exist on the stream' do
           described_class.wrap(:stderr)
-          expect { $stderr.not_really_puts('Oh, hi here !') }.to raise_exception(NoMethodError)
+
+          expect { $stderr.not_really_puts('Oh, hi here !') }.to raise_error(NoMethodError)
         end
       end
     end
