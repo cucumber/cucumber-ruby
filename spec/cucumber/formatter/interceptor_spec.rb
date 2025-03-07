@@ -59,6 +59,14 @@ module Cucumber
           $stdout = @stdout
         end
 
+        before :each do
+          @stderr = $stderr
+        end
+
+        after :each do
+          $stderr = @stderr
+        end
+
         it "raises an ArgumentError if it wasn't passed :stderr/:stdout" do
           expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
         end
