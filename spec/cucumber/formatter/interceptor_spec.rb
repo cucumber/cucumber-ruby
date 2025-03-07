@@ -132,7 +132,7 @@ module Cucumber
         it 'responds to all methods $stderr has' do
           $stderr.methods.each do |m|
             response = pi.respond_to?(m)
-            "Method: #{m} - RESPONSE: #{response}"
+            puts "Method: #{m} - RESPONSE: #{response}"
             expect(response).to be true
           end
         end
