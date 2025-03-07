@@ -53,17 +53,11 @@ module Cucumber
           @stdout = $stdout
           $stdout = pipe
           @wrapped = described_class.wrap(:stdout)
-        end
-
-        after :each do
-          $stdout = @stdout
-        end
-
-        before :each do
           @stderr = $stderr
         end
 
         after :each do
+          $stdout = @stdout
           $stderr = @stderr
         end
 
