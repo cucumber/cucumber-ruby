@@ -130,7 +130,11 @@ module Cucumber
         let(:pi) { described_class.wrap(:stderr) }
 
         it 'responds to all methods $stderr has' do
-          $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
+          $stderr.methods.each do |m|
+            response = pi.respond_to?(m)
+            "Method: #{m} - RESPONSE: #{response}"
+            expect(response).to be true
+          end
         end
       end
 
