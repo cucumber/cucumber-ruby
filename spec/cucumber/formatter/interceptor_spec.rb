@@ -124,17 +124,11 @@ module Cucumber
         let(:pi) { described_class.wrap(:stderr) }
 
         it 'responds to all methods $stderr has' do
-          puts 'problematic methods'
-          puts %w[pread pwrite nonblock? ioctl pathconf]
-          true_methods, false_methods = $stderr.methods.partition { |m| pi.respond_to?(m) }
-          puts "\n\n\nPASSING\n\n\n"
-          puts true_methods
-          puts "\n\n\nFAILING\n\n\n"
-          puts false_methods
+          # puts 'problematic methods'
+          # puts %w[pread pwrite nonblock? ioctl pathconf]
+          # true_methods, false_methods = $stderr.methods.partition { |m| pi.respond_to?(m) }
 
-          $stderr.methods.each do |m|
-            expect(pi.respond_to?(m)).to be true
-          end
+          $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
         end
       end
 
