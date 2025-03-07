@@ -136,7 +136,7 @@ module Cucumber
         after :each do
           $stdout = @stdout
         end
-        
+
         let(:pi) { described_class.wrap(:stderr) }
 
         it 'responds to all methods $stderr has' do
@@ -144,7 +144,7 @@ module Cucumber
           # puts %w[pread pwrite nonblock? ioctl pathconf]
           # true_methods, false_methods = $stderr.methods.partition { |m| pi.respond_to?(m) }
 
-          $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
+          expect(pi).to respond_to(*$stderr.methods)
         end
       end
 
