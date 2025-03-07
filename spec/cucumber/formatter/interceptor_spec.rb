@@ -114,10 +114,14 @@ module Cucumber
       describe '#method_missing' do
         before :each do
           @stdout = $stdout
+          $stdout = pipe
+          @wrapped = described_class.wrap(:stdout)
+          @stderr = $stderr
         end
 
         after :each do
           $stdout = @stdout
+          $stderr = @stderr
         end
 
         let(:pi) { described_class.new(pipe) }
@@ -131,10 +135,14 @@ module Cucumber
       describe '#respond_to' do
         before :each do
           @stdout = $stdout
+          $stdout = pipe
+          @wrapped = described_class.wrap(:stdout)
+          @stderr = $stderr
         end
 
         after :each do
           $stdout = @stdout
+          $stderr = @stderr
         end
 
         let(:pi) { described_class.wrap(:stderr) }
