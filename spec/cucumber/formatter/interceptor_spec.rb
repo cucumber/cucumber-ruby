@@ -112,6 +112,14 @@ module Cucumber
       end
 
       describe '#method_missing' do
+        before :each do
+          @stdout = $stdout
+        end
+
+        after :each do
+          $stdout = @stdout
+        end
+
         let(:pi) { described_class.new(pipe) }
 
         it 'passes #tty? to the original pipe' do
@@ -121,6 +129,14 @@ module Cucumber
       end
 
       describe '#respond_to' do
+        before :each do
+          @stdout = $stdout
+        end
+
+        after :each do
+          $stdout = @stdout
+        end
+        
         let(:pi) { described_class.wrap(:stderr) }
 
         it 'responds to all methods $stderr has' do
