@@ -14,9 +14,9 @@ module Cucumber
         @config.on_event(:test_case_finished) do |event|
           if event.test_case != @previous_test_case
             @previous_test_case = event.test_case
-            @issues[event.result.to_sym] << event.test_case unless event.result.ok?(@config.strict)
+            @issues[event.result.to_sym] << event.test_case unless event.result.ok?(strict: @config.strict)
           elsif event.result.passed?
-            @issues[:flaky] << event.test_case unless Core::Test::Result::Flaky.ok?(@config.strict.strict?(:flaky))
+            @issues[:flaky] << event.test_case unless Core::Test::Result::Flaky.ok?(strict: @config.strict.strict?(:flaky))
             @issues[:failed].delete(event.test_case)
           end
         end

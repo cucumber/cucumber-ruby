@@ -342,7 +342,7 @@ OUTPUT
               Given('this step passes') {}
             end
 
-            it 'displays hook output appropriately ' do
+            it 'displays hook output appropriately' do
               expect(@out.string).to include <<~OUTPUT
                 Feature: 
                 

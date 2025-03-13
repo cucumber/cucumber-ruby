@@ -1,12 +1,13 @@
 # Cucumber and JRuby limitations
 
-`cucumber` can be executed on `JRuby` (tested with `9.2`), although some of the features
+`cucumber` can be executed on `JRuby` (tested with `9.4`), although some of the features
 are not available on this platform.
 
 ## Defining steps with native languages
 
 There are currently three languages (Russian, Ukrainian and Uzbek) for which the step definition
 can not be written in native language.
+
 That means, for example, that you can not write the following code:
 
 ```ruby

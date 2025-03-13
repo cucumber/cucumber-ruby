@@ -9,13 +9,46 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Added dependencies that will no longer be part of the ruby stdlib ([jeromeag](https://github.com/jerome))
+- Updated `cucumber-compatibility-kit` to v16 ([luke-hill](https://github.com/luke-hill))
+- Changed compatibility testing to fully lean on external assets instead of duplicating them ([luke-hill](https://github.com/luke-hill))
+- Permit usage of latest versions of all cucumber internal gems
+- The auto-generation of all placeholder `pending` steps has been refactored (_There should be no visible changes
+but the code is now refactored to work using newer ruby standards_)
+- The `#text?` method for checking Differences in multi-line text is now deprecated (Users
+should lean on an appropriate testing library for this)
+- `Cucumber.use_legacy_autoloader` that was intended as a stop-gap for v4/v5 is now deprecated (People
+that need to rely on procedural loading / reloading of files should use method invocations) ([luke-hill](https://github.com/luke-hill))
+
 ### Fixed
-- Fix some problematic specs that were leaking state and showcasing an issue on JRuby
-  ([#1783](https://github.com/cucumber/cucumber-ruby/pull/1783) [luke-hill](https://github.com/luke-hill))
+- Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
+- Fixed Ruby 3.4+ issue where error backtraces weren't being formatted. ([#1771](https://github.com/cucumber/cucumber-ruby/pull/1771) [orien](https://github.com/orien))
+- Fix some problematic specs that were leaking state and showcasing an issue on JRuby ([#1783](https://github.com/cucumber/cucumber-ruby/pull/1783) [luke-hill](https://github.com/luke-hill))
+
+### Removed
+- `StepDefinitionLight` associated methods. The class itself is present but deprecated
+- `Webrick` Proc handling aliases that were long redundant
+- Associated legacy scripts for updating dependencies that are no longer used
+- Tag Expressions using legacy syntax that were handled / sanitized are no longer done so
+(This applies to both regular usage and internal testing)
+- Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))
+- Unindentation support for snippet generator / tests (Heredocs are much better now) ([luke-hill](https://github.com/luke-hill))
+
+## [9.2.1] - 2025-01-12
+### Fixed
+- Fixed an issue for Ruby 3.4+ where a default hash instantiation was being picked up as keyword arguments ([Jon Rowe](https://github.com/JonRowe))
+
+## [9.2.0] - 2024-03-19
+### Changed
+- Updated cucumber dependencies (Specifically cucumber-core) ([luke-hill](https://github.com/luke-hill))
+- Uncoupled a lot of dual-responsibility complexity in HTTP classes (Specifically the builders/parsers)
+([#1752](https://github.com/cucumber/cucumber-ruby/pull/1750) [luke-hill](https://github.com/luke-hill))
+
+### Removed
+- Some legacy JRuby local testing profiles are now removed ([luke-hill](https://github.com/luke-hill))
 
 ## [9.1.2] - 2024-01-23
-### Added
-
 ### Changed
 - Moved all CCK step definition/miscellaneous file logic from CCK gem to this repo.
 All logic contained in [compatibility](./compatibility) ([luke-hill](https://github.com/luke-hill))
@@ -25,8 +58,6 @@ All logic contained in [compatibility](./compatibility) ([luke-hill](https://git
 - Fix a situation whereby the step definition message will omit the parameter-type name when it cannot be inferred
 (This fixes an issue in cucumber-wire when passing legacy steps down the wire)
 ([#1746](https://github.com/cucumber/cucumber-ruby/pull/1746) [luke-hill](https://github.com/luke-hill))
-
-### Removed
 
 ## [9.1.1] - 2024-01-04
 ### Changed
@@ -152,7 +183,9 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.1...HEAD
+[9.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.0...v9.2.1
+[9.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...v9.2.0
 [9.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.1...v9.1.2
 [9.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.0...v9.1.1
 [9.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.0.2...v9.1.0

@@ -4,6 +4,7 @@ require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/multiline_argument/data_table/diff_matrices'
+require 'cucumber/deprecate'
 
 module Cucumber
   module MultilineArgument
@@ -75,7 +76,9 @@ module Cucumber
         def eof; end
       end
 
-      NULL_CONVERSIONS = Hash.new(strict: false, proc: ->(cell_value) { cell_value }).freeze
+      # This is a Hash being initialized with a default value of a Hash
+      # DO NOT REFORMAT TO REMOVE {} - Ruby 3.4+ will interpret these as keywords and cucumber will not work
+      NULL_CONVERSIONS = Hash.new({ strict: false, proc: ->(cell_value) { cell_value } }).freeze
 
       # @param data [Core::Test::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_column
@@ -365,6 +368,11 @@ module Cucumber
       # TODO: remove the below function if it's not actually being used.
       # Nothing else in this repo calls it.
       def text?(text)
+        Cucumber.deprecate(
+          'This method is no longer supported for checking text',
+          '#text?',
+          '11.0.0'
+        )
         raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
       end
 

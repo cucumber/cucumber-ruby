@@ -2,14 +2,13 @@
 
 ### Ruby Extension
 
-Install and configure the
-[ruby extension](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby)
+Install and configure the [ruby extension](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby)
 
 ### Use `debase` and `ruby-debug-ide` gems locally
 
 Make sure to use a `Gemfile.local` file with `debase` and `ruby-debug-ide` gems.
 
-~~~ruby
+```ruby
 # Include the regular Gemfile
 eval File.read('Gemfile')
 
@@ -17,7 +16,7 @@ group :development do
   gem 'debase', require: false
   gem 'ruby-debug-ide', require: false
 end 
-~~~
+```
 
 Execute `bundle config set --local gemfile Gemfile.local` to use it per default,
 then `bundle install`.

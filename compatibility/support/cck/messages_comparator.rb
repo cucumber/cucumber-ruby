@@ -51,6 +51,7 @@ module CCK
       return if ignorable?(detected)
       return if incomparable?(detected)
 
+      # TODO: This needs refactoring as it's becoming rather large and bloated
       all_errors << CCK::KeysChecker.compare(detected, expected)
       compare_sub_messages(detected, expected)
     end
@@ -59,7 +60,7 @@ module CCK
       !detected.is_a?(Cucumber::Messages::Message)
     end
 
-    # These messages we need to ignore because they are too large or they feature timestamps which always vary
+    # These messages need to be ignored because they are too large, or they feature timestamps which will be different
     def ignorable?(detected)
       too_large_message?(detected) || time_message?(detected)
     end
@@ -72,7 +73,7 @@ module CCK
       detected.is_a?(Cucumber::Messages::Timestamp) || detected.is_a?(Cucumber::Messages::Duration)
     end
 
-    # These messages we need to ignore because they are often not of identical shape/value
+    # These messages need to be ignored because they are often not of identical shape
     def incomparable?(detected)
       detected.is_a?(Cucumber::Messages::Ci) || detected.is_a?(Cucumber::Messages::Git)
     end

@@ -68,36 +68,39 @@ OUTPUT
 
           define_steps do
             When('an object is logged') do
-              log(a: 1, b: 2, c: 3)
+              object = Object.new
+              def object.to_s
+                '<test-object>'
+              end
+              log(object)
             end
           end
 
-          it 'attached the styring version on the object' do
-            expect(@out.string).to include '{:a=>1, :b=>2, :c=>3}'
+          it 'prints the stringified version of the object as a log message' do
+            expect(@out.string).to include('<test-object>')
           end
         end
 
         describe 'when logging multiple items on one call' do
           define_feature <<-FEATURE
-        Feature: Banana party
+        Feature: Logging multiple entries
 
-          Scenario: Monkey eats banana
-            When monkey eats banana
+          Scenario: Logging multiple entries
+            When logging multiple entries
           FEATURE
 
           define_steps do
-            When('{word} {word} {word}') do |subject, verb, complement|
-              log "subject: #{subject}", "verb: #{verb}", "complement: #{complement}", subject: subject, verb: verb, complement: complement
+            When('logging multiple entries') do
+              log 'entry one', 'entry two', 'entry three'
             end
           end
 
-          it 'logs each parameter independently' do
-            expect(@out.string).to include [
-              '      subject: monkey',
-              '      verb: eats',
-              '      complement: banana',
-              '      {:subject=>"monkey", :verb=>"eats", :complement=>"banana"}'
-            ].join("\n")
+          it 'logs each entry independently' do
+            expect(@out.string).to include([
+              '      entry one',
+              '      entry two',
+              '      entry three'
+            ].join("\n"))
           end
         end
 
@@ -132,7 +135,7 @@ OUTPUT
         extend Cucumber::Formatter::SpecHelperDsl
         include Cucumber::Formatter::SpecHelper
 
-        before(:each) do
+        before do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
           @formatter = Cucumber::Formatter::Pretty.new(actual_runtime.configuration.with_options(out_stream: @out, source: false))
@@ -140,7 +143,7 @@ OUTPUT
         end
 
         describe 'when attaching data with null byte' do
-          define_feature <<-FEATURE
+          define_feature <<~FEATURE
             Feature: Banana party
 
               Scenario: Monkey eats banana
@@ -154,11 +157,11 @@ OUTPUT
           end
 
           it 'does not report an error' do
-            expect(@out.string).not_to include 'Error'
+            expect(@out.string).not_to include('Error')
           end
 
           it 'properly attaches the data' do
-            expect(@out.string).to include "'\x00'attachement"
+            expect(@out.string).to include("'\x00'attachement")
           end
         end
       end

@@ -16,34 +16,35 @@ Gem::Specification.new do |s|
     'changelog_uri' => 'https://github.com/cucumber/cucumber-ruby/blob/main/CHANGELOG.md',
     'documentation_uri' => 'https://www.rubydoc.info/github/cucumber/cucumber-ruby/',
     'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/cukes',
-    'source_code_uri' => 'https://github.com/cucumber/cucumber-ruby'
+    'source_code_uri' => 'https://github.com/cucumber/cucumber-ruby',
+    'funding_uri' => 'https://opencollective.com/cucumber'
   }
 
-  s.required_ruby_version = '>= 2.7'
-  s.required_rubygems_version = '>= 3.0.1'
+  s.required_ruby_version = '>= 3.0'
+  s.required_rubygems_version = '>= 3.2.8'
 
-  s.add_dependency 'builder', '~> 3.2', '>= 3.2.4'
-  s.add_dependency 'cucumber-ci-environment', '~> 9.2', '>= 9.2.0'
-  s.add_dependency 'cucumber-core', '~> 12.0'
+  s.add_dependency 'base64', '~> 0.2'
+  s.add_dependency 'builder', '~> 3.2'
+  s.add_dependency 'cucumber-ci-environment', '> 9', '< 11'
+  s.add_dependency 'cucumber-core', '~> 15.0'
   s.add_dependency 'cucumber-cucumber-expressions', '~> 17.0'
-  s.add_dependency 'cucumber-gherkin', '> 24', '< 27'
   s.add_dependency 'cucumber-html-formatter', '> 20.3', '< 22'
-  s.add_dependency 'cucumber-messages', '> 19', '< 25'
   s.add_dependency 'diff-lcs', '~> 1.5'
-  s.add_dependency 'mini_mime', '~> 1.1', '>= 1.1.5'
-  s.add_dependency 'multi_test', '~> 1.1', '>= 1.1.0'
-  s.add_dependency 'sys-uname', '~> 1.2', '>= 1.2.3'
+  s.add_dependency 'logger', '~> 1.6'
+  s.add_dependency 'mini_mime', '~> 1.1'
+  s.add_dependency 'multi_test', '~> 1.1'
+  s.add_dependency 'sys-uname', '~> 1.3'
 
-  s.add_development_dependency 'cucumber-compatibility-kit', '~> 15.0'
+  s.add_development_dependency 'cucumber-compatibility-kit', '~> 16.2'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
-  s.add_development_dependency 'nokogiri', '~> 1.14'
-  s.add_development_dependency 'rake', '~> 13.1'
-  s.add_development_dependency 'rspec', '~> 3.12'
-  s.add_development_dependency 'rubocop', '~> 1.56.4'
-  s.add_development_dependency 'rubocop-capybara', '~> 2.19.0'
+  s.add_development_dependency 'nokogiri', '~> 1.15'
+  s.add_development_dependency 'rake', '~> 13.2'
+  s.add_development_dependency 'rspec', '~> 3.13'
+  s.add_development_dependency 'rubocop', '~> 1.69.2'
+  s.add_development_dependency 'rubocop-capybara', '~> 2.21.0'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
   s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
-  s.add_development_dependency 'rubocop-rspec', '~> 2.25.0'
+  s.add_development_dependency 'rubocop-rspec', '~> 3.3.0'
   s.add_development_dependency 'simplecov', '~> 0.22.0'
   s.add_development_dependency 'webrick', '~> 1.8'
 

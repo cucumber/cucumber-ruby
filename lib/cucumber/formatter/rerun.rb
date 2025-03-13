@@ -14,7 +14,7 @@ module Cucumber
         config.on_event :test_case_finished do |event|
           test_case, result = *event.attributes
           if @config.strict.strict?(:flaky)
-            next if result.ok?(@config.strict)
+            next if result.ok?(strict: @config.strict)
 
             add_to_failures(test_case)
           else
@@ -22,11 +22,11 @@ module Cucumber
               if @latest_failed_test_case != test_case
                 add_to_failures(@latest_failed_test_case)
                 @latest_failed_test_case = nil
-              elsif result.ok?(@config.strict)
+              elsif result.ok?(strict: @config.strict)
                 @latest_failed_test_case = nil
               end
             end
-            @latest_failed_test_case = test_case unless result.ok?(@config.strict)
+            @latest_failed_test_case = test_case unless result.ok?(strict: @config.strict)
           end
         end
         config.on_event :test_run_finished do

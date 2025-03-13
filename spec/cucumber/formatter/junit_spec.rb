@@ -68,7 +68,7 @@ module Cucumber
                 Given a passing scenario
           FEATURE
 
-          it 'will contain the file attribute' do
+          it 'contains the file attribute' do
             expect(@doc.xpath('//testsuite/testcase/@file').first.value).to eq('spec.feature')
           end
         end
@@ -104,7 +104,7 @@ module Cucumber
                 Given a passing scenario
           FEATURE
 
-          it 'will not contain the file attribute' do
+          it 'does not contain the file attribute' do
             expect(@doc.xpath('//testsuite/testcase/@file')).to be_empty
           end
         end
@@ -135,7 +135,7 @@ module Cucumber
                 Given a passing scenario
           FEATURE
 
-          it 'will not contain the file attribute' do
+          it 'does not contain the file attribute' do
             expect(@doc.xpath('//testsuite/testcase/@file')).to be_empty
           end
         end
