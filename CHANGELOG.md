@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Fixed
+- Fix some problematic specs that were leaking state and showcasing an issue on JRuby
+  ([#1783](https://github.com/cucumber/cucumber-ruby/pull/1783) [luke-hill](https://github.com/luke-hill))
 
 ## [9.1.2] - 2024-01-23
 ### Added
