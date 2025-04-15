@@ -93,8 +93,7 @@ module Cucumber
       def runtime(existing_runtime)
         return Runtime.new(configuration) unless existing_runtime
 
-        existing_runtime.configure(configuration)
-        existing_runtime
+        existing_runtime.tap { |runtime| runtime.configure(configuration) }
       end
     end
   end
