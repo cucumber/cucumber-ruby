@@ -41,8 +41,13 @@ describe Cucumber::Formatter::Interceptor::Pipe do
       @stdout = $stdout
       $stdout = pipe
       @wrapped = described_class.wrap(:stdout)
+      @stderr = $stderr
     end
-    after { $stdout = @stdout }
+
+    after :each do
+      $stdout = @stdout
+      $stderr = @stderr
+    end
 
     it "raises an ArgumentError if it wasn't passed :stderr/:stdout" do
       expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
@@ -57,12 +62,12 @@ describe Cucumber::Formatter::Interceptor::Pipe do
 
     it 'noops if $stdout or $stderr has been overwritten' do
       $stdout = StringIO.new
-      pipe = described_class.unwrap!(:stdout)
-      expect(pipe).to eq $stdout
+      pipe = described_class.unwrap! :stdout
+      expect(pipe).to eq($stdout)
 
       $stderr = StringIO.new
-      pipe = described_class.unwrap!(:stderr)
-      expect(pipe).to eq $stderr
+      pipe = described_class.unwrap! :stderr
+      expect(pipe).to eq($stderr)
     end
 
     it 'disables the pipe bypass' do
@@ -95,49 +100,6 @@ describe Cucumber::Formatter::Interceptor::Pipe do
         expect($stdout).to be_instance_of described_class
         expect($stdout).to be wrapped
       end
-    end
-  end
-
-  describe '#unwrap!' do
-    before :each do
-      @stdout = $stdout
-      $stdout = pipe
-      @wrapped = described_class.wrap(:stdout)
-      @stderr = $stderr
-    end
-
-    after :each do
-      $stdout = @stdout
-      $stderr = @stderr
-    end
-
-    it "raises an ArgumentError if it wasn't passed :stderr/:stdout" do
-      expect { described_class.unwrap!(:nonsense) }.to raise_error(ArgumentError)
-    end
-
-    it 'resets $stdout when #unwrap! is called' do
-      interceptor = described_class.unwrap! :stdout
-
-      expect(interceptor).to be_instance_of described_class
-      expect($stdout).not_to be interceptor
-    end
-
-    it 'noops if $stdout or $stderr has been overwritten' do
-      $stdout = StringIO.new
-      pipe = described_class.unwrap! :stdout
-      expect(pipe).to eq($stdout)
-
-      $stderr = StringIO.new
-      pipe = described_class.unwrap! :stderr
-      expect(pipe).to eq($stderr)
-    end
-
-    it 'disables the pipe bypass' do
-      buffer = '(::)'
-      described_class.unwrap! :stdout
-      @wrapped.write(buffer)
-
-      expect(@wrapped.buffer_string).not_to end_with(buffer)
     end
   end
 
