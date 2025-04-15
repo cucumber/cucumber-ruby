@@ -45,6 +45,7 @@ Later in this document, bundler is considered being used so all commands are usi
 
 ### Supported platforms
 
+- Ruby 3.4
 - Ruby 3.3
 - Ruby 3.2
 - Ruby 3.1
@@ -91,12 +92,11 @@ Feature: Rule Sample
       Given this will fail
       When I do an action
       Then some results should be there
-
 ```
 
 ### Automate your specification
 
-And a file named `steps.rb` in `features/step_definitions` with:
+And a file named `rule_steps.rb` in `features/step_definitions` with:
 
 ```ruby
 # features/step_definitions/steps.rb
@@ -149,4 +149,4 @@ You can also find documentation on the command line possibilities in [features/d
 
 ## Copyright
 
-Copyright (c) Cucumber Ltd. and Contributors. See LICENSE for details.
+Copyright (c) Cucumber and Contributors. See LICENSE for details.
