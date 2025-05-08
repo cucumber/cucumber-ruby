@@ -7,20 +7,11 @@ module Cucumber
     module Query
       class TestRunStarted
         def initialize(config)
-          @test_run_ids = {}
-          config.on_event :test_run_started, &method(:on_test_run_started)
+          @config = config
         end
 
-        def test_run_id(test_case)
-          return @test_run_ids[test_case.id] if @test_run_ids.key?(test_case.id)
-
-          raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@test_run_ids.keys}"
-        end
-
-        private
-
-        def on_test_run_started(event)
-          @test_run_ids[event.test_case.id] = event.pickle.id
+        def id
+          @id ||= @config.id_generator.new_id
         end
       end
     end

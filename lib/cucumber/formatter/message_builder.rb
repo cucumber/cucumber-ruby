@@ -7,6 +7,7 @@ require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/pickle_step_by_test_step'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
+require 'cucumber/formatter/query/test_run_started'
 
 module Cucumber
   module Formatter
@@ -152,12 +153,12 @@ module Cucumber
       end
 
       def on_test_run_started(event)
-        @current_test_run_started_id = test_case_started_id(event.test_case)
+        @current_test_run_started_id = @test_run_started.id
 
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
-            id: event.test_cases.first.id
+            id: @current_test_run_started_id
           )
         )
 
