@@ -97,7 +97,8 @@ module Cucumber
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
             pickle_id: @pickle_by_test.pickle_id(event.test_case),
-            test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) }
+            test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
+            test_run_started_id: @current_test_run_started_id
           )
         )
 

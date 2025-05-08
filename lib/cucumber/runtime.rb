@@ -257,8 +257,6 @@ module Cucumber
           filters << Filters::ApplyAroundHooks.new(@support_code)
         end
 
-        filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
-
         unless configuration.dry_run?
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
           filters << Filters::Quit.new
@@ -266,6 +264,8 @@ module Cucumber
           # need to do this last so it becomes the first test step
           filters << Filters::PrepareWorld.new(self)
         end
+
+        filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
       end
     end
 
