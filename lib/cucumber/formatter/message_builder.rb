@@ -252,7 +252,8 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_run_finished: Cucumber::Messages::TestRunFinished.new(
             timestamp: time_to_timestamp(Time.now),
-            success: event.success
+            success: event.success,
+            test_run_started_id: @current_test_run_started_id
           )
         )
 
