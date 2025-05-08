@@ -34,7 +34,6 @@ module Cucumber
       def exception
         return @exception if ::Cucumber.use_full_backtrace
 
-        pwd_pattern = /#{::Regexp.escape(::Dir.pwd)}\//m
         backtrace = @exception.backtrace.map { |line| line.gsub(pwd_pattern, './') }
 
         filtered = (backtrace || []).reject do |line|
@@ -42,16 +41,36 @@ module Cucumber
         end
 
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
-          # Strip off file locations
-          regexp = RUBY_VERSION >= '3.4' ? /(.*):in '/ : /(.*):in `/
           filtered = filtered.map do |line|
-            match = regexp.match(line)
+            # Strip off file locations
+            match = regexp_filter.match(line)
             match ? match[1] : line
           end
         end
 
-        @exception.set_backtrace(filtered)
-        @exception
+        @exception.tap { |e| e.set_backtrace(filtered) }
+      end
+
+      private
+
+      def pwd_pattern
+        /#{::Regexp.escape(::Dir.pwd)}\//m
+      end
+
+      def regexp_filter
+        ruby_greater_than_three_four? ? three_four_filter : three_three_filter
+      end
+
+      def ruby_greater_than_three_four?
+        RUBY_VERSION.to_f >= 3.4
+      end
+
+      def three_four_filter
+        /(.*):in '/
+      end
+
+      def three_three_filter
+        /(.*):in `/
       end
     end
   end
