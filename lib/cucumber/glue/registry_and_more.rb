@@ -85,9 +85,9 @@ module Cucumber
         end
       end
 
-      def register_rb_hook(phase, tag_expressions, proc, name: nil)
-        hook = add_hook(phase, Hook.new(@configuration.id_generator.new_id, self, tag_expressions, proc, name: name))
-        @configuration.notify :envelope, hook.to_envelope
+      def register_rb_hook(type, tag_expressions, proc, name: nil)
+        hook = add_hook(type, Hook.new(@configuration.id_generator.new_id, self, tag_expressions, proc, name: name))
+        @configuration.notify(:envelope, hook.to_envelope(type))
         hook
       end
 
@@ -166,8 +166,8 @@ module Cucumber
         end
       end
 
-      def add_hook(phase, hook)
-        hooks[phase.to_sym] << hook
+      def add_hook(type, hook)
+        hooks[type.to_sym] << hook
         hook
       end
 
@@ -175,8 +175,8 @@ module Cucumber
         @hooks = nil
       end
 
-      def hooks_for(phase, scenario) # :nodoc:
-        hooks[phase.to_sym].select { |hook| scenario.accept_hook?(hook) }
+      def hooks_for(type, scenario) # :nodoc:
+        hooks[type.to_sym].select { |hook| scenario.accept_hook?(hook) }
       end
 
       def create_expression(string_or_regexp)
