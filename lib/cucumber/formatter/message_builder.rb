@@ -152,7 +152,7 @@ module Cucumber
         step_match_argument.parameter_type&.name if step_match_argument.respond_to?(:parameter_type)
       end
 
-      def on_test_run_started(event)
+      def on_test_run_started(*)
         @current_test_run_started_id = @test_run_started.id
 
         message = Cucumber::Messages::Envelope.new(
@@ -271,10 +271,6 @@ module Cucumber
 
       def test_case_started_id(test_case)
         @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
-      end
-
-      def test_run_started_id(test_case)
-        @test_run_started.test_run_id(test_case)
       end
     end
   end
