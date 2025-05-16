@@ -31,12 +31,8 @@ module Cucumber
       end
 
       it 'allows calling of other steps' do
-        dsl.Given(/Outside/) do
-          step 'Inside'
-        end
-        dsl.Given(/Inside/) do
-          @@inside = true
-        end
+        dsl.Given('Outside') { step 'Inside' }
+        dsl.Given('Inside') { @@inside = true }
 
         run_step 'Outside'
 
@@ -44,12 +40,8 @@ module Cucumber
       end
 
       it 'allows calling of other steps with inline arg' do
-        dsl.Given(/Outside/) do
-          step 'Inside', table([['inside']])
-        end
-        dsl.Given(/Inside/) do |t|
-          @@inside = t.raw[0][0]
-        end
+        dsl.Given('Outside') { step 'Inside', table([['inside']]) }
+        dsl.Given('Inside') { @@inside = t.raw[0][0] }
 
         run_step 'Outside'
 
@@ -94,15 +86,14 @@ module Cucumber
         end
 
         it 'has the correct location' do
-          dsl.Given(/With symbol/, :with_symbol)
-          expect(step_match('With symbol').file_colon_line).to eq "spec/cucumber/glue/step_definition_spec.rb:#{__LINE__ - 1}"
+          dsl.Given('With symbol', :with_symbol)
+
+          expect(step_match('With symbol').file_colon_line).to eq("spec/cucumber/glue/step_definition_spec.rb:#{__LINE__ - 2}")
         end
       end
 
       it 'raises UndefinedDynamicStep when inside step is not defined' do
-        dsl.Given(/Outside/) do
-          step 'Inside'
-        end
+        dsl.Given('Outside') { step 'Inside' }
 
         expect { run_step 'Outside' }.to raise_error(Cucumber::UndefinedDynamicStep)
       end
@@ -143,16 +134,13 @@ module Cucumber
       end
 
       it 'allows forced pending' do
-        dsl.Given(/Outside/) do
-          pending('Do me!')
-        end
+        dsl.Given('Outside') { pending('Do me!') }
 
         expect { run_step 'Outside' }.to raise_error(Cucumber::Pending, 'Do me!')
       end
 
       it 'raises ArityMismatchError when the number of capture groups differs from the number of step arguments' do
-        dsl.Given(/No group: \w+/) do |arg|
-        end
+        dsl.Given(/No group: \w+/) { |_arg| }
 
         expect { run_step 'No group: arg' }.to raise_error(Cucumber::Glue::ArityMismatchError)
       end
