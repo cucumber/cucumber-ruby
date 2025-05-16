@@ -58,9 +58,7 @@ module Cucumber
 
       context 'when mapping to world methods' do
         before do
-          if RUBY_ENGINE.start_with?('truffleruby')
-            skip('These tests are problematic on truffleruby. See: https://github.com/oracle/truffleruby/issues/3870')
-          end
+          skip('These tests are problematic on truffleruby. See: https://github.com/oracle/truffleruby/issues/3870') if RUBY_ENGINE.start_with?('truffleruby')
         end
 
         it 'calls a method on the world when specified with a symbol' do
