@@ -25,6 +25,16 @@ When('an array with {int} bytes is attached as {string}') do |size, media_type|
   attach(data, media_type)
 end
 
+# Deprecated - not used - should be removed
+When('a JPEG image is attached') do
+  attach(File.open("#{cck_asset_path}/cucumber.jpeg"), 'image/jpeg')
+end
+
+# Deprecated - not used - should be removed
+When('a PNG image is attached') do
+  attach(File.open("#{cck_asset_path}/cucumber.png"), 'image/png')
+end
+
 When('a PDF document is attached and renamed') do
   attach(File.open("#{cck_asset_path}/document.pdf"), 'application/pdf', 'renamed.pdf')
 end
