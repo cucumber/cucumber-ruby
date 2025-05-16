@@ -26,7 +26,7 @@ When('an array with {int} bytes is attached as {string}') do |size, media_type|
 end
 
 When('a PDF document is attached and renamed') do
-  attach(File.open("#{cck_asset_path}/document.pdf"), 'document/pdf', 'renamed.pdf')
+  attach(File.open("#{cck_asset_path}/document.pdf"), 'application/pdf', 'renamed.pdf')
 end
 
 When('a link to {string} is attached') do |link|
