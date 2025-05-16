@@ -57,6 +57,12 @@ module Cucumber
       end
 
       context 'when mapping to world methods' do
+        before do
+          if RUBY_ENGINE.start_with?('truffleruby')
+            skip('These tests are problematic on truffleruby. See: https://github.com/oracle/truffleruby/issues/3870')
+          end
+        end
+
         it 'calls a method on the world when specified with a symbol' do
           expect(registry.current_world).to receive(:with_symbol)
 
