@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'cucumber/formatter/errors'
-
 module Cucumber
   module Formatter
     module Query
