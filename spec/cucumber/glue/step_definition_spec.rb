@@ -41,7 +41,7 @@ module Cucumber
 
       it 'allows calling of other steps with inline arg' do
         dsl.Given('Outside') { step 'Inside', table([['inside']]) }
-        dsl.Given('Inside') { @@inside = t.raw[0][0] }
+        dsl.Given('Inside') { |t| @@inside = t.raw[0][0] }
 
         run_step 'Outside'
 
