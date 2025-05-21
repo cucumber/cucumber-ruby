@@ -45,7 +45,7 @@ module Cucumber
 
         run_step 'Outside'
 
-        expect(@@inside).to eq 'inside'
+        expect(@@inside).to eq('inside')
       end
 
       context 'when mapping to world methods' do
@@ -169,8 +169,8 @@ module Cucumber
 
         it 'uses the instance created by the ParameterType transformer proc' do
           dsl.Given 'capture this: {actor}' do |arg|
-            expect(arg.name).to eq 'Anjie'
-            expect(arg).to be @actor
+            expect(arg.name).to eq('Anjie')
+            expect(arg).to eq(@actor)
           end
 
           run_step 'capture this: Anjie'
@@ -183,8 +183,8 @@ module Cucumber
 
           run_step 'capture this: Anjie'
           step_args = step_match('capture this: Anjie').args
-          expect(step_args[0].name).not_to eq 'Dave'
-          expect(step_args[0].name).to eq 'Anjie'
+          expect(step_args[0].name).not_to eq('Dave')
+          expect(step_args[0].name).to eq('Anjie')
         end
       end
 
@@ -192,18 +192,14 @@ module Cucumber
         it 'calls "attach" with the correct media type' do
           expect(user_interface).to receive(:attach).with('wasup', 'text/x.cucumber.log+plain', nil)
 
-          dsl.Given(/Loud/) do
-            log 'wasup'
-          end
+          dsl.Given('Loud') { log 'wasup' }
           run_step 'Loud'
         end
 
         it 'calls `to_s` if the message is not a String' do
           expect(user_interface).to receive(:attach).with('["Not", 1, "string"]', 'text/x.cucumber.log+plain', nil)
 
-          dsl.Given(/Loud/) do
-            log ['Not', 1, 'string']
-          end
+          dsl.Given('Loud') { log 'wasup' }
           run_step 'Loud'
         end
       end
@@ -217,20 +213,9 @@ module Cucumber
       end
 
       it 'has a JSON representation of the signature' do
-        expect(described_class.new(
-          id,
-          registry,
-          /I CAN HAZ (\d+) CUKES/i,
-          -> {},
-          {}
-        ).to_hash).to eq(
-          source: {
-            type: 'regular expression',
-            expression: 'I CAN HAZ (\\d+) CUKES'
-          },
-          regexp: {
-            source: 'I CAN HAZ (\\d+) CUKES', flags: 'i'
-          }
+        expect(described_class.new(id, registry, /I CAN HAZ (\d+) CUKES/i, -> {}, {}).to_hash).to eq(
+          source: { type: 'regular expression', expression: 'I CAN HAZ (\\d+) CUKES' },
+          regexp: { source: 'I CAN HAZ (\\d+) CUKES', flags: 'i' }
         )
       end
     end
