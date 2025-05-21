@@ -25,12 +25,12 @@ When('an array with {int} bytes is attached as {string}') do |size, media_type|
   attach(data, media_type)
 end
 
-# Deprecated - not used - should be removed
+# To be removed in CCK v19 alongside removing duplicate scenarios: https://github.com/cucumber/compatibility-kit/pull/127
 When('a JPEG image is attached') do
   attach(File.open("#{cck_asset_path}/cucumber.jpeg"), 'image/jpeg')
 end
 
-# Deprecated - not used - should be removed
+# To be removed in CCK v19 alongside removing duplicate scenarios: https://github.com/cucumber/compatibility-kit/pull/127
 When('a PNG image is attached') do
   attach(File.open("#{cck_asset_path}/cucumber.png"), 'image/png')
 end
