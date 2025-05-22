@@ -199,15 +199,14 @@ module Cucumber
         it 'calls `to_s` if the message is not a String' do
           expect(user_interface).to receive(:attach).with('["Not", 1, "string"]', 'text/x.cucumber.log+plain', nil)
 
-          dsl.Given('Loud') { log 'wasup' }
+          dsl.Given('Loud') { log ['Not', 1, 'string'] }
           run_step 'Loud'
         end
       end
 
       it 'recognizes $arg style captures' do
-        arg_value = 'up'
-        dsl.Given 'capture this: {word}' do |arg|
-          expect(arg).to eq arg_value
+        dsl.Given('capture this: {word}') do |arg|
+          expect(arg).to eq('up')
         end
         run_step 'capture this: up'
       end
