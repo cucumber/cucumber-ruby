@@ -4,31 +4,10 @@ require 'cucumber/platform'
 
 module Cucumber
   module Formatter
-    @backtrace_filters = %w[
-      /vendor/rails
-      lib/cucumber
-      bin/cucumber:
-      lib/rspec
-      gems/
-      site_ruby/
-      minitest
-      test/unit
-      .gem/ruby
-      bin/bundle
-      rdebug-ide
-    ]
-
-    @backtrace_filters << RbConfig::CONFIG['rubyarchdir'] if RbConfig::CONFIG['rubyarchdir']
-    @backtrace_filters << RbConfig::CONFIG['rubylibdir'] if RbConfig::CONFIG['rubylibdir']
-
-    @backtrace_filters << 'org/jruby/' if ::Cucumber::JRUBY
-    @backtrace_filters << '<internal:' if RUBY_ENGINE == 'truffleruby'
-
-    BACKTRACE_FILTER_PATTERNS = Regexp.new(@backtrace_filters.join('|'))
-
     class BacktraceFilter
       def initialize(exception)
         @exception = exception
+        @backtrace_filters = standard_ruby_paths + dynamic_ruby_paths
       end
 
       def exception
@@ -37,7 +16,7 @@ module Cucumber
         backtrace = @exception.backtrace.map { |line| line.gsub(pwd_pattern, './') }
 
         filtered = (backtrace || []).reject do |line|
-          line =~ BACKTRACE_FILTER_PATTERNS
+          line =~ backtrace_filter_patterns
         end
 
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
@@ -53,6 +32,20 @@ module Cucumber
 
       private
 
+      def backtrace_filter_patterns
+        Regexp.new(@backtrace_filters.join('|'))
+      end
+
+      def dynamic_ruby_paths
+        [].tap do |paths|
+          paths << RbConfig::CONFIG['rubyarchdir'] if RbConfig::CONFIG['rubyarchdir']
+          paths << RbConfig::CONFIG['rubylibdir'] if RbConfig::CONFIG['rubylibdir']
+
+          paths << 'org/jruby/' if ::Cucumber::JRUBY
+          paths << '<internal:' if RUBY_ENGINE == 'truffleruby'
+        end
+      end
+
       def pwd_pattern
         /#{::Regexp.escape(::Dir.pwd)}\//m
       end
@@ -63,6 +56,22 @@ module Cucumber
 
       def ruby_greater_than_three_four?
         RUBY_VERSION.to_f >= 3.4
+      end
+
+      def standard_ruby_paths
+        %w[
+          /vendor/rails
+          lib/cucumber
+          bin/cucumber:
+          lib/rspec
+          gems/
+          site_ruby/
+          minitest
+          test/unit
+          .gem/ruby
+          bin/bundle
+          rdebug-ide
+        ]
       end
 
       def three_four_filter
