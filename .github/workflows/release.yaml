@@ -24,7 +24,7 @@ jobs:
           - os: ubuntu-latest
             ruby: jruby-9.4
           - os: ubuntu-latest
-            ruby: truffleruby-24
+            ruby: truffleruby
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
