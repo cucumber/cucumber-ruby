@@ -3,8 +3,10 @@
 require 'cucumber/formatter/backtrace_filter'
 
 describe Cucumber::Formatter::BacktraceFilter do
+  subject(:exception) { exception_klass.new }
+
   let(:exception_klass) do
-    Class.new(Exception) do
+    Class.new(StandardError) do
       def _trace
         static_trace + dynamic_trace + realistic_trace
       end
@@ -42,14 +44,13 @@ describe Cucumber::Formatter::BacktraceFilter do
 
   describe '#exception' do
     before do
-      @exception = exception_klass.new
-      @exception.set_backtrace(@exception._trace)
+      exception.set_backtrace(exception._trace)
     end
 
     it 'filters unnecessary traces' do
-      described_class.new(@exception).exception
+      described_class.new(exception).exception
 
-      expect(@exception.backtrace).to eq(%w[a b])
+      expect(exception.backtrace).to eq(%w[a b])
     end
   end
 end
