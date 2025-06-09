@@ -30,11 +30,10 @@ RSpec.shared_examples 'cucumber compatibility kit' do
 
   it 'ensures a consistent `testRunStartedId` across the entire test run' do
     test_run_started_id = parsed_generated.detect { |msg| message_type(msg) == :test_run_started }.test_run_started.id
-    messages_containing_test_run_started_id = parsed_generated.select do |msg|
+    ids = parsed_generated.filter_map do |msg|
       # These two types of message are the only ones containing the testRunStartedId attribute
-      %i[test_case test_run_finished].include?(message_type(msg))
+      msg.send(message_type(msg)).test_run_started_id if %i[test_case test_run_finished].include?(message_type(msg))
     end
-    ids = messages_containing_test_run_started_id.map { |msg| msg.send(message_type(msg)).test_run_started_id }
 
     expect(ids).to all eq(test_run_started_id)
   end
