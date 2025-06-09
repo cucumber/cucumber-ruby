@@ -14,10 +14,7 @@ module Cucumber
         return @exception if ::Cucumber.use_full_backtrace
 
         backtrace = @exception.backtrace.map { |line| line.gsub(pwd_pattern, './') }
-
-        filtered = (backtrace || []).reject do |line|
-          line =~ backtrace_filter_patterns
-        end
+        filtered = backtrace.reject { |line| line.match?(backtrace_filter_patterns) }
 
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
           filtered = filtered.map do |line|
@@ -27,7 +24,7 @@ module Cucumber
           end
         end
 
-        @exception.tap { |e| e.set_backtrace(filtered) }
+        @exception.tap { |error_object| error_object.set_backtrace(filtered) }
       end
 
       private
