@@ -11,7 +11,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Changed
 - Added dependencies that will no longer be part of the ruby stdlib ([jeromeag](https://github.com/jerome))
-- Updated `cucumber-compatibility-kit` to v18 ([luke-hill](https://github.com/luke-hill))
+- Updated `cucumber-compatibility-kit` to v18
+  - NB: This change has also facilitated a tweak to some output messages to include new fields such as `testRunStartedId`
+  for full changes and expectations of what will be new check the [messages](https://github.com/cucumber/messages/blob/main/CHANGELOG.md#2700---2024-10-26)
+  ([luke-hill](https://github.com/luke-hill))
 - Changed compatibility testing to fully lean on external assets instead of duplicating them ([luke-hill](https://github.com/luke-hill))
 - Permit usage of latest versions of all cucumber internal gems
 - The auto-generation of all placeholder `pending` steps has been refactored (_There should be no visible changes
@@ -20,6 +23,8 @@ but the code is now refactored to work using newer ruby standards_)
 should lean on an appropriate testing library for this)
 - `Cucumber.use_legacy_autoloader` that was intended as a stop-gap for v4/v5 is now deprecated (People
 that need to rely on procedural loading / reloading of files should use method invocations) ([luke-hill](https://github.com/luke-hill))
+- The backtrace filtering logic has been changed (_There should be no visible changes but the code is now
+refactored to use newer, less procedural ruby_)
 
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
