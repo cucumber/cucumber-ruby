@@ -37,7 +37,7 @@ refactored to use newer, less procedural ruby_)
 - Associated legacy scripts for updating dependencies that are no longer used
 - Tag Expressions using legacy syntax that were handled / sanitized are no longer done so
 (This applies to both regular usage and internal testing)
-- Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))
+- Removed support for Ruby 2.7 and 3.0 (Minimum ruby is now 3.1) ([luke-hill](https://github.com/luke-hill))
 - Unindentation support for snippet generator / tests (Heredocs are much better now) ([luke-hill](https://github.com/luke-hill))
 
 ## [9.2.1] - 2025-01-12

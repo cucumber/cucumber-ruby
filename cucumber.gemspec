@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     'funding_uri' => 'https://opencollective.com/cucumber'
   }
 
-  s.required_ruby_version = '>= 3.0'
+  s.required_ruby_version = '>= 3.1'
   s.required_rubygems_version = '>= 3.2.8'
 
   s.add_dependency 'base64', '~> 0.2'

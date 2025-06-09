@@ -12,7 +12,7 @@ require:
 AllCops:
   NewCops: disable
   # Keep this inline with the lowest ruby version in the gemspec
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.1
   # Display cop name / style guide references
   DisplayCopNames: true
   DisplayStyleGuide: true

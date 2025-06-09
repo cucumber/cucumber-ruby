@@ -5,7 +5,7 @@ inputs:
   ruby-version:
     description: Version of ruby to use with ruby/setup-ruby@v1
     required: false
-    default: '3.0'
+    default: '3.1'
 
 runs:
   using: "composite"
