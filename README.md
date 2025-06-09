@@ -50,7 +50,7 @@ Later in this document, bundler is considered being used so all commands are usi
 - Ruby 3.2
 - Ruby 3.1
 - Ruby 3.0
-- TruffleRuby 22.0.0+
+- TruffleRuby 24.0.0+
 - JRuby 9.4+ (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
 
 ### Ruby on Rails
