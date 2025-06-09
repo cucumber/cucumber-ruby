@@ -50,6 +50,7 @@ module Cucumber
 
       context 'when mapping to world methods' do
         before do
+          # TODO: LH -> Remove this skip pragma in 2026 as they should be fully fixed and released by then
           skip('These tests are problematic on truffleruby. See: https://github.com/oracle/truffleruby/issues/3870') if RUBY_ENGINE.start_with?('truffleruby')
         end
 
