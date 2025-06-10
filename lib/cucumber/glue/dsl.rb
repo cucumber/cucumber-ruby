@@ -18,8 +18,8 @@ module Cucumber
           @rb_language.build_rb_world_factory(world_modules, namespaced_world_modules, proc)
         end
 
-        def register_rb_hook(phase, tag_names, proc, name: nil)
-          @rb_language.register_rb_hook(phase, tag_names, proc, name: name)
+        def register_rb_hook(type, tag_names, proc, name: nil)
+          @rb_language.register_rb_hook(type, tag_names, proc, name: name)
         end
 
         def define_parameter_type(parameter_type)

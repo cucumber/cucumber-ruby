@@ -31,12 +31,8 @@ module Cucumber
       end
 
       it 'allows calling of other steps' do
-        dsl.Given(/Outside/) do
-          step 'Inside'
-        end
-        dsl.Given(/Inside/) do
-          @@inside = true
-        end
+        dsl.Given('Outside') { step 'Inside' }
+        dsl.Given('Inside') { @@inside = true }
 
         run_step 'Outside'
 
@@ -44,19 +40,20 @@ module Cucumber
       end
 
       it 'allows calling of other steps with inline arg' do
-        dsl.Given(/Outside/) do
-          step 'Inside', table([['inside']])
-        end
-        dsl.Given(/Inside/) do |t|
-          @@inside = t.raw[0][0]
-        end
+        dsl.Given('Outside') { step 'Inside', table([['inside']]) }
+        dsl.Given('Inside') { |t| @@inside = t.raw[0][0] }
 
         run_step 'Outside'
 
-        expect(@@inside).to eq 'inside'
+        expect(@@inside).to eq('inside')
       end
 
       context 'when mapping to world methods' do
+        before do
+          # TODO: LH -> Remove this skip pragma in 2026 as they should be fully fixed and released by then
+          skip('These tests are problematic on truffleruby. See: https://github.com/oracle/truffleruby/issues/3870') if RUBY_ENGINE.start_with?('truffleruby')
+        end
+
         it 'calls a method on the world when specified with a symbol' do
           expect(registry.current_world).to receive(:with_symbol)
 
@@ -90,15 +87,14 @@ module Cucumber
         end
 
         it 'has the correct location' do
-          dsl.Given(/With symbol/, :with_symbol)
-          expect(step_match('With symbol').file_colon_line).to eq "spec/cucumber/glue/step_definition_spec.rb:#{__LINE__ - 1}"
+          dsl.Given('With symbol', :with_symbol)
+
+          expect(step_match('With symbol').file_colon_line).to eq("spec/cucumber/glue/step_definition_spec.rb:#{__LINE__ - 2}")
         end
       end
 
       it 'raises UndefinedDynamicStep when inside step is not defined' do
-        dsl.Given(/Outside/) do
-          step 'Inside'
-        end
+        dsl.Given('Outside') { step 'Inside' }
 
         expect { run_step 'Outside' }.to raise_error(Cucumber::UndefinedDynamicStep)
       end
@@ -139,16 +135,13 @@ module Cucumber
       end
 
       it 'allows forced pending' do
-        dsl.Given(/Outside/) do
-          pending('Do me!')
-        end
+        dsl.Given('Outside') { pending('Do me!') }
 
         expect { run_step 'Outside' }.to raise_error(Cucumber::Pending, 'Do me!')
       end
 
       it 'raises ArityMismatchError when the number of capture groups differs from the number of step arguments' do
-        dsl.Given(/No group: \w+/) do |arg|
-        end
+        dsl.Given(/No group: \w+/) { |_arg| }
 
         expect { run_step 'No group: arg' }.to raise_error(Cucumber::Glue::ArityMismatchError)
       end
@@ -177,8 +170,8 @@ module Cucumber
 
         it 'uses the instance created by the ParameterType transformer proc' do
           dsl.Given 'capture this: {actor}' do |arg|
-            expect(arg.name).to eq 'Anjie'
-            expect(arg).to be @actor
+            expect(arg.name).to eq('Anjie')
+            expect(arg).to eq(@actor)
           end
 
           run_step 'capture this: Anjie'
@@ -191,8 +184,8 @@ module Cucumber
 
           run_step 'capture this: Anjie'
           step_args = step_match('capture this: Anjie').args
-          expect(step_args[0].name).not_to eq 'Dave'
-          expect(step_args[0].name).to eq 'Anjie'
+          expect(step_args[0].name).not_to eq('Dave')
+          expect(step_args[0].name).to eq('Anjie')
         end
       end
 
@@ -200,45 +193,29 @@ module Cucumber
         it 'calls "attach" with the correct media type' do
           expect(user_interface).to receive(:attach).with('wasup', 'text/x.cucumber.log+plain', nil)
 
-          dsl.Given(/Loud/) do
-            log 'wasup'
-          end
+          dsl.Given('Loud') { log 'wasup' }
           run_step 'Loud'
         end
 
         it 'calls `to_s` if the message is not a String' do
           expect(user_interface).to receive(:attach).with('["Not", 1, "string"]', 'text/x.cucumber.log+plain', nil)
 
-          dsl.Given(/Loud/) do
-            log ['Not', 1, 'string']
-          end
+          dsl.Given('Loud') { log ['Not', 1, 'string'] }
           run_step 'Loud'
         end
       end
 
       it 'recognizes $arg style captures' do
-        arg_value = 'up'
-        dsl.Given 'capture this: {word}' do |arg|
-          expect(arg).to eq arg_value
+        dsl.Given('capture this: {word}') do |arg|
+          expect(arg).to eq('up')
         end
         run_step 'capture this: up'
       end
 
       it 'has a JSON representation of the signature' do
-        expect(described_class.new(
-          id,
-          registry,
-          /I CAN HAZ (\d+) CUKES/i,
-          -> {},
-          {}
-        ).to_hash).to eq(
-          source: {
-            type: 'regular expression',
-            expression: 'I CAN HAZ (\\d+) CUKES'
-          },
-          regexp: {
-            source: 'I CAN HAZ (\\d+) CUKES', flags: 'i'
-          }
+        expect(described_class.new(id, registry, /I CAN HAZ (\d+) CUKES/i, -> {}, {}).to_hash).to eq(
+          source: { type: 'regular expression', expression: 'I CAN HAZ (\\d+) CUKES' },
+          regexp: { source: 'I CAN HAZ (\\d+) CUKES', flags: 'i' }
         )
       end
     end

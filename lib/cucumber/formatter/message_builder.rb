@@ -7,6 +7,7 @@ require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/pickle_step_by_test_step'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
+require 'cucumber/formatter/query/test_run_started'
 
 module Cucumber
   module Formatter
@@ -21,6 +22,7 @@ module Cucumber
         @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
+        @test_run_started = Query::TestRunStarted.new(config)
 
         config.on_event :envelope, &method(:on_envelope)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
@@ -34,6 +36,7 @@ module Cucumber
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
+        @current_test_run_started_id = nil
         @current_test_case_started_id = nil
         @current_test_step_id = nil
       end
@@ -94,7 +97,8 @@ module Cucumber
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
             pickle_id: @pickle_by_test.pickle_id(event.test_case),
-            test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) }
+            test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
+            test_run_started_id: @current_test_run_started_id
           )
         )
 
@@ -150,9 +154,12 @@ module Cucumber
       end
 
       def on_test_run_started(*)
+        @current_test_run_started_id = @test_run_started.id
+
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
-            timestamp: time_to_timestamp(Time.now)
+            timestamp: time_to_timestamp(Time.now),
+            id: @current_test_run_started_id
           )
         )
 
@@ -245,7 +252,8 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_run_finished: Cucumber::Messages::TestRunFinished.new(
             timestamp: time_to_timestamp(Time.now),
-            success: event.success
+            success: event.success,
+            test_run_started_id: @current_test_run_started_id
           )
         )
 

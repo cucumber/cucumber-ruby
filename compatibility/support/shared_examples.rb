@@ -27,4 +27,14 @@ RSpec.shared_examples 'cucumber compatibility kit' do
 
     expect(comparator.errors).to be_empty, "There were comparison errors: #{comparator.errors}"
   end
+
+  it 'ensures a consistent `testRunStartedId` across the entire test run' do
+    test_run_started_id = parsed_generated.detect { |msg| message_type(msg) == :test_run_started }.test_run_started.id
+    ids = parsed_generated.filter_map do |msg|
+      # These two types of message are the only ones containing the testRunStartedId attribute
+      msg.send(message_type(msg)).test_run_started_id if %i[test_case test_run_finished].include?(message_type(msg))
+    end
+
+    expect(ids).to all eq(test_run_started_id)
+  end
 end

@@ -255,13 +255,13 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
+          filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
+          filters << Filters::Quit.new
         end
 
         filters << Filters::BroadcastTestCaseReadyEvent.new(@configuration)
 
         unless configuration.dry_run?
-          filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
-          filters << Filters::Quit.new
           filters << Filters::Retry.new(@configuration)
           # need to do this last so it becomes the first test step
           filters << Filters::PrepareWorld.new(self)

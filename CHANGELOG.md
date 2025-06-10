@@ -11,7 +11,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Changed
 - Added dependencies that will no longer be part of the ruby stdlib ([jeromeag](https://github.com/jerome))
-- Updated `cucumber-compatibility-kit` to v16 ([luke-hill](https://github.com/luke-hill))
+- Updated `cucumber-compatibility-kit` to v18
+  - NB: This change has also facilitated a tweak to some output messages to include new fields such as `testRunStartedId`
+  for full changes and expectations of what will be new check the [messages](https://github.com/cucumber/messages/blob/main/CHANGELOG.md#2700---2024-10-26)
+  ([luke-hill](https://github.com/luke-hill))
 - Changed compatibility testing to fully lean on external assets instead of duplicating them ([luke-hill](https://github.com/luke-hill))
 - Permit usage of latest versions of all cucumber internal gems
 - The auto-generation of all placeholder `pending` steps has been refactored (_There should be no visible changes
@@ -20,6 +23,8 @@ but the code is now refactored to work using newer ruby standards_)
 should lean on an appropriate testing library for this)
 - `Cucumber.use_legacy_autoloader` that was intended as a stop-gap for v4/v5 is now deprecated (People
 that need to rely on procedural loading / reloading of files should use method invocations) ([luke-hill](https://github.com/luke-hill))
+- The backtrace filtering logic has been changed (_There should be no visible changes but the code is now
+refactored to use newer, less procedural ruby_)
 
 ### Fixed
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
@@ -32,7 +37,7 @@ that need to rely on procedural loading / reloading of files should use method i
 - Associated legacy scripts for updating dependencies that are no longer used
 - Tag Expressions using legacy syntax that were handled / sanitized are no longer done so
 (This applies to both regular usage and internal testing)
-- Removed support for Ruby 2.7 ([luke-hill](https://github.com/luke-hill))
+- Removed support for Ruby 2.7 and 3.0 (Minimum ruby is now 3.1) ([luke-hill](https://github.com/luke-hill))
 - Unindentation support for snippet generator / tests (Heredocs are much better now) ([luke-hill](https://github.com/luke-hill))
 
 ## [9.2.1] - 2025-01-12
@@ -70,7 +75,7 @@ All logic contained in [compatibility](./compatibility) ([luke-hill](https://git
 
 ## [9.1.0] - 2023-11-14
 ### Changed
-- First couple of passes of tidying up approximately 40% of the manual fix cops
+- First iteration to tidy up approximately 40% of the manual fix cops
 ([#1739](https://github.com/cucumber/cucumber-ruby/pull/1739) [#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [#1741](https://github.com/cucumber/cucumber-ruby/pull/1741) [#1742](https://github.com/cucumber/cucumber-ruby/pull/1742) [luke-hill](https://github.com/luke-hill))
 - Removed a bunch of example files / sample projects from ancient projects no longer viable
 ([#1740](https://github.com/cucumber/cucumber-ruby/pull/1740) [luke-hill](https://github.com/luke-hill))

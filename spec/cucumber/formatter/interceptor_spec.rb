@@ -12,13 +12,8 @@ describe Cucumber::Formatter::Interceptor::Pipe do
     end
 
     context 'when passed :stderr' do
-      before :each do
-        @stderr = $stderr
-      end
-
-      after :each do
-        $stderr = @stderr
-      end
+      before { @stderr = $stderr }
+      after { $stderr = @stderr }
 
       it 'wraps $stderr' do
         wrapped = described_class.wrap(:stderr)
@@ -29,13 +24,8 @@ describe Cucumber::Formatter::Interceptor::Pipe do
     end
 
     context 'when passed :stdout' do
-      before :each do
-        @stdout = $stdout
-      end
-
-      after :each do
-        $stdout = @stdout
-      end
+      before { @stdout = $stdout }
+      after { $stdout = @stdout }
 
       it 'wraps $stdout' do
         wrapped = described_class.wrap(:stdout)
@@ -82,10 +72,34 @@ describe Cucumber::Formatter::Interceptor::Pipe do
 
     it 'disables the pipe bypass' do
       buffer = '(::)'
-      described_class.unwrap! :stdout
+      described_class.unwrap!(:stdout)
       @wrapped.write(buffer)
 
       expect(@wrapped.buffer_string).not_to end_with(buffer)
+    end
+
+    it 'wraps $stderr' do
+      wrapped = described_class.wrap(:stderr)
+
+      expect($stderr).to be_instance_of described_class
+      expect($stderr).to be wrapped
+    end
+
+    context 'when passed :stdout' do
+      before :each do
+        @stdout = $stdout
+      end
+
+      after :each do
+        $stdout = @stdout
+      end
+
+      it 'wraps $stdout' do
+        wrapped = described_class.wrap(:stdout)
+
+        expect($stdout).to be_instance_of described_class
+        expect($stdout).to be wrapped
+      end
     end
   end
 

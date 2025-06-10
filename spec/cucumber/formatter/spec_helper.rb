@@ -42,8 +42,8 @@ module Cucumber
           Filters::ApplyBeforeHooks.new(actual_runtime.support_code),
           Filters::ApplyAfterHooks.new(actual_runtime.support_code),
           Filters::ApplyAroundHooks.new(actual_runtime.support_code),
-          Filters::BroadcastTestCaseReadyEvent.new(actual_runtime.configuration),
           Filters::BroadcastTestRunStartedEvent.new(actual_runtime.configuration),
+          Filters::BroadcastTestCaseReadyEvent.new(actual_runtime.configuration),
           Filters::PrepareWorld.new(actual_runtime)
         ]
       end
