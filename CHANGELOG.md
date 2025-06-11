@@ -30,6 +30,7 @@ refactored to use newer, less procedural ruby_)
 - Fixed an issue where a change to one example in compatibility testing wasn't fully adhered to ([luke-hill](https://github.com/luke-hill))
 - Fixed Ruby 3.4+ issue where error backtraces weren't being formatted. ([#1771](https://github.com/cucumber/cucumber-ruby/pull/1771) [orien](https://github.com/orien))
 - Fix some problematic specs that were leaking state and showcasing an issue on JRuby ([#1783](https://github.com/cucumber/cucumber-ruby/pull/1783) [luke-hill](https://github.com/luke-hill))
+- Fixed an issue where NoMethodError could be raised when declaring a parameter-type that used bound methods ([#1789](https://github.com/cucumber/cucumber-ruby/pull/1789))
 
 ### Removed
 - `StepDefinitionLight` associated methods. The class itself is present but deprecated
