@@ -9,12 +9,14 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [10.0.0] - 2025-06-11
 ### Changed
 - Added dependencies that will no longer be part of the ruby stdlib ([jeromeag](https://github.com/jerome))
+- NB: This change has also facilitated a tweak to some output messages to include new fields such as `testRunStartedId`
+for full changes and expectations of what will be new check the [messages](https://github.com/cucumber/messages/blob/main/CHANGELOG.md#2700---2024-10-26)
+([luke-hill](https://github.com/luke-hill))
 - Updated `cucumber-compatibility-kit` to v18
-  - NB: This change has also facilitated a tweak to some output messages to include new fields such as `testRunStartedId`
-  for full changes and expectations of what will be new check the [messages](https://github.com/cucumber/messages/blob/main/CHANGELOG.md#2700---2024-10-26)
-  ([luke-hill](https://github.com/luke-hill))
 - Changed compatibility testing to fully lean on external assets instead of duplicating them ([luke-hill](https://github.com/luke-hill))
 - Permit usage of latest versions of all cucumber internal gems
 - The auto-generation of all placeholder `pending` steps has been refactored (_There should be no visible changes
@@ -188,7 +190,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v10.0.0...HEAD
+[10.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.1...v10.0.0
 [9.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.0...v9.2.1
 [9.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.2...v9.2.0
 [9.1.2]: https://github.com/cucumber/cucumber-ruby/compare/v9.1.1...v9.1.2
