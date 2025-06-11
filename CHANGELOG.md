@@ -17,6 +17,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 - Fix crash when `Cucumber::Messages::Group#children` is `nil`
+- Fixed an issue where NoMethodError could be raised when declaring a parameter-type that used bound methods ([#1789](https://github.com/cucumber/cucumber-ruby/pull/1789))
 
 ### Changed
 - Use the test result type 'ambiguous' added to cucumber-ruby-core
@@ -24,7 +25,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Use the new internal `cucumber-query` structure for the `rerun` formatter
 > This is a very large refactor, but should not change any behaviour. The `cucumber-query` structure is a new internal structure that is designed to be used by formatters to query
 > the state of the test run in a more intuitive way.
-> 
+>
 > The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
 > formatters and will allow us to test the new structure in a real-world scenario.
 
