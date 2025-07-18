@@ -12,7 +12,7 @@ module CCK
     end
 
     def errors
-      all_errors.compact.flatten
+      all_errors.flatten
     end
 
     private
@@ -51,7 +51,6 @@ module CCK
       return if ignorable?(detected)
       return if incomparable?(detected)
 
-      # TODO: This needs refactoring as it's becoming rather large and bloated
       all_errors << CCK::KeysChecker.compare(detected, expected)
       compare_sub_messages(detected, expected)
     end
