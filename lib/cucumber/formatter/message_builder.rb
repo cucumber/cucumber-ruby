@@ -232,12 +232,10 @@ module Cucumber
       def create_exception_object(result, message_element)
         return unless result.failed?
 
-        Cucumber::Messages::Exception.from_h(
-          {
-            type: message_element.class,
-            message: message_element.message,
-            stack_trace: message_element.backtrace
-          }
+        Cucumber::Messages::Exception.new(
+          type: message_element.class,
+          message: message_element.message,
+          stack_trace: message_element.backtrace.join("\n")
         )
       end
 
