@@ -10,7 +10,7 @@ describe CCK::KeysChecker do
     let(:missing_kvps) { Cucumber::Messages::Attachment.new(url: 'https://foo.com') }
     let(:extra_kvps) { Cucumber::Messages::Attachment.new(url: 'https://foo.com', file_name: 'file.extension', test_step_id: 123_456, source: '1') }
     let(:missing_and_extra_kvps) { Cucumber::Messages::Attachment.new(file_name: 'file.extension', test_step_id: 123_456, test_run_started_id: 123_456) }
-    let(:wrong_values) { Cucumber::Messages::Attachment.new(url: 'https://otherfoo.com', file_name: 'file.other',  test_step_id: 456_789) }
+    let(:wrong_values) { Cucumber::Messages::Attachment.new(url: 'https://otherfoo.com', file_name: 'file.other', test_step_id: 456_789) }
 
     it 'finds missing keys' do
       expect(described_class.compare(missing_kvps, expected_kvps)).to eq(
