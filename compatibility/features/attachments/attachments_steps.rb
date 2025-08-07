@@ -25,16 +25,6 @@ When('an array with {int} bytes is attached as {string}') do |size, media_type|
   attach(data, media_type)
 end
 
-# To be removed in CCK v19 alongside removing duplicate scenarios: https://github.com/cucumber/compatibility-kit/pull/127
-When('a JPEG image is attached') do
-  attach(File.open("#{cck_asset_path}/cucumber.jpeg"), 'image/jpeg')
-end
-
-# To be removed in CCK v19 alongside removing duplicate scenarios: https://github.com/cucumber/compatibility-kit/pull/127
-When('a PNG image is attached') do
-  attach(File.open("#{cck_asset_path}/cucumber.png"), 'image/png')
-end
-
 When('a PDF document is attached and renamed') do
   attach(File.open("#{cck_asset_path}/document.pdf"), 'application/pdf', 'renamed.pdf')
 end
