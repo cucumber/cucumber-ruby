@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Fixed
+- Fixed an issue where the html-formatter wasn't respecting the new structure for `StackTrace` cucumber messages ([#1790](https://github.com/cucumber/cucumber-ruby/pull/1790) [luke-hill](https://github.com/luke-hill))
 
 ## [10.0.0] - 2025-06-11
 ### Changed
