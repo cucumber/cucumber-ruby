@@ -225,7 +225,10 @@ module Cucumber
       end
 
       def create_error_message(message_element)
-        ["#{message_element.message} (#{message_element.class})", message_element.backtrace].join("\n")
+        <<~ERROR_MESSAGE
+          #{message_element.message} (#{message_element.class})
+          #{message_element.backtrace}
+        ERROR_MESSAGE
       end
 
       def create_exception_object(result, message_element)
