@@ -12,7 +12,7 @@ module CCK
     end
 
     def errors
-      all_errors.flatten
+      all_errors.compact
     end
 
     private

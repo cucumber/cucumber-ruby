@@ -16,9 +16,8 @@ module CCK
     def compare
       return if identical_keys?
       return "Detected extra keys in message #{message_name}: #{extra_keys}" if extra_keys.any?
-      return "Missing keys in message #{message_name}: #{missing_keys}" if missing_keys.any?
 
-      'Undiagnosable error: Needs developer triage. Keys not identical, but nothing is identified erroneous'
+      "Missing keys in message #{message_name}: #{missing_keys}" if missing_keys.any?
     rescue StandardError => e
       ["Unexpected error: #{e.message}"]
     end
