@@ -198,9 +198,7 @@ module Cucumber
 
       def on_test_step_finished(event)
         test_case = @test_case_by_step_id[event.test_step.id]
-        result = event
-                 .result
-                 .with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
 
         result_message = result.to_message
         if result.failed? || result.pending?
@@ -227,14 +225,20 @@ module Cucumber
       end
 
       def create_error_message(message_element)
-        message = "#{message_element.message} (#{message_element.class})"
-        ([message] + message_element.backtrace).join("\n")
+        <<~ERROR_MESSAGE
+          #{message_element.message} (#{message_element.class})
+          #{message_element.backtrace}
+        ERROR_MESSAGE
       end
 
       def create_exception_object(result, message_element)
         return unless result.failed?
 
-        Cucumber::Messages::Exception.from_h({ type: message_element.class, message: message_element.message })
+        Cucumber::Messages::Exception.new(
+          type: message_element.class,
+          message: message_element.message,
+          stack_trace: message_element.backtrace.join("\n")
+        )
       end
 
       def on_test_case_finished(event)
