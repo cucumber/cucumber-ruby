@@ -11,6 +11,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Changed
 - Updated `cucumber-compatibility-kit` to v19
+- Optimised `compatibility` tests (That use the CCK), so that tests run slightly more optimal (Creating less empty arrays)
 
 ### Fixed
 - Fixed an issue where the html-formatter wasn't respecting the new structure for `StackTrace` cucumber messages ([#1790](https://github.com/cucumber/cucumber-ruby/pull/1790) [luke-hill](https://github.com/luke-hill))

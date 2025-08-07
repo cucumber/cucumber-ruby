@@ -14,16 +14,19 @@ module CCK
     end
 
     def compare
-      return [] if identical_keys?
+      return if identical_keys?
+      return "Detected extra keys in message #{message_name}: #{extra_keys}" if extra_keys.any?
 
-      errors << "Detected extra keys in message #{message_name}: #{extra_keys}" if extra_keys.any?
-      errors << "Missing keys in message #{message_name}: #{missing_keys}" if missing_keys.any?
-      errors
+      "Missing keys in message #{message_name}: #{missing_keys}" if missing_keys.any?
     rescue StandardError => e
       ["Unexpected error: #{e.message}"]
     end
 
     private
+
+    def identical_keys?
+      detected_keys == expected_keys
+    end
 
     def detected_keys
       @detected_keys ||= ordered_uniq_hash_keys(detected)
@@ -33,16 +36,16 @@ module CCK
       @expected_keys ||= ordered_uniq_hash_keys(expected)
     end
 
-    def identical_keys?
-      detected_keys == expected_keys
-    end
-
-    def missing_keys
-      (expected_keys - detected_keys).reject { |key| meta_message? && key == :ci }
+    def ordered_uniq_hash_keys(object)
+      object.to_h(reject_nil_values: true).keys.sort
     end
 
     def extra_keys
       (detected_keys - expected_keys).reject { |key| meta_message? && key == :ci }
+    end
+
+    def missing_keys
+      (expected_keys - detected_keys).reject { |key| meta_message? && key == :ci }
     end
 
     def meta_message?
@@ -51,14 +54,6 @@ module CCK
 
     def message_name
       detected.class.name
-    end
-
-    def ordered_uniq_hash_keys(object)
-      object.to_h(reject_nil_values: true).keys.sort
-    end
-
-    def errors
-      @errors ||= []
     end
   end
 end
