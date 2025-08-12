@@ -10,7 +10,7 @@ jobs:
     name: Perform checks before releasing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           git fetch --quiet origin main
           git merge-base --is-ancestor HEAD origin/main
@@ -27,7 +27,7 @@ jobs:
             ruby: truffleruby
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/test-ruby
         with:
           ruby-version: ${{ matrix.ruby }}
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cucumber/action-publish-rubygem@v1.0.0
         with:
           rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
@@ -51,7 +51,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cucumber/action-create-github-release@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
