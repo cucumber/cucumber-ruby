@@ -12,7 +12,7 @@ RSpec.shared_examples 'cucumber compatibility kit' do
 
   let(:cck_path) { CCK::Examples.feature_code_for(example) }
 
-  let(:parsed_original) { parse_ndjson_file("#{cck_path}/#{example}.feature.ndjson") }
+  let(:parsed_original) { parse_ndjson_file("#{cck_path}/#{example}.ndjson") }
   let(:parsed_generated) { parse_ndjson(messages) }
 
   let(:original_messages_types) { parsed_original.map { |msg| message_type(msg) } }
