@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Changed
-- Updated `cucumber-compatibility-kit` to v19
+- Updated `cucumber-compatibility-kit` to v20
 - Optimised `compatibility` tests (That use the CCK), so that tests run slightly more optimal (Creating less empty arrays)
 
 ### Fixed
