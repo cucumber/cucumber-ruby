@@ -53,20 +53,16 @@ module Cucumber
           file_name: filename
         }
 
-        if media_type.start_with?('text/')
+        if media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
           attachment_data[:body] = src
         else
           body = src.respond_to?(:read) ? src.read : src
-
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
           attachment_data[:body] = Base64.strict_encode64(body)
         end
 
-        message = Cucumber::Messages::Envelope.new(
-          attachment: Cucumber::Messages::Attachment.new(**attachment_data)
-        )
-
+        message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))
         output_envelope(message)
       end
 
