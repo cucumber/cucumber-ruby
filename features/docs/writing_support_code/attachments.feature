@@ -12,13 +12,13 @@ Feature: Attachments
       """
       Feature: A screenshot feature
         Scenario:
-          Given I attach a screenshot with media type
+          Given I attach a screenshot with a media type
       """
     Given a file named "features/attaching_screenshot_without_mediatype.feature" with:
       """
       Feature: A file feature
         Scenario:
-          Given I attach a screenshot without media type
+          Given I attach a screenshot without a media type
       """
     And a file named "features/screenshot.png" with:
       """
@@ -26,12 +26,12 @@ Feature: Attachments
       """
     And a file named "features/step_definitions/attaching_screenshot_steps.rb" with:
       """
-      Given /^I attach a screenshot with media type/ do
-        attach "features/screenshot.png", "image/png"
+      Given('I attach a screenshot with a media type') do
+        attach('features/screenshot.png', 'image/png')
       end
 
-      Given /^I attach a screenshot without media type/ do
-        attach "features/screenshot.png"
+      Given('I attach a screenshot without a media type') do
+        attach('features/screenshot.png')
       end
       """
 

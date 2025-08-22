@@ -29,13 +29,13 @@ Feature: Message output formatter
       gherkinDocument
       pickle
       pickle
-      testCase
-      testCase
       testRunStarted
+      testCase
       testCaseStarted
       testStepStarted
       testStepFinished
       testCaseFinished
+      testCase
       testCaseStarted
       testStepStarted
       testStepFinished
@@ -51,10 +51,8 @@ Feature: Message output formatter
       """
     When I run `cucumber features/my_feature.feature --format message`
     Then output should be valid NDJSON
-    And the output should contain:
-      """
-      {"testRunFinished":{"success":false
-      """
+    And the output should contain NDJSON with key "testRunFinished"
+    And the output should contain NDJSON "testRunFinished" message with key "success" and boolean value false
 
   Scenario: it sets "testRunFinished"."success" to true if nothing failed
     Given a file named "features/my_feature.feature" with:
@@ -70,7 +68,5 @@ Feature: Message output formatter
       """
     When I run `cucumber features/my_feature.feature --format message`
     Then output should be valid NDJSON
-    And the output should contain:
-      """
-      {"testRunFinished":{"success":true
-      """
+    And the output should contain NDJSON with key "testRunFinished"
+    And the output should contain NDJSON "testRunFinished" message with key "success" and boolean value true

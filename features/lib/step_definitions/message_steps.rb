@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 Then('messages types should be:') do |expected_types|
-  parsed_json = command_line.stdout.split("\n").map { |line| JSON.parse(line) }
-  message_types = parsed_json.map(&:keys).flatten.compact
+  message_types = command_line.stdout(format: :messages).map(&:keys).flatten.compact
 
-  expect(expected_types.split("\n").map(&:strip)).to contain_exactly(*message_types)
+  expect(expected_types.split("\n")).to eq(message_types)
 end
 
 Then('output should be valid NDJSON') do
@@ -23,4 +22,11 @@ Then('the output should contain NDJSON {string} message with key {string} and va
   message_contents = command_line.stdout(format: :messages).detect { |msg| msg.keys == [message_name] }[message_name]
 
   expect(message_contents).to include(key => value)
+end
+
+Then('the output should contain NDJSON {string} message with key {string} and boolean value {word}') do |message_name, key, value|
+  boolean = value == 'true' ? true : false
+  message_contents = command_line.stdout(format: :messages).detect { |msg| msg.keys == [message_name] }[message_name]
+
+  expect(message_contents).to include(key => boolean)
 end
