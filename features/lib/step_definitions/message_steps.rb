@@ -25,7 +25,7 @@ Then('the output should contain NDJSON {string} message with key {string} and va
 end
 
 Then('the output should contain NDJSON {string} message with key {string} and boolean value {word}') do |message_name, key, value|
-  boolean = value == 'true' ? true : false
+  boolean = value == 'true'
   message_contents = command_line.stdout(format: :messages).detect { |msg| msg.keys == [message_name] }[message_name]
 
   expect(message_contents).to include(key => boolean)

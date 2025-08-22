@@ -32,8 +32,8 @@ class CommandLine
 
   def stdout(format: :string)
     case format
-    when :lines; @stdout.string.split("\n")
-    when :messages; @stdout.string.split("\n").map { |line| JSON.parse(line) }
+    when :lines then @stdout.string.split("\n")
+    when :messages then @stdout.string.split("\n").map { |line| JSON.parse(line) }
     else @stdout.string
     end
   end
