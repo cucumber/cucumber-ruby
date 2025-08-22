@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Fixed
+- Prevent messages (And any consuming formatters), from not handling unknown (base64), media types ([#1796](https://github.com/cucumber/cucumber-ruby/pull/1796) [luke-hill](https://github.com/luke-hill))
 
 ## [10.1.0] - 2025-08-20
 ### Changed
