@@ -47,8 +47,10 @@ Feature: Attachments
     Then output should be valid NDJSON
     And the output should contain NDJSON with key "attachment"
     And the output should contain NDJSON with key "body" and value "Zm9v"
+    And the output should contain NDJSON "attachment" message with key "body" and value "Zm9v"
     And the output should contain NDJSON with key "mediaType" and value "image/png"
-    
+    And the output should contain NDJSON "attachment" message with key "mediaType" and value "image/png"
+
   Scenario: With json formatter, files can be attached given their path
     When I run `cucumber --format json features/attaching_screenshot_with_mediatype.feature`
     Then the output should contain "embeddings\":"
