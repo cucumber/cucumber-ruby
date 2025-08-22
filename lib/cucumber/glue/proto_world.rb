@@ -90,13 +90,10 @@ module Cucumber
       #   This is only needed in situations where you want to rename a PDF download e.t.c. - In most situations
       #   you should not need to pass a filename
       def attach(file, media_type = nil, filename = nil)
-        return super unless File.file?(file)
-
-        content = File.read(file, mode: 'rb')
-        media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
-
-        super(content, media_type.to_s, filename)
-      rescue StandardError
+        if File.exist?(file)
+          file = File.read(file, mode: 'rb')
+          media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
+        end
         super
       end
 
