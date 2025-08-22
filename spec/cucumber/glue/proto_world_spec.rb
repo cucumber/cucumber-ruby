@@ -32,16 +32,16 @@ module Cucumber
           run_defined_feature
         end
 
-        describe 'when modifying the printed variable after the call to log' do
-          define_feature <<-FEATURE
-        Feature: Banana party
-
-          Scenario: Monkey eats banana
-            When log is called twice for the same variable
+        describe 'when modifying the printed variable after the call to #log' do
+          define_feature <<~FEATURE
+            Feature: Banana party
+    
+              Scenario: Monkey eats banana
+                When log is called twice for the same variable
           FEATURE
 
           define_steps do
-            When(/^log is called twice for the same variable$/) do
+            When('log is called twice for the same variable') do
               foo = String.new('a')
               log foo
               foo.upcase!
@@ -49,21 +49,21 @@ module Cucumber
             end
           end
 
-          it 'prints the variable value at the time puts was called' do
-            expect(@out.string).to include <<OUTPUT
-    When log is called twice for the same variable
-      a
-      A
-OUTPUT
+          it 'prints the variable value at the time `#log` was called' do
+            expect(@out.string).to include <<~OUTPUT
+              When log is called twice for the same variable
+                    a
+                    A
+            OUTPUT
           end
         end
 
         describe 'when logging an object' do
-          define_feature <<-FEATURE
-        Feature: Banana party
+          define_feature <<~FEATURE
+            Feature: Banana party
 
-          Scenario: Monkey eats banana
-            When an object is logged
+              Scenario: Monkey eats banana
+                When an object is logged
           FEATURE
 
           define_steps do
@@ -82,11 +82,11 @@ OUTPUT
         end
 
         describe 'when logging multiple items on one call' do
-          define_feature <<-FEATURE
-        Feature: Logging multiple entries
-
-          Scenario: Logging multiple entries
-            When logging multiple entries
+          define_feature <<~FEATURE
+            Feature: Logging multiple entries
+    
+              Scenario: Logging multiple entries
+                When logging multiple entries
           FEATURE
 
           define_steps do
@@ -101,32 +101,6 @@ OUTPUT
               '      entry two',
               '      entry three'
             ].join("\n"))
-          end
-        end
-
-        describe 'when modifying the printed variable after the call to log' do
-          define_feature <<-FEATURE
-        Feature: Banana party
-
-          Scenario: Monkey eats banana
-            When puts is called twice for the same variable
-          FEATURE
-
-          define_steps do
-            When(/^puts is called twice for the same variable$/) do
-              foo = String.new('a')
-              log foo
-              foo.upcase!
-              log foo
-            end
-          end
-
-          it 'prints the variable value at the time puts was called' do
-            expect(@out.string).to include <<OUTPUT
-    When puts is called twice for the same variable
-      a
-      A
-OUTPUT
           end
         end
       end
@@ -152,7 +126,7 @@ OUTPUT
 
           define_steps do
             When('some data is attached') do
-              attach("'\x00'attachement", 'text/x.cucumber.log+plain')
+              attach("'\x00'attachment", 'text/x.cucumber.log+plain')
             end
           end
 
@@ -161,7 +135,7 @@ OUTPUT
           end
 
           it 'properly attaches the data' do
-            expect(@out.string).to include("'\x00'attachement")
+            expect(@out.string).to include("'\x00'attachment")
           end
         end
       end
