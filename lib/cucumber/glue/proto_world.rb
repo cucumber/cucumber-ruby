@@ -91,8 +91,8 @@ module Cucumber
       #   you should not need to pass a filename
       def attach(file, media_type = nil, filename = nil)
         if File.file?(file)
-          file = File.read(file, mode: 'rb')
           media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
+          file = File.read(file, mode: 'rb')
         end
         super
       rescue StandardError
