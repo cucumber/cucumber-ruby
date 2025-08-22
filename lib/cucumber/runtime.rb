@@ -2,7 +2,6 @@
 
 require 'fileutils'
 require 'cucumber/configuration'
-require 'cucumber/deprecate'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'

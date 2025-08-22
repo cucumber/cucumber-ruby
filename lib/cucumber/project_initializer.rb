@@ -12,33 +12,21 @@ module Cucumber
 
     private
 
-    def create_directory(dir_name)
-      create_directory_or_file dir_name, true
+    def create_directory(directory_name)
+      create_directory_or_file(directory_name, command: :mkdir_p)
     end
 
-    def create_file(file_name)
-      create_directory_or_file file_name, false
+    def create_file(filename)
+      create_directory_or_file(filename, command: :touch)
     end
 
-    def create_directory_or_file(file_name, directory)
-      file_type = if directory
-                    :mkdir_p
-                  else
-                    :touch
-                  end
-
-      report_exists(file_name) || return if File.exist?(file_name)
-
-      report_creating(file_name)
-      FileUtils.send file_type, file_name
-    end
-
-    def report_exists(file)
-      puts "   exist   #{file}"
-    end
-
-    def report_creating(file)
-      puts "  create   #{file}"
+    def create_directory_or_file(name, command:)
+      if File.exist?(name)
+        puts "#{name} already exists"
+      else
+        puts "creating #{name}"
+        FileUtils.send(command, name)
+      end
     end
   end
 end
