@@ -14,7 +14,7 @@ module Cucumber
     attr_reader :use_legacy_autoloader
 
     def deprecate(message, method, remove_after_version)
-      $stderr.puts(
+      Kernel.warn(
         "\nWARNING: #{method} is deprecated" \
           " and will be removed after version #{remove_after_version}. #{message}.\n" \
           "(Called from #{caller(3..3).first})"
