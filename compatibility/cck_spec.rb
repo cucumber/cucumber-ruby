@@ -5,7 +5,12 @@ require_relative 'support/cck/examples'
 
 require 'cck/examples'
 
-describe 'Cucumber Compatibility Kit', :cck do
+# This is the implementation of the CCK testing for cucumber-ruby
+# It will run each example from the CCK that is of type "gherkin" (As "markdown" examples aren't implemented in ruby)
+#
+# All step definition and required supporting logic is contained here, the CCK gem proper contains the source of truth
+# of the "golden" NDJSON files and attachments / miscellaneous files
+describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   CCK::Examples.gherkin.each do |example_name|
