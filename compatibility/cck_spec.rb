@@ -5,7 +5,7 @@ require_relative 'support/cck/examples'
 
 require 'cck/examples'
 
-describe 'Cucumber Compatibility Kit', type: :feature, cck: true do
+describe 'Cucumber Compatibility Kit', :cck, type: :feature do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   CCK::Examples.gherkin.each do |example_name|
