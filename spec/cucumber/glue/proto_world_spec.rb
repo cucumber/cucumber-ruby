@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
+require 'cucumber/formatter/message'
 
 module Cucumber
   module Glue
@@ -32,16 +33,16 @@ module Cucumber
           run_defined_feature
         end
 
-        describe 'when modifying the printed variable after the call to log' do
-          define_feature <<-FEATURE
-        Feature: Banana party
+        describe 'when modifying the printed variable after the call to #log' do
+          define_feature <<~FEATURE
+            Feature: Banana party
 
-          Scenario: Monkey eats banana
-            When log is called twice for the same variable
+              Scenario: Monkey eats banana
+                When log is called twice for the same variable
           FEATURE
 
           define_steps do
-            When(/^log is called twice for the same variable$/) do
+            When('log is called twice for the same variable') do
               foo = String.new('a')
               log foo
               foo.upcase!
@@ -49,21 +50,21 @@ module Cucumber
             end
           end
 
-          it 'prints the variable value at the time puts was called' do
-            expect(@out.string).to include <<OUTPUT
-    When log is called twice for the same variable
-      a
-      A
-OUTPUT
+          it 'prints the variable value at the time `#log` was called' do
+            expect(@out.string).to include <<~OUTPUT
+              When log is called twice for the same variable
+                    a
+                    A
+            OUTPUT
           end
         end
 
         describe 'when logging an object' do
-          define_feature <<-FEATURE
-        Feature: Banana party
+          define_feature <<~FEATURE
+            Feature: Banana party
 
-          Scenario: Monkey eats banana
-            When an object is logged
+              Scenario: Monkey eats banana
+                When an object is logged
           FEATURE
 
           define_steps do
@@ -82,11 +83,11 @@ OUTPUT
         end
 
         describe 'when logging multiple items on one call' do
-          define_feature <<-FEATURE
-        Feature: Logging multiple entries
+          define_feature <<~FEATURE
+            Feature: Logging multiple entries
 
-          Scenario: Logging multiple entries
-            When logging multiple entries
+              Scenario: Logging multiple entries
+                When logging multiple entries
           FEATURE
 
           define_steps do
@@ -103,32 +104,6 @@ OUTPUT
             ].join("\n"))
           end
         end
-
-        describe 'when modifying the printed variable after the call to log' do
-          define_feature <<-FEATURE
-        Feature: Banana party
-
-          Scenario: Monkey eats banana
-            When puts is called twice for the same variable
-          FEATURE
-
-          define_steps do
-            When(/^puts is called twice for the same variable$/) do
-              foo = String.new('a')
-              log foo
-              foo.upcase!
-              log foo
-            end
-          end
-
-          it 'prints the variable value at the time puts was called' do
-            expect(@out.string).to include <<OUTPUT
-    When puts is called twice for the same variable
-      a
-      A
-OUTPUT
-          end
-        end
       end
 
       describe 'Handling attachments in step definitions' do
@@ -142,7 +117,7 @@ OUTPUT
           run_defined_feature
         end
 
-        describe 'when attaching data with null byte' do
+        context 'when attaching data with null byte' do
           define_feature <<~FEATURE
             Feature: Banana party
 
@@ -152,7 +127,7 @@ OUTPUT
 
           define_steps do
             When('some data is attached') do
-              attach("'\x00'attachement", 'text/x.cucumber.log+plain')
+              attach("'\x00'attachment", 'text/x.cucumber.log+plain')
             end
           end
 
@@ -161,7 +136,60 @@ OUTPUT
           end
 
           it 'properly attaches the data' do
-            expect(@out.string).to include("'\x00'attachement")
+            expect(@out.string).to include("'\x00'attachment")
+          end
+        end
+
+        context 'when attaching a image using a file path' do
+          define_feature <<~FEATURE
+            Feature: Banana party
+
+              Scenario: Monkey eats banana
+                When some data is attached
+          FEATURE
+
+          define_steps do
+            When('some data is attached') do
+              path = "#{Dir.pwd}/docs/img/cucumber-open-logo.png"
+              attach(path, 'image/png')
+            end
+          end
+
+          it 'does not report an error' do
+            expect(@out.string).not_to include('Error')
+          end
+
+          it 'properly attaches the image' do
+            pending 'This is correct currently with the pretty implementation'
+
+            expect(@out.string).to include("'\x00'attachment")
+          end
+        end
+
+        context 'when attaching a image using the input-read data' do
+          define_feature <<~FEATURE
+            Feature: Banana party
+
+              Scenario: Monkey eats banana
+                When some data is attached
+          FEATURE
+
+          define_steps do
+            When('some data is attached') do
+              path = "#{Dir.pwd}/docs/img/cucumber-open-logo.png"
+              image_data = File.read(path, mode: 'rb')
+              attach(image_data, 'base64;image/png')
+            end
+          end
+
+          it 'does not report an error' do
+            expect(@out.string).not_to include('Error')
+          end
+
+          it 'properly attaches the image' do
+            pending 'This is correct currently with the pretty implementation'
+
+            expect(@out.string).to include("'\x00'attachment")
           end
         end
       end
