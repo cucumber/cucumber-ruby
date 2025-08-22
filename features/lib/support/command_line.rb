@@ -30,8 +30,12 @@ class CommandLine
     @stderr.string
   end
 
-  def stdout
-    @stdout.string
+  def stdout(format: :string)
+    case format
+    when :lines; @stdout.string.split("\n")
+    when :messages; @stdout.string.split("\n").map { |line| JSON.parse(line) }
+    else @stdout.string
+    end
   end
 
   def all_output
