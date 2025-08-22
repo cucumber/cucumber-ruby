@@ -3,6 +3,7 @@
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
+require 'cucumber/formatter/message'
 
 module Cucumber
   module Glue
@@ -116,7 +117,7 @@ module Cucumber
           run_defined_feature
         end
 
-        describe 'when attaching data with null byte' do
+        context 'when attaching data with null byte' do
           define_feature <<~FEATURE
             Feature: Banana party
 
@@ -135,6 +136,59 @@ module Cucumber
           end
 
           it 'properly attaches the data' do
+            expect(@out.string).to include("'\x00'attachment")
+          end
+        end
+
+        context 'when attaching a image using a file path' do
+          define_feature <<~FEATURE
+            Feature: Banana party
+
+              Scenario: Monkey eats banana
+                When some data is attached
+          FEATURE
+
+          define_steps do
+            When('some data is attached') do
+              path = "#{Dir.pwd}/docs/img/cucumber-open-logo.png"
+              attach(path, 'image/png')
+            end
+          end
+
+          it 'does not report an error' do
+            expect(@out.string).not_to include('Error')
+          end
+
+          it 'properly attaches the image' do
+            pending 'This is correct currently with the pretty implementation'
+
+            expect(@out.string).to include("'\x00'attachment")
+          end
+        end
+
+        context 'when attaching a image using the input-read data' do
+          define_feature <<~FEATURE
+            Feature: Banana party
+
+              Scenario: Monkey eats banana
+                When some data is attached
+          FEATURE
+
+          define_steps do
+            When('some data is attached') do
+              path = "#{Dir.pwd}/docs/img/cucumber-open-logo.png"
+              image_data = File.read(path, mode: 'rb')
+              attach(image_data, 'base64;image/png')
+            end
+          end
+
+          it 'does not report an error' do
+            expect(@out.string).not_to include('Error')
+          end
+
+          it 'properly attaches the image' do
+            pending 'This is correct currently with the pretty implementation'
+
             expect(@out.string).to include("'\x00'attachment")
           end
         end
