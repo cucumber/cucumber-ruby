@@ -36,7 +36,7 @@ module Cucumber
         describe 'when modifying the printed variable after the call to #log' do
           define_feature <<~FEATURE
             Feature: Banana party
-    
+
               Scenario: Monkey eats banana
                 When log is called twice for the same variable
           FEATURE
@@ -85,7 +85,7 @@ module Cucumber
         describe 'when logging multiple items on one call' do
           define_feature <<~FEATURE
             Feature: Logging multiple entries
-    
+
               Scenario: Logging multiple entries
                 When logging multiple entries
           FEATURE
