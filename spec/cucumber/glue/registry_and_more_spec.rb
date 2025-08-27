@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
+require 'cucumber/cucumber_expressions/parameter_type'
 require 'support/fake_objects'
 
 module Cucumber
@@ -218,6 +219,61 @@ module Cucumber
           allow(scenario).to receive(:accept_hook?).with(a).and_return(true)
           allow(scenario).to receive(:accept_hook?).with(b).and_return(false)
           expect(registry.hooks_for(:around, scenario)).to eq([a])
+        end
+      end
+    end
+
+    describe RegistryAndMore do
+      let(:registry) { described_class.new(double, configuration) }
+      let(:configuration) { Configuration.new({}) }
+
+      describe '#parameter_type_envelope' do
+        subject(:envelope) { registry.send(:parameter_type_envelope, parameter_type) }
+
+        let(:parameter_type) { CucumberExpressions::ParameterType.new(name, regexp, type, transformer, use_for_snippets, prefer_for_regexp_match) }
+        let(:id) { '279e0f28-c91b-4de2-89c0-e7fbc2a15406' }
+        let(:name) { 'person' }
+        let(:regexp) { /"[^"]+"/ }
+        let(:type) { String }
+        let(:transformer) { ->(s) { s } }
+        let(:use_for_snippets) { false }
+        let(:prefer_for_regexp_match) { true }
+
+        before do
+          allow(configuration).to receive_message_chain(:id_generator, :new_id).and_return(id) # rubocop:disable RSpec/MessageChain
+        end
+
+        it 'produces an envelope with the expected contents' do
+          expect(envelope).to be_a Cucumber::Messages::Envelope
+          expect(envelope.parameter_type).to be_a Cucumber::Messages::ParameterType
+          expect(envelope.parameter_type).to have_attributes(
+            id: '279e0f28-c91b-4de2-89c0-e7fbc2a15406',
+            name: 'person',
+            regular_expressions: [%("[^"]+")],
+            prefer_for_regular_expression_match: true,
+            use_for_snippets: false,
+            source_reference: anything # tested in later cases
+          )
+        end
+
+        context 'when provided a ParameterType with transformer being a lambda' do
+          let(:transformer) { ->(s) { s } }
+
+          it 'includes the lambda source-location in the envelope' do
+            expect(envelope.parameter_type.source_reference).to be_a Cucumber::Messages::SourceReference
+            expect(envelope.parameter_type.source_reference).to have_attributes(
+              uri: transformer.source_location[0],
+              location: have_attributes(line: transformer.source_location[1])
+            )
+          end
+        end
+
+        context 'when provided a ParameterType with transformer being a bound method, which has no source location' do
+          let(:transformer) { String.method(:new) }
+
+          it 'does not include the source-location in the envelope' do
+            expect(envelope.parameter_type.source_reference).to be_nil
+          end
         end
       end
     end

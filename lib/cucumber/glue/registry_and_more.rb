@@ -197,11 +197,19 @@ module Cucumber
             regular_expressions: parameter_type.regexps.map(&:to_s),
             prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match,
             use_for_snippets: parameter_type.use_for_snippets,
-            source_reference: Cucumber::Messages::SourceReference.new(
-              uri: parameter_type.transformer.source_location[0],
-              location: Cucumber::Messages::Location.new(line: parameter_type.transformer.source_location[1])
-            )
+            source_reference: source_reference_for(parameter_type.transformer)
           )
+        )
+      end
+
+      def source_reference_for(transformer)
+        # #source_location may return nil if no definition was found
+        # This is the case for transformers created using method(sym) or similar
+        return nil if transformer.source_location.nil?
+
+        Cucumber::Messages::SourceReference.new(
+          uri: transformer.source_location[0],
+          location: Cucumber::Messages::Location.new(line: transformer.source_location[1])
         )
       end
 
