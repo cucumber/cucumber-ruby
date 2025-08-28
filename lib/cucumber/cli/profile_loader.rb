@@ -57,9 +57,12 @@ module Cucumber
         process_configuration_file_with_erb
         load_configuration
 
-        if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
-          raise(YmlLoadError, 'cucumber.yml was found, but was blank or malformed. ' \
-          "Please refer to cucumber's documentation on correct profile usage.\n")
+        unless @cucumber_yml.is_a?(Hash)
+          raise(YmlLoadError, <<~ERROR_MESSAGE)
+            cucumber.yml was found, but was blank or malformed.
+            Please refer to cucumber's documentation on correct profile usage.
+            Type 'cucumber --help' for usage.
+          ERROR_MESSAGE
         end
 
         @cucumber_yml
