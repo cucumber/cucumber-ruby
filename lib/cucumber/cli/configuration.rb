@@ -8,11 +8,9 @@ require 'cucumber'
 
 module Cucumber
   module Cli
-    class YmlLoadError < StandardError; end
-
-    class ProfilesNotDefinedError < YmlLoadError; end
-
-    class ProfileNotFound < StandardError; end
+    YmlLoadError = Class.new(StandardError)
+    ProfilesNotDefinedError = Class.new(YmlLoadError)
+    ProfileNotFound = Class.new(StandardError)
 
     class Configuration
       include Constantize

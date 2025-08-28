@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'erb'
 
 module Cucumber
   module Cli
@@ -11,12 +12,12 @@ module Cucumber
 
       def args_from(profile)
         unless cucumber_yml.key?(profile)
-          raise(ProfileNotFound, <<~END_OF_ERROR)
+          raise(ProfileNotFound, <<~ERROR_MESSAGE)
             Could not find profile: '#{profile}'
 
             Defined profiles in cucumber.yml:
               * #{cucumber_yml.keys.sort.join("\n  * ")}
-          END_OF_ERROR
+          ERROR_MESSAGE
         end
 
         args_from_yml = cucumber_yml[profile] || ''
@@ -67,32 +68,26 @@ module Cucumber
       def ensure_configuration_file_exists
         return if cucumber_yml_defined?
 
-        raise(ProfilesNotDefinedError, "cucumber.yml was not found.  Current directory is #{Dir.pwd}." \
-                                       "Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define" \
-                                       "a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+        raise(ProfilesNotDefinedError, <<~ERROR_MESSAGE)
+          cucumber.yml was not found.  Current directory is #{Dir.pwd}.
+          Please refer to cucumber's documentation on defining profiles in cucumber.yml.
+          You must define a 'default' profile to use the cucumber command without any arguments.
+          Type 'cucumber --help' for usage.
+        ERROR_MESSAGE
       end
 
       def process_configuration_file_with_erb
-        require 'erb'
-        begin
-          @cucumber_erb = ERB.new(IO.read(cucumber_file), trim_mode: '%').result(binding)
-        rescue StandardError
-          raise(YmlLoadError, "cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$ERROR_INFO.inspect}")
-        end
+        @cucumber_erb = ERB.new(IO.read(cucumber_file), trim_mode: '%').result(binding)
+      rescue StandardError
+        raise(YmlLoadError, "cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$ERROR_INFO.inspect}")
       end
 
       def load_configuration
-        require 'yaml'
-        begin
-          @cucumber_yml = YAML.load(@cucumber_erb)
-        rescue StandardError
-          raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
-        end
+        @cucumber_yml = YAML.load(@cucumber_erb)
+      rescue StandardError
+        raise(YmlLoadError, "cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.")
       end
 
-      # Locates cucumber.yml file. The file can end in .yml or .yaml,
-      # and be located in the current directory (eg. project root) or
-      # in a .config/ or config/ subdirectory of the current directory.
       def cucumber_file
         @cucumber_file ||= Dir.glob('{,.config/,config/}cucumber{.yml,.yaml}').first
       end
