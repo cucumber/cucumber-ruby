@@ -158,7 +158,7 @@ module Cucumber
         end
 
         it 'issues a helpful error message when cucumber.yml is blank or malformed' do
-          expected_error_message = /cucumber\.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage./
+          expected_error_message = /cucumber\.yml was found, but was blank or malformed.\nPlease refer to cucumber's documentation on correct profile usage./
 
           ['', 'sfsadfs', "--- \n- an\n- array\n", '---dddfd'].each do |bad_input|
             given_cucumber_yml_defined_as(bad_input)

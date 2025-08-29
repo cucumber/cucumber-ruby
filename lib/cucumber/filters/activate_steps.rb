@@ -38,6 +38,9 @@ module Cucumber
         end
 
         class FindMatch
+          attr_reader :step_match_search, :configuration, :test_step
+          private :step_match_search, :configuration, :test_step
+
           def initialize(step_match_search, configuration, test_step)
             @step_match_search = step_match_search
             @configuration = configuration
@@ -57,9 +60,6 @@ module Cucumber
           end
 
           private
-
-          attr_reader :step_match_search, :configuration, :test_step
-          private :step_match_search, :configuration, :test_step
 
           def match
             matches.first

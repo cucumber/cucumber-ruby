@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Detect the platform we're running on so we can tweak behaviour in various places.
 require 'rbconfig'
 require 'cucumber/core/platform'
 
@@ -11,12 +10,14 @@ module Cucumber
   RUBY_BINARY   = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
 
   class << self
-    attr_accessor :use_full_backtrace
+    attr_writer :use_full_backtrace
 
-    # @private
+    def use_full_backtrace
+      @use_full_backtrace ||= false
+    end
+
     def file_mode(mode, encoding = 'UTF-8')
       "#{mode}:#{encoding}"
     end
   end
-  self.use_full_backtrace = false
 end

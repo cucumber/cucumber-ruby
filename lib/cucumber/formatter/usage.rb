@@ -8,8 +8,22 @@ module Cucumber
   module Formatter
     class Usage < Progress
       include Console
-      class StepDefKey < StepDefinitionLight
+      class StepDefKey
         attr_accessor :mean_duration, :status
+        attr_reader :regexp_source, :location
+
+        def initialize(regexp_source, location)
+          @regexp_source = regexp_source
+          @location = location
+        end
+
+        def eql?(other)
+          regexp_source == other.regexp_source && location == other.location
+        end
+
+        def hash
+          regexp_source.hash + 31 * location.to_s.hash
+        end
       end
 
       def initialize(config)
