@@ -13,13 +13,13 @@ module Cucumber
       @step_by_id = []
       @step_definition_by_id = {}
       @step_match_arguments_lists_by_pickle_step_id = [{}]
-      @test_case_by_id = []
+      @test_case_by_id = {} # Should be working
       @test_case_by_pickle_id = []
       @test_case_finished_by_test_case_started_id = [[]]
-      @test_case_started_by_id = {}
+      @test_case_started_by_id = {} # Should be working
       @test_run_started = :not_sure_on_this
       @test_run_finished = :not_sure_on_this
-      @test_step_finished_by_test_case_started_id = {}
+      @test_step_finished_by_test_case_started_id = {} # Should be working
       @test_step_ids_by_pickle_step_id = [{}]
       @test_step_result_by_pickle_id = [{}]
       @test_step_results_by_pickle_step_id = [[]]
@@ -58,7 +58,20 @@ module Cucumber
     end
 
     def update_test_case(test_case)
-      :not_yet_implemented
+      @test_case_by_id[test_case.id] = test_case
+
+      # NOT YET IMPLEMENTED THE BELOW - NEXT STEPS from javascript implementation
+      # this.testCaseByPickleId.set(testCase.pickleId, testCase)
+      # testCase.testSteps.forEach((testStep) => {
+      #   this.testStepById.set(testStep.id, testStep)
+      #                            this.pickleIdByTestStepId.set(testStep.id, testCase.pickleId)
+      # this.pickleStepIdByTestStepId.set(testStep.id, testStep.pickleStepId)
+      # this.testStepIdsByPickleStepId.put(testStep.pickleStepId, testStep.id)
+      # this.stepMatchArgumentsListsByPickleStepId.set(
+      #   testStep.pickleStepId,
+      #   testStep.stepMatchArgumentsLists
+      # )
+      # })
     end
 
     def update_test_case_started(test_case_started)
