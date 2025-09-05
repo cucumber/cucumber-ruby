@@ -276,6 +276,7 @@ module Cucumber
       end
 
       def test_case_started_id(test_case)
+        # a = @query.instance_variable_get(:@test_case_started_by_id)
         @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
       end
     end
