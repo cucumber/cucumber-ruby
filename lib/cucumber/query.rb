@@ -27,6 +27,10 @@ module Cucumber
       @test_step_started_by_test_case_started_id = [[]]
     end
 
+    # FIRST TWO THINGS TO FIX
+    # Use query to establish
+    # 1) `on_test_step_started` - Establish what the TestStepStarted message property is for `test_case_started_id` is
+    # 2) `on_test_step_finished` - Establish what the TestStepFinished message property is for `test_case_started_id` is
     def update(envelope)
       @meta = envelope.meta if envelope.meta
       update_gherkin_document(envelope.gherkin_document) if envelope.gherkin_document
