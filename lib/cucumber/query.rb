@@ -19,7 +19,7 @@ module Cucumber
       @test_case_started_by_id = {}
       @test_run_started = :not_sure_on_this
       @test_run_finished = :not_sure_on_this
-      @test_step_finished_by_test_case_started_id = [[]]
+      @test_step_finished_by_test_case_started_id = {}
       @test_step_ids_by_pickle_step_id = [{}]
       @test_step_result_by_pickle_id = [{}]
       @test_step_results_by_pickle_step_id = [[]]
@@ -90,7 +90,15 @@ module Cucumber
     end
 
     def update_test_step_finished(test_step_finished)
-      :not_yet_implemented
+      @test_step_finished_by_test_case_started_id[test_step_finished.test_case_started_id] = test_step_finished
+
+      # NOT YET IMPLEMENTED THE BELOW - NEXT STEPS from javascript implementation
+      #     const pickleId = this.pickleIdByTestStepId.get(testStepFinished.testStepId)
+      #     this.testStepResultByPickleId.put(pickleId, testStepFinished.testStepResult)
+      #     const testStep = this.testStepById.get(testStepFinished.testStepId)
+      #     this.testStepResultsByPickleStepId.put(testStep.pickleStepId, testStepFinished.testStepResult)
+      #     this.testStepResultsbyTestStepId.put(testStep.id, testStepFinished.testStepResult)
+      #   }
     end
 
     def update_test_case_finished(test_case_finished)
