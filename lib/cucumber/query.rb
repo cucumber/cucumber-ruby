@@ -16,7 +16,7 @@ module Cucumber
       @test_case_by_id = []
       @test_case_by_pickle_id = []
       @test_case_finished_by_test_case_started_id = [[]]
-      @test_case_started_by_id = []
+      @test_case_started_by_id = {}
       @test_run_started = :not_sure_on_this
       @test_run_finished = :not_sure_on_this
       @test_step_finished_by_test_case_started_id = [[]]
@@ -62,7 +62,23 @@ module Cucumber
     end
 
     def update_test_case_started(test_case_started)
-      :not_yet_implemented
+      @test_case_started_by_id[test_case_started.id] = test_case_started
+
+      # NOT YET IMPLEMENTED THE BELOW - NEXT STEPS from javascript implementation
+      #     /*
+      #     when a test case attempt starts besides the first one, clear all existing results
+      #     and attachments for that test case, so we always report on the latest attempt
+      #     (applies to legacy pickle-oriented query methods only)
+      #      */
+      #     const testCase = this.testCaseById.get(testCaseStarted.testCaseId)
+      #     if (testCase) {
+      #       this.testStepResultByPickleId.delete(testCase.pickleId)
+      #       for (const testStep of testCase.testSteps) {
+      #         this.testStepResultsByPickleStepId.delete(testStep.pickleStepId)
+      #         this.testStepResultsbyTestStepId.delete(testStep.id)
+      #         this.attachmentsByTestStepId.delete(testStep.id)
+      #       }
+      #     }
     end
 
     def update_test_step_started(test_step_started)
