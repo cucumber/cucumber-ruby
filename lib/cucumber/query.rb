@@ -32,18 +32,18 @@ module Cucumber
     # 1) `on_test_step_started` - Establish what the TestStepStarted message property is for `test_case_started_id` is
     # 2) `on_test_step_finished` - Establish what the TestStepFinished message property is for `test_case_started_id` is
     def update(envelope)
-      @meta = envelope.meta if envelope.meta
-      update_gherkin_document(envelope.gherkin_document) if envelope.gherkin_document
-      update_pickle(envelope.pickle) if envelope.gherkin_document
-      @hooks_by_id[envelope.hook.id] = envelope.hook if envelope.hook
-      @step_definition_by_id[envelope.step_definition.id] = envelope.step_definition if envelope.step_definition
-      @test_run_started = envelope.test_run_started if envelope.test_run_started
-      update_test_case(envelope.test_case) if envelope.test_case
-      update_test_case_started(envelope.test_case_started) if envelope.test_case_started
-      update_test_step_started(envelope.test_step_started) if envelope.test_step_started
-      update_attachment(envelope.attachment) if envelope.attachment
-      update_test_step_finished(envelope.test_step_finished) if envelope.test_step_finished
-      update_test_case_finished(envelope.test_case_finished) if envelope.test_case_finished
+      return @meta = envelope.meta if envelope.meta
+      return update_gherkin_document(envelope.gherkin_document) if envelope.gherkin_document
+      return update_pickle(envelope.pickle) if envelope.gherkin_document
+      return @hooks_by_id[envelope.hook.id] = envelope.hook if envelope.hook
+      return @step_definition_by_id[envelope.step_definition.id] = envelope.step_definition if envelope.step_definition
+      return @test_run_started = envelope.test_run_started if envelope.test_run_started
+      return update_test_case(envelope.test_case) if envelope.test_case
+      return update_test_case_started(envelope.test_case_started) if envelope.test_case_started
+      return update_test_step_started(envelope.test_step_started) if envelope.test_step_started
+      return update_attachment(envelope.attachment) if envelope.attachment
+      return update_test_step_finished(envelope.test_step_finished) if envelope.test_step_finished
+      return update_test_case_finished(envelope.test_case_finished) if envelope.test_case_finished
       @test_run_finished = envelope.test_run_finished if envelope.test_run_finished
     end
 
