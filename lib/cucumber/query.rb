@@ -1,30 +1,30 @@
 module Cucumber
   class Query
     def initialize
-      @test_step_result_by_pickle_id = [{}]
-      @test_step_results_by_pickle_step_id = [[]]
-      @test_case_by_pickle_id = []
-      @pickle_id_by_test_step_id = []
-      @pickle_step_id_by_test_step_id = []
-      @test_step_results_by_test_step_id = [[]]
-      @test_step_ids_by_pickle_step_id = [{}]
-      @hooks_by_id = {}
+      @attachments_by_test_case_started_id = [[]]
       @attachments_by_test_step_id = []
-      @step_match_arguments_lists_by_pickle_step_id = [{}]
+      @hooks_by_id = {}
+      @lineage_by_id = []
       @meta = :not_sure_on_this
+      @pickle_by_id = []
+      @pickle_id_by_test_step_id = []
+      @pickle_step_by_id = []
+      @pickle_step_id_by_test_step_id = []
+      @step_by_id = []
+      @step_definition_by_id = {}
+      @step_match_arguments_lists_by_pickle_step_id = [{}]
+      @test_case_by_id = []
+      @test_case_by_pickle_id = []
+      @test_case_finished_by_test_case_started_id = [[]]
+      @test_case_started_by_id = []
       @test_run_started = :not_sure_on_this
       @test_run_finished = :not_sure_on_this
-      @test_case_started_by_id = []
-      @lineage_by_id = []
-      @step_by_id = []
-      @pickle_by_id = []
-      @pickle_step_by_id = []
-      @step_definition_by_id = {}
-      @test_case_by_id = []
-      @test_case_finished_by_test_case_started_id = [[]]
-      @test_step_started_by_test_case_started_id = [[]]
       @test_step_finished_by_test_case_started_id = [[]]
-      @attachments_by_test_case_started_id = [[]]
+      @test_step_ids_by_pickle_step_id = [{}]
+      @test_step_result_by_pickle_id = [{}]
+      @test_step_results_by_pickle_step_id = [[]]
+      @test_step_results_by_test_step_id = [[]]
+      @test_step_started_by_test_case_started_id = [[]]
     end
 
     def update(envelope)
