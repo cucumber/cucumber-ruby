@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cucumber/formatter/rerun'
+require 'cucumber/formatter/new_rerun'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 require 'support/standard_step_actions'
@@ -9,7 +9,7 @@ require 'support/fake_objects'
 
 module Cucumber
   module Formatter
-    describe Rerun do
+    describe NewRerun do
       include Cucumber::Core::Gherkin::Writer
       include Cucumber::Core
 
@@ -34,6 +34,7 @@ module Cucumber
               end
             end
           end
+
           described_class.new(config)
           execute [gherkin], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
