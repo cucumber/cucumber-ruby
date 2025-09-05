@@ -1,5 +1,29 @@
 module Cucumber
   class Query
+    attr_reader :attachments_by_test_case_started_id,
+                :attachments_by_test_case_finished_id,
+                :hooks_by_id,
+                :lineage_by_id,
+                :meta,
+                :pickle_by_id,
+                :pickle_step_by_id,
+                :pickle_step_id_by_test_step_id,
+                :step_by_id,
+                :step_definition_by_id,
+                :step_matches_by_test_step_id,
+                :test_case_by_id,
+                :test_case_by_pickle_id,
+                :test_case_finished_by_test_case_started_id,
+                :test_case_started_by_id,
+                :test_run_started,
+                :test_run_finished,
+                :test_step_finished_by_test_case_started_id,
+                :test_step_ids_by_pickle_step_id,
+                :test_step_result_by_pickle_id,
+                :test_step_results_by_pickle_step_id,
+                :test_step_results_by_test_step_id,
+                :test_step_started_by_test_case_started_id
+
     def initialize
       @attachments_by_test_case_started_id = [[]]
       @attachments_by_test_step_id = []
