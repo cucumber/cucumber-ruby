@@ -9,6 +9,8 @@ require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
 require 'cucumber/formatter/query/test_run_started'
 
+require 'cucumber/query'
+
 module Cucumber
   module Formatter
     class MessageBuilder
@@ -39,6 +41,8 @@ module Cucumber
         @current_test_run_started_id = nil
         @current_test_case_started_id = nil
         @current_test_step_id = nil
+
+        @query = Cucumber::Query.new
       end
 
       def output_message
@@ -272,6 +276,7 @@ module Cucumber
       end
 
       def test_case_started_id(test_case)
+        # a = @query.instance_variable_get(:@test_case_started_by_id)
         @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
       end
     end
