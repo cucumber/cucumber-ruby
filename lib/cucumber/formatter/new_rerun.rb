@@ -13,8 +13,8 @@ module Cucumber
         @io = ensure_io(config.out_stream, config.error_stream)
 
         # Old implementation
-        #
-        # @failures = {}
+
+        @failures = {}
         # config.on_event :test_case_finished do |event|
         #   test_case, result = *event.attributes
         #   if @config.strict.strict?(:flaky)
@@ -39,6 +39,8 @@ module Cucumber
         #
         #   @io.print file_failures.join("\n")
         # end
+
+        # End of old implementation
 
         super(config)
       end
