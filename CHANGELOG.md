@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [10.1.1] - 2025-10-08
 ### Changed
 - Internal refactors to CCK testing code to better check that the message formatter responses are as expected
 - Simplify `#attach` by better checking the different use cases (base64 vs file path)
@@ -204,7 +206,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.1...HEAD
+[10.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.0...v10.1.1
 [10.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.0.0...v10.1.0
 [10.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.1...v10.0.0
 [9.2.1]: https://github.com/cucumber/cucumber-ruby/compare/v9.2.0...v9.2.1
