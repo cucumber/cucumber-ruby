@@ -10,7 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Changed
-- Internal refactors to testing code to better check that message responses are as expected
+- Internal refactors to CCK testing code to better check that the message formatter responses are as expected
 - Simplify `#attach` by better checking the different use cases (base64 vs file path)
 
 ### Fixed
