@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 def sources
-  [
-    "#{Dir.pwd}/spec/support/attachments.ndjson",
-    "#{Dir.pwd}/spec/support/empty.ndjson",
-    "#{Dir.pwd}/spec/support/hooks.ndjson",
-    "#{Dir.pwd}/spec/support/minimal.ndjson",
+  %W[
+    #{Dir.pwd}/spec/support/attachments.ndjson
+    #{Dir.pwd}/spec/support/empty.ndjson
+    #{Dir.pwd}/spec/support/hooks.ndjson
+    #{Dir.pwd}/spec/support/minimal.ndjson
+    #{Dir.pwd}/spec/support/rules.ndjson
   ]
 end
 
-def list_of_queries
+def queries
   {
     'findAllPickles' => ->(query) { query.find_all_pickles.length }
   }
@@ -18,7 +19,7 @@ end
 def list_of_tests
   tests ||= []
   sources.map do |source|
-    list_of_queries.each do |query|
+    queries.each do |query|
       tests << [source, query]
     end
   end
@@ -42,14 +43,14 @@ describe Cucumber::Query do
   let(:repository) { Cucumber::Repository.new }
 
   describe 'Acceptance tests for Cucumber::Query' do
-    list_of_tests.each do |line_item|
-      query_name = line_item.last.first
-      query_proc = line_item.last.last
-      cck_spec = line_item.first
-      message_array = parse_ndjson_file(cck_spec).map { |msg| msg }
-      it "Executes the following queries '#{query_name}' against the CCK definition provided by #{cck_spec}" do
-        message_array.each { |msg| repository.update(msg) }
-        name_of_file_to_check = cck_spec.sub('.ndjson', ".#{query_name}.results.json")
+    list_of_tests.each do |test|
+      query_name = test.last.first
+      query_proc = test.last.last
+      cck_definition = test.first
+      message_array = parse_ndjson_file(cck_definition).map.itself
+      it "Executes the query '#{query_name}' against the CCK definition '#{cck_definition}'" do
+        message_array.each { |message| repository.update(message) }
+        name_of_file_to_check = cck_definition.sub('.ndjson', ".#{query_name}.results.json")
         expected_query_result = JSON.parse(File.read(name_of_file_to_check))
 
         expect(query_proc.call(query)).to eq(expected_query_result)
