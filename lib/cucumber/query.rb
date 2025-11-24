@@ -1,3 +1,5 @@
+require 'cucumber/repository'
+
 module Cucumber
   class Query
     attr_reader :repository
@@ -8,7 +10,7 @@ module Cucumber
     end
 
     def find_all_pickles
-      repository.values
+      repository.pickle_by_id.values
     end
 
     # This method will be called with 1 of these 3 messages

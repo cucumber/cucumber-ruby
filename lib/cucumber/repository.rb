@@ -6,9 +6,9 @@ module Cucumber
                   :test_run_finished
 
     def update(envelope)
-      return this.meta = envelope.meta if envelope.meta
-      return this.test_run_started = envelope.test_run_started if envelope.test_run_started
-      return this.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
+      return @meta = envelope.meta if envelope.meta
+      return @test_run_started = envelope.test_run_started if envelope.test_run_started
+      return @test_run_finished = envelope.test_run_finished if envelope.test_run_finished
 
       # TODO: We need to improve these
       return update_pickle(envelope.pickle) if envelope.pickle
@@ -50,16 +50,16 @@ module Cucumber
 
     def update_pickle(pickle)
       # This method also needs to update the hash `pickle_step_by_id`
-      @pickle_by_id[pickle.id] = pickle
+      pickle_by_id[pickle.id] = pickle
     end
 
     def update_test_case(test_case)
       # This method also needs to update the hash `test_step_by_id`
-      @test_case_by_id[test_case.id] = test_case
+      test_case_by_id[test_case.id] = test_case
     end
 
     def update_test_case_started(test_case_started)
-      @test_case_started_by_id[test_case_started.id] = test_case_started
+      test_case_started_by_id[test_case_started.id] = test_case_started
     end
   end
 end
