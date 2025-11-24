@@ -10,28 +10,40 @@ module Cucumber
       return this.test_run_started = envelope.test_run_started if envelope.test_run_started
       return this.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
 
-      # TODO: We need to improve this
+      # TODO: We need to improve these
       return update_pickle(envelope.pickle) if envelope.pickle
-
+      return update_test_case(envelope.test_case) if envelope.test_case
+      return update_test_case_started(envelope.test_case) if envelope.test_case
 
       # Change all of the below lines to look like the above lines
-      # NB: One of these items will be fixed up later
       #
       # return @test_run_hook_started = envelope.test_run_hook_started if envelope.test_run_hook_started
       # return @test_run_hook_finished = envelope.test_run_hook_finished if envelope.test_run_hook_finished
-      # return @test_case_started = envelope.test_case_started if envelope.test_case_started
       # return @test_case_finished = envelope.test_case_finished if envelope.test_case_finished
       # return @test_step_started = envelope.test_step_started if envelope.test_step_started
       # return @test_step_finished = envelope.test_step_finished if envelope.test_step_finished
-      # return @test_case = envelope.test_case if envelope.test_case
     end
 
     def pickle_by_id
       @pickle_by_id ||= {}
     end
 
+    # TODO: Not used yet
     def pickle_step_by_id
       @pickle_step_by_id ||= {}
+    end
+
+    def test_case_by_id
+      @test_case_by_id ||= {}
+    end
+
+    # TODO: Not used yet
+    def test_step_by_id
+      @test_step_by_id ||= {}
+    end
+
+    def test_case_started_by_id
+      @test_case_started_by_id ||= {}
     end
 
     private
@@ -40,34 +52,21 @@ module Cucumber
       # This method also needs to update the hash `pickle_step_by_id`
       @pickle_by_id[pickle.id] = pickle
     end
+
+    def update_test_case(test_case)
+      # This method also needs to update the hash `test_step_by_id`
+      @test_case_by_id[test_case.id] = test_case
+    end
+
+    def update_test_case_started(test_case_started)
+      @test_case_started_by_id[test_case_started.id] = test_case_started
+    end
   end
 end
-
 
 ## Placeholder code that "might" be useful
 #    def update_gherkin_document(gherkin_document)
 #       :not_yet_implemented
-#     end
-#
-#     def update_pickle(pickle)
-#       :not_yet_implemented
-#     end
-#
-#     def update_test_case(test_case)
-#       @test_case_by_id[test_case.id] = test_case
-#
-#       # NOT YET IMPLEMENTED THE BELOW - NEXT STEPS from javascript implementation
-#       # this.testCaseByPickleId.set(testCase.pickleId, testCase)
-#       # testCase.testSteps.forEach((testStep) => {
-#       #   this.testStepById.set(testStep.id, testStep)
-#       #                            this.pickleIdByTestStepId.set(testStep.id, testCase.pickleId)
-#       # this.pickleStepIdByTestStepId.set(testStep.id, testStep.pickleStepId)
-#       # this.testStepIdsByPickleStepId.put(testStep.pickleStepId, testStep.id)
-#       # this.stepMatchArgumentsListsByPickleStepId.set(
-#       #   testStep.pickleStepId,
-#       #   testStep.stepMatchArgumentsLists
-#       # )
-#       # })
 #     end
 #
 #     def update_test_case_started(test_case_started)
