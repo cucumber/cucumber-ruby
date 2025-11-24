@@ -2,8 +2,10 @@
 
 def sources
   [
+    "#{Dir.pwd}/spec/support/attachments.ndjson",
     "#{Dir.pwd}/spec/support/empty.ndjson",
-    "#{Dir.pwd}/spec/support/minimal.ndjson"
+    "#{Dir.pwd}/spec/support/hooks.ndjson",
+    "#{Dir.pwd}/spec/support/minimal.ndjson",
   ]
 end
 
@@ -15,7 +17,7 @@ end
 
 def list_of_tests
   tests ||= []
-  sources.each do |source|
+  sources.map do |source|
     list_of_queries.each do |query|
       tests << [source, query]
     end
@@ -34,24 +36,23 @@ end
 require 'cucumber/query'
 require 'cucumber/messages'
 
-# This is the new query spec
 describe Cucumber::Query do
   subject(:query) { described_class.new(repository) }
 
   let(:repository) { Cucumber::Repository.new }
 
-  describe 'all of our tests' do
+  describe 'Acceptance tests for Cucumber::Query' do
     list_of_tests.each do |line_item|
-      it "Executes the following queries '#{line_item.last.first}' against the CCK definition provided by #{line_item.first}" do
-        message_array = parse_ndjson_file(line_item.first).map { |msg| msg }
+      query_name = line_item.last.first
+      query_proc = line_item.last.last
+      cck_spec = line_item.first
+      message_array = parse_ndjson_file(cck_spec).map { |msg| msg }
+      it "Executes the following queries '#{query_name}' against the CCK definition provided by #{cck_spec}" do
         message_array.each { |msg| repository.update(msg) }
+        name_of_file_to_check = cck_spec.sub('.ndjson', ".#{query_name}.results.json")
+        expected_query_result = JSON.parse(File.read(name_of_file_to_check))
 
-        name = line_item.last.first
-        query_proc = line_item.last.last
-        name_of_file_to_check = line_item.first.sub('.ndjson', ".#{name}.results.json")
-        answer = File.read(name_of_file_to_check)
-
-        expect(query_proc.call(query)).to eq(JSON.parse(answer))
+        expect(query_proc.call(query)).to eq(expected_query_result)
       end
     end
   end
