@@ -1,16 +1,14 @@
 module Cucumber
   # In memory repository i.e. a thread based link to cucumber-query
   class Repository
-    attr_accessor :meta,
-                  :test_run_started,
-                  :test_run_finished
+    attr_accessor :meta, :test_run_started, :test_run_finished
 
     def update(envelope)
-      return @meta = envelope.meta if envelope.meta
-      return @test_run_started = envelope.test_run_started if envelope.test_run_started
-      return @test_run_finished = envelope.test_run_finished if envelope.test_run_finished
+      return self.meta = envelope.meta if envelope.meta
+      return self.test_run_started = envelope.test_run_started if envelope.test_run_started
+      return self.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
 
-      # TODO: We will need to improve these over time
+      # TODO: These need more updates adding onto their methods
       return update_pickle(envelope.pickle) if envelope.pickle
       return update_test_case(envelope.test_case) if envelope.test_case
 
