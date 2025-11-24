@@ -14,15 +14,15 @@ module Cucumber
       return update_pickle(envelope.pickle) if envelope.pickle
       return update_test_case(envelope.test_case) if envelope.test_case
 
-      # TODO: These items are completed AS IS
-      return update_test_case_started(envelope.test_case) if envelope.test_case
-      return update_test_run_hook_started(envelope.test_case) if envelope.test_run_hook_started
-      return update_test_run_hook_finished(envelope.test_case) if envelope.test_run_hook_finished
+      # TODO: These items are completed AS IS. Should be good to sign off
+      return update_test_case_started(envelope.test_case_started) if envelope.test_case_started
+      return update_test_run_hook_started(envelope.test_run_hook_started) if envelope.test_run_hook_started
+      return update_test_run_hook_finished(envelope.test_run_hook_finished) if envelope.test_run_hook_finished
+      return update_test_case_finished(envelope.test_case_finished) if envelope.test_case_finished
 
-      # Change all the below lines to look like the above lines
-      # return @test_case_finished = envelope.test_case_finished if envelope.test_case_finished
-      # return @test_step_started = envelope.test_step_started if envelope.test_step_started
-      # return @test_step_finished = envelope.test_step_finished if envelope.test_step_finished
+      # TODO: Check these two items in terms of LinkedHashMap in Java
+      return update_test_step_started(envelope.test_step_started) if envelope.test_step_started
+      return update_test_step_finished(envelope.test_step_finished) if envelope.test_step_finished
 
       nil
     end
@@ -40,6 +40,14 @@ module Cucumber
       @test_case_by_id ||= {}
     end
 
+    def test_case_finished_by_test_case_started_id
+      @test_case_finished_by_test_case_started_id ||= {}
+    end
+
+    def test_case_started_by_id
+      @test_case_started_by_id ||= {}
+    end
+
     def test_run_hook_started_by_id
       @test_run_hook_started_by_id ||= {}
     end
@@ -53,8 +61,12 @@ module Cucumber
       @test_step_by_id ||= {}
     end
 
-    def test_case_started_by_id
-      @test_case_started_by_id ||= {}
+    def test_steps_finished_by_test_case_started_id
+      @test_steps_finished_by_test_case_started_id ||= {}
+    end
+
+    def test_steps_started_by_test_case_started_id
+      @test_steps_started_by_test_case_started_id ||= {}
     end
 
     private
@@ -69,30 +81,32 @@ module Cucumber
       test_case_by_id[test_case.id] = test_case
     end
 
+    def update_test_case_finished(test_case_finished)
+      test_case_finished_by_test_case_started_id[test_case_finished.test_case_started_id] = test_case_finished
+    end
+
     def update_test_case_started(test_case_started)
       test_case_started_by_id[test_case_started.id] = test_case_started
+    end
+
+    def update_test_run_hook_finished(test_run_hook_finished)
+      test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_finished.test_run_hook_started_id] = test_run_hook_finished
     end
 
     def update_test_run_hook_started(test_run_hook_started)
       test_run_hook_started_by_id[test_run_hook_started.id] = test_run_hook_started
     end
 
-    def update_test_run_hook_finished(test_run_hook_finished)
-      test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_finished.test_run_hook_started_id] = test_run_hook_finished
+    def update_test_step_finished(test_step_finished)
+      # Java impl:
+      #   this.testStepsFinishedByTestCaseStartedId.compute(event.getTestCaseStartedId(), updateList(event));
+      test_steps_finished_by_test_case_started_id[test_step_finished.test_case_started_id] = test_step_finished
+    end
+
+    def update_test_step_started(test_step_started)
+      # Java impl
+      #    this.testStepsStartedByTestCaseStartedId.compute(event.getTestCaseStartedId(), updateList(event));
+      test_steps_started_by_test_case_started_id[test_step_started.test_case_started_id] = test_step_started
     end
   end
 end
-
-## Placeholder code that "might" be useful
-#     def update_test_step_finished(test_step_finished)
-#       @test_step_finished_by_test_case_started_id[test_step_finished.test_case_started_id] = test_step_finished
-#
-#       # NOT YET IMPLEMENTED THE BELOW - NEXT STEPS from javascript implementation
-#       #     const pickleId = this.pickleIdByTestStepId.get(testStepFinished.testStepId)
-#       #     this.testStepResultByPickleId.put(pickleId, testStepFinished.testStepResult)
-#       #     const testStep = this.testStepById.get(testStepFinished.testStepId)
-#       #     this.testStepResultsByPickleStepId.put(testStep.pickleStepId, testStepFinished.testStepResult)
-#       #     this.testStepResultsbyTestStepId.put(testStep.id, testStepFinished.testStepResult)
-#       #   }
-#     end
-#
