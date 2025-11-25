@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
+def source_names
+  %w[attachments empty hooks minimal rules]
+end
+
 def sources
-  %W[
-    #{Dir.pwd}/spec/support/attachments.ndjson
-    #{Dir.pwd}/spec/support/empty.ndjson
-    #{Dir.pwd}/spec/support/hooks.ndjson
-    #{Dir.pwd}/spec/support/minimal.ndjson
-    #{Dir.pwd}/spec/support/rules.ndjson
-  ]
+  source_names.map { |name| "#{Dir.pwd}/spec/support/#{name}.ndjson" }
 end
 
 def queries
@@ -16,22 +14,12 @@ def queries
   }
 end
 
-def new_list_of_tests
-  sources.flat_map do |item|
-    queries.map do |key, value|
-      { cck_spec: item, query_name: key, query_proc: value }
-    end
-  end
-end
-
 def list_of_tests
-  tests ||= []
-  sources.map do |source|
-    queries.each do |query|
-      tests << [source, query]
+  sources.flat_map do |source|
+    queries.map do |query_name, query_proc|
+      { cck_spec: source, query_name:, query_proc: }
     end
   end
-  tests
 end
 
 require 'cucumber/query'
@@ -45,19 +33,15 @@ describe Cucumber::Query do
 
   let(:repository) { Cucumber::Repository.new }
 
-  new_list_of_tests.each do |test|
+  list_of_tests.each do |test|
     describe "executes the query '#{test[:query_name]}' against the CCK definition '#{test[:cck_spec]}'" do
-      let(:query_name) { test[:query_name] }
-      let(:query_proc) { test[:query_proc] }
-      let(:cck_definition) { test[:cck_spec] }
-
-      let(:cck_messages) { parse_ndjson_file(cck_definition).map.itself }
-      let(:filename_to_check) { cck_definition.sub('.ndjson', ".#{query_name}.results.json") }
+      let(:cck_messages) { parse_ndjson_file(test[:cck_spec]).map.itself }
+      let(:filename_to_check) { test[:cck_spec].sub('.ndjson', ".#{test[:query_name]}.results.json") }
 
       before { cck_messages.each { |message| repository.update(message) } }
 
       it 'returns the expected query result' do
-        evaluated_query = query_proc.call(query)
+        evaluated_query = test[:query_proc].call(query)
         expected_query_result = JSON.parse(File.read(filename_to_check))
 
         expect(evaluated_query).to eq(expected_query_result)
