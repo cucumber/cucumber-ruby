@@ -15,14 +15,18 @@ module Cucumber
     #   Missing: countMostSevereTestStepResultStatus / countTestCasesStarted
     #   Completed: N/A
 
-    # TODO: findAll methods (4/12) Complete
-    #   Missing: findAllPickleSteps / findAllTestCaseStarted / findAllStepDefinitions / findAllTestCaseFinished
-    #   Missing: findAllTestStepFinished / findAllTestRunHookStarted / findAllTestRunHookFinished
-    #   Missing: findAllUndefinedParameterTypes
-    #   Completed: findAllPickles / findAllTestCases / findAllTestSteps / findAllTestStepStarted
+    # TODO: findAll methods (6/12) Complete
+    #   Missing: findAllTestCaseStarted / findAllStepDefinitions / findAllTestCaseFinished
+    #   Missing: findAllTestRunHookStarted / findAllTestRunHookFinished /findAllUndefinedParameterTypes
+    #   Completed: findAllPickles / findAllPickleSteps
+    #   Completed: findAllTestCases / findAllTestSteps / findAllTestStepStarted / findAllTestStepFinished
 
     def find_all_pickles
       repository.pickle_by_id.values
+    end
+
+    def find_all_pickle_steps
+      repository.pickle_step_by_id.values
     end
 
     def find_all_test_cases
@@ -30,9 +34,11 @@ module Cucumber
     end
 
     def find_all_test_step_started
-      # Java impl
-      #    repository.testStepsStartedByTestCaseStartedId.values().stream().flatMap(Collection::stream).collect(toList());
       repository.test_steps_started_by_test_case_started_id.values.flatten
+    end
+
+    def find_all_test_step_finished
+      repository.test_steps_finished_by_test_case_started_id.values.flatten
     end
 
     def find_all_test_steps

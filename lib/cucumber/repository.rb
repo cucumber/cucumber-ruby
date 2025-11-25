@@ -5,21 +5,21 @@ module Cucumber
   class Repository
     attr_accessor :meta, :test_run_started, :test_run_finished
     attr_reader :pickle_by_id, :pickle_step_by_id,
-                :test_case_by_id, :test_case_finished_by_test_case_started_id, :test_case_started_by_id,
+                :test_case_by_id, :test_case_started_by_id, :test_case_finished_by_test_case_started_id,
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
-                :test_step_by_id, :test_steps_finished_by_test_case_started_id, :test_steps_started_by_test_case_started_id
+                :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
 
     def initialize
       @pickle_by_id = {}
       @pickle_step_by_id = {}
       @test_case_by_id = {}
-      @test_case_finished_by_test_case_started_id = {}
       @test_case_started_by_id = {}
+      @test_case_finished_by_test_case_started_id = {}
       @test_run_hook_started_by_id = {}
       @test_run_hook_finished_by_test_run_hook_started_id = {}
       @test_step_by_id = {}
-      @test_steps_finished_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
       @test_steps_started_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
+      @test_steps_finished_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
     end
 
     def update(envelope)
