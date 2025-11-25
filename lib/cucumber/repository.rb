@@ -15,12 +15,8 @@ module Cucumber
       return update_test_run_hook_finished(envelope.test_run_hook_finished) if envelope.test_run_hook_finished
       return update_test_case_started(envelope.test_case_started) if envelope.test_case_started
       return update_test_case_finished(envelope.test_case_finished) if envelope.test_case_finished
-
-      # TODO: Check these two items in terms of LinkedHashMap in Java
       return update_test_step_started(envelope.test_step_started) if envelope.test_step_started
       return update_test_step_finished(envelope.test_step_finished) if envelope.test_step_finished
-
-      # TODO: These items are completed AS IS. Should be good to sign off
       return update_pickle(envelope.pickle) if envelope.pickle
       return update_test_case(envelope.test_case) if envelope.test_case
 
