@@ -21,7 +21,7 @@ module Cucumber
       # TODO: These items are completed AS IS. Should be good to sign off
       return update_pickle(envelope.pickle) if envelope.pickle
       return update_test_case(envelope.test_case) if envelope.test_case
-      
+
       nil
     end
 

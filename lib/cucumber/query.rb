@@ -9,6 +9,17 @@ module Cucumber
       @repository = repository
     end
 
+    # TODO: count methods (0/2) Complete
+    #   Missing: countMostSevereTestStepResultStatus / countTestCasesStarted
+    #   Completed: N/A
+
+    # TODO: findAll methods (0/12) Complete
+    #   Missing: findAllPickles / findAllPickleSteps / findAllTestCaseStarted / findAllStepDefinitions
+    #   Missing: findAllTestCaseFinished / findAllTestSteps / findAllTestCases
+    #   Missing: findAllTestStepStarted / findAllTestStepFinished / findAllTestRunHookStarted / findAllTestRunHookFinished
+    #   Missing: findAllUndefinedParameterTypes
+    #   Completed: N/A
+
     def find_all_pickles
       repository.pickle_by_id.values
     end
