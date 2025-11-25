@@ -60,11 +60,11 @@ module Cucumber
     end
 
     def test_steps_finished_by_test_case_started_id
-      @test_steps_finished_by_test_case_started_id ||= {}
+      @test_steps_finished_by_test_case_started_id ||= Hash.new { |hash, key| hash[key] = [] }
     end
 
     def test_steps_started_by_test_case_started_id
-      @test_steps_started_by_test_case_started_id ||= {}
+      @test_steps_started_by_test_case_started_id ||= Hash.new { |hash, key| hash[key] = [] }
     end
 
     private
@@ -96,15 +96,11 @@ module Cucumber
     end
 
     def update_test_step_finished(test_step_finished)
-      # Java impl:
-      #   this.testStepsFinishedByTestCaseStartedId.compute(event.getTestCaseStartedId(), updateList(event));
-      test_steps_finished_by_test_case_started_id[test_step_finished.test_case_started_id] = test_step_finished
+      test_steps_finished_by_test_case_started_id[test_step_finished.test_case_started_id] << test_step_finished
     end
 
     def update_test_step_started(test_step_started)
-      # Java impl
-      #    this.testStepsStartedByTestCaseStartedId.compute(event.getTestCaseStartedId(), updateList(event));
-      test_steps_started_by_test_case_started_id[test_step_started.test_case_started_id] = test_step_started
+      test_steps_started_by_test_case_started_id[test_step_started.test_case_started_id] << test_step_started
     end
   end
 end
