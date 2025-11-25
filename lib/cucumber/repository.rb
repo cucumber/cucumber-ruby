@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cucumber
   # In memory repository i.e. a thread based link to cucumber-query
   class Repository
