@@ -13,15 +13,28 @@ module Cucumber
     #   Missing: countMostSevereTestStepResultStatus / countTestCasesStarted
     #   Completed: N/A
 
-    # TODO: findAll methods (1/12) Complete
-    #   Missing: findAllPickleSteps / findAllTestCaseStarted / findAllStepDefinitions
-    #   Missing: findAllTestCaseFinished / findAllTestSteps / findAllTestCases
-    #   Missing: findAllTestStepStarted / findAllTestStepFinished / findAllTestRunHookStarted / findAllTestRunHookFinished
+    # TODO: findAll methods (4/12) Complete
+    #   Missing: findAllPickleSteps / findAllTestCaseStarted / findAllStepDefinitions / findAllTestCaseFinished
+    #   Missing: findAllTestStepFinished / findAllTestRunHookStarted / findAllTestRunHookFinished
     #   Missing: findAllUndefinedParameterTypes
-    #   Completed: findAllPickles
+    #   Completed: findAllPickles / findAllTestCases / findAllTestSteps / findAllTestStepStarted
 
     def find_all_pickles
       repository.pickle_by_id.values
+    end
+
+    def find_all_test_cases
+      repository.test_case_by_id.values
+    end
+
+    def find_all_test_step_started
+      # Java impl
+      #    repository.testStepsStartedByTestCaseStartedId.values().stream().flatMap(Collection::stream).collect(toList());
+      repository.test_steps_started_by_test_case_started_id.values
+    end
+
+    def find_all_test_steps
+      repository.test_step_by_id.values
     end
 
     # This method will be called with 1 of these 3 messages
