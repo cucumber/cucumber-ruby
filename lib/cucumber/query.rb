@@ -11,9 +11,9 @@ module Cucumber
       @repository = repository
     end
 
-    # TODO: count methods (0/2) Complete
-    #   Missing: countMostSevereTestStepResultStatus / countTestCasesStarted
-    #   Completed: N/A
+    # TODO: count methods (1/2) Complete
+    #   Missing: countMostSevereTestStepResultStatus
+    #   Completed: countTestCasesStarted
 
     # TODO: findAll methods (8/12) Complete
     #   Missing: findAllTestCaseStarted / findAllStepDefinitions / findAllTestCaseFinished
@@ -22,12 +22,29 @@ module Cucumber
     #   Completed: findAllTestRunHookStarted / findAllTestRunHookFinished
     #   Completed: findAllTestCases / findAllTestSteps / findAllTestStepStarted / findAllTestStepFinished
 
+    def count_test_cases_started
+      find_all_test_case_started.length
+    end
+
     def find_all_pickles
       repository.pickle_by_id.values
     end
 
     def find_all_pickle_steps
       repository.pickle_step_by_id.values
+    end
+
+    def find_all_test_case_started
+      # TODO: In prog. Needs query: `findTestCaseFinishedBy`
+      #         return repository.testCaseStartedById.values().stream()
+      #                 .filter(element -> !findTestCaseFinishedBy(element)
+      #                         .filter(TestCaseFinished::getWillBeRetried)
+      #                         .isPresent())
+      #                 .collect(toList());
+      initial_cases = repository.test_case_started_by_id.values
+      cases_without_retries = initial_cases.reject(&:will_be_retried)
+      # TODO: Need some help here - Not sure if this is the right filtering
+      final_cases = cases_without_retries.select { |test_case| find_test_case_finished_by(test_case.id) }
     end
 
     def find_all_test_cases
@@ -55,7 +72,7 @@ module Cucumber
     end
 
     # This method will be called with 1 of these 3 messages
-    # TestCaseStarted | TestCaseFinished | TestStepStarted
+    #   TestCaseStarted | TestCaseFinished | TestStepStarted
     def find_pickle_by(element)
       test_case = find_test_case_by(element)
       raise 'Expected to find TestCase from TestCaseStarted' unless test_case
@@ -64,7 +81,7 @@ module Cucumber
     end
 
     # This method will be called with 1 of these 4 messages
-    # TestCaseStarted | TestCaseFinished | TestStepStarted | TestStepFinished
+    #   TestCaseStarted | TestCaseFinished | TestStepStarted | TestStepFinished
     def find_test_case_by(element)
       test_case_started = element.respond_to?(:test_case_started_id) ? find_test_case_started_by(element) : element
       raise 'Expected to find TestCaseStarted by TestStepStarted' unless test_case_started
@@ -73,9 +90,15 @@ module Cucumber
     end
 
     # This method will be called with 1 of these 3 messages
-    # TestCaseFinished | TestStepStarted | TestStepFinished
+    #   TestCaseFinished | TestStepStarted | TestStepFinished
     def find_test_case_started_by(element)
       repository.test_case_started_by_id[element.test_case_started_id]
+    end
+
+    # This method will be called with only 1 message
+    #   TestCaseStarted
+    def find_test_case_finished_by(test_case_started)
+      repository.test_case_finished_by_test_case_started_id[test_case_started.id]
     end
   end
 end
