@@ -6,49 +6,41 @@ require 'cucumber/formatter/message_builder'
 
 module Cucumber
   module Formatter
-    class NewRerun < MessageBuilder
+    class NewRerun
       include Formatter::Io
 
       def initialize(config)
         @io = ensure_io(config.out_stream, config.error_stream)
-
-        # Old implementation
-
+        @config = config
         @failures = {}
-        # config.on_event :test_case_finished do |event|
-        #   test_case, result = *event.attributes
-        #   if @config.strict.strict?(:flaky)
-        #     next if result.ok?(strict: @config.strict)
-        #
-        #     add_to_failures(test_case)
-        #   else
-        #     unless @latest_failed_test_case.nil?
-        #       if @latest_failed_test_case != test_case
-        #         add_to_failures(@latest_failed_test_case)
-        #         @latest_failed_test_case = nil
-        #       elsif result.ok?(strict: @config.strict)
-        #         @latest_failed_test_case = nil
-        #       end
-        #     end
-        #     @latest_failed_test_case = test_case unless result.ok?(strict: @config.strict)
-        #   end
-        # end
-        # config.on_event :test_run_finished do
-        #   add_to_failures(@latest_failed_test_case) unless @latest_failed_test_case.nil?
-        #   next if @failures.empty?
-        #
-        #   @io.print file_failures.join("\n")
-        # end
-
-        # End of old implementation
-
-        super(config)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-      def output_envelope(envelope)
-        @io.write(envelope.to_json)
-        @io.write("\n")
-        @query.update(envelope)
+      def on_test_case_finished(event)
+        test_case, result = *event.attributes
+        if @config.strict.strict?(:flaky)
+          next if result.ok?(strict: @config.strict)
+
+          add_to_failures(test_case)
+        else
+          unless @latest_failed_test_case.nil?
+            if @latest_failed_test_case != test_case
+              add_to_failures(@latest_failed_test_case)
+              @latest_failed_test_case = nil
+            elsif result.ok?(strict: @config.strict)
+              @latest_failed_test_case = nil
+            end
+          end
+          @latest_failed_test_case = test_case unless result.ok?(strict: @config.strict)
+        end
+      end
+
+      def on_test_run_finished(_event)
+        add_to_failures(@latest_failed_test_case) unless @latest_failed_test_case.nil?
+        next if @failures.empty?
+
+        @io.print file_failures.join("\n")
       end
 
       private
