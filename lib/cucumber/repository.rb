@@ -29,7 +29,6 @@ module Cucumber
       @pickle_by_id ||= {}
     end
 
-    # TODO: Not used yet
     def pickle_step_by_id
       @pickle_step_by_id ||= {}
     end
@@ -54,7 +53,6 @@ module Cucumber
       @test_run_hook_finished_by_test_run_hook_started_id ||= {}
     end
 
-    # TODO: Not used yet
     def test_step_by_id
       @test_step_by_id ||= {}
     end
@@ -70,13 +68,13 @@ module Cucumber
     private
 
     def update_pickle(pickle)
-      # This method also needs to update the hash `pickle_step_by_id`
       pickle_by_id[pickle.id] = pickle
+      pickle.steps.each { |pickle_step| pickle_step_by_id[pickle_step.id] = pickle_step }
     end
 
     def update_test_case(test_case)
-      # This method also needs to update the hash `test_step_by_id`
       test_case_by_id[test_case.id] = test_case
+      test_case.test_steps.each { |test_step| test_step_by_id[test_step.id] = test_step }
     end
 
     def update_test_case_finished(test_case_finished)
