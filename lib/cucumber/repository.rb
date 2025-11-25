@@ -8,11 +8,9 @@ module Cucumber
       return self.test_run_started = envelope.test_run_started if envelope.test_run_started
       return self.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
 
-      # TODO: These need more updates adding onto their methods
+      # TODO: These items are completed AS IS. Should be good to sign off
       return update_pickle(envelope.pickle) if envelope.pickle
       return update_test_case(envelope.test_case) if envelope.test_case
-
-      # TODO: These items are completed AS IS. Should be good to sign off
       return update_test_case_started(envelope.test_case_started) if envelope.test_case_started
       return update_test_run_hook_started(envelope.test_run_hook_started) if envelope.test_run_hook_started
       return update_test_run_hook_finished(envelope.test_run_hook_finished) if envelope.test_run_hook_finished
