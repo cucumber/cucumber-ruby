@@ -10,7 +10,9 @@ end
 
 def queries
   {
-    'findAllPickles' => ->(query) { query.find_all_pickles.length }
+    'findAllPickles' => ->(query) { query.find_all_pickles.length },
+    'findAllTestCases' => ->(query) { query.find_all_test_cases.length },
+    'findAllTestSteps' => ->(query) { query.find_all_test_steps.length }
   }
 end
 
