@@ -4,6 +4,23 @@ module Cucumber
   # In memory repository i.e. a thread based link to cucumber-query
   class Repository
     attr_accessor :meta, :test_run_started, :test_run_finished
+    attr_reader :pickle_by_id, :pickle_step_by_id,
+                :test_case_by_id, :test_case_finished_by_test_case_started_id, :test_case_started_by_id,
+                :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
+                :test_step_by_id, :test_steps_finished_by_test_case_started_id, :test_steps_started_by_test_case_started_id
+
+    def initialize
+      @pickle_by_id = {}
+      @pickle_step_by_id = {}
+      @test_case_by_id = {}
+      @test_case_finished_by_test_case_started_id = {}
+      @test_case_started_by_id = {}
+      @test_run_hook_started_by_id = {}
+      @test_run_hook_finished_by_test_run_hook_started_id = {}
+      @test_step_by_id = {}
+      @test_steps_finished_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
+      @test_steps_started_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
+    end
 
     def update(envelope)
       return self.meta = envelope.meta if envelope.meta
@@ -21,46 +38,6 @@ module Cucumber
       return update_test_case(envelope.test_case) if envelope.test_case
 
       nil
-    end
-
-    def pickle_by_id
-      @pickle_by_id ||= {}
-    end
-
-    def pickle_step_by_id
-      @pickle_step_by_id ||= {}
-    end
-
-    def test_case_by_id
-      @test_case_by_id ||= {}
-    end
-
-    def test_case_finished_by_test_case_started_id
-      @test_case_finished_by_test_case_started_id ||= {}
-    end
-
-    def test_case_started_by_id
-      @test_case_started_by_id ||= {}
-    end
-
-    def test_run_hook_started_by_id
-      @test_run_hook_started_by_id ||= {}
-    end
-
-    def test_run_hook_finished_by_test_run_hook_started_id
-      @test_run_hook_finished_by_test_run_hook_started_id ||= {}
-    end
-
-    def test_step_by_id
-      @test_step_by_id ||= {}
-    end
-
-    def test_steps_finished_by_test_case_started_id
-      @test_steps_finished_by_test_case_started_id ||= Hash.new { |hash, key| hash[key] = [] }
-    end
-
-    def test_steps_started_by_test_case_started_id
-      @test_steps_started_by_test_case_started_id ||= Hash.new { |hash, key| hash[key] = [] }
     end
 
     private
