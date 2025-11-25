@@ -16,6 +16,14 @@ def queries
   }
 end
 
+def new_list_of_tests
+  sources.flat_map do |item|
+    queries.map do |key, value|
+      { cck_spec: item, query_name: key, query_proc: value }
+    end
+  end
+end
+
 def list_of_tests
   tests ||= []
   sources.map do |source|
@@ -26,34 +34,32 @@ def list_of_tests
   tests
 end
 
-def parse_ndjson_file(path)
-  parse_ndjson(File.read(path))
-end
-
-def parse_ndjson(ndjson)
-  Cucumber::Messages::Helpers::NdjsonToMessageEnumerator.new(ndjson)
-end
-
 require 'cucumber/query'
 require 'cucumber/messages'
+require_relative '../../compatibility/support/cck/helpers'
 
 describe Cucumber::Query do
+  include CCK::Helpers
+
   subject(:query) { described_class.new(repository) }
 
   let(:repository) { Cucumber::Repository.new }
 
-  describe 'Acceptance tests for Cucumber::Query' do
-    list_of_tests.each do |test|
-      query_name = test.last.first
-      query_proc = test.last.last
-      cck_definition = test.first
-      message_array = parse_ndjson_file(cck_definition).map.itself
-      it "Executes the query '#{query_name}' against the CCK definition '#{cck_definition}'" do
-        message_array.each { |message| repository.update(message) }
-        name_of_file_to_check = cck_definition.sub('.ndjson', ".#{query_name}.results.json")
-        expected_query_result = JSON.parse(File.read(name_of_file_to_check))
+  list_of_tests.each do |test|
+    describe "executes the query '#{test.last.first}' against the CCK definition '#{test.first}'" do
+      let(:query_name) { test.last.first }
+      let(:query_proc) { test.last.last }
+      let(:cck_definition) { test.first }
+      let(:cck_messages) { parse_ndjson_file(cck_definition).map.itself }
+      let(:filename_to_check) { cck_definition.sub('.ndjson', ".#{query_name}.results.json") }
 
-        expect(query_proc.call(query)).to eq(expected_query_result)
+      before { cck_messages.each { |message| repository.update(message) } }
+
+      it 'returns the expected query result' do
+        evaluated_query = query_proc.call(query)
+        expected_query_result = JSON.parse(File.read(filename_to_check))
+
+        expect(evaluated_query).to eq(expected_query_result)
       end
     end
   end
