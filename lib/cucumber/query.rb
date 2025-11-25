@@ -15,10 +15,11 @@ module Cucumber
     #   Missing: countMostSevereTestStepResultStatus / countTestCasesStarted
     #   Completed: N/A
 
-    # TODO: findAll methods (6/12) Complete
+    # TODO: findAll methods (8/12) Complete
     #   Missing: findAllTestCaseStarted / findAllStepDefinitions / findAllTestCaseFinished
-    #   Missing: findAllTestRunHookStarted / findAllTestRunHookFinished /findAllUndefinedParameterTypes
+    #   Missing: findAllUndefinedParameterTypes
     #   Completed: findAllPickles / findAllPickleSteps
+    #   Completed: findAllTestRunHookStarted / findAllTestRunHookFinished
     #   Completed: findAllTestCases / findAllTestSteps / findAllTestStepStarted / findAllTestStepFinished
 
     def find_all_pickles
@@ -31,6 +32,14 @@ module Cucumber
 
     def find_all_test_cases
       repository.test_case_by_id.values
+    end
+
+    def find_all_test_run_hook_started
+      repository.test_run_hook_started_by_id.values
+    end
+
+    def find_all_test_run_hook_finished
+      repository.test_run_hook_finished_by_test_run_hook_started_id.values
     end
 
     def find_all_test_step_started
