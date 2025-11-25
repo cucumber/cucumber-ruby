@@ -32,7 +32,7 @@ module Cucumber
     def find_all_test_step_started
       # Java impl
       #    repository.testStepsStartedByTestCaseStartedId.values().stream().flatMap(Collection::stream).collect(toList());
-      repository.test_steps_started_by_test_case_started_id.values
+      repository.test_steps_started_by_test_case_started_id.values.flatten
     end
 
     def find_all_test_steps
