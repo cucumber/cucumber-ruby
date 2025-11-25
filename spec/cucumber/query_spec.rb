@@ -45,11 +45,12 @@ describe Cucumber::Query do
 
   let(:repository) { Cucumber::Repository.new }
 
-  list_of_tests.each do |test|
-    describe "executes the query '#{test.last.first}' against the CCK definition '#{test.first}'" do
-      let(:query_name) { test.last.first }
-      let(:query_proc) { test.last.last }
-      let(:cck_definition) { test.first }
+  new_list_of_tests.each do |test|
+    describe "executes the query '#{test[:query_name]}' against the CCK definition '#{test[:cck_spec]}'" do
+      let(:query_name) { test[:query_name] }
+      let(:query_proc) { test[:query_proc] }
+      let(:cck_definition) { test[:cck_spec] }
+
       let(:cck_messages) { parse_ndjson_file(cck_definition).map.itself }
       let(:filename_to_check) { cck_definition.sub('.ndjson', ".#{query_name}.results.json") }
 
