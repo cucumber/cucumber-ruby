@@ -15,9 +15,9 @@ module Cucumber
     #   Missing: countMostSevereTestStepResultStatus
     #   Completed: countTestCasesStarted
 
-    # TODO: findAll methods (10/12) Complete
-    #   Missing: findAllStepDefinitions / findAllUndefinedParameterTypes
-    #   Completed: findAllPickles / findAllPickleSteps
+    # TODO: findAll methods (11/12) Complete
+    #   Missing: findAllUndefinedParameterTypes
+    #   Completed: findAllPickles / findAllPickleSteps / findAllStepDefinitions
     #   Completed: findAllTestRunHookStarted / findAllTestRunHookFinished / findAllTestCaseStarted / findAllTestCaseFinished
     #   Completed: findAllTestCases / findAllTestSteps / findAllTestStepStarted / findAllTestStepFinished
 
@@ -31,6 +31,10 @@ module Cucumber
 
     def find_all_pickle_steps
       repository.pickle_step_by_id.values
+    end
+
+    def find_all_step_definitions
+      repository.step_definition_by_id.values
     end
 
     # This finds all test cases that have started, but not yet finished
@@ -75,7 +79,7 @@ module Cucumber
     end
 
     # This method will be called with 1 of these 3 messages
-    #   TestCaseStarted | TestCaseFinished | TestStepStarted
+    #   [TestCaseStarted || TestCaseFinished || TestStepStarted]
     def find_pickle_by(element)
       test_case = find_test_case_by(element)
       raise 'Expected to find TestCase from TestCaseStarted' unless test_case
@@ -84,7 +88,7 @@ module Cucumber
     end
 
     # This method will be called with 1 of these 4 messages
-    #   TestCaseStarted | TestCaseFinished | TestStepStarted | TestStepFinished
+    #   [TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_by(element)
       test_case_started = element.respond_to?(:test_case_started_id) ? find_test_case_started_by(element) : element
       raise 'Expected to find TestCaseStarted by TestStepStarted' unless test_case_started
@@ -93,13 +97,13 @@ module Cucumber
     end
 
     # This method will be called with 1 of these 3 messages
-    #   TestCaseFinished | TestStepStarted | TestStepFinished
+    #   [TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_started_by(element)
       repository.test_case_started_by_id[element.test_case_started_id]
     end
 
     # This method will be called with only 1 message
-    #   TestCaseStarted
+    #   [TestCaseStarted]
     def find_test_case_finished_by(test_case_started)
       repository.test_case_finished_by_test_case_started_id[test_case_started.id]
     end
