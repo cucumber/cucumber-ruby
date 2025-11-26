@@ -26,6 +26,7 @@ module Cucumber
       return self.meta = envelope.meta if envelope.meta
       return self.test_run_started = envelope.test_run_started if envelope.test_run_started
       return self.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
+      return update_gherkin_document(envelope.gherkin_document) if envelope.gherkin_document
       return update_test_run_hook_started(envelope.test_run_hook_started) if envelope.test_run_hook_started
       return update_test_run_hook_finished(envelope.test_run_hook_finished) if envelope.test_run_hook_finished
       return update_test_case_started(envelope.test_case_started) if envelope.test_case_started
@@ -39,6 +40,41 @@ module Cucumber
     end
 
     private
+
+    def update_feature(feature)
+      # Java impl:
+      #        feature.getChildren()
+      #                 .forEach(featureChild -> {
+      #                     featureChild.getBackground().ifPresent(background -> updateSteps(background.getSteps()));
+      #                     featureChild.getScenario().ifPresent(this::updateScenario);
+      #                     featureChild.getRule().ifPresent(rule -> rule.getChildren().forEach(ruleChild -> {
+      #                         ruleChild.getBackground().ifPresent(background -> updateSteps(background.getSteps()));
+      #                         ruleChild.getScenario().ifPresent(this::updateScenario);
+      #                     }));
+      #                 });
+
+      # TODO -> NB: This requires `update_steps` and `update_scenario` being implemented before this is functional
+      feature.children.each do |feature_child|
+        update_steps(feature_child.background.steps) if feature_child.background
+        update_scenario(feature_child.scenario) if feature_child.scenario
+        if feature_child.rule
+          feature_child.rule.children.each do |rule_child|
+            update_steps(rule_child.background.steps) if rule_child.background
+            update_scenario(rule_child.scenario) if rule_child.scenario
+          end
+        end
+      end
+    end
+
+    def update_gherkin_document(gherkin_document)
+      # Java impl:
+      #       private void updateGherkinDocument(GherkinDocument document) {
+      #         lineageById.putAll(Lineages.of(document));
+      #         document.getFeature().ifPresent(this::updateFeature);
+      #     }
+      # TODO: Update lineage??
+      update_feature(gherkin_document.feature) if gherkin_document.feature
+    end
 
     def update_pickle(pickle)
       pickle_by_id[pickle.id] = pickle
