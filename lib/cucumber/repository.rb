@@ -5,6 +5,7 @@ module Cucumber
   class Repository
     attr_accessor :meta, :test_run_started, :test_run_finished
     attr_reader :pickle_by_id, :pickle_step_by_id,
+                :step_by_id,
                 :test_case_by_id, :test_case_started_by_id, :test_case_finished_by_test_case_started_id,
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
                 :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
@@ -12,6 +13,7 @@ module Cucumber
     def initialize
       @pickle_by_id = {}
       @pickle_step_by_id = {}
+      @step_by_id = {}
       @test_case_by_id = {}
       @test_case_started_by_id = {}
       @test_case_finished_by_test_case_started_id = {}
@@ -52,8 +54,7 @@ module Cucumber
       #                         ruleChild.getScenario().ifPresent(this::updateScenario);
       #                     }));
       #                 });
-
-      # TODO -> NB: This requires `update_steps` and `update_scenario` being implemented before this is functional
+      
       feature.children.each do |feature_child|
         update_steps(feature_child.background.steps) if feature_child.background
         update_scenario(feature_child.scenario) if feature_child.scenario
@@ -83,6 +84,10 @@ module Cucumber
 
     def update_scenario(scenario)
       update_steps(scenario.steps)
+    end
+
+    def update_steps(steps)
+      steps.each { |step| step_by_id[step.id] = step }
     end
 
     def update_test_case(test_case)
