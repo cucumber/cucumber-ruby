@@ -22,22 +22,22 @@ module Cucumber
     # TODO: findAll methods (11/12) Complete
     #   Missing: findAllUndefinedParameterTypes
 
-    # TODO: find****By methods (0/25) Complete
+    # TODO: find****By methods (3/25) Complete
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findHookBy (3 variants)
     #   Missing: findMeta (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Missing: findPickleBy (5 variants)
+    #   Partially Complete (3/5): findPickleBy (5 variants)
     #   Missing: findPickleStepBy (1 variant)
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findStepBy (1 variant)
     #   Missing: findStepDefinitionsBy (1 variant)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
-    #   Missing: findTestCaseBy (4 variants)
+    #   Fully Complete (4/4): findTestCaseBy (4 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
-    #   Missing: findTestCaseStartedBy (3 variants)
-    #   Missing: findTestCaseFinishedBy (1 variant)
+    #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
+    #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
     #   Missing: findTestRunHookFinishedBy (1 variant)
     #   Missing: findTestRunHookStartedBy (1 variant)
     #   Missing: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
