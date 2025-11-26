@@ -2,6 +2,11 @@
 
 require 'cucumber/repository'
 
+# Given one Cucumber Message, find another.
+#
+# Queries can be made while the test run is incomplete - and this will naturally return incomplete results
+# see <a href="https://github.com/cucumber/messages?tab=readme-ov-file#message-overview">Cucumber Messages - Message Overview</a>
+#
 module Cucumber
   class Query
     attr_reader :repository
