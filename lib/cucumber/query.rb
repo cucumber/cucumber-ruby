@@ -43,6 +43,13 @@ module Cucumber
       end
     end
 
+    # This finds all test cases that have finished AND will not be retried
+    def find_all_test_case_finished
+      repository.test_case_finished_by_test_case_started_id.values.reject do |test_case_finished|
+        test_case_finished.will_be_retried
+      end
+    end
+
     def find_all_test_cases
       repository.test_case_by_id.values
     end
