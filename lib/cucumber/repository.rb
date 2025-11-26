@@ -26,8 +26,6 @@ module Cucumber
       return self.meta = envelope.meta if envelope.meta
       return self.test_run_started = envelope.test_run_started if envelope.test_run_started
       return self.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
-
-      # TODO: These items are completed AS IS. Should be good to sign off
       return update_test_run_hook_started(envelope.test_run_hook_started) if envelope.test_run_hook_started
       return update_test_run_hook_finished(envelope.test_run_hook_finished) if envelope.test_run_hook_finished
       return update_test_case_started(envelope.test_case_started) if envelope.test_case_started

@@ -15,11 +15,10 @@ module Cucumber
     #   Missing: countMostSevereTestStepResultStatus
     #   Completed: countTestCasesStarted
 
-    # TODO: findAll methods (8/12) Complete
-    #   Missing: findAllTestCaseStarted / findAllStepDefinitions / findAllTestCaseFinished
-    #   Missing: findAllUndefinedParameterTypes
+    # TODO: findAll methods (9/12) Complete
+    #   Missing: findAllStepDefinitions / findAllTestCaseFinished / findAllUndefinedParameterTypes
     #   Completed: findAllPickles / findAllPickleSteps
-    #   Completed: findAllTestRunHookStarted / findAllTestRunHookFinished
+    #   Completed: findAllTestRunHookStarted / findAllTestRunHookFinished / findAllTestCaseStarted
     #   Completed: findAllTestCases / findAllTestSteps / findAllTestStepStarted / findAllTestStepFinished
 
     def count_test_cases_started
@@ -34,17 +33,14 @@ module Cucumber
       repository.pickle_step_by_id.values
     end
 
+    # This finds all test cases that have started, but not yet finished
+    # AS WELL AS (AND)
+    # This finds all test cases that have started AND have finished, but that will NOT be retried
     def find_all_test_case_started
-      # TODO: In prog. Needs query: `findTestCaseFinishedBy`
-      #         return repository.testCaseStartedById.values().stream()
-      #                 .filter(element -> !findTestCaseFinishedBy(element)
-      #                         .filter(TestCaseFinished::getWillBeRetried)
-      #                         .isPresent())
-      #                 .collect(toList());
-      initial_cases = repository.test_case_started_by_id.values
-      cases_without_retries = initial_cases.reject(&:will_be_retried)
-      # TODO: Need some help here - Not sure if this is the right filtering
-      final_cases = cases_without_retries.select { |test_case| find_test_case_finished_by(test_case.id) }
+      repository.test_case_started_by_id.values.select do |test_case_started|
+        test_case_finished = find_test_case_finished_by(test_case_started)
+        test_case_finished.nil? || !test_case_finished.will_be_retried
+      end
     end
 
     def find_all_test_cases
