@@ -18,13 +18,36 @@ module Cucumber
 
     # TODO: count methods (1/2) Complete
     #   Missing: countMostSevereTestStepResultStatus
-    #   Completed: countTestCasesStarted
 
     # TODO: findAll methods (11/12) Complete
     #   Missing: findAllUndefinedParameterTypes
-    #   Completed: findAllPickles / findAllPickleSteps / findAllStepDefinitions
-    #   Completed: findAllTestRunHookStarted / findAllTestRunHookFinished / findAllTestCaseStarted / findAllTestCaseFinished
-    #   Completed: findAllTestCases / findAllTestSteps / findAllTestStepStarted / findAllTestStepFinished
+
+    # TODO: find****By methods (0/25) Complete
+    #   Missing: findAttachmentsBy (2 variants)
+    #   Missing: findHookBy (3 variants)
+    #   Missing: findMeta (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   Missing: findMostSevereTestStepResultBy (2 variants)
+    #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   Missing: findPickleBy (5 variants)
+    #   Missing: findPickleStepBy (1 variant)
+    #   Missing: findSuggestionsBy (2 variants)
+    #   Missing: findStepBy (1 variant)
+    #   Missing: findStepDefinitionsBy (1 variant)
+    #   Missing: findUnambiguousStepDefinitionBy (1 variant)
+    #   Missing: findTestCaseBy (4 variants)
+    #   Missing: findTestCaseDurationBy (2 variant)
+    #   Missing: findTestCaseStartedBy (3 variants)
+    #   Missing: findTestCaseFinishedBy (1 variant)
+    #   Missing: findTestRunHookFinishedBy (1 variant)
+    #   Missing: findTestRunHookStartedBy (1 variant)
+    #   Missing: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   Missing: findTestRunFinished (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   Missing: findTestRunStarted (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   Missing: findTestStepBy (2 variants)
+    #   Missing: findTestStepsStartedBy (2 variants)
+    #   Missing: findTestStepsFinishedBy (2 variants)
+    #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
+    #   Missing: findLineageBy (9 variants!)
 
     def count_test_cases_started
       find_all_test_case_started.length
