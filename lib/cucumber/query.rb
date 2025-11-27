@@ -29,7 +29,7 @@ module Cucumber
     #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Partially Complete (3/5): findPickleBy (5 variants)
-    #   Missing: findPickleStepBy (1 variant)
+    #   Complete: findPickleStepBy (1 variant)
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findStepBy (1 variant)
     #   Missing: findStepDefinitionsBy (1 variant)
@@ -38,12 +38,12 @@ module Cucumber
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
     #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
-    #   Missing: findTestRunHookFinishedBy (1 variant)
-    #   Missing: findTestRunHookStartedBy (1 variant)
+    #   Complete: findTestRunHookStartedBy (1 variant)
+    #   Complete: findTestRunHookFinishedBy (1 variant)
     #   Missing: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestRunFinished (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestRunStarted (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Missing: findTestStepBy (2 variants)
+    #   Fully Complete (2/2): findTestStepBy (2 variants)
     #   Missing: findTestStepsStartedBy (2 variants)
     #   Missing: findTestStepsFinishedBy (2 variants)
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
@@ -65,9 +65,9 @@ module Cucumber
       repository.step_definition_by_id.values
     end
 
-    # This finds all test cases that have started, but not yet finished
-    # AS WELL AS (AND)
-    # This finds all test cases that have started AND have finished, but that will NOT be retried
+    # This finds all test cases from the following conditions (UNION)
+    #   -> Test cases that have started, but not yet finished
+    #   -> Test cases that have started, finished, but that will NOT be retried
     def find_all_test_case_started
       repository.test_case_started_by_id.values.select do |test_case_started|
         test_case_finished = find_test_case_finished_by(test_case_started)
@@ -115,6 +115,14 @@ module Cucumber
       repository.pickle_by_id[test_case.pickle_id]
     end
 
+    # This method will be called with only 1 message
+    #   [TestStep]
+    def find_pickle_step_by(test_step)
+      raise 'Must provide a TestStep message to use #find_pickle_step_by' unless test_step.is_a?(Cucumber::Messages::TestStep)
+
+      repository.pickle_step_by_id[test_step.pickle_step_id]
+    end
+
     # This method will be called with 1 of these 4 messages
     #   [TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_by(element)
@@ -134,6 +142,36 @@ module Cucumber
     #   [TestCaseStarted]
     def find_test_case_finished_by(test_case_started)
       repository.test_case_finished_by_test_case_started_id[test_case_started.id]
+    end
+
+    # This method will be called with only 1 message
+    #   [TestRunHookFinished]
+    def find_test_run_hook_started_by(test_run_hook_finished)
+      unless test_run_hook_finished.is_a?(Cucumber::Messages::TestRunHookFinished)
+        raise 'Must provide a TestRunHookFinished message to use #find_test_run_hook_started_by'
+      end
+
+      repository.test_run_hook_started_by_id[test_run_hook_finished.test_run_hook_started_id]
+    end
+
+    # This method will be called with only 1 message
+    #   [TestRunHookFinished]
+    def find_test_run_hook_finished_by(test_run_hook_started)
+      unless test_run_hook_started.is_a?(Cucumber::Messages::TestRunHookStarted)
+        raise 'Must provide a TestRunHookStarted message to use #find_test_run_hook_finished_by'
+      end
+
+      repository.test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_started.id]
+    end
+
+    # This method will be called with 1 of these 2 messages
+    #   [TestStepStarted || TestStepFinished]
+    def find_test_step_by(element)
+      unless [Cucumber::Messages::TestStepStarted, Cucumber::Messages::TestStepFinished].include?(element)
+        raise 'Must provide either a TestStepStarted or TestStepFinished message to use #find_test_step_by'
+      end
+
+      repository.test_step_by_id[element.test_step_id]
     end
   end
 end
