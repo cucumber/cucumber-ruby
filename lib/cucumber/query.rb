@@ -22,7 +22,7 @@ module Cucumber
     # TODO: findAll methods (11/12) Complete
     #   Missing: findAllUndefinedParameterTypes
 
-    # TODO: find****By methods (9/25) Complete
+    # TODO: find****By methods (10/25) Complete
     #   Missing: findAttachmentsBy (2 variants)
     #   Requires Review (3/3): findHookBy (3 variants)
     #   Missing: findMeta (1 variant) - This strictly speaking isn't a findBy but is located within them
@@ -32,7 +32,7 @@ module Cucumber
     #   Complete: findPickleStepBy (1 variant)
     #   Missing: findSuggestionsBy (2 variants)
     #   Complete: findStepBy (1 variant)
-    #   Missing: findStepDefinitionsBy (1 variant)
+    #   Complete: findStepDefinitionsBy (1 variant)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
     #   Fully Complete (4/4): findTestCaseBy (4 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
@@ -145,6 +145,16 @@ module Cucumber
       raise 'Must provide a PickleStep message to use #find_step_by' unless test_step.is_a?(Cucumber::Messages::PickleStep)
 
       repository.step_by_id[pickle_step.ast_node_ids.first]
+    end
+
+    # This method will be called with only 1 message
+    #   [TestStep]
+    def find_step_definitions_by(test_step)
+      raise 'Must provide a TestStep message to use #find_step_definitions_by' unless test_step.is_a?(Cucumber::Messages::TestStep)
+
+      # TODO: QQ) Shouldn't the default value of `step_definition_ids` be [] instead of nil
+      ids = test_step.step_definition_ids.nil? ? [] : test_step.step_definition_ids
+      ids.map { |id| repository.step_definition_by_id[id] }.compact
     end
 
     # This method will be called with 1 of these 4 messages
