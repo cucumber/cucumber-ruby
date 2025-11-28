@@ -4,13 +4,15 @@ module Cucumber
   # In memory repository i.e. a thread based link to cucumber-query
   class Repository
     attr_accessor :meta, :test_run_started, :test_run_finished
-    attr_reader :pickle_by_id, :pickle_step_by_id,
+    attr_reader :hook_by_id,
+                :pickle_by_id, :pickle_step_by_id,
                 :step_by_id, :step_definition_by_id,
                 :test_case_by_id, :test_case_started_by_id, :test_case_finished_by_test_case_started_id,
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
                 :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
 
     def initialize
+      @hook_by_id = {}
       @pickle_by_id = {}
       @pickle_step_by_id = {}
       @step_by_id = {}
@@ -30,7 +32,9 @@ module Cucumber
       return self.test_run_started = envelope.test_run_started if envelope.test_run_started
       return self.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
       return update_gherkin_document(envelope.gherkin_document) if envelope.gherkin_document
+      return update_hook(envelope.hook) if envelope.hook
       return update_pickle(envelope.pickle) if envelope.pickle
+      return update_step_definition(envelope.step_definition) if envelope.step_definition
       return update_test_run_hook_started(envelope.test_run_hook_started) if envelope.test_run_hook_started
       return update_test_run_hook_finished(envelope.test_run_hook_finished) if envelope.test_run_hook_finished
       return update_test_case_started(envelope.test_case_started) if envelope.test_case_started
@@ -76,6 +80,10 @@ module Cucumber
       #     }
       # TODO: Update lineage??
       update_feature(gherkin_document.feature) if gherkin_document.feature
+    end
+
+    def update_hook(hook)
+      hook_by_id[hook.id] = hook
     end
 
     def update_pickle(pickle)

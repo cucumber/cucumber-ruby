@@ -22,9 +22,9 @@ module Cucumber
     # TODO: findAll methods (11/12) Complete
     #   Missing: findAllUndefinedParameterTypes
 
-    # TODO: find****By methods (3/25) Complete
+    # TODO: find****By methods (9/25) Complete
     #   Missing: findAttachmentsBy (2 variants)
-    #   Missing: findHookBy (3 variants)
+    #   Requires Review (3/3): findHookBy (3 variants)
     #   Missing: findMeta (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
@@ -104,6 +104,22 @@ module Cucumber
 
     def find_all_test_steps
       repository.test_step_by_id.values
+    end
+
+    # This method will be called with 1 of these 3 messages
+    #   [TestStep || TestRunHookStarted || TestRunHookFinished]
+    def find_hook_by(element)
+      # TODO: Check with Java here, the first and second implementations look identical but are coded diff in Java
+      if element.is_a?(Cucumber::Messages::TestStep)
+        repository.hook_by_id[element.hook_id]
+      elsif element.is_a?(Cucumber::Messages::TestRunHookStarted)
+        repository.hook_by_id[element.hook_id]
+      elsif element.is_a?(Cucumber::Messages::TestRunHookFinished)
+        # TODO: Not sure how this one is intended to work? As it returns a single hook yet we're enumerating it?
+        find_test_run_hook_started_by(element).flat_map { |test_run_hook_started| find_hook_by(test_run_hook_started) }
+      else
+        raise 'Must provide either a TestStep, TestRunHookStarted or TestRunHookFinished message to use #find_hook_by'
+      end
     end
 
     # This method will be called with 1 of these 3 messages
