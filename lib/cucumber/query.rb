@@ -31,7 +31,7 @@ module Cucumber
     #   Partially Complete (3/5): findPickleBy (5 variants)
     #   Complete: findPickleStepBy (1 variant)
     #   Missing: findSuggestionsBy (2 variants)
-    #   Missing: findStepBy (1 variant)
+    #   Complete: findStepBy (1 variant)
     #   Missing: findStepDefinitionsBy (1 variant)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
     #   Fully Complete (4/4): findTestCaseBy (4 variants)
@@ -44,8 +44,8 @@ module Cucumber
     #   Missing: findTestRunFinished (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestRunStarted (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Fully Complete (2/2): findTestStepBy (2 variants)
-    #   Missing: findTestStepsStartedBy (2 variants)
-    #   Missing: findTestStepsFinishedBy (2 variants)
+    #   Fully Complete (2/2): findTestStepsStartedBy (2 variants)
+    #   Requires Review (2/2): findTestStepsFinishedBy (2 variants)
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
     #   Missing: findLineageBy (9 variants!)
 
@@ -123,6 +123,14 @@ module Cucumber
       repository.pickle_step_by_id[test_step.pickle_step_id]
     end
 
+    # This method will be called with only 1 message
+    #   [PickleStep]
+    def find_step_by(pickle_step)
+      raise 'Must provide a PickleStep message to use #find_step_by' unless test_step.is_a?(Cucumber::Messages::PickleStep)
+
+      repository.step_by_id[pickle_step.ast_node_ids.first]
+    end
+
     # This method will be called with 1 of these 4 messages
     #   [TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_by(element)
@@ -172,6 +180,39 @@ module Cucumber
       end
 
       repository.test_step_by_id[element.test_step_id]
+    end
+
+    # This method will be called with 1 of these 2 messages
+    #   [TestCaseStarted || TestCaseFinished]
+    def find_test_steps_started_by(element)
+      key =
+        if element.is_a?(Cucumber::Messages::TestCaseStarted)
+          test_case_started.id
+        elsif element.is_a?(Cucumber::Messages::TestCaseFinished)
+          test_case_finished.test_case_started_id
+        else
+          raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_started_by'
+        end
+
+      # For Concurrency purposes
+      Array.new(repository.test_steps_started_by_test_case_started_id.fetch(key, []))
+    end
+
+    # This method will be called with 1 of these 2 messages
+    #   [TestCaseStarted || TestCaseFinished]
+    def find_test_steps_finished_by(element)
+      if element.is_a?(Cucumber::Messages::TestCaseStarted)
+        test_steps_finished = test_steps_finished_by_test_case_started_id.fetch(element.id, [])
+        # For Concurrency purposes
+        Array.new(test_steps_finished)
+      elsif element.is_a?(Cucumber::Messages::TestCaseFinished)
+        # TODO: The logic in Java says orElseGet a blank array. But here we're recursively calling this method with either
+        # a tc_started_message or `nil` so would we want it to error the 2nd time round or return `[]`
+        tc_started_message = find_test_case_started_by(element)
+        find_test_steps_finished_by(tc_started_message)
+      else
+        raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_finished_by'
+      end
     end
   end
 end
