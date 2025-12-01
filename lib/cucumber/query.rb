@@ -106,16 +106,16 @@ module Cucumber
 
     # This method will be called with 1 of these 3 messages
     #   [TestStep || TestRunHookStarted || TestRunHookFinished]
-    def find_hook_by(element)
+    def find_hook_by(message)
       # TODO: Check with Java here, the first and second implementations look identical but are coded diff in Java
-      case element
+      case message
       when Cucumber::Messages::TestStep
-        repository.hook_by_id[element.hook_id]
+        repository.hook_by_id[message.hook_id]
       when Cucumber::Messages::TestRunHookStarted
-        repository.hook_by_id[element.hook_id]
+        repository.hook_by_id[message.hook_id]
       when Cucumber::Messages::TestRunHookFinished
         # TODO: Not sure how this one is intended to work? As it returns a single hook yet we're enumerating it?
-        find_test_run_hook_started_by(element).flat_map { |test_run_hook_started| find_hook_by(test_run_hook_started) }
+        find_test_run_hook_started_by(message).flat_map { |test_run_hook_started| find_hook_by(test_run_hook_started) }
       else
         raise 'Must provide either a TestStep, TestRunHookStarted or TestRunHookFinished message to use #find_hook_by'
       end
@@ -157,8 +157,8 @@ module Cucumber
 
     # This method will be called with 1 of these 4 messages
     #   [TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
-    def find_test_case_by(element)
-      test_case_started = element.respond_to?(:test_case_started_id) ? find_test_case_started_by(element) : element
+    def find_test_case_by(message)
+      test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
       raise 'Expected to find TestCaseStarted by TestStepStarted' unless test_case_started
 
       repository.test_case_by_id[test_case_started.test_case_id]
@@ -166,8 +166,8 @@ module Cucumber
 
     # This method will be called with 1 of these 3 messages
     #   [TestCaseFinished || TestStepStarted || TestStepFinished]
-    def find_test_case_started_by(element)
-      repository.test_case_started_by_id[element.test_case_started_id]
+    def find_test_case_started_by(message)
+      repository.test_case_started_by_id[message.test_case_started_id]
     end
 
     # This method will be called with only 1 message
@@ -179,9 +179,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestRunHookFinished]
     def find_test_run_hook_started_by(test_run_hook_finished)
-      unless test_run_hook_finished.is_a?(Cucumber::Messages::TestRunHookFinished)
-        raise 'Must provide a TestRunHookFinished message to use #find_test_run_hook_started_by'
-      end
+      raise 'Must provide a TestRunHookFinished message to use #find_test_run_hook_started_by' unless test_run_hook_finished.is_a?(Cucumber::Messages::TestRunHookFinished)
 
       repository.test_run_hook_started_by_id[test_run_hook_finished.test_run_hook_started_id]
     end
@@ -189,30 +187,28 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestRunHookFinished]
     def find_test_run_hook_finished_by(test_run_hook_started)
-      unless test_run_hook_started.is_a?(Cucumber::Messages::TestRunHookStarted)
-        raise 'Must provide a TestRunHookStarted message to use #find_test_run_hook_finished_by'
-      end
+      raise 'Must provide a TestRunHookStarted message to use #find_test_run_hook_finished_by' unless test_run_hook_started.is_a?(Cucumber::Messages::TestRunHookStarted)
 
       repository.test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_started.id]
     end
 
     # This method will be called with 1 of these 2 messages
     #   [TestStepStarted || TestStepFinished]
-    def find_test_step_by(element)
-      unless [Cucumber::Messages::TestStepStarted, Cucumber::Messages::TestStepFinished].include?(element)
+    def find_test_step_by(message)
+      unless [Cucumber::Messages::TestStepStarted, Cucumber::Messages::TestStepFinished].include?(message)
         raise 'Must provide either a TestStepStarted or TestStepFinished message to use #find_test_step_by'
       end
 
-      repository.test_step_by_id[element.test_step_id]
+      repository.test_step_by_id[message.test_step_id]
     end
 
     # This method will be called with 1 of these 2 messages
     #   [TestCaseStarted || TestCaseFinished]
-    def find_test_steps_started_by(element)
+    def find_test_steps_started_by(message)
       key =
-        if element.is_a?(Cucumber::Messages::TestCaseStarted)
+        if message.is_a?(Cucumber::Messages::TestCaseStarted)
           test_case_started.id
-        elsif element.is_a?(Cucumber::Messages::TestCaseFinished)
+        elsif message.is_a?(Cucumber::Messages::TestCaseFinished)
           test_case_finished.test_case_started_id
         else
           raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_started_by'
@@ -224,15 +220,15 @@ module Cucumber
 
     # This method will be called with 1 of these 2 messages
     #   [TestCaseStarted || TestCaseFinished]
-    def find_test_steps_finished_by(element)
-      if element.is_a?(Cucumber::Messages::TestCaseStarted)
-        test_steps_finished = test_steps_finished_by_test_case_started_id.fetch(element.id, [])
+    def find_test_steps_finished_by(message)
+      if message.is_a?(Cucumber::Messages::TestCaseStarted)
+        test_steps_finished = test_steps_finished_by_test_case_started_id.fetch(message.id, [])
         # For Concurrency purposes
         Array.new(test_steps_finished)
-      elsif element.is_a?(Cucumber::Messages::TestCaseFinished)
+      elsif message.is_a?(Cucumber::Messages::TestCaseFinished)
         # TODO: The logic in Java says orElseGet a blank array. But here we're recursively calling this method with either
         # a tc_started_message or `nil` so would we want it to error the 2nd time round or return `[]`
-        tc_started_message = find_test_case_started_by(element)
+        tc_started_message = find_test_case_started_by(message)
         find_test_steps_finished_by(tc_started_message)
       else
         raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_finished_by'
