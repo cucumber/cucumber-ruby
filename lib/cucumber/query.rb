@@ -77,9 +77,7 @@ module Cucumber
 
     # This finds all test cases that have finished AND will not be retried
     def find_all_test_case_finished
-      repository.test_case_finished_by_test_case_started_id.values.reject do |test_case_finished|
-        test_case_finished.will_be_retried
-      end
+      repository.test_case_finished_by_test_case_started_id.values.reject(&:will_be_retried)
     end
 
     def find_all_test_cases
@@ -110,11 +108,12 @@ module Cucumber
     #   [TestStep || TestRunHookStarted || TestRunHookFinished]
     def find_hook_by(element)
       # TODO: Check with Java here, the first and second implementations look identical but are coded diff in Java
-      if element.is_a?(Cucumber::Messages::TestStep)
+      case element
+      when Cucumber::Messages::TestStep
         repository.hook_by_id[element.hook_id]
-      elsif element.is_a?(Cucumber::Messages::TestRunHookStarted)
+      when Cucumber::Messages::TestRunHookStarted
         repository.hook_by_id[element.hook_id]
-      elsif element.is_a?(Cucumber::Messages::TestRunHookFinished)
+      when Cucumber::Messages::TestRunHookFinished
         # TODO: Not sure how this one is intended to work? As it returns a single hook yet we're enumerating it?
         find_test_run_hook_started_by(element).flat_map { |test_run_hook_started| find_hook_by(test_run_hook_started) }
       else
@@ -152,7 +151,6 @@ module Cucumber
     def find_step_definitions_by(test_step)
       raise 'Must provide a TestStep message to use #find_step_definitions_by' unless test_step.is_a?(Cucumber::Messages::TestStep)
 
-      # TODO: QQ) Shouldn't the default value of `step_definition_ids` be [] instead of nil
       ids = test_step.step_definition_ids.nil? ? [] : test_step.step_definition_ids
       ids.map { |id| repository.step_definition_by_id[id] }.compact
     end
