@@ -109,9 +109,7 @@ module Cucumber
     def find_hook_by(message)
       # TODO: Check with Java here, the first and second implementations look identical but are coded diff in Java
       case message
-      when Cucumber::Messages::TestStep
-        repository.hook_by_id[message.hook_id]
-      when Cucumber::Messages::TestRunHookStarted
+      when Cucumber::Messages::TestStep, Cucumber::Messages::TestRunHookStarted
         repository.hook_by_id[message.hook_id]
       when Cucumber::Messages::TestRunHookFinished
         # TODO: Not sure how this one is intended to work? As it returns a single hook yet we're enumerating it?
