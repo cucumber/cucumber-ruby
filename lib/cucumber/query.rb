@@ -23,31 +23,31 @@ module Cucumber
     #   Missing: findAllUndefinedParameterTypes
 
     # TODO: find****By methods (10/25) Complete
-    #   Missing: findAttachmentsBy (2 variants)
-    #   Requires Review (3/3): findHookBy (3 variants)
     #   Missing: findMeta (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Partially Complete (3/5): findPickleBy (5 variants)
-    #   Complete: findPickleStepBy (1 variant)
     #   Missing: findSuggestionsBy (2 variants)
-    #   Complete: findStepBy (1 variant)
-    #   Complete: findStepDefinitionsBy (1 variant)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
-    #   Fully Complete (4/4): findTestCaseBy (4 variants)
-    #   Missing: findTestCaseDurationBy (2 variant)
-    #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
-    #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
-    #   Complete: findTestRunHookStartedBy (1 variant)
-    #   Complete: findTestRunHookFinishedBy (1 variant)
     #   Missing: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestRunFinished (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestRunStarted (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Fully Complete (2/2): findTestStepBy (2 variants)
-    #   Fully Complete (2/2): findTestStepsStartedBy (2 variants)
-    #   Requires Review (2/2): findTestStepsFinishedBy (2 variants)
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
+    #   Missing: findMostSevereTestStepResultBy (2 variants)
+    #   Missing: findAttachmentsBy (2 variants)
+    #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
+    #   Partially Complete (3/5): findPickleBy (5 variants)
+    #   Requires Review (3/3): findHookBy (3 variants)
+    #   Requires Review (2/2): findTestStepsFinishedBy (2 variants)
+    #   Complete: findTestRunHookStartedBy (1 variant)
+    #   Complete: findTestRunHookFinishedBy (1 variant)
+    #   Complete: findPickleStepBy (1 variant)
+    #   Complete: findStepDefinitionsBy (1 variant)
+    #   Complete: findStepBy (1 variant)
+    #   Fully Complete (2/2): findTestStepsStartedBy (2 variants)
+    #   Fully Complete (2/2): findTestStepBy (2 variants)
+    #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
+    #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
+    #   Fully Complete (4/4): findTestCaseBy (4 variants)
 
     def count_test_cases_started
       find_all_test_case_started.length
