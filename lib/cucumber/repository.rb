@@ -49,25 +49,14 @@ module Cucumber
     private
 
     def update_feature(feature)
-      # Java impl:
-      #        feature.getChildren()
-      #                 .forEach(featureChild -> {
-      #                     featureChild.getBackground().ifPresent(background -> updateSteps(background.getSteps()));
-      #                     featureChild.getScenario().ifPresent(this::updateScenario);
-      #                     featureChild.getRule().ifPresent(rule -> rule.getChildren().forEach(ruleChild -> {
-      #                         ruleChild.getBackground().ifPresent(background -> updateSteps(background.getSteps()));
-      #                         ruleChild.getScenario().ifPresent(this::updateScenario);
-      #                     }));
-      #                 });
-
       feature.children.each do |feature_child|
         update_steps(feature_child.background.steps) if feature_child.background
         update_scenario(feature_child.scenario) if feature_child.scenario
-        if feature_child.rule
-          feature_child.rule.children.each do |rule_child|
-            update_steps(rule_child.background.steps) if rule_child.background
-            update_scenario(rule_child.scenario) if rule_child.scenario
-          end
+        next unless feature_child.rule
+
+        feature_child.rule.children.each do |rule_child|
+          update_steps(rule_child.background.steps) if rule_child.background
+          update_scenario(rule_child.scenario) if rule_child.scenario
         end
       end
     end
@@ -78,7 +67,7 @@ module Cucumber
       #         lineageById.putAll(Lineages.of(document));
       #         document.getFeature().ifPresent(this::updateFeature);
       #     }
-      # TODO: Update lineage??
+      # TODO: Update lineage at a later date
       update_feature(gherkin_document.feature) if gherkin_document.feature
     end
 
