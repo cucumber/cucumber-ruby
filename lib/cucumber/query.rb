@@ -23,7 +23,7 @@ module Cucumber
     #   Missing: findAllUndefinedParameterTypes
 
     # TODO: find****By methods (10/25) Complete
-    #   Missing: findMeta (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   Complete: findMeta (1 variant)
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
@@ -124,6 +124,10 @@ module Cucumber
       else
         raise 'Must provide either a TestStep, TestRunHookStarted or TestRunHookFinished message to use #find_hook_by'
       end
+    end
+
+    def find_meta
+      repository.meta
     end
 
     # This method will be called with 1 of these 5 messages
