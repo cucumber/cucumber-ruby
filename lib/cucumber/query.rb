@@ -103,26 +103,20 @@ module Cucumber
     def find_all_test_steps
       repository.test_step_by_id.values
     end
-
-    # TODO: Standardise all methods `find_by` to have a nil check as line 1
-
+    
     # This method will be called with 1 of these 3 messages
     #   [TestStep || TestRunHookStarted || TestRunHookFinished]
     def find_hook_by(message)
+      ensure_only_message_types!(message, %i[test_step test_run_hook_started test_run_hook_finished], '#find_hook_by')
+
       # TODO: Refactor this to be nicer use the below as example
       # test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
       case message
-      when Cucumber::Messages::TestStep, Cucumber::Messages::TestRunHookStarted
-        repository.hook_by_id[message.hook_id]
       when Cucumber::Messages::TestRunHookFinished
         message_or_nil = find_test_run_hook_started_by(message)
-        if message_or_nil
-          find_hook_by(message_or_nil)
-        else
-          nil
-        end
+        message_or_nil ? find_hook_by(message_or_nil) : nil
       else
-        raise 'Must provide either a TestStep, TestRunHookStarted or TestRunHookFinished message to use #find_hook_by'
+        repository.hook_by_id[message.hook_id]
       end
     end
 
@@ -133,15 +127,7 @@ module Cucumber
     # This method will be called with 1 of these 5 messages
     #   [TestCase || TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_pickle_by(message)
-      valid_messages =
-        [
-          Cucumber::Messages::TestCase,
-          Cucumber::Messages::TestCaseStarted,
-          Cucumber::Messages::TestCaseFinished,
-          Cucumber::Messages::TestStepStarted,
-          Cucumber::Messages::TestStepFinished
-        ]
-      raise "Did not provide a valid input message - Input message class: #{message.class}" unless valid_messages.include?(message)
+      ensure_only_message_types!(message, %i[test_case test_case_started test_case_finished test_step_started test_step_finished], '#find_pickle_by')
 
       test_case = message.is_a?(Cucumber::Messages::TestCase) ? message : find_test_case_by(message)
       repository.pickle_by_id[test_case.pickle_id]
@@ -150,7 +136,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestStep]
     def find_pickle_step_by(test_step)
-      raise 'Must provide a TestStep message to use #find_pickle_step_by' unless test_step.is_a?(Cucumber::Messages::TestStep)
+      ensure_only_message_types!(message, %i[test_step], '#find_pickle_step_by')
 
       repository.pickle_step_by_id[test_step.pickle_step_id]
     end
@@ -158,7 +144,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [PickleStep]
     def find_step_by(pickle_step)
-      raise 'Must provide a PickleStep message to use #find_step_by' unless test_step.is_a?(Cucumber::Messages::PickleStep)
+      ensure_only_message_types!(message, %i[pickle_step], '#find_step_by')
 
       repository.step_by_id[pickle_step.ast_node_ids.first]
     end
@@ -166,7 +152,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestStep]
     def find_step_definitions_by(test_step)
-      raise 'Must provide a TestStep message to use #find_step_definitions_by' unless test_step.is_a?(Cucumber::Messages::TestStep)
+      ensure_only_message_types!(message, %i[test_step], '#find_step_definitions_by')
 
       ids = test_step.step_definition_ids.nil? ? [] : test_step.step_definition_ids
       ids.map { |id| repository.step_definition_by_id[id] }.compact
@@ -175,16 +161,17 @@ module Cucumber
     # This method will be called with 1 of these 4 messages
     #   [TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_by(message)
-      test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
-      raise 'Expected to find TestCaseStarted by TestStepStarted' unless test_case_started
+      ensure_only_message_types!(message, %i[test_case_started test_case_finished test_step_started test_step_finished], '#find_test_case_by')
 
+      # TODO: Refactor this to use object checking
+      test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
       repository.test_case_by_id[test_case_started.test_case_id]
     end
 
     # This method will be called with 1 of these 3 messages
     #   [TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_started_by(message)
-      raise 'Must provide a TestCaseStarted message to use #find_test_case_started_by' unless test_case_started.is_a?(Cucumber::Messages::TestCaseStarted)
+      ensure_only_message_types!(message, %i[test_case_finished test_step_started test_step_finished], '#find_test_case_started_by')
 
       repository.test_case_started_by_id[message.test_case_started_id]
     end
@@ -192,7 +179,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestCaseStarted]
     def find_test_case_finished_by(test_case_started)
-      raise 'Must provide a TestCaseStarted message to use #find_test_case_finished_by' unless test_case_started.is_a?(Cucumber::Messages::TestCaseStarted)
+      ensure_only_message_types!(message, %i[test_case_started], '#find_test_case_finished_by')
 
       repository.test_case_finished_by_test_case_started_id[test_case_started.id]
     end
@@ -200,15 +187,15 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestRunHookFinished]
     def find_test_run_hook_started_by(test_run_hook_finished)
-      raise 'Must provide a TestRunHookFinished message to use #find_test_run_hook_started_by' unless test_run_hook_finished.is_a?(Cucumber::Messages::TestRunHookFinished)
+      ensure_only_message_types!(message, %i[test_run_hook_finished], '#find_test_run_hook_started_by')
 
       repository.test_run_hook_started_by_id[test_run_hook_finished.test_run_hook_started_id]
     end
 
     # This method will be called with only 1 message
-    #   [TestRunHookFinished]
+    #   [TestRunHookStarted]
     def find_test_run_hook_finished_by(test_run_hook_started)
-      raise 'Must provide a TestRunHookStarted message to use #find_test_run_hook_finished_by' unless test_run_hook_started.is_a?(Cucumber::Messages::TestRunHookStarted)
+      ensure_only_message_types!(message, %i[test_run_hook_started], '#find_test_run_hook_finished_by')
 
       repository.test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_started.id]
     end
@@ -216,9 +203,7 @@ module Cucumber
     # This method will be called with 1 of these 2 messages
     #   [TestStepStarted || TestStepFinished]
     def find_test_step_by(message)
-      unless [Cucumber::Messages::TestStepStarted, Cucumber::Messages::TestStepFinished].include?(message)
-        raise 'Must provide either a TestStepStarted or TestStepFinished message to use #find_test_step_by'
-      end
+      ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_step_by')
 
       repository.test_step_by_id[message.test_step_id]
     end
@@ -226,15 +211,9 @@ module Cucumber
     # This method will be called with 1 of these 2 messages
     #   [TestCaseStarted || TestCaseFinished]
     def find_test_steps_started_by(message)
-      key =
-        if message.is_a?(Cucumber::Messages::TestCaseStarted)
-          test_case_started.id
-        elsif message.is_a?(Cucumber::Messages::TestCaseFinished)
-          test_case_finished.test_case_started_id
-        else
-          raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_started_by'
-        end
+      ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_steps_started_by')
 
+      key = message.is_a?(Cucumber::Messages::TestCaseStarted) ? message.id : message.test_case_started_id
       # For Concurrency purposes
       Array.new(repository.test_steps_started_by_test_case_started_id.fetch(key, []))
     end
@@ -242,30 +221,26 @@ module Cucumber
     # This method will be called with 1 of these 2 messages
     #   [TestCaseStarted || TestCaseFinished]
     def find_test_steps_finished_by(message)
+      ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_steps_finished_by')
+
       if message.is_a?(Cucumber::Messages::TestCaseStarted)
         test_steps_finished = test_steps_finished_by_test_case_started_id.fetch(message.id, [])
         # For Concurrency purposes
         Array.new(test_steps_finished)
-      elsif message.is_a?(Cucumber::Messages::TestCaseFinished)
-        tc_started_message = find_test_case_started_by(message)
-        if tc_started_message.nil?
-          []
-        else
-          find_test_steps_finished_by(tc_started_message)
-        end
       else
-        raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_finished_by'
+        tc_started_message = find_test_case_started_by(message)
+        tc_started_message.nil? ? [] : find_test_steps_finished_by(tc_started_message)
       end
     end
   end
 
   private
 
-  def ensure_only_message_types!(supplied_message, permissible_message_types)
+  def ensure_only_message_types!(supplied_message, permissible_message_types, method_name)
     raise ArgumentError, "Supplied argument is not a Cucumber Message. Argument: #{supplied_message.class}" unless supplied_message.is_a?(Cucumber::Messages::Message)
 
     permitted_klasses = permissible_message_types.map { |message| message_types[message] }
-    raise ArgumentError, "Supplied message is not a permitted message type. Message class: #{supplied_message.class}" unless permitted_klasses.include?(supplied_message.class)
+    raise ArgumentError, "Supplied message type '#{supplied_message.class}' is not permitted to be used when calling #{method_name}" unless permitted_klasses.include?(supplied_message.class)
   end
 
   def message_types
