@@ -36,8 +36,8 @@ module Cucumber
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
     #   Partially Complete (3/5): findPickleBy (5 variants)
-    #   Requires Review (3/3): findHookBy (3 variants)
-    #   Requires Review (2/2): findTestStepsFinishedBy (2 variants)
+    #   Requires Refactor (3/3): findHookBy (3 variants)
+    #   Requires Refactor (2/2): findTestStepsFinishedBy (2 variants)
     #   Complete: findTestRunHookStartedBy (1 variant)
     #   Complete: findTestRunHookFinishedBy (1 variant)
     #   Complete: findPickleStepBy (1 variant)
@@ -107,13 +107,18 @@ module Cucumber
     # This method will be called with 1 of these 3 messages
     #   [TestStep || TestRunHookStarted || TestRunHookFinished]
     def find_hook_by(message)
-      # TODO: Check with Java here, the first and second implementations look identical but are coded diff in Java
+      # TODO: Refactor this to be nicer use the below as example
+      # test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
       case message
       when Cucumber::Messages::TestStep, Cucumber::Messages::TestRunHookStarted
         repository.hook_by_id[message.hook_id]
       when Cucumber::Messages::TestRunHookFinished
-        # TODO: Not sure how this one is intended to work? As it returns a single hook yet we're enumerating it?
-        find_test_run_hook_started_by(message).flat_map { |test_run_hook_started| find_hook_by(test_run_hook_started) }
+        message_or_nil = find_test_run_hook_started_by(message)
+        if message_or_nil
+          find_hook_by(message_or_nil)
+        else
+          nil
+        end
       else
         raise 'Must provide either a TestStep, TestRunHookStarted or TestRunHookFinished message to use #find_hook_by'
       end
@@ -224,10 +229,12 @@ module Cucumber
         # For Concurrency purposes
         Array.new(test_steps_finished)
       elsif message.is_a?(Cucumber::Messages::TestCaseFinished)
-        # TODO: The logic in Java says orElseGet a blank array. But here we're recursively calling this method with either
-        # a tc_started_message or `nil` so would we want it to error the 2nd time round or return `[]`
         tc_started_message = find_test_case_started_by(message)
-        find_test_steps_finished_by(tc_started_message)
+        if tc_started_message.nil?
+          []
+        else
+          find_test_steps_finished_by(tc_started_message)
+        end
       else
         raise 'Must provide either a TestCaseStarted or TestCaseFinished message to use #find_test_steps_finished_by'
       end
