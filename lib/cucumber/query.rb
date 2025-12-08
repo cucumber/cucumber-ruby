@@ -35,7 +35,7 @@ module Cucumber
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
-    #   Partially Complete (3/5): findPickleBy (5 variants)
+    #   Fully Complete (5/5): findPickleBy (5 variants)
     #   Requires Refactor (3/3): findHookBy (3 variants)
     #   Requires Refactor (2/2): findTestStepsFinishedBy (2 variants)
     #   Complete: findTestRunHookStartedBy (1 variant)
@@ -104,6 +104,8 @@ module Cucumber
       repository.test_step_by_id.values
     end
 
+    # TODO: Standardise all methods `find_by` to have a nil check as line 1
+
     # This method will be called with 1 of these 3 messages
     #   [TestStep || TestRunHookStarted || TestRunHookFinished]
     def find_hook_by(message)
@@ -124,12 +126,20 @@ module Cucumber
       end
     end
 
-    # This method will be called with 1 of these 3 messages
-    #   [TestCaseStarted || TestCaseFinished || TestStepStarted]
-    def find_pickle_by(element)
-      test_case = find_test_case_by(element)
-      raise 'Expected to find TestCase from TestCaseStarted' unless test_case
+    # This method will be called with 1 of these 5 messages
+    #   [TestCase || TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
+    def find_pickle_by(message)
+      valid_messages =
+        [
+          Cucumber::Messages::TestCase,
+          Cucumber::Messages::TestCaseStarted,
+          Cucumber::Messages::TestCaseFinished,
+          Cucumber::Messages::TestStepStarted,
+          Cucumber::Messages::TestStepFinished
+        ]
+      raise "Did not provide a valid input message - Input message class: #{message.class}" unless valid_messages.include?(message)
 
+      test_case = message.is_a?(Cucumber::Messages::TestCase) ? message : find_test_case_by(message)
       repository.pickle_by_id[test_case.pickle_id]
     end
 
@@ -170,12 +180,16 @@ module Cucumber
     # This method will be called with 1 of these 3 messages
     #   [TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_test_case_started_by(message)
+      raise 'Must provide a TestCaseStarted message to use #find_test_case_started_by' unless test_case_started.is_a?(Cucumber::Messages::TestCaseStarted)
+
       repository.test_case_started_by_id[message.test_case_started_id]
     end
 
     # This method will be called with only 1 message
     #   [TestCaseStarted]
     def find_test_case_finished_by(test_case_started)
+      raise 'Must provide a TestCaseStarted message to use #find_test_case_finished_by' unless test_case_started.is_a?(Cucumber::Messages::TestCaseStarted)
+
       repository.test_case_finished_by_test_case_started_id[test_case_started.id]
     end
 
