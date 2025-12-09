@@ -22,8 +22,7 @@ module Cucumber
     # TODO: findAll methods (11/12) Complete
     #   Missing: findAllUndefinedParameterTypes
 
-    # TODO: find****By methods (10/25) Complete
-    #   Complete: findMeta (1 variant)
+    # TODO: find****By methods (14/25) Complete
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
@@ -35,9 +34,7 @@ module Cucumber
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
-    #   Fully Complete (5/5): findPickleBy (5 variants)
-    #   Requires Refactor (3/3): findHookBy (3 variants)
-    #   Requires Refactor (2/2): findTestStepsFinishedBy (2 variants)
+    #   Complete: findMeta (1 variant)
     #   Complete: findTestRunHookStartedBy (1 variant)
     #   Complete: findTestRunHookFinishedBy (1 variant)
     #   Complete: findPickleStepBy (1 variant)
@@ -48,6 +45,9 @@ module Cucumber
     #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
     #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
     #   Fully Complete (4/4): findTestCaseBy (4 variants)
+    #   Fully Complete (5/5): findPickleBy (5 variants)
+    #   Fully Complete (3/3): findHookBy (3 variants)
+    #   Fully Complete (2/2): findTestStepsFinishedBy (2 variants)
 
     def count_test_cases_started
       find_all_test_case_started.length
@@ -109,12 +109,9 @@ module Cucumber
     def find_hook_by(message)
       ensure_only_message_types!(message, %i[test_step test_run_hook_started test_run_hook_finished], '#find_hook_by')
 
-      # TODO: Refactor this to be nicer use the below as example
-      # test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
-      case message
-      when Cucumber::Messages::TestRunHookFinished
-        message_or_nil = find_test_run_hook_started_by(message)
-        message_or_nil ? find_hook_by(message_or_nil) : nil
+      if message.is_a?(Cucumber::Messages::TestRunHookFinished)
+        test_run_hook_started_message = find_test_run_hook_started_by(message)
+        test_run_hook_started_message ? find_hook_by(test_run_hook_started_message) : nil
       else
         repository.hook_by_id[message.hook_id]
       end
@@ -129,8 +126,8 @@ module Cucumber
     def find_pickle_by(message)
       ensure_only_message_types!(message, %i[test_case test_case_started test_case_finished test_step_started test_step_finished], '#find_pickle_by')
 
-      test_case = message.is_a?(Cucumber::Messages::TestCase) ? message : find_test_case_by(message)
-      repository.pickle_by_id[test_case.pickle_id]
+      test_case_message = message.is_a?(Cucumber::Messages::TestCase) ? message : find_test_case_by(message)
+      repository.pickle_by_id[test_case_message.pickle_id]
     end
 
     # This method will be called with only 1 message
@@ -163,9 +160,8 @@ module Cucumber
     def find_test_case_by(message)
       ensure_only_message_types!(message, %i[test_case_started test_case_finished test_step_started test_step_finished], '#find_test_case_by')
 
-      # TODO: Refactor this to use object checking
-      test_case_started = message.respond_to?(:test_case_started_id) ? find_test_case_started_by(message) : message
-      repository.test_case_by_id[test_case_started.test_case_id]
+      test_case_started_message = message.is_a?(Cucumber::Messages::TestCaseStarted) ? message : find_test_case_started_by(message)
+      repository.test_case_by_id[test_case_started_message.test_case_id]
     end
 
     # This method will be called with 1 of these 3 messages
@@ -214,8 +210,7 @@ module Cucumber
       ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_steps_started_by')
 
       key = message.is_a?(Cucumber::Messages::TestCaseStarted) ? message.id : message.test_case_started_id
-      # For Concurrency purposes
-      Array.new(repository.test_steps_started_by_test_case_started_id.fetch(key, []))
+      repository.test_steps_started_by_test_case_started_id.fetch(key, [])
     end
 
     # This method will be called with 1 of these 2 messages
@@ -224,12 +219,10 @@ module Cucumber
       ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_steps_finished_by')
 
       if message.is_a?(Cucumber::Messages::TestCaseStarted)
-        test_steps_finished = test_steps_finished_by_test_case_started_id.fetch(message.id, [])
-        # For Concurrency purposes
-        Array.new(test_steps_finished)
+        test_steps_finished_by_test_case_started_id.fetch(message.id, [])
       else
-        tc_started_message = find_test_case_started_by(message)
-        tc_started_message.nil? ? [] : find_test_steps_finished_by(tc_started_message)
+        test_case_started_message = find_test_case_started_by(message)
+        test_case_started_message.nil? ? [] : find_test_steps_finished_by(test_case_started_message)
       end
     end
   end

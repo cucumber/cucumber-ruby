@@ -62,12 +62,7 @@ module Cucumber
     end
 
     def update_gherkin_document(gherkin_document)
-      # Java impl:
-      #       private void updateGherkinDocument(GherkinDocument document) {
-      #         lineageById.putAll(Lineages.of(document));
-      #         document.getFeature().ifPresent(this::updateFeature);
-      #     }
-      # TODO: Update lineage at a later date
+      # TODO: Update lineage at a later date. Java Impl -> lineageById.putAll(Lineages.of(document));
       update_feature(gherkin_document.feature) if gherkin_document.feature
     end
 
