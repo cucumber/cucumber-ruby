@@ -103,7 +103,7 @@ module Cucumber
     def find_all_test_steps
       repository.test_step_by_id.values
     end
-    
+
     # This method will be called with 1 of these 3 messages
     #   [TestStep || TestRunHookStarted || TestRunHookFinished]
     def find_hook_by(message)
@@ -245,13 +245,15 @@ module Cucumber
 
   def message_types
     {
+      pickle_step: Cucumber::Messages::PickleStep,
       test_case: Cucumber::Messages::TestCase,
       test_case_started: Cucumber::Messages::TestCaseStarted,
       test_case_finished: Cucumber::Messages::TestCaseFinished,
-      test_step_started: Cucumber::Messages::TestStepStarted,
-      test_step_finished: Cucumber::Messages::TestStepFinished,
       test_run_hook_started: Cucumber::Messages::TestRunHookStarted,
-      test_run_hook_finished: Cucumber::Messages::TestRunHookFinished
+      test_run_hook_finished: Cucumber::Messages::TestRunHookFinished,
+      test_step: Cucumber::Messages::TestStep,
+      test_step_started: Cucumber::Messages::TestStepStarted,
+      test_step_finished: Cucumber::Messages::TestStepFinished
     }
   end
 end
