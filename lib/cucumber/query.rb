@@ -225,28 +225,28 @@ module Cucumber
         test_case_started_message.nil? ? [] : find_test_steps_finished_by(test_case_started_message)
       end
     end
-  end
 
-  private
+    private
 
-  def ensure_only_message_types!(supplied_message, permissible_message_types, method_name)
-    raise ArgumentError, "Supplied argument is not a Cucumber Message. Argument: #{supplied_message.class}" unless supplied_message.is_a?(Cucumber::Messages::Message)
+    def ensure_only_message_types!(supplied_message, permissible_message_types, method_name)
+      raise ArgumentError, "Supplied argument is not a Cucumber Message. Argument: #{supplied_message.class}" unless supplied_message.is_a?(Cucumber::Messages::Message)
 
-    permitted_klasses = permissible_message_types.map { |message| message_types[message] }
-    raise ArgumentError, "Supplied message type '#{supplied_message.class}' is not permitted to be used when calling #{method_name}" unless permitted_klasses.include?(supplied_message.class)
-  end
+      permitted_klasses = permissible_message_types.map { |message| message_types[message] }
+      raise ArgumentError, "Supplied message type '#{supplied_message.class}' is not permitted to be used when calling #{method_name}" unless permitted_klasses.include?(supplied_message.class)
+    end
 
-  def message_types
-    {
-      pickle_step: Cucumber::Messages::PickleStep,
-      test_case: Cucumber::Messages::TestCase,
-      test_case_started: Cucumber::Messages::TestCaseStarted,
-      test_case_finished: Cucumber::Messages::TestCaseFinished,
-      test_run_hook_started: Cucumber::Messages::TestRunHookStarted,
-      test_run_hook_finished: Cucumber::Messages::TestRunHookFinished,
-      test_step: Cucumber::Messages::TestStep,
-      test_step_started: Cucumber::Messages::TestStepStarted,
-      test_step_finished: Cucumber::Messages::TestStepFinished
-    }
+    def message_types
+      {
+        pickle_step: Cucumber::Messages::PickleStep,
+        test_case: Cucumber::Messages::TestCase,
+        test_case_started: Cucumber::Messages::TestCaseStarted,
+        test_case_finished: Cucumber::Messages::TestCaseFinished,
+        test_run_hook_started: Cucumber::Messages::TestRunHookStarted,
+        test_run_hook_finished: Cucumber::Messages::TestRunHookFinished,
+        test_step: Cucumber::Messages::TestStep,
+        test_step_started: Cucumber::Messages::TestStepStarted,
+        test_step_finished: Cucumber::Messages::TestStepFinished
+      }
+    end
   end
 end
