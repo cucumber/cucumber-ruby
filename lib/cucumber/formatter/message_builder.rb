@@ -42,7 +42,8 @@ module Cucumber
         @current_test_case_started_id = nil
         @current_test_step_id = nil
 
-        @query = Cucumber::Query.new
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
       end
 
       def output_message
