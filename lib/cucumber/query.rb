@@ -133,7 +133,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestStep]
     def find_pickle_step_by(test_step)
-      ensure_only_message_types!(message, %i[test_step], '#find_pickle_step_by')
+      ensure_only_message_types!(test_step, %i[test_step], '#find_pickle_step_by')
 
       repository.pickle_step_by_id[test_step.pickle_step_id]
     end
@@ -141,7 +141,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [PickleStep]
     def find_step_by(pickle_step)
-      ensure_only_message_types!(message, %i[pickle_step], '#find_step_by')
+      ensure_only_message_types!(pickle_step, %i[pickle_step], '#find_step_by')
 
       repository.step_by_id[pickle_step.ast_node_ids.first]
     end
@@ -149,7 +149,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestStep]
     def find_step_definitions_by(test_step)
-      ensure_only_message_types!(message, %i[test_step], '#find_step_definitions_by')
+      ensure_only_message_types!(test_step, %i[test_step], '#find_step_definitions_by')
 
       ids = test_step.step_definition_ids.nil? ? [] : test_step.step_definition_ids
       ids.map { |id| repository.step_definition_by_id[id] }.compact
@@ -175,7 +175,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestCaseStarted]
     def find_test_case_finished_by(test_case_started)
-      ensure_only_message_types!(message, %i[test_case_started], '#find_test_case_finished_by')
+      ensure_only_message_types!(test_case_started, %i[test_case_started], '#find_test_case_finished_by')
 
       repository.test_case_finished_by_test_case_started_id[test_case_started.id]
     end
@@ -183,7 +183,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestRunHookFinished]
     def find_test_run_hook_started_by(test_run_hook_finished)
-      ensure_only_message_types!(message, %i[test_run_hook_finished], '#find_test_run_hook_started_by')
+      ensure_only_message_types!(test_run_hook_finished, %i[test_run_hook_finished], '#find_test_run_hook_started_by')
 
       repository.test_run_hook_started_by_id[test_run_hook_finished.test_run_hook_started_id]
     end
@@ -191,7 +191,7 @@ module Cucumber
     # This method will be called with only 1 message
     #   [TestRunHookStarted]
     def find_test_run_hook_finished_by(test_run_hook_started)
-      ensure_only_message_types!(message, %i[test_run_hook_started], '#find_test_run_hook_finished_by')
+      ensure_only_message_types!(test_run_hook_started, %i[test_run_hook_started], '#find_test_run_hook_finished_by')
 
       repository.test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_started.id]
     end
