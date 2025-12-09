@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cucumber/formatter/new_rerun'
+require 'cucumber/formatter/rerun'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 require 'support/standard_step_actions'
@@ -9,7 +9,7 @@ require 'support/fake_objects'
 
 module Cucumber
   module Formatter
-    describe NewRerun do
+    describe Rerun do
       include Cucumber::Core::Gherkin::Writer
       include Cucumber::Core
 
