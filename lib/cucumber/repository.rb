@@ -11,6 +11,29 @@ module Cucumber
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
                 :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
 
+    # Java Repository Attrs
+    #     DONE: final Map<String, TestCaseStarted> testCaseStartedById = new LinkedHashMap<>();
+    #     DONE: final Map<String, TestCaseFinished> testCaseFinishedByTestCaseStartedId = new LinkedHashMap<>();
+    #     DONE: final Map<String, List<TestStepFinished>> testStepsFinishedByTestCaseStartedId = new LinkedHashMap<>();
+    #     DONE: final Map<String, List<TestStepStarted>> testStepsStartedByTestCaseStartedId = new LinkedHashMap<>();
+    #     DONE: final Map<String, TestRunHookStarted> testRunHookStartedById = new LinkedHashMap<>();
+    #     DONE: final Map<String, TestRunHookFinished> testRunHookFinishedByTestRunHookStartedId = new LinkedHashMap<>();
+    #     DONE: final Map<String, Pickle> pickleById = new LinkedHashMap<>();
+    #     DONE: final Map<String, TestCase> testCaseById = new LinkedHashMap<>();
+    #     DONE: final Map<String, Step> stepById = new LinkedHashMap<>();
+    #     DONE: final Map<String, TestStep> testStepById = new LinkedHashMap<>();
+    #     DONE: final Map<String, PickleStep> pickleStepById = new LinkedHashMap<>();
+    #     DONE: final Map<String, Hook> hookById = new LinkedHashMap<>();
+    #     DONE: final Map<String, StepDefinition> stepDefinitionById = new LinkedHashMap<>();
+    #     TODO: final Map<String, List<Attachment>> attachmentsByTestCaseStartedId = new LinkedHashMap<>();
+    #     TODO: final Map<String, List<Attachment>> attachmentsByTestRunHookStartedId = new LinkedHashMap<>();
+    #     TODO: final Map<Object, Lineage> lineageById = new HashMap<>();
+    #     TODO: final Map<String, List<Suggestion>> suggestionsByPickleStepId = new LinkedHashMap<>();
+    #     TODO: final List<UndefinedParameterType> undefinedParameterTypes = new ArrayList<>();
+    #
+    #     DONE: Meta meta;
+    #     DONE: TestRunStarted testRunStarted;
+    #     DONE: TestRunFinished testRunFinished;
     def initialize
       @hook_by_id = {}
       @pickle_by_id = {}
