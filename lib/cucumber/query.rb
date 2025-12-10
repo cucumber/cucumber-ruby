@@ -22,13 +22,11 @@ module Cucumber
     # TODO: findAll methods (11/12) Complete
     #   Missing: findAllUndefinedParameterTypes
 
-    # TODO: find****By methods (14/25) Complete
+    # TODO: find****By methods (16/25) Complete
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
     #   Missing: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Missing: findTestRunFinished (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Missing: findTestRunStarted (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
     #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findAttachmentsBy (2 variants)
@@ -40,6 +38,8 @@ module Cucumber
     #   Complete: findPickleStepBy (1 variant)
     #   Complete: findStepDefinitionsBy (1 variant)
     #   Complete: findStepBy (1 variant)
+    #   Complete: findTestRunFinished (1 variant)
+    #   Complete: findTestRunStarted (1 variant)
     #   Fully Complete (2/2): findTestStepsStartedBy (2 variants)
     #   Fully Complete (2/2): findTestStepBy (2 variants)
     #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
@@ -194,6 +194,14 @@ module Cucumber
       ensure_only_message_types!(test_run_hook_started, %i[test_run_hook_started], '#find_test_run_hook_finished_by')
 
       repository.test_run_hook_finished_by_test_run_hook_started_id[test_run_hook_started.id]
+    end
+
+    def find_test_run_started
+      repository.test_run_started
+    end
+
+    def find_test_run_finished
+      repository.test_run_finished
     end
 
     # This method will be called with 1 of these 2 messages
