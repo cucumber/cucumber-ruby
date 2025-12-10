@@ -26,12 +26,12 @@ module Cucumber
     #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
-    #   Missing: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
     #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
+    #   To Review: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Complete: findMeta (1 variant)
     #   Complete: findTestRunHookStartedBy (1 variant)
     #   Complete: findTestRunHookFinishedBy (1 variant)
@@ -178,6 +178,31 @@ module Cucumber
       ensure_only_message_types!(test_case_started, %i[test_case_started], '#find_test_case_finished_by')
 
       repository.test_case_finished_by_test_case_started_id[test_case_started.id]
+    end
+
+    def find_test_run_duration
+      #   Java impl
+      #     public Optional<Duration> findTestRunDuration() {
+      #         if (repository.testRunStarted == null || repository.testRunFinished == null) {
+      #             return Optional.empty();
+      #         }
+      #         Duration between = Duration.between(
+      #                 Convertor.toInstant(repository.testRunStarted.getTimestamp()),
+      #                 Convertor.toInstant(repository.testRunFinished.getTimestamp())
+      #         );
+      #         return Optional.of(between);
+      #     }
+
+      if repository.test_run_started.nil? || repository.test_run_finished.nil?
+        nil
+        # EDIT: Shouldn't be put something like `:unknown` here?
+      else
+        # TODO: Check AI generation below. Think this looks about right. However there are a bunch of time helpers in the cucumber lib
+        # EDIT (LH), all of these time helpers are duplicate code for a lot of the bespoke formatters. Here we should have a single impl
+        start_time = repository.test_run_started.timestamp.seconds + (repository.test_run_started.timestamp.nanos * 1e-9)
+        end_time = repository.test_run_finished.timestamp.seconds + (repository.test_run_finished.timestamp.nanos * 1e-9)
+        end_time - start_time
+      end
     end
 
     # This method will be called with only 1 message
