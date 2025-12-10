@@ -18,8 +18,8 @@ module Cucumber
     #   final List<UndefinedParameterType> undefinedParameterTypes = new ArrayList<>();
 
     def initialize
-      @attachments_by_test_case_started_id = {}
-      @attachments_by_test_run_hook_started_id = {}
+      @attachments_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
+      @attachments_by_test_run_hook_started_id = Hash.new { |hash, key| hash[key] = [] }
       @hook_by_id = {}
       @pickle_by_id = {}
       @pickle_step_by_id = {}
@@ -64,6 +64,12 @@ module Cucumber
       #                 .ifPresent(testCaseStartedId -> this.attachmentsByTestCaseStartedId.compute(testCaseStartedId, updateList(attachment)));
       #         attachment.getTestRunHookStartedId()
       #                 .ifPresent(testRunHookStartedId -> this.attachmentsByTestRunHookStartedId.compute(testRunHookStartedId, updateList(attachment)));
+
+      test_case_started_id = attachment&.test_case_started_id
+      test_run_hook_started_id = attachment&.test_run_hook_started_id # TODO: This does not seem to be a property on attachment?
+
+      attachments_by_test_case_started_id if test_case_started_id
+      attachments_by_test_run_hook_started_id if test_run_hook_started_id
     end
 
     def update_feature(feature)
