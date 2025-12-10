@@ -25,10 +25,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'base64', '~> 0.2'
   s.add_dependency 'builder', '~> 3.2'
-  s.add_dependency 'cucumber-ci-environment', '> 9', '< 11'
+  s.add_dependency 'cucumber-ci-environment', '> 9', '< 12'
   s.add_dependency 'cucumber-core', '> 15', '< 17'
-  s.add_dependency 'cucumber-cucumber-expressions', '> 17', '< 19'
-  s.add_dependency 'cucumber-html-formatter', '> 20.3', '< 22'
+  s.add_dependency 'cucumber-cucumber-expressions', '> 17', '< 20'
+  s.add_dependency 'cucumber-html-formatter', '> 21', '< 23'
   s.add_dependency 'diff-lcs', '~> 1.5'
   s.add_dependency 'logger', '~> 1.6'
   s.add_dependency 'mini_mime', '~> 1.1'
