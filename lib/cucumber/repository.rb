@@ -4,37 +4,22 @@ module Cucumber
   # In memory repository i.e. a thread based link to cucumber-query
   class Repository
     attr_accessor :meta, :test_run_started, :test_run_finished
-    attr_reader :hook_by_id,
+    attr_reader :attachments_by_test_case_started_id, :attachments_by_test_run_hook_started_id,
+                :hook_by_id,
                 :pickle_by_id, :pickle_step_by_id,
                 :step_by_id, :step_definition_by_id,
                 :test_case_by_id, :test_case_started_by_id, :test_case_finished_by_test_case_started_id,
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
                 :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
 
-    # Java Repository Attrs
-    #     DONE: final Map<String, TestCaseStarted> testCaseStartedById = new LinkedHashMap<>();
-    #     DONE: final Map<String, TestCaseFinished> testCaseFinishedByTestCaseStartedId = new LinkedHashMap<>();
-    #     DONE: final Map<String, List<TestStepFinished>> testStepsFinishedByTestCaseStartedId = new LinkedHashMap<>();
-    #     DONE: final Map<String, List<TestStepStarted>> testStepsStartedByTestCaseStartedId = new LinkedHashMap<>();
-    #     DONE: final Map<String, TestRunHookStarted> testRunHookStartedById = new LinkedHashMap<>();
-    #     DONE: final Map<String, TestRunHookFinished> testRunHookFinishedByTestRunHookStartedId = new LinkedHashMap<>();
-    #     DONE: final Map<String, Pickle> pickleById = new LinkedHashMap<>();
-    #     DONE: final Map<String, TestCase> testCaseById = new LinkedHashMap<>();
-    #     DONE: final Map<String, Step> stepById = new LinkedHashMap<>();
-    #     DONE: final Map<String, TestStep> testStepById = new LinkedHashMap<>();
-    #     DONE: final Map<String, PickleStep> pickleStepById = new LinkedHashMap<>();
-    #     DONE: final Map<String, Hook> hookById = new LinkedHashMap<>();
-    #     DONE: final Map<String, StepDefinition> stepDefinitionById = new LinkedHashMap<>();
-    #     TODO: final Map<String, List<Attachment>> attachmentsByTestCaseStartedId = new LinkedHashMap<>();
-    #     TODO: final Map<String, List<Attachment>> attachmentsByTestRunHookStartedId = new LinkedHashMap<>();
-    #     TODO: final Map<Object, Lineage> lineageById = new HashMap<>();
-    #     TODO: final Map<String, List<Suggestion>> suggestionsByPickleStepId = new LinkedHashMap<>();
-    #     TODO: final List<UndefinedParameterType> undefinedParameterTypes = new ArrayList<>();
-    #
-    #     DONE: Meta meta;
-    #     DONE: TestRunStarted testRunStarted;
-    #     DONE: TestRunFinished testRunFinished;
+    # TODO: Missing structs (3)
+    #   final Map<Object, Lineage> lineageById = new HashMap<>();
+    #   final Map<String, List<Suggestion>> suggestionsByPickleStepId = new LinkedHashMap<>();
+    #   final List<UndefinedParameterType> undefinedParameterTypes = new ArrayList<>();
+
     def initialize
+      @attachments_by_test_case_started_id = {}
+      @attachments_by_test_run_hook_started_id = {}
       @hook_by_id = {}
       @pickle_by_id = {}
       @pickle_step_by_id = {}
@@ -54,6 +39,7 @@ module Cucumber
       return self.meta = envelope.meta if envelope.meta
       return self.test_run_started = envelope.test_run_started if envelope.test_run_started
       return self.test_run_finished = envelope.test_run_finished if envelope.test_run_finished
+      return update_attachment(envelope.attachment) if envelope.attachment
       return update_gherkin_document(envelope.gherkin_document) if envelope.gherkin_document
       return update_hook(envelope.hook) if envelope.hook
       return update_pickle(envelope.pickle) if envelope.pickle
@@ -70,6 +56,15 @@ module Cucumber
     end
 
     private
+
+    def update_attachment(attachment)
+      # TODO: Update both attachment structs at a later date.
+      # Java impl
+      #             attachment.getTestCaseStartedId()
+      #                 .ifPresent(testCaseStartedId -> this.attachmentsByTestCaseStartedId.compute(testCaseStartedId, updateList(attachment)));
+      #         attachment.getTestRunHookStartedId()
+      #                 .ifPresent(testRunHookStartedId -> this.attachmentsByTestRunHookStartedId.compute(testRunHookStartedId, updateList(attachment)));
+    end
 
     def update_feature(feature)
       feature.children.each do |feature_child|
