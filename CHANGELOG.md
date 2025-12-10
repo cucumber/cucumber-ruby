@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Permit the latest version of the `cucumber-html-formatter` (v22.0.0+)
+- Permit `cucumber-expressions` up to v19
 
 ## [10.1.1] - 2025-10-08
 ### Changed
