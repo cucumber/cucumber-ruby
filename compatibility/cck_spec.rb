@@ -18,10 +18,8 @@ describe CCK, :cck do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
         let(:extra_args) do
-          if example == 'retry'
-            '--retry 2'
-          elsif example == 'multiple-features-reversed'
-            '--order reverse'
+          if File.exist?("#{cck_path}/#{example}.arguments.txt")
+            File.read("#{cck_path}/#{example}.arguments.txt")
           else
             ''
           end
