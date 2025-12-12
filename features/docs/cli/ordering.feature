@@ -59,6 +59,31 @@ Feature: Ordering
   Scenario: Run scenarios in order
     When I run `cucumber`
     Then it should pass
+    And the stdout should contain exactly:
+      """
+      Feature: Bad practice, part 1
+
+        Scenario: Set state      # features/bad_practice_part_1.feature:3
+          Given I set some state # features/step_definitions/steps.rb:1
+
+        Scenario: Depend on state from a preceding scenario # features/bad_practice_part_1.feature:6
+          When I depend on the state                        # features/step_definitions/steps.rb:5
+
+      Feature: Bad practice, part 2
+
+        Scenario: Depend on state from a preceding feature # features/bad_practice_part_2.feature:3
+          When I depend on the state                       # features/step_definitions/steps.rb:5
+
+      Feature: Unrelated
+
+        @skipme
+        Scenario: Do something unrelated # features/unrelated.feature:4
+          When I do something            # features/step_definitions/steps.rb:9
+
+      4 scenarios (4 passed)
+      4 steps (4 passed)
+      0m0.012s
+      """
 
   @global_state
   Scenario: Run scenarios randomized
