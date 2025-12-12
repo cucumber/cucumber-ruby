@@ -96,7 +96,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding scenario
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_1.feature:7:in `I depend on the state'
 
       Feature: Unrelated
@@ -110,7 +110,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding feature
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_2.feature:4:in `I depend on the state'
 
       Feature: Bad practice, part 1
@@ -144,7 +144,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding scenario
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_1.feature:7:in `I depend on the state'
 
       Feature: Bad practice, part 2
@@ -152,7 +152,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding feature
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_2.feature:4:in `I depend on the state'
 
       Feature: Bad practice, part 1
@@ -177,11 +177,6 @@ Feature: Ordering
     Then it should fail
     And the stdout should contain exactly:
       """
-      Feature: Bad practice, part 1
-
-        Scenario: Set state
-          Given I set some state
-
       Feature: Unrelated
 
         @skipme
@@ -193,7 +188,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding feature
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_2.feature:4:in `I depend on the state'
 
       Feature: Bad practice, part 1
@@ -201,8 +196,11 @@ Feature: Ordering
         Scenario: Depend on state from a preceding scenario
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_1.feature:7:in `I depend on the state'
+
+        Scenario: Set state
+          Given I set some state
 
       Failing Scenarios:
       cucumber features/bad_practice_part_2.feature:3
@@ -210,8 +208,6 @@ Feature: Ordering
 
       4 scenarios (2 failed, 2 passed)
       4 steps (2 failed, 2 passed)
-
-      Randomized with seed 41544
       """
 
   @global_state
@@ -224,7 +220,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding scenario
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_1.feature:7:in `I depend on the state'
 
       Feature: Bad practice, part 2
@@ -232,7 +228,7 @@ Feature: Ordering
         Scenario: Depend on state from a preceding feature
           When I depend on the state
             I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
             features/bad_practice_part_2.feature:4:in `I depend on the state'
 
       Feature: Bad practice, part 1
