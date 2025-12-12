@@ -1,8 +1,11 @@
-Feature: Randomize
+Feature: Ordering
 
-  Use the `--order random` switch to run scenarios in random order.
+  Cucumber can run scenarios in different orders.  By default, scenarios are run in the order they
+  appear in the feature files. Use the `--order random` switch to run scenarios in random order.
 
-  This is especially helpful for detecting situations where you have state
+  You can also run cucumber in a reverse order using `--order reverse`.
+
+  Using different ordering can help you detect situations where you have state
   leaking between scenarios, which can cause flickering or fragile tests.
 
   If you do find a random run that exposes dependencies between your tests,
@@ -41,15 +44,15 @@ Feature: Randomize
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given(/^I set some state$/) do
-        $global_state = "set"
+      Given('I set some state') do
+        $global_state = 'set'
       end
 
-      Given(/^I depend on the state$/) do
-        raise "I expect the state to be set!" unless $global_state == "set"
+      Given('I depend on the state') do
+        raise 'I expect the state to be set!' unless $global_state == 'set'
       end
 
-      Given(/^I do something$/) do
+      Given('I do something') do
       end
       """
 
@@ -109,6 +112,86 @@ Feature: Randomize
   @global_state
   Scenario: Run scenarios randomized with some skipped
     When I run `cucumber --tags "not @skipme" --order random:41544 -q`
+    Then it should fail with exactly:
+      """
+      Feature: Bad practice, part 1
+
+        Scenario: Depend on state from a preceding scenario
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            features/bad_practice_part_1.feature:7:in `I depend on the state'
+
+      Feature: Bad practice, part 2
+
+        Scenario: Depend on state from a preceding feature
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            features/bad_practice_part_2.feature:4:in `I depend on the state'
+
+      Feature: Bad practice, part 1
+
+        Scenario: Set state
+          Given I set some state
+
+      Failing Scenarios:
+      cucumber features/bad_practice_part_1.feature:6
+      cucumber features/bad_practice_part_2.feature:3
+
+      3 scenarios (2 failed, 1 passed)
+      3 steps (2 failed, 1 passed)
+
+      Randomized with seed 41544
+
+      """
+
+  @global_state
+  Scenario: Run scenarios in reverse order
+    When I run `cucumber --order reverse -q`
+    Then it should fail
+    And the stdout should contain exactly:
+      """
+      Feature: Bad practice, part 1
+
+        Scenario: Set state
+          Given I set some state
+
+      Feature: Unrelated
+
+        @skipme
+        Scenario: Do something unrelated
+          When I do something
+
+      Feature: Bad practice, part 2
+
+        Scenario: Depend on state from a preceding feature
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            features/bad_practice_part_2.feature:4:in `I depend on the state'
+
+      Feature: Bad practice, part 1
+
+        Scenario: Depend on state from a preceding scenario
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            features/bad_practice_part_1.feature:7:in `I depend on the state'
+
+      Failing Scenarios:
+      cucumber features/bad_practice_part_2.feature:3
+      cucumber features/bad_practice_part_1.feature:6
+
+      4 scenarios (2 failed, 2 passed)
+      4 steps (2 failed, 2 passed)
+
+      Randomized with seed 41544
+      """
+
+  @global_state
+  Scenario: Run scenarios in reverse order with some skipped
+    When I run `cucumber --tags "not @skipme" --order reverse -q`
     Then it should fail with exactly:
       """
       Feature: Bad practice, part 1
