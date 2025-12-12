@@ -63,7 +63,7 @@ module Cucumber
         PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, RETRY_TOTAL_FLAG,
         '-l', '--lines', '--port', '-I', '--snippet-type'
       ].freeze
-      ORDER_TYPES = %w[defined random reversed].freeze
+      ORDER_TYPES = %w[defined random reverse].freeze
       TAG_LIMIT_MATCHER = /(?<tag_name>@\w+):(?<limit>\d+)/x.freeze
 
       def self.parse(args, out_stream, error_stream, options = {})
