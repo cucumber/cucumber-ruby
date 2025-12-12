@@ -50,8 +50,16 @@ module Cucumber
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,
           media_type: media_type,
-          file_name: filename
+          file_name: filename,
+          timestamp: time_to_timestamp(Time.now)
         }
+
+        #   if/else
+        #     body / content_encoding
+        #   TOP-LEVEL
+        #     file_name / media_type / test_case_started_id / test_step_id
+        #   MISSING
+        #     source / url / test_run_started_id / test_run_hook_started_id / timestamp (ADDED)
 
         if media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
