@@ -63,7 +63,7 @@ module Cucumber
         PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG, RETRY_TOTAL_FLAG,
         '-l', '--lines', '--port', '-I', '--snippet-type'
       ].freeze
-      ORDER_TYPES = %w[defined random].freeze
+      ORDER_TYPES = %w[defined random reversed].freeze
       TAG_LIMIT_MATCHER = /(?<tag_name>@\w+):(?<limit>\d+)/x.freeze
 
       def self.parse(args, out_stream, error_stream, options = {})
@@ -146,6 +146,7 @@ module Cucumber
                   *<<~TEXT.split("\n")) do |order|
                       [defined]     Run scenarios in the order they were defined (default).
                       [random]      Shuffle scenarios before running.
+                      [reverse]     Run scenarios in the opposite order to which they were defined.
                     Specify SEED to reproduce the shuffling from a previous run.
                       e.g. --order random:5738
                   TEXT
