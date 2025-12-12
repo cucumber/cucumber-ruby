@@ -213,16 +213,9 @@ Feature: Ordering
   @global_state
   Scenario: Run scenarios in reverse order with some skipped
     When I run `cucumber --tags "not @skipme" --order reverse -q`
-    Then it should fail with exactly:
+    Then it should fail
+    And the stdout should contain exactly:
       """
-      Feature: Bad practice, part 1
-
-        Scenario: Depend on state from a preceding scenario
-          When I depend on the state
-            I expect the state to be set! (RuntimeError)
-            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
-            features/bad_practice_part_1.feature:7:in `I depend on the state'
-
       Feature: Bad practice, part 2
 
         Scenario: Depend on state from a preceding feature
@@ -233,16 +226,19 @@ Feature: Ordering
 
       Feature: Bad practice, part 1
 
+        Scenario: Depend on state from a preceding scenario
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `"I depend on the state"'
+            features/bad_practice_part_1.feature:7:in `I depend on the state'
+
         Scenario: Set state
           Given I set some state
 
       Failing Scenarios:
-      cucumber features/bad_practice_part_1.feature:6
       cucumber features/bad_practice_part_2.feature:3
+      cucumber features/bad_practice_part_1.feature:6
 
       3 scenarios (2 failed, 1 passed)
       3 steps (2 failed, 1 passed)
-
-      Randomized with seed 41544
-
       """
