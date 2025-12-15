@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Added
+- Added a new option for running order `--reverse` which will run the scenarios in reverse order ([#1807](https://github.com/cucumber/cucumber-ruby/pull/1807) [luke-hill](https://github.com/luke-hill))
 
 ## [10.2.0] - 2025-12-10
 ### Changed
