@@ -4,15 +4,14 @@ require 'digest/sha2'
 
 module Cucumber
   module Filters
-    # Batches up all test cases, randomizes them, and then sends them on
-    class Randomizer
+    # Reverses the order of test cases
+    class Reverser
       attr_reader :seed
       private :seed
 
-      def initialize(seed, receiver = nil)
+      def initialize(receiver = nil)
         @receiver = receiver
         @test_cases = []
-        @seed = seed
       end
 
       def test_case(test_case)
@@ -21,7 +20,7 @@ module Cucumber
       end
 
       def done
-        shuffled_test_cases.each do |test_case|
+        reversed_test_cases.each do |test_case|
           test_case.describe_to(@receiver)
         end
         @receiver.done
@@ -29,16 +28,13 @@ module Cucumber
       end
 
       def with_receiver(receiver)
-        self.class.new(seed, receiver)
+        self.class.new(receiver)
       end
 
       private
 
-      def shuffled_test_cases
-        digester = Digest::SHA2.new(256)
-        @test_cases.map.with_index
-                   .sort_by { |_, index| digester.digest((seed + index).to_s) }
-                   .map { |test_case, _| test_case }
+      def reversed_test_cases
+        @test_cases.reverse
       end
     end
   end
