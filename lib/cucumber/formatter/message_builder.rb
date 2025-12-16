@@ -41,16 +41,13 @@ module Cucumber
         @current_test_step_id = nil
       end
 
-      def output_message
-        raise 'To be implemented'
-      end
-
       def attach(src, media_type, filename)
         attachment_data = {
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,
           media_type: media_type,
-          file_name: filename
+          file_name: filename,
+          timestamp: time_to_timestamp(Time.now)
         }
 
         if media_type&.start_with?('text/')
