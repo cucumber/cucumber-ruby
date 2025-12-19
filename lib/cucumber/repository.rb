@@ -59,7 +59,6 @@ module Cucumber
 
     def update_attachment(attachment)
       attachments_by_test_case_started_id[attachment.test_case_started_id] << attachment if attachment.test_case_started_id
-      # TODO: Ensure v28 of messages is bumped before this PR is merged
       attachments_by_test_run_hook_started_id[attachment.test_run_hook_started_id] << attachment if attachment.test_run_hook_started_id
     end
 
