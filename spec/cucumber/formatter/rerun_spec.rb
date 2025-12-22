@@ -34,6 +34,7 @@ module Cucumber
               end
             end
           end
+
           described_class.new(config)
           execute [gherkin], [StandardStepActions.new], config.event_bus
           config.event_bus.test_run_finished
