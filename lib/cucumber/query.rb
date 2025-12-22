@@ -121,6 +121,26 @@ module Cucumber
       repository.meta
     end
 
+    #    public Optional<TestStepResult> findMostSevereTestStepResultBy(TestCaseStarted testCaseStarted) {
+    #         requireNonNull(testCaseStarted);
+    #         return findTestStepsFinishedBy(testCaseStarted)
+    #                 .stream()
+    #                 .map(TestStepFinished::getTestStepResult)
+    #                 .max(comparing(TestStepResult::getStatus, new TestStepResultStatusComparator()));
+    #     }
+    #
+    #     public Optional<TestStepResult> findMostSevereTestStepResultBy(TestCaseFinished testCaseFinished) {
+    #         requireNonNull(testCaseFinished);
+    #         return findTestCaseStartedBy(testCaseFinished)
+    #                 .flatMap(this::findMostSevereTestStepResultBy);
+    #     }
+
+    # This method will be called with 1 of these 2 messages
+    #   [TestCaseStarted || TestCaseFinished]
+    def find_most_severe_test_step_result_by(message)
+
+    end
+
     # This method will be called with 1 of these 5 messages
     #   [TestCase || TestCaseStarted || TestCaseFinished || TestStepStarted || TestStepFinished]
     def find_pickle_by(message)
