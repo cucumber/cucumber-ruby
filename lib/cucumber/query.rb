@@ -181,27 +181,10 @@ module Cucumber
     end
 
     def find_test_run_duration
-      #   Java impl
-      #     public Optional<Duration> findTestRunDuration() {
-      #         if (repository.testRunStarted == null || repository.testRunFinished == null) {
-      #             return Optional.empty();
-      #         }
-      #         Duration between = Duration.between(
-      #                 Convertor.toInstant(repository.testRunStarted.getTimestamp()),
-      #                 Convertor.toInstant(repository.testRunFinished.getTimestamp())
-      #         );
-      #         return Optional.of(between);
-      #     }
-
       if repository.test_run_started.nil? || repository.test_run_finished.nil?
         nil
-        # EDIT: Shouldn't be put something like `:unknown` here?
       else
-        # TODO: Check AI generation below. Think this looks about right. However there are a bunch of time helpers in the cucumber lib
-        # EDIT (LH), all of these time helpers are duplicate code for a lot of the bespoke formatters. Here we should have a single impl
-        start_time = repository.test_run_started.timestamp.seconds + (repository.test_run_started.timestamp.nanos * 1e-9)
-        end_time = repository.test_run_finished.timestamp.seconds + (repository.test_run_finished.timestamp.nanos * 1e-9)
-        end_time - start_time
+        timestamp_to_time(repository.test_run_finished.timestamp) - timestamp_to_time(repository.test_run_started.timestamp)
       end
     end
 
