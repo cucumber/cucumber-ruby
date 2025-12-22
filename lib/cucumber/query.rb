@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'cucumber/repository'
+require 'cucumber/messages'
 
 # Given one Cucumber Message, find another.
 #
@@ -11,6 +12,9 @@ module Cucumber
   class Query
     attr_reader :repository
     private :repository
+
+    include Cucumber::Messages::Helpers::TimeConversion
+    include Cucumber::Messages::Helpers::TestStepResultComparator
 
     def initialize(repository)
       @repository = repository
@@ -23,14 +27,14 @@ module Cucumber
     #   Missing: findAllUndefinedParameterTypes
 
     # TODO: find****By methods (16/25) Complete
-    #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
-    #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
+    #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   To Review: findMostSevereTestStepResultBy (2 variants)
     #   To Review: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Complete: findMeta (1 variant)
     #   Complete: findTestRunHookStartedBy (1 variant)
@@ -121,24 +125,21 @@ module Cucumber
       repository.meta
     end
 
-    #    public Optional<TestStepResult> findMostSevereTestStepResultBy(TestCaseStarted testCaseStarted) {
-    #         requireNonNull(testCaseStarted);
-    #         return findTestStepsFinishedBy(testCaseStarted)
-    #                 .stream()
-    #                 .map(TestStepFinished::getTestStepResult)
-    #                 .max(comparing(TestStepResult::getStatus, new TestStepResultStatusComparator()));
-    #     }
-    #
-    #     public Optional<TestStepResult> findMostSevereTestStepResultBy(TestCaseFinished testCaseFinished) {
-    #         requireNonNull(testCaseFinished);
-    #         return findTestCaseStartedBy(testCaseFinished)
-    #                 .flatMap(this::findMostSevereTestStepResultBy);
-    #     }
-
     # This method will be called with 1 of these 2 messages
     #   [TestCaseStarted || TestCaseFinished]
     def find_most_severe_test_step_result_by(message)
+      ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_most_severe_test_step_result_by')
 
+      if message.is_a?(Cucumber::Messages::TestCaseStarted)
+        find_test_steps_finished_by(message)
+          .map(&:test_step_result)
+          .max_by { |test_step_result| test_step_result_rankings[test_step_result.status] }
+        # Java code: "PREVIOUS".max(comparing(TestStepResult::getStatus, new TestStepResultStatusComparator()));
+      else
+        test_case_started_message = find_test_case_started_by(message)
+        test_case_started_message && find_most_severe_test_step_result_by(test_case_started_message)
+        # Java code: return findTestCaseStartedBy(testCaseFinished).flatMap(this::findMostSevereTestStepResultBy);
+      end
     end
 
     # This method will be called with 1 of these 5 messages
