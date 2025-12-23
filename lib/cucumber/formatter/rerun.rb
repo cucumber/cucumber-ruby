@@ -1,52 +1,58 @@
 # frozen_string_literal: true
 
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/message_builder'
 
 module Cucumber
   module Formatter
-    class Rerun
+    class Rerun < MessageBuilder
       include Formatter::Io
 
       def initialize(config)
         @io = ensure_io(config.out_stream, config.error_stream)
-        @config = config
-        @failures = {}
-        config.on_event :test_case_finished do |event|
-          test_case, result = *event.attributes
-          if @config.strict.strict?(:flaky)
-            next if result.ok?(strict: @config.strict)
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
+        super(config)
+      end
 
-            add_to_failures(test_case)
-          else
-            unless @latest_failed_test_case.nil?
-              if @latest_failed_test_case != test_case
-                add_to_failures(@latest_failed_test_case)
-                @latest_failed_test_case = nil
-              elsif result.ok?(strict: @config.strict)
-                @latest_failed_test_case = nil
-              end
-            end
-            @latest_failed_test_case = test_case unless result.ok?(strict: @config.strict)
-          end
-        end
-        config.on_event :test_run_finished do
-          add_to_failures(@latest_failed_test_case) unless @latest_failed_test_case.nil?
-          next if @failures.empty?
-
-          @io.print file_failures.join("\n")
-        end
+      def output_envelope(envelope)
+        @repository.update(envelope)
+        finish_report if envelope.test_run_finished
       end
 
       private
 
-      def file_failures
-        @failures.map { |file, lines| [file, lines].join(':') }
+      # TODO: Fix this one method to make rerun formatter in new style
+      def finish_report
+        @query.find_all_test_case_started.each do |test_case|
+          # Only consider test cases that were not passing or skipped
+          next if passing_or_skipped?(test_case)
+
+          # Don't consider test cases without a pickle (Unsure what these could be?)
+          pickle = @query.find_pickle_by(test_case)
+          next if pickle.nil?
+
+          # Store each failure in a Hash to be condensed into rerun text format
+          uri_and_location_hash[pickle.uri] << pickle.location
+
+          # This outputs the desired failures in to the file
+          @io.print(failure_array.join("\n"))
+        end
       end
 
-      def add_to_failures(test_case)
-        location = test_case.location
-        @failures[location.file] ||= []
-        @failures[location.file] << location.lines.max unless @failures[location.file].include?(location.lines.max)
+      def failure_array
+        uri_and_location_hash.map do |uri, lines|
+          "#{uri}:#{lines.join(':')}"
+        end
+      end
+
+      def uri_and_location_hash
+        @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = [] }
+      end
+
+      def passing_or_skipped?(test_case_started)
+        most_severe_test_step_result = @query.find_most_severe_test_step_result_by(test_case_started)
+        [TestStepResultStatus::PASSED, TestStepResultStatus::SKIPPED].include?(most_severe_test_step_result.status)
       end
     end
   end
