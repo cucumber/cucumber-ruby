@@ -8,6 +8,7 @@ module Cucumber
       def initialize(config)
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
+        super(config)
       end
 
       def output_envelope(envelope)
@@ -33,38 +34,30 @@ module Cucumber
         @query.find_all_test_case_started.each do |test_case|
           next unless not_passing_or_skipped?(test_case)
 
-          pickle_opt = @query.find_pickle_by(test_case)
-          next if pickle_opt.nil?
+          pickle = @query.find_pickle_by(test_case)
+          next if pickle.nil?
 
-          pickle = pickle_opt
-          uri_and_line = uri_and_line(pickle)
-          file = uri_and_line[:uri]
-          line = uri_and_line[:line]
-          if line
-            @failures ||= {}
-            @failures[file] ||= []
-            @failures[file] << line unless @failures[file].include?(line)
-          end
+          file = pickle.uri
+          line = pickle.location
+          uri_and_line_store[file] << line
+
+          failure_array
         end
       end
 
-      def not_passing_or_skipped?(test_case_started)
-        #     private boolean isNotPassingOrSkipped(TestCaseStarted event) {
-        #         return query.findMostSevereTestStepResultBy(event)
-        #                 .map(TestStepResult::getStatus)
-        #                 .filter(status -> status != TestStepResultStatus.PASSED)
-        #                 .filter(status -> status != TestStepResultStatus.SKIPPED)
-        #                 .isPresent();
-        #     }
-        most_severe = @query.find_most_severe_test_step_result_by(test_case_started)
-        return false if most_severe.nil?
-
-        status = most_severe.status
-        status != :passed && status != :skipped
+      def failure_array
+        uri_and_line_store.map do |uri, lines|
+          "#{uri}:#{lines.join(':')}"
+        end
       end
 
-      def uri_and_line(pickle)
-        { uri: pickle.uri, line: pickle.location }
+      def uri_and_line_store
+        @uri_and_line_store ||= Hash.new { |hash, key| hash[key] = [] }
+      end
+
+      def not_passing_or_skipped?(test_case_started)
+        most_severe_test_step_result = @query.find_most_severe_test_step_result_by(test_case_started)
+        ![TestStepResultStatus::PASSED, TestStepResultStatus::SKIPPED].include?(most_severe_test_step_result.status)
       end
     end
   end
