@@ -5,7 +5,10 @@ require 'cucumber/formatter/io'
 module Cucumber
   module Formatter
     class RerunWithMessages < MessageBuilder
+      include Formatter::Io
+
       def initialize(config)
+        @io = ensure_io(config.out_stream, config.error_stream)
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
         super(config)
@@ -21,17 +24,18 @@ module Cucumber
       # TODO: Fix this one method to make rerun formatter in new style
       def finish_report
         @query.find_all_test_case_started.each do |test_case|
+          # Only consider test cases that were not passing or skipped
           next if passing_or_skipped?(test_case)
 
+          # Don't consider test cases without a pickle (Unsure what these could be?)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
 
-          file = pickle.uri
-          line = pickle.location
-          uri_and_location_hash[file] << line
+          # Store each failure in a Hash to be condensed into rerun text format
+          uri_and_location_hash[pickle.uri] << pickle.location
 
-          # TODO: This outputs my desired failures in an array format. Now just to format to a file
-          failure_array
+          # This outputs the desired failures in to the file
+          @io.print(failure_array.join("\n"))
         end
       end
 
