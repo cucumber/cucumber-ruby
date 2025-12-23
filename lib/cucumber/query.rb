@@ -32,26 +32,10 @@ module Cucumber
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
-    #   Missing: findLineageBy (9 variants!)
-    #   To Complete: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   REDUNDANT: findLineageBy (9 variants!)
+    #   REDUNDANT: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   To Review: findMostSevereTestStepResultBy (2 variants)
     #   To Review: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Complete: findMeta (1 variant)
-    #   Complete: findTestRunHookStartedBy (1 variant)
-    #   Complete: findTestRunHookFinishedBy (1 variant)
-    #   Complete: findPickleStepBy (1 variant)
-    #   Complete: findStepDefinitionsBy (1 variant)
-    #   Complete: findStepBy (1 variant)
-    #   Complete: findTestRunFinished (1 variant)
-    #   Complete: findTestRunStarted (1 variant)
-    #   Fully Complete (2/2): findTestStepsStartedBy (2 variants)
-    #   Fully Complete (2/2): findTestStepBy (2 variants)
-    #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
-    #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
-    #   Fully Complete (4/4): findTestCaseBy (4 variants)
-    #   Fully Complete (5/5): findPickleBy (5 variants)
-    #   Fully Complete (3/3): findHookBy (3 variants)
-    #   Fully Complete (2/2): findTestStepsFinishedBy (2 variants)
 
     def count_test_cases_started
       find_all_test_case_started.length
@@ -119,52 +103,6 @@ module Cucumber
       else
         repository.hook_by_id[message.hook_id]
       end
-    end
-
-    # This method will be called with 1 of these 9 messages
-    #   [GherkinDocument || Feature || Rule || Scenario || Examples || TableRow || Pickle || TestCaseStarted || TestCaseFinished]
-    def find_lineage_by(message)
-      ensure_only_message_types!(message, %i[gherkin_document feature rule scenario examples table_row pickle test_case_started test_case_finished], '#find_lineage_by')
-
-      case message.class
-      when Cucumber::Messages::GherkinDocument
-        repository.lineage_by_id[message.uri]
-      when Cucumber::Messages::Feature
-        repository.lineage_by_id[message]
-      when Cucumber::Messages::Rule, Cucumber::Messages::Scenario, Cucumber::Messages::Examples, Cucumber::Messages::TableRow
-        repository.lineage_by_id[message.id]
-      when Cucumber::Messages::Pickle
-        ast_node_ids = message.ast_node_ids
-        pickle_ast_node_id = ast_node_ids.last
-        repository.lineage_by_id[pickle_ast_node_id]
-      when Cucumber::Messages::TestCaseStarted, Cucumber::Messages::TestCaseFinished
-        pickle = find_pickle_by(message)
-        pickle && find_lineage_by(pickle)
-      end
-    end
-
-    # This method will be called with only 1 message
-    #   [Pickle]
-    def find_location_of(pickle)
-      ensure_only_message_types!(pickle, %i[pickle], '#find_location_of')
-
-      # TODO: Check this AI generated code
-      find_lineage_by(pickle)&.then do |lineage|
-        if lineage.example
-          lineage.example.location
-        else
-          lineage.scenario&.location
-        end
-      end
-      # Java code:
-      #    public Optional<Location> findLocationOf(Pickle pickle) {
-      #         return findLineageBy(pickle).flatMap(lineage -> {
-      #             if (lineage.example().isPresent()) {
-      #                 return lineage.example().map(TableRow::getLocation);
-      #             }
-      #             return lineage.scenario().map(Scenario::getLocation);
-      #         });
-      #     }
     end
 
     def find_meta

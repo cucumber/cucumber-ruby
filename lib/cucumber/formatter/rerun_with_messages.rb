@@ -64,14 +64,7 @@ module Cucumber
       end
 
       def uri_and_line(pickle)
-        # private UriAndLine createUriAndLine(Pickle pickle) {
-        #         String uri = pickle.getUri();
-        #         Long line = query.findLocationOf(pickle).map(Location::getLine).orElse(null);
-        #         return new UriAndLine(uri, line);
-        #     }
-        uri = pickle.uri
-        line = @query.find_location_of(pickle)&.line
-        { uri: uri, line: line }
+        { uri: pickle.uri, line: pickle.location }
       end
     end
   end
