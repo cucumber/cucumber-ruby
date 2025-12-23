@@ -6,14 +6,14 @@ module Cucumber
     attr_accessor :meta, :test_run_started, :test_run_finished
     attr_reader :attachments_by_test_case_started_id, :attachments_by_test_run_hook_started_id,
                 :hook_by_id,
+                :lineage_by_id,
                 :pickle_by_id, :pickle_step_by_id,
                 :step_by_id, :step_definition_by_id,
                 :test_case_by_id, :test_case_started_by_id, :test_case_finished_by_test_case_started_id,
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
                 :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
 
-    # TODO: Missing structs (3)
-    #   final Map<Object, Lineage> lineageById = new HashMap<>();
+    # TODO: Missing structs (2)
     #   final Map<String, List<Suggestion>> suggestionsByPickleStepId = new LinkedHashMap<>();
     #   final List<UndefinedParameterType> undefinedParameterTypes = new ArrayList<>();
 
@@ -21,6 +21,7 @@ module Cucumber
       @attachments_by_test_case_started_id = Hash.new { |hash, key| hash[key] = [] }
       @attachments_by_test_run_hook_started_id = Hash.new { |hash, key| hash[key] = [] }
       @hook_by_id = {}
+      @lineage_by_id = {}
       @pickle_by_id = {}
       @pickle_step_by_id = {}
       @step_by_id = {}

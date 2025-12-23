@@ -131,22 +131,13 @@ module Cucumber
         repository.lineage_by_id[message.uri]
       when Cucumber::Messages::Feature
         repository.lineage_by_id[message]
-      when Cucumber::Messages::Rule
-        repository.lineage_by_id[message.id]
-      when Cucumber::Messages::Scenario
-        repository.lineage_by_id[message.id]
-      when Cucumber::Messages::Examples
-        repository.lineage_by_id[message.id]
-      when Cucumber::Messages::TableRow
+      when Cucumber::Messages::Rule, Cucumber::Messages::Scenario, Cucumber::Messages::Examples, Cucumber::Messages::TableRow
         repository.lineage_by_id[message.id]
       when Cucumber::Messages::Pickle
         ast_node_ids = message.ast_node_ids
         pickle_ast_node_id = ast_node_ids.last
         repository.lineage_by_id[pickle_ast_node_id]
-      when Cucumber::Messages::TestCaseStarted
-        pickle = find_pickle_by(message)
-        pickle && find_lineage_by(pickle)
-      when Cucumber::Messages::TestCaseFinished
+      when Cucumber::Messages::TestCaseStarted, Cucumber::Messages::TestCaseFinished
         pickle = find_pickle_by(message)
         pickle && find_lineage_by(pickle)
       end
