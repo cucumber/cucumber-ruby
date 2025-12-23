@@ -33,7 +33,7 @@ module Cucumber
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
     #   Missing: findLineageBy (9 variants!)
-    #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   To Complete: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   To Review: findMostSevereTestStepResultBy (2 variants)
     #   To Review: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Complete: findMeta (1 variant)
@@ -119,6 +119,61 @@ module Cucumber
       else
         repository.hook_by_id[message.hook_id]
       end
+    end
+
+    # This method will be called with 1 of these 9 messages
+    #   [GherkinDocument || Feature || Rule || Scenario || Examples || TableRow || Pickle || TestCaseStarted || TestCaseFinished]
+    def find_lineage_by(message)
+      ensure_only_message_types!(message, %i[gherkin_document feature rule scenario examples table_row pickle test_case_started test_case_finished], '#find_lineage_by')
+
+      case message.class
+      when Cucumber::Messages::GherkinDocument
+        repository.lineage_by_id[message.uri]
+      when Cucumber::Messages::Feature
+        repository.lineage_by_id[message]
+      when Cucumber::Messages::Rule
+        repository.lineage_by_id[message.id]
+      when Cucumber::Messages::Scenario
+        repository.lineage_by_id[message.id]
+      when Cucumber::Messages::Examples
+        repository.lineage_by_id[message.id]
+      when Cucumber::Messages::TableRow
+        repository.lineage_by_id[message.id]
+      when Cucumber::Messages::Pickle
+        ast_node_ids = message.ast_node_ids
+        pickle_ast_node_id = ast_node_ids.last
+        repository.lineage_by_id[pickle_ast_node_id]
+      when Cucumber::Messages::TestCaseStarted
+        pickle = find_pickle_by(message)
+        pickle && find_lineage_by(pickle)
+      when Cucumber::Messages::TestCaseFinished
+        pickle = find_pickle_by(message)
+        pickle && find_lineage_by(pickle)
+      end
+    end
+
+    # This method will be called with only 1 message
+    #   [Pickle]
+    def find_location_of(pickle)
+      ensure_only_message_types!(pickle, %i[pickle], '#find_location_of')
+
+      # TODO: Check this AI generated code
+      find_lineage_by(pickle)&.then do |lineage|
+        if lineage.example
+          lineage.example.location
+        else
+          lineage.scenario&.location
+        end
+      end
+      # Java code:
+      #    public Optional<Location> findLocationOf(Pickle pickle) {
+      #         return findLineageBy(pickle).flatMap(lineage -> {
+      #             if (lineage.example().isPresent()) {
+      #                 return lineage.example().map(TableRow::getLocation);
+      #             }
+      #             return lineage.scenario().map(Scenario::getLocation);
+      #         });
+      #     }
     end
 
     def find_meta
