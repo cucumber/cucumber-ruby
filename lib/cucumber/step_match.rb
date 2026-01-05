@@ -148,7 +148,7 @@ module Cucumber
     end
 
     def activate(test_step)
-      test_step.with_action { raise @error }
+      test_step.with_action { raise Core::Test::Result::Ambiguous, @error.message }
     end
   end
 end
