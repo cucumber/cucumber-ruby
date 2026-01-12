@@ -25,20 +25,21 @@ module Cucumber
 
       private
 
-      # TODO: Fix this one method to make rerun formatter in new style
       def finish_report
         @query.find_all_test_case_started.each do |test_case|
-          # Only consider test cases that were not passing or skipped
+          # Sanitization: Skipped test cases are not considered failures (on their own)
           next if skipped?(test_case) # only for skipped
-
-          if passing?(test_case)
-            # Clean up the hash and remove it if present
-            next # only for passed
-          end
 
           # Don't consider test cases without a pickle (Unsure what these could be?)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
+
+          # Sanitization: Passing test cases are not considered failures
+          if passing?(test_case)
+            # If a test case is passing on a retry - it must alleviate prior failures of the same case
+            uri_and_location_hash[pickle.uri] - pickle.location.line.to_a
+            next
+          end
 
           # Store each failure in a Hash to be condensed into rerun text format
           uri_and_location_hash[pickle.uri] << pickle.location.line
