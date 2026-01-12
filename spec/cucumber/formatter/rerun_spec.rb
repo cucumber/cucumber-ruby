@@ -134,7 +134,7 @@ module Cucumber
             expect(io.string).to eq('foo.feature:3')
           end
 
-          it 'does not include retried failing scenarios more than once' do
+          it 'does not include the same failing scenario more than once' do
             gherkin = gherkin('foo.feature') do
               feature do
                 scenario do
@@ -147,7 +147,7 @@ module Cucumber
             execute [gherkin, gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
             config.event_bus.test_run_finished
 
-            expect(io.string).to eq 'foo.feature:3'
+            expect(io.string).to eq('foo.feature:3')
           end
         end
       end
