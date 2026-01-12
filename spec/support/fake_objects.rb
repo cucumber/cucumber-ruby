@@ -48,6 +48,7 @@ module FakeObjects
       end
 
       test_case.with_steps(failing_test_steps).describe_to(receiver)
+      test_case.with_steps(failing_test_steps).describe_to(receiver)
       test_case.with_steps(passing_test_steps).describe_to(receiver)
     end
   end
