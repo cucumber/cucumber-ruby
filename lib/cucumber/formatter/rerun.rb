@@ -28,6 +28,13 @@ module Cucumber
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
 
+          # RULE: (Configuration specific)
+          #   -> If the test case has already been logged (And so we're retrying), we remove prior references of failures
+          if passing?(test_case) && !rerun_flaky_tests?
+            uri_and_location_hash[pickle.uri].delete(pickle.location.line)
+            next
+          end
+
           # RULE: Passing test cases are not considered failures (Don't log these)
           next if passing?(test_case)
 
@@ -37,14 +44,7 @@ module Cucumber
           # RULE: Before logging a failure, ensure we are not on a retried test case (Don't log a retry multiple times)
           next if test_case.attempt > 1
 
-          # RULE: (Configuration specific)
-          #   -> If the test case has already been logged (And so we're retrying), we remove prior references of failures
-          if passing?(test_case) && !rerun_flaky_tests?
-            uri_and_location_hash[pickle.uri].delete(pickle.location.line)
-            next
-          end
-
-          # Log the failure if every other skip rule has not been met
+          # Log the failure if every other skip rule has not been met, and the failure has not already been logged
           uri_and_location_hash[pickle.uri] << pickle.location.line
         end
 
@@ -59,11 +59,11 @@ module Cucumber
       end
 
       def uri_and_location_hash
-        @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = [] }
+        @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = Set.new }
       end
 
       def rerun_flaky_tests?
-        @config.strict.send(:settings)[:flaky]
+        @config.strict.send(:settings)[:flaky] == true
       end
 
       def passing?(test_case_started)
