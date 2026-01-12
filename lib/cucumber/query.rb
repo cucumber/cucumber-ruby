@@ -240,7 +240,7 @@ module Cucumber
       ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_steps_finished_by')
 
       if message.is_a?(Cucumber::Messages::TestCaseStarted)
-        test_steps_finished_by_test_case_started_id.fetch(message.id, [])
+        repository.test_steps_finished_by_test_case_started_id.fetch(message.id, [])
       else
         test_case_started_message = find_test_case_started_by(message)
         test_case_started_message.nil? ? [] : find_test_steps_finished_by(test_case_started_message)

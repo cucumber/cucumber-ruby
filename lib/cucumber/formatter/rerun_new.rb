@@ -14,15 +14,6 @@ module Cucumber
         @query = Cucumber::Query.new(@repository)
 
         config.on_event :envelope, &method(:on_envelope)
-        # config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
-        # config.on_event :test_case_ready, &method(:on_test_case_ready)
-        # config.on_event :test_run_started, &method(:on_test_run_started)
-        # config.on_event :test_case_started, &method(:on_test_case_started)
-        # config.on_event :test_step_started, &method(:on_test_step_started)
-        # config.on_event :test_step_finished, &method(:on_test_step_finished)
-        # config.on_event :test_case_finished, &method(:on_test_case_finished)
-        # config.on_event :test_run_finished, &method(:on_test_run_finished)
-        # config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
       end
 
       def output_envelope(envelope)
