@@ -131,7 +131,7 @@ module Cucumber
             execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
             config.event_bus.test_run_finished
 
-            expect(io.string).to eq 'foo.feature:3'
+            expect(io.string).to eq('foo.feature:3')
           end
 
           it 'does not include retried failing scenarios more than once' do

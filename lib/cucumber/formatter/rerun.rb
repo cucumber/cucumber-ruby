@@ -12,8 +12,6 @@ module Cucumber
         @io = ensure_io(config.out_stream, config.error_stream)
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
-
-        config.on_event :envelope, &method(:on_envelope)
         super(config)
       end
 
@@ -31,16 +29,20 @@ module Cucumber
           next if pickle.nil?
 
           # RULE: Passing test cases are not considered failures (Don't log these)
-          if passing?(test_case)
-            # If the test case has already been logged (And so we're retrying), we remove prior references of failures
-            uri_and_location_hash[pickle.uri] - [pickle.location.line]
+          next if passing?(test_case)
+
+          # RULE: Skipped test cases are not considered failures (on their own, don't log these)
+          next if skipped?(test_case)
+
+          # RULE: Before logging a failure, ensure we are not on a retried test case (Don't log a retry multiple times)
+          next if test_case.attempt > 1
+
+          # RULE: (Configuration specific)
+          #   -> If the test case has already been logged (And so we're retrying), we remove prior references of failures
+          if passing?(test_case) && !rerun_flaky_tests?
+            uri_and_location_hash[pickle.uri].delete(pickle.location.line)
             next
           end
-
-          # RULE:
-          #   -> Skipped test cases are not considered failures (on their own, don't log these)
-          #   -> Before logging a failure, ensure we are not on a retried test case (Don't log a retry multiple times)
-          next if skipped?(test_case) || test_case.attempt > 1
 
           # Log the failure if every other skip rule has not been met
           uri_and_location_hash[pickle.uri] << pickle.location.line
@@ -51,13 +53,17 @@ module Cucumber
       end
 
       def failure_array
-        uri_and_location_hash.map do |uri, lines|
-          "#{uri}:#{lines.join(':')}"
+        uri_and_location_hash.filter_map do |uri, lines|
+          "#{uri}:#{lines.join(':')}" if lines.any?
         end
       end
 
       def uri_and_location_hash
         @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = [] }
+      end
+
+      def rerun_flaky_tests?
+        @config.strict.send(:settings)[:flaky]
       end
 
       def passing?(test_case_started)
