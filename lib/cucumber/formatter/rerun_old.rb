@@ -4,7 +4,7 @@ require 'cucumber/formatter/io'
 
 module Cucumber
   module Formatter
-    class RerunOld
+    class Rerun
       include Formatter::Io
 
       def initialize(config)
