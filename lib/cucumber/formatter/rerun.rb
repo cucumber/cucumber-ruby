@@ -27,19 +27,23 @@ module Cucumber
 
       def finish_report
         @query.find_all_test_case_started.each do |test_case|
-          # Sanitization: Skipped test cases are not considered failures (on their own)
-          next if skipped?(test_case) # only for skipped
-
           # Don't consider test cases without a pickle (Unsure what these could be?)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
 
+          # Sanitization: Skipped test cases are not considered failures (on their own)
+          next if skipped?(test_case)
+
           # Sanitization: Passing test cases are not considered failures
           if passing?(test_case)
             # If a test case is passing on a retry - it must alleviate prior failures of the same case
-            uri_and_location_hash[pickle.uri] - pickle.location.line.to_a
+            uri_and_location_hash[pickle.uri] - [pickle.location.line]
             next
           end
+
+          # Sanitization: Finally before logging a failure, ensure we are not on a retried test case
+          #   - i.e. if a test fails once, we don't log that it needs retrying multiple times
+          next if test_case.attempt > 1
 
           # Store each failure in a Hash to be condensed into rerun text format
           uri_and_location_hash[pickle.uri] << pickle.location.line
