@@ -18,7 +18,6 @@ module Cucumber
       end
 
       def output_envelope(envelope)
-        p envelope
         @repository.update(envelope)
         finish_report if envelope.test_run_finished
       end
