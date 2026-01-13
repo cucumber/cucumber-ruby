@@ -24,6 +24,7 @@ module Cucumber
 
       def finish_report
         @query.find_all_test_case_started.each do |test_case|
+          status = @query.find_most_severe_test_step_result_by(test_case).status
           # RULE: Don't log test cases without a pickle (Unsure what these could be?)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
@@ -34,6 +35,11 @@ module Cucumber
             uri_and_location_hash[pickle.uri].delete(pickle.location.line)
             next
           end
+
+          # RULE: (Configuration specific - to be amended once CCK conformance is finalised)
+          #   -> If the strict configuration permits the result - handle it accordingly
+          next if status == 'UNDEFINED' && !@config.strict.strict?(:undefined)
+          next if status == 'PENDING' && !@config.strict.strict?(:pending)
 
           # RULE: Passing test cases are not considered failures (Don't log these)
           next if passing?(test_case)
@@ -63,7 +69,7 @@ module Cucumber
       end
 
       def rerun_flaky_tests?
-        @config.strict.send(:settings)[:flaky] == true
+        @config.strict.strict?(:flaky)
       end
 
       def passing?(test_case_started)
