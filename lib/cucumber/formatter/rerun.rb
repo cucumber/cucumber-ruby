@@ -6,12 +6,8 @@ require 'cucumber/formatter/message_builder'
 module Cucumber
   module Formatter
     class Rerun < MessageBuilder
-      include Formatter::Io
-
       def initialize(config)
         @io = ensure_io(config.out_stream, config.error_stream)
-        @repository = Cucumber::Repository.new
-        @query = Cucumber::Query.new(@repository)
         super(config)
       end
 

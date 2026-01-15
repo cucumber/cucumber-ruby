@@ -15,6 +15,7 @@ module Cucumber
   module Formatter
     class MessageBuilder
       include Cucumber::Messages::Helpers::TimeConversion
+      include Io
 
       def initialize(config)
         @config = config
