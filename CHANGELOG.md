@@ -11,6 +11,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Added
 - Add timestamp to `Attachment` message
+- A first initial iteration of the new `cucumber-query` structure ([#1801](https://github.com/cucumber/cucumber-ruby/pull/1801) [luke-hill](https://github.com/luke-hill))
+
+> This is currently not consumed anywhere, but will become the building blocks for the future of cucumber formatters
+> which we hope to begin migrating to in the start of 2026
 
 ## [10.2.0] - 2025-12-10
 ### Changed

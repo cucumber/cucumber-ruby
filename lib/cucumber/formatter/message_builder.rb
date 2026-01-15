@@ -9,6 +9,8 @@ require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
 require 'cucumber/formatter/query/test_run_started'
 
+require 'cucumber/query'
+
 module Cucumber
   module Formatter
     class MessageBuilder
@@ -39,6 +41,9 @@ module Cucumber
         @current_test_run_started_id = nil
         @current_test_case_started_id = nil
         @current_test_step_id = nil
+
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
       end
 
       def attach(src, media_type, filename)
