@@ -88,6 +88,8 @@ module Cucumber
       end
 
       def on_test_case_ready(event)
+        # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
+        # TODO: The finder in query is `find_test_step_by` (Using +TestStepStarted+ message)
         event.test_case.test_steps.each do |step|
           @test_case_by_step_id[step.id] = event.test_case
         end
@@ -101,6 +103,9 @@ module Cucumber
           )
         )
 
+        # TODO: Once we're comfortable switching this over. Call @repository.update(message) alongside output_envelope
+        # however this may not be necessary as output_envelope may/should already be doing this?
+
         output_envelope(message)
       end
 
@@ -109,6 +114,8 @@ module Cucumber
 
         Cucumber::Messages::TestStep.new(
           id: step.id,
+          # TODO: This "fake query" is only used once. It can likely be replace by `find_pickle_step_by` which
+          # takes a +TestStep+ message from the repo directly.
           pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
           step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
           step_match_arguments_lists: step_match_arguments_lists(step)
@@ -153,6 +160,7 @@ module Cucumber
       end
 
       def on_test_run_started(*)
+        # TODO: Switch this over to using the Query object -> `find_test_run_started`
         @current_test_run_started_id = @test_run_started.id
 
         message = Cucumber::Messages::Envelope.new(
