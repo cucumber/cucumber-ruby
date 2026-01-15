@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'support/shared_examples'
-require_relative 'support/cck/examples'
+require_relative 'support/compatibility_kit'
 
 require 'cucumber/compatibility_kit'
 

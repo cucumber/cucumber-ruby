@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../support/cck/examples'
+require_relative '../../support/cck/atibility_kit'
 
 describe CCK::Examples do
   let(:features_path) { File.expand_path("#{File.dirname(__FILE__)}/../../features") }
