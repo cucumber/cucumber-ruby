@@ -26,6 +26,8 @@ module Cucumber
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
         @test_run_started = Query::TestRunStarted.new(config)
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
 
         config.on_event :envelope, &method(:on_envelope)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
@@ -42,9 +44,6 @@ module Cucumber
         @current_test_run_started_id = nil
         @current_test_case_started_id = nil
         @current_test_step_id = nil
-
-        @repository = Cucumber::Repository.new
-        @query = Cucumber::Query.new(@repository)
       end
 
       def attach(src, media_type, filename)
