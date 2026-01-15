@@ -41,7 +41,7 @@ describe CCK, :cck do
             ''
           end
         end
-        let(:support_code_path) { CCK::Examples.supporting_code_for(example) }
+        let(:support_code_path) { CompatibilityKit.supporting_code_for(example) }
         let(:messages) { `#{cucumber_command} --require #{support_code_path} #{cck_path} #{extra_args}` }
       end
     end
