@@ -25,7 +25,7 @@ jobs:
             ruby: truffleruby
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/actions/test-ruby
         with:
           ruby-version: ${{ matrix.ruby }}
