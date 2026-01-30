@@ -143,7 +143,7 @@ module Cucumber
         Cucumber::Messages::Group.new(
           start: group.start,
           value: group.value,
-          children: group.children.map { |child| argument_group_to_message(child) }
+          children: group.children&.map { |child| argument_group_to_message(child) }
         )
       end
 
