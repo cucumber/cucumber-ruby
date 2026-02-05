@@ -15,6 +15,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > This is currently not consumed anywhere, but will become the building blocks for the future of cucumber formatters
 > which we hope to begin migrating to in the start of 2026
 
+### Changed
+- Use the test result type 'ambiguous' added to cucumber-ruby-core
+([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
+
 ## [10.2.0] - 2025-12-10
 ### Changed
 - Permit the latest version of the `cucumber-html-formatter` (v22.0.0+)
