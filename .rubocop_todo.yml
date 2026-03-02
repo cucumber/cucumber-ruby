@@ -12,6 +12,7 @@
 # TODO - [LH] -> Jan '25 (Updated deps and v10 prep) - 369 files inspected, 704 offenses detected, 112 offenses autocorrectable
 # TODO - [LH] -> Mar '25 (v10 prep) - 370 files inspected, 721 offenses detected, 116 offenses autocorrectable
 # TODO - [LH] -> Dec '25 - 375 files inspected, 713 offenses detected, 109 offenses autocorrectable
+# TODO - [LH] -> Dec '26 (query prep) - 378 files inspected, 729 offenses detected, 109 offenses autocorrectable
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
@@ -47,7 +48,7 @@ Lint/UselessMethodDefinition:
   Exclude:
     - 'lib/cucumber/glue/proto_world.rb'
 
-# Offense count: 62
+# Offense count: 66
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
   Max: 127
@@ -58,17 +59,17 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Max: 53
 
-# Offense count: 13
+# Offense count: 14
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
   Max: 516
 
-# Offense count: 7
+# Offense count: 10
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
-  Max: 12
+  Max: 15
 
-# Offense count: 78
+# Offense count: 83
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
   Max: 65
@@ -78,10 +79,10 @@ Metrics/MethodLength:
 Metrics/ModuleLength:
   Max: 804
 
-# Offense count: 7
+# Offense count: 10
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
-  Max: 13
+  Max: 15
 
 # Offense count: 1
 # Configuration parameters: ExpectMatchingDefinition, CheckDefinitionPathHierarchy, CheckDefinitionPathHierarchyRoots, Regex, IgnoreExecutableScripts, AllowedAcronyms.

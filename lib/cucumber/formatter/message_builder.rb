@@ -9,10 +9,13 @@ require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
 require 'cucumber/formatter/query/test_run_started'
 
+require 'cucumber/query'
+
 module Cucumber
   module Formatter
     class MessageBuilder
       include Cucumber::Messages::Helpers::TimeConversion
+      include Io
 
       def initialize(config)
         @config = config
@@ -23,6 +26,8 @@ module Cucumber
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
         @test_run_started = Query::TestRunStarted.new(config)
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
 
         config.on_event :envelope, &method(:on_envelope)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
@@ -41,16 +46,13 @@ module Cucumber
         @current_test_step_id = nil
       end
 
-      def output_message
-        raise 'To be implemented'
-      end
-
       def attach(src, media_type, filename)
         attachment_data = {
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,
           media_type: media_type,
-          file_name: filename
+          file_name: filename,
+          timestamp: time_to_timestamp(Time.now)
         }
 
         if media_type&.start_with?('text/')
@@ -85,6 +87,8 @@ module Cucumber
       end
 
       def on_test_case_ready(event)
+        # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
+        # TODO: The finder in query is `find_test_step_by` (Using +TestStepStarted+ message)
         event.test_case.test_steps.each do |step|
           @test_case_by_step_id[step.id] = event.test_case
         end
@@ -98,6 +102,9 @@ module Cucumber
           )
         )
 
+        # TODO: Once we're comfortable switching this over. Call @repository.update(message) alongside output_envelope
+        # however this may not be necessary as output_envelope may/should already be doing this?
+
         output_envelope(message)
       end
 
@@ -106,6 +113,8 @@ module Cucumber
 
         Cucumber::Messages::TestStep.new(
           id: step.id,
+          # TODO: This "fake query" is only used once. It can likely be replace by `find_pickle_step_by` which
+          # takes a +TestStep+ message from the repo directly.
           pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
           step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
           step_match_arguments_lists: step_match_arguments_lists(step)
@@ -141,7 +150,7 @@ module Cucumber
         Cucumber::Messages::Group.new(
           start: group.start,
           value: group.value,
-          children: group.children.map { |child| argument_group_to_message(child) }
+          children: group.children&.map { |child| argument_group_to_message(child) }
         )
       end
 
@@ -150,6 +159,7 @@ module Cucumber
       end
 
       def on_test_run_started(*)
+        # TODO: Switch this over to using the Query object -> `find_test_run_started`
         @current_test_run_started_id = @test_run_started.id
 
         message = Cucumber::Messages::Envelope.new(
