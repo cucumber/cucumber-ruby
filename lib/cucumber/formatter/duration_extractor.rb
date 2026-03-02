@@ -14,6 +14,8 @@ module Cucumber
 
       def failed(*) end
 
+      def ambiguous(*) end
+
       def undefined(*) end
 
       def skipped(*) end

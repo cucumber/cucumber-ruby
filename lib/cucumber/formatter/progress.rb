@@ -94,6 +94,7 @@ module Cucumber
       CHARS = {
         passed: '.',
         failed: 'F',
+        ambiguous: 'A',
         undefined: 'U',
         pending: 'P',
         skipped: '-'
