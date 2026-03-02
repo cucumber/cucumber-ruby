@@ -54,6 +54,10 @@ module Cucumber
       @options[:order] == 'random'
     end
 
+    def reverse_order?
+      @options[:order] == 'reverse'
+    end
+
     def seed
       @options[:seed]
     end
