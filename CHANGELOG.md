@@ -18,6 +18,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 - Fix crash when `Cucumber::Messages::Group#children` is `nil`
 
+### Changed
+- Use the test result type 'ambiguous' added to cucumber-ruby-core
+([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
+
 ## [10.2.0] - 2025-12-10
 ### Changed
 - Permit the latest version of the `cucumber-html-formatter` (v22.0.0+)
