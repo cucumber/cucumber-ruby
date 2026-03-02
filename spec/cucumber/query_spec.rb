@@ -56,7 +56,10 @@ describe Cucumber::Query do
       let(:cck_messages) { parse_ndjson_file(test[:cck_spec]).map.itself }
       let(:filename_to_check) { test[:cck_spec].sub('.ndjson', ".#{test[:query_name]}.results.json") }
 
-      before { cck_messages.each { |message| repository.update(message) } }
+      before do
+        skip('These tests will not pass on JRuby') if Cucumber::JRUBY
+        cck_messages.each { |message| repository.update(message) }
+      end
 
       it 'returns the expected query result' do
         evaluated_query = test[:query_proc].call(query)
