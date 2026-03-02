@@ -13,9 +13,9 @@ require 'cucumber/compatibility_kit'
 describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
-  # CCK v22 conformance status update - Jan 2026
-  # OVERALL: 93 examples, 15 failures, 78 passed
-  # SANITIZED: 69 examples, 0 failures, 69 passed
+  # CCK v22 conformance status update - Mar 2026
+  # OVERALL: 93 examples, 10 failures, 83 passed
+  # SANITIZED: 78 examples, 0 failures, 78 passed
 
   items_to_fix =
     %w[
@@ -24,7 +24,6 @@ describe CCK, :cck do
       global-hooks-afterall-error
       global-hooks-attachments
       global-hooks-beforeall-error
-      retry
     ]
   _failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
