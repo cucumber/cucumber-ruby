@@ -7,13 +7,10 @@ require 'cucumber/formatter/message_builder'
 module Cucumber
   module Formatter
     class HTML < MessageBuilder
-      include Io
-
       def initialize(config)
         @io = ensure_io(config.out_stream, config.error_stream)
         @html_formatter = Cucumber::HTMLFormatter::Formatter.new(@io)
         @html_formatter.write_pre_message
-
         super(config)
       end
 

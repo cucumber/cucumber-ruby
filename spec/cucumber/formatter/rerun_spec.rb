@@ -36,7 +36,7 @@ module Cucumber
           end
 
           described_class.new(config)
-          execute [gherkin], [StandardStepActions.new], config.event_bus
+          execute [gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
           expect(io.string).to eq 'foo.feature:3:6'
@@ -70,7 +70,7 @@ module Cucumber
           end
 
           described_class.new(config)
-          execute [foo, bar], [StandardStepActions.new], config.event_bus
+          execute [foo, bar], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
           expect(io.string).to eq "foo.feature:3:6\nbar.feature:3"
@@ -88,14 +88,14 @@ module Cucumber
           end
 
           described_class.new(config)
-          execute [gherkin], [StandardStepActions.new], config.event_bus
+          execute [gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
-          expect(io.string).to eq ''
+          expect(io.string).to eq('')
         end
       end
 
-      context 'with only a flaky scenarios' do
+      context 'with a flaky scenario' do
         context 'with option --no-strict-flaky' do
           it 'prints nothing' do
             gherkin = gherkin('foo.feature') do
@@ -107,10 +107,11 @@ module Cucumber
             end
 
             described_class.new(config)
-            execute [gherkin], [FakeObjects::FlakyStepActions.new], config.event_bus
+            execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
+
             config.event_bus.test_run_finished
 
-            expect(io.string).to eq ''
+            expect(io.string).to eq('')
           end
         end
 
@@ -118,7 +119,7 @@ module Cucumber
           let(:config) { Configuration.new(out_stream: io, strict: Core::Test::Result::StrictConfiguration.new([:flaky])) }
 
           it 'prints the location of the flaky scenario' do
-            foo = gherkin('foo.feature') do
+            gherkin = gherkin('foo.feature') do
               feature do
                 scenario do
                   step 'flaky'
@@ -127,14 +128,14 @@ module Cucumber
             end
 
             described_class.new(config)
-            execute [foo], [FakeObjects::FlakyStepActions.new], config.event_bus
+            execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
             config.event_bus.test_run_finished
 
-            expect(io.string).to eq 'foo.feature:3'
+            expect(io.string).to eq('foo.feature:3')
           end
 
-          it 'does not include retried failing scenarios more than once' do
-            foo = gherkin('foo.feature') do
+          it 'does not include the same failing scenario more than once' do
+            gherkin = gherkin('foo.feature') do
               feature do
                 scenario do
                   step 'failing'
@@ -143,10 +144,10 @@ module Cucumber
             end
 
             described_class.new(config)
-            execute [foo, foo], [StandardStepActions.new], config.event_bus
+            execute [gherkin, gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
             config.event_bus.test_run_finished
 
-            expect(io.string).to eq 'foo.feature:3'
+            expect(io.string).to eq('foo.feature:3')
           end
         end
       end
