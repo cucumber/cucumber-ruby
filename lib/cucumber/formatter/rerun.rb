@@ -34,8 +34,23 @@ module Cucumber
 
           # RULE: (Configuration specific - to be amended once CCK conformance is finalised)
           #   -> If the strict configuration permits the result - handle it accordingly
-          next if status == 'UNDEFINED' && !@config.strict.strict?(:undefined)
-          next if status == 'PENDING' && !@config.strict.strict?(:pending)
+          if status == 'UNDEFINED' && !@config.strict.strict?(:undefined)
+            Cucumber.deprecate(
+              'The strict configuration in cucumber is going away and moving towards a standardised set of behaviours',
+              '--strict=undefined',
+              '12.0.0'
+            )
+            next
+          end
+
+          if status == 'PENDING' && !@config.strict.strict?(:pending)
+            Cucumber.deprecate(
+              'The strict configuration in cucumber is going away and moving towards a standardised set of behaviours',
+              '--strict=pending',
+              '12.0.0'
+            )
+            next
+          end
 
           # RULE: Passing test cases are not considered failures (Don't log these)
           next if passing?(test_case)
