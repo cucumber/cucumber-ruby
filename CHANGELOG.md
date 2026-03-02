@@ -11,10 +11,23 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Added
 - Add timestamp to `Attachment` message
+- Added a new option for running order `--reverse` which will run the scenarios in reverse order ([#1807](https://github.com/cucumber/cucumber-ruby/pull/1807) [luke-hill](https://github.com/luke-hill))
 - A first initial iteration of the new `cucumber-query` structure ([#1801](https://github.com/cucumber/cucumber-ruby/pull/1801) [luke-hill](https://github.com/luke-hill))
+> This will be used for the migration of all existing formatters - becoming the building blocks for the future of cucumber formatters
+> which will begin being migrated in the start of 2026
 
-> This is currently not consumed anywhere, but will become the building blocks for the future of cucumber formatters
-> which we hope to begin migrating to in the start of 2026
+### Fixed
+- Fix crash when `Cucumber::Messages::Group#children` is `nil`
+
+### Changed
+- Use the test result type 'ambiguous' added to cucumber-ruby-core
+([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
+- Use the new internal `cucumber-query` structure for the `rerun` formatter
+> This is a very large refactor, but should not change any behaviour. The `cucumber-query` structure is a new internal structure that is designed to be used by formatters to query
+> the state of the test run in a more intuitive way.
+> 
+> The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
+> formatters and will allow us to test the new structure in a real-world scenario.
 
 ## [10.2.0] - 2025-12-10
 ### Changed

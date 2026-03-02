@@ -47,6 +47,8 @@ module Cucumber
     # * <tt>flaky_param</tt>   - defaults to <tt>yellow,bold</tt>
     # * <tt>failed</tt>        - defaults to <tt>red</tt>
     # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
+    # * <tt>ambiguous</tt>     - defaults to <tt>red</tt>
+    # * <tt>abmiguous_param</tt> - defaults to <tt>red,bold</tt>
     # * <tt>passed</tt>        - defaults to <tt>green</tt>
     # * <tt>passed_param</tt>  - defaults to <tt>green,bold</tt>
     # * <tt>outline</tt>       - defaults to <tt>cyan</tt>
@@ -72,6 +74,7 @@ module Cucumber
         'pending' => 'yellow',
         'flaky' => 'yellow',
         'failed' => 'red',
+        'ambiguous' => 'red',
         'passed' => 'green',
         'outline' => 'cyan',
         'skipped' => 'cyan',

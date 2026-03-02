@@ -131,7 +131,7 @@ module Cucumber
       end
 
       def build_testcase(result, scenario_designation, output)
-        duration = ResultBuilder.new(result).test_case_duration
+        duration = DurationExtractor.new(result).result_duration
         @current_feature_data[:time] += duration
         classname = @current_feature_data[:feature].name
         filename = @current_feature_data[:uri]
@@ -233,33 +233,6 @@ module Cucumber
         @row_name = "| #{row.cells.map(&:value).join(' | ')} |"
         @name_suffix = " (outline example : #{@row_name})"
       end
-    end
-
-    class ResultBuilder
-      attr_reader :test_case_duration
-
-      def initialize(result)
-        @test_case_duration = 0
-        result.describe_to(self)
-      end
-
-      def passed(*) end
-
-      def failed(*) end
-
-      def undefined(*) end
-
-      def skipped(*) end
-
-      def pending(*) end
-
-      def exception(*) end
-
-      def duration(duration, *)
-        duration.tap { |dur| @test_case_duration = dur.nanoseconds / 10**9.0 }
-      end
-
-      def attach(*) end
     end
   end
 end

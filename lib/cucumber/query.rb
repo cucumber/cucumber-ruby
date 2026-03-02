@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'cucumber/repository'
+require 'cucumber/messages'
 
 # Given one Cucumber Message, find another.
 #
@@ -11,6 +12,9 @@ module Cucumber
   class Query
     attr_reader :repository
     private :repository
+
+    include Cucumber::Messages::Helpers::TimeConversion
+    include Cucumber::Messages::Helpers::TestStepResultComparator
 
     def initialize(repository)
       @repository = repository
@@ -23,31 +27,15 @@ module Cucumber
     #   Missing: findAllUndefinedParameterTypes
 
     # TODO: find****By methods (16/25) Complete
-    #   Missing: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
     #   Missing: findSuggestionsBy (2 variants)
     #   Missing: findUnambiguousStepDefinitionBy (1 variant)
     #   Missing: findTestStepFinishedAndTestStepBy (1 variant)
-    #   Missing: findMostSevereTestStepResultBy (2 variants)
     #   Missing: findAttachmentsBy (2 variants)
     #   Missing: findTestCaseDurationBy (2 variant)
-    #   Missing: findLineageBy (9 variants!)
+    #   REDUNDANT: findLineageBy (9 variants!)
+    #   REDUNDANT: findLocationOf (1 variant) - This strictly speaking isn't a findBy but is located within them
+    #   To Review: findMostSevereTestStepResultBy (2 variants)
     #   To Review: findTestRunDuration (1 variant) - This strictly speaking isn't a findBy but is located within them
-    #   Complete: findMeta (1 variant)
-    #   Complete: findTestRunHookStartedBy (1 variant)
-    #   Complete: findTestRunHookFinishedBy (1 variant)
-    #   Complete: findPickleStepBy (1 variant)
-    #   Complete: findStepDefinitionsBy (1 variant)
-    #   Complete: findStepBy (1 variant)
-    #   Complete: findTestRunFinished (1 variant)
-    #   Complete: findTestRunStarted (1 variant)
-    #   Fully Complete (2/2): findTestStepsStartedBy (2 variants)
-    #   Fully Complete (2/2): findTestStepBy (2 variants)
-    #   Fully Complete (3/3): findTestCaseStartedBy (3 variants)
-    #   Fully Complete (1/1): findTestCaseFinishedBy (1 variant)
-    #   Fully Complete (4/4): findTestCaseBy (4 variants)
-    #   Fully Complete (5/5): findPickleBy (5 variants)
-    #   Fully Complete (3/3): findHookBy (3 variants)
-    #   Fully Complete (2/2): findTestStepsFinishedBy (2 variants)
 
     def count_test_cases_started
       find_all_test_case_started.length
@@ -119,6 +107,23 @@ module Cucumber
 
     def find_meta
       repository.meta
+    end
+
+    # This method will be called with 1 of these 2 messages
+    #   [TestCaseStarted || TestCaseFinished]
+    def find_most_severe_test_step_result_by(message)
+      ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_most_severe_test_step_result_by')
+
+      if message.is_a?(Cucumber::Messages::TestCaseStarted)
+        find_test_steps_finished_by(message)
+          .map(&:test_step_result)
+          .max_by { |test_step_result| test_step_result_rankings[test_step_result.status] }
+        # Java code: "PREVIOUS".max(comparing(TestStepResult::getStatus, new TestStepResultStatusComparator()));
+      else
+        test_case_started_message = find_test_case_started_by(message)
+        test_case_started_message && find_most_severe_test_step_result_by(test_case_started_message)
+        # Java code: return findTestCaseStartedBy(testCaseFinished).flatMap(this::findMostSevereTestStepResultBy);
+      end
     end
 
     # This method will be called with 1 of these 5 messages
@@ -235,7 +240,7 @@ module Cucumber
       ensure_only_message_types!(message, %i[test_case_started test_case_finished], '#find_test_steps_finished_by')
 
       if message.is_a?(Cucumber::Messages::TestCaseStarted)
-        test_steps_finished_by_test_case_started_id.fetch(message.id, [])
+        repository.test_steps_finished_by_test_case_started_id.fetch(message.id, [])
       else
         test_case_started_message = find_test_case_started_by(message)
         test_case_started_message.nil? ? [] : find_test_steps_finished_by(test_case_started_message)

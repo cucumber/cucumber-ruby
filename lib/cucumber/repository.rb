@@ -12,8 +12,7 @@ module Cucumber
                 :test_run_hook_started_by_id, :test_run_hook_finished_by_test_run_hook_started_id,
                 :test_step_by_id, :test_steps_started_by_test_case_started_id, :test_steps_finished_by_test_case_started_id
 
-    # TODO: Missing structs (3)
-    #   final Map<Object, Lineage> lineageById = new HashMap<>();
+    # TODO: Missing structs (2)
     #   final Map<String, List<Suggestion>> suggestionsByPickleStepId = new LinkedHashMap<>();
     #   final List<UndefinedParameterType> undefinedParameterTypes = new ArrayList<>();
 

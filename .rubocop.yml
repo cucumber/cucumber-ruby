@@ -33,6 +33,18 @@ Layout/TrailingWhitespace:
     - spec/cucumber/formatter/pretty_spec.rb
     - spec/cucumber/formatter/progress_spec.rb
 
+# This file has a couple of very long complex methods which are hard to break down further meaningfully
+#   -> They also will only ever run one single branch (Due to the fact messages only are ever of one type at a time)
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - lib/cucumber/repository.rb
+
+# This file has a couple of very long complex methods which are hard to break down further meaningfully
+#   -> They also will only ever run one single branch (Due to the fact messages only are ever of one type at a time)
+Metrics/PerceivedComplexity:
+  Exclude:
+    - lib/cucumber/repository.rb
+
 # Rubocop doesn't like method names in other languages but as Cucumber supports multiple languages, this cop needs to be disabled
 Naming/AsciiIdentifiers:
   Enabled: false
