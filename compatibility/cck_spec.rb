@@ -19,13 +19,11 @@ describe CCK, :cck do
 
   items_to_fix =
     %w[
-      ambiguous
       backgrounds
       global-hooks
       global-hooks-afterall-error
       global-hooks-attachments
       global-hooks-beforeall-error
-      multiple-features-reversed
       retry
     ]
   _failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
