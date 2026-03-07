@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
   s.add_development_dependency 'nokogiri', '~> 1.15'
   s.add_development_dependency 'rake', '~> 13.2'
-  s.add_development_dependency 'rspec', '~> 3.13'
+  s.add_development_dependency 'rspec', '~> 4.0.0.beta1'
   s.add_development_dependency 'rubocop', '~> 1.85.1'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
   s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
