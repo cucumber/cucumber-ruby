@@ -3,7 +3,7 @@
 require 'cucumber/hooks'
 module Cucumber
   module Hooks
-    shared_examples_for 'a source node' do
+    RSpec.shared_examples_for 'a source node' do
       it 'responds to text' do
         expect(subject.text).to be_a(String)
       end
@@ -19,14 +19,14 @@ module Cucumber
     end
 
     require 'cucumber/core/test/location'
-    describe BeforeHook do
+    RSpec.describe BeforeHook do
       subject { described_class.new(location) }
       let(:location) { Cucumber::Core::Test::Location.new('hooks.rb', 1) }
 
       it_behaves_like 'a source node'
     end
 
-    describe AfterHook do
+    RSpec.describe AfterHook do
       subject { described_class.new(location) }
       let(:location) { Cucumber::Core::Test::Location.new('hooks.rb', 1) }
 

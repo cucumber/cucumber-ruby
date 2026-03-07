@@ -19,7 +19,7 @@ module Cucumber
       end
     end
 
-    describe HTTPIO do
+    RSpec.describe HTTPIO do
       include_context 'an HTTP server accepting file requests'
 
       # Close during the test so the request is done while server still runs

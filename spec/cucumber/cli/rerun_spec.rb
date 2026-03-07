@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Cucumber::Cli::RerunFile do
+RSpec.describe Cucumber::Cli::RerunFile do
   let(:rerun_file) { described_class.new('@rerun.txt') }
 
   it 'expects rerun files to have a leading @' do

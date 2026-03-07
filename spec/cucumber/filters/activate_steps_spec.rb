@@ -4,7 +4,7 @@ require 'cucumber/filters/activate_steps'
 require 'cucumber/core/gherkin/writer'
 require 'cucumber/core'
 
-describe Cucumber::Filters::ActivateSteps do
+RSpec.describe Cucumber::Filters::ActivateSteps do
   include Cucumber::Core::Gherkin::Writer
   include Cucumber::Core
 

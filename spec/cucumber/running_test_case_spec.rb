@@ -5,7 +5,7 @@ require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 
 module Cucumber
-  describe RunningTestCase do
+  RSpec.describe RunningTestCase do
     include Core
     include Core::Gherkin::Writer
 

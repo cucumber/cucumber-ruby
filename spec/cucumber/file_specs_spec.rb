@@ -3,7 +3,7 @@
 require 'cucumber/file_specs'
 
 module Cucumber
-  describe FileSpecs do
+  RSpec.describe FileSpecs do
     let(:file_specs) { described_class.new(['features/foo.feature:1:2:3', 'features/bar.feature:4:5:6']) }
     let(:locations) { file_specs.locations }
     let(:files) { file_specs.files }

@@ -2,7 +2,7 @@
 
 require 'yaml'
 
-describe Cucumber::Cli::Main do
+RSpec.describe Cucumber::Cli::Main do
   subject { described_class.new(args, stdout, stderr, kernel) }
 
   let(:args)   { [] }

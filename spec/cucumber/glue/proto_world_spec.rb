@@ -7,7 +7,7 @@ require 'cucumber/formatter/message'
 
 module Cucumber
   module Glue
-    describe ProtoWorld do
+    RSpec.describe ProtoWorld do
       let(:runtime) { double('runtime') }
       let(:language) { double('language') }
       let(:world) { Object.new.extend(described_class.for(runtime, language)) }

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Cucumber
-  describe Runtime do
+  RSpec.describe Runtime do
     subject { described_class.new(options) }
     let(:options) { {} }
 

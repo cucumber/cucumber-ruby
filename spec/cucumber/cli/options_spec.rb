@@ -3,7 +3,7 @@
 require 'yaml'
 require 'cucumber/cli/options'
 
-describe Cucumber::Cli::Options do
+RSpec.describe Cucumber::Cli::Options do
   def given_cucumber_yml_defined_as(hash_or_string)
     allow(File).to receive(:exist?).and_return(true)
 

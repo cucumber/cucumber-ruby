@@ -6,7 +6,7 @@ require 'support/fake_objects'
 
 module Cucumber
   module Glue
-    describe StepDefinition do
+    RSpec.describe StepDefinition do
       let(:id)             { double }
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }

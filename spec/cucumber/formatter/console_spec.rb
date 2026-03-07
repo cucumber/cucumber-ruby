@@ -5,7 +5,7 @@ require 'cucumber/formatter/console'
 
 module Cucumber
   module Formatter
-    describe Console do
+    RSpec.describe Console do
       include described_class
       it 'indents when padding is positive' do
         res = indent('a line', 2)
