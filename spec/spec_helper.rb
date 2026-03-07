@@ -7,7 +7,6 @@ require 'simplecov_setup'
 require 'cucumber'
 
 RSpec.configure do |config|
-  config.expose_dsl_globally = false
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
