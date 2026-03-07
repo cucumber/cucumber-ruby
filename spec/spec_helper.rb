@@ -7,5 +7,6 @@ require 'simplecov_setup'
 require 'cucumber'
 
 RSpec.configure do |c|
+  c.expose_dsl_globally = false
   c.before { Cucumber::Term::ANSIColor.coloring = true }
 end
