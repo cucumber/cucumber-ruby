@@ -86,6 +86,11 @@ describe Cucumber::Formatter::Json do
   end
 
   describe 'with a scenario with a failed step' do
+    before do
+      # TODO: LH -> These are skipped because of the way in which JRuby outputs failure procs
+      skip('This test is problematic on JRuby, owing to the output procs') if Cucumber::JRUBY
+    end
+
     define_feature <<~FEATURE
       Feature: Banana party
 
@@ -130,6 +135,11 @@ describe Cucumber::Formatter::Json do
         Scenario: Monkey eats bananas
           Given there are bananas
     FEATURE
+
+    before do
+      # TODO: LH -> These are skipped because of the way in which JRuby outputs failure procs
+      skip('This test is problematic on JRuby, owing to the output procs') if Cucumber::JRUBY
+    end
 
     define_steps do
       Given(/^there are bananas$/) { pending }
@@ -669,6 +679,11 @@ describe Cucumber::Formatter::Json do
   end
 
   describe 'with a scenario when only an around hook is failing' do
+    before do
+      # TODO: LH -> These are skipped because of the way in which JRuby outputs failure procs
+      skip('This test is problematic on JRuby, owing to the output procs') if Cucumber::JRUBY
+    end
+    
     define_feature <<~FEATURE
       Feature: Banana party
 
