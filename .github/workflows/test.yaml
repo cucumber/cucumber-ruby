@@ -1,5 +1,7 @@
 name: Test cucumber
 
+permissions: {}
+
 on:
   push:
     branches:
