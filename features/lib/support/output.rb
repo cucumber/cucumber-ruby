@@ -12,6 +12,7 @@ def clean_output(output)
       .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s')         # Make duration predictable
       .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
       .sub(/\s*$/, '')                             # Drop trailing whitespaces
+      .sub(/:in( .*)$/, '')                        # Drop backtrace refs with proc styling (Whilst we have "pre" and "post" ruby 3.4 styles)
   end.compact.join("\n")
 end
 
