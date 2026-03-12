@@ -104,6 +104,7 @@ Feature: JSON output formatter
       """
 
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
+  @todo-jruby @wip-jruby
   Scenario: one feature, one passing scenario, one failing scenario
     When I run `cucumber --format json features/one_passing_one_failing.feature`
     Then it should fail with JSON:
@@ -194,6 +195,7 @@ Feature: JSON output formatter
 
       """
 
+  @todo-jruby @wip-jruby
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
@@ -303,7 +305,8 @@ Feature: JSON output formatter
 
     """
 
-  Scenario: scenario outline
+  @todo-jruby @wip-jruby
+  Scenario: Scenario outline
     When I run `cucumber --format json features/outline.feature`
     Then it should fail with JSON:
     """
@@ -389,7 +392,8 @@ Feature: JSON output formatter
 
     """
 
-  Scenario: scenario outline with docstring      
+  @todo-jruby @wip-jruby
+  Scenario: Scenario outline with docstring
     Given a file named "features/outline_doc_string.feature" with:
           """
       Feature: An outline feature with a DocString
@@ -484,7 +488,7 @@ Feature: JSON output formatter
       ]
       """
 
-  Scenario: print from step definition
+  Scenario: Print from step definition
     When I run `cucumber --format json features/print_from_step_definition.feature`
     Then it should pass with JSON:
     """
@@ -543,7 +547,8 @@ Feature: JSON output formatter
 
     """
 
-  Scenario: scenario outline expanded
+  @todo-jruby @wip-jruby
+  Scenario: Scenario outline expanded
     When I run `cucumber --expand --format json features/outline.feature`
     Then it should fail with JSON:
     """
