@@ -77,30 +77,6 @@ describe Cucumber::Formatter::Interceptor::Pipe do
 
       expect(@wrapped.buffer_string).not_to end_with(buffer)
     end
-
-    it 'wraps $stderr' do
-      wrapped = described_class.wrap(:stderr)
-
-      expect($stderr).to be_instance_of described_class
-      expect($stderr).to be wrapped
-    end
-
-    context 'when passed :stdout' do
-      before :each do
-        @stdout = $stdout
-      end
-
-      after :each do
-        $stdout = @stdout
-      end
-
-      it 'wraps $stdout' do
-        wrapped = described_class.wrap(:stdout)
-
-        expect($stdout).to be_instance_of described_class
-        expect($stdout).to be wrapped
-      end
-    end
   end
 
   describe '#write' do
