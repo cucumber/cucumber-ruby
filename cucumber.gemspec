@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'logger', '~> 1.6'
   s.add_dependency 'mini_mime', '~> 1.1'
   s.add_dependency 'multi_test', '~> 1.1'
-  s.add_dependency 'sys-uname', '~> 1.3'
+  s.add_dependency 'sys-uname', '~> 1.5'
 
   s.add_development_dependency 'cucumber-compatibility-kit', '~> 20.0'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
