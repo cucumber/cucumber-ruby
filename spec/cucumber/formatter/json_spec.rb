@@ -121,9 +121,9 @@ describe Cucumber::Formatter::Json do
                 [{"keyword": "Given ",
                   "name": "there are bananas",
                   "line": 4,
-                  "match": {"location": "spec/cucumber/formatter/json_spec.rb:99"},
+                  "match": {"location": "spec/cucumber/formatter/json_spec.rb:102"},
                   "result": {"status": "failed",
-                             "error_message": "no bananas (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:99:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
+                             "error_message": "no bananas (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:102:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
                              "duration": 1}}]}]}]})
     end
   end
@@ -164,9 +164,9 @@ describe Cucumber::Formatter::Json do
                 [{"keyword": "Given ",
                   "name": "there are bananas",
                   "line": 4,
-                  "match": {"location": "spec/cucumber/formatter/json_spec.rb:137"},
+                  "match": {"location": "spec/cucumber/formatter/json_spec.rb:145"},
                   "result": {"status": "pending",
-                             "error_message": "TODO (Cucumber::Pending)\\n./spec/cucumber/formatter/json_spec.rb:137:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
+                             "error_message": "TODO (Cucumber::Pending)\\n./spec/cucumber/formatter/json_spec.rb:145:in `/^there are bananas$/'\\nspec.feature:4:in `there are bananas'",
                              "duration": 1}}]}]}]})
     end
   end
@@ -718,13 +718,13 @@ describe Cucumber::Formatter::Json do
                 [{"keyword": "Given ",
                   "name": "there are bananas",
                   "line": 4,
-                  "match": {"location": "spec/cucumber/formatter/json_spec.rb:686"},
+                  "match": {"location": "spec/cucumber/formatter/json_spec.rb:699"},
                   "result": {"status": "passed",
                              "duration": 1}}],
                "around":
                 [{"match": {"location": "unknown_hook_location:1"},
                   "result": {"status": "failed",
-                             "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:684:in `Around'",
+                             "error_message": "error (RuntimeError)\\n./spec/cucumber/formatter/json_spec.rb:697:in `Around'",
                              "duration": 1}}]}]}]})
     end
   end
