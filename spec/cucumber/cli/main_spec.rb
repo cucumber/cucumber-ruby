@@ -65,6 +65,26 @@ module Cucumber
             subject.execute!
           end
         end
+
+        thread_dump_signal = Signal.list['INFO'] || Signal.list['PWR']
+
+        context 'when interrupted with thread dump signal', skip: thread_dump_signal.nil? do
+          let(:runtime) { double('runtime').as_null_object }
+
+          it 'dumps the thread backtrace to the error stream' do
+            allow(runtime).to receive(:run!) do
+              Process.kill(thread_dump_signal, Process.pid)
+            end
+
+            allow(runtime).to receive(:failure?).and_return(false)
+
+            expect(kernel).to receive(:exit).with(0)
+
+            subject.execute!(runtime)
+
+            expect(stderr.string).to match(/Thread TID-[a-z0-9]+ <no name> #{__FILE__}:#{__LINE__ - 8}:in 'Process\.kill'/)
+          end
+        end
       end
 
       [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
