@@ -84,7 +84,7 @@ module Cucumber
 
             tid = (Thread.current.object_id ^ Process.pid).to_s(36)
 
-            expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{__LINE__ - 11}:in 'Process\.kill'/)
+            expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{__LINE__ - 11}:in (?:`kill'|'Process\.kill')/)
           end
         end
       end
