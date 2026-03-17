@@ -14,20 +14,19 @@ describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   # CCK v22 conformance status update - Mar 2026
-  # OVERALL: 93 examples, 10 failures, 83 passed
-  # SANITIZED: 78 examples, 0 failures, 78 passed
+  # OVERALL: 93 examples, 7 failures, 86 passed
+  # SANITIZED: 81 examples, 0 failures, 81 passed
 
   items_to_fix =
     %w[
-      backgrounds
       global-hooks
       global-hooks-afterall-error
       global-hooks-attachments
       global-hooks-beforeall-error
     ]
-  _failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
+  failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
-  passing.each do |example_name|
+  failing.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
