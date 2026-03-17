@@ -5,6 +5,10 @@ BeforeAll do
 end
 
 BeforeAll do
+  raise 'BeforeAll hook went wrong'
+end
+
+BeforeAll do
   # no-op
 end
 
