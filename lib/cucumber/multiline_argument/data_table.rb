@@ -364,17 +364,6 @@ module Cucumber
         raise %(The table must have exactly #{width} columns) unless raw[0].size == width
       end
 
-      # TODO: remove the below function if it's not actually being used.
-      # Nothing else in this repo calls it.
-      def text?(text)
-        Cucumber.deprecate(
-          'This method is no longer supported for checking text',
-          '#text?',
-          '11.0.0'
-        )
-        raw.flatten.compact.detect { |cell_value| cell_value.index(text) }
-      end
-
       def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           Cells.new(self, cell_row)
