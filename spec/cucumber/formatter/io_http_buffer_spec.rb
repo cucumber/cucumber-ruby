@@ -3,7 +3,6 @@
 require 'stringio'
 require 'webrick'
 require 'webrick/https'
-require 'spec_helper'
 require 'cucumber/formatter/io'
 require 'support/shared_context/http_server'
 
