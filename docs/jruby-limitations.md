@@ -1,6 +1,6 @@
 # Cucumber and JRuby limitations
 
-`cucumber` can be executed on `JRuby` (tested with `9.4`), although some of the features
+`cucumber` can be executed on `JRuby` (tested with `10.0`), although some of the features
 are not available on this platform.
 
 ## Defining steps with native languages
@@ -12,14 +12,14 @@ That means, for example, that you can not write the following code:
 
 ```ruby
 Допустим('я ввожу число {int}') do |число|
-  calc.push число
+  calc.push(число)
 end
 ```
 
 Instead, you have to write:
 ```ruby
 Given('я ввожу число {int}') do |number|
-  calc.push number
+  calc.push(number)
 end
 ```
 
