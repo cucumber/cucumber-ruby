@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 
