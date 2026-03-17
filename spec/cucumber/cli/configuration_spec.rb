@@ -1,460 +1,451 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'yaml'
 
-module Cucumber
-  module Cli
-    module ExposesOptions
-      attr_reader :options
+describe Cucumber::Cli::Configuration do
+  def given_cucumber_yml_defined_as(hash_or_string)
+    allow(File).to receive(:exist?).and_return(true)
+    cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
+    allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
+  end
+
+  def given_the_following_files(*files)
+    allow(File).to receive(:directory?).and_return(true)
+    allow(File).to receive(:file?).and_return(true)
+    allow(Dir).to receive(:[]) { files }
+  end
+
+  before do
+    allow(File).to receive(:exist?).and_return(false)
+    allow(Kernel).to receive(:exit)
+  end
+
+  def config
+    @config ||= described_class.new(@out = StringIO.new, @error = StringIO.new)
+  end
+
+  def reset_config
+    @config = nil
+  end
+
+  attr_reader :out, :error
+
+  it 'uses the default profile when no profile is defined' do
+    given_cucumber_yml_defined_as('default' => '--require some_file')
+    config.parse!(%w[--format progress])
+
+    expect(config.options[:require]).to include('some_file')
+  end
+
+  context 'when using the --profile flag' do
+    it 'expands args from profiles in the cucumber.yml file' do
+      given_cucumber_yml_defined_as('bongo' => '--require from/yml')
+      config.parse!(%w[--format progress --profile bongo])
+
+      expect(config.options[:formats]).to eq [['progress', {}, out]]
+      expect(config.options[:require]).to eq ['from/yml']
     end
 
-    describe Configuration do
-      def given_cucumber_yml_defined_as(hash_or_string)
-        allow(File).to receive(:exist?).and_return(true)
-        cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
-        allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
-      end
+    it 'expands args from the default profile when no flags are provided' do
+      given_cucumber_yml_defined_as('default' => '--require from/yml')
+      config.parse!([])
 
-      def given_the_following_files(*files)
-        allow(File).to receive(:directory?).and_return(true)
-        allow(File).to receive(:file?).and_return(true)
-        allow(Dir).to receive(:[]) { files }
-      end
+      expect(config.options[:require]).to eq ['from/yml']
+    end
 
-      before do
-        allow(File).to receive(:exist?).and_return(false)
-        allow(Kernel).to receive(:exit)
-      end
+    it 'allows --strict to be set by a profile' do
+      given_cucumber_yml_defined_as('bongo' => '--strict')
+      config.parse!(%w[--profile bongo])
 
-      def config
-        @config ||= Configuration.new(@out = StringIO.new, @error = StringIO.new).extend(ExposesOptions)
-      end
+      expect(config.options[:strict].strict?(:undefined)).to be true
+      expect(config.options[:strict].strict?(:pending)).to be true
+      expect(config.options[:strict].strict?(:flaky)).to be true
+    end
 
-      def reset_config
-        @config = nil
-      end
+    it 'allows --strict from a profile to be selectively overridden' do
+      given_cucumber_yml_defined_as('bongo' => '--strict')
+      config.parse!(%w[--profile bongo --no-strict-flaky])
 
-      attr_reader :out, :error
+      expect(config.options[:strict].strict?(:undefined)).to be true
+      expect(config.options[:strict].strict?(:pending)).to be true
+      expect(config.options[:strict].strict?(:flaky)).to be false
+    end
 
-      it 'uses the default profile when no profile is defined' do
-        given_cucumber_yml_defined_as('default' => '--require some_file')
-        config.parse!(%w[--format progress])
+    it 'parses ERB syntax in the cucumber.yml file' do
+      given_cucumber_yml_defined_as("---\ndefault: \"<%=\"--require some_file\"%>\"\n")
+      config.parse!([])
 
-        expect(config.options[:require]).to include('some_file')
-      end
+      expect(config.options[:require]).to include('some_file')
+    end
 
-      context 'when using the --profile flag' do
-        it 'expands args from profiles in the cucumber.yml file' do
-          given_cucumber_yml_defined_as('bongo' => '--require from/yml')
-          config.parse!(%w[--format progress --profile bongo])
+    it 'parses ERB in cucumber.yml that makes uses nested ERB sessions' do
+      given_cucumber_yml_defined_as(<<~ERB_YML)
+        <%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
+        <%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
+      ERB_YML
 
-          expect(config.options[:formats]).to eq [['progress', {}, out]]
-          expect(config.options[:require]).to eq ['from/yml']
+      config.parse!(%w[-p standard])
+
+      expect(config.options[:require]).to include('some_file')
+    end
+
+    it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
+      given_cucumber_yml_defined_as('default' => '--require from/yml', 'json_report' => '--format json')
+
+      expected_message = <<~END_OF_MESSAGE
+        Could not find profile: 'i_do_not_exist'
+
+        Defined profiles in cucumber.yml:
+          * default
+          * json_report
+      END_OF_MESSAGE
+
+      expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(Cucumber::Cli::ProfileNotFound, expected_message)
+    end
+
+    it 'allows profiles to be defined in arrays' do
+      given_cucumber_yml_defined_as('foo' => ['-f', 'progress'])
+      config.parse!(%w[--profile foo])
+
+      expect(config.options[:formats]).to eq [['progress', {}, out]]
+    end
+
+    it 'disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)' do
+      given_cucumber_yml_defined_as('foo' => %w[--format pretty])
+      config.parse!(%w[--format progress --profile foo])
+
+      expect(config.options[:formats]).to eq [['progress', {}, out]]
+    end
+
+    ['--no-profile', '-P'].each do |flag|
+      context "when #{flag} is specified with none" do
+        it 'disables profiles' do
+          given_cucumber_yml_defined_as('default' => '-v --require file_specified_in_default_profile.rb')
+          config.parse!("#{flag} --require some_file.rb".split(' '))
+
+          expect(config.options[:require]).to eq ['some_file.rb']
         end
 
-        it 'expands args from the default profile when no flags are provided' do
-          given_cucumber_yml_defined_as('default' => '--require from/yml')
-          config.parse!([])
+        it 'notifies the user that the profiles are being disabled' do
+          given_cucumber_yml_defined_as('default' => '-v')
+          config.parse!("#{flag} --require some_file.rb".split(' '))
 
-          expect(config.options[:require]).to eq ['from/yml']
-        end
-
-        it 'allows --strict to be set by a profile' do
-          given_cucumber_yml_defined_as('bongo' => '--strict')
-          config.parse!(%w[--profile bongo])
-
-          expect(config.options[:strict].strict?(:undefined)).to be true
-          expect(config.options[:strict].strict?(:pending)).to be true
-          expect(config.options[:strict].strict?(:flaky)).to be true
-        end
-
-        it 'allows --strict from a profile to be selectively overridden' do
-          given_cucumber_yml_defined_as('bongo' => '--strict')
-          config.parse!(%w[--profile bongo --no-strict-flaky])
-
-          expect(config.options[:strict].strict?(:undefined)).to be true
-          expect(config.options[:strict].strict?(:pending)).to be true
-          expect(config.options[:strict].strict?(:flaky)).to be false
-        end
-
-        it 'parses ERB syntax in the cucumber.yml file' do
-          given_cucumber_yml_defined_as("---\ndefault: \"<%=\"--require some_file\"%>\"\n")
-          config.parse!([])
-
-          expect(config.options[:require]).to include('some_file')
-        end
-
-        it 'parses ERB in cucumber.yml that makes uses nested ERB sessions' do
-          given_cucumber_yml_defined_as(<<~ERB_YML)
-            <%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
-            <%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
-          ERB_YML
-
-          config.parse!(%w[-p standard])
-
-          expect(config.options[:require]).to include('some_file')
-        end
-
-        it 'provides a helpful error message when a specified profile does not exists in cucumber.yml' do
-          given_cucumber_yml_defined_as('default' => '--require from/yml', 'json_report' => '--format json')
-
-          expected_message = <<~END_OF_MESSAGE
-            Could not find profile: 'i_do_not_exist'
-
-            Defined profiles in cucumber.yml:
-              * default
-              * json_report
-          END_OF_MESSAGE
-
-          expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(ProfileNotFound, expected_message)
-        end
-
-        it 'allows profiles to be defined in arrays' do
-          given_cucumber_yml_defined_as('foo' => ['-f', 'progress'])
-          config.parse!(%w[--profile foo])
-
-          expect(config.options[:formats]).to eq [['progress', {}, out]]
-        end
-
-        it 'disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)' do
-          given_cucumber_yml_defined_as('foo' => %w[--format pretty])
-          config.parse!(%w[--format progress --profile foo])
-
-          expect(config.options[:formats]).to eq [['progress', {}, out]]
-        end
-
-        ['--no-profile', '-P'].each do |flag|
-          context "when #{flag} is specified with none" do
-            it 'disables profiles' do
-              given_cucumber_yml_defined_as('default' => '-v --require file_specified_in_default_profile.rb')
-              config.parse!("#{flag} --require some_file.rb".split(' '))
-
-              expect(config.options[:require]).to eq ['some_file.rb']
-            end
-
-            it 'notifies the user that the profiles are being disabled' do
-              given_cucumber_yml_defined_as('default' => '-v')
-              config.parse!("#{flag} --require some_file.rb".split(' '))
-
-              expect(out.string).to match(/Disabling profiles.../)
-            end
-          end
-        end
-
-        it 'issues a helpful error message when a specified profile exists but is nil or blank' do
-          [nil, '   '].each do |bad_input|
-            given_cucumber_yml_defined_as('foo' => bad_input)
-            expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
-
-            expect { config.parse!(%w[--profile foo]) }.to raise_error(expected_error)
-          end
-        end
-
-        it 'issues a helpful error message when no YAML file exists and a profile is specified' do
-          expect(File).to receive(:exist?).with('cucumber.yml').and_return(false)
-
-          expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(/cucumber\.yml was not found/)
-        end
-
-        it 'issues a helpful error message when cucumber.yml is blank or malformed' do
-          expected_error_message = /cucumber\.yml was found, but was blank or malformed.\nPlease refer to cucumber's documentation on correct profile usage./
-
-          ['', 'sfsadfs', "--- \n- an\n- array\n", '---dddfd'].each do |bad_input|
-            given_cucumber_yml_defined_as(bad_input)
-
-            expect { config.parse!([]) }.to raise_error(expected_error_message)
-
-            reset_config
-          end
-        end
-
-        it 'issues a helpful error message when cucumber.yml can not be parsed' do
-          given_cucumber_yml_defined_as('input that causes an exception in YAML loading')
-
-          expect(YAML).to receive(:load).and_raise(ArgumentError)
-          expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./)
-        end
-
-        it 'issues a helpful error message when cucumber.yml can not be parsed by ERB' do
-          given_cucumber_yml_defined_as('<% this_fails %>')
-
-          expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./)
+          expect(out.string).to match(/Disabling profiles.../)
         end
       end
+    end
 
-      it 'accepts --dry-run option' do
-        config.parse!(%w[--dry-run])
+    it 'issues a helpful error message when a specified profile exists but is nil or blank' do
+      [nil, '   '].each do |bad_input|
+        given_cucumber_yml_defined_as('foo' => bad_input)
+        expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
 
-        expect(config.options[:dry_run]).to be true
+        expect { config.parse!(%w[--profile foo]) }.to raise_error(expected_error)
       end
+    end
 
-      it 'implies --no-duration with --dry-run option' do
-        config.parse!(%w[--dry-run])
+    it 'issues a helpful error message when no YAML file exists and a profile is specified' do
+      expect(File).to receive(:exist?).with('cucumber.yml').and_return(false)
 
-        expect(config.options[:duration]).to be false
+      expect { config.parse!(%w[--profile i_do_not_exist]) }.to raise_error(/cucumber\.yml was not found/)
+    end
+
+    it 'issues a helpful error message when cucumber.yml is blank or malformed' do
+      expected_error_message = /cucumber\.yml was found, but was blank or malformed.\nPlease refer to cucumber's documentation on correct profile usage./
+
+      ['', 'sfsadfs', "--- \n- an\n- array\n", '---dddfd'].each do |bad_input|
+        given_cucumber_yml_defined_as(bad_input)
+
+        expect { config.parse!([]) }.to raise_error(expected_error_message)
+
+        reset_config
       end
+    end
 
-      it 'accepts --no-source option' do
-        config.parse!(%w[--no-source])
+    it 'issues a helpful error message when cucumber.yml can not be parsed' do
+      given_cucumber_yml_defined_as('input that causes an exception in YAML loading')
 
-        expect(config.options[:source]).to be false
-      end
+      expect(YAML).to receive(:load).and_raise(ArgumentError)
+      expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./)
+    end
 
-      it 'accepts --no-snippets option' do
-        config.parse!(%w[--no-snippets])
+    it 'issues a helpful error message when cucumber.yml can not be parsed by ERB' do
+      given_cucumber_yml_defined_as('<% this_fails %>')
 
-        expect(config.options[:snippets]).to be false
-      end
+      expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./)
+    end
+  end
 
-      it 'sets snippets and source and duration to false with --quiet option' do
-        config.parse!(%w[--quiet])
+  it 'accepts --dry-run option' do
+    config.parse!(%w[--dry-run])
 
-        expect(config.options[:snippets]).to be false
-        expect(config.options[:source]).to be false
-        expect(config.options[:duration]).to be false
-      end
+    expect(config.options[:dry_run]).to be true
+  end
 
-      it 'sets duration to false with --no-duration' do
-        config.parse!(%w[--no-duration])
+  it 'implies --no-duration with --dry-run option' do
+    config.parse!(%w[--dry-run])
 
-        expect(config.options[:duration]).to be false
-      end
+    expect(config.options[:duration]).to be false
+  end
 
-      it 'accepts --verbose option' do
-        config.parse!(%w[--verbose])
+  it 'accepts --no-source option' do
+    config.parse!(%w[--no-source])
 
-        expect(config.options[:verbose]).to be true
-      end
+    expect(config.options[:source]).to be false
+  end
 
-      it 'uses the pretty formatter to stdout when no formatter is defined' do
-        config.parse!([])
+  it 'accepts --no-snippets option' do
+    config.parse!(%w[--no-snippets])
 
-        expect(config.formats).to eq [['pretty', {}, out]]
-      end
+    expect(config.options[:snippets]).to be false
+  end
 
-      it 'adds the default formatter when no other formatter is defined with --publish' do
-        config.parse!(['--publish'])
+  it 'sets snippets and source and duration to false with --quiet option' do
+    config.parse!(%w[--quiet])
 
-        expect(config.formats).to eq [
-          ['pretty', {}, out],
-          ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
-        ]
-      end
+    expect(config.options[:snippets]).to be false
+    expect(config.options[:source]).to be false
+    expect(config.options[:duration]).to be false
+  end
 
-      it 'does not add the default formatter when a formatter is defined with --publish' do
-        config.parse!(['--publish', '--format', 'progress'])
+  it 'sets duration to false with --no-duration' do
+    config.parse!(%w[--no-duration])
 
-        expect(config.formats).to eq [
-          ['progress', {}, out],
-          ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
-        ]
-      end
+    expect(config.options[:duration]).to be false
+  end
 
-      it 'does not add the default formatter with --format message' do
-        config.parse!(['--format', 'message'])
+  it 'accepts --verbose option' do
+    config.parse!(%w[--verbose])
 
-        expect(config.formats).to eq [
-          ['message', {}, out]
-        ]
-      end
+    expect(config.options[:verbose]).to be true
+  end
 
-      it 'accepts --out option' do
-        config.parse!(%w[--out jalla.txt])
+  it 'uses the pretty formatter to stdout when no formatter is defined' do
+    config.parse!([])
 
-        expect(config.formats).to eq [['pretty', {}, 'jalla.txt']]
-      end
+    expect(config.formats).to eq [['pretty', {}, out]]
+  end
 
-      it 'accepts multiple --out options' do
-        config.parse!(%w[--format progress --out file1 --out file2])
+  it 'adds the default formatter when no other formatter is defined with --publish' do
+    config.parse!(['--publish'])
 
-        expect(config.formats).to eq [['progress', {}, 'file2']]
-      end
+    expect(config.formats).to eq [
+      ['pretty', {}, out],
+      ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
+    ]
+  end
 
-      it 'accepts multiple --format options and put the STDOUT one first so progress is seen' do
-        config.parse!(%w[--format pretty --out pretty.txt --format progress])
+  it 'does not add the default formatter when a formatter is defined with --publish' do
+    config.parse!(['--publish', '--format', 'progress'])
 
-        expect(config.formats).to eq [['progress', {}, out], ['pretty', {}, 'pretty.txt']]
-      end
+    expect(config.formats).to eq [
+      ['progress', {}, out],
+      ['message', {}, 'https://messages.cucumber.io/api/reports -X GET']
+    ]
+  end
 
-      it 'does not accept multiple --format options when both use implicit STDOUT' do
-        expect { config.parse!(%w[--format pretty --format progress]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
-      end
+  it 'does not add the default formatter with --format message' do
+    config.parse!(['--format', 'message'])
 
-      it 'does not accept multiple --format options when both use implicit STDOUT (using profile with no formatters)' do
-        given_cucumber_yml_defined_as('default' => ['-q'])
-        expect { config.parse!(%w[--format pretty --format progress]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
-      end
+    expect(config.formats).to eq [
+      ['message', {}, out]
+    ]
+  end
 
-      it 'accepts same --format options with implicit STDOUT, and keep only one' do
-        config.parse!(%w[--format pretty --format pretty])
+  it 'accepts --out option' do
+    config.parse!(%w[--out jalla.txt])
 
-        expect(config.formats).to eq [['pretty', {}, out]]
-      end
+    expect(config.formats).to eq [['pretty', {}, 'jalla.txt']]
+  end
 
-      it 'does not accept multiple --out streams pointing to the same place' do
-        expected_error = 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
-        expect { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }.to raise_error(expected_error)
-      end
+  it 'accepts multiple --out options' do
+    config.parse!(%w[--format progress --out file1 --out file2])
 
-      it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
-        given_cucumber_yml_defined_as('default' => ['-f', 'progress', '--out', 'file1'])
-        expect { config.parse!(%w[--format pretty --out file1]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
-      end
+    expect(config.formats).to eq [['progress', {}, 'file2']]
+  end
 
-      it 'associates --out to previous --format' do
-        config.parse!(%w[--format progress --out file1 --format profile --out file2])
+  it 'accepts multiple --format options and put the STDOUT one first so progress is seen' do
+    config.parse!(%w[--format pretty --out pretty.txt --format progress])
 
-        expect(config.formats).to match_array([['progress', {}, 'file1'], ['profile', {}, 'file2']])
-      end
+    expect(config.formats).to eq [['progress', {}, out], ['pretty', {}, 'pretty.txt']]
+  end
 
-      it 'accepts same --format options with same --out streams and keep only one' do
-        config.parse!(%w[--format json --out file --format pretty --format json --out file])
+  it 'does not accept multiple --format options when both use implicit STDOUT' do
+    expect { config.parse!(%w[--format pretty --format progress]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+  end
 
-        expect(config.formats).to eq [['pretty', {}, out], ['json', {}, 'file']]
-      end
+  it 'does not accept multiple --format options when both use implicit STDOUT (using profile with no formatters)' do
+    given_cucumber_yml_defined_as('default' => ['-q'])
+    expect { config.parse!(%w[--format pretty --format progress]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+  end
 
-      it 'accepts same --format options with different --out streams' do
-        config.parse!(%w[--format json --out file1 --format json --out file2])
+  it 'accepts same --format options with implicit STDOUT, and keep only one' do
+    config.parse!(%w[--format pretty --format pretty])
 
-        expect(config.formats).to match_array([['json', {}, 'file1'], ['json', {}, 'file2']])
-      end
+    expect(config.formats).to eq [['pretty', {}, out]]
+  end
 
-      it 'accepts --color option' do
-        expect(Cucumber::Term::ANSIColor).to receive(:coloring=).with(true)
+  it 'does not accept multiple --out streams pointing to the same place' do
+    expected_error = 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
+    expect { config.parse!(%w[--format pretty --out file1 --format progress --out file1]) }.to raise_error(expected_error)
+  end
 
-        config.parse!(['--color'])
-      end
+  it 'does not accept multiple --out streams pointing to the same place (one from profile, one from command line)' do
+    given_cucumber_yml_defined_as('default' => ['-f', 'progress', '--out', 'file1'])
+    expect { config.parse!(%w[--format pretty --out file1]) }.to raise_error('All but one formatter must use --out, only one can print to each stream (or STDOUT)')
+  end
 
-      it 'accepts --no-color option' do
-        expect(Cucumber::Term::ANSIColor).to receive(:coloring=).with(false)
+  it 'associates --out to previous --format' do
+    config.parse!(%w[--format progress --out file1 --format profile --out file2])
 
-        config = described_class.new(StringIO.new)
-        config.parse!(['--no-color'])
-      end
+    expect(config.formats).to match_array([['progress', {}, 'file1'], ['profile', {}, 'file2']])
+  end
 
-      describe '--backtrace' do
-        before do
-          Cucumber.use_full_backtrace = false
-        end
+  it 'accepts same --format options with same --out streams and keep only one' do
+    config.parse!(%w[--format json --out file --format pretty --format json --out file])
 
-        after do
-          Cucumber.use_full_backtrace = false
-        end
+    expect(config.formats).to eq [['pretty', {}, out], ['json', {}, 'file']]
+  end
 
-        it 'shows full backtrace when --backtrace is present' do
-          Main.new(['--backtrace'])
-          expect('x').to eq('y')
-        rescue RSpec::Expectations::ExpectationNotMetError => e
-          expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
-        end
-      end
+  it 'accepts same --format options with different --out streams' do
+    config.parse!(%w[--format json --out file1 --format json --out file2])
 
-      it 'accepts multiple --name options' do
-        config.parse!(['--name', 'User logs in', '--name', 'User signs up'])
+    expect(config.formats).to match_array([['json', {}, 'file1'], ['json', {}, 'file2']])
+  end
 
-        expect(config.options[:name_regexps]).to include(/User logs in/)
-        expect(config.options[:name_regexps]).to include(/User signs up/)
-      end
+  it 'accepts --color option' do
+    expect(Cucumber::Term::ANSIColor).to receive(:coloring=).with(true)
 
-      it 'accepts multiple -n options' do
-        config.parse!(['-n', 'User logs in', '-n', 'User signs up'])
+    config.parse!(['--color'])
+  end
 
-        expect(config.options[:name_regexps]).to include(/User logs in/)
-        expect(config.options[:name_regexps]).to include(/User signs up/)
-      end
+  it 'accepts --no-color option' do
+    expect(Cucumber::Term::ANSIColor).to receive(:coloring=).with(false)
 
-      it 'allows specifying environment variables on the command line' do
-        config.parse!(['foo=bar'])
+    config = described_class.new(StringIO.new)
+    config.parse!(['--no-color'])
+  end
 
-        expect(ENV['foo']).to eq 'bar'
-        expect(config.paths).not_to include('foo=bar')
-      end
+  describe '--backtrace' do
+    before do
+      Cucumber.use_full_backtrace = false
+    end
 
-      it 'allows specifying environment variables in profiles' do
-        given_cucumber_yml_defined_as('selenium' => 'RAILS_ENV=selenium')
-        config.parse!(['--profile', 'selenium'])
+    after do
+      Cucumber.use_full_backtrace = false
+    end
 
-        expect(ENV['RAILS_ENV']).to eq 'selenium'
-        expect(config.paths).not_to include('RAILS_ENV=selenium')
-      end
+    it 'shows full backtrace when --backtrace is present' do
+      Cucumber::Cli::Main.new(['--backtrace'])
+      expect('x').to eq('y')
+    rescue RSpec::Expectations::ExpectationNotMetError => e
+      expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
+    end
+  end
 
-      describe '#tag_expressions' do
-        it 'returns an empty expression when no tags are specified' do
-          config.parse!([])
+  it 'accepts multiple --name options' do
+    config.parse!(['--name', 'User logs in', '--name', 'User signs up'])
 
-          expect(config.tag_expressions).to be_empty
-        end
+    expect(config.options[:name_regexps]).to include(/User logs in/)
+    expect(config.options[:name_regexps]).to include(/User signs up/)
+  end
 
-        it 'returns an expression when tags are specified' do
-          config.parse!(['--tags', '@foo'])
+  it 'accepts multiple -n options' do
+    config.parse!(['-n', 'User logs in', '-n', 'User signs up'])
 
-          expect(config.tag_expressions).not_to be_empty
-        end
-      end
+    expect(config.options[:name_regexps]).to include(/User logs in/)
+    expect(config.options[:name_regexps]).to include(/User signs up/)
+  end
 
-      describe '#tag_limits' do
-        it 'returns an empty hash when no limits are specified' do
-          config.parse!([])
+  it 'allows specifying environment variables on the command line' do
+    config.parse!(['foo=bar'])
 
-          expect(config.tag_limits).to eq({})
-        end
+    expect(ENV['foo']).to eq 'bar'
+    expect(config.paths).not_to include('foo=bar')
+  end
 
-        it 'returns a hash of limits when limits are specified' do
-          config.parse!(['--tags', '@foo:1'])
+  it 'allows specifying environment variables in profiles' do
+    given_cucumber_yml_defined_as('selenium' => 'RAILS_ENV=selenium')
+    config.parse!(['--profile', 'selenium'])
 
-          expect(config.tag_limits).to eq('@foo' => 1)
-        end
-      end
+    expect(ENV['RAILS_ENV']).to eq 'selenium'
+    expect(config.paths).not_to include('RAILS_ENV=selenium')
+  end
 
-      describe '#dry_run?' do
-        it 'returns true when --dry-run was specified on in the arguments' do
-          config.parse!(['--dry-run'])
+  describe '#tag_expressions' do
+    it 'returns an empty expression when no tags are specified' do
+      config.parse!([])
 
-          expect(config.dry_run?).to be true
-        end
+      expect(config.tag_expressions).to be_empty
+    end
 
-        it 'returns true when --dry-run was specified in yaml file' do
-          given_cucumber_yml_defined_as('default' => '--dry-run')
-          config.parse!([])
+    it 'returns an expression when tags are specified' do
+      config.parse!(['--tags', '@foo'])
 
-          expect(config.dry_run?).to be true
-        end
+      expect(config.tag_expressions).not_to be_empty
+    end
+  end
 
-        it 'returns false by default' do
-          config.parse!([])
+  describe '#tag_limits' do
+    it 'returns an empty hash when no limits are specified' do
+      config.parse!([])
 
-          expect(config.dry_run?).to be false
-        end
-      end
+      expect(config.tag_limits).to eq({})
+    end
 
-      describe '#snippet_type' do
-        it 'returns the snippet type when it was set' do
-          config.parse!(['--snippet-type', 'classic'])
+    it 'returns a hash of limits when limits are specified' do
+      config.parse!(['--tags', '@foo:1'])
 
-          expect(config.snippet_type).to eq(:classic)
-        end
+      expect(config.tag_limits).to eq('@foo' => 1)
+    end
+  end
 
-        it 'returns the snippet type when it was set with shorthand option' do
-          config.parse!(['-I', 'classic'])
+  describe '#dry_run?' do
+    it 'returns true when --dry-run was specified on in the arguments' do
+      config.parse!(['--dry-run'])
 
-          expect(config.snippet_type).to eq(:classic)
-        end
+      expect(config.dry_run?).to be true
+    end
 
-        it 'returns the default snippet type if it was not set' do
-          config.parse!([])
+    it 'returns true when --dry-run was specified in yaml file' do
+      given_cucumber_yml_defined_as('default' => '--dry-run')
+      config.parse!([])
 
-          expect(config.snippet_type).to eq(:cucumber_expression)
-        end
-      end
+      expect(config.dry_run?).to be true
+    end
 
-      describe '#retry_attempts' do
-        it 'returns the specified number of retries' do
-          config.parse!(['--retry=3'])
+    it 'returns false by default' do
+      config.parse!([])
 
-          expect(config.retry_attempts).to eq(3)
-        end
-      end
+      expect(config.dry_run?).to be false
+    end
+  end
+
+  describe '#snippet_type' do
+    it 'returns the snippet type when it was set' do
+      config.parse!(['--snippet-type', 'classic'])
+
+      expect(config.snippet_type).to eq(:classic)
+    end
+
+    it 'returns the snippet type when it was set with shorthand option' do
+      config.parse!(['-I', 'classic'])
+
+      expect(config.snippet_type).to eq(:classic)
+    end
+
+    it 'returns the default snippet type if it was not set' do
+      config.parse!([])
+
+      expect(config.snippet_type).to eq(:cucumber_expression)
+    end
+  end
+
+  describe '#retry_attempts' do
+    it 'returns the specified number of retries' do
+      config.parse!(['--retry=3'])
+
+      expect(config.retry_attempts).to eq(3)
     end
   end
 end
