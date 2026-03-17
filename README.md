@@ -45,12 +45,12 @@ Later in this document, bundler is considered being used so all commands are usi
 
 ### Supported platforms
 
+- Ruby 4.0
 - Ruby 3.4
 - Ruby 3.3
 - Ruby 3.2
-- Ruby 3.1
 - TruffleRuby 24.0.0+
-- JRuby 9.4+ (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
+- JRuby 10.0+ (with [some limitations](https://github.com/cucumber/cucumber-ruby/blob/main/docs/jruby-limitations.md))
 
 ### Ruby on Rails
 
