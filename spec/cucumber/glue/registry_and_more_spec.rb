@@ -39,7 +39,6 @@ module Cucumber
             end
           STRING
         end
-
         let(:value3) do
           <<~STRING
             class Foo
@@ -69,51 +68,6 @@ module Cucumber
             a_file_called('docs1.md') { value3 }
             registry.load_code_file('tmp1.rb')
             registry.load_code_file('docs1.md')
-
-            expect(Foo.value).not_to eq(3)
-          end
-        end
-
-        context 'when using `use_legacy_autoloader`' do
-          before(:each) { allow(Cucumber).to receive(:use_legacy_autoloader).and_return(true) }
-
-          it 're-loads the file when called multiple times' do
-            a_file_called('tmp2.rb') { value1 }
-            registry.load_code_file('tmp2.rb')
-            a_file_called('tmp2.rb') { value2 }
-            registry.load_code_file('tmp2.rb')
-
-            expect(Foo.value).to eq(2)
-          end
-
-          it 'only loads ruby files' do
-            a_file_called('tmp2.rb') { value1 }
-            a_file_called('docs2.md') { value3 }
-            registry.load_code_file('tmp2.rb')
-            registry.load_code_file('docs2.md')
-
-            expect(Foo.value).not_to eq(3)
-          end
-        end
-
-        context 'when explicitly NOT using `use_legacy_autoloader`' do
-          before(:each) { allow(Cucumber).to receive(:use_legacy_autoloader).and_return(false) }
-          after(:each) { FileUtils.rm_rf('tmp3.rb') }
-
-          it 'does not re-load the file when called multiple times' do
-            a_file_called('tmp3.rb') { value1 }
-            registry.load_code_file('tmp3.rb')
-            a_file_called('tmp3.rb') { value2 }
-            registry.load_code_file('tmp3.rb')
-
-            expect(Foo.value).to eq(1)
-          end
-
-          it 'only loads ruby files' do
-            a_file_called('tmp3.rb') { value1 }
-            a_file_called('docs3.md') { value3 }
-            registry.load_code_file('tmp3.rb')
-            registry.load_code_file('docs3.md')
 
             expect(Foo.value).not_to eq(3)
           end

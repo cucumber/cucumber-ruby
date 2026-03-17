@@ -128,7 +128,6 @@ Feature: Ordering
       Randomized with seed 41544
       """
 
-  @force_legacy_loader
   Scenario: Rerun scenarios randomized
     When I run `cucumber --order random --format summary`
     And I rerun the previous command with the same seed
