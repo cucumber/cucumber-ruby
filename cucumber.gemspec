@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
     'funding_uri' => 'https://opencollective.com/cucumber'
   }
 
-  s.required_ruby_version = '>= 3.1'
+  s.required_ruby_version = '>= 3.2'
   s.required_rubygems_version = '>= 3.2.8'
 
   s.add_dependency 'base64', '~> 0.2'
@@ -28,22 +28,22 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-ci-environment', '> 9', '< 12'
   s.add_dependency 'cucumber-core', '>= 16.2.0', '< 17'
   s.add_dependency 'cucumber-cucumber-expressions', '> 17', '< 20'
-  s.add_dependency 'cucumber-html-formatter', '> 21', '< 23'
+  s.add_dependency 'cucumber-html-formatter', '> 21', '< 24'
   s.add_dependency 'diff-lcs', '~> 1.5'
   s.add_dependency 'logger', '~> 1.6'
   s.add_dependency 'mini_mime', '~> 1.1'
   s.add_dependency 'multi_test', '~> 1.1'
-  s.add_dependency 'sys-uname', '~> 1.3'
+  s.add_dependency 'sys-uname', '~> 1.5'
 
   s.add_development_dependency 'cucumber-compatibility-kit', '~> 22.0'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
   s.add_development_dependency 'nokogiri', '~> 1.15'
   s.add_development_dependency 'rake', '~> 13.2'
   s.add_development_dependency 'rspec', '~> 3.13'
-  s.add_development_dependency 'rubocop', '~> 1.71.0'
+  s.add_development_dependency 'rubocop', '~> 1.85.1'
   s.add_development_dependency 'rubocop-packaging', '~> 0.5.2'
   s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
-  s.add_development_dependency 'rubocop-rspec', '~> 3.4.0'
+  s.add_development_dependency 'rubocop-rspec', '~> 3.8.0'
   s.add_development_dependency 'simplecov', '~> 0.22.0'
   s.add_development_dependency 'webrick', '~> 1.8'
 

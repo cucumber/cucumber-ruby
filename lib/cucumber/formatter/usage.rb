@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require 'cucumber/formatter/progress'
-require 'cucumber/step_definition_light'
 require 'cucumber/formatter/console'
 
 module Cucumber
   module Formatter
     class Usage < Progress
       include Console
+
       class StepDefKey
         attr_accessor :mean_duration, :status
         attr_reader :regexp_source, :location

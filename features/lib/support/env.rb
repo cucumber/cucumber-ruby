@@ -35,13 +35,6 @@ Around do |_, block|
   ENV['CUCUMBER_PUBLISH_TOKEN'] = original_publish_token
 end
 
-Around('@force_legacy_loader') do |_, block|
-  original_loader = Cucumber.use_legacy_autoloader
-  Cucumber.use_legacy_autoloader = true
-  block.call
-  Cucumber.use_legacy_autoloader = original_loader
-end
-
 Before('@global_state') do
   # Ok, this one is tricky but kinda make sense.
   # So, we need to share state between some sub-scenarios (the ones executed by
