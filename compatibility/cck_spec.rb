@@ -17,6 +17,11 @@ describe CCK, :cck do
   # OVERALL: 93 examples, 7 failures, 86 passed
   # SANITIZED: 81 examples, 0 failures, 81 passed
 
+  # Global Hooks -> 23 messages generated - Expected 31 (Missing 4 testRunHookStarted + 4 testRunHookFinished)
+  # Global Hooks Before All -> 0 messages generated - Expected 22
+  # Global Hooks Attachments -> 0 messages generated - Expected 20
+  # Global Hooks After All -> 17 messages generated - Expected 27 (Missing 5 testRunHookStarted + 5 testRunHookFinished)
+
   items_to_fix =
     %w[
       global-hooks
@@ -26,7 +31,7 @@ describe CCK, :cck do
     ]
   failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
-  passing.each do |example_name|
+  failing.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
