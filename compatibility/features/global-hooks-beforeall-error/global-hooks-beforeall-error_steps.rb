@@ -21,9 +21,5 @@ AfterAll do
 end
 
 AfterAll do
-  raise 'AfterAll hook went wrong'
-end
-
-AfterAll do
   # no-op
 end
