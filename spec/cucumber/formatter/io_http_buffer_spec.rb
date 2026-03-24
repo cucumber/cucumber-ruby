@@ -3,7 +3,6 @@
 require 'stringio'
 require 'webrick'
 require 'webrick/https'
-require 'spec_helper'
 require 'cucumber/formatter/io'
 require 'support/shared_context/http_server'
 
@@ -16,9 +15,7 @@ module Cucumber
     describe IOHTTPBuffer do
       include_context 'an HTTP server accepting file requests'
 
-      # JRuby seems to have some issues with huge reports. At least during tests
-      # Maybe something to see with Webrick configuration.
-      let(:report_size) { RUBY_PLATFORM == 'java' ? 8_000 : 10_000_000 }
+      let(:report_size) { 10_000_000 }
       let(:sent_body) { 'X' * report_size }
 
       it 'raises an error on close when server in unreachable' do

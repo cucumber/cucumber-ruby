@@ -19,10 +19,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        ruby: ['3.2', '3.3', '3.4']
+        ruby: ['3.2', '3.3', '3.4', '4.0']
         include:
           - os: ubuntu-latest
-            ruby: jruby-9.4
+            ruby: jruby-10.0
           - os: ubuntu-latest
             ruby: truffleruby
     runs-on: ${{ matrix.os }}

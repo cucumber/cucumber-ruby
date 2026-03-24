@@ -1,5 +1,4 @@
 .bundle
-nbproject
 coverage
 pkg
 doc
@@ -8,20 +7,12 @@ tmp
 *.log
 *.pid
 .eprj
-.tmtags
-*~
 .DS_Store
-*.swp
-*.swo
 target
-*.tmproj
-.#*
 .idea
 .vscode
-*.pyc
 *.rbc
 rerun.txt
-._*
 .rvmrc
 .sass-cache
 doc/
@@ -33,5 +24,4 @@ Gemfile.local
 Gemfile.local.lock
 .envrc
 Gemfile.lock
-bin/json-formatter
 acceptance/*
