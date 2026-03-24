@@ -8,7 +8,7 @@ module Cucumber
       attr_reader :envelope
 
       def inspect
-        "Envelope Event -> Message Type: #{not_nil_message_name}}"
+        "Envelope Event -> Message Type: #{type}}"
       end
 
       def to_s
@@ -17,7 +17,7 @@ module Cucumber
 
       private
 
-      def not_nil_message_name
+      def type
         envelope.instance_variables.detect { |message| !envelope.send(name_of(message)).nil? }
       end
 

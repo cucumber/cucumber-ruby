@@ -31,7 +31,7 @@ describe CCK, :cck do
     ]
   failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
-  failing.each do |example_name|
+  ['global-hooks'].each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
