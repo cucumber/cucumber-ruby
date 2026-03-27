@@ -12,4 +12,13 @@ describe Cucumber do
       described_class.deprecate('Use #some_other_method instead', '#some_method', '1.0.0')
     end
   end
+
+  describe '.logger' do
+    it 'generates a new logger if current logger is nil' do
+      described_class.logger = nil
+      logger = described_class.logger
+
+      expect(logger).to be_instance_of Logger
+    end
+  end
 end

@@ -23,7 +23,7 @@ module Cucumber
     def logger
       return @log if @log
 
-      @log = Logger.new($stdout).tap { it.level = Logger::INFO }
+      @log = Logger.new($stdout).tap { |log| log.level = Logger::INFO }
     end
 
     def logger=(logger)
