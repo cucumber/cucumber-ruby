@@ -3,17 +3,21 @@
 require 'yaml'
 
 describe Cucumber::Cli::Main do
-  before(:each) do
-    allow(File).to receive(:exist?).and_return(false) # When Configuration checks for cucumber.yml
-    allow(Dir).to receive(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
-  end
+  subject { described_class.new(args, stdout, stderr, kernel) }
 
   let(:args)   { [] }
   let(:stdout) { StringIO.new }
   let(:stderr) { StringIO.new }
   let(:kernel) { double(:kernel) }
 
-  subject { described_class.new(args, stdout, stderr, kernel) }
+  before(:each) do
+    allow(File).to receive(:exist?).and_return(false) # When Configuration checks for cucumber.yml
+    allow(Dir).to receive(:[]).and_return([]) # to prevent cucumber's features dir to being loaded
+  end
+
+  after do
+    Cucumber.logger = nil
+  end
 
   describe '#execute!' do
     context 'when passed an existing runtime' do
