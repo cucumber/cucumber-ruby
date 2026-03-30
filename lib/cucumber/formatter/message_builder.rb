@@ -50,7 +50,6 @@ module Cucumber
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
-        @current_test_run_started_id = nil
         @current_test_case_started_id = nil
         @current_test_step_id = nil
       end
@@ -110,7 +109,7 @@ module Cucumber
             id: event.test_case.id,
             pickle_id: @pickle_by_test.pickle_id(event.test_case),
             test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
-            test_run_started_id: @current_test_run_started_id
+            test_run_started_id: @test_run_started.id
           )
         )
 
@@ -179,12 +178,11 @@ module Cucumber
       end
 
       def on_test_run_started(*)
-        # TODO: Switch this over to using the Query object -> `find_test_run_started`
-        @current_test_run_started_id = @test_run_started.id
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
-            id: @current_test_run_started_id
+            # TODO: Switch this over to using the Query object -> `find_test_run_started`
+            id: @test_run_started.id
           )
         )
 
@@ -292,7 +290,7 @@ module Cucumber
           test_run_finished: Cucumber::Messages::TestRunFinished.new(
             timestamp: time_to_timestamp(Time.now),
             success: event.success,
-            test_run_started_id: @current_test_run_started_id
+            test_run_started_id: @test_run_started.id
           )
         )
 
@@ -314,7 +312,7 @@ module Cucumber
           test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
             id: @current_test_run_hook_started_id,
             hook_id: event.hook.id,
-            test_run_started_id: @current_test_run_started_id,
+            test_run_started_id: @test_run_started.id,
             timestamp: time_to_timestamp(Time.now)
           )
         )
