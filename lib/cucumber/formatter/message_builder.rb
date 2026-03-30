@@ -30,14 +30,21 @@ module Cucumber
         @query = Cucumber::Query.new(@repository)
 
         config.on_event :envelope, &method(:on_envelope)
+
+        config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
-        config.on_event :test_case_ready, &method(:on_test_case_ready)
-        config.on_event :test_run_started, &method(:on_test_run_started)
-        config.on_event :test_case_started, &method(:on_test_case_started)
-        config.on_event :test_step_started, &method(:on_test_step_started)
-        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
+        config.on_event :step_activated, &method(:on_step_activated)
+        config.on_event :step_definition_registered, &method(:on_step_definition_registered)
+        # TODO: Handle TestCaseCreated
         config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_case_ready, &method(:on_test_case_ready)
+        config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :test_run_started, &method(:on_test_run_started)
+        # TODO: Handle TestStepCreated
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
@@ -74,6 +81,10 @@ module Cucumber
         output_envelope(event.envelope)
       end
 
+      def on_gherkin_source_parsed(event)
+        # TODO: Handle GherkinSourceParsed
+      end
+
       def on_gherkin_source_read(event)
         message = Cucumber::Messages::Envelope.new(
           source: Cucumber::Messages::Source.new(
@@ -86,13 +97,12 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_test_case_ready(event)
-        # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
-        # TODO: The finder in query is `find_test_step_by` (Using +TestStepStarted+ message)
-        event.test_case.test_steps.each do |step|
-          @test_case_by_step_id[step.id] = event.test_case
-        end
+      def on_hook_test_step_created(event)
+        # TODO: Handle HookTestStepCreated
+        @hook_by_test_step
+      end
 
+      def on_test_case_ready(event)
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
@@ -101,6 +111,14 @@ module Cucumber
             test_run_started_id: @current_test_run_started_id
           )
         )
+
+        @repository.update(message)
+
+        # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
+        # TODO: The finder in query is `find_test_step_by` (Using +TestStepStarted+ message)
+        event.test_case.test_steps.each do |step|
+          @test_case_by_step_id[step.id] = event.test_case
+        end
 
         # TODO: Once we're comfortable switching this over. Call @repository.update(message) alongside output_envelope
         # however this may not be necessary as output_envelope may/should already be doing this?
@@ -268,6 +286,14 @@ module Cucumber
         )
 
         output_envelope(message)
+      end
+
+      def on_step_activated(event)
+        # TODO: Handle StepActivated
+      end
+
+      def on_step_definition_registered(event)
+        output_envelope(event.step_definition.to_envelope)
       end
 
       def on_undefined_parameter_type(event)
