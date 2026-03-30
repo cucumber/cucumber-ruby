@@ -13,13 +13,18 @@ require 'cucumber/compatibility_kit'
 describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
-  # CCK v22 conformance status update - Mar 2026
+  # CCK v22 conformance
   # OVERALL: 93 examples, 5 failures, 88 passed
   # SANITIZED: 84 examples, 0 failures, 84 passed
 
   # Global Hooks Before All -> 0 messages generated - Expected 22
   # Global Hooks Attachments -> 0 messages generated - Expected 20
   # Global Hooks After All -> 17 messages generated - Expected 27 (Missing 5 testRunHookStarted + 5 testRunHookFinished)
+
+  # There are a variety of non-conformancies in the CCK currently with reasons for them to be fixed
+  # -> global-hooks-beforeall-error: This requires an internal change to cucumber to make it store all hook messages before exiting
+  # -> global-hooks-afterall-error: This requires an internal change to cucumber to make it store all hook messages before exiting
+  # -> global-hooks-attachments: This requires a change to cucumber to allow the `attach` method to be called in the BeforeAll/AfterAll hooks
 
   items_to_fix =
     %w[
