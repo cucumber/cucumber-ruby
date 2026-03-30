@@ -50,8 +50,6 @@ module Cucumber
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
-        @current_test_case_started_id = nil
-        @current_test_step_id = nil
       end
 
       def attach(src, media_type, filename)
