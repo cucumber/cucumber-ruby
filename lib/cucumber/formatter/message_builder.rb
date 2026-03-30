@@ -25,7 +25,6 @@ module Cucumber
         @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
-        @test_run_started = Query::TestRunStarted.new(config)
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
@@ -44,7 +43,7 @@ module Cucumber
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
         config.on_event :test_run_hook_finished, &method(:on_test_run_hook_finished)
-        # TODO: Handle TestStepCreated
+        config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
@@ -180,8 +179,8 @@ module Cucumber
 
       def on_test_run_started(*)
         # TODO: Switch this over to using the Query object -> `find_test_run_started`
-        @current_test_run_started_id = @test_run_started.id
-
+        # @current_test_run_started_id = @test_run_started.id
+        @current_test_run_started_id = @config.id_generator.new_id
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
@@ -204,6 +203,13 @@ module Cucumber
           )
         )
 
+        output_envelope(message)
+      end
+
+      def on_test_step_created(event)
+        hash = @pickle_step_by_test_step.instance_variable_get(:@pickle_id_step_by_test_step_id)
+        hash[event.test_step.id] = event.pickle_step.id
+        message = test_step_to_message(event.test_step)
         output_envelope(message)
       end
 
@@ -305,7 +311,7 @@ module Cucumber
           test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
             id: @current_test_run_hook_started_id,
             hook_id: event.hook.id,
-            test_run_started_id: @test_run_started.id,
+            test_run_started_id: @current_test_run_started_id,
             timestamp: time_to_timestamp(Time.now)
           )
         )
