@@ -209,8 +209,11 @@ module Cucumber
       def on_test_step_created(event)
         hash = @pickle_step_by_test_step.instance_variable_get(:@pickle_id_step_by_test_step_id)
         hash[event.test_step.id] = event.pickle_step.id
-        message = test_step_to_message(event.test_step)
-        output_envelope(message)
+        message = Cucumber::Messages::Envelope.new(
+          test_case: test_step_to_message(event.test_step)
+        )
+        # TODO: This seems to output extra test cases that aren't expected
+        # output_envelope(message)
       end
 
       def on_test_step_started(event)
