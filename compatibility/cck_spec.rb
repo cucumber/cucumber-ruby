@@ -14,10 +14,9 @@ describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   # CCK v22 conformance status update - Mar 2026
-  # OVERALL: 93 examples, 7 failures, 86 passed
-  # SANITIZED: 81 examples, 0 failures, 81 passed
+  # OVERALL: 93 examples, 5 failures, 88 passed
+  # SANITIZED: 84 examples, 0 failures, 84 passed
 
-  # Global Hooks -> 23 messages generated - Expected 31 (Missing 4 testRunHookStarted + 4 testRunHookFinished)
   # Global Hooks Before All -> 0 messages generated - Expected 22
   # Global Hooks Attachments -> 0 messages generated - Expected 20
   # Global Hooks After All -> 17 messages generated - Expected 27 (Missing 5 testRunHookStarted + 5 testRunHookFinished)
@@ -28,9 +27,9 @@ describe CCK, :cck do
       global-hooks-attachments
       global-hooks-beforeall-error
     ]
-  failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
+  _failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
-  ['global-hooks'].each do |example_name|
+  passing.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
