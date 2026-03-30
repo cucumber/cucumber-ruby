@@ -42,6 +42,8 @@ module Cucumber
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         config.on_event :test_run_started, &method(:on_test_run_started)
+        config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
+        config.on_event :test_run_hook_finished, &method(:on_test_run_hook_finished)
         # TODO: Handle TestStepCreated
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)
@@ -294,6 +296,45 @@ module Cucumber
 
       def on_step_definition_registered(event)
         output_envelope(event.step_definition.to_envelope)
+      end
+
+      def on_test_run_hook_started(event)
+        @current_test_run_hook_started_id = @config.id_generator.new_id
+
+        message = Cucumber::Messages::Envelope.new(
+          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
+            id: @current_test_run_hook_started_id,
+            hook_id: event.hook.id,
+            test_run_started_id: @test_run_started.id,
+            timestamp: time_to_timestamp(Time.now)
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_run_hook_finished(event)
+        result = event.test_result
+        result_message = result.to_message
+
+        if result.failed?
+          result_message = Cucumber::Messages::TestStepResult.new(
+            status: result_message.status,
+            duration: result_message.duration,
+            message: create_error_message(result.exception),
+            exception: create_exception_object(result, result.exception)
+          )
+        end
+
+        message = Cucumber::Messages::Envelope.new(
+          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
+            test_run_hook_started_id: @current_test_run_hook_started_id,
+            timestamp: time_to_timestamp(Time.now),
+            result: result_message
+          )
+        )
+
+        output_envelope(message)
       end
 
       def on_undefined_parameter_type(event)

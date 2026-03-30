@@ -24,7 +24,6 @@ describe CCK, :cck do
 
   items_to_fix =
     %w[
-      global-hooks
       global-hooks-afterall-error
       global-hooks-attachments
       global-hooks-beforeall-error

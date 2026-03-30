@@ -148,13 +148,13 @@ module Cucumber
 
       def before_all
         hooks[:before_all].each do |hook|
-          hook.invoke('BeforeAll', [])
+          invoke_run_hook(hook, 'BeforeAll')
         end
       end
 
       def after_all
         hooks[:after_all].each do |hook|
-          hook.invoke('AfterAll', [])
+          invoke_run_hook(hook, 'AfterAll')
         end
       end
 
@@ -179,6 +179,18 @@ module Cucumber
       end
 
       private
+
+      def invoke_run_hook(hook, pseudo_method)
+        @configuration.notify(:test_run_hook_started, hook)
+        timer = Core::Test::Timer.new.start
+        begin
+          hook.invoke(pseudo_method, [])
+          @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Passed.new(timer.duration))
+        rescue StandardError => e
+          @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Failed.new(timer.duration, e))
+          raise
+        end
+      end
 
       def parameter_type_envelope(parameter_type)
         # TODO: should this be moved to Cucumber::Expression::ParameterType#to_envelope ??
