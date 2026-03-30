@@ -24,6 +24,7 @@ module Cucumber
         @pickle_by_test = Query::PickleByTest.new(config)
         @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
+        @test_run_started = Query::TestRunStarted.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
@@ -179,8 +180,7 @@ module Cucumber
 
       def on_test_run_started(*)
         # TODO: Switch this over to using the Query object -> `find_test_run_started`
-        # @current_test_run_started_id = @test_run_started.id
-        @current_test_run_started_id = @config.id_generator.new_id
+        @current_test_run_started_id = @test_run_started.id
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
