@@ -6,7 +6,6 @@ require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
-require 'cucumber/formatter/query/test_run_started'
 
 require 'cucumber/query'
 
