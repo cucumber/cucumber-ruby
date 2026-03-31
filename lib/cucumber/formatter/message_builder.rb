@@ -22,8 +22,8 @@ module Cucumber
         @hook_by_test_step = Query::HookByTestStep.new(config)
         @pickle_by_test = Query::PickleByTest.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
-        @test_run_started = Query::TestRunStarted.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
+
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
@@ -31,22 +31,30 @@ module Cucumber
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
+
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
+
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :step_definition_registered, &method(:on_step_definition_registered)
+
         # TODO: Handle TestCaseCreated
-        config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
         config.on_event :test_case_started, &method(:on_test_case_started)
-        config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+
         config.on_event :test_run_started, &method(:on_test_run_started)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
+
         config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
         config.on_event :test_run_hook_finished, &method(:on_test_run_hook_finished)
+
         config.on_event :test_step_created, &method(:on_test_step_created)
-        config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
+        @test_run_started_id = config.id_generator.new_id
         @test_case_by_step_id = {}
         @pickle_id_step_by_test_step_id = {}
       end
@@ -105,7 +113,7 @@ module Cucumber
             id: event.test_case.id,
             pickle_id: @pickle_by_test.pickle_id(event.test_case),
             test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
-            test_run_started_id: @test_run_started.id
+            test_run_started_id: @test_run_started_id
           )
         )
 
@@ -178,7 +186,7 @@ module Cucumber
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
             # TODO: Switch this over to using the Query object -> `find_test_run_started`
-            id: @test_run_started.id
+            id: @test_run_started_id
           )
         )
 
@@ -285,7 +293,7 @@ module Cucumber
           test_run_finished: Cucumber::Messages::TestRunFinished.new(
             timestamp: time_to_timestamp(Time.now),
             success: event.success,
-            test_run_started_id: @test_run_started.id
+            test_run_started_id: @test_run_started_id
           )
         )
 
@@ -307,7 +315,7 @@ module Cucumber
           test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
             id: @current_test_run_hook_started_id,
             hook_id: event.hook.id,
-            test_run_started_id: @test_run_started.id,
+            test_run_started_id: @test_run_started_id,
             timestamp: time_to_timestamp(Time.now)
           )
         )
