@@ -26,6 +26,12 @@ module Cucumber
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
+        @test_run_started_id = config.id_generator.new_id
+        @test_case_by_step_id = {}
+        @pickle_id_step_by_test_step_id = {}
+
+        # Ensure all handlers for events occur after all ivars are instantiated
+
         config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
@@ -52,10 +58,6 @@ module Cucumber
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
-
-        @test_run_started_id = config.id_generator.new_id
-        @test_case_by_step_id = {}
-        @pickle_id_step_by_test_step_id = {}
       end
 
       def attach(src, media_type, filename)
