@@ -28,6 +28,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > 
 > The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
 > formatters and will allow us to test the new structure in a real-world scenario.
+- Updated `cucumber-compatibility-kit` to v22
 
 ## [10.2.0] - 2025-12-10
 ### Changed
