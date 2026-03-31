@@ -4,7 +4,6 @@ require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
-require 'cucumber/formatter/query/pickle_step_by_test_step'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
 require 'cucumber/formatter/query/test_run_started'
@@ -96,7 +95,7 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_hook_test_step_created(event)
+      def on_hook_test_step_created(_event)
         # TODO: Handle HookTestStepCreated
         @hook_by_test_step
       end
@@ -204,7 +203,7 @@ module Cucumber
 
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
-        message = Cucumber::Messages::Envelope.new(
+        Cucumber::Messages::Envelope.new(
           test_case: test_step_to_message(event.test_step)
         )
         # TODO: This seems to output extra test cases that aren't expected
