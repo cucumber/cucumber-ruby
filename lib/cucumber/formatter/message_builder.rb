@@ -79,7 +79,7 @@ module Cucumber
         output_envelope(event.envelope)
       end
 
-      def on_gherkin_source_parsed(event)
+      def on_gherkin_source_parsed(_event)
         # TODO: Handle GherkinSourceParsed
       end
 
@@ -97,7 +97,6 @@ module Cucumber
 
       def on_hook_test_step_created(_event)
         # TODO: Handle HookTestStepCreated
-        @hook_by_test_step
       end
 
       def on_test_case_ready(event)
