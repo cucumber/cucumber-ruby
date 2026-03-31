@@ -19,3 +19,15 @@ end
 Given('a step that always fails') do
   raise 'Exception in step'
 end
+
+Given('an ambiguous step') do
+  # first one
+end
+
+Given('an ambiguous step') do
+  # second one
+end
+
+Given('a pending step') do
+  pending('')
+end

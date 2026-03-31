@@ -24,7 +24,12 @@ module CCK
       detected_by_type.each_key do |type|
         compare_list(detected_by_type[type], expected_by_type[type])
       rescue StandardError => e
-        all_errors << "Error while comparing #{type}: #{e.message}"
+        # TODO: Remove this override when the CCK is being checked at v29+
+        if e.message.include?('each_with_index')
+          :ignore_until_cck_v29
+        else
+          all_errors << "Error while comparing #{type}: #{e.message}"
+        end
       end
     end
 

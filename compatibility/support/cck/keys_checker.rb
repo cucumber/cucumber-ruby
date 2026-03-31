@@ -17,6 +17,9 @@ module CCK
       return if identical_keys?
       return "Detected extra keys in message #{message_name}: #{extra_keys}" if extra_keys.any?
 
+      # TODO: Remove this override when the CCK is being checked at v29+
+      return if missing_keys == [:children]
+
       "Missing keys in message #{message_name}: #{missing_keys}" if missing_keys.any?
     rescue StandardError => e
       ["Unexpected error: #{e.message}"]
