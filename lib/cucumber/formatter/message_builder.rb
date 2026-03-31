@@ -22,7 +22,6 @@ module Cucumber
 
         @hook_by_test_step = Query::HookByTestStep.new(config)
         @pickle_by_test = Query::PickleByTest.new(config)
-        @pickle_step_by_test_step = Query::PickleStepByTestStep.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_run_started = Query::TestRunStarted.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
@@ -50,6 +49,7 @@ module Cucumber
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
 
         @test_case_by_step_id = {}
+        @pickle_id_step_by_test_step_id = {}
       end
 
       def attach(src, media_type, filename)
@@ -132,7 +132,7 @@ module Cucumber
           id: step.id,
           # TODO: This "fake query" is only used once. It can likely be replace by `find_pickle_step_by` which
           # takes a +TestStep+ message from the repo directly.
-          pickle_step_id: @pickle_step_by_test_step.pickle_step_id(step),
+          pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
           step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
           step_match_arguments_lists: step_match_arguments_lists(step)
         )
@@ -203,8 +203,7 @@ module Cucumber
       end
 
       def on_test_step_created(event)
-        hash = @pickle_step_by_test_step.instance_variable_get(:@pickle_id_step_by_test_step_id)
-        hash[event.test_step.id] = event.pickle_step.id
+        @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
         message = Cucumber::Messages::Envelope.new(
           test_case: test_step_to_message(event.test_step)
         )
