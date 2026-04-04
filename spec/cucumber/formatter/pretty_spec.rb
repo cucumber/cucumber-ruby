@@ -7,7 +7,7 @@ require 'cucumber/cli/options'
 
 module Cucumber
   module Formatter
-    describe Pretty do
+    RSpec.describe Pretty do
       extend SpecHelperDsl
       include SpecHelper
 

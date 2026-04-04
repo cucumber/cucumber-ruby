@@ -9,7 +9,7 @@ require 'support/fake_objects'
 
 module Cucumber
   module Formatter
-    describe Rerun do
+    RSpec.describe Rerun do
       include Cucumber::Core::Gherkin::Writer
       include Cucumber::Core
 

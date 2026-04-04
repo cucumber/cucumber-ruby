@@ -5,7 +5,7 @@ require 'cucumber/formatter/ansicolor'
 
 module Cucumber
   module Formatter
-    describe ANSIColor do
+    RSpec.describe ANSIColor do
       include described_class
 
       it 'wraps passed_param with bold green and reset to green' do

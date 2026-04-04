@@ -2,7 +2,7 @@
 
 require 'cucumber/formatter/backtrace_filter'
 
-describe Cucumber::Formatter::BacktraceFilter do
+RSpec.describe Cucumber::Formatter::BacktraceFilter do
   subject(:exception) { exception_klass.new }
 
   let(:exception_klass) do

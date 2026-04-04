@@ -6,7 +6,7 @@ require 'cucumber/runtime/before_hooks'
 
 module Cucumber
   class Runtime
-    describe BeforeHooks do
+    RSpec.describe BeforeHooks do
       let(:subject) { described_class.new(id_generator, hooks, scenario, event_bus) }
 
       describe '#apply_to' do

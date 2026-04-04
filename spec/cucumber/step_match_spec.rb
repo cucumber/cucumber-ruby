@@ -5,7 +5,7 @@ require 'cucumber/glue/step_definition'
 require 'cucumber/glue/registry_and_more'
 
 module Cucumber
-  describe StepMatch do
+  RSpec.describe StepMatch do
     let(:word) { '[[:word:]]' }
 
     before do

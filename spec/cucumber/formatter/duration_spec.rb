@@ -5,7 +5,7 @@ require 'cucumber/formatter/duration'
 
 module Cucumber
   module Formatter
-    describe Duration do
+    RSpec.describe Duration do
       include described_class
 
       it 'formats ms' do

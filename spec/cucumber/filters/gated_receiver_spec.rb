@@ -2,7 +2,7 @@
 
 require 'cucumber/filters/gated_receiver'
 
-describe Cucumber::Filters::GatedReceiver do
+RSpec.describe Cucumber::Filters::GatedReceiver do
   subject(:gated_receiver) { described_class.new(receiver) }
 
   let(:receiver) { double(:receiver) }

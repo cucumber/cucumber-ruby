@@ -12,7 +12,7 @@ module Cucumber
       def report(banner); end
     end
 
-    describe IOHTTPBuffer do
+    RSpec.describe IOHTTPBuffer do
       include_context 'an HTTP server accepting file requests'
 
       let(:report_size) { 10_000_000 }

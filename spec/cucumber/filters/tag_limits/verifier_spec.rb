@@ -2,7 +2,7 @@
 
 require 'cucumber/filters/tag_limits'
 
-describe Cucumber::Filters::TagLimits::Verifier do
+RSpec.describe Cucumber::Filters::TagLimits::Verifier do
   describe '#verify!' do
     subject(:verifier) { described_class.new(tag_limits) }
 

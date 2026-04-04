@@ -6,7 +6,7 @@ require 'rake'
 
 module Cucumber
   module Rake
-    describe Task::ForkedCucumberRunner do
+    RSpec.describe Task::ForkedCucumberRunner do
       let(:libs) { ['lib'] }
       let(:binary) { Cucumber::BINARY }
       let(:cucumber_opts) { ['--cuke-option'] }

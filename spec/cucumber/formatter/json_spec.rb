@@ -6,7 +6,7 @@ require 'cucumber/formatter/json'
 require 'cucumber/cli/options'
 require 'json'
 
-describe Cucumber::Formatter::Json do
+RSpec.describe Cucumber::Formatter::Json do
   extend Cucumber::Formatter::SpecHelperDsl
   include Cucumber::Formatter::SpecHelper
 

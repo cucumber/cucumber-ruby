@@ -8,7 +8,7 @@ require 'cucumber/core/test/case'
 require 'cucumber/core'
 require 'cucumber/events'
 
-describe Cucumber::Filters::Retry do
+RSpec.describe Cucumber::Filters::Retry do
   include Cucumber::Core::Gherkin::Writer
   include Cucumber::Core
   include Cucumber::Events

@@ -6,7 +6,7 @@ require 'cucumber/formatter/query/pickle_by_test'
 module Cucumber
   module Formatter
     module Query
-      describe PickleByTest do
+      RSpec.describe PickleByTest do
         extend SpecHelperDsl
         include SpecHelper
 

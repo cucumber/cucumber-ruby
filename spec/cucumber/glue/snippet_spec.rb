@@ -9,7 +9,7 @@ require 'cucumber/formatter/console'
 
 module Cucumber
   module Glue
-    describe Snippet do
+    RSpec.describe Snippet do
       include Cucumber::Formatter::Console
       let(:code_keyword) { 'Given' }
       let(:snippet) do

@@ -6,7 +6,7 @@ require 'cucumber/formatter/publish_banner_printer'
 
 module Cucumber
   module Formatter
-    describe PublishBannerPrinter do
+    RSpec.describe PublishBannerPrinter do
       extend SpecHelperDsl
       include SpecHelper
 

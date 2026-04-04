@@ -5,7 +5,7 @@ require 'cucumber/multiline_argument/data_table'
 
 module Cucumber
   module MultilineArgument
-    describe DataTable do
+    RSpec.describe DataTable do
       subject(:table) { described_class.from([%w[one four seven], %w[4444 55555 666666]]) }
 
       it 'has rows' do
