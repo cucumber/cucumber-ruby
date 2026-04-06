@@ -295,19 +295,15 @@ module Cucumber
         @repository.update(message)
 
         max_attempts = @config.retry_attempts
-
-        test_case_started = @query.find_test_case_started_by(message.test_case_finished)
-        current_attempt = test_case_started.attempt
-        # Attempt == 1 - FAIL (No retries happened yet. We should retry when retry is 2)
-        # Attempt == 2 - FAIL (Initial execution FAILED. Retry #1 failed. We should retry when retry is 2)
-        # Attempt == 3 - FAIL (Initial execution FAILED. Retry #1 failed. Retry #2 failed. We should NOT retry when retry is 2)
-        retry_the_test = event.result.failed? && (current_attempt <= max_attempts)
+        # See "fake query" for reason this is index shifted
+        retries_attempted = @query.find_test_case_started_by(message.test_case_finished).attempt - 1
+        will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
 
         message = Cucumber::Messages::Envelope.new(
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
             test_case_started_id: test_case_started_id(event.test_case),
             timestamp: time_to_timestamp(Time.now),
-            will_be_retried: retry_the_test
+            will_be_retried: will_be_retried
           )
         )
 
