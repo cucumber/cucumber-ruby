@@ -206,6 +206,8 @@ module Cucumber
           )
         )
 
+        @repository.update(message)
+
         output_envelope(message)
       end
 
@@ -279,10 +281,33 @@ module Cucumber
       end
 
       def on_test_case_finished(event)
+        # TODO: This currently generated a wrongly structured message, this is done to facilitate using the new query
+        # library. Once we have done this, we can then find one message using another (Even if it's malformed)
+        #
+        # This is not a good approach. And should be fixed once we've moved away from the events model to a message-centric model
         message = Cucumber::Messages::Envelope.new(
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
             test_case_started_id: test_case_started_id(event.test_case),
             timestamp: time_to_timestamp(Time.now)
+          )
+        )
+
+        @repository.update(message)
+
+        max_attempts = @config.retry_attempts
+
+        test_case_started = @query.find_test_case_started_by(message.test_case_finished)
+        current_attempt = test_case_started.attempt
+        # Attempt == 1 - FAIL (No retries happened yet. We should retry when retry is 2)
+        # Attempt == 2 - FAIL (Initial execution FAILED. Retry #1 failed. We should retry when retry is 2)
+        # Attempt == 3 - FAIL (Initial execution FAILED. Retry #1 failed. Retry #2 failed. We should NOT retry when retry is 2)
+        retry_the_test = event.result.failed? && (current_attempt <= max_attempts)
+
+        message = Cucumber::Messages::Envelope.new(
+          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
+            test_case_started_id: test_case_started_id(event.test_case),
+            timestamp: time_to_timestamp(Time.now),
+            will_be_retried: retry_the_test
           )
         )
 
