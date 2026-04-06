@@ -16,9 +16,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > This will be used for the migration of all existing formatters - becoming the building blocks for the future of cucumber formatters
 > which will begin being migrated in the start of 2026
 
-### Fixed
-- Fix crash when `Cucumber::Messages::Group#children` is `nil`
-
 ### Changed
 - Use the test result type 'ambiguous' added to cucumber-ruby-core
 ([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
@@ -29,6 +26,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
 > formatters and will allow us to test the new structure in a real-world scenario.
 - Updated `cucumber-compatibility-kit` to v22
+- Security: Switched out `IO.read` for more secure `File.read` in a few areas of the codebase
+
+### Fixed
+- Fix crash when `Cucumber::Messages::Group#children` is `nil`
 
 ## [10.2.0] - 2025-12-10
 ### Changed
