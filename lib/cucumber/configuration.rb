@@ -26,7 +26,6 @@ module Cucumber
         strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
         require: [],
         dry_run: false,
-        publish_quiet: false,
         fail_fast: false,
         formats: [],
         excludes: [],
