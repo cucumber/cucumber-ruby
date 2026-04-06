@@ -118,6 +118,7 @@ module Cucumber
           )
         )
 
+        # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
 
         # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
@@ -125,9 +126,6 @@ module Cucumber
         event.test_case.test_steps.each do |step|
           @test_case_by_step_id[step.id] = event.test_case
         end
-
-        # TODO: Once we're comfortable switching this over. Call @repository.update(message) alongside output_envelope
-        # however this may not be necessary as output_envelope may/should already be doing this?
 
         output_envelope(message)
       end
@@ -205,8 +203,6 @@ module Cucumber
             attempt: @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
           )
         )
-
-        @repository.update(message)
 
         output_envelope(message)
       end
