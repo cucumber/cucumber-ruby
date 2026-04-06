@@ -172,7 +172,8 @@ RSpec.describe Cucumber::Cli::Configuration do
     it 'issues a helpful error message when cucumber.yml can not be parsed by ERB' do
       given_cucumber_yml_defined_as('<% this_fails %>')
 
-      expect { config.parse!([]) }.to raise_error(/cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./)
+      expect { config.parse!([]) }
+        .to raise_error(/cucumber.yml was found, but could not be parsed with ERB. Please refer to cucumber's documentation on correct profile usage./)
     end
   end
 
