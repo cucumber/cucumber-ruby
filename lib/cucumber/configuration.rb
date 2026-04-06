@@ -19,6 +19,31 @@ module Cucumber
       new
     end
 
+    def self.default_options
+      {
+        autoload_code_paths: %w[features/support features/step_definitions],
+        filters: [],
+        strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
+        require: [],
+        dry_run: false,
+        publish_quiet: false,
+        fail_fast: false,
+        formats: [],
+        excludes: [],
+        tag_expressions: [],
+        name_regexps: [],
+        env_vars: {},
+        diff_enabled: true,
+        snippets: true,
+        source: true,
+        duration: true,
+        event_bus: Cucumber::Events.make_event_bus,
+        retry_total: Float::INFINITY,
+        tag_limits: {},
+        retry: 0
+      }
+    end
+
     # Subscribe to an event.
     #
     # See {Cucumber::Events} for the list of possible events.
@@ -35,7 +60,7 @@ module Cucumber
     end
 
     def initialize(user_options = {})
-      @options = default_options.merge(Hash(user_options))
+      @options = self.default_options.merge(Hash(user_options))
     end
 
     def with_options(new_options)
@@ -264,26 +289,7 @@ module Cucumber
     private
 
     def default_options
-      {
-        autoload_code_paths: ['features/support', 'features/step_definitions'],
-        filters: [],
-        strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
-        require: [],
-        dry_run: false,
-        publish_quiet: false,
-        fail_fast: false,
-        formats: [],
-        excludes: [],
-        tag_expressions: [],
-        name_regexps: [],
-        env_vars: {},
-        diff_enabled: true,
-        snippets: true,
-        source: true,
-        duration: true,
-        event_bus: Cucumber::Events.make_event_bus,
-        retry_total: Float::INFINITY
-      }
+      self.class.default_options
     end
 
     def default_features_paths
