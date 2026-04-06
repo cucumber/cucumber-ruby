@@ -4,6 +4,7 @@ module Cucumber
   module Cli
     class RerunFile
       attr_reader :path
+      private :path
 
       def self.can_read?(path)
         path[0] == '@' && File.file?(real_path(path))
@@ -24,7 +25,7 @@ module Cucumber
       private
 
       def lines
-        IO.read(@path).split("\n")
+        File.read(path).split("\n")
       end
     end
   end
