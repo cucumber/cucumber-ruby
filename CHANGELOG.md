@@ -22,7 +22,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   ([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
 
 ### Changed
-- Use the test result type 'ambiguous' added to cucumber-ruby-core
+- Use the test result type 'ambiguous' added to cucumber-ruby-core when steps are ambiguous
 ([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
 - Use the new internal `cucumber-query` structure for the `rerun` formatter
 > This is a very large refactor, but should not change any behaviour. The `cucumber-query` structure is a new internal structure that is designed to be used by formatters to query
@@ -31,6 +31,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
 > formatters and will allow us to test the new structure in a real-world scenario.
 - Updated `cucumber-compatibility-kit` to v22
+- Implemented the new cucumber-query structure in all message based formatters (Currently HTML / Rerun and Message)
+  ([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
 
 ## [10.2.0] - 2025-12-10
 ### Changed
