@@ -34,6 +34,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Fix crash when `Cucumber::Messages::Group#children` is `nil`
 - Fixed a longstanding issue that could affect formatters reporting of retried scenarios (Now each scenario should only be reported once, with the final result of the scenario)
   ([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
+- Fixed an issue where the default flags derived in the `Options` and `Configuration` classes were not congruent
+  ([#1846](https://github.com/cucumber/cucumber-ruby/pull/1846)) [luke-hill](https://github.com/luke-hill))
 
 ## [10.2.0] - 2025-12-10
 ### Changed
