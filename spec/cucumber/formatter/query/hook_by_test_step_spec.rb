@@ -3,7 +3,7 @@
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/query/hook_by_test_step'
 
-describe Cucumber::Formatter::Query::HookByTestStep do
+RSpec.describe Cucumber::Formatter::Query::HookByTestStep do
   extend Cucumber::Formatter::SpecHelperDsl
   include Cucumber::Formatter::SpecHelper
 

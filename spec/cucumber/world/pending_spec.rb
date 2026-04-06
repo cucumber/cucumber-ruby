@@ -5,7 +5,7 @@ require 'cucumber/glue/registry_and_more'
 require 'cucumber/configuration'
 
 module Cucumber
-  describe 'Pending' do
+  RSpec.describe 'Pending' do
     before(:each) do
       registry = Glue::RegistryAndMore.new(Runtime.new, Configuration.new)
       registry.begin_scenario(double('scenario').as_null_object)

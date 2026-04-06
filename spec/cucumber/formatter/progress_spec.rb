@@ -6,7 +6,7 @@ require 'cucumber/cli/options'
 
 module Cucumber
   module Formatter
-    describe Progress do
+    RSpec.describe Progress do
       extend SpecHelperDsl
       include SpecHelper
 

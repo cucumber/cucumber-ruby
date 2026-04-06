@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'cucumber/formatter/interceptor'
 
-describe Cucumber::Formatter::Interceptor::Pipe do
+RSpec.describe Cucumber::Formatter::Interceptor::Pipe do
   let(:pipe) { instance_spy(IO) }
 
   describe '#wrap!' do

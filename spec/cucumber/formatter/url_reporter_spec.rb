@@ -6,7 +6,7 @@ require 'cucumber/formatter/url_reporter'
 
 module Cucumber
   module Formatter
-    describe URLReporter do
+    RSpec.describe URLReporter do
       let(:io) { StringIO.new }
 
       subject { described_class.new(io) }

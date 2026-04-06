@@ -6,7 +6,7 @@ require 'rake'
 
 module Cucumber
   module Rake
-    describe Task do
+    RSpec.describe Task do
       describe '#task_name' do
         it 'can be read' do
           expect(subject.task_name).to eq('cucumber')

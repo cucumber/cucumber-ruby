@@ -2,7 +2,7 @@
 
 require 'cucumber/term/banner'
 
-describe Cucumber::Term::Banner do
+RSpec.describe Cucumber::Term::Banner do
   include described_class
 
   describe '.display_banner' do

@@ -2,7 +2,7 @@
 
 require 'yaml'
 
-describe Cucumber::Cli::ProfileLoader do
+RSpec.describe Cucumber::Cli::ProfileLoader do
   subject(:loader) { described_class.new }
 
   def given_cucumber_yml_defined_as(hash_or_string)

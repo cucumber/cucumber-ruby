@@ -10,7 +10,7 @@ require 'support/standard_step_actions'
 
 module Cucumber
   module Formatter
-    describe FailFast do
+    RSpec.describe FailFast do
       include Cucumber::Core
       include Cucumber::Core::Gherkin::Writer
 

@@ -7,7 +7,7 @@ require 'spec_helper'
 require 'cucumber/formatter/io'
 require 'support/shared_context/http_server'
 
-describe Cucumber::Formatter::CurlOptionParser do
+RSpec.describe Cucumber::Formatter::CurlOptionParser do
   describe '.parse' do
     context 'when a simple URL is given' do
       it 'returns the URL' do

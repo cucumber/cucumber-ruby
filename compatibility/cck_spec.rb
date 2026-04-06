@@ -10,7 +10,7 @@ require 'cucumber/compatibility_kit'
 #
 # All step definition and required supporting logic is contained here, the CCK gem proper contains the source of truth
 # of the "golden" NDJSON files and attachments / miscellaneous files
-describe CCK, :cck do
+RSpec.describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   # CCK v22 conformance

@@ -7,7 +7,7 @@ require 'cucumber/runtime/after_hooks'
 
 module Cucumber
   class Runtime
-    describe AfterHooks do
+    RSpec.describe AfterHooks do
       let(:subject) { described_class.new(id_generator, hooks, scenario, event_bus) }
 
       describe '#apply_to' do

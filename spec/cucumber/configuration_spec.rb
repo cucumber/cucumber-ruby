@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Cucumber
-  describe Configuration do
+  RSpec.describe Configuration do
     describe '.default' do
       subject { described_class.default }
 

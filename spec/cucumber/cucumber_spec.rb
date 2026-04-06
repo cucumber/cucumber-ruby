@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Cucumber do
+RSpec.describe Cucumber do
   describe '.deprecate' do
     it 'outputs a message to $stderr' do
       allow(Kernel).to receive(:warn)

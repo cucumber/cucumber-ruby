@@ -5,7 +5,7 @@ require 'spec_helper'
 module Html end
 
 module Cucumber
-  describe Constantize do
+  RSpec.describe Constantize do
     include described_class
 
     it 'loads pretty formatter' do

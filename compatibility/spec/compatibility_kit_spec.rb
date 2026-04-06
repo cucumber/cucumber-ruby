@@ -2,7 +2,7 @@
 
 require_relative '../support/compatibility_kit'
 
-describe CompatibilityKit do
+RSpec.describe CompatibilityKit do
   let(:features_path) { File.expand_path("#{File.dirname(__FILE__)}/../features") }
 
   describe '.supporting_code_for' do

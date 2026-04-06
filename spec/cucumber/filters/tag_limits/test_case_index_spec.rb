@@ -2,7 +2,7 @@
 
 require 'cucumber/filters/tag_limits'
 
-describe Cucumber::Filters::TagLimits::TestCaseIndex do
+RSpec.describe Cucumber::Filters::TagLimits::TestCaseIndex do
   subject(:index) { described_class.new }
 
   let(:test_cases) do

@@ -44,7 +44,7 @@ require 'cucumber/query'
 require 'cucumber/messages'
 require_relative '../../compatibility/support/cck/helpers'
 
-describe Cucumber::Query do
+RSpec.describe Cucumber::Query do
   include CCK::Helpers
 
   subject(:query) { described_class.new(repository) }
