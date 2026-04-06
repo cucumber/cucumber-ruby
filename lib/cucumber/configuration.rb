@@ -59,7 +59,7 @@ module Cucumber
     end
 
     def initialize(user_options = {})
-      @options = self.default_options.merge(Hash(user_options))
+      @options = self.class.default_options.merge(Hash(user_options))
     end
 
     def with_options(new_options)
@@ -286,10 +286,6 @@ module Cucumber
     end
 
     private
-
-    def default_options
-      self.class.default_options
-    end
 
     def default_features_paths
       ['features']

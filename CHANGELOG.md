@@ -30,7 +30,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Fixed
 - Fix crash when `Cucumber::Messages::Group#children` is `nil`
-
+- Fixed an issue where the default flags derived in the `Options` and `Configuration` classes were not congruent
+  ([#1846](https://github.com/cucumber/cucumber-ruby/pull/1846)) [luke-hill](https://github.com/luke-hill))
 ## [10.2.0] - 2025-12-10
 ### Changed
 - Permit the latest version of the `cucumber-html-formatter` (v22.0.0+)
