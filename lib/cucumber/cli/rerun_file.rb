@@ -24,7 +24,7 @@ module Cucumber
       private
 
       def lines
-        IO.read(@path).split("\n")
+        File.read(path).split("\n")
       end
     end
   end

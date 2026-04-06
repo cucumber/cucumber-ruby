@@ -20,7 +20,7 @@ RSpec.describe Cucumber::Cli::RerunFile do
 
   context 'with a rerun file containing a single feature reference' do
     before(:each) do
-      allow(IO).to receive(:read).and_return('cucumber.feature')
+      allow(File).to receive(:read).and_return('cucumber.feature')
     end
 
     it 'produces an array containing a single feature file path' do
@@ -30,7 +30,7 @@ RSpec.describe Cucumber::Cli::RerunFile do
 
   context 'with a rerun file containing multiple feature references on multiple lines' do
     before(:each) do
-      allow(IO).to receive(:read).and_return("cucumber.feature\nfoo.feature")
+      allow(File).to receive(:read).and_return("cucumber.feature\nfoo.feature")
     end
 
     it 'produces an array containing multiple feature file paths' do
@@ -40,7 +40,7 @@ RSpec.describe Cucumber::Cli::RerunFile do
 
   context 'with a rerun file containing multiple feature references on the same line' do
     before(:each) do
-      allow(IO).to receive(:read).and_return('cucumber.feature foo.feature')
+      allow(File).to receive(:read).and_return('cucumber.feature foo.feature')
     end
 
     it 'produces an array containing multiple feature file paths' do
@@ -50,7 +50,7 @@ RSpec.describe Cucumber::Cli::RerunFile do
 
   context 'with a rerun file containing multiple scenario references on the same line' do
     before(:each) do
-      allow(IO).to receive(:read).and_return('cucumber.feature:8 foo.feature:8:16')
+      allow(File).to receive(:read).and_return('cucumber.feature:8 foo.feature:8:16')
     end
 
     it 'produces an array containing multiple feature file paths with scenario lines' do
@@ -60,7 +60,7 @@ RSpec.describe Cucumber::Cli::RerunFile do
 
   context 'with a rerun file containing multiple feature references with spaces in file names' do
     before(:each) do
-      allow(IO).to receive(:read).and_return('cucumber test.feature:8 foo.feature:8:16')
+      allow(File).to receive(:read).and_return('cucumber test.feature:8 foo.feature:8:16')
     end
 
     it 'produces an array containing multiple feature file paths with scenario lines' do
@@ -70,7 +70,7 @@ RSpec.describe Cucumber::Cli::RerunFile do
 
   context 'with a rerun file containing multiple scenario references without spaces in between them' do
     before(:each) do
-      allow(IO).to receive(:read).and_return('cucumber test.feature:8foo.feature:8:16')
+      allow(File).to receive(:read).and_return('cucumber test.feature:8foo.feature:8:16')
     end
 
     it 'produces an array containing multiple feature file paths with scenario lines' do

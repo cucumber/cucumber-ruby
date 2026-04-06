@@ -118,7 +118,7 @@ module Cucumber
       it 'gets the feature files from the rerun file' do
         allow(File).to receive(:directory?).and_return(false)
         allow(File).to receive(:file?).and_return(true)
-        allow(IO).to receive(:read).and_return(
+        allow(File).to receive(:read).and_return(
           "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
           "domain folder/different cuke.feature:134 domain folder/cuke.feature:1\n"\
           'domain folder/different cuke.feature:4:5 bar.feature'
