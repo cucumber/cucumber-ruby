@@ -602,23 +602,7 @@ module Cucumber
       end
 
       def default_options
-        {
-          strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
-          require: [],
-          dry_run: false,
-          formats: [],
-          excludes: [],
-          tag_expressions: [],
-          tag_limits: {},
-          name_regexps: [],
-          env_vars: {},
-          diff_enabled: true,
-          snippets: true,
-          source: true,
-          duration: true,
-          retry: 0,
-          retry_total: Float::INFINITY
-        }
+        Cucumber::Configuration.default_options
       end
     end
   end
