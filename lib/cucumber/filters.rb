@@ -1,15 +1,3 @@
 # frozen_string_literal: true
 
-require_relative 'filters/activate_steps'
-require_relative 'filters/apply_after_step_hooks'
-require_relative 'filters/apply_before_hooks'
-require_relative 'filters/apply_after_hooks'
-require_relative 'filters/apply_around_hooks'
-require_relative 'filters/broadcast_test_run_started_event'
-require_relative 'filters/prepare_world'
-require_relative 'filters/quit'
-require_relative 'filters/randomizer'
-require_relative 'filters/reverser'
-require_relative 'filters/retry'
-require_relative 'filters/tag_limits'
-require_relative 'filters/broadcast_test_case_ready_event'
+Dir["#{File.dirname(__FILE__)}/filters/*.rb"].map(&method(:require))
