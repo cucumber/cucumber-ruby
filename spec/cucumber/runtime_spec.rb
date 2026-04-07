@@ -1,24 +1,21 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+RSpec.describe Cucumber::Runtime do
+  subject(:runtime) { described_class.new(options) }
 
-module Cucumber
-  RSpec.describe Runtime do
-    subject { described_class.new(options) }
-    let(:options) { {} }
+  let(:options) { {} }
 
-    describe '#features_paths' do
-      let(:options) { { paths: ['foo/bar/baz.feature', 'foo/bar/features/baz.feature', 'other_features'] } }
+  describe '#features_paths' do
+    let(:options) { { paths: %w[foo/bar/baz.feature foo/bar/features/baz.feature other_features] } }
 
-      it 'returns the value from configuration.paths' do
-        expect(subject.features_paths).to eq options[:paths]
-      end
+    it 'returns the value from configuration.paths' do
+      expect(runtime.features_paths).to eq options[:paths]
     end
+  end
 
-    describe '#doc_string' do
-      it 'is creates an object equal to a string' do
-        expect(subject.doc_string('Text')).to eq 'Text'
-      end
+  describe '#doc_string' do
+    it 'is creates an object equal to a string' do
+      expect(runtime.doc_string('Text')).to eq 'Text'
     end
   end
 end
