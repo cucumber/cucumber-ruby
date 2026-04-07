@@ -11,9 +11,9 @@ RSpec.describe Cucumber::Rake::ForkedCucumberRunner do
   let(:feature_files) { ['./some.feature'] }
 
   context 'when running with bundler' do
-    let(:bundler) { true }
-
     subject { described_class.new(libs, binary, cucumber_opts, bundler, feature_files) }
+
+    let(:bundler) { true }
 
     it 'does use bundler if bundler is set to true' do
       expect(subject.use_bundler).to be true
@@ -32,9 +32,9 @@ RSpec.describe Cucumber::Rake::ForkedCucumberRunner do
   end
 
   context 'when running without bundler' do
-    let(:bundler) { false }
-
     subject { described_class.new(libs, binary, cucumber_opts, bundler, feature_files) }
+
+    let(:bundler) { false }
 
     it 'does not use bundler if bundler is set to false' do
       expect(subject.use_bundler).to be false
