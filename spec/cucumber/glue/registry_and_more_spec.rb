@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'cucumber/glue/registry_and_more'
 require 'support/fake_objects'
 

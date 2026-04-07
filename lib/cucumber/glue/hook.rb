@@ -4,7 +4,6 @@ require 'cucumber/glue/invoke_in_world'
 
 module Cucumber
   module Glue
-    # TODO: Kill pointless wrapper for Before, After and AfterStep hooks with fire
     class Hook
       attr_reader :id, :tag_expressions, :location, :name
 
