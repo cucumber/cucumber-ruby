@@ -17,7 +17,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > which will begin being migrated in the start of 2026
 
 ### Changed
-- Use the test result type 'ambiguous' added to cucumber-ruby-core
+- Use the test result type 'ambiguous' added to cucumber-ruby-core when steps are ambiguous
 ([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
 - Use the new internal `cucumber-query` structure for the `rerun` formatter
 > This is a very large refactor, but should not change any behaviour. The `cucumber-query` structure is a new internal structure that is designed to be used by formatters to query
@@ -27,11 +27,16 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > formatters and will allow us to test the new structure in a real-world scenario.
 - Updated `cucumber-compatibility-kit` to v22
 - Security: Switched out `IO.read` for more secure `File.read` in a few areas of the codebase
+- Implemented the new cucumber-query structure in all message based formatters (Currently HTML / Rerun and Message)
+  ([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
 
 ### Fixed
 - Fix crash when `Cucumber::Messages::Group#children` is `nil`
+- Fixed a longstanding issue that could affect formatters reporting of retried scenarios (Now each scenario should only be reported once, with the final result of the scenario)
+  ([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
 - Fixed an issue where the default flags derived in the `Options` and `Configuration` classes were not congruent
   ([#1846](https://github.com/cucumber/cucumber-ruby/pull/1846)) [luke-hill](https://github.com/luke-hill))
+
 ## [10.2.0] - 2025-12-10
 ### Changed
 - Permit the latest version of the `cucumber-html-formatter` (v22.0.0+)
