@@ -192,25 +192,27 @@ module Cucumber
       end
 
       def on_test_case_started(event)
-        @current_test_case_started_id = test_case_started_id(event.test_case)
+        @current_test_case_started_id = @config.id_generator.new_id
+        # @current_test_case_started_id = test_case_started_id(event.test_case)
 
         # Query missing
         # find_test_case_started_by_test_case_id
+        # TODO: LH - Apr '26 -> Clarify if this should start with attempt 1 or attempt 0
         attempts_made_new =
           @repository.test_case_started_by_id
                      .values
                      .filter_map { |test_case_started| test_case_started.attempt if test_case_started.test_case_id == event.test_case.id }
                      .max
-                     .to_i
+                     .to_i + 1
 
-        attempts_made_old = @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
+        # attempts_made_old = @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
 
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
-            id: test_case_started_id(event.test_case),
+            id: @current_test_case_started_id,
             test_case_id: event.test_case.id,
             timestamp: time_to_timestamp(Time.now),
-            attempt: @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
+            attempt: attempts_made_new
           )
         )
 
@@ -387,7 +389,12 @@ module Cucumber
       end
 
       def test_case_started_id(test_case)
-        @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
+        id = test_case.id
+        repo_values = @repository.test_case_started_by_id.values
+        # old = @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
+        new = repo_values.detect { |e| e.test_case_id == id }.id
+        # [old, new]
+        # old
       end
     end
   end
