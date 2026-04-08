@@ -5,7 +5,6 @@ require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
-require 'cucumber/formatter/query/test_case_started_by_test_case'
 
 require 'cucumber/query'
 
@@ -21,7 +20,6 @@ module Cucumber
         @hook_by_test_step = Query::HookByTestStep.new(config)
         @pickle_by_test = Query::PickleByTest.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
-        @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
 
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
