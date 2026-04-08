@@ -27,6 +27,7 @@ module Cucumber
         @query = Cucumber::Query.new(@repository)
 
         @test_run_started_id = config.id_generator.new_id
+        # Redundant iVar - Should be removed in the v11 fake query removals branch
         @test_case_by_step_id = {}
         @pickle_id_step_by_test_step_id = {}
 
