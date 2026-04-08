@@ -6,6 +6,8 @@ module Cucumber
   module Formatter
     module Query
       class TestCaseStartedByTestCase
+        attr_reader :attempts_by_test_case_id, :test_case_started_id_by_test_case_id
+
         def initialize(config)
           @config = config
           config.on_event :test_case_created, &method(:on_test_case_created)
