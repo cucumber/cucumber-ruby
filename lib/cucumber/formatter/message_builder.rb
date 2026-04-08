@@ -228,7 +228,7 @@ module Cucumber
         find_test_case_started_by_test_case =
           @repository.test_case_started_by_id
                      .values
-                     .detect { |msg| msg.test_case_id == find_test_case_by_step_id.id }
+                     .detect { |test_case_started| test_case_started.test_case_id == find_test_case_by_step_id.id }
 
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
@@ -250,7 +250,7 @@ module Cucumber
         find_test_case_started_by_test_case =
           @repository.test_case_started_by_id
                      .values
-                     .detect { |msg| msg.test_case_id == find_test_case_by_step_id.id }
+                     .detect { |test_case_started| test_case_started.test_case_id == find_test_case_by_step_id.id }
 
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
 
@@ -384,6 +384,7 @@ module Cucumber
         output_envelope(message)
       end
 
+      # TODO: This is used in 3 locations
       def test_case_started_id(test_case)
         @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
       end
