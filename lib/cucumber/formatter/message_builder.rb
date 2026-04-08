@@ -5,7 +5,6 @@ require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/query/hook_by_test_step'
 require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
-require 'cucumber/formatter/query/test_case_started_by_test_case'
 
 require 'cucumber/query'
 
@@ -21,7 +20,6 @@ module Cucumber
         @hook_by_test_step = Query::HookByTestStep.new(config)
         @pickle_by_test = Query::PickleByTest.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
-        @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
 
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
@@ -42,7 +40,7 @@ module Cucumber
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :step_definition_registered, &method(:on_step_definition_registered)
 
-        # TODO: Handle TestCaseCreated
+        config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
@@ -106,6 +104,10 @@ module Cucumber
 
       def on_hook_test_step_created(_event)
         # TODO: Handle HookTestStepCreated
+      end
+
+      def on_test_case_created(event)
+        on_test_case_started(event)
       end
 
       def on_test_case_ready(event)
@@ -194,12 +196,21 @@ module Cucumber
       def on_test_case_started(event)
         @current_test_case_started_id = test_case_started_id(event.test_case)
 
+        # Query missing: `#find_all_test_case_started_by_test_case_id`
+        find_all_test_case_started_by_test_case_id =
+          @repository.test_case_started_by_id
+                     .values
+                     .select { |test_case_started| test_case_started.test_case_id == event.test_case.id }
+
+        # If no TestCaseStarted messages exist. We must be on attempt 1 (Hence the .to_i casting for a `nil` value)
+        attempts_previously_made = find_all_test_case_started_by_test_case_id.map(&:attempt).max.to_i
+
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
-            id: test_case_started_id(event.test_case),
+            id: @current_test_case_started_id,
             test_case_id: event.test_case.id,
             timestamp: time_to_timestamp(Time.now),
-            attempt: @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
+            attempt: attempts_previously_made + 1
           )
         )
 
@@ -290,7 +301,6 @@ module Cucumber
         test_case_started_id = test_case_started_id(event.test_case)
         test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
         max_attempts = @config.retry_attempts
-        # See "fake query" for reason this is index shifted
         retries_attempted = test_case_started_message.attempt - 1
         will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
 
@@ -376,7 +386,8 @@ module Cucumber
       end
 
       def test_case_started_id(test_case)
-        @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
+        repo_values = @repository.test_case_started_by_id.values
+        repo_values.detect { |e| e.test_case_id == test_case.id }&.id || @config.id_generator.new_id
       end
     end
   end
