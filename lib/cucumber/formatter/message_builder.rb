@@ -27,8 +27,6 @@ module Cucumber
         @query = Cucumber::Query.new(@repository)
 
         @test_run_started_id = config.id_generator.new_id
-        # Redundant iVar - Should be removed in the v11 fake query removals branch
-        @test_case_by_step_id = {}
         @pickle_id_step_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
@@ -121,12 +119,6 @@ module Cucumber
 
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
-
-        # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
-        # TODO: The finder in query is `find_test_step_by` (Using +TestStepStarted+ message)
-        event.test_case.test_steps.each do |step|
-          @test_case_by_step_id[step.id] = event.test_case
-        end
 
         output_envelope(message)
       end
@@ -229,14 +221,10 @@ module Cucumber
 
       def on_test_step_started(event)
         @current_test_step_id = event.test_step.id
-        # Redundant lVar - Should be removed in the v11 fake query removals branch
-        _test_case = @test_case_by_step_id[event.test_step.id]
-
         find_test_case_by_step_id =
           @repository.test_case_by_id
                      .values
                      .detect { |test_case| test_case.test_steps.any? { |step| step.id == event.test_step.id } }
-
         find_test_case_started_by_test_case =
           @repository.test_case_started_by_id
                      .values
@@ -254,11 +242,6 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        # Redundant lVar - Should be removed in the v11 fake query removals branch
-        test_case = @test_case_by_step_id[event.test_step.id]
-        # Redundant lVar - Should be removed in the v11 fake query removals branch
-        _test_case_started_id = @repository.test_case_started_by_id.values.detect { |msg| msg.test_case_id == test_case.id }.id
-
         find_test_case_by_step_id =
           @repository.test_case_by_id
                      .values
