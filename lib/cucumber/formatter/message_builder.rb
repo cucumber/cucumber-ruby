@@ -269,7 +269,8 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
-            test_case_started_id: find_test_case_started_by_test_case.id,
+            test_case_started_id: test_case_started_id(find_test_case_by_step_id),
+            # test_case_started_id: find_test_case_started_by_test_case.id,
             test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
           )
