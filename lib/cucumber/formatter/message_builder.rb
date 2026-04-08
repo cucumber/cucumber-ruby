@@ -194,6 +194,17 @@ module Cucumber
       def on_test_case_started(event)
         @current_test_case_started_id = test_case_started_id(event.test_case)
 
+        # Query missing
+        # find_test_case_started_by_test_case_id
+        attempts_made_new =
+          @repository.test_case_started_by_id
+                     .values
+                     .filter_map { |test_case_started| test_case_started.attempt if test_case_started.test_case_id == event.test_case.id }
+                     .max
+                     .to_i
+
+        attempts_made_old = @test_case_started_by_test_case.attempt_by_test_case(event.test_case)
+
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(
             id: test_case_started_id(event.test_case),
