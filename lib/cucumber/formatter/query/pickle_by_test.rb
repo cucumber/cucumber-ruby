@@ -6,6 +6,8 @@ module Cucumber
   module Formatter
     module Query
       class PickleByTest
+        attr_reader :pickle_id_by_test_case_id
+
         def initialize(config)
           @pickle_id_by_test_case_id = {}
           config.on_event :test_case_created, &method(:on_test_case_created)

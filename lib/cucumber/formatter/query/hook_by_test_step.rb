@@ -6,6 +6,8 @@ module Cucumber
   module Formatter
     module Query
       class HookByTestStep
+        attr_reader :hook_id_by_test_step_id
+
         def initialize(config)
           @hook_id_by_test_step_id = {}
 
