@@ -184,7 +184,6 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
-            # TODO: Switch this over to using the Query object -> `find_test_run_started`
             id: @test_run_started_id
           )
         )
@@ -209,10 +208,21 @@ module Cucumber
 
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
-        Cucumber::Messages::Envelope.new(
-          test_case: test_step_to_message(event.test_step)
-        )
-        # TODO: This seems to output extra test cases that aren't expected
+        test_step_to_message(event.test_step)
+        # TODO: We need to determine what message to output here (Unsure - Placeholder added)
+        # message = Cucumber::Messages::Envelope.new(
+        #   pickle: {
+        #     id: '',
+        #     uri: '',
+        #     location: nil,
+        #     name: '',
+        #     language: '',
+        #     steps: test_step_to_message(event.test_step),
+        #     tags: [],
+        #     ast_node_ids: []
+        #   }
+        # )
+        #
         # output_envelope(message)
       end
 
