@@ -107,7 +107,7 @@ module Cucumber
       end
 
       def on_test_case_created(event)
-        # on_test_case_ready(event)
+        on_test_case_started(event)
       end
 
       def on_test_case_ready(event)
@@ -194,7 +194,7 @@ module Cucumber
       end
 
       def on_test_case_started(event)
-        @current_test_case_started_id = @config.id_generator.new_id
+        @current_test_case_started_id = test_case_started_id(event.test_case)
 
         # Query missing: `#find_all_test_case_started_by_test_case_id`
         find_all_test_case_started_by_test_case_id =
@@ -387,7 +387,7 @@ module Cucumber
 
       def test_case_started_id(test_case)
         repo_values = @repository.test_case_started_by_id.values
-        repo_values.detect { |e| e.test_case_id == test_case.id }.id
+        repo_values.detect { |e| e.test_case_id == test_case.id }&.id || @config.id_generator.new_id
       end
     end
   end
