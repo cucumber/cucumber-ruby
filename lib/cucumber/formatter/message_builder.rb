@@ -40,7 +40,7 @@ module Cucumber
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :step_definition_registered, &method(:on_step_definition_registered)
 
-        # TODO: Handle TestCaseCreated
+        config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
@@ -104,6 +104,10 @@ module Cucumber
 
       def on_hook_test_step_created(_event)
         # TODO: Handle HookTestStepCreated
+      end
+
+      def on_test_case_created(event)
+        # on_test_case_ready(event)
       end
 
       def on_test_case_ready(event)
