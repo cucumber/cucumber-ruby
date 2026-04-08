@@ -229,7 +229,8 @@ module Cucumber
 
       def on_test_step_started(event)
         @current_test_step_id = event.test_step.id
-        test_case = @test_case_by_step_id[event.test_step.id]
+        # Redundant lVar - Should be removed in the v11 fake query removals branch
+        _test_case = @test_case_by_step_id[event.test_step.id]
 
         find_test_case_by_step_id =
           @repository.test_case_by_id
@@ -253,8 +254,10 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
+        # Redundant lVar - Should be removed in the v11 fake query removals branch
         test_case = @test_case_by_step_id[event.test_step.id]
-        test_case_started_id = @repository.test_case_started_by_id.values.detect { |msg| msg.test_case_id == test_case.id }.id
+        # Redundant lVar - Should be removed in the v11 fake query removals branch
+        _test_case_started_id = @repository.test_case_started_by_id.values.detect { |msg| msg.test_case_id == test_case.id }.id
 
         find_test_case_by_step_id =
           @repository.test_case_by_id
