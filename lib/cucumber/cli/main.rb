@@ -99,9 +99,10 @@ module Cucumber
         trap(signal) do
           Thread.list.each do |thread|
             prefix = "Thread TID-#{(thread.object_id ^ Process.pid).to_s(36)} #{thread.name || '<no name>'}"
+            backtrace = thread.backtrace
 
-            if thread.backtrace&.any?
-              thread.backtrace.each do |line|
+            if backtrace&.any?
+              backtrace.each do |line|
                 @err.puts("#{prefix} #{line}")
               end
             else
