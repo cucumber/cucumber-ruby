@@ -83,8 +83,9 @@ describe Cucumber::Cli::Main do
         subject.execute!(runtime)
 
         tid = (Thread.current.object_id ^ Process.pid).to_s(36)
+        pattern = RUBY_VERSION >= '3.4' ? /'Process\.kill'/ : /`kill'/
 
-        expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in (?:`kill'|'Process\.kill')/)
+        expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in #{pattern}/)
       end
     end
   end
