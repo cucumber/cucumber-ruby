@@ -69,8 +69,11 @@ describe Cucumber::Cli::Main do
       let(:runtime) { double('runtime').as_null_object }
 
       it 'dumps the thread backtrace to the error stream' do
+        kill_line = 0
+
         allow(runtime).to receive(:run!) do
           Process.kill(thread_dump_signal, Process.pid)
+          kill_line = __LINE__ - 1
         end
 
         allow(runtime).to receive(:failure?).and_return(false)
@@ -81,7 +84,7 @@ describe Cucumber::Cli::Main do
 
         tid = (Thread.current.object_id ^ Process.pid).to_s(36)
 
-        expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{__LINE__ - 11}:in (?:`kill'|'Process\.kill')/)
+        expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in (?:`kill'|'Process\.kill')/)
       end
     end
   end
