@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Cucumber
-  describe Runtime::SupportCode do
+  RSpec.describe Runtime::SupportCode do
     let(:user_interface) { double('user interface') }
     subject { described_class.new(user_interface, configuration) }
 

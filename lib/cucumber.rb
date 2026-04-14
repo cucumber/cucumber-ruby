@@ -3,6 +3,7 @@
 require 'yaml'
 require 'cucumber/encoding'
 require 'cucumber/platform'
+require 'cucumber/formatter'
 require 'cucumber/runtime'
 require 'cucumber/cli/main'
 require 'cucumber/step_definitions'
@@ -23,7 +24,7 @@ module Cucumber
     def logger
       return @log if @log
 
-      @log = Logger.new($stdout).tap { it.level = Logger::INFO }
+      @log = Logger.new($stdout).tap { |log| log.level = Logger::INFO }
     end
 
     def logger=(logger)

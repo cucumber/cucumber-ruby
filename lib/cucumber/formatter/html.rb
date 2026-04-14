@@ -15,6 +15,7 @@ module Cucumber
       end
 
       def output_envelope(envelope)
+        @repository.update(envelope)
         @html_formatter.write_message(envelope)
         @html_formatter.write_post_message if envelope.test_run_finished
       end

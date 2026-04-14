@@ -6,7 +6,7 @@ require 'cucumber/formatter/query/test_case_started_by_test_case'
 module Cucumber
   module Formatter
     module Query
-      describe TestCaseStartedByTestCase do
+      RSpec.describe TestCaseStartedByTestCase do
         extend SpecHelperDsl
         include SpecHelper
 

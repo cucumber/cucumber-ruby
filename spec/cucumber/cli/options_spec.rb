@@ -3,13 +3,13 @@
 require 'yaml'
 require 'cucumber/cli/options'
 
-describe Cucumber::Cli::Options do
+RSpec.describe Cucumber::Cli::Options do
   def given_cucumber_yml_defined_as(hash_or_string)
     allow(File).to receive(:exist?).and_return(true)
 
     cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
 
-    allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
+    allow(File).to receive(:read).with('cucumber.yml') { cucumber_yml }
   end
 
   before(:each) do

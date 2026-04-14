@@ -9,25 +9,38 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [11.0.0] - 2026-04-14
 ### Added
+- Add timestamp to `Attachment` message
 - Added a new option for running order `--reverse` which will run the scenarios in reverse order ([#1807](https://github.com/cucumber/cucumber-ruby/pull/1807) [luke-hill](https://github.com/luke-hill))
 - A first initial iteration of the new `cucumber-query` structure ([#1801](https://github.com/cucumber/cucumber-ruby/pull/1801) [luke-hill](https://github.com/luke-hill))
 > This will be used for the migration of all existing formatters - becoming the building blocks for the future of cucumber formatters
 > which will begin being migrated in the start of 2026
 - Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
 
-### Fixed
-- Fix crash when `Cucumber::Messages::Group#children` is `nil`
-
 ### Changed
-- Use the test result type 'ambiguous' added to cucumber-ruby-core
+- Use the test result type 'ambiguous' added to cucumber-ruby-core when steps are ambiguous
 ([#1815](https://github.com/cucumber/cucumber-ruby/pull/1815)) [brasmusson](https://github.com/brasmusson))
 - Use the new internal `cucumber-query` structure for the `rerun` formatter
 > This is a very large refactor, but should not change any behaviour. The `cucumber-query` structure is a new internal structure that is designed to be used by formatters to query
 > the state of the test run in a more intuitive way.
-> 
+>
 > The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
 > formatters and will allow us to test the new structure in a real-world scenario.
+- Updated `cucumber-compatibility-kit` to v22
+- Security: Switched out `IO.read` for more secure `File.read` in a few areas of the codebase
+- Implemented the new cucumber-query structure in all message based formatters (Currently HTML / Rerun and Message)
+([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
+
+### Fixed
+- Fix crash when `Cucumber::Messages::Group#children` is `nil`
+- Fixed a longstanding issue that could affect formatters reporting of retried scenarios (Now each scenario should only be reported once, with the final result of the scenario)
+([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
+- Fixed an issue where the default flags derived in the `Options` and `Configuration` classes were not congruent
+([#1846](https://github.com/cucumber/cucumber-ruby/pull/1846)) [luke-hill](https://github.com/luke-hill))
+- Fixed an issue where NoMethodError could be raised when declaring a parameter-type that used bound methods
+([#1789](https://github.com/cucumber/cucumber-ruby/pull/1789))
 
 ## [10.2.0] - 2025-12-10
 ### Changed
@@ -230,7 +243,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v10.2.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...HEAD
+[11.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.2.0...v11.0.0
 [10.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.1...v10.2.0
 [10.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.0...v10.1.1
 [10.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.0.0...v10.1.0

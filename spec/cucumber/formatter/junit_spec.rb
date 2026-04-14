@@ -34,7 +34,7 @@ module Cucumber
       end
     end
 
-    describe Junit do
+    RSpec.describe Junit do
       extend SpecHelperDsl
       include SpecHelper
 

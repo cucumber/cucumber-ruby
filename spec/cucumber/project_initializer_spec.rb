@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Cucumber::ProjectInitializer do
+RSpec.describe Cucumber::ProjectInitializer do
   let(:command_line_config) { described_class.new }
 
   before { allow(command_line_config).to receive(:puts) }

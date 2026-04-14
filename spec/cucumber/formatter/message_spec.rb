@@ -6,7 +6,7 @@ require 'cucumber/cli/options'
 
 module Cucumber
   module Formatter
-    describe Message do
+    RSpec.describe Message do
       extend SpecHelperDsl
       include SpecHelper
 

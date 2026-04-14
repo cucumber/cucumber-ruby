@@ -40,11 +40,9 @@ def list_of_tests
   end
 end
 
-require 'cucumber/query'
-require 'cucumber/messages'
 require_relative '../../compatibility/support/cck/helpers'
 
-describe Cucumber::Query do
+RSpec.describe Cucumber::Query do
   include CCK::Helpers
 
   subject(:query) { described_class.new(repository) }
@@ -56,7 +54,10 @@ describe Cucumber::Query do
       let(:cck_messages) { parse_ndjson_file(test[:cck_spec]).map.itself }
       let(:filename_to_check) { test[:cck_spec].sub('.ndjson', ".#{test[:query_name]}.results.json") }
 
-      before { cck_messages.each { |message| repository.update(message) } }
+      before do
+        skip('These tests will not pass on JRuby') if Cucumber::JRUBY
+        cck_messages.each { |message| repository.update(message) }
+      end
 
       it 'returns the expected query result' do
         evaluated_query = test[:query_proc].call(query)

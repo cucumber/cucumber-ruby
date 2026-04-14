@@ -35,6 +35,7 @@ module Cucumber
         end
 
         def on_test_case_started(event)
+          # TODO: LH - Apr '26 -> Clarify if this should start with attempt 1 or attempt 0
           @attempts_by_test_case_id[event.test_case.id] += 1
           @test_case_started_id_by_test_case_id[event.test_case.id] = @config.id_generator.new_id
         end

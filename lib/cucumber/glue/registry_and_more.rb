@@ -99,7 +99,6 @@ module Cucumber
         step_definition = StepDefinition.new(@configuration.id_generator.new_id, self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
-        @configuration.notify :envelope, step_definition.to_envelope
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
         # TODO: add a way to extract the parameter type directly from the error.
@@ -149,13 +148,13 @@ module Cucumber
 
       def before_all
         hooks[:before_all].each do |hook|
-          hook.invoke('BeforeAll', [])
+          invoke_run_hook(hook, 'BeforeAll')
         end
       end
 
       def after_all
         hooks[:after_all].each do |hook|
-          hook.invoke('AfterAll', [])
+          invoke_run_hook(hook, 'AfterAll')
         end
       end
 
@@ -181,6 +180,18 @@ module Cucumber
 
       private
 
+      def invoke_run_hook(hook, pseudo_method)
+        @configuration.notify(:test_run_hook_started, hook)
+        timer = Core::Test::Timer.new.start
+        begin
+          hook.invoke(pseudo_method, [])
+          @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Passed.new(timer.duration))
+        rescue StandardError => e
+          @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Failed.new(timer.duration, e))
+          raise
+        end
+      end
+
       def parameter_type_envelope(parameter_type)
         # TODO: should this be moved to Cucumber::Expression::ParameterType#to_envelope ??
         # Note: that would mean that cucumber-expression would depend on cucumber-messages
@@ -191,11 +202,19 @@ module Cucumber
             regular_expressions: parameter_type.regexps.map(&:to_s),
             prefer_for_regular_expression_match: parameter_type.prefer_for_regexp_match,
             use_for_snippets: parameter_type.use_for_snippets,
-            source_reference: Cucumber::Messages::SourceReference.new(
-              uri: parameter_type.transformer.source_location[0],
-              location: Cucumber::Messages::Location.new(line: parameter_type.transformer.source_location[1])
-            )
+            source_reference: source_reference_for(parameter_type.transformer)
           )
+        )
+      end
+
+      def source_reference_for(transformer)
+        # #source_location may return nil if no definition was found
+        # This is the case for transformers created using method(sym) or similar
+        return nil if transformer.source_location.nil?
+
+        Cucumber::Messages::SourceReference.new(
+          uri: transformer.source_location[0],
+          location: Cucumber::Messages::Location.new(line: transformer.source_location[1])
         )
       end
 

@@ -6,7 +6,7 @@ require 'support/fake_objects'
 
 module Cucumber
   module Glue
-    describe StepDefinition do
+    RSpec.describe StepDefinition do
       let(:id)             { double }
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
@@ -49,9 +49,15 @@ module Cucumber
       end
 
       context 'when mapping to world methods' do
+        let(:target) { double('target') }
+
         before do
           # TODO: LH -> Remove this skip pragma in 2026 as they should be fully fixed and released by then
           skip('These tests are problematic on truffleruby. See: https://github.com/oracle/truffleruby/issues/3870') if RUBY_ENGINE.start_with?('truffleruby')
+
+          world_class = registry.current_world.singleton_class
+          world_class.define_method(:with_symbol) {}
+          world_class.define_method(:target) { target }
         end
 
         it 'calls a method on the world when specified with a symbol' do
@@ -63,8 +69,6 @@ module Cucumber
         end
 
         it 'calls a method on a specified object' do
-          target = double('target')
-
           allow(registry.current_world).to receive(:target) { target }
 
           dsl.Given(/With symbol on block/, :with_symbol, on: -> { target })
@@ -75,8 +79,6 @@ module Cucumber
         end
 
         it 'calls a method on a specified world attribute' do
-          target = double('target')
-
           allow(registry.current_world).to receive(:target) { target }
 
           dsl.Given(/With symbol on symbol/, :with_symbol, on: :target)

@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'cucumber/runtime/meta_message_builder'
 
-describe Cucumber::Runtime::MetaMessageBuilder do
+RSpec.describe Cucumber::Runtime::MetaMessageBuilder do
   describe '.build_meta_message' do
     subject { described_class.build_meta_message }
 
