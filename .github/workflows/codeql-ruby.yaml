@@ -9,6 +9,9 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: '35 11 * * 2'
+
 
 concurrency:
   # Cancels in-progress runs only for pull requests
