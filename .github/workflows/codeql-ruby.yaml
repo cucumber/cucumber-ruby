@@ -10,7 +10,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '35 11 * * 2'
+    - cron: '25 11 * * 2'
 
 
 concurrency:
