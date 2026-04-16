@@ -72,15 +72,13 @@ module Cucumber
 
       load_step_definitions
       fire_install_plugin_hook
-      fire_before_all_hook unless dry_run?
       # TODO: can we remove this state?
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
-      @configuration.notify :test_run_finished, !failure?
-
       fire_after_all_hook unless dry_run?
+      @configuration.notify :test_run_finished, !failure?
     end
 
     def features_paths
@@ -113,7 +111,7 @@ module Cucumber
       if @configuration.wip?
         summary_report.test_cases.total_passed.positive?
       else
-        !summary_report.ok?(strict: @configuration.strict)
+        !summary_report.ok?(strict: @configuration.strict) || !global_hooks_summary_report.ok?
       end
     end
 
@@ -191,7 +189,7 @@ module Cucumber
     def report
       return @report if @report
 
-      reports = [summary_report] + formatters
+      reports = [summary_report, global_hooks_summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
       reports << publish_banner_printer unless @configuration.publish_quiet?
       @report ||= Formatter::Fanout.new(reports)
@@ -199,6 +197,10 @@ module Cucumber
 
     def summary_report
       @summary_report ||= Core::Report::Summary.new(@configuration.event_bus)
+    end
+
+    def global_hooks_summary_report
+      @global_hooks_summary_report ||= Formatter::GlobalHooksSummary.new(@configuration)
     end
 
     def fail_fast_report
@@ -256,6 +258,7 @@ module Cucumber
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
+          filters << Filters::FireBeforeAllHooks.new(method(:fire_before_all_hook))
           filters << Filters::Quit.new
         end
 

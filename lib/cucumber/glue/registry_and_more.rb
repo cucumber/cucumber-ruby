@@ -147,15 +147,25 @@ module Cucumber
       end
 
       def before_all
+        set_up_world_for_global_hooks
+        all_succeded = true
         hooks[:before_all].each do |hook|
-          invoke_run_hook(hook, 'BeforeAll')
+          result = invoke_run_hook(hook, 'BeforeAll')
+          all_succeded = false unless result
         end
+        @current_world = nil
+        all_succeded
       end
 
       def after_all
+        set_up_world_for_global_hooks
+        all_succeded = true
         hooks[:after_all].each do |hook|
-          invoke_run_hook(hook, 'AfterAll')
+          result = invoke_run_hook(hook, 'AfterAll')
+          all_succeded = false unless result
         end
+        @current_world = nil
+        all_succeded
       end
 
       def add_hook(type, hook)
@@ -186,9 +196,10 @@ module Cucumber
         begin
           hook.invoke(pseudo_method, [])
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Passed.new(timer.duration))
+          true
         rescue StandardError => e
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Failed.new(timer.duration, e))
-          raise
+          false
         end
       end
 
@@ -220,6 +231,13 @@ module Cucumber
 
       def hooks
         @hooks ||= Hash.new { |h, k| h[k] = [] }
+      end
+
+      def set_up_world_for_global_hooks
+        @current_world = WorldFactory.new(@world_proc).create_world
+        @current_world.extend(ProtoWorld.for(@runtime, nil))
+        MultiTest.extend_with_best_assertion_library(@current_world)
+        @current_world.add_modules!(@world_modules || [], @namespaced_world_modules || {})
       end
     end
   end
