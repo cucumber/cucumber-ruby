@@ -66,6 +66,37 @@ RSpec.describe Cucumber::Cli::Main do
         subject.execute!
       end
     end
+
+    thread_dump_signal = Signal.list['INFO'] || Signal.list['PWR']
+
+    context 'when interrupted with thread dump signal', skip: thread_dump_signal.nil? do
+      let(:runtime) { double('runtime').as_null_object }
+
+      it 'dumps the thread backtrace to the error stream' do
+        kill_line = 0
+
+        allow(runtime).to receive(:run!) do
+          Process.kill(thread_dump_signal, Process.pid)
+          kill_line = __LINE__ - 1
+        end
+
+        allow(runtime).to receive(:failure?).and_return(false)
+
+        expect(kernel).to receive(:exit).with(0)
+
+        subject.execute!(runtime)
+
+        tid = (Thread.current.object_id ^ Process.pid).to_s(36)
+
+        if defined?(TruffleRuby)
+          # TruffleRuby does not dump the actual Process.kill call, but rather the internal core/thread.rb call
+          expect(stderr.string).to match(/Thread TID-#{tid} <no name> <internal:core> core\/thread.rb:/)
+        else
+          pattern = RUBY_VERSION >= '3.4' ? /'Process\.kill'/ : /`kill'/
+          expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in #{pattern}/)
+        end
+      end
+    end
   end
 
   [Cucumber::Cli::ProfilesNotDefinedError, Cucumber::Cli::YmlLoadError, Cucumber::Cli::ProfileNotFound].each do |exception_klass|

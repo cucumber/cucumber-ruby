@@ -23,6 +23,7 @@ module Cucumber
 
       def execute!(existing_runtime = nil)
         trap_interrupt
+        trap_thread_dump_signal
 
         runtime = runtime(existing_runtime)
 
@@ -87,6 +88,27 @@ module Cucumber
           Cucumber.wants_to_quit = true
           $stderr.puts "\nExiting... Interrupt again to exit immediately."
           exit_unable_to_finish
+        end
+      end
+
+      def trap_thread_dump_signal
+        signal = Signal.list['INFO'] || Signal.list['PWR']
+
+        return if signal.nil?
+
+        trap(signal) do
+          Thread.list.each do |thread|
+            prefix = "Thread TID-#{(thread.object_id ^ Process.pid).to_s(36)} #{thread.name || '<no name>'}"
+            backtrace = thread.backtrace
+
+            if backtrace&.any?
+              backtrace.each do |line|
+                @err.puts("#{prefix} #{line}")
+              end
+            else
+              @err.puts("#{prefix} <no backtrace available>")
+            end
+          end
         end
       end
 

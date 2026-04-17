@@ -17,6 +17,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - A first initial iteration of the new `cucumber-query` structure ([#1801](https://github.com/cucumber/cucumber-ruby/pull/1801) [luke-hill](https://github.com/luke-hill))
 > This will be used for the migration of all existing formatters - becoming the building blocks for the future of cucumber formatters
 > which will begin being migrated in the start of 2026
+- Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
 
 ### Changed
 - Use the test result type 'ambiguous' added to cucumber-ruby-core when steps are ambiguous
