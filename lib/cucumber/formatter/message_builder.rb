@@ -2,8 +2,6 @@
 
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
-require 'cucumber/formatter/query/hook_by_test_step'
-require 'cucumber/formatter/query/pickle_by_test'
 require 'cucumber/formatter/query/step_definitions_by_test_step'
 require 'cucumber/formatter/query/test_case_started_by_test_case'
 
@@ -18,8 +16,6 @@ module Cucumber
       def initialize(config)
         @config = config
 
-        @hook_by_test_step = Query::HookByTestStep.new(config)
-        @pickle_by_test = Query::PickleByTest.new(config)
         @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
         @test_case_started_by_test_case = Query::TestCaseStartedByTestCase.new(config)
 
@@ -27,8 +23,12 @@ module Cucumber
         @query = Cucumber::Query.new(@repository)
 
         @test_run_started_id = config.id_generator.new_id
+
+        # Fake Query objects
         @test_case_by_step_id = {}
+        @pickle_id_by_test_case_id = {}
         @pickle_id_step_by_test_step_id = {}
+        @hook_id_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
 
@@ -42,7 +42,7 @@ module Cucumber
         config.on_event :step_activated, &method(:on_step_activated)
         config.on_event :step_definition_registered, &method(:on_step_definition_registered)
 
-        # TODO: Handle TestCaseCreated
+        config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
@@ -104,15 +104,19 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_hook_test_step_created(_event)
-        # TODO: Handle HookTestStepCreated
+      def on_hook_test_step_created(event)
+        @hook_id_by_test_step_id[event.test_step.id] = event.hook.id
+      end
+
+      def on_test_case_created(event)
+        @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
       end
 
       def on_test_case_ready(event)
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
-            pickle_id: @pickle_by_test.pickle_id(event.test_case),
+            pickle_id: fake_query_pickle_id(event.test_case),
             test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
             test_run_started_id: @test_run_started_id
           )
@@ -146,7 +150,7 @@ module Cucumber
       def hook_step_to_message(step)
         Cucumber::Messages::TestStep.new(
           id: step.id,
-          hook_id: @hook_by_test_step.hook_id(step)
+          hook_id: fake_query_hook_id(step)
         )
       end
 
@@ -209,6 +213,7 @@ module Cucumber
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
         test_step_to_message(event.test_step)
+        @hook_id_by_test_step_id[event.test_step.id] = nil
         # TODO: We need to determine what message to output here (Unsure - Placeholder added)
         # message = Cucumber::Messages::Envelope.new(
         #   pickle: {
@@ -377,6 +382,18 @@ module Cucumber
 
       def test_case_started_id(test_case)
         @test_case_started_by_test_case.test_case_started_id_by_test_case(test_case)
+      end
+
+      def fake_query_hook_id(test_step)
+        return @hook_id_by_test_step_id[test_step.id] if @hook_id_by_test_step_id.key?(test_step.id)
+
+        raise TestStepUnknownError, "No hook found for #{test_step.id} }. Known: #{@hook_id_by_test_step_id.keys}"
+      end
+
+      def fake_query_pickle_id(test_case)
+        return @pickle_id_by_test_case_id[test_case.id] if @pickle_id_by_test_case_id.key?(test_case.id)
+
+        raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@pickle_id_by_test_case_id.keys}"
       end
     end
   end
