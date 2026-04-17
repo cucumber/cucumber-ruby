@@ -87,9 +87,14 @@ RSpec.describe Cucumber::Cli::Main do
         subject.execute!(runtime)
 
         tid = (Thread.current.object_id ^ Process.pid).to_s(36)
-        pattern = RUBY_VERSION >= '3.4' ? /'Process\.kill'/ : /`kill'/
 
-        expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in #{pattern}/)
+        if defined?(TruffleRuby)
+          # TruffleRuby does not dump the actual Process.kill call, but rather the internal core/thread.rb call
+          expect(stderr.string).to match(/Thread TID-#{tid} <no name> <internal:core> core\/thread.rb:/)
+        else
+          pattern = RUBY_VERSION >= '3.4' ? /'Process\.kill'/ : /`kill'/
+          expect(stderr.string).to match(/Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in #{pattern}/)
+        end
       end
     end
   end
