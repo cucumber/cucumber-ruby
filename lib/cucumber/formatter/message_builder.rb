@@ -239,6 +239,9 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
             test_step_id: event.test_step.id,
+            # Working entity
+            test_case_started_id: test_case_started_id(find_test_case_by_step_id),
+            # "Should be broken" - But is working entity - This is actually broken - It keeps returning the same value each time
             test_case_started_id: find_test_case_started_by_test_case.id,
             timestamp: time_to_timestamp(Time.now)
           )
@@ -248,6 +251,9 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
+        # test_case = @test_case_by_step_id[event.test_step.id]
+        # test_case_started_id: test_case_started_id(test_case),
+        #
         find_test_case_by_step_id =
           @repository.test_case_by_id
                      .values
@@ -277,8 +283,8 @@ module Cucumber
             test_step_id: event.test_step.id,
             # Working entity
             test_case_started_id: test_case_started_id(find_test_case_by_step_id),
-            # Broken entity
-            # test_case_started_id: find_test_case_started_by_test_case.id,
+            # Broken entity - This is actually broken - It keeps returning the same value each time
+            test_case_started_id: find_test_case_started_by_test_case.id,
             test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
           )
