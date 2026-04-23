@@ -5,10 +5,11 @@ require 'cucumber/core/events'
 module Cucumber
   module Events
     # Event fired when a step is created from a hook
-    class HookTestStepCreated
+    class HookTestStepCreated < BaseEventNew
       attr_reader :test_step, :hook
 
-      # @return [Symbol] the underscored name of the class to be used as the key in an event registry
+      # The underscored name of the class to be used as the key in an event registry
+      #   @return [Symbol]
       def self.event_id
         :hook_test_step_created
       end
@@ -16,17 +17,7 @@ module Cucumber
       def initialize(test_step, hook)
         @test_step = test_step
         @hook = hook
-      end
-
-      def to_h
-        {
-          test_step: test_step,
-          hook: hook
-        }
-      end
-
-      def event_id
-        self.class.event_id
+        super()
       end
     end
   end

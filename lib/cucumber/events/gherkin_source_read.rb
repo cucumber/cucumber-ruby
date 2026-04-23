@@ -12,7 +12,8 @@ module Cucumber
       # The raw Gherkin source
       attr_reader :body
 
-      # @return [Symbol] the underscored name of the class to be used as the key in an event registry
+      # The underscored name of the class to be used as the key in an event registry
+      #   @return [Symbol]
       def self.event_id
         :gherkin_source_read
       end

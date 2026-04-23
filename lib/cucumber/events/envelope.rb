@@ -7,7 +7,8 @@ module Cucumber
     class Envelope < BaseEventNew
       attr_reader :envelope
 
-      # @return [Symbol] the underscored name of the class to be used as the key in an event registry
+      # The underscored name of the class to be used as the key in an event registry
+      #   @return [Symbol]
       def self.event_id
         :envelope
       end
