@@ -11,7 +11,7 @@ module Cucumber
 
       # @return [Symbol] the underscored name of the class to be used as the key in an event registry
       def self.event_id
-        :gherkin_document
+        :gherkin_source_parsed
       end
 
       def initialize(gherkin_document)
