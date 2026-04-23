@@ -16,12 +16,6 @@ module Cucumber
         @envelope = envelope
       end
 
-      # Here just is an array of each method defined as your readers
-      def attributes
-        [envelope]
-        to_h.map { |_k, v| v }
-      end
-
       def to_h
         {
           envelope: envelope
