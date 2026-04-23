@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
-
 module Cucumber
   module Events
     # Event fired when a step is activated

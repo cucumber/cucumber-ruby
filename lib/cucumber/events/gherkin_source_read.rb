@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
-
 module Cucumber
   module Events
     # Fired after we've read in the contents of a feature file

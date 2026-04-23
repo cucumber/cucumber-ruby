@@ -1,4 +1,6 @@
-# frozen_string_literal: require_relative 'base_event_new'
+# frozen_string_literal: true
+
+require_relative 'base_event_new'
 
 module Cucumber
   module Events
