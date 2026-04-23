@@ -188,7 +188,7 @@ module Cucumber
       end
 
       def on_test_case_started(event)
-        @current_test_case_started_id = test_case_started_id(event.test_case)
+        @current_test_case_started_id = @config.id_generator.new_id
 
         # Query missing: `#find_all_test_case_started_by_test_case_id`
         find_all_test_case_started_by_test_case_id =
