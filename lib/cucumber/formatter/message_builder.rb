@@ -110,10 +110,6 @@ module Cucumber
         @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
       end
 
-      def on_test_case_created(event)
-        on_test_case_started(event)
-      end
-
       def on_test_case_ready(event)
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
