@@ -399,10 +399,14 @@ module Cucumber
         output_envelope(message)
       end
 
-      # TODO: This is used in 3 locations
       def test_case_started_id(test_case)
-        repo_values = @repository.test_case_started_by_id.values
-        repo_values.detect { |e| e.test_case_id == test_case.id }&.id || @config.id_generator.new_id
+        test_case_started =
+          @repository.test_case_started_by_id
+                     .values
+                     .select { |test_case_started_message| test_case_started_message.test_case_id == test_case.id }
+                     .max_by(&:attempt)
+
+        test_case_started&.id || @config.id_generator.new_id
       end
 
       def fake_query_hook_id(test_step)
