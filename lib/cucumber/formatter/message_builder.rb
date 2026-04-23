@@ -214,7 +214,7 @@ module Cucumber
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
         test_step_to_message(event.test_step)
-        @hook_id_by_test_step_id[event.test_step.id] = nil
+        :no_op
         # TODO: We need to determine what message to output here (Unsure - Placeholder added)
         # message = Cucumber::Messages::Envelope.new(
         #   pickle: {
