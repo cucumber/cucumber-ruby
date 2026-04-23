@@ -6,6 +6,8 @@ module Cucumber
   module Formatter
     module Query
       class StepDefinitionsByTestStep
+        attr_reader :step_definition_ids_by_test_step_id, :step_match_arguments_by_test_step_id
+
         def initialize(config)
           @step_definition_ids_by_test_step_id = {}
           @step_match_arguments_by_test_step_id = {}
