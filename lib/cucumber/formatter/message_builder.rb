@@ -313,21 +313,20 @@ module Cucumber
       end
 
       def on_test_case_finished(event)
-        test_case_started_id_new =
+        test_case_started_id =
           @repository.test_case_started_by_id
                      .values
                      .detect { |test_case_started_message| test_case_started_message.test_case_id == event.test_case.id }
                      .id
 
-        test_case_started_id = test_case_started_id(event.test_case)
-        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id_new]
+        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
         max_attempts = @config.retry_attempts
         retries_attempted = test_case_started_message.attempt - 1
         will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
 
         message = Cucumber::Messages::Envelope.new(
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: test_case_started_id_new,
+            test_case_started_id: test_case_started_id,
             timestamp: time_to_timestamp(Time.now),
             will_be_retried: will_be_retried
           )
