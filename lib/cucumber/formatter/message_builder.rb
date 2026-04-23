@@ -188,6 +188,7 @@ module Cucumber
       end
 
       def on_test_case_started(event)
+        # For any new test_case_started events, we must ALWAYS generate a new id for a new run
         @current_test_case_started_id = @config.id_generator.new_id
 
         # Query missing: `#find_all_test_case_started_by_test_case_id`
