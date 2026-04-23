@@ -230,11 +230,11 @@ module Cucumber
         find_test_case_by_step_id =
           @repository.test_case_by_id
                      .values
-                     .detect { |test_case| test_case.test_steps.any? { |step| step.id == event.test_step.id } }
+                     .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
         find_test_case_started_by_test_case =
           @repository.test_case_started_by_id
                      .values
-                     .detect { |test_case_started| test_case_started.test_case_id == find_test_case_by_step_id.id }
+                     .detect { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
 
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
@@ -251,12 +251,12 @@ module Cucumber
         find_test_case_by_step_id =
           @repository.test_case_by_id
                      .values
-                     .detect { |test_case| test_case.test_steps.any? { |step| step.id == event.test_step.id } }
+                     .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
 
         find_test_case_started_by_test_case =
           @repository.test_case_started_by_id
                      .values
-                     .detect { |test_case_started| test_case_started.test_case_id == find_test_case_by_step_id.id }
+                     .detect { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
 
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
 
@@ -275,7 +275,9 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
+            # Working entity
             test_case_started_id: test_case_started_id(find_test_case_by_step_id),
+            # Broken entity
             # test_case_started_id: find_test_case_started_by_test_case.id,
             test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
