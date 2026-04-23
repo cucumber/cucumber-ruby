@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-require 'cucumber/core/events'
+# frozen_string_literal: require_relative 'base_event_new'
 
 module Cucumber
   module Events
@@ -10,7 +8,7 @@ module Cucumber
       attr_reader :gherkin_document
 
       # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
+      #   @return [Symb
       def self.event_id
         :gherkin_source_parsed
       end

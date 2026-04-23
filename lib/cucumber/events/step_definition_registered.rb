@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
+require_relative 'base_event_new'
 
 module Cucumber
   module Events
