@@ -5,7 +5,7 @@ require 'cucumber/core/events'
 module Cucumber
   module Events
     # Fired after we've read in the contents of a feature file
-    class GherkinSourceRead
+    class GherkinSourceRead < BaseEventNew
       # The path to the file
       attr_reader :path
 
@@ -20,17 +20,7 @@ module Cucumber
       def initialize(path, body)
         @path = path
         @body = body
-      end
-
-      def to_h
-        {
-          path: path,
-          body: body
-        }
-      end
-
-      def event_id
-        self.class.event_id
+        super()
       end
     end
   end

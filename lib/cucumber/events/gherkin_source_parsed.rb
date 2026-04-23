@@ -5,7 +5,7 @@ require 'cucumber/core/events'
 module Cucumber
   module Events
     # Fired after we've parsed the contents of a feature file
-    class GherkinSourceParsed
+    class GherkinSourceParsed < BaseEventNew
       # # The Gherkin Ast
       attr_reader :gherkin_document
 
@@ -16,16 +16,7 @@ module Cucumber
 
       def initialize(gherkin_document)
         @gherkin_document = gherkin_document
-      end
-
-      def to_h
-        {
-          gherkin_document: gherkin_document
-        }
-      end
-
-      def event_id
-        self.class.event_id
+        super()
       end
     end
   end

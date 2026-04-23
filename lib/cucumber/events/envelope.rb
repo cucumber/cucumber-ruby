@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
+require_relative 'base_event_new'
 
 module Cucumber
   module Events
-    class Envelope
+    class Envelope < BaseEventNew
       attr_reader :envelope
 
       # @return [Symbol] the underscored name of the class to be used as the key in an event registry
@@ -14,16 +14,7 @@ module Cucumber
 
       def initialize(envelope)
         @envelope = envelope
-      end
-
-      def to_h
-        {
-          envelope: envelope
-        }
-      end
-
-      def event_id
-        self.class.event_id
+        super()
       end
 
       def inspect
