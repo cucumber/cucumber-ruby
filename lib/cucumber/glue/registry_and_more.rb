@@ -13,6 +13,7 @@ require 'cucumber/glue/world_factory'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
+require 'cucumber/events/base_event_new'
 require 'cucumber/events/step_definition_registered'
 
 module Cucumber
