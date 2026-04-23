@@ -231,27 +231,17 @@ module Cucumber
           @repository.test_case_by_id
                      .values
                      .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
-        find_test_case_started_by_test_case =
-          @repository.test_case_started_by_id
-                     .values
-                     .detect { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
 
-        find_test_case_started_by_test_case_new =
+        find_test_case_started_by_test_case =
           @repository.test_case_started_by_id
                      .values
                      .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
                      .max_by(&:attempt)
 
-        old = test_case_started_id(find_test_case_by_step_id)
-        new = find_test_case_started_by_test_case.id
-
         message = Cucumber::Messages::Envelope.new(
           test_step_started: Cucumber::Messages::TestStepStarted.new(
             test_step_id: event.test_step.id,
-            # Working entity
-            # test_case_started_id: test_case_started_id(find_test_case_by_step_id),
-            # "Should be broken" - But is working entity - This is actually broken - It keeps returning the same value each time
-            test_case_started_id: find_test_case_started_by_test_case_new.id,
+            test_case_started_id: find_test_case_started_by_test_case.id,
             timestamp: time_to_timestamp(Time.now)
           )
         )
@@ -260,31 +250,18 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        # test_case = @test_case_by_step_id[event.test_step.id]
-        # test_case_started_id: test_case_started_id(test_case),
-        #
         find_test_case_by_step_id =
           @repository.test_case_by_id
                      .values
                      .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
 
-        # The problem here is `#detect` they are both the same test_case_id (As it's iteration 1/2 of the same test case)
-        # so it keeps returning the same value each time instead of the updated one. We need a way of picking the "right" message
         find_test_case_started_by_test_case =
-          @repository.test_case_started_by_id
-                     .values
-                     .detect { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
-
-        find_test_case_started_by_test_case_new =
           @repository.test_case_started_by_id
                      .values
                      .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
                      .max_by(&:attempt)
 
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-
-        old = test_case_started_id(find_test_case_by_step_id)
-        new = find_test_case_started_by_test_case.id
 
         result_message = result.to_message
         if result.failed? || result.pending?
@@ -301,10 +278,7 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
-            # Working entity
-            # test_case_started_id: test_case_started_id(find_test_case_by_step_id),
-            # Broken entity - This is actually broken - It keeps returning the same value each time
-            test_case_started_id: find_test_case_started_by_test_case_new.id,
+            test_case_started_id: find_test_case_started_by_test_case.id,
             test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
           )
