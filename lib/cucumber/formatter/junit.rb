@@ -51,19 +51,17 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        test_step, result = *event.attributes
         return if @failing_test_step
 
-        @failing_test_step = test_step unless result.ok?(strict: @config.strict)
+        @failing_test_step = event.test_step unless event.result.ok?(strict: @config.strict)
       end
 
       def on_test_case_finished(event)
-        test_case, result = *event.attributes
-        result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        test_case_name = NameBuilder.new(test_case, @ast_lookup)
+        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+        test_case_name = NameBuilder.new(event.test_case, @ast_lookup)
         scenario = test_case_name.scenario_name
         scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
-        output = create_output_string(test_case, scenario, result, test_case_name.row_name)
+        output = create_output_string(event.test_case, scenario, result, test_case_name.row_name)
         build_testcase(result, scenario_designation, output)
 
         Interceptor::Pipe.unwrap! :stdout
