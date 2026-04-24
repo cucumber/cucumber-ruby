@@ -116,9 +116,7 @@ module Cucumber
 
       def on_test_case_created(event)
         @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
-      end
 
-      def on_test_case_ready(event)
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
@@ -132,6 +130,11 @@ module Cucumber
         @repository.update(message)
 
         output_envelope(message)
+      end
+
+      def on_test_case_ready(_event)
+        # We now publish all the relevant information and data in the `on_test_case_created` handler
+        :no_op
       end
 
       def on_test_case_started(event)
