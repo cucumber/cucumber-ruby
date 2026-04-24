@@ -10,7 +10,7 @@ module Cucumber
         :test_run_finished
       end
 
-      def initialize(success)
+      def initialize(success = nil)
         @success = success
         super()
       end
