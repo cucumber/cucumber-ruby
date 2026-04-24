@@ -246,8 +246,6 @@ module Cucumber
 
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
-        test_step_to_message(event.test_step)
-        :no_op
         # TODO: We need to determine what message to output here (Unsure - Placeholder added)
         # message = Cucumber::Messages::Envelope.new(
         #   pickle: {
@@ -343,8 +341,6 @@ module Cucumber
 
         Cucumber::Messages::TestStep.new(
           id: step.id,
-          # TODO: This "fake query" is only used once. It can likely be replace by `find_pickle_step_by` which
-          # takes a +TestStep+ message from the repo directly.
           pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
           step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
           step_match_arguments_lists: step_match_arguments_lists(step)
@@ -354,7 +350,7 @@ module Cucumber
       def hook_step_to_message(step)
         Cucumber::Messages::TestStep.new(
           id: step.id,
-          hook_id: fake_query_hook_id(step)
+          hook_id: @hook_id_by_test_step_id[step.id]
         )
       end
 
@@ -403,12 +399,6 @@ module Cucumber
           message: message_element.message,
           stack_trace: message_element.backtrace.join("\n")
         )
-      end
-
-      def fake_query_hook_id(test_step)
-        return @hook_id_by_test_step_id[test_step.id] if @hook_id_by_test_step_id.key?(test_step.id)
-
-        raise TestStepUnknownError, "No hook found for #{test_step.id} }. Known: #{@hook_id_by_test_step_id.keys}"
       end
 
       def fake_query_pickle_id(test_case)
