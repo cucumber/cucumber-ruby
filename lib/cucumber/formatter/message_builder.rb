@@ -123,9 +123,6 @@ module Cucumber
           )
         )
 
-        # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
-        @repository.update(message)
-
         output_envelope(message)
       end
 
