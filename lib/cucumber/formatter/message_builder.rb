@@ -106,6 +106,14 @@ module Cucumber
         @hook_id_by_test_step_id[event.test_step.id] = event.hook.id
       end
 
+      def on_step_activated(event)
+        # TODO: Handle StepActivated
+      end
+
+      def on_step_definition_registered(event)
+        output_envelope(event.step_definition.to_envelope)
+      end
+
       def on_test_case_created(event)
         @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
       end
@@ -122,67 +130,6 @@ module Cucumber
 
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
-
-        output_envelope(message)
-      end
-
-      def test_step_to_message(step)
-        return hook_step_to_message(step) if step.hook?
-
-        Cucumber::Messages::TestStep.new(
-          id: step.id,
-          # TODO: This "fake query" is only used once. It can likely be replace by `find_pickle_step_by` which
-          # takes a +TestStep+ message from the repo directly.
-          pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
-          step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
-          step_match_arguments_lists: step_match_arguments_lists(step)
-        )
-      end
-
-      def hook_step_to_message(step)
-        Cucumber::Messages::TestStep.new(
-          id: step.id,
-          hook_id: fake_query_hook_id(step)
-        )
-      end
-
-      def step_match_arguments_lists(step)
-        match_arguments = step_match_arguments(step)
-        [Cucumber::Messages::StepMatchArgumentsList.new(
-          step_match_arguments: match_arguments
-        )]
-      rescue Cucumber::Formatter::TestStepUnknownError
-        []
-      end
-
-      def step_match_arguments(step)
-        @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
-          Cucumber::Messages::StepMatchArgument.new(
-            group: argument_group_to_message(argument.group),
-            parameter_type_name: parameter_type_name(argument)
-          )
-        end
-      end
-
-      def argument_group_to_message(group)
-        Cucumber::Messages::Group.new(
-          start: group.start,
-          value: group.value,
-          children: group.children&.map { |child| argument_group_to_message(child) }
-        )
-      end
-
-      def parameter_type_name(step_match_argument)
-        step_match_argument.parameter_type&.name if step_match_argument.respond_to?(:parameter_type)
-      end
-
-      def on_test_run_started(*)
-        message = Cucumber::Messages::Envelope.new(
-          test_run_started: Cucumber::Messages::TestRunStarted.new(
-            timestamp: time_to_timestamp(Time.now),
-            id: @test_run_started_id
-          )
-        )
 
         output_envelope(message)
       end
@@ -206,6 +153,91 @@ module Cucumber
             test_case_id: event.test_case.id,
             timestamp: time_to_timestamp(Time.now),
             attempt: attempts_previously_made + 1
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_case_finished(event)
+        test_case_started_id =
+          @repository.test_case_started_by_id
+                     .values
+                     .detect { |test_case_started_message| test_case_started_message.test_case_id == event.test_case.id }
+                     .id
+
+        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
+        max_attempts = @config.retry_attempts
+        retries_attempted = test_case_started_message.attempt - 1
+        will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
+
+        message = Cucumber::Messages::Envelope.new(
+          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
+            test_case_started_id: test_case_started_id,
+            timestamp: time_to_timestamp(Time.now),
+            will_be_retried: will_be_retried
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_run_started(*)
+        message = Cucumber::Messages::Envelope.new(
+          test_run_started: Cucumber::Messages::TestRunStarted.new(
+            timestamp: time_to_timestamp(Time.now),
+            id: @test_run_started_id
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_run_finished(event)
+        message = Cucumber::Messages::Envelope.new(
+          test_run_finished: Cucumber::Messages::TestRunFinished.new(
+            timestamp: time_to_timestamp(Time.now),
+            success: event.success,
+            test_run_started_id: @test_run_started_id
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_run_hook_started(event)
+        @current_test_run_hook_started_id = @config.id_generator.new_id
+
+        message = Cucumber::Messages::Envelope.new(
+          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
+            id: @current_test_run_hook_started_id,
+            hook_id: event.hook.id,
+            test_run_started_id: @test_run_started_id,
+            timestamp: time_to_timestamp(Time.now)
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def on_test_run_hook_finished(event)
+        result = event.test_result
+        result_message = result.to_message
+
+        if result.failed?
+          result_message = Cucumber::Messages::TestStepResult.new(
+            status: result_message.status,
+            duration: result_message.duration,
+            message: create_error_message(result.exception),
+            exception: create_exception_object(result, result.exception)
+          )
+        end
+
+        message = Cucumber::Messages::Envelope.new(
+          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
+            test_run_hook_started_id: @current_test_run_hook_started_id,
+            timestamp: time_to_timestamp(Time.now),
+            result: result_message
           )
         )
 
@@ -295,6 +327,67 @@ module Cucumber
         output_envelope(message)
       end
 
+      def on_undefined_parameter_type(event)
+        message = Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
+            name: event.type_name,
+            expression: event.expression
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def test_step_to_message(step)
+        return hook_step_to_message(step) if step.hook?
+
+        Cucumber::Messages::TestStep.new(
+          id: step.id,
+          # TODO: This "fake query" is only used once. It can likely be replace by `find_pickle_step_by` which
+          # takes a +TestStep+ message from the repo directly.
+          pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
+          step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
+          step_match_arguments_lists: step_match_arguments_lists(step)
+        )
+      end
+
+      def hook_step_to_message(step)
+        Cucumber::Messages::TestStep.new(
+          id: step.id,
+          hook_id: fake_query_hook_id(step)
+        )
+      end
+
+      def step_match_arguments_lists(step)
+        match_arguments = step_match_arguments(step)
+        [Cucumber::Messages::StepMatchArgumentsList.new(
+          step_match_arguments: match_arguments
+        )]
+      rescue Cucumber::Formatter::TestStepUnknownError
+        []
+      end
+
+      def step_match_arguments(step)
+        @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
+          Cucumber::Messages::StepMatchArgument.new(
+            group: argument_group_to_message(argument.group),
+            parameter_type_name: parameter_type_name(argument)
+          )
+        end
+      end
+
+      def argument_group_to_message(group)
+        Cucumber::Messages::Group.new(
+          start: group.start,
+          value: group.value,
+          children: group.children&.map { |child| argument_group_to_message(child) }
+        )
+      end
+
+      def parameter_type_name(step_match_argument)
+        step_match_argument.parameter_type&.name if step_match_argument.respond_to?(:parameter_type)
+      end
+
       def create_error_message(message_element)
         <<~ERROR_MESSAGE
           #{message_element.message} (#{message_element.class})
@@ -310,99 +403,6 @@ module Cucumber
           message: message_element.message,
           stack_trace: message_element.backtrace.join("\n")
         )
-      end
-
-      def on_test_case_finished(event)
-        test_case_started_id =
-          @repository.test_case_started_by_id
-                     .values
-                     .detect { |test_case_started_message| test_case_started_message.test_case_id == event.test_case.id }
-                     .id
-
-        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
-        max_attempts = @config.retry_attempts
-        retries_attempted = test_case_started_message.attempt - 1
-        will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: test_case_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            will_be_retried: will_be_retried
-          )
-        )
-
-        output_envelope(message)
-      end
-
-      def on_test_run_finished(event)
-        message = Cucumber::Messages::Envelope.new(
-          test_run_finished: Cucumber::Messages::TestRunFinished.new(
-            timestamp: time_to_timestamp(Time.now),
-            success: event.success,
-            test_run_started_id: @test_run_started_id
-          )
-        )
-
-        output_envelope(message)
-      end
-
-      def on_step_activated(event)
-        # TODO: Handle StepActivated
-      end
-
-      def on_step_definition_registered(event)
-        output_envelope(event.step_definition.to_envelope)
-      end
-
-      def on_test_run_hook_started(event)
-        @current_test_run_hook_started_id = @config.id_generator.new_id
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
-            id: @current_test_run_hook_started_id,
-            hook_id: event.hook.id,
-            test_run_started_id: @test_run_started_id,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        output_envelope(message)
-      end
-
-      def on_test_run_hook_finished(event)
-        result = event.test_result
-        result_message = result.to_message
-
-        if result.failed?
-          result_message = Cucumber::Messages::TestStepResult.new(
-            status: result_message.status,
-            duration: result_message.duration,
-            message: create_error_message(result.exception),
-            exception: create_exception_object(result, result.exception)
-          )
-        end
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
-            test_run_hook_started_id: @current_test_run_hook_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            result: result_message
-          )
-        )
-
-        output_envelope(message)
-      end
-
-      def on_undefined_parameter_type(event)
-        message = Cucumber::Messages::Envelope.new(
-          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
-            name: event.type_name,
-            expression: event.expression
-          )
-        )
-
-        output_envelope(message)
       end
 
       def fake_query_hook_id(test_step)
