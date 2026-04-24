@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'base_event_new'
+require_relative 'base'
 
 module Cucumber
   module Events
     # Fired after we've parsed the contents of a feature file
-    class GherkinSourceParsed < BaseEventNew
+    class GherkinSourceParsed < Base
       # # The Gherkin Ast
       attr_reader :gherkin_document
 

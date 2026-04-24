@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Event fired when a Test::Case is created from a Pickle
-    class TestCaseCreated < BaseEventNew
+    class TestCaseCreated < Base
       attr_reader :test_case, :pickle
 
       # The underscored name of the class to be used as the key in an event registry

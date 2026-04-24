@@ -2,7 +2,7 @@
 
 module Cucumber
   module Events
-    class TestCaseReady < BaseEventNew
+    class TestCaseReady < Base
       attr_reader :test_case
 
       # The underscored name of the class to be used as the key in an event registry

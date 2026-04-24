@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'base_event_new'
+require_relative 'base'
 
 module Cucumber
   module Events
-    class Envelope < BaseEventNew
+    class Envelope < Base
       attr_reader :envelope
 
       # The underscored name of the class to be used as the key in an event registry

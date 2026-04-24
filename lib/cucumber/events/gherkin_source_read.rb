@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Fired after we've read in the contents of a feature file
-    class GherkinSourceRead < BaseEventNew
+    class GherkinSourceRead < Base
       # The path to the file
       attr_reader :path
 

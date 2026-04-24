@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'base_event_new'
+require_relative 'base'
 
 module Cucumber
   module Events
     # Signals that a {Cucumber::Core::Test::Case} is about to be executed
-    class TestCaseStarted < BaseEventNew
+    class TestCaseStarted < Base
       # @return [Cucumber::Core::Test::Case] the test case to be executed
       attr_reader :test_case
 

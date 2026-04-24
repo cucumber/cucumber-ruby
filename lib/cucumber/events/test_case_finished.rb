@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Event fired when a Test::Case is created from a Pickle
-    class TestCaseFinished < BaseEventNew
+    class TestCaseFinished < Base
       # @return [Cucumber::Core::Test::Case] that was executed
       attr_reader :test_case
 

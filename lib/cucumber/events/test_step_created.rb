@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'base_event_new'
+require_relative 'base'
 
 module Cucumber
   module Events
     # Event fired when a TestStep is created from a PickleStep
-    class TestStepCreated < BaseEventNew
+    class TestStepCreated < Base
       attr_reader :test_step, :pickle_step
 
       def self.event_id

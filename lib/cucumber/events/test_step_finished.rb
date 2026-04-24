@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'base_event_new'
+require_relative 'base'
 
 module Cucumber
   module Events
     # Signals that a {Cucumber::Core::Test::Step} has finished executing
-    class TestStepFinished < BaseEventNew
+    class TestStepFinished < Base
       # @return [Cucumber::Core::Test::Step] the test step that was executed
       attr_reader :test_step
 

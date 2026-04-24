@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'base_event_new'
+require_relative 'base'
 
 module Cucumber
   module Events
     # Event fired when a step is created from a hook
-    class HookTestStepCreated < BaseEventNew
+    class HookTestStepCreated < Base
       attr_reader :test_step, :hook
 
       # The underscored name of the class to be used as the key in an event registry

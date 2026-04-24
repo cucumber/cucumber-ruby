@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Event fired when a step is activated
-    class StepActivated < BaseEventNew
+    class StepActivated < Base
       # The test step that was matched.
       #   @return [Cucumber::Core::Test::Step]
       attr_reader :test_step
