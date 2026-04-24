@@ -24,7 +24,6 @@ module Cucumber
 
         # Fake Query objects
         @test_case_by_step_id = {}
-        @pickle_id_by_test_case_id = {}
         @pickle_id_step_by_test_step_id = {}
         @hook_id_by_test_step_id = {}
 
@@ -115,12 +114,10 @@ module Cucumber
       end
 
       def on_test_case_created(event)
-        @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
-
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
-            pickle_id: fake_query_pickle_id(event.test_case),
+            pickle_id: event.pickle.id,
             test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
             test_run_started_id: @test_run_started_id
           )
@@ -412,12 +409,6 @@ module Cucumber
         return @hook_id_by_test_step_id[test_step.id] if @hook_id_by_test_step_id.key?(test_step.id)
 
         raise TestStepUnknownError, "No hook found for #{test_step.id} }. Known: #{@hook_id_by_test_step_id.keys}"
-      end
-
-      def fake_query_pickle_id(test_case)
-        return @pickle_id_by_test_case_id[test_case.id] if @pickle_id_by_test_case_id.key?(test_case.id)
-
-        raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@pickle_id_by_test_case_id.keys}"
       end
     end
   end
