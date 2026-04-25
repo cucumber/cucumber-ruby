@@ -61,13 +61,22 @@ module Cucumber
       end
 
       def attach(src, media_type, filename)
-        attachment_data = {
-          test_step_id: @current_test_step_id,
-          test_case_started_id: @current_test_case_started_id,
-          media_type: media_type,
-          file_name: filename,
-          timestamp: time_to_timestamp(Time.now)
-        }
+        attachment_data = if @current_test_run_hook_started_id.nil?
+                            {
+                              test_step_id: @current_test_step_id,
+                              test_case_started_id: @current_test_case_started_id,
+                              media_type: media_type,
+                              file_name: filename,
+                              timestamp: time_to_timestamp(Time.now)
+                            }
+                          else
+                            {
+                              test_run_hook_started_id: @current_test_run_hook_started_id,
+                              media_type: media_type,
+                              file_name: filename,
+                              timestamp: time_to_timestamp(Time.now)
+                            }
+                          end
 
         if media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
@@ -193,6 +202,7 @@ module Cucumber
 
       def on_test_case_started(event)
         @current_test_case_started_id = test_case_started_id(event.test_case)
+        @current_test_run_hook_started_id = nil
 
         message = Cucumber::Messages::Envelope.new(
           test_case_started: Cucumber::Messages::TestCaseStarted.new(

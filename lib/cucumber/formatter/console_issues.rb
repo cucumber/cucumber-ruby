@@ -10,6 +10,7 @@ module Cucumber
       def initialize(config, ast_lookup = AstLookup.new(config))
         @previous_test_case = nil
         @issues = Hash.new { |h, k| h[k] = [] }
+        @global_hooks_summary = GlobalHooksSummary.new(config)
         @config = config
         @config.on_event(:test_case_finished) do |event|
           if event.test_case != @previous_test_case
@@ -24,14 +25,13 @@ module Cucumber
       end
 
       def to_s
-        return if @issues.empty?
-
-        result = Core::Test::Result::TYPES.map { |type| scenario_listing(type, @issues[type]) }
-        result.flatten.join("\n")
+        test_case_result = @issues.empty? ? [] : Core::Test::Result::TYPES.map { |type| scenario_listing(type, @issues[type]) }
+        global_hooks_result = @global_hooks_summary.ok? ? [] : @global_hooks_summary.exception_listing
+        [test_case_result + global_hooks_result].flatten.join("\n")
       end
 
       def any?
-        @issues.any?
+        @issues.any? || !@global_hooks_summary.ok?
       end
 
       private

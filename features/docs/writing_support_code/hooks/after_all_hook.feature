@@ -42,6 +42,9 @@ Feature: AfterAll Hooks
         Scenario: #2                                     # features/f.feature:5
           Then the AfterAll hook has not been called yet # features/step_definitions/steps.rb:9
 
+      Global hook failures:
+      features/step_definitions/steps.rb:3 # AfterAll hook error has been raised (RuntimeError)
+
       2 scenarios (2 passed)
       2 steps (2 passed)
       """
