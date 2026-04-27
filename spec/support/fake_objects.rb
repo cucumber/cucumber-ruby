@@ -41,7 +41,7 @@ module FakeObjects
   class FlakyStepActions < ::Cucumber::Core::Filter.new
     def test_case(test_case)
       failing_test_steps = test_case.test_steps.map do |step|
-        step.with_action { raise Failure }
+        step.with_action { raise 'Failure' }
       end
       passing_test_steps = test_case.test_steps.map do |step|
         step.with_action {}
