@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
+require_relative 'base'
 
 module Cucumber
   module Events
-    class Envelope < Core::Event.new(:envelope)
+    class Envelope < Base
       attr_reader :envelope
+
+      # The underscored name of the class to be used as the key in an event registry
+      #   @return [Symbol]
+      def self.event_id
+        :envelope
+      end
+
+      def initialize(envelope)
+        @envelope = envelope
+        super()
+      end
 
       def inspect
         "Envelope Event -> Message Type: #{type}}"

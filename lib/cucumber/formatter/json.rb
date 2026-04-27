@@ -65,7 +65,8 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        test_step, result = *event.attributes
+        test_step = event.test_step
+        result = event.result
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         return if internal_hook?(test_step)
 
@@ -76,7 +77,8 @@ module Cucumber
       def on_test_case_finished(event)
         feature_elements << @test_case_hash if @in_background
 
-        _test_case, result = *event.attributes
+        _test_case = event.test_case
+        result = event.result
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end

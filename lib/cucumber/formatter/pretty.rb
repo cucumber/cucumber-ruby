@@ -73,8 +73,7 @@ module Cucumber
       end
 
       def on_step_activated(event)
-        test_step, step_match = *event.attributes
-        @step_matches[test_step.to_s] = step_match
+        @step_matches[event.test_step.to_s] = event.step_match
       end
 
       def on_test_case_started(event)

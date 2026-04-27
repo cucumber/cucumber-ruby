@@ -1,12 +1,20 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
-
 module Cucumber
   module Events
-    # Event fired when a Test::Case is ready to be ran (matching has been done, hooks added etc)
-    class TestCaseReady < Core::Event.new(:test_case)
+    class TestCaseReady < Base
       attr_reader :test_case
+
+      # The underscored name of the class to be used as the key in an event registry
+      #   @return [Symbol]
+      def self.event_id
+        :test_case_ready
+      end
+
+      def initialize(test_case)
+        @test_case = test_case
+        super()
+      end
     end
   end
 end
