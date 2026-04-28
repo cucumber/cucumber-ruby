@@ -92,7 +92,7 @@ module Cucumber
       end
 
       def trap_thread_dump_signal
-        signal = Signal.list['INFO'] || Signal.list['PWR']
+        signal = %w[INFO PWR].find { |s| Signal.list.key?(s) }
 
         return if signal.nil?
 

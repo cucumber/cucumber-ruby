@@ -67,7 +67,7 @@ RSpec.describe Cucumber::Cli::Main do
       end
     end
 
-    thread_dump_signal = Signal.list['INFO'] || Signal.list['PWR']
+    thread_dump_signal = %w[INFO PWR].find { |s| Signal.list.key?(s) }
 
     context 'when interrupted with thread dump signal', skip: thread_dump_signal.nil? do
       let(:runtime) { double('runtime').as_null_object }
@@ -88,7 +88,15 @@ RSpec.describe Cucumber::Cli::Main do
 
         tid = (Thread.current.object_id ^ Process.pid).to_s(36)
 
-        if defined?(TruffleRuby)
+        if defined?(JRUBY_VERSION)
+          pattern = /Thread TID-[0-9a-z]+ SIGPWR handler /
+
+          # JRuby runs signal handlers asynchronously on a dedicated thread
+          deadline = Time.now + 2
+          sleep 0.01 while stderr.string !~ pattern && Time.now < deadline
+
+          expect(stderr.string).to match(pattern)
+        elsif defined?(TruffleRuby)
           # TruffleRuby does not dump the actual Process.kill call, but rather the internal core/thread.rb call
           expect(stderr.string).to match(/Thread TID-#{tid} <no name> <internal:core> core\/thread.rb:/)
         else
