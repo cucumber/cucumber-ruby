@@ -191,10 +191,14 @@ module Cucumber
     def report
       return @report if @report
 
-      reports = [summary_report] + formatters
+      reports = [message_builder, summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
       reports << publish_banner_printer unless @configuration.publish_quiet?
       @report ||= Formatter::Fanout.new(reports)
+    end
+
+    def message_builder
+      @message_builder ||= Formatter::MessageBuilder.new(@configuration)
     end
 
     def summary_report
