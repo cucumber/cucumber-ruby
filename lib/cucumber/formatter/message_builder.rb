@@ -13,9 +13,6 @@ module Cucumber
 
       def initialize(config)
         @config = config
-
-        @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
-
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
@@ -30,7 +27,6 @@ module Cucumber
         @step_match_arguments_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
-
         config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
