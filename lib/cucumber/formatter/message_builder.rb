@@ -2,7 +2,6 @@
 
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
-require 'cucumber/formatter/query/step_definitions_by_test_step'
 
 require 'cucumber/query'
 
@@ -14,9 +13,6 @@ module Cucumber
 
       def initialize(config)
         @config = config
-
-        @step_definitions_by_test_step = Query::StepDefinitionsByTestStep.new(config)
-
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
@@ -27,9 +23,10 @@ module Cucumber
         @pickle_id_by_test_case_id = {}
         @pickle_id_step_by_test_step_id = {}
         @hook_id_by_test_step_id = {}
+        @step_definition_ids_by_test_step_id = {}
+        @step_match_arguments_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
-
         config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
@@ -107,7 +104,8 @@ module Cucumber
       end
 
       def on_step_activated(event)
-        # TODO: Handle StepActivated
+        @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
+        @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
       end
 
       def on_step_definition_registered(event)
@@ -138,7 +136,6 @@ module Cucumber
         # For any new test_case_started events, we must ALWAYS generate a new id for a new run
         @current_test_case_started_id = @config.id_generator.new_id
 
-        # Query missing: `#find_all_test_case_started_by_test_case_id`
         find_all_test_case_started_by_test_case_id =
           @repository.test_case_started_by_id
                      .values
@@ -246,21 +243,7 @@ module Cucumber
 
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
-        # TODO: We need to determine what message to output here (Unsure - Placeholder added)
-        # message = Cucumber::Messages::Envelope.new(
-        #   pickle: {
-        #     id: '',
-        #     uri: '',
-        #     location: nil,
-        #     name: '',
-        #     language: '',
-        #     steps: test_step_to_message(event.test_step),
-        #     tags: [],
-        #     ast_node_ids: []
-        #   }
-        # )
-        #
-        # output_envelope(message)
+        @step_definition_ids_by_test_step_id[event.test_step.id] = []
       end
 
       def on_test_step_started(event)
@@ -342,7 +325,7 @@ module Cucumber
         Cucumber::Messages::TestStep.new(
           id: step.id,
           pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
-          step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
+          step_definition_ids: fake_query_step_definition_ids(step),
           step_match_arguments_lists: step_match_arguments_lists(step)
         )
       end
@@ -356,15 +339,15 @@ module Cucumber
 
       def step_match_arguments_lists(step)
         match_arguments = step_match_arguments(step)
-        [Cucumber::Messages::StepMatchArgumentsList.new(
-          step_match_arguments: match_arguments
-        )]
-      rescue Cucumber::Formatter::TestStepUnknownError
-        []
+        if match_arguments.nil?
+          []
+        else
+          [Cucumber::Messages::StepMatchArgumentsList.new(step_match_arguments: match_arguments)]
+        end
       end
 
       def step_match_arguments(step)
-        @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
+        fake_query_step_match_arguments(step)&.map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: parameter_type_name(argument)
@@ -402,15 +385,19 @@ module Cucumber
       end
 
       def fake_query_hook_id(test_step)
-        return @hook_id_by_test_step_id[test_step.id] if @hook_id_by_test_step_id.key?(test_step.id)
-
-        raise TestStepUnknownError, "No hook found for #{test_step.id} }. Known: #{@hook_id_by_test_step_id.keys}"
+        @hook_id_by_test_step_id.fetch(test_step.id)
       end
 
       def fake_query_pickle_id(test_case)
-        return @pickle_id_by_test_case_id[test_case.id] if @pickle_id_by_test_case_id.key?(test_case.id)
+        @pickle_id_by_test_case_id.fetch(test_case.id)
+      end
 
-        raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@pickle_id_by_test_case_id.keys}"
+      def fake_query_step_definition_ids(test_step)
+        @step_definition_ids_by_test_step_id.fetch(test_step.id)
+      end
+
+      def fake_query_step_match_arguments(test_step)
+        @step_match_arguments_by_test_step_id.fetch(test_step.id, nil)
       end
     end
   end
