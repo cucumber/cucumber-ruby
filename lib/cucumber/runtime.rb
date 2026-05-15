@@ -1,52 +1,27 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'cucumber/configuration'
-require 'cucumber/load_path'
-require 'cucumber/formatter/duration'
-require 'cucumber/file_specs'
-require 'cucumber/filters'
-require 'cucumber/formatter/fanout'
-require 'cucumber/gherkin/i18n'
-require 'cucumber/glue/registry_wrapper'
-require 'cucumber/step_match_search'
-require 'cucumber/messages'
-require 'cucumber/runtime/meta_message_builder'
 require 'sys/uname'
 
+require 'cucumber/core'
+require 'cucumber/messages'
+
+require_relative 'configuration'
+require_relative 'errors'
+require_relative 'file_specs'
+require_relative 'filters'
+require_relative 'load_path'
+require_relative 'step_match_search'
+
+require_relative 'formatter/duration'
+require_relative 'formatter/fanout'
+require_relative 'gherkin/i18n'
+require_relative 'glue/registry_wrapper'
+require_relative 'runtime/meta_message_builder'
+require_relative 'runtime/support_code'
+require_relative 'runtime/user_interface'
+
 module Cucumber
-  module FixRuby21Bug9285
-    def message
-      String(super).gsub('@ rb_sysopen ', '')
-    end
-  end
-
-  class FileException < RuntimeError
-    attr_reader :path
-
-    def initialize(original_exception, path)
-      @path = path
-      super(original_exception)
-    end
-  end
-
-  class FileNotFoundException < FileException
-  end
-
-  class FeatureFolderNotFoundException < RuntimeError
-    def initialize(path)
-      @path = path
-      super
-    end
-
-    def message
-      "No such file or directory - #{@path}"
-    end
-  end
-
-  require 'cucumber/core'
-  require 'cucumber/runtime/user_interface'
-  require 'cucumber/runtime/support_code'
   class Runtime
     attr_reader :results, :support_code, :configuration
 
