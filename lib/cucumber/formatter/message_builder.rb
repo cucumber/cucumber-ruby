@@ -340,15 +340,19 @@ module Cucumber
 
       def step_match_arguments_lists(step)
         match_arguments = step_match_arguments(step)
-        [Cucumber::Messages::StepMatchArgumentsList.new(
-          step_match_arguments: match_arguments
-        )]
+        if match_arguments.nil?
+          []
+        else
+          [Cucumber::Messages::StepMatchArgumentsList.new(
+            step_match_arguments: match_arguments
+          )]
+        end
       rescue KeyError
         []
       end
 
       def step_match_arguments(step)
-        fake_query_step_match_arguments(step).map do |argument|
+        fake_query_step_match_arguments(step)&.map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: parameter_type_name(argument)
@@ -398,7 +402,7 @@ module Cucumber
       end
 
       def fake_query_step_match_arguments(test_step)
-        @step_match_arguments_by_test_step_id.fetch(test_step.id)
+        @step_match_arguments_by_test_step_id.fetch(test_step.id, nil)
       end
     end
   end
