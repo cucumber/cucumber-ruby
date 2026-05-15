@@ -390,27 +390,19 @@ module Cucumber
       end
 
       def fake_query_hook_id(test_step)
-        return @hook_id_by_test_step_id[test_step.id] if @hook_id_by_test_step_id.key?(test_step.id)
-
-        raise TestStepUnknownError, "No hook found for #{test_step.id} }. Known: #{@hook_id_by_test_step_id.keys}"
+        @hook_id_by_test_step_id.fetch(test_step.id)
       end
 
       def fake_query_pickle_id(test_case)
-        return @pickle_id_by_test_case_id[test_case.id] if @pickle_id_by_test_case_id.key?(test_case.id)
-
-        raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@pickle_id_by_test_case_id.keys}"
+        @pickle_id_by_test_case_id.fetch(test_case.id)
       end
 
       def fake_query_step_definition_ids(test_step)
-        return @step_definition_ids_by_test_step_id[test_step.id] if @step_definition_ids_by_test_step_id.key?(test_step.id)
-
-        raise TestStepUnknownError, "No step definition found for #{test_step.id} }. Known: #{@step_definition_ids_by_test_step_id.keys}"
+        @step_definition_ids_by_test_step_id.fetch(test_step.id)
       end
 
       def fake_query_step_match_arguments(test_step)
-        return @step_match_arguments_by_test_step_id[test_step.id] if @step_match_arguments_by_test_step_id.key?(test_step.id)
-
-        raise TestStepUnknownError, "No step match arguments found for #{test_step.id} }. Known: #{@step_match_arguments_by_test_step_id.keys}"
+        @step_match_arguments_by_test_step_id.fetch(test_step.id)
       end
     end
   end
