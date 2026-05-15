@@ -14,6 +14,10 @@ RSpec.describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   # CCK v22 conformance
+  # OVERALL: N/A (yet)
+  # SANITIZED: 102 examples, 22 failures, 80 passed
+
+  # CCK v22 conformance
   # OVERALL: 93 examples, 5 failures, 88 passed
   # SANITIZED: 84 examples, 0 failures, 84 passed
 
@@ -32,7 +36,7 @@ RSpec.describe CCK, :cck do
       global-hooks-attachments
       global-hooks-beforeall-error
     ]
-  _failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
+  _failing, passing = Cucumber::CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
   passing.each do |example_name|
     describe "'#{example_name}' example" do
@@ -45,7 +49,7 @@ RSpec.describe CCK, :cck do
             ''
           end
         end
-        let(:support_code_path) { CompatibilityKit.supporting_code_for(example) }
+        let(:support_code_path) { Cucumber::CompatibilityKit.supporting_code_for(example) }
         let(:messages) { `#{cucumber_command} --require #{support_code_path} #{cck_path} #{extra_args}` }
       end
     end
