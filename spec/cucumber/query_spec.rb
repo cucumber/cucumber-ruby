@@ -40,8 +40,6 @@ def list_of_tests
   end
 end
 
-require 'cucumber/query'
-require 'cucumber/messages'
 require_relative '../../compatibility/support/cck/helpers'
 
 RSpec.describe Cucumber::Query do

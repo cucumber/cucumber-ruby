@@ -208,7 +208,7 @@ RSpec/IndexedLet:
     - 'spec/cucumber/filters/retry_spec.rb'
     - 'spec/cucumber/glue/registry_and_more_spec.rb'
 
-# Offense count: 64
+# Offense count: 65
 # Configuration parameters: AssignmentOnly.
 RSpec/InstanceVariable:
   Exclude:
@@ -216,6 +216,7 @@ RSpec/InstanceVariable:
     - 'spec/cucumber/formatter/interceptor_spec.rb'
     - 'spec/cucumber/formatter/json_spec.rb'
     - 'spec/cucumber/formatter/query/hook_by_test_step_spec.rb'
+    - 'spec/cucumber/step_match_spec.rb'
     - 'spec/support/shared_context/http_server.rb'
 
 # Offense count: 2
@@ -254,7 +255,7 @@ RSpec/MultipleSubjects:
   Exclude:
     - 'spec/cucumber/runtime/support_code_spec.rb'
 
-# Offense count: 46
+# Offense count: 44
 # Configuration parameters: EnforcedStyle, IgnoreSharedExamples.
 # SupportedStyles: always, named_only
 RSpec/NamedSubject:
@@ -266,7 +267,6 @@ RSpec/NamedSubject:
     - 'spec/cucumber/rake/task_spec.rb'
     - 'spec/cucumber/runtime/meta_message_builder_spec.rb'
     - 'spec/cucumber/runtime/support_code_spec.rb'
-    - 'spec/cucumber/runtime_spec.rb'
 
 # Offense count: 8
 # Configuration parameters: AllowedGroups.
