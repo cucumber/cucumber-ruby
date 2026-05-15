@@ -2,7 +2,6 @@
 
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
-require 'cucumber/formatter/query/step_definitions_by_test_step'
 
 require 'cucumber/query'
 
@@ -27,6 +26,8 @@ module Cucumber
         @pickle_id_by_test_case_id = {}
         @pickle_id_step_by_test_step_id = {}
         @hook_id_by_test_step_id = {}
+        @step_definition_ids_by_test_step_id = {}
+        @step_match_arguments_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
 
@@ -107,7 +108,8 @@ module Cucumber
       end
 
       def on_step_activated(event)
-        # TODO: Handle StepActivated
+        @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
+        @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
       end
 
       def on_step_definition_registered(event)
@@ -246,21 +248,7 @@ module Cucumber
 
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
-        # TODO: We need to determine what message to output here (Unsure - Placeholder added)
-        # message = Cucumber::Messages::Envelope.new(
-        #   pickle: {
-        #     id: '',
-        #     uri: '',
-        #     location: nil,
-        #     name: '',
-        #     language: '',
-        #     steps: test_step_to_message(event.test_step),
-        #     tags: [],
-        #     ast_node_ids: []
-        #   }
-        # )
-        #
-        # output_envelope(message)
+        @step_definition_ids_by_test_step_id[event.test_step.id] = []
       end
 
       def on_test_step_started(event)
@@ -342,7 +330,7 @@ module Cucumber
         Cucumber::Messages::TestStep.new(
           id: step.id,
           pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
-          step_definition_ids: @step_definitions_by_test_step.step_definition_ids(step),
+          step_definition_ids: fake_query_step_definition_ids(step),
           step_match_arguments_lists: step_match_arguments_lists(step)
         )
       end
@@ -364,7 +352,7 @@ module Cucumber
       end
 
       def step_match_arguments(step)
-        @step_definitions_by_test_step.step_match_arguments(step).map do |argument|
+        fake_query_step_match_arguments(step).map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: parameter_type_name(argument)
@@ -411,6 +399,18 @@ module Cucumber
         return @pickle_id_by_test_case_id[test_case.id] if @pickle_id_by_test_case_id.key?(test_case.id)
 
         raise TestCaseUnknownError, "No pickle found for #{test_case.id} }. Known: #{@pickle_id_by_test_case_id.keys}"
+      end
+
+      def fake_query_step_definition_ids(test_step)
+        return @step_definition_ids_by_test_step_id[test_step.id] if @step_definition_ids_by_test_step_id.key?(test_step.id)
+
+        raise TestStepUnknownError, "No step definition found for #{test_step.id} }. Known: #{@step_definition_ids_by_test_step_id.keys}"
+      end
+
+      def fake_query_step_match_arguments(test_step)
+        return @step_match_arguments_by_test_step_id[test_step.id] if @step_match_arguments_by_test_step_id.key?(test_step.id)
+
+        raise TestStepUnknownError, "No step match arguments found for #{test_step.id} }. Known: #{@step_match_arguments_by_test_step_id.keys}"
       end
     end
   end
