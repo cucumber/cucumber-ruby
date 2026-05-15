@@ -9,7 +9,7 @@ RSpec.describe Cucumber::Cli::Options do
 
     cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
 
-    allow(IO).to receive(:read).with('cucumber.yml') { cucumber_yml }
+    allow(File).to receive(:read).with('cucumber.yml') { cucumber_yml }
   end
 
   before(:each) do

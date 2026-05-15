@@ -118,6 +118,7 @@ module Cucumber
           )
         )
 
+        # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
 
         # TODO: Switch this over to using the Repo Query object -> `test_step_by_id`
@@ -125,9 +126,6 @@ module Cucumber
         event.test_case.test_steps.each do |step|
           @test_case_by_step_id[step.id] = event.test_case
         end
-
-        # TODO: Once we're comfortable switching this over. Call @repository.update(message) alongside output_envelope
-        # however this may not be necessary as output_envelope may/should already be doing this?
 
         output_envelope(message)
       end
@@ -186,7 +184,6 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           test_run_started: Cucumber::Messages::TestRunStarted.new(
             timestamp: time_to_timestamp(Time.now),
-            # TODO: Switch this over to using the Query object -> `find_test_run_started`
             id: @test_run_started_id
           )
         )
@@ -211,10 +208,21 @@ module Cucumber
 
       def on_test_step_created(event)
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
-        Cucumber::Messages::Envelope.new(
-          test_case: test_step_to_message(event.test_step)
-        )
-        # TODO: This seems to output extra test cases that aren't expected
+        test_step_to_message(event.test_step)
+        # TODO: We need to determine what message to output here (Unsure - Placeholder added)
+        # message = Cucumber::Messages::Envelope.new(
+        #   pickle: {
+        #     id: '',
+        #     uri: '',
+        #     location: nil,
+        #     name: '',
+        #     language: '',
+        #     steps: test_step_to_message(event.test_step),
+        #     tags: [],
+        #     ast_node_ids: []
+        #   }
+        # )
+        #
         # output_envelope(message)
       end
 
@@ -279,10 +287,18 @@ module Cucumber
       end
 
       def on_test_case_finished(event)
+        test_case_started_id = test_case_started_id(event.test_case)
+        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
+        max_attempts = @config.retry_attempts
+        # See "fake query" for reason this is index shifted
+        retries_attempted = test_case_started_message.attempt - 1
+        will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
+
         message = Cucumber::Messages::Envelope.new(
           test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: test_case_started_id(event.test_case),
-            timestamp: time_to_timestamp(Time.now)
+            test_case_started_id: test_case_started_id,
+            timestamp: time_to_timestamp(Time.now),
+            will_be_retried: will_be_retried
           )
         )
 

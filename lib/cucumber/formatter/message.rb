@@ -15,6 +15,7 @@ module Cucumber
       end
 
       def output_envelope(envelope)
+        @repository.update(envelope)
         @io.write(envelope.to_json)
         @io.write("\n")
       end
