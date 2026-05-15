@@ -21,6 +21,7 @@ module Cucumber
       # that makes a sound before invoking #ask.
       #
       def ask(question, timeout_seconds)
+        Cucumber.deprecate(ask_deprecation_message, 'Cucumber::Runtime#ask (From UserInterface Module)', 'v12')
         $stdout.puts(question)
         $stdout.flush
         puts(question)
@@ -46,6 +47,18 @@ module Cucumber
       end
 
       private
+
+      def ask_deprecation_message
+        <<~MESSAGE
+          The `#ask` method has been present in cucumber for a while, but its purpose outside of cucumber is
+          questionable. It is being deprecated and will be removed in a future version (Targeting v12).
+
+          If you are using it in your own code, you should remove the dependency on it and implement your own version
+          of it. If you are using it in a step definition, you should consider whether that is really necessary and
+          use either a conditional waiter or use a tag so that the scenario doesn't automatically run in a CI
+          environment where there is no operator to answer the question.
+        MESSAGE
+      end
 
       def mri_gets(timeout_seconds)
         Timeout.timeout(timeout_seconds) do

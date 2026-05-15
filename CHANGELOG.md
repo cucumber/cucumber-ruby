@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
+and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
 
 ## [11.0.0] - 2026-04-14
 ### Added
