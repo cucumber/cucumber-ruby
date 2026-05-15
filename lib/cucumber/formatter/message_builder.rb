@@ -136,7 +136,6 @@ module Cucumber
         # For any new test_case_started events, we must ALWAYS generate a new id for a new run
         @current_test_case_started_id = @config.id_generator.new_id
 
-        # Query missing: `#find_all_test_case_started_by_test_case_id`
         find_all_test_case_started_by_test_case_id =
           @repository.test_case_started_by_id
                      .values
@@ -343,12 +342,8 @@ module Cucumber
         if match_arguments.nil?
           []
         else
-          [Cucumber::Messages::StepMatchArgumentsList.new(
-            step_match_arguments: match_arguments
-          )]
+          [Cucumber::Messages::StepMatchArgumentsList.new(step_match_arguments: match_arguments)]
         end
-      rescue KeyError
-        []
       end
 
       def step_match_arguments(step)
