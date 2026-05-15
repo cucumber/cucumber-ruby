@@ -12,6 +12,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
   ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+- Refactor to internal error logic (No user facing changes)
+
+### Removed
+- Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
+logic and some old rspec helper files)
+- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2)
 
 ## [11.0.0] - 2026-04-14
 ### Added
