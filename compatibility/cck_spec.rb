@@ -15,7 +15,7 @@ RSpec.describe CCK, :cck do
 
   # CCK v22 conformance
   # OVERALL: N/A (yet)
-  # SANITIZED: 102 examples, 22 failures, 80 passed
+  # SANITIZED: 102 examples, 9 failures, 93 passed
 
   # CCK v22 conformance
   # OVERALL: 93 examples, 5 failures, 88 passed
