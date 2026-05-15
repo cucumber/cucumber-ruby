@@ -15,12 +15,6 @@ require 'cucumber/runtime/meta_message_builder'
 require 'sys/uname'
 
 module Cucumber
-  module FixRuby21Bug9285
-    def message
-      String(super).gsub('@ rb_sysopen ', '')
-    end
-  end
-
   class FileException < RuntimeError
     attr_reader :path
 
