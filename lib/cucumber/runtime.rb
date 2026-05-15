@@ -13,34 +13,13 @@ require 'cucumber/step_match_search'
 require 'cucumber/messages'
 require 'cucumber/runtime/meta_message_builder'
 require 'sys/uname'
+require 'cucumber/core'
+require 'cucumber/runtime/user_interface'
+require 'cucumber/runtime/support_code'
+
+require_relative 'errors'
 
 module Cucumber
-  class FileException < RuntimeError
-    attr_reader :path
-
-    def initialize(original_exception, path)
-      @path = path
-      super(original_exception)
-    end
-  end
-
-  class FileNotFoundException < FileException
-  end
-
-  class FeatureFolderNotFoundException < RuntimeError
-    def initialize(path)
-      @path = path
-      super
-    end
-
-    def message
-      "No such file or directory - #{@path}"
-    end
-  end
-
-  require 'cucumber/core'
-  require 'cucumber/runtime/user_interface'
-  require 'cucumber/runtime/support_code'
   class Runtime
     attr_reader :results, :support_code, :configuration
 
