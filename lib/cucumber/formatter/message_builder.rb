@@ -343,7 +343,7 @@ module Cucumber
         [Cucumber::Messages::StepMatchArgumentsList.new(
           step_match_arguments: match_arguments
         )]
-      rescue Cucumber::Formatter::TestStepUnknownError
+      rescue KeyError
         []
       end
 
