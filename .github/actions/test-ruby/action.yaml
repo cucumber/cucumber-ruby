@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Set up Ruby
-      uses: ruby/setup-ruby@e65c17d16e57e481586a6a5a0282698790062f92 # v1.300.0
+      uses: ruby/setup-ruby@97ecb7b512899eb71ab1bf2310a624c6f1589ac6 # v1.308.0
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
