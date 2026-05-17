@@ -148,24 +148,24 @@ module Cucumber
 
       def before_all
         set_up_world_for_global_hooks
-        all_succeded = true
+        all_succeeded = true
         hooks[:before_all].each do |hook|
           result = invoke_run_hook(hook, 'BeforeAll')
-          all_succeded = false unless result
+          all_succeeded = false unless result
         end
         @current_world = nil
-        all_succeded
+        all_succeeded
       end
 
       def after_all
         set_up_world_for_global_hooks
-        all_succeded = true
+        all_succeeded = true
         hooks[:after_all].each do |hook|
           result = invoke_run_hook(hook, 'AfterAll')
-          all_succeded = false unless result
+          all_succeeded = false unless result
         end
         @current_world = nil
-        all_succeded
+        all_succeeded
       end
 
       def add_hook(type, hook)

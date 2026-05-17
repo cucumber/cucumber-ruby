@@ -17,8 +17,8 @@ module Cucumber
       end
 
       def done
-        all_succeded = @fire_before_all_hooks_method.call
-        if all_succeded
+        all_succeeded = @fire_before_all_hooks_method.call
+        if all_succeeded
           @test_cases.map do |test_case|
             test_case.describe_to(@receiver)
           end
