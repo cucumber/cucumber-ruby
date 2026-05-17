@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
+  ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
 
 ## [11.0.0] - 2026-04-14
 ### Added
