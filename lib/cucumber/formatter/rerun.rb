@@ -59,7 +59,7 @@ module Cucumber
 
       def non_rerunnable_status?(status)
         [
-          Cucumber::Messages::TestStepResultStatus::PASSED,
+          Cucumber::Messages::TestStepResultStatus::SKIPPED,
           Cucumber::Messages::TestStepResultStatus::PENDING,
           Cucumber::Messages::TestStepResultStatus::UNDEFINED
         ].include?(status)
