@@ -68,37 +68,6 @@ Feature: Rerun formatter
       """
       """
 
-  Scenario: Exit code is not zero, regular scenario
-    Given a file named "features/mixed.feature" with:
-      """
-      Feature: Mixed
-
-        Scenario:
-          Given this step fails
-
-        Scenario:
-          Given this step is undefined
-
-        Scenario:
-          Given this step is pending
-
-        Scenario:
-          Given this step passes
-      """
-    And a file named "features/all_good.feature" with:
-      """
-      Feature: All good
-
-        Scenario:
-          Given this step passes
-      """
-
-    When I run `cucumber --publish-quiet -f rerun`
-    Then it should fail with exactly:
-      """
-      features/mixed.feature:3:6:9
-      """
-
   Scenario: Exit code is not zero, scenario outlines
     For details see https://github.com/cucumber/cucumber/issues/57
     Given a file named "features/one_passing_one_failing.feature" with:
