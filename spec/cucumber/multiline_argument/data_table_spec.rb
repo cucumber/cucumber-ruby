@@ -82,16 +82,9 @@ module Cucumber
           expect(new_table.rows.first).not_to include('4444')
         end
 
-        it 'passes silently once #hashes are interrogated if a mapped column does not exist in non-strict mode' do
+        it 'fails once `#hashes` are interrogated if a mapped column does not exist' do
           expect do
-            new_table = table.map_column('two', strict: false, &:to_i)
-            new_table.hashes
-          end.not_to raise_error
-        end
-
-        it 'fails once #hashes are interrogated if a mapped column does not exist in strict mode' do
-          expect do
-            new_table = table.map_column('two', strict: true, &:to_i)
+            new_table = table.map_column('two', &:to_i)
             new_table.hashes
           end.to raise_error('The column named "two" does not exist')
         end
@@ -136,7 +129,7 @@ module Cucumber
 
         it 'supports header and column mapping' do
           table = described_class.from([%w[one 1111], %w[two 22222]])
-          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase).map_column('two', strict: false, &:to_i)
+          t2 = table.map_headers({ 'two' => 'Two' }, &:upcase).map_column('two', &:to_i)
 
           expect(t2.rows_hash).to eq('ONE' => '1111', 'Two' => 22_222)
         end

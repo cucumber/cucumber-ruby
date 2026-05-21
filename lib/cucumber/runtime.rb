@@ -88,7 +88,7 @@ module Cucumber
       if @configuration.wip?
         summary_report.test_cases.total_passed.positive?
       else
-        !summary_report.ok?(strict: @configuration.strict)
+        !summary_report.ok?
       end
     end
 
