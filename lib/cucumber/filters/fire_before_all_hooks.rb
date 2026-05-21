@@ -2,12 +2,12 @@
 
 module Cucumber
   module Filters
-    # Executes all BeforeAll hooks and only if they were all
-    # successful pass on the TestCases down the filter chain
+    # Executes all BeforeAll hooks and ONLY if they were all
+    # successful pass on all the `TestCase` objects down the filter chain
     class FireBeforeAllHooks < Core::Filter.new(:config)
-      def initialize(fire_before_all_hooks_method, receiver = nil)
+      def initialize(support_code, receiver = nil)
         super
-        @fire_before_all_hooks_method = fire_before_all_hooks_method
+        @support_code = support_code
         @test_cases = []
       end
 
@@ -17,14 +17,19 @@ module Cucumber
       end
 
       def done
-        all_succeeded = @fire_before_all_hooks_method.call
-        if all_succeeded
+        if fire_before_all_hook
           @test_cases.map do |test_case|
             test_case.describe_to(@receiver)
           end
         end
-        super
+        receiver.done
         self
+      end
+
+      private
+
+      def fire_before_all_hook
+        @support_code.fire_hook(:before_all)
       end
     end
   end

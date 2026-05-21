@@ -121,10 +121,6 @@ module Cucumber
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
     end
 
-    def fire_before_all_hook # :nodoc:
-      @support_code.fire_hook(:before_all)
-    end
-
     def fire_after_all_hook # :nodoc:
       @support_code.fire_hook(:after_all)
     end
@@ -258,7 +254,7 @@ module Cucumber
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
-          filters << Filters::FireBeforeAllHooks.new(method(:fire_before_all_hook))
+          filters << Filters::FireBeforeAllHooks.new(@support_code)
           filters << Filters::Quit.new
         end
 
