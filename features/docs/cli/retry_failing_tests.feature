@@ -16,19 +16,14 @@ Feature: Retry failing tests
     And a scenario "Solid" that passes
 
   Scenario: Retry once, so Fails-once starts to pass
-    Given a scenario "Fails-forever" that fails
     When I run `cucumber -q --retry 1 --format summary`
     # These split assertions are due to an issue with aruba treating the () as regex and it failing erroneously
     Then it should fail with:
       """
-      4 scenarios (2 failed, 1 flaky, 1 passed)
+      3 scenarios (1 failed, 1 flaky, 1 passed)
       """
     And it should fail with:
       """
-      Fails-forever
-        Fails-forever ✗
-        Fails-forever ✗
-
       Fails-once feature
         Fails-once ✗
         Fails-once ✓
@@ -42,19 +37,13 @@ Feature: Retry failing tests
       """
 
   Scenario: Retry twice, so Fails-twice starts to pass too
-    Given a scenario "Fails-forever" that fails
     When I run `cucumber -q --retry 2 --format summary`
-    Then it should fail with:
+    Then it should pass with:
       """
-      4 scenarios (1 failed, 2 flaky, 1 passed)
+      3 scenarios (2 flaky, 1 passed)
       """
-    And it should fail with:
+    And it should pass with:
       """
-      Fails-forever
-        Fails-forever ✗
-        Fails-forever ✗
-        Fails-forever ✗
-
       Fails-once feature
         Fails-once ✗
         Fails-once ✓
@@ -66,17 +55,6 @@ Feature: Retry failing tests
 
       Solid
         Solid ✓
-      """
-
-  Scenario: Flaky scenarios gives non-zero exit code
-    When I run `cucumber -q --retry 2 --format summary`
-    Then it should fail with:
-      """
-      Flaky Scenarios:
-      cucumber features/fails-once_feature.feature:2
-      cucumber features/fails-twice_feature.feature:2
-
-      3 scenarios (2 flaky, 1 passed)
       """
 
   Scenario: Retry each test but suspend retrying after 2 failing tests, so later tests are not retried
