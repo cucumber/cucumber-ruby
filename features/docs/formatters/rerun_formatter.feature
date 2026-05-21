@@ -31,7 +31,6 @@ Feature: Rerun formatter
 
         Scenario:
           Given this step passes
-
       """
 
     When I run `cucumber --publish-quiet -f rerun`
@@ -55,7 +54,6 @@ Feature: Rerun formatter
 
         Scenario:
           Given this step passes
-
       """
     And a file named "features/all_good.feature" with:
       """
@@ -86,7 +84,6 @@ Feature: Rerun formatter
 
         Scenario:
           Given this step passes
-
       """
     And a file named "features/all_good.feature" with:
       """
@@ -115,7 +112,6 @@ Feature: Rerun formatter
           | status |
           | passes |
           | fails  |
-
       """
     When I run `cucumber -f rerun`
     Then it should fail with:
@@ -179,7 +175,6 @@ Feature: Rerun formatter
           | status |
           | passes |
           | fails  |
-
       """
     When I run `cucumber --expand -f rerun`
     Then it should fail with:

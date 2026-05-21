@@ -22,21 +22,19 @@ module Cucumber
         @query.find_all_test_case_started.each do |test_case|
           status = @query.find_most_severe_test_step_result_by(test_case).status
 
-          # RULE: Don't log test cases without a pickle (Unsure what these could be?)
+          # RULE: Don't log test cases without a pickle (We cannot query their location data to log them)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
 
-          # RULE: If the test case has already been logged as a failure (And we're retrying), remove prior reference of failure
-          if passing?(test_case)
+          # RULE: Test cases with the worst result as Passing is not considered a failure (Don't log these)
+          if status == Cucumber::Messages::TestStepResultStatus::PASSED
+            # If the test case in question had already been logged as a failure (And we're retrying), remove the prior reference of failure
             uri_and_location_hash[pickle.uri].delete(pickle.location.line)
             next
           end
 
-          # RULE: Passing test cases are not considered failures (Don't log these)
-          next if passing?(test_case)
-
-          # RULE: Skipped test cases are not considered failures (on their own, don't log these)
-          next if skipped?(test_case)
+          # RULE: Test cases with the worst result as Skipped/Pending/Undefined are not considered failures (don't log these)
+          next if non_rerunnable_status?(status)
 
           # RULE: Before logging a failure, ensure we are not on a retried test case (Don't log a retry multiple times)
           next if test_case.attempt > 1
@@ -59,14 +57,12 @@ module Cucumber
         @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = Set.new }
       end
 
-      def passing?(test_case_started)
-        most_severe_test_step_result = @query.find_most_severe_test_step_result_by(test_case_started)
-        most_severe_test_step_result.status == Cucumber::Messages::TestStepResultStatus::PASSED
-      end
-
-      def skipped?(test_case_started)
-        most_severe_test_step_result = @query.find_most_severe_test_step_result_by(test_case_started)
-        most_severe_test_step_result.status == Cucumber::Messages::TestStepResultStatus::SKIPPED
+      def non_rerunnable_status?(status)
+        [
+          Cucumber::Messages::TestStepResultStatus::PASSED,
+          Cucumber::Messages::TestStepResultStatus::PENDING,
+          Cucumber::Messages::TestStepResultStatus::UNDEFINED
+        ].include?(status)
       end
     end
   end
