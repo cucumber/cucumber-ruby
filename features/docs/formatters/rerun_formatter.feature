@@ -96,7 +96,7 @@ Feature: Rerun formatter
           Given this step passes
       """
 
-    When I run `cucumber --publish-quiet -f rerun --strict`
+    When I run `cucumber --publish-quiet -f rerun`
     Then it should fail with exactly:
       """
       features/mixed.feature:3:6:9

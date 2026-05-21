@@ -21,34 +21,14 @@ module Cucumber
       def finish_report
         @query.find_all_test_case_started.each do |test_case|
           status = @query.find_most_severe_test_step_result_by(test_case).status
+
           # RULE: Don't log test cases without a pickle (Unsure what these could be?)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
 
-          # RULE: (Configuration specific)
-          #   -> If the test case has already been logged (And so we're retrying), we remove prior references of failures
-          if passing?(test_case) && !rerun_flaky_tests?
+          # RULE: If the test case has already been logged as a failure (And we're retrying), remove prior reference of failure
+          if passing?(test_case)
             uri_and_location_hash[pickle.uri].delete(pickle.location.line)
-            next
-          end
-
-          # RULE: (Configuration specific - to be amended once CCK conformance is finalised)
-          #   -> If the strict configuration permits the result - handle it accordingly
-          if status == 'UNDEFINED' && !@config.strict.strict?(:undefined)
-            Cucumber.deprecate(
-              'The strict configuration in cucumber is going away and moving towards a standardised set of behaviours',
-              '--strict=undefined',
-              '12.0.0'
-            )
-            next
-          end
-
-          if status == 'PENDING' && !@config.strict.strict?(:pending)
-            Cucumber.deprecate(
-              'The strict configuration in cucumber is going away and moving towards a standardised set of behaviours',
-              '--strict=pending',
-              '12.0.0'
-            )
             next
           end
 
@@ -77,10 +57,6 @@ module Cucumber
 
       def uri_and_location_hash
         @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = Set.new }
-      end
-
-      def rerun_flaky_tests?
-        @config.strict.strict?(:flaky)
       end
 
       def passing?(test_case_started)

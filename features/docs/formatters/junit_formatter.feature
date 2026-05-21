@@ -260,8 +260,8 @@ Feature: JUnit output formatter
 
       """
 
-  Scenario: pending and undefined steps with strict option should fail
-    When I run `cucumber --format junit --out tmp/ features/pending.feature --strict`
+  Scenario: pending and undefined steps should fail
+    When I run `cucumber --format junit --out tmp/ features/pending.feature`
     Then it should fail with:
       """
 
@@ -331,8 +331,8 @@ can't convert .* into String \(TypeError\)
 You *must* specify --out DIR for the junit formatter
       """
 
-  Scenario: strict mode, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
-    When I run `cucumber --strict --format junit --out tmp/ features/scenario_outline.feature`
+  Scenario: One feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
+    When I run `cucumber --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with:
       """
 
@@ -409,8 +409,8 @@ You *must* specify --out DIR for the junit formatter
 
       """
 
-  Scenario: strict mode with --expand option, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
-    When I run `cucumber --strict --expand --format junit --out tmp/ features/scenario_outline.feature --publish-quiet`
+  Scenario: Testing with --expand option, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
+    When I run `cucumber --expand --format junit --out tmp/ features/scenario_outline.feature --publish-quiet`
     Then it should fail with exactly:
       """
 

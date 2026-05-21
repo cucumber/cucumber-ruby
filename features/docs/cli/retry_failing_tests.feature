@@ -67,26 +67,8 @@ Feature: Retry failing tests
         Solid ✓
       """
 
-  Scenario: Flaky scenarios gives exit code zero in non-strict mode
+  Scenario: Flaky scenarios gives non-zero exit code
     When I run `cucumber -q --retry 2 --format summary`
-    Then it should pass with:
-      """
-
-
-      3 scenarios (2 flaky, 1 passed)
-      """
-
-  Scenario: Flaky scenarios gives exit code zero in non-strict mode even when failing fast
-    When I run `cucumber -q --retry 2 --fail-fast --format summary`
-    Then it should pass with:
-      """
-
-
-      3 scenarios (2 flaky, 1 passed)
-      """
-
-  Scenario: Flaky scenarios gives non-zero exit code in strict mode
-    When I run `cucumber -q --retry 2 --format summary --strict`
     Then it should fail with:
       """
       Flaky Scenarios:
