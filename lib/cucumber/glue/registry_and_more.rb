@@ -131,7 +131,7 @@ module Cucumber
 
       def begin_scenario(test_case)
         @current_world = WorldFactory.new(@world_proc).create_world
-        @current_world.extend(ProtoWorld.for(@runtime, test_case.language))
+        @current_world.extend(ProtoWorld.for(@runtime, test_case&.language))
         MultiTest.extend_with_best_assertion_library(@current_world)
         @current_world.add_modules!(@world_modules || [], @namespaced_world_modules || {})
       end
@@ -234,10 +234,8 @@ module Cucumber
       end
 
       def set_up_world_for_global_hooks
-        @current_world = WorldFactory.new(@world_proc).create_world
-        @current_world.extend(ProtoWorld.for(@runtime, nil))
-        MultiTest.extend_with_best_assertion_library(@current_world)
-        @current_world.add_modules!(@world_modules || [], @namespaced_world_modules || {})
+        # We don't need a language as we're just creating a world object to attach the BeforeAll / AfterAll hooks to
+        begin_scenario(nil)
       end
     end
   end
