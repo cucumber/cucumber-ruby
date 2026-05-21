@@ -18,6 +18,7 @@ Feature: Retry failing tests
   Scenario: Retry once, so Fails-once starts to pass
     Given a scenario "Fails-forever" that fails
     When I run `cucumber -q --retry 1 --format summary`
+    # These split assertions are due to an issue with aruba treating the () as regex and it failing erroneously
     Then it should fail with:
       """
       4 scenarios (2 failed, 1 flaky, 1 passed)
