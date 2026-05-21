@@ -82,14 +82,7 @@ module Cucumber
           expect(new_table.rows.first).not_to include('4444')
         end
 
-        it 'passes silently once #hashes are interrogated if a mapped column does not exist in non-strict mode' do
-          expect do
-            new_table = table.map_column('two', &:to_i)
-            new_table.hashes
-          end.not_to raise_error
-        end
-
-        it 'fails once #hashes are interrogated if a mapped column does not exist in strict mode' do
+        it 'fails once `#hashes` are interrogated if a mapped column does not exist' do
           expect do
             new_table = table.map_column('two', &:to_i)
             new_table.hashes
