@@ -1,13 +1,22 @@
-<img src="docs/img/logo.svg" alt="" width="75" />
+<h1 align="center">
+  <img src="docs/img/logo.svg" alt="Cucumber logo" width="75">
+  <br>
+  Cucumber
+</h1>
 
-# Cucumber
+<div align="center">
 
-[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://vshymanskyy.github.io/StandWithUkraine)
+[![Gem Version](https://badge.fury.io/rb/cucumber.svg)](https://badge.fury.io/rb/cucumber)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/cucumber/cucumber-ruby/badge)](https://scorecard.dev/viewer/?uri=github.com/cucumber/cucumber-ruby)
 [![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](https://opencollective.com/cucumber)
 [![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
-[![Test cucumber](https://github.com/cucumber/cucumber-ruby/actions/workflows/test.yaml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions/workflows/test.yaml)
-[![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
-[![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=main)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=main)
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://vshymanskyy.github.io/StandWithUkraine)
+
+[![Build Status](https://github.com/cucumber/cucumber-ruby/actions/workflows/test-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions)
+[![Build Status](https://github.com/cucumber/cucumber-ruby/actions/workflows/release-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions)
+
+</div>
+
 
 Cucumber is a tool for running automated tests written in plain language. Because they're
 written in plain language, they can be read by anyone on your team. Because they can be
