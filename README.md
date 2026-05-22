@@ -7,13 +7,13 @@
 <div align="center">
 
 [![Gem Version](https://badge.fury.io/rb/cucumber.svg)](https://badge.fury.io/rb/cucumber)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/cucumber/cucumber-jvm/badge)](https://scorecard.dev/viewer/?uri=github.com/cucumber/cucumber-jvm)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/cucumber/cucumber-ruby/badge)](https://scorecard.dev/viewer/?uri=github.com/cucumber/cucumber-ruby)
 [![OpenCollective](https://opencollective.com/cucumber/backers/badge.svg)](https://opencollective.com/cucumber)
 [![OpenCollective](https://opencollective.com/cucumber/sponsors/badge.svg)](https://opencollective.com/cucumber)
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://vshymanskyy.github.io/StandWithUkraine)
 
-[![Build Status](https://github.com/cucumber/cucumber-ruby/actions/workflows/test-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-jvm/actions)
-[![Build Status](https://github.com/cucumber/cucumber-ruby/actions/workflows/release-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-jvm/actions)
+[![Build Status](https://github.com/cucumber/cucumber-ruby/actions/workflows/test-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions)
+[![Build Status](https://github.com/cucumber/cucumber-ruby/actions/workflows/release-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-ruby/actions)
 
 </div>
 
