@@ -12,6 +12,11 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
   ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+- Simplify attachment handling in the `MessageBuilder` and `#attach` method
+
+([#1853](
+### Fixed
+- When someone `#attach`s a hashified output (Instead of JSON), call `#to_json` before attaching as a stringified JSON response
 
 ## [11.0.0] - 2026-04-14
 ### Added
