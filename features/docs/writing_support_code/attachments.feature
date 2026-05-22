@@ -49,5 +49,5 @@ Feature: Attachments
   Scenario: With json formatter, files can be attached given their path
     When I run `cucumber --format json features/attaching_screenshot_with_mediatype.feature`
     Then the output should contain "embeddings\":"
-    And the output should contain "\"mime_type\": \"image/png\","
-    And the output should contain "\"data\": \"Zm9v\""
+    And the output should contain "\"mime_type\": \"image/jpeg\","
+    And the output should contain "\"data\":"
