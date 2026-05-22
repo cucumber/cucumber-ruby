@@ -65,16 +65,12 @@ module Cucumber
           timestamp: time_to_timestamp(Time.now)
         }
 
-        if media_type&.start_with?('text/')
-          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
-          attachment_data[:body] = src
-        elsif media_type.end_with?('json')
+        if src.respond_to(:read)
+          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
+          attachment_data[:body] = Base64.strict_encode64(src.read)
+        else
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
           attachment_data[:body] = src.is_a?(Hash) ? src.to_json : src
-        else
-          body = src.respond_to?(:read) ? src.read : src
-          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
-          attachment_data[:body] = Base64.strict_encode64(body)
         end
 
         message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))
