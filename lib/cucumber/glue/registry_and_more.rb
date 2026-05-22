@@ -210,7 +210,7 @@ module Cucumber
           test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
             id: id,
             hook_id: hook.id,
-            test_run_started_id: 'unknown - to be set in message builder',
+            test_run_started_id: @configuration.test_run_started_id,
             timestamp: time_to_timestamp(Time.now)
           )
         )

@@ -80,12 +80,6 @@ module Cucumber
       private
 
       def on_envelope(event)
-        # We do not have the requisite id for TestRunHookStarted#test_run_started_id at this point in time, so we
-        # will update the message live before updating the repository
-
-        event.envelope.test_run_hook_started&.tap do |message|
-          message.instance_variable_set(:@test_run_started_id, @test_run_started_id)
-        end
         output_envelope(event.envelope)
       end
 
