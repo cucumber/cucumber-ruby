@@ -68,7 +68,7 @@ module Cucumber
         if media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
           attachment_data[:body] = src
-        elsif media_type.end_with('json')
+        elsif media_type.end_with?('json')
           attachment_data[:content_type] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
           attachment_data[:body] = src.is_a?(Hash) ? src.to_json : src
         else
