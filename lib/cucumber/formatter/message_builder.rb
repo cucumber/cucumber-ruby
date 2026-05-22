@@ -80,6 +80,12 @@ module Cucumber
       private
 
       def on_envelope(event)
+        # We do not have the requisite id for TestRunHookStarted#test_run_started_id at this point in time, so we
+        # will update the message live before updating the repository
+
+        event.envelope.test_run_hook_started&.tap do |message|
+          message.instance_variable_set(:@test_run_started_id, @test_run_started_id)
+        end
         output_envelope(event.envelope)
       end
 
@@ -202,43 +208,16 @@ module Cucumber
         output_envelope(message)
       end
 
-      def on_test_run_hook_started(event)
-        @current_test_run_hook_started_id = @config.id_generator.new_id
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
-            id: @current_test_run_hook_started_id,
-            hook_id: event.hook.id,
-            test_run_started_id: @test_run_started_id,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        output_envelope(message)
+      def on_test_run_hook_started(_event)
+        :no_op
+        # This is now emitted at the required source (Single event listener - cucumber/glue/registry_and_more.rb#invoke_run_hook)
+        # It does not need to be emitted here as well
       end
 
-      def on_test_run_hook_finished(event)
-        result = event.test_result
-        result_message = result.to_message
-
-        if result.failed?
-          result_message = Cucumber::Messages::TestStepResult.new(
-            status: result_message.status,
-            duration: result_message.duration,
-            message: create_error_message(result.exception),
-            exception: create_exception_object(result, result.exception)
-          )
-        end
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
-            test_run_hook_started_id: @current_test_run_hook_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            result: result_message
-          )
-        )
-
-        output_envelope(message)
+      def on_test_run_hook_finished(_event)
+        :no_op
+        # This is now emitted at the required source (Single event listener - cucumber/glue/registry_and_more.rb#invoke_run_hook)
+        # It does not need to be emitted here as well
       end
 
       def on_test_step_created(event)
