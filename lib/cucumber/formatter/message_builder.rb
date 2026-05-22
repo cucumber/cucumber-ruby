@@ -56,7 +56,7 @@ module Cucumber
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
       end
 
-      def attach(src, media_type, filename)
+      def attach(src, media_type, filename, streamed_file)
         attachment_data = {
           test_step_id: @current_test_step_id,
           test_case_started_id: @current_test_case_started_id,
@@ -65,9 +65,9 @@ module Cucumber
           timestamp: time_to_timestamp(Time.now)
         }
 
-        if src.respond_to?(:read)
+        if streamed_file
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
-          attachment_data[:body] = Base64.strict_encode64(src.read)
+          attachment_data[:body] = Base64.strict_encode64(src)
         else
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
           attachment_data[:body] = src.is_a?(Hash) ? src.to_json : src

@@ -20,18 +20,15 @@ Feature: Attachments
         Scenario:
           Given I attach a screenshot without a media type
       """
-    And a file named "features/screenshot.png" with:
-      """
-      foo
-      """
+    And an image named "cucumber.jpeg"
     And a file named "features/step_definitions/attaching_screenshot_steps.rb" with:
       """
       Given('I attach a screenshot with a media type') do
-        attach('features/screenshot.png', 'image/png')
+        attach('features/cucumber.jpeg', 'image/jpeg')
       end
 
       Given('I attach a screenshot without a media type') do
-        attach('features/screenshot.png')
+        attach('features/cucumber.jpeg')
       end
       """
 
@@ -39,15 +36,15 @@ Feature: Attachments
     When I run `cucumber --format message features/attaching_screenshot_with_mediatype.feature`
     Then output should be valid NDJSON
     And the output should contain NDJSON with key "attachment"
-    And the output should contain NDJSON "attachment" message with key "body" and value "Zm9v"
-    And the output should contain NDJSON "attachment" message with key "mediaType" and value "image/png"
+    And the output should contain NDJSON "attachment" message with key "body" and an encoded value
+    And the output should contain NDJSON "attachment" message with key "mediaType" and value "image/jpeg"
     
   Scenario: Media type is inferred from the given file
     When I run `cucumber --format message features/attaching_screenshot_without_mediatype.feature`
     Then output should be valid NDJSON
     And the output should contain NDJSON with key "attachment"
-    And the output should contain NDJSON "attachment" message with key "body" and value "Zm9v"
-    And the output should contain NDJSON "attachment" message with key "mediaType" and value "image/png"
+    And the output should contain NDJSON "attachment" message with key "body" and an encoded value
+    And the output should contain NDJSON "attachment" message with key "mediaType" and value "image/jpeg"
 
   Scenario: With json formatter, files can be attached given their path
     When I run `cucumber --format json features/attaching_screenshot_with_mediatype.feature`

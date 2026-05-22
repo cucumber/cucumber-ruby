@@ -89,14 +89,16 @@ module Cucumber
       # @param filename [string] the name of the file you wish to specify.
       #   This is only needed in situations where you want to rename a PDF download e.t.c. - In most situations
       #   you should not need to pass a filename
-      def attach(file, media_type = nil, filename = nil)
+      def attach(file, media_type = nil, filename = nil, streamed_file = nil)
         if File.file?(file)
           media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
           file = File.read(file, mode: 'rb')
+          streamed_file = true
         end
-        super
+        # We pass in the concept of a streamed_file to ensure that the envelope encoding is correct
+        super(file, media_type, filename, streamed_file)
       rescue StandardError
-        super
+        super(file, media_type, filename, streamed_file)
       end
 
       # Mark the matched step as pending.
@@ -153,8 +155,8 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:attach) do |file, media_type, filename|
-            runtime.attach(file, media_type, filename)
+          define_method(:attach) do |file, media_type, filename, streamed_file = false|
+            runtime.attach(file, media_type, filename, streamed_file)
           end
 
           # Prints the list of modules that are included in the World

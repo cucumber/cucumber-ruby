@@ -169,7 +169,7 @@ module Cucumber
         end
       end
 
-      def attach(src, media_type, filename)
+      def attach(src, media_type, filename, streamed_file = false)
         return unless media_type == 'text/x.cucumber.log+plain'
         return unless @io
 
