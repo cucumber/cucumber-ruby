@@ -65,7 +65,7 @@ module Cucumber
           timestamp: time_to_timestamp(Time.now)
         }
 
-        if src.respond_to(:read)
+        if src.respond_to?(:read)
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
           attachment_data[:body] = Base64.strict_encode64(src.read)
         else
