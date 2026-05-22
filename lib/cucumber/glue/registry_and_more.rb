@@ -149,6 +149,7 @@ module Cucumber
       def before_all
         set_up_world_for_global_hooks
         all_succeeded = true
+        # Run each `BeforeAll` hook. Ensuring that we store the overall result as the worst status
         hooks[:before_all].each do |hook|
           result = invoke_run_hook(hook, 'BeforeAll')
           all_succeeded = false unless result
@@ -160,6 +161,7 @@ module Cucumber
       def after_all
         set_up_world_for_global_hooks
         all_succeeded = true
+        # Run each `AfterAll` hook. Ensuring that we store the overall result as the worst status
         hooks[:after_all].each do |hook|
           result = invoke_run_hook(hook, 'AfterAll')
           all_succeeded = false unless result
