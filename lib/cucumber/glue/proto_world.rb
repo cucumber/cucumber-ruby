@@ -95,7 +95,7 @@ module Cucumber
           file = File.read(file, mode: 'rb')
           streamed_file = true
         end
-        # We pass in the concept of a streamed_file to ensure that the envelope encoding is correct
+        # We pass in the concept of whether the file is streamed to ensure that the envelope encoding is correct
         super(file, media_type, filename, streamed_file)
       rescue StandardError
         super(file, media_type, filename, streamed_file)
