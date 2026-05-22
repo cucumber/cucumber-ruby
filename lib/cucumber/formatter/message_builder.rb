@@ -16,7 +16,7 @@ module Cucumber
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
-        @test_run_started_id = config.id_generator.new_id
+        @test_run_started_id = config.test_run_started_id
 
         # Fake Query objects
         @test_case_by_step_id = {}
