@@ -15,33 +15,14 @@ require 'multi_test'
 require 'cucumber/step_match'
 require 'cucumber/events/step_definition_registered'
 
+require_relative 'multiple_world'
+require_relative 'nil_world'
+
 module Cucumber
   module Glue
     def self.backtrace_line(proc, name)
       location = Cucumber::Core::Test::Location.from_source_location(*proc.source_location)
       "#{location}:in `#{name}'"
-    end
-
-    # Raised if a World block returns Nil.
-    class NilWorld < StandardError
-      def initialize
-        super('World procs should never return nil')
-      end
-    end
-
-    # Raised if there are 2 or more World blocks.
-    class MultipleWorld < StandardError
-      def initialize(first_proc, second_proc)
-        # TODO: [LH] - Just use a heredoc here to fix this up
-        message = String.new
-        message << "You can only pass a proc to #World once, but it's happening\n"
-        message << "in 2 places:\n\n"
-        message << Glue.backtrace_line(first_proc, 'World') << "\n"
-        message << Glue.backtrace_line(second_proc, 'World') << "\n\n"
-        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc\n"
-        message << "or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.\n\n"
-        super(message)
-      end
     end
 
     # TODO: This class has too many responsibilities, split off
