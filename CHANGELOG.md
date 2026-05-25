@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Added
+- Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
+
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
   ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
@@ -21,7 +24,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - A first initial iteration of the new `cucumber-query` structure ([#1801](https://github.com/cucumber/cucumber-ruby/pull/1801) [luke-hill](https://github.com/luke-hill))
 > This will be used for the migration of all existing formatters - becoming the building blocks for the future of cucumber formatters
 > which will begin being migrated in the start of 2026
-- Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
 
 ### Changed
 - Use the test result type 'ambiguous' added to cucumber-ruby-core when steps are ambiguous
