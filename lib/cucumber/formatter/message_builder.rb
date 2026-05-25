@@ -10,9 +10,11 @@ module Cucumber
     class MessageBuilder
       include Cucumber::Messages::Helpers::TimeConversion
       include Io
+      include Console
 
       def initialize(config)
         @config = config
+        @ast_lookup = AstLookup.new(config)
         @repository = Cucumber::Repository.new
         @query = Cucumber::Query.new(@repository)
 
@@ -281,6 +283,19 @@ module Cucumber
         output_envelope(message)
       end
 
+      # def print_snippets(options)
+      #   return unless options[:snippets]
+      #
+      #   snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
+      #     snippet_text(step_keyword, step_name, multiline_arg)
+      #   end
+      #   do_print_snippets(snippet_text_proc) unless snippets_input.empty?
+      #
+      #   undefined_parameter_types.map do |type_name|
+      #     do_print_undefined_parameter_type_snippet(type_name)
+      #   end
+      # end
+
       def on_test_step_finished(event)
         find_test_case_by_step_id =
           @repository.test_case_by_id
@@ -293,8 +308,8 @@ module Cucumber
                      .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
                      .max_by(&:attempt)
 
+        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-
         result_message = result.to_message
         if result.failed? || result.pending?
           message_element = result.failed? ? result.exception : result
@@ -307,12 +322,30 @@ module Cucumber
           )
         end
 
+        print_snippets(@config.to_hash)
+
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
             test_case_started_id: find_test_case_started_by_test_case.id,
             test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
+          )
+        )
+
+        output_envelope(message)
+      end
+
+      def do_print_snippets(snippet_text_proc)
+        code_text = @snippets_input.map do |data|
+          snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
+        end.uniq
+
+        message = Cucumber::Messages::Envelope.new(
+          suggestion: Cucumber::Messages::Suggestion.new(
+            id: @config.id_generator.new_id,
+            pickle_step_id: 'TBC',
+            snippets: [Cucumber::Messages::Snippet.new(language: 'ruby', code: code_text)]
           )
         )
 
