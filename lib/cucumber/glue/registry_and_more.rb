@@ -131,7 +131,7 @@ module Cucumber
 
       def begin_scenario(test_case)
         @current_world = WorldFactory.new(@world_proc).create_world
-        @current_world.extend(ProtoWorld.for(@runtime, test_case.language))
+        @current_world.extend(ProtoWorld.for(@runtime, test_case&.language))
         MultiTest.extend_with_best_assertion_library(@current_world)
         @current_world.add_modules!(@world_modules || [], @namespaced_world_modules || {})
       end
@@ -147,15 +147,27 @@ module Cucumber
       end
 
       def before_all
+        set_up_world_for_global_hooks
+        all_succeeded = true
+        # Run each `BeforeAll` hook. Ensuring that we store the overall result as the worst status
         hooks[:before_all].each do |hook|
-          invoke_run_hook(hook, 'BeforeAll')
+          result = invoke_run_hook(hook, 'BeforeAll')
+          all_succeeded = false unless result
         end
+        @current_world = nil
+        all_succeeded
       end
 
       def after_all
+        set_up_world_for_global_hooks
+        all_succeeded = true
+        # Run each `AfterAll` hook. Ensuring that we store the overall result as the worst status
         hooks[:after_all].each do |hook|
-          invoke_run_hook(hook, 'AfterAll')
+          result = invoke_run_hook(hook, 'AfterAll')
+          all_succeeded = false unless result
         end
+        @current_world = nil
+        all_succeeded
       end
 
       def add_hook(type, hook)
@@ -186,9 +198,10 @@ module Cucumber
         begin
           hook.invoke(pseudo_method, [])
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Passed.new(timer.duration))
+          true
         rescue StandardError => e
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Failed.new(timer.duration, e))
-          raise
+          false
         end
       end
 
@@ -220,6 +233,11 @@ module Cucumber
 
       def hooks
         @hooks ||= Hash.new { |h, k| h[k] = [] }
+      end
+
+      def set_up_world_for_global_hooks
+        # We don't need a language as we're just creating a world object to attach the BeforeAll / AfterAll hooks to
+        begin_scenario(nil)
       end
     end
   end

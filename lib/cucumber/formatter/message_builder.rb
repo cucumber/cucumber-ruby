@@ -56,13 +56,23 @@ module Cucumber
       end
 
       def attach(src, media_type, filename)
-        attachment_data = {
-          test_step_id: @current_test_step_id,
-          test_case_started_id: @current_test_case_started_id,
-          media_type: media_type,
-          file_name: filename,
-          timestamp: time_to_timestamp(Time.now)
-        }
+        attachment_data =
+          if @current_test_run_hook_started_id.nil?
+            {
+              test_step_id: @current_test_step_id,
+              test_case_started_id: @current_test_case_started_id,
+              media_type: media_type,
+              file_name: filename,
+              timestamp: time_to_timestamp(Time.now)
+            }
+          else
+            {
+              test_run_hook_started_id: @current_test_run_hook_started_id,
+              media_type: media_type,
+              file_name: filename,
+              timestamp: time_to_timestamp(Time.now)
+            }
+          end
 
         if media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
@@ -135,6 +145,7 @@ module Cucumber
       def on_test_case_started(event)
         # For any new test_case_started events, we must ALWAYS generate a new id for a new run
         @current_test_case_started_id = @config.id_generator.new_id
+        @current_test_run_hook_started_id = nil
 
         find_all_test_case_started_by_test_case_id =
           @repository.test_case_started_by_id
