@@ -17,6 +17,7 @@ RSpec.describe CCK, :cck do
   # OVERALL: 111 examples, 8 failures, 103 passed
   # SANITIZED: 90 examples, 0 failures, 90 passed
 
+  # Items to fix - "Suggestion" message * 6, Invalid option * 1, Step Definition * 1
   items_to_fix =
     %w[
       undefined
@@ -29,7 +30,7 @@ RSpec.describe CCK, :cck do
     ]
   _failing, passing = Cucumber::CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
-  passing.each do |example_name|
+  _failing.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
