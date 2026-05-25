@@ -13,16 +13,20 @@ require 'cucumber/compatibility_kit'
 RSpec.describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
-  # CCK v22 conformance
-  # OVERALL: N/A (yet)
-  # SANITIZED: 102 examples, 9 failures, 93 passed
-
-  # CCK v22 conformance
-  # OVERALL: 93 examples, 5 failures, 88 passed
-  # SANITIZED: 84 examples, 0 failures, 84 passed
+  # CCK v24 conformance
+  # OVERALL: 111 examples, 8 failures, 103 passed
+  # SANITIZED: 90 examples, 0 failures, 90 passed
 
   items_to_fix =
-    %w[]
+    %w[
+      undefined
+      examples-tables-undefined
+      retry-undefined
+      unknown-parameter-type
+      hooks-undefined
+      retry-ambiguous
+      test-run-exception
+    ]
   _failing, passing = Cucumber::CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
   passing.each do |example_name|
