@@ -14,10 +14,10 @@ RSpec.describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   # CCK v24 conformance
-  # OVERALL: 111 examples, 8 failures, 103 passed
+  # OVERALL: 111 examples, 7 failures, 104 passed
   # SANITIZED: 90 examples, 0 failures, 90 passed
 
-  # Items to fix - "Suggestion" message * 6, Invalid option * 1, Step Definition * 1
+  # Items to fix - "Suggestion" message * 5, Invalid option * 2
   items_to_fix =
     %w[
       undefined
@@ -25,7 +25,6 @@ RSpec.describe CCK, :cck do
       retry-undefined
       unknown-parameter-type
       hooks-undefined
-      retry-ambiguous
       test-run-exception
     ]
   _failing, passing = Cucumber::CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
