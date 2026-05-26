@@ -347,7 +347,7 @@ module Cucumber
         message = Cucumber::Messages::Envelope.new(
           suggestion: Cucumber::Messages::Suggestion.new(
             id: @config.id_generator.new_id,
-            pickle_step_id: 'TBC',
+            pickle_step_id: @repository.test_step_by_id[event.test_step.id].pickle_step_id,
             snippets: snippets_array.map { |code_snippet| Cucumber::Messages::Snippet.new(language: 'ruby', code: code_snippet) }
           )
         )
