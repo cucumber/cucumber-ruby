@@ -283,19 +283,6 @@ module Cucumber
         output_envelope(message)
       end
 
-      # def print_snippets(options)
-      #   return unless options[:snippets]
-      #
-      #   snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
-      #     snippet_text(step_keyword, step_name, multiline_arg)
-      #   end
-      #   do_print_snippets(snippet_text_proc) unless snippets_input.empty?
-      #
-      #   undefined_parameter_types.map do |type_name|
-      #     do_print_undefined_parameter_type_snippet(type_name)
-      #   end
-      # end
-
       def on_test_step_finished(event)
         find_test_case_by_step_id =
           @repository.test_case_by_id
@@ -320,12 +307,8 @@ module Cucumber
             exception: create_exception_object(result, message_element)
           )
         end
-        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
-        # We always want to build snippet messages in the `MessageBuilder` formatter - irrespective of config options
-        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
-          snippet_text(step_keyword, step_name, multiline_arg)
-        end
-        do_print_snippets(snippet_text_proc, event) unless snippets_input.empty?
+
+        output_snippet_envelope(event)
 
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
@@ -339,22 +322,30 @@ module Cucumber
         output_envelope(message)
       end
 
-      def do_print_snippets(snippet_text_proc, event)
+      def output_snippet_envelope(event)
+        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
+        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
+          snippet_text(step_keyword, step_name, multiline_arg)
+        end
+
+        message = generate_snippet_envelope(snippet_text_proc, event) unless snippets_input.empty?
+        output_envelope(message)
+        # To ensure we don't redistribute the "same" snippets over and over again
+        snippets_input.clear
+      end
+
+      def generate_snippet_envelope(snippet_text_proc, event)
         snippets_array = snippets_input.map do |data|
           snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
         end.uniq
 
-        message = Cucumber::Messages::Envelope.new(
+        Cucumber::Messages::Envelope.new(
           suggestion: Cucumber::Messages::Suggestion.new(
             id: @config.id_generator.new_id,
             pickle_step_id: @repository.test_step_by_id[event.test_step.id].pickle_step_id,
             snippets: snippets_array.map { |code_snippet| Cucumber::Messages::Snippet.new(language: 'ruby', code: code_snippet) }
           )
         )
-
-        output_envelope(message)
-        # To ensure we don't redistribute the "same" snippets over and over again
-        snippets_input.clear
       end
 
       def on_undefined_parameter_type(event)
