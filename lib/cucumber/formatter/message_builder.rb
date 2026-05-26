@@ -319,7 +319,7 @@ module Cucumber
         end
         
         message = generate_snippet_envelope(snippet_text_proc, event)
-        output_envelope(message)
+        @config.event_bus.envelope(message)
         # To ensure we don't redistribute the "same" snippets over and over again
         snippets_input.clear
       end
