@@ -3,8 +3,6 @@
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 
-require 'cucumber/query'
-
 module Cucumber
   module Formatter
     class MessageBuilder
@@ -14,7 +12,6 @@ module Cucumber
       def initialize(config)
         @config = config
         @repository = Cucumber::Repository.new
-        @query = Cucumber::Query.new(@repository)
 
         @test_run_started_id = config.test_run_started_id
 
@@ -27,14 +24,12 @@ module Cucumber
         @step_match_arguments_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
-        config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
 
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
         config.on_event :step_activated, &method(:on_step_activated)
-        config.on_event :step_definition_registered, &method(:on_step_definition_registered)
 
         config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
@@ -52,13 +47,23 @@ module Cucumber
       end
 
       def attach(src, media_type, filename)
-        attachment_data = {
-          test_step_id: @current_test_step_id,
-          test_case_started_id: @current_test_case_started_id,
-          media_type: media_type,
-          file_name: filename,
-          timestamp: time_to_timestamp(Time.now)
-        }
+        attachment_data =
+          if @current_test_run_hook_started_id.nil?
+            {
+              test_step_id: @current_test_step_id,
+              test_case_started_id: @current_test_case_started_id,
+              media_type: media_type,
+              file_name: filename,
+              timestamp: time_to_timestamp(Time.now)
+            }
+          else
+            {
+              test_run_hook_started_id: @current_test_run_hook_started_id,
+              media_type: media_type,
+              file_name: filename,
+              timestamp: time_to_timestamp(Time.now)
+            }
+          end
 
         if media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
@@ -70,14 +75,10 @@ module Cucumber
         end
 
         message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       private
-
-      def on_envelope(event)
-        output_envelope(event.envelope)
-      end
 
       def on_gherkin_source_parsed(_event)
         # TODO: Handle GherkinSourceParsed
@@ -90,10 +91,6 @@ module Cucumber
       def on_step_activated(event)
         @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
         @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
-      end
-
-      def on_step_definition_registered(event)
-        output_envelope(event.step_definition.to_envelope)
       end
 
       def on_test_case_created(event)
@@ -113,12 +110,13 @@ module Cucumber
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_case_started(event)
         # For any new test_case_started events, we must ALWAYS generate a new id for a new run
         @current_test_case_started_id = @config.id_generator.new_id
+        @current_test_run_hook_started_id = nil
 
         find_all_test_case_started_by_test_case_id =
           @repository.test_case_started_by_id
@@ -137,7 +135,8 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
+        @repository.update(message)
       end
 
       def on_test_case_finished(event)
@@ -160,7 +159,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_started(*)
@@ -171,7 +170,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_finished(event)
@@ -183,7 +182,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_step_created(event)
@@ -212,7 +211,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_step_finished(event)
@@ -250,7 +249,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_undefined_parameter_type(event)
@@ -261,7 +260,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def test_step_to_message(step)
