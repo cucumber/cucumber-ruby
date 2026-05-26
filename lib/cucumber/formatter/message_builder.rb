@@ -87,16 +87,10 @@ module Cucumber
         # TODO: Handle GherkinSourceParsed
       end
 
-      def on_gherkin_source_read(event)
-        message = Cucumber::Messages::Envelope.new(
-          source: Cucumber::Messages::Source.new(
-            uri: event.path,
-            data: event.body,
-            media_type: 'text/x.cucumber.gherkin+plain'
-          )
-        )
-
-        output_envelope(message)
+      def on_gherkin_source_read(_event)
+        :no_op
+        # This is now emitted at the required source (Single event listener - cucumber/runtime.rb#features)
+        # It does not need to be emitted here as well
       end
 
       def on_hook_test_step_created(event)
