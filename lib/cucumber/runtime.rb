@@ -137,7 +137,10 @@ module Cucumber
         source = NormalisedEncodingFile.read(path)
         @configuration.notify :gherkin_source_read, path, source
 
-        # TODO: Move this into `Cucumber::Core::Gherkin::Document#to_envelope`
+        # TODO: When core is v17+ switch the below code out to the following
+        # Cucumber::Core::Gherkin::Document.new(path, source).tap do |document|
+        #   @configuration.notify(:envelope, document.to_envelope)
+        # end
         to_envelope =
           Cucumber::Messages::Envelope.new(
             source: Cucumber::Messages::Source.new(
@@ -147,7 +150,7 @@ module Cucumber
             )
           )
 
-        @configuration.notify :envelope, to_envelope
+        @configuration.notify(:envelope, to_envelope)
 
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
