@@ -123,9 +123,7 @@ module Cucumber
         undefined_parameter_types << undefined_parameter_type.type_name
       end
 
-      def print_snippets(options)
-        return unless options[:snippets]
-
+      def print_snippets(_options)
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
           snippet_text(step_keyword, step_name, multiline_arg)
         end
