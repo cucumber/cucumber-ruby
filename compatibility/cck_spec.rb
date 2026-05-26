@@ -14,22 +14,16 @@ RSpec.describe CCK, :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
   # CCK v24 conformance
-  # OVERALL: 111 examples, 7 failures, 104 passed
-  # SANITIZED: 90 examples, 0 failures, 90 passed
+  # OVERALL: 111 examples, 2 failures, 109 passed
+  # SANITIZED: 108 examples, 0 failures, 108 passed
 
-  # Items to fix - "Suggestion" message * 5, Invalid option * 2
   items_to_fix =
     %w[
-      undefined
-      examples-tables-undefined
-      retry-undefined
-      unknown-parameter-type
-      hooks-undefined
       test-run-exception
     ]
   _failing, passing = Cucumber::CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
-  ['examples-tables-undefined'].each do |example_name|
+  passing.each do |example_name|
     describe "'#{example_name}' example" do
       include_examples 'cucumber compatibility kit' do
         let(:example) { example_name }
