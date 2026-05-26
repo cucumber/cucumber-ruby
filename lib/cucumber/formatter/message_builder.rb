@@ -3,8 +3,6 @@
 require 'base64'
 require 'cucumber/formatter/backtrace_filter'
 
-require 'cucumber/query'
-
 module Cucumber
   module Formatter
     class MessageBuilder
@@ -14,7 +12,6 @@ module Cucumber
       def initialize(config)
         @config = config
         @repository = Cucumber::Repository.new
-        @query = Cucumber::Query.new(@repository)
 
         @test_run_started_id = config.id_generator.new_id
 
@@ -27,7 +24,6 @@ module Cucumber
         @step_match_arguments_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
-        config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
         config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
@@ -35,7 +31,6 @@ module Cucumber
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
         config.on_event :step_activated, &method(:on_step_activated)
-        config.on_event :step_definition_registered, &method(:on_step_definition_registered)
 
         config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
@@ -84,14 +79,10 @@ module Cucumber
         end
 
         message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       private
-
-      def on_envelope(event)
-        output_envelope(event.envelope)
-      end
 
       def on_gherkin_source_parsed(_event)
         # TODO: Handle GherkinSourceParsed
@@ -106,7 +97,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_hook_test_step_created(event)
@@ -116,10 +107,6 @@ module Cucumber
       def on_step_activated(event)
         @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
         @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
-      end
-
-      def on_step_definition_registered(event)
-        output_envelope(event.step_definition.to_envelope)
       end
 
       def on_test_case_created(event)
@@ -139,7 +126,7 @@ module Cucumber
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_case_started(event)
@@ -164,7 +151,8 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
+        @repository.update(message)
       end
 
       def on_test_case_finished(event)
@@ -187,7 +175,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_started(*)
@@ -198,7 +186,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_finished(event)
@@ -210,7 +198,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_hook_started(event)
@@ -225,7 +213,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_hook_finished(event)
@@ -249,7 +237,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_step_created(event)
@@ -278,7 +266,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_step_finished(event)
@@ -316,7 +304,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_undefined_parameter_type(event)
@@ -327,7 +315,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def test_step_to_message(step)
