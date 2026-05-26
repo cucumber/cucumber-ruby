@@ -308,7 +308,6 @@ module Cucumber
                      .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
                      .max_by(&:attempt)
 
-        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         result_message = result.to_message
         if result.failed? || result.pending?
@@ -321,9 +320,12 @@ module Cucumber
             exception: create_exception_object(result, message_element)
           )
         end
-
+        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
         # We always want to build snippet messages in the `MessageBuilder` formatter - irrespective of config options
-        print_snippets({ snippets: true })
+        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
+          snippet_text(step_keyword, step_name, multiline_arg)
+        end
+        do_print_snippets(snippet_text_proc, event) unless snippets_input.empty?
 
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
@@ -337,8 +339,8 @@ module Cucumber
         output_envelope(message)
       end
 
-      def do_print_snippets(snippet_text_proc)
-        code_text = snippets_input.map do |data|
+      def do_print_snippets(snippet_text_proc, event)
+        snippets_array = snippets_input.map do |data|
           snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
         end.uniq
 
@@ -346,11 +348,13 @@ module Cucumber
           suggestion: Cucumber::Messages::Suggestion.new(
             id: @config.id_generator.new_id,
             pickle_step_id: 'TBC',
-            snippets: [Cucumber::Messages::Snippet.new(language: 'ruby', code: code_text)]
+            snippets: snippets_array.map { |code_snippet| Cucumber::Messages::Snippet.new(language: 'ruby', code: code_snippet) }
           )
         )
 
         output_envelope(message)
+        # To ensure we don't redistribute the "same" snippets over and over again
+        snippets_input.clear
       end
 
       def on_undefined_parameter_type(event)
