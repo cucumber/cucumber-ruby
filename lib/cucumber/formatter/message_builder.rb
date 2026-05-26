@@ -322,7 +322,8 @@ module Cucumber
           )
         end
 
-        print_snippets(@config.to_hash)
+        # We always want to build snippet messages in the `MessageBuilder` formatter - irrespective of config options
+        print_snippets({ snippets: true })
 
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
@@ -337,7 +338,7 @@ module Cucumber
       end
 
       def do_print_snippets(snippet_text_proc)
-        code_text = @snippets_input.map do |data|
+        code_text = snippets_input.map do |data|
           snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
         end.uniq
 
