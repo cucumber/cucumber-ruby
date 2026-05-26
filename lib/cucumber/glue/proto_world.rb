@@ -89,7 +89,7 @@ module Cucumber
       # @param filename [string] the name of the file you wish to specify.
       #   This is only needed in situations where you want to rename a PDF download e.t.c. - In most situations
       #   you should not need to pass a filename
-      def attach(file, media_type = nil, filename = nil, streamed_file = nil)
+      def attach(file, media_type = nil, filename = nil)
         if File.file?(file)
           media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
           file = File.read(file, mode: 'rb')
@@ -155,7 +155,7 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:attach) do |file, media_type, filename, streamed_file = false|
+          define_method(:attach) do |file, media_type, filename, streamed_file|
             runtime.attach(file, media_type, filename, streamed_file)
           end
 
