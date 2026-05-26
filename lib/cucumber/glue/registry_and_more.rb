@@ -4,6 +4,8 @@ require 'cucumber/cucumber_expressions/parameter_type_registry'
 require 'cucumber/cucumber_expressions/cucumber_expression'
 require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
+require 'cucumber/messages/helpers/time_conversion'
+
 require 'cucumber/glue/dsl'
 require 'cucumber/glue/snippet'
 require 'cucumber/glue/hook'
@@ -47,6 +49,8 @@ module Cucumber
     # TODO: This class has too many responsibilities, split off
     class RegistryAndMore
       attr_reader :current_world, :step_definitions
+
+      include Cucumber::Messages::Helpers::TimeConversion
 
       all_keywords = ::Gherkin::DIALECTS.keys.map do |dialect_name|
         dialect = ::Gherkin::Dialect.for(dialect_name)
@@ -182,14 +186,73 @@ module Cucumber
 
       def invoke_run_hook(hook, pseudo_method)
         @configuration.notify(:test_run_hook_started, hook)
+
+        current_test_run_hook_started_id = @configuration.id_generator.new_id
+        started_envelope = test_run_hook_started_envelope(hook, current_test_run_hook_started_id)
+        @configuration.notify(:envelope, started_envelope)
+
         timer = Core::Test::Timer.new.start
         begin
           hook.invoke(pseudo_method, [])
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Passed.new(timer.duration))
+          finished_envelope = test_run_hook_finished_envelope(hook, Core::Test::Result::Passed.new(timer.duration), current_test_run_hook_started_id)
+          @configuration.notify(:envelope, finished_envelope)
         rescue StandardError => e
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Failed.new(timer.duration, e))
+          finished_envelope = test_run_hook_finished_envelope(hook, Core::Test::Result::Failed.new(timer.duration, e), current_test_run_hook_started_id)
+          @configuration.notify(:envelope, finished_envelope)
           raise
         end
+      end
+
+      def test_run_hook_started_envelope(hook, id)
+        Cucumber::Messages::Envelope.new(
+          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
+            id: id,
+            hook_id: hook.id,
+            test_run_started_id: @configuration.test_run_started_id,
+            timestamp: time_to_timestamp(Time.now)
+          )
+        )
+      end
+
+      def test_run_hook_finished_envelope(_hook, test_result, test_run_hook_started_id)
+        result = test_result
+        result_message = result.to_message
+
+        if result.failed?
+          result_message = Cucumber::Messages::TestStepResult.new(
+            status: result_message.status,
+            duration: result_message.duration,
+            message: create_error_message(result.exception),
+            exception: create_exception_object(result, result.exception)
+          )
+        end
+
+        Cucumber::Messages::Envelope.new(
+          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
+            test_run_hook_started_id: test_run_hook_started_id,
+            timestamp: time_to_timestamp(Time.now),
+            result: result_message
+          )
+        )
+      end
+
+      def create_error_message(message_element)
+        <<~ERROR_MESSAGE
+          #{message_element.message} (#{message_element.class})
+          #{message_element.backtrace}
+        ERROR_MESSAGE
+      end
+
+      def create_exception_object(result, message_element)
+        return unless result.failed?
+
+        Cucumber::Messages::Exception.new(
+          type: message_element.class,
+          message: message_element.message,
+          stack_trace: message_element.backtrace.join("\n")
+        )
       end
 
       def parameter_type_envelope(parameter_type)
