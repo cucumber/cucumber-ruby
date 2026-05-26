@@ -2,9 +2,9 @@
 
 require 'rspec'
 require 'cucumber/messages'
-require_relative '../../support/cck/messages_comparator'
+require_relative '../../support/cucumber/compatibility_kit/messages_comparator'
 
-RSpec.describe CCK::MessagesComparator do
+RSpec.describe Cucumber::CompatibilityKit::MessagesComparator do
   describe '#errors' do
     context 'when executed as part of a CI' do
       before { allow(ENV).to receive(:[]).with('CI').and_return(true) }

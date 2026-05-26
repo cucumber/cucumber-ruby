@@ -2,9 +2,9 @@
 
 require 'rspec'
 require 'cucumber/messages'
-require_relative '../../support/cck/keys_checker'
+require_relative '../../support/cucumber/compatibility_kit/it/keys_checker'
 
-RSpec.describe CCK::KeysChecker do
+RSpec.describe Cucumber::CompatibilityKit::KeysChecker do
   describe '#compare' do
     let(:expected_kvps) { Cucumber::Messages::Attachment.new(url: 'https://foo.com', file_name: 'file.extension', test_step_id: 123_456) }
     let(:missing_kvps) { Cucumber::Messages::Attachment.new(url: 'https://foo.com') }
