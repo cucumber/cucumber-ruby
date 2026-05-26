@@ -30,7 +30,6 @@ module Cucumber
         config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
-        config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
 
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
@@ -44,9 +43,6 @@ module Cucumber
 
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
-
-        config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
-        config.on_event :test_run_hook_finished, &method(:on_test_run_hook_finished)
 
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
@@ -85,12 +81,6 @@ module Cucumber
 
       def on_gherkin_source_parsed(_event)
         # TODO: Handle GherkinSourceParsed
-      end
-
-      def on_gherkin_source_read(_event)
-        :no_op
-        # This is now emitted at the required source (Single event listener - cucumber/runtime.rb#features)
-        # It does not need to be emitted here as well
       end
 
       def on_hook_test_step_created(event)
@@ -194,18 +184,6 @@ module Cucumber
         )
 
         output_envelope(message)
-      end
-
-      def on_test_run_hook_started(_event)
-        :no_op
-        # This is now emitted at the required source (Single event listener - cucumber/glue/registry_and_more.rb#invoke_run_hook)
-        # It does not need to be emitted here as well
-      end
-
-      def on_test_run_hook_finished(_event)
-        :no_op
-        # This is now emitted at the required source (Single event listener - cucumber/glue/registry_and_more.rb#invoke_run_hook)
-        # It does not need to be emitted here as well
       end
 
       def on_test_step_created(event)
