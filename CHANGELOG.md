@@ -9,9 +9,13 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Added
+- Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
+
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
   ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+- Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 
 ## [11.0.0] - 2026-04-14
 ### Added
