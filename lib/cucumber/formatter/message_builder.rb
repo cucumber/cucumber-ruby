@@ -323,12 +323,16 @@ module Cucumber
       end
 
       def output_snippet_envelope(event)
-        collect_snippet_data(event.test_step, @ast_lookup) if event.result.undefined?
+        return unless event.result.undefined?
+
+        collect_snippet_data(event.test_step, @ast_lookup)
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
           snippet_text(step_keyword, step_name, multiline_arg)
         end
 
-        message = generate_snippet_envelope(snippet_text_proc, event) unless snippets_input.empty?
+        return if snippets_input.empty?
+
+        message = generate_snippet_envelope(snippet_text_proc, event)
         output_envelope(message)
         # To ensure we don't redistribute the "same" snippets over and over again
         snippets_input.clear
