@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Cucumber
-  module CompatibilityKit
+  class CompatibilityKit
     class KeysChecker
       def self.compare(detected, expected)
         new(detected, expected).compare

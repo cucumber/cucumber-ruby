@@ -2,7 +2,8 @@
 
 require 'rspec'
 require 'cucumber/messages'
-require_relative '../../support/cucumber/compatibility_kit/messages_comparator'
+
+require_relative '../../../support/cucumber/compatibility_kit'
 
 RSpec.describe Cucumber::CompatibilityKit::MessagesComparator do
   describe '#errors' do

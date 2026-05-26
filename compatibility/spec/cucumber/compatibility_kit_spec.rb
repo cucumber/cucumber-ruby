@@ -3,7 +3,7 @@
 require_relative '../../support/cucumber/compatibility_kit'
 
 RSpec.describe Cucumber::CompatibilityKit do
-  let(:features_path) { File.expand_path("#{File.dirname(__FILE__)}/../features") }
+  let(:features_path) { File.expand_path("#{File.dirname(__FILE__)}/../../features") }
 
   describe '.supporting_code_for' do
     context 'with an example that exists' do

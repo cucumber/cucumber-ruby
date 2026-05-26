@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'compatibility_kit/helpers'
+
+require_relative 'compatibility_kit/keys_checker'
+require_relative 'compatibility_kit/messages_comparator'
+
 module Cucumber
   class CompatibilityKit
     class << self
@@ -14,7 +19,7 @@ module Cucumber
       private
 
       def local_features_folder_location
-        File.expand_path("#{File.dirname(__FILE__)}/../features/")
+        File.expand_path("#{File.dirname(__FILE__)}/../../features/")
       end
     end
   end

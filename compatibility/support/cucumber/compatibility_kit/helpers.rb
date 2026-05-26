@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Cucumber
-  module CompatibilityKit
+  class CompatibilityKit
     module Helpers
       def message_type(message)
         message.to_h.each do |key, value|

@@ -2,7 +2,8 @@
 
 require 'rspec'
 require 'cucumber/messages'
-require_relative '../../support/cucumber/compatibility_kit/it/keys_checker'
+
+require_relative '../../../support/cucumber/compatibility_kit'
 
 RSpec.describe Cucumber::CompatibilityKit::KeysChecker do
   describe '#compare' do

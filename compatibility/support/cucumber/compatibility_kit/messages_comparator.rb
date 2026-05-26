@@ -4,7 +4,7 @@ require_relative 'keys_checker'
 require_relative 'helpers'
 
 module Cucumber
-  module CompatibilityKit
+  class CompatibilityKit
     class MessagesComparator
       include Helpers
 
@@ -57,7 +57,7 @@ module Cucumber
         return if ignorable?(detected)
         return if incomparable?(detected)
 
-        all_errors << CCK::KeysChecker.compare(detected, expected)
+        all_errors << Cucumber::CompatibilityKit::KeysChecker.compare(detected, expected)
         compare_sub_messages(detected, expected)
       end
 
