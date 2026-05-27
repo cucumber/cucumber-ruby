@@ -42,8 +42,6 @@ module Cucumber
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
-
-        config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
       end
 
       def attach(src, media_type, filename)
@@ -246,17 +244,6 @@ module Cucumber
             test_case_started_id: find_test_case_started_by_test_case.id,
             test_step_result: result_message,
             timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        @config.event_bus.envelope(message)
-      end
-
-      def on_undefined_parameter_type(event)
-        message = Cucumber::Messages::Envelope.new(
-          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
-            name: event.type_name,
-            expression: event.expression
           )
         )
 
