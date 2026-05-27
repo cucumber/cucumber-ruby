@@ -44,8 +44,6 @@ module Cucumber
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
-
-        config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
       end
 
       def attach(src, media_type, filename)
@@ -254,7 +252,7 @@ module Cucumber
 
         @config.event_bus.envelope(message)
       end
-
+      
       def output_snippet_envelope(event)
         return unless event.result.undefined?
 

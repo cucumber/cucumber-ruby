@@ -102,14 +102,12 @@ module Cucumber
       def register_rb_step_definition(string_or_regexp, proc_or_sym, options)
         step_definition = StepDefinition.new(@configuration.id_generator.new_id, self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
-        @configuration.notify :step_definition_registered, step_definition
-        @configuration.notify :envelope, step_definition.to_envelope
+        @configuration.notify(:step_definition_registered, step_definition)
+        @configuration.notify(:envelope, step_definition.to_envelope)
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
-        # TODO: add a way to extract the parameter type directly from the error.
-        type_name = e.message.match(/^Undefined parameter type ['|{](.*)['|}].?$/)[1]
-
-        @configuration.notify :undefined_parameter_type, type_name, string_or_regexp
+        @configuration.notify(:undefined_parameter_type, e.undefined_parameter_type_name, string_or_regexp)
+        @configuration.notify(:envelope, e.to_envelope(string_or_regexp))
       end
 
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
