@@ -18,6 +18,11 @@ Feature: Message output formatter
           | passed |
           | failed |
       """
+    And a file named "features/steps.rb" with:
+      """
+      Given('a passed step') {}
+      Given('a failed step') { raise 'oops' }
+      """
 
   Scenario: it produces NDJSON messages
     When I run `cucumber features/my_feature.feature --format message`
@@ -25,6 +30,8 @@ Feature: Message output formatter
     And messages types should be:
       """
       meta
+      stepDefinition
+      stepDefinition
       source
       gherkinDocument
       pickle
@@ -44,11 +51,6 @@ Feature: Message output formatter
       """
 
   Scenario: it sets "testRunFinished"."success" to false if something failed
-    Given a file named "features/steps.rb" with:
-      """
-      Given('a passed step') {}
-      Given('a failed step') { fail }
-      """
     When I run `cucumber features/my_feature.feature --format message`
     Then output should be valid NDJSON
     And the output should contain NDJSON with key "testRunFinished"
@@ -61,10 +63,6 @@ Feature: Message output formatter
 
         Scenario Outline: a scenario
           Given a passed step
-      """
-    And a file named "features/steps.rb" with:
-      """
-      Given('a passed step') {}
       """
     When I run `cucumber features/my_feature.feature --format message`
     Then output should be valid NDJSON
