@@ -107,7 +107,15 @@ module Cucumber
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
         @configuration.notify(:undefined_parameter_type, e.undefined_parameter_type_name, string_or_regexp)
-        @configuration.notify(:envelope, e.to_envelope(string_or_regexp))
+        # Move the below code into cucumber-expressions. Once done. Switch the line for
+        # @configuration.notify(:envelope, e.to_envelope(string_or_regexp))
+        to_envelope = Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
+            name: e.undefined_parameter_type_name,
+            expression: string_or_regexp
+          )
+        )
+        @configuration.notify(:envelope, to_envelope)
       end
 
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)

@@ -252,7 +252,7 @@ module Cucumber
 
         @config.event_bus.envelope(message)
       end
-      
+
       def output_snippet_envelope(event)
         return unless event.result.undefined?
 
