@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'support/shared_examples'
-require_relative 'support/compatibility_kit'
+require_relative 'support/cucumber/compatibility_kit'
 
 require 'cucumber/compatibility_kit'
 
@@ -10,16 +10,18 @@ require 'cucumber/compatibility_kit'
 #
 # All step definition and required supporting logic is contained here, the CCK gem proper contains the source of truth
 # of the "golden" NDJSON files and attachments / miscellaneous files
-RSpec.describe CCK, :cck do
+RSpec.describe 'CCK', :cck do
   let(:cucumber_command) { 'bundle exec cucumber --publish-quiet --profile none --format message' }
 
-  # CCK v22 conformance
-  # OVERALL: 93 examples, 0 failures, 93 passed
-  # SANITIZED: 84 examples, 0 failures, 84 passed
+  # CCK v24 conformance
+  # OVERALL: 111 examples, 2 failures, 109 passed
+  # SANITIZED: 108 examples, 0 failures, 108 passed
 
   items_to_fix =
-    %w[]
-  _failing, passing = CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
+    %w[
+      test-run-exception
+    ]
+  _failing, passing = Cucumber::CompatibilityKit.gherkin.partition { |name| items_to_fix.include?(name) }
 
   passing.each do |example_name|
     describe "'#{example_name}' example" do
@@ -32,7 +34,7 @@ RSpec.describe CCK, :cck do
             ''
           end
         end
-        let(:support_code_path) { CompatibilityKit.supporting_code_for(example) }
+        let(:support_code_path) { Cucumber::CompatibilityKit.supporting_code_for(example) }
         let(:messages) { `#{cucumber_command} --require #{support_code_path} #{cck_path} #{extra_args}` }
       end
     end

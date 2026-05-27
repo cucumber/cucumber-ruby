@@ -8,9 +8,11 @@ module Cucumber
     class MessageBuilder
       include Cucumber::Messages::Helpers::TimeConversion
       include Io
+      include Console
 
       def initialize(config)
         @config = config
+        @ast_lookup = AstLookup.new(config)
         @repository = Cucumber::Repository.new
 
         @test_run_started_id = config.test_run_started_id
@@ -227,7 +229,6 @@ module Cucumber
                      .max_by(&:attempt)
 
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-
         result_message = result.to_message
         if result.failed? || result.pending?
           message_element = result.failed? ? result.exception : result
@@ -240,6 +241,8 @@ module Cucumber
           )
         end
 
+        output_snippet_envelope(event)
+
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
@@ -250,6 +253,34 @@ module Cucumber
         )
 
         @config.event_bus.envelope(message)
+      end
+
+      def output_snippet_envelope(event)
+        return unless event.result.undefined?
+
+        collect_snippet_data(event.test_step, @ast_lookup)
+        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
+          snippet_text(step_keyword, step_name, multiline_arg)
+        end
+
+        message = generate_snippet_envelope(snippet_text_proc, event)
+        @config.event_bus.envelope(message)
+        # To ensure we don't redistribute the "same" snippets over and over again
+        snippets_input.clear
+      end
+
+      def generate_snippet_envelope(snippet_text_proc, event)
+        snippets_array = snippets_input.map do |data|
+          snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
+        end.uniq
+
+        Cucumber::Messages::Envelope.new(
+          suggestion: Cucumber::Messages::Suggestion.new(
+            id: @config.id_generator.new_id,
+            pickle_step_id: @repository.test_step_by_id[event.test_step.id].pickle_step_id,
+            snippets: snippets_array.map { |code_snippet| Cucumber::Messages::Snippet.new(language: 'ruby', code: code_snippet) }
+          )
+        )
       end
 
       def on_undefined_parameter_type(event)
