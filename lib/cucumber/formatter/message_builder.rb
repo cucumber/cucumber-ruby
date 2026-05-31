@@ -41,8 +41,6 @@ module Cucumber
 
         config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
-        config.on_event :test_case_started, &method(:on_test_case_started)
-        config.on_event :test_case_finished, &method(:on_test_case_finished)
 
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
@@ -57,6 +55,11 @@ module Cucumber
 
       def on_envelope(event)
         store_current_test_run_hook_started_id(event)
+        return unless event.envelope.test_case_started
+
+        @current_test_case_started_id = event.envelope.test_case_started.id
+        @current_test_run_hook_started_id = nil
+        @repository.update(event.envelope)
       end
 
       def on_attach_called(event)
@@ -123,55 +126,6 @@ module Cucumber
 
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
-
-        @config.event_bus.envelope(message)
-      end
-
-      def on_test_case_started(event)
-        # For any new test_case_started events, we must ALWAYS generate a new id for a new run
-        @current_test_case_started_id = @config.id_generator.new_id
-        @current_test_run_hook_started_id = nil
-
-        find_all_test_case_started_by_test_case_id =
-          @repository.test_case_started_by_id
-                     .values
-                     .select { |test_case_started| test_case_started.test_case_id == event.test_case.id }
-
-        # If no TestCaseStarted messages exist. We must be on attempt 1 (Hence the .to_i casting for a `nil` value)
-        attempts_previously_made = find_all_test_case_started_by_test_case_id.map(&:attempt).max.to_i
-
-        message = Cucumber::Messages::Envelope.new(
-          test_case_started: Cucumber::Messages::TestCaseStarted.new(
-            id: @current_test_case_started_id,
-            test_case_id: event.test_case.id,
-            timestamp: time_to_timestamp(Time.now),
-            attempt: attempts_previously_made + 1
-          )
-        )
-
-        @config.event_bus.envelope(message)
-        @repository.update(message)
-      end
-
-      def on_test_case_finished(event)
-        test_case_started_id =
-          @repository.test_case_started_by_id
-                     .values
-                     .detect { |test_case_started_message| test_case_started_message.test_case_id == event.test_case.id }
-                     .id
-
-        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
-        max_attempts = @config.retry_attempts
-        retries_attempted = test_case_started_message.attempt - 1
-        will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: test_case_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            will_be_retried: will_be_retried
-          )
-        )
 
         @config.event_bus.envelope(message)
       end
