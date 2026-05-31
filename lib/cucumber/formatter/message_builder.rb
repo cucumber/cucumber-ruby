@@ -40,11 +40,16 @@ module Cucumber
 
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
-        config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
 
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
+
+        config.on_event :envelope, &method(:on_envelope)
+      end
+
+      def on_envelope(event)
+        @current_test_run_hook_started_id = event.envelope.test_run_hook_started.id if event.envelope.test_run_hook_started
       end
 
       def attach(src, media_type, filename)
@@ -184,10 +189,6 @@ module Cucumber
         )
 
         @config.event_bus.envelope(message)
-      end
-
-      def on_test_run_hook_started(event)
-        @current_test_run_hook_started_id = event.test_step.id
       end
 
       def on_test_step_created(event)
