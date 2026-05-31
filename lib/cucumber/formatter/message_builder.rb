@@ -50,32 +50,34 @@ module Cucumber
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
         config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
+
+        config.on_event :attach_called, &method(:on_attach_called)
       end
 
-      def attach(src, media_type, filename)
+      def on_attach_called(event)
         attachment_data =
           if @current_test_run_hook_started_id.nil?
             {
               test_step_id: @current_test_step_id,
               test_case_started_id: @current_test_case_started_id,
-              media_type: media_type,
-              file_name: filename,
+              media_type: event.media_type,
+              file_name: event.filename,
               timestamp: time_to_timestamp(Time.now)
             }
           else
             {
               test_run_hook_started_id: @current_test_run_hook_started_id,
-              media_type: media_type,
-              file_name: filename,
+              media_type: event.media_type,
+              file_name: event.filename,
               timestamp: time_to_timestamp(Time.now)
             }
           end
 
-        if media_type&.start_with?('text/')
+        if event.media_type&.start_with?('text/')
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
-          attachment_data[:body] = src
+          attachment_data[:body] = event.src
         else
-          body = src.respond_to?(:read) ? src.read : src
+          body = event.src.respond_to?(:read) ? event.src.read : event.src
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
           attachment_data[:body] = Base64.strict_encode64(body)
         end

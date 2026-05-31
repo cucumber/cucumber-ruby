@@ -169,15 +169,15 @@ module Cucumber
         end
       end
 
-      def attach(src, media_type, filename)
-        return unless media_type == 'text/x.cucumber.log+plain'
+      def on_attach_called(event)
+        return unless event.media_type == 'text/x.cucumber.log+plain'
         return unless @io
 
         @io.puts
-        if filename
-          @io.puts("#{filename}: #{format_string(src, :tag)}")
+        if event.filename
+          @io.puts("#{event.filename}: #{format_string(event.src, :tag)}")
         else
-          @io.puts(format_string(src, :tag))
+          @io.puts(format_string(event.src, :tag))
         end
 
         @io.flush

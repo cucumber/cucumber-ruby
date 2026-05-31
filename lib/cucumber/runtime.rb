@@ -6,7 +6,6 @@ require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 require 'cucumber/filters'
-require 'cucumber/formatter/fanout'
 require 'cucumber/gherkin/i18n'
 require 'cucumber/glue/registry_wrapper'
 require 'cucumber/step_match_search'
@@ -72,8 +71,7 @@ module Cucumber
 
       load_step_definitions
       fire_install_plugin_hook
-      # TODO: can we remove this state?
-      self.visitor = report
+      create_formatters
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
@@ -182,13 +180,18 @@ module Cucumber
     require 'cucumber/formatter/publish_banner_printer'
     require 'cucumber/core/report/summary'
 
-    def report
-      return @report if @report
-
-      reports = [message_builder, summary_report, global_hooks_summary_report] + formatters
-      reports << fail_fast_report if @configuration.fail_fast?
-      reports << publish_banner_printer unless @configuration.publish_quiet?
-      @report ||= Formatter::Fanout.new(reports)
+    def create_formatters
+      # Until all messages are generated at the source the message_builder
+      # is necessary
+      message_builder
+      # summary_report and global_hooks_summary_report is use to determine
+      # the exit code
+      summary_report
+      global_hooks_summary_report
+      # the formatters defined by the cli options
+      formatters
+      fail_fast_report if @configuration.fail_fast?
+      publish_banner_printer unless @configuration.publish_quiet?
     end
 
     def message_builder
