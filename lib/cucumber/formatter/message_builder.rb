@@ -40,6 +40,7 @@ module Cucumber
 
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
 
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
@@ -183,6 +184,10 @@ module Cucumber
         )
 
         @config.event_bus.envelope(message)
+      end
+
+      def on_test_run_hook_started(event)
+        @current_test_run_hook_started_id = event.test_step.id
       end
 
       def on_test_step_created(event)
