@@ -19,7 +19,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Updated `cucumber-compatibility-kit` to v24
+- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Should be no noticeable change)
+  - This has only been partially completed so far (With approx 20% of all events refactored)
 
+([#1869](
 ## [11.0.0] - 2026-04-14
 ### Added
 - Add timestamp to `Attachment` message
