@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Remove this class and use Cucumber::Core::Event::Base once v17 of core is minimum
 module Cucumber
   module Events
     # An archetype of what each Cucumber Event defined in cucumber-ruby must adhere to
