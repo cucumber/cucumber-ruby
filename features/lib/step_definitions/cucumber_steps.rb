@@ -15,7 +15,7 @@ Given('log only formatter is declared') do
     '    @io = config.out_stream',
     '  end',
     '',
-    '  def attach(src, media_type, _filename)',
+    '  def attach(src, media_type, _filename, _streamed_file)',
     '    @io.puts(src)',
     '  end',
     'end'

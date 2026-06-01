@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'base64'
+require 'json'
+
 require 'cucumber/formatter/backtrace_filter'
+require 'cucumber/query'
 
 module Cucumber
   module Formatter
@@ -52,7 +55,7 @@ module Cucumber
         @current_test_run_hook_started_id = event.envelope.test_run_hook_started.id if event.envelope.test_run_hook_started
       end
 
-      def attach(src, media_type, filename)
+      def attach(src, media_type, filename, streamed_file)
         attachment_data =
           if @current_test_run_hook_started_id.nil?
             {
@@ -71,13 +74,12 @@ module Cucumber
             }
           end
 
-        if media_type&.start_with?('text/')
-          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
-          attachment_data[:body] = src
-        else
-          body = src.respond_to?(:read) ? src.read : src
+        if streamed_file
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
-          attachment_data[:body] = Base64.strict_encode64(body)
+          attachment_data[:body] = Base64.strict_encode64(src)
+        else
+          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
+          attachment_data[:body] = src.is_a?(Hash) ? src.to_json : src
         end
 
         message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))
