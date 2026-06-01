@@ -19,7 +19,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Simplify attachment handling in the `MessageBuilder` and `#attach` method
 
 ### Fixed
-- When someone calls `#attach` with a hashified output (Instead of JSON); call `#to_json` before attaching as a stringified JSON response to avoid errors
+- When someone calls `#attach` with a hashified output (Instead of JSON); call `#to_json` before attaching as a stringified JSON response to avoid errors ([#1787](https://github.com/cucumber/cucumber-ruby/pull/1787) [luke-hill](https://github.com/luke-hill))
 - Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Updated `cucumber-compatibility-kit` to v24
