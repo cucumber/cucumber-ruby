@@ -6,8 +6,6 @@ module Cucumber
     class TestCaseCreated < Base
       attr_reader :test_case, :pickle
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
       def self.event_id
         :test_case_created
       end

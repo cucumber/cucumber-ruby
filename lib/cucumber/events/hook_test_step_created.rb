@@ -8,8 +8,6 @@ module Cucumber
     class HookTestStepCreated < Base
       attr_reader :test_step, :hook
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
       def self.event_id
         :hook_test_step_created
       end

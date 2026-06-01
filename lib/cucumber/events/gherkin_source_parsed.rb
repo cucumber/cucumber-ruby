@@ -9,8 +9,6 @@ module Cucumber
       # # The Gherkin Ast
       attr_reader :gherkin_document
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symb
       def self.event_id
         :gherkin_source_parsed
       end

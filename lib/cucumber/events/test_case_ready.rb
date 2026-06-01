@@ -5,8 +5,6 @@ module Cucumber
     class TestCaseReady < Base
       attr_reader :test_case
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
       def self.event_id
         :test_case_ready
       end

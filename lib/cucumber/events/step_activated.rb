@@ -12,8 +12,6 @@ module Cucumber
       #   @return [Cucumber::StepMatch]
       attr_reader :step_match
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
       def self.event_id
         :step_activated
       end

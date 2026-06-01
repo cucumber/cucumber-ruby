@@ -10,8 +10,6 @@ module Cucumber
       #   @return [RbSupport::RbStepDefinition]
       attr_reader :step_definition
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
       def self.event_id
         :step_definition_registered
       end

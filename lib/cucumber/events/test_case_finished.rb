@@ -10,8 +10,6 @@ module Cucumber
       # @return [Cucumber::Core::Test::Result] the result of running the {Cucumber::Core::Test::Case}
       attr_reader :result
 
-      # The underscored name of the class to be used as the key in an event registry
-      #   @return [Symbol]
       def self.event_id
         :test_case_finished
       end
