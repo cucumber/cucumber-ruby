@@ -15,7 +15,7 @@ module Cucumber
         @ast_lookup = AstLookup.new(config)
         @repository = Cucumber::Repository.new
 
-        @test_run_started_id = config.id_generator.new_id
+        @test_run_started_id = config.test_run_started_id
 
         # Fake Query objects
         @test_case_by_step_id = {}
@@ -28,7 +28,6 @@ module Cucumber
         # Ensure all handlers for events occur after all ivars are instantiated
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
-        config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
 
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
@@ -42,14 +41,15 @@ module Cucumber
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
 
-        config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
-        config.on_event :test_run_hook_finished, &method(:on_test_run_hook_finished)
-
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
-        config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
+        config.on_event :envelope, &method(:on_envelope)
+      end
+
+      def on_envelope(event)
+        @current_test_run_hook_started_id = event.envelope.test_run_hook_started.id if event.envelope.test_run_hook_started
       end
 
       def attach(src, media_type, filename)
@@ -88,18 +88,6 @@ module Cucumber
 
       def on_gherkin_source_parsed(_event)
         # TODO: Handle GherkinSourceParsed
-      end
-
-      def on_gherkin_source_read(event)
-        message = Cucumber::Messages::Envelope.new(
-          source: Cucumber::Messages::Source.new(
-            uri: event.path,
-            data: event.body,
-            media_type: 'text/x.cucumber.gherkin+plain'
-          )
-        )
-
-        @config.event_bus.envelope(message)
       end
 
       def on_hook_test_step_created(event)
@@ -197,45 +185,6 @@ module Cucumber
             timestamp: time_to_timestamp(Time.now),
             success: event.success,
             test_run_started_id: @test_run_started_id
-          )
-        )
-
-        @config.event_bus.envelope(message)
-      end
-
-      def on_test_run_hook_started(event)
-        @current_test_run_hook_started_id = @config.id_generator.new_id
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
-            id: @current_test_run_hook_started_id,
-            hook_id: event.hook.id,
-            test_run_started_id: @test_run_started_id,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        @config.event_bus.envelope(message)
-      end
-
-      def on_test_run_hook_finished(event)
-        result = event.test_result
-        result_message = result.to_message
-
-        if result.failed?
-          result_message = Cucumber::Messages::TestStepResult.new(
-            status: result_message.status,
-            duration: result_message.duration,
-            message: create_error_message(result.exception),
-            exception: create_exception_object(result, result.exception)
-          )
-        end
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
-            test_run_hook_started_id: @current_test_run_hook_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            result: result_message
           )
         )
 

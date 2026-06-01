@@ -130,6 +130,22 @@ module Cucumber
       @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
         @configuration.notify :gherkin_source_read, path, source
+
+        # TODO: When core is v17+ switch the below code out to the following
+        # Cucumber::Core::Gherkin::Document.new(path, source).tap do |document|
+        #   @configuration.notify(:envelope, document.to_envelope)
+        # end
+        to_envelope =
+          Cucumber::Messages::Envelope.new(
+            source: Cucumber::Messages::Source.new(
+              uri: path,
+              data: source,
+              media_type: 'text/x.cucumber.gherkin+plain'
+            )
+          )
+
+        @configuration.notify(:envelope, to_envelope)
+
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
