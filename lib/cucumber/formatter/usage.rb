@@ -32,8 +32,7 @@ module Cucumber
         @total_duration = 0
         @matches = {}
         config.on_event :step_activated do |event|
-          test_step, step_match = *event.attributes
-          @matches[test_step.to_s] = step_match
+          @matches[event.test_step.to_s] = event.step_match
         end
         config.on_event :step_definition_registered, &method(:on_step_definition_registered)
       end
