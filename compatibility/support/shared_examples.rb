@@ -4,13 +4,13 @@ require 'json'
 require 'rspec'
 require 'cucumber/messages'
 
-require_relative 'cck/helpers'
-require_relative 'cck/messages_comparator'
+require_relative 'cucumber/compatibility_kit/helpers'
+require_relative 'cucumber/compatibility_kit/messages_comparator'
 
 RSpec.shared_examples 'cucumber compatibility kit' do
-  include CCK::Helpers
+  include Cucumber::CompatibilityKit::Helpers
 
-  let(:cck_path) { CompatibilityKit.feature_code_for(example) }
+  let(:cck_path) { Cucumber::CompatibilityKit.feature_code_for(example) }
 
   let(:parsed_original) { parse_ndjson_file("#{cck_path}/#{example}.ndjson") }
   let(:parsed_generated) { parse_ndjson(messages) }
@@ -23,7 +23,7 @@ RSpec.shared_examples 'cucumber compatibility kit' do
   end
 
   it 'generates valid message structure' do
-    comparator = CCK::MessagesComparator.new(parsed_generated, parsed_original)
+    comparator = Cucumber::CompatibilityKit::MessagesComparator.new(parsed_generated, parsed_original)
 
     expect(comparator.errors).to be_empty, "There were comparison errors: #{comparator.errors}"
   end

@@ -9,7 +9,20 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Added
+- Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
+- Added `Suggestion` messages that will show all the snippets for all message based formatters ([#1870](https://github.com/cucumber/cucumber-ruby/pull/1870)) [luke-hill](https://github.com/luke-hill)
 
+### Changed
+- Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
+  ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+- Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
+- Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
+- Updated `cucumber-compatibility-kit` to v24
+- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Should be no noticeable change)
+  - This has only been partially completed so far (With approx 20% of all events refactored)
+
+([#1869](
 ## [11.0.0] - 2026-04-14
 ### Added
 - Add timestamp to `Attachment` message
@@ -28,7 +41,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 > The `rerun` formatter was chosen as the first formatter to migrate to this new structure as it is one of the simpler
 > formatters and will allow us to test the new structure in a real-world scenario.
 - Updated `cucumber-compatibility-kit` to v22
-- Security: Switched out `IO.read` for more secure `File.read` in a few areas of the codebase
 - Implemented the new cucumber-query structure in all message based formatters (Currently HTML / Rerun and Message)
 ([#1844](https://github.com/cucumber/cucumber-ruby/pull/1844) [luke-hill](https://github.com/luke-hill))
 
@@ -40,6 +52,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ([#1846](https://github.com/cucumber/cucumber-ruby/pull/1846)) [luke-hill](https://github.com/luke-hill))
 - Fixed an issue where NoMethodError could be raised when declaring a parameter-type that used bound methods
 ([#1789](https://github.com/cucumber/cucumber-ruby/pull/1789))
+
+### Security
+- Switched out `IO.read` for more secure `File.read` in a few areas of the codebase
 
 ## [10.2.0] - 2025-12-10
 ### Changed

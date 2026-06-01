@@ -72,15 +72,13 @@ module Cucumber
 
       load_step_definitions
       fire_install_plugin_hook
-      fire_before_all_hook unless dry_run?
       # TODO: can we remove this state?
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
-      @configuration.notify :test_run_finished, !failure?
-
       fire_after_all_hook unless dry_run?
+      @configuration.notify :test_run_finished, !failure?
     end
 
     def features_paths
@@ -113,7 +111,7 @@ module Cucumber
       if @configuration.wip?
         summary_report.test_cases.total_passed.positive?
       else
-        !summary_report.ok?(strict: @configuration.strict)
+        !summary_report.ok?(strict: @configuration.strict) || !global_hooks_summary_report.ok?
       end
     end
 
@@ -121,10 +119,6 @@ module Cucumber
 
     def fire_install_plugin_hook # :nodoc:
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
-    end
-
-    def fire_before_all_hook # :nodoc:
-      @support_code.fire_hook(:before_all)
     end
 
     def fire_after_all_hook # :nodoc:
@@ -136,6 +130,22 @@ module Cucumber
       @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
         @configuration.notify :gherkin_source_read, path, source
+
+        # TODO: When core is v17+ switch the below code out to the following
+        # Cucumber::Core::Gherkin::Document.new(path, source).tap do |document|
+        #   @configuration.notify(:envelope, document.to_envelope)
+        # end
+        to_envelope =
+          Cucumber::Messages::Envelope.new(
+            source: Cucumber::Messages::Source.new(
+              uri: path,
+              data: source,
+              media_type: 'text/x.cucumber.gherkin+plain'
+            )
+          )
+
+        @configuration.notify(:envelope, to_envelope)
+
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
@@ -191,14 +201,22 @@ module Cucumber
     def report
       return @report if @report
 
-      reports = [summary_report] + formatters
+      reports = [message_builder, summary_report, global_hooks_summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
       reports << publish_banner_printer unless @configuration.publish_quiet?
       @report ||= Formatter::Fanout.new(reports)
     end
 
+    def message_builder
+      @message_builder ||= Formatter::MessageBuilder.new(@configuration)
+    end
+
     def summary_report
       @summary_report ||= Core::Report::Summary.new(@configuration.event_bus)
+    end
+
+    def global_hooks_summary_report
+      @global_hooks_summary_report ||= Formatter::GlobalHooksSummary.new(@configuration)
     end
 
     def fail_fast_report
@@ -256,6 +274,7 @@ module Cucumber
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
+          filters << Filters::FireBeforeAllHooks.new(@support_code)
           filters << Filters::Quit.new
         end
 
