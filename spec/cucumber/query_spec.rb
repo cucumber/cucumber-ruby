@@ -40,10 +40,10 @@ def list_of_tests
   end
 end
 
-require_relative '../../compatibility/support/cck/helpers'
+require_relative '../../compatibility/support/cucumber/compatibility_kit/helpers'
 
 RSpec.describe Cucumber::Query do
-  include CCK::Helpers
+  include Cucumber::CompatibilityKit::Helpers
 
   subject(:query) { described_class.new(repository) }
 

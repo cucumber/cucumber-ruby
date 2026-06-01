@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../support/compatibility_kit'
+require_relative '../../support/cucumber/compatibility_kit'
 
-RSpec.describe CompatibilityKit do
-  let(:features_path) { File.expand_path("#{File.dirname(__FILE__)}/../features") }
+RSpec.describe Cucumber::CompatibilityKit do
+  let(:features_path) { File.expand_path("#{File.dirname(__FILE__)}/../../features") }
 
   describe '.supporting_code_for' do
     context 'with an example that exists' do

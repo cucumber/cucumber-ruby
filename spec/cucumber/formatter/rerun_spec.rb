@@ -36,6 +36,7 @@ module Cucumber
           end
 
           described_class.new(config)
+          MessageBuilder.new(config)
           execute [gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
@@ -70,6 +71,7 @@ module Cucumber
           end
 
           described_class.new(config)
+          MessageBuilder.new(config)
           execute [foo, bar], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
@@ -88,6 +90,7 @@ module Cucumber
           end
 
           described_class.new(config)
+          MessageBuilder.new(config)
           execute [gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
@@ -107,6 +110,7 @@ module Cucumber
             end
 
             described_class.new(config)
+            MessageBuilder.new(config)
             execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
 
             config.event_bus.test_run_finished
@@ -128,6 +132,7 @@ module Cucumber
             end
 
             described_class.new(config)
+            MessageBuilder.new(config)
             execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
             config.event_bus.test_run_finished
 
@@ -144,6 +149,7 @@ module Cucumber
             end
 
             described_class.new(config)
+            MessageBuilder.new(config)
             execute [gherkin, gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
             config.event_bus.test_run_finished
 

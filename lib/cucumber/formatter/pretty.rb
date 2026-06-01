@@ -33,8 +33,6 @@ module Cucumber
         @io = ensure_io(config.out_stream, config.error_stream)
         @config = config
         @options = config.to_hash
-        @snippets_input = []
-        @undefined_parameter_types = []
         @total_duration = 0
         @exceptions = []
         @gherkin_sources = {}
