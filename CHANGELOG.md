@@ -9,16 +9,25 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [11.1.0] - 2026-06-02
 ### Added
 - Print thread backtraces on SIGINFO/SIGPWR ([#1830](https://github.com/cucumber/cucumber-ruby/pull/1830)) [sobrinho](https://github.com/sobrinho)
 - Added `Suggestion` messages that will show all the snippets for all message based formatters ([#1870](https://github.com/cucumber/cucumber-ruby/pull/1870)) [luke-hill](https://github.com/luke-hill)
 
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
-  ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+- Simplify attachment handling in the `MessageBuilder` and `#attach` method
+
+### Fixed
+- When someone calls `#attach` with a hashified output (Instead of JSON); call `#to_json` before attaching as a stringified JSON response to avoid errors ([#1787](https://github.com/cucumber/cucumber-ruby/pull/1787) [luke-hill](https://github.com/luke-hill))
 - Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Updated `cucumber-compatibility-kit` to v24
+- This has only been partially completed so far (With approx 20% of all events refactored)
+- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Should be no noticeable change)
+- Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
 
 ## [11.0.0] - 2026-04-14
 ### Added
@@ -254,7 +263,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...HEAD
+[11.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...v11.1.0
 [11.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.2.0...v11.0.0
 [10.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.1...v10.2.0
 [10.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.0...v10.1.1

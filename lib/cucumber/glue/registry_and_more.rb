@@ -4,6 +4,8 @@ require 'cucumber/cucumber_expressions/parameter_type_registry'
 require 'cucumber/cucumber_expressions/cucumber_expression'
 require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
+require 'cucumber/messages/helpers/time_conversion'
+
 require 'cucumber/glue/dsl'
 require 'cucumber/glue/snippet'
 require 'cucumber/glue/hook'
@@ -13,6 +15,7 @@ require 'cucumber/glue/world_factory'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
+require 'cucumber/events/base'
 require 'cucumber/events/step_definition_registered'
 
 module Cucumber
@@ -47,6 +50,8 @@ module Cucumber
     # TODO: This class has too many responsibilities, split off
     class RegistryAndMore
       attr_reader :current_world, :step_definitions
+
+      include Cucumber::Messages::Helpers::TimeConversion
 
       all_keywords = ::Gherkin::DIALECTS.keys.map do |dialect_name|
         dialect = ::Gherkin::Dialect.for(dialect_name)
@@ -98,14 +103,20 @@ module Cucumber
       def register_rb_step_definition(string_or_regexp, proc_or_sym, options)
         step_definition = StepDefinition.new(@configuration.id_generator.new_id, self, string_or_regexp, proc_or_sym, options)
         @step_definitions << step_definition
-        @configuration.notify :step_definition_registered, step_definition
-        @configuration.notify :envelope, step_definition.to_envelope
+        @configuration.notify(:step_definition_registered, step_definition)
+        @configuration.notify(:envelope, step_definition.to_envelope)
         step_definition
       rescue Cucumber::CucumberExpressions::UndefinedParameterTypeError => e
-        # TODO: add a way to extract the parameter type directly from the error.
-        type_name = e.message.match(/^Undefined parameter type ['|{](.*)['|}].?$/)[1]
-
-        @configuration.notify :undefined_parameter_type, type_name, string_or_regexp
+        @configuration.notify(:undefined_parameter_type, e.undefined_parameter_type_name, string_or_regexp)
+        # Move the below code into cucumber-expressions. Once done. Switch the line for
+        # @configuration.notify(:envelope, e.to_envelope(string_or_regexp))
+        to_envelope = Cucumber::Messages::Envelope.new(
+          undefined_parameter_type: Cucumber::Messages::UndefinedParameterType.new(
+            name: e.undefined_parameter_type_name,
+            expression: string_or_regexp
+          )
+        )
+        @configuration.notify(:envelope, to_envelope)
       end
 
       def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
@@ -195,15 +206,74 @@ module Cucumber
 
       def invoke_run_hook(hook, pseudo_method)
         @configuration.notify(:test_run_hook_started, hook)
+
+        current_test_run_hook_started_id = @configuration.id_generator.new_id
+        started_envelope = test_run_hook_started_envelope(hook, current_test_run_hook_started_id)
+        @configuration.notify(:envelope, started_envelope)
+
         timer = Core::Test::Timer.new.start
         begin
           hook.invoke(pseudo_method, [])
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Passed.new(timer.duration))
+          finished_envelope = test_run_hook_finished_envelope(Core::Test::Result::Passed.new(timer.duration), current_test_run_hook_started_id)
+          @configuration.notify(:envelope, finished_envelope)
           true
         rescue StandardError => e
           @configuration.notify(:test_run_hook_finished, hook, Core::Test::Result::Failed.new(timer.duration, e))
+          finished_envelope = test_run_hook_finished_envelope(Core::Test::Result::Failed.new(timer.duration, e), current_test_run_hook_started_id)
+          @configuration.notify(:envelope, finished_envelope)
           false
         end
+      end
+
+      def test_run_hook_started_envelope(hook, id)
+        Cucumber::Messages::Envelope.new(
+          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
+            id: id,
+            hook_id: hook.id,
+            test_run_started_id: @configuration.test_run_started_id,
+            timestamp: time_to_timestamp(Time.now)
+          )
+        )
+      end
+
+      def test_run_hook_finished_envelope(test_result, test_run_hook_started_id)
+        result = test_result
+        result_message = result.to_message
+
+        if result.failed?
+          result_message = Cucumber::Messages::TestStepResult.new(
+            status: result_message.status,
+            duration: result_message.duration,
+            message: create_error_message(result.exception),
+            exception: create_exception_object(result, result.exception)
+          )
+        end
+
+        Cucumber::Messages::Envelope.new(
+          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
+            test_run_hook_started_id: test_run_hook_started_id,
+            timestamp: time_to_timestamp(Time.now),
+            result: result_message
+          )
+        )
+      end
+
+      def create_error_message(message_element)
+        <<~ERROR_MESSAGE
+          #{message_element.message} (#{message_element.class})
+          #{message_element.backtrace}
+        ERROR_MESSAGE
+      end
+
+      def create_exception_object(result, message_element)
+        return unless result.failed?
+
+        Cucumber::Messages::Exception.new(
+          type: message_element.class,
+          message: message_element.message,
+          stack_trace: message_element.backtrace.join("\n")
+        )
       end
 
       def parameter_type_envelope(parameter_type)
