@@ -26,10 +26,11 @@ def examples_disabled?(lang)
   make_warning("SKIPPING #{lang}: examples have been disabled for JRuby.") if jruby_disabled_examples?(lang)
 end
 
-def jruby_disabled_examples?(lang)
+def jruby_disabled_examples?(_lang)
   return unless RUBY_PLATFORM == 'java'
 
-  %w[ru uk uz].include?(lang)
+  # No longer any disabled examples for JRuby as of cucumber 11.1.0
+  nil
 end
 
 def make_warning(msg)
