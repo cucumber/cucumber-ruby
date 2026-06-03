@@ -181,10 +181,10 @@ module Cucumber
           expect(snippet.to_s).to eq(cucumber_output)
         end
 
-        it 'escapes apostrophes in generated cucumber expression snippets' do
+        it 'uses double quotes when generated cucumber expression snippets contain apostrophes' do
           @step_text = "Lucy hears Sean's message"
           cucumber_output = <<~CUKE.chomp
-            Given('Lucy hears Sean\\'s message') do
+            Given("Lucy hears Sean's message") do
               pending # Write code here that turns the phrase above into concrete actions
             end
           CUKE
