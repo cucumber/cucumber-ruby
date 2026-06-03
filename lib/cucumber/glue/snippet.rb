@@ -110,9 +110,11 @@ module Cucumber
 
         def quoted_expression_source(expr)
           source = expr.source
-          return "'#{source.gsub(/['\\]/) { |char| "\\#{char}" }}'" unless source.include?("'")
 
-          "\"#{source.gsub(/["\\]/) { |char| "\\#{char}" }}\""
+          return "'#{source}'" unless source.include?("'")
+
+          escaped_source = source.gsub(/["\\#]/) { |char| "\\#{char}" }
+          "\"#{escaped_source}\""
         end
 
         def self.description
