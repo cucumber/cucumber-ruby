@@ -10,7 +10,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Fixed
-- Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use english step definitions to help JRuby testing)
+- Show failed step error details in the summary formatter output
+- Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
 - Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
 
 ## [11.1.0] - 2026-06-02
