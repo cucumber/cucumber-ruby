@@ -10,14 +10,14 @@ end
 After do
 end
 
-Given 'كتابة $n في الآلة الحاسبة' do |n|
+بفرض(/كتابة (.+) في الآلة الحاسبة/) do |n|
   @calc.push n.to_i
 end
 
-When(/يتم الضغط على (.+)/) do |op|
+متى(/يتم الضغط على (.+)/) do |op|
   @result = @calc.send op
 end
 
-Then(/يظهر (.*) على الشاشة/) do |result|
+اذاً(/يظهر (\d+) على الشاشة/) do |result|
   expect(@result).to eq(result)
 end
