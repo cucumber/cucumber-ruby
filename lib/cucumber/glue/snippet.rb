@@ -111,7 +111,7 @@ module Cucumber
         def quoted_expression_source(expr)
           source = expr.source
 
-          return "'#{source}'" unless source.include?("'")
+          return "'#{source.gsub(/\\/) { |char| "\\#{char}" }}'" unless source.include?("'")
 
           escaped_source = source.gsub(/["\\#]/) { |char| "\\#{char}" }
           "\"#{escaped_source}\""
