@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
-Допустим('я ввожу число {int}') do |число|
-  calc.push число
+Given('я ввожу число {int}') do |number|
+  calc.push number
 end
 
-Допустим('затем ввожу число {int}') do |число|
-  calc.push число
+Given('затем ввожу число {int}') do |number|
+  calc.push number
 end
 
-Если('нажимаю {string}') do |операция|
-  calc.send операция
+When('нажимаю {string}') do |operation|
+  calc.send operation
 end
 
-Если('я нажимаю {string}') do |операция|
-  calc.send операция
+When('я нажимаю {string}') do |operation|
+  calc.send operation
 end
 
-То('результатом должно быть число {float}') do |результат|
-  expect(calc.result).to eq(результат)
+Then('результатом должно быть число {float}') do |answer|
+  expect(calc.result).to eq(answer)
 end
 
-Допустим('я сложил {int} и {int}') do |слагаемое1, слагаемое2|
-  calc.push слагаемое1
-  calc.push слагаемое2
+When('я сложил {int} и {int}') do |number1, number2|
+  calc.push number1
+  calc.push number2
   calc.send '+'
 end

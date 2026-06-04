@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
-Агар('{int} сонини киритсам') do |сон|
-  calc.push сон
+Given('{int} сонини киритсам') do |number|
+  calc.push number
 end
 
-Агар('ундан сунг {int} сонини киритсам') do |сон|
-  calc.push сон
+Given('ундан сунг {int} сонини киритсам') do |number|
+  calc.push number
 end
 
-Агар('ман {int} сонини киритсам') do |сон|
-  calc.push сон
+Given('ман {int} сонини киритсам') do |number|
+  calc.push number
 end
 
-Агар('{word} боссам') do |операция|
-  calc.send операция
+When('{word} боссам') do |operation|
+  calc.send operation
 end
 
-Агар('{int} ва {int} сонини кушсам') do |сон1, сон2|
-  calc.push сон1.to_i
-  calc.push сон2.to_i
+When('{int} ва {int} сонини кушсам') do |number1, number2|
+  calc.push number1
+  calc.push number2
   calc.send '+'
 end
 
-Унда('жавоб {int} сони булиши керак') do |жавоб|
-  expect(calc.result).to eq(жавоб)
+Then('жавоб {int} сони булиши керак') do |answer|
+  expect(calc.result).to eq(answer)
 end
