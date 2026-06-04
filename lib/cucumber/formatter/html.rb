@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
-require 'cucumber/formatter/io'
+require 'cucumber/query'
 require 'cucumber/html_formatter'
-require 'cucumber/formatter/message_builder'
+
+require_relative 'io'
 
 module Cucumber
   module Formatter
-    class HTML < MessageBuilder
+    class HTML
+      include Io
+
       def initialize(config)
         @io = ensure_io(config.out_stream, config.error_stream)
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
         @html_formatter = Cucumber::HTMLFormatter::Formatter.new(@io)
         @html_formatter.write_pre_message
-        super(config)
+        config.on_event :envelope, &method(:output_envelope)
       end
 
       def output_envelope(envelope)
