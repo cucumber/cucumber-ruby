@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'timeout'
+require 'cucumber/events/attach_called'
 
 module Cucumber
   class Runtime
     module UserInterface
-      attr_writer :visitor
+      attr_writer :configuration
 
       # Suspends execution and prompts +question+ to the console (STDOUT).
       # An operator (manual tester) can then enter a line of text and hit
@@ -42,7 +43,8 @@ module Cucumber
       # The embedded data may or may not be ignored, depending on what kind of formatter(s) are active.
       #
       def attach(src, media_type, filename, streamed_file)
-        @visitor.attach(src, media_type, filename, streamed_file)
+        @configuration.notify(:attach_called, src, media_type, filename, streamed_file)
+        self
       end
 
       private
