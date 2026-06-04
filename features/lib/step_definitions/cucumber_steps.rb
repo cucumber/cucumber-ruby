@@ -13,10 +13,11 @@ Given('log only formatter is declared') do
     '',
     '  def initialize(config)',
     '    @io = config.out_stream',
+    '    config.on_event :attach_called, &method(:on_attach_called)',
     '  end',
     '',
-    '  def attach(src, media_type, _filename, _streamed_file)',
-    '    @io.puts(src)',
+    '  def on_attach_called(event)',
+    '    @io.puts(event.src)',
     '  end',
     'end'
   ].join("\n"))

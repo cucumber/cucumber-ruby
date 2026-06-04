@@ -48,6 +48,7 @@ module Cucumber
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
+        config.on_event :attach_called, &method(:on_attach_called)
         config.on_event :envelope, &method(:on_envelope)
       end
 
@@ -55,31 +56,31 @@ module Cucumber
         @current_test_run_hook_started_id = event.envelope.test_run_hook_started.id if event.envelope.test_run_hook_started
       end
 
-      def attach(src, media_type, filename, streamed_file)
+      def on_attach_called(event)
         attachment_data =
           if @current_test_run_hook_started_id.nil?
             {
               test_step_id: @current_test_step_id,
               test_case_started_id: @current_test_case_started_id,
-              media_type: media_type,
-              file_name: filename,
+              media_type: event.media_type,
+              file_name: event.filename,
               timestamp: time_to_timestamp(Time.now)
             }
           else
             {
               test_run_hook_started_id: @current_test_run_hook_started_id,
-              media_type: media_type,
-              file_name: filename,
+              media_type: event.media_type,
+              file_name: event.filename,
               timestamp: time_to_timestamp(Time.now)
             }
           end
 
-        if streamed_file
+        if event.streamed_file
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
-          attachment_data[:body] = Base64.strict_encode64(src)
+          attachment_data[:body] = Base64.strict_encode64(event.src)
         else
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
-          attachment_data[:body] = src.is_a?(Hash) ? src.to_json : src
+          attachment_data[:body] = event.src.is_a?(Hash) ? event.src.to_json : event.src
         end
 
         message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))

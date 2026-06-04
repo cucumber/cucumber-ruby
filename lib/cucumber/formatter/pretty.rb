@@ -64,6 +64,7 @@ module Cucumber
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         config.on_event :undefined_parameter_type, &method(:collect_undefined_parameter_type_names)
+        config.on_event :attach_called, &method(:on_attach_called)
       end
 
       def on_gherkin_source_read(event)
@@ -137,13 +138,13 @@ module Cucumber
         print_summary
       end
 
-      def attach(src, media_type, filename, _streamed_file)
-        return unless media_type == 'text/x.cucumber.log+plain'
+      def on_attach_called(event)
+        return unless event.media_type == 'text/x.cucumber.log+plain'
 
-        if filename
-          @test_step_output.push("#{filename}: #{src}")
+        if event.filename
+          @test_step_output.push("#{event.filename}: #{event.src}")
         else
-          @test_step_output.push(src)
+          @test_step_output.push(event.src)
         end
       end
 
