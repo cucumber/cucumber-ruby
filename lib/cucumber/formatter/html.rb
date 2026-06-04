@@ -19,7 +19,8 @@ module Cucumber
         config.on_event :envelope, &method(:output_envelope)
       end
 
-      def output_envelope(envelope)
+      def output_envelope(event)
+        envelope = event.envelope
         @repository.update(envelope)
         @html_formatter.write_message(envelope)
         @html_formatter.write_post_message if envelope.test_run_finished
