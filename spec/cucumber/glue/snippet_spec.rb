@@ -181,7 +181,7 @@ module Cucumber
           expect(snippet.to_s).to eq(cucumber_output)
         end
 
-        it 'uses double quotes for generated cucumber expression snippets with apostrophes' do
+        it 'uses double quotes for generated snippets with apostrophes' do
           @step_text = "Lucy hears Sean's message"
           cucumber_output = <<~CUKE.chomp
             Given("Lucy hears Sean's message") do
@@ -192,7 +192,7 @@ module Cucumber
           expect(snippet.to_s).to eq(cucumber_output)
         end
 
-        it 'escapes backslashes in single quoted cucumber expression snippets' do
+        it 'escapes backslashes in single quoted snippets' do
           @step_text = 'Lucy hears trailing \\'
           cucumber_output = <<~'CUKE'.chomp
             Given('Lucy hears trailing \\') do
@@ -203,7 +203,7 @@ module Cucumber
           expect(snippet.to_s).to eq(cucumber_output)
         end
 
-        it 'escapes interpolation markers in double quoted cucumber expression snippets' do
+        it 'escapes interpolation markers in double quoted snippets' do
           @step_text = 'Lucy hears Sean\'s #@message'
           cucumber_output = <<~'CUKE'.chomp
             Given("Lucy hears Sean's \#@message") do
