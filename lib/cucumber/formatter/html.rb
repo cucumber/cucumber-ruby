@@ -8,6 +8,7 @@ module Cucumber
   module Formatter
     class HTML
       include Io
+      include MessageHandlers
 
       def initialize(config)
         @io = ensure_io(config.out_stream, config.error_stream)
@@ -17,6 +18,7 @@ module Cucumber
       end
 
       def output_envelope(event)
+        store_current_test_run_hook_started_id(event)
         envelope = event.envelope
         @html_formatter.write_message(envelope)
         # TODO: Move this conditional logic into the HTML formatter proper
