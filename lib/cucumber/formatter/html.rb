@@ -3,6 +3,7 @@
 require 'cucumber/html_formatter'
 
 require_relative 'io'
+require_relative 'message_handlers'
 
 module Cucumber
   module Formatter
