@@ -78,7 +78,9 @@ module Cucumber
             }
           end
 
-        if event.streamed_file
+        streamed_file = event.src.encoding == Encoding::BINARY
+
+        if streamed_file
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
           attachment_data[:body] = Base64.strict_encode64(event.src)
         else
