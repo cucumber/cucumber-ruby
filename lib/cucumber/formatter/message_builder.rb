@@ -46,7 +46,6 @@ module Cucumber
         config.on_event :test_run_finished, &method(:on_test_run_finished)
 
         config.on_event :test_step_created, &method(:on_test_step_created)
-        config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
         config.on_event :attach_called, &method(:on_attach_called)
@@ -55,6 +54,7 @@ module Cucumber
 
       def on_envelope(event)
         store_current_test_run_hook_started_id(event)
+        @current_test_step_id = event.envelope.test_step_started.test_step_id if event.envelope.test_step_started
         return unless event.envelope.test_case_started
 
         @current_test_case_started_id = event.envelope.test_case_started.id
@@ -158,67 +158,8 @@ module Cucumber
         @step_definition_ids_by_test_step_id[event.test_step.id] = []
       end
 
-      def on_test_step_started(event)
-        @current_test_step_id = event.test_step.id
-        find_test_case_by_step_id =
-          @repository.test_case_by_id
-                     .values
-                     .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
-
-        find_test_case_started_by_test_case =
-          @repository.test_case_started_by_id
-                     .values
-                     .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
-                     .max_by(&:attempt)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_step_started: Cucumber::Messages::TestStepStarted.new(
-            test_step_id: event.test_step.id,
-            test_case_started_id: find_test_case_started_by_test_case.id,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        @config.event_bus.envelope(message)
-      end
-
       def on_test_step_finished(event)
-        find_test_case_by_step_id =
-          @repository.test_case_by_id
-                     .values
-                     .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
-
-        find_test_case_started_by_test_case =
-          @repository.test_case_started_by_id
-                     .values
-                     .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
-                     .max_by(&:attempt)
-
-        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        result_message = result.to_message
-        if result.failed? || result.pending?
-          message_element = result.failed? ? result.exception : result
-
-          result_message = Cucumber::Messages::TestStepResult.new(
-            status: result_message.status,
-            duration: result_message.duration,
-            message: create_error_message(message_element),
-            exception: create_exception_object(result, message_element)
-          )
-        end
-
         output_snippet_envelope(event)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_step_finished: Cucumber::Messages::TestStepFinished.new(
-            test_step_id: event.test_step.id,
-            test_case_started_id: find_test_case_started_by_test_case.id,
-            test_step_result: result_message,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        @config.event_bus.envelope(message)
       end
 
       def output_snippet_envelope(event)
