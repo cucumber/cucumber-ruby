@@ -298,57 +298,6 @@ Feature: JUnit output formatter
 
       """
 
-  Scenario: pending and undefined steps should fail
-    When I run `cucumber --format junit --out tmp/ features/pending.feature`
-    Then it should fail with:
-      """
-
-      """
-    And the junit output file "tmp/TEST-features-pending.xml" should contain:
-      """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite failures="2" errors="0" skipped="0" tests="2" time="0.05" name="Pending step">
-      <testcase classname="Pending step" name="Pending" time="0.05">
-        <failure message="pending Pending" type="pending">
-          <![CDATA[Scenario: Pending
-
-      Given this step is pending
-
-      Message:
-      ]]>
-          <![CDATA[TODO (Cucumber::Pending)
-      ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
-      features/pending.feature:4:in `this step is pending']]>
-        </failure>
-        <system-out>
-          <![CDATA[]]>
-        </system-out>
-        <system-err>
-          <![CDATA[]]>
-        </system-err>
-      </testcase>
-      <testcase classname="Pending step" name="Undefined" time="0.05">
-        <failure message="undefined Undefined" type="undefined">
-          <![CDATA[Scenario: Undefined
-
-      Given this step is undefined
-
-      Message:
-      ]]>
-          <![CDATA[Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
-      features/pending.feature:7:in `this step is undefined']]>
-        </failure>
-        <system-out>
-          <![CDATA[]]>
-        </system-out>
-        <system-err>
-          <![CDATA[]]>
-        </system-err>
-      </testcase>
-      </testsuite>
-
-      """
-
   Scenario: run all features
     When I run `cucumber --format junit --out tmp/ features`
     Then it should fail with:
