@@ -10,6 +10,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Fixed
+- Fixed issue with `html-formatter` where attachments and envelopes were causing the entire message pool to be blank ([#1891](https://github.com/cucumber/cucumber-ruby/pull/1891)) [luke-hill](https://github.com/luke-hill)
 - Show failed step error details in the summary formatter output
 - Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
 - Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
