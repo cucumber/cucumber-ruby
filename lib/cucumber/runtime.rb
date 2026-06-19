@@ -14,7 +14,6 @@ require_relative 'load_path'
 require_relative 'step_match_search'
 
 require_relative 'formatter/duration'
-require_relative 'formatter/fanout'
 require_relative 'gherkin/i18n'
 require_relative 'glue/registry_wrapper'
 require_relative 'runtime/meta_message_builder'
