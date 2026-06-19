@@ -1,7 +1,8 @@
 Feature: Spec formatter
 
   This formatter mimics the output from tools like RSpec or Mocha, giving an
-  overview of each feature and scenario but omitting the steps.
+  overview of each feature and scenario while omitting passing step details.
+  Failed steps still include enough exception detail to debug the failure.
 
   Background:
     Given the standard step definitions
@@ -22,6 +23,12 @@ Feature: Spec formatter
     Test
       Passing ✓
       Failing ✗
+
+    (::) failed steps (::)
+
+     (RuntimeError)
+    ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+    features/test.feature:6:in `this step fails'
 
     Failing Scenarios:
     cucumber features/test.feature:5 # Scenario: Failing

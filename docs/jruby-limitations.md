@@ -16,7 +16,7 @@ That means, for example, that you can not write the following code:
 end
 ```
 
-Instead, you have to write:
+Instead, you have to write (**NB:** both the gherkin term and the block variable(s) are in English):
 ```ruby
 Given('я ввожу число {int}') do |number|
   calc.push(number)
@@ -39,3 +39,5 @@ feature file can be executed on JRuby:
     Если я нажимаю "+"
     То результатом должно быть число 120
 ```
+
+In our CI system these languages are tested using the anglicised step definitions

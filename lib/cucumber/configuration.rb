@@ -280,6 +280,10 @@ module Cucumber
       @id_generator ||= Cucumber::Messages::Helpers::IdGenerator::UUID.new
     end
 
+    def test_run_started_id
+      @test_run_started_id ||= id_generator.new_id
+    end
+
     private
 
     def default_features_paths

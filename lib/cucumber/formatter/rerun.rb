@@ -1,17 +1,23 @@
 # frozen_string_literal: true
 
 require 'cucumber/formatter/io'
-require 'cucumber/formatter/message_builder'
+require 'cucumber/query'
 
 module Cucumber
   module Formatter
-    class Rerun < MessageBuilder
+    class Rerun
+      include Io
+
       def initialize(config)
+        @config = config
         @io = ensure_io(config.out_stream, config.error_stream)
-        super(config)
+        @repository = Cucumber::Repository.new
+        @query = Cucumber::Query.new(@repository)
+        config.on_event :envelope, &method(:output_envelope)
       end
 
-      def output_envelope(envelope)
+      def output_envelope(event)
+        envelope = event.envelope
         @repository.update(envelope)
         finish_report if envelope.test_run_finished
       end
