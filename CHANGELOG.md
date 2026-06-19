@@ -11,11 +11,20 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Changed
 - Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
+- Refactor to internal error logic (No user facing changes)
 
 ### Fixed
 - Show failed step error details in the summary formatter output
 - Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
 - Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
+
+### Removed
+- Removed the concept of `strict` from cucumber-ruby. 
+  - This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.
+  - All non-passing scenarios (Except flaky with retry), are now considered failures
+- Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
+  logic and some old rspec helper files)
+- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2)
 
 ## [11.1.0] - 2026-06-02
 ### Added
@@ -25,7 +34,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
   ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
-- Refactor to internal error logic (No user facing changes)
 - Simplify attachment handling in the `MessageBuilder` and `#attach` method
 
 ### Fixed
@@ -36,11 +44,6 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - This has only been partially completed so far (With approx 20% of all events refactored)
 - Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
-
-### Removed
-- Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
-  logic and some old rspec helper files)
-- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2)
 
 ## [11.0.0] - 2026-04-14
 ### Added
