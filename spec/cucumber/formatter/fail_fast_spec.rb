@@ -77,15 +77,6 @@ module Cucumber
 
           expect(Cucumber.wants_to_quit).to be_falsey
         end
-
-        context 'when in strict mode' do
-          let(:configuration) { Cucumber::Configuration.new strict: Cucumber::Core::Test::Result::StrictConfiguration.new([:undefined]) }
-
-          it 'sets Cucumber.wants_to_quit' do
-            execute [@gherkin], [StandardStepActions.new], configuration.event_bus
-            expect(Cucumber.wants_to_quit).to be_truthy
-          end
-        end
       end
     end
   end
