@@ -24,10 +24,7 @@ Feature: Rerun formatter
       Feature: Mixed
 
         Scenario:
-          Given this step is undefined
-
-        Scenario:
-          Given this step is pending
+          Given this step is skipped
 
         Scenario:
           Given this step passes
@@ -47,10 +44,10 @@ Feature: Rerun formatter
           Given this step fails
 
         Scenario:
-          Given this step is undefined
+          Given this step is pending
 
         Scenario:
-          Given this step is pending
+          Given this step is skipped
 
         Scenario:
           Given this step passes

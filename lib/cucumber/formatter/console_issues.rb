@@ -26,7 +26,7 @@ module Cucumber
       def to_s
         return if @issues.empty?
 
-        result = Core::Test::Result::TYPES.map { |type| scenario_listing(type, @issues[type]) }
+        result = Core::Test::Result::Summary::TYPES.map { |type| scenario_listing(type, @issues[type]) }
         result.flatten.join("\n")
       end
 

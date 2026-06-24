@@ -42,5 +42,6 @@ Feature: Fail fast
         Scenario: bar second
           Given this step passes
       """
+    And the standard step definitions
     When I run `cucumber --fail-fast`
     Then it should pass

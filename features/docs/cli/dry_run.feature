@@ -46,12 +46,17 @@ Feature: Dry Run
           Given this step is undefined
       """
     When I run `cucumber --dry-run`
-    Then it should pass with:
+    Then it should fail with:
       """
       Feature: test
 
         Scenario:                      # features/test.feature:2
           Given this step is undefined # features/test.feature:3
+            Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
+            features/test.feature:3
+
+Undefined Scenarios:
+cucumber features/test.feature:2 # Scenario:
 
       1 scenario (1 undefined)
       1 step (1 undefined)
