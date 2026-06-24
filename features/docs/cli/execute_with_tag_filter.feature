@@ -4,26 +4,27 @@ Feature: Tag logic
   I want to select features using logical AND/OR of tags
 
   Background:
-    Given a file named "features/test.feature" with:
+    Given the standard step definitions
+    And a file named "features/test.feature" with:
       """
       @feature
       Feature: Sample
 
         @one @three
         Scenario: Example
-          Given passing
+          Given this step passes
 
         @one
         Scenario: Another Example
-          Given passing
+          Given this step passes
 
         @three
         Scenario: Yet another Example
-          Given passing
+          Given this step passes
 
         @ignore
         Scenario: And yet another Example
-          Given passing
+          Given this step passes
       """
 
   Scenario: ANDing tags
@@ -35,10 +36,10 @@ Feature: Tag logic
 
         @one @three
         Scenario: Example
-          Given passing
+          Given this step passes
 
-      1 scenario (1 undefined)
-      1 step (1 undefined)
+      1 scenario (1 passed)
+      1 step (1 passed)
 
       """
 
@@ -51,18 +52,18 @@ Feature: Tag logic
 
         @one @three
         Scenario: Example
-          Given passing
+          Given this step passes
 
         @one
         Scenario: Another Example
-          Given passing
+          Given this step passes
 
         @three
         Scenario: Yet another Example
-          Given passing
+          Given this step passes
 
-      3 scenarios (3 undefined)
-      3 steps (3 undefined)
+      3 scenarios (3 passed)
+      3 steps (3 passed)
 
       """
 
@@ -75,14 +76,14 @@ Feature: Tag logic
 
         @one
         Scenario: Another Example
-          Given passing
+          Given this step passes
 
         @ignore
         Scenario: And yet another Example
-          Given passing
+          Given this step passes
 
-      2 scenarios (2 undefined)
-      2 steps (2 undefined)
+      2 scenarios (2 passed)
+      2 steps (2 passed)
       """
 
   Scenario: Run with limited tag count, blowing it on scenario

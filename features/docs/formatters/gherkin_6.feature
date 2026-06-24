@@ -77,19 +77,24 @@ Feature: Gherkin 6 and old formatters
 
   Scenario: usage formatter
     When I run `cucumber --format usage --dry-run`
-    Then it should pass with:
+    Then it should fail with:
     """
     /^this step fails$/             # features/step_definitions/steps.rb:4
       Given this step fails         # features/my_feature.feature:12:7
-    /^this step is a table step$/   # features/step_definitions/steps.rb:5
+    /^this step is a table step$/   # features/step_definitions/steps.rb:6
       NOT MATCHED BY ANY STEPS
     /^this step is pending$/        # features/step_definitions/steps.rb:3
+      NOT MATCHED BY ANY STEPS
+    /^this step is skipped$/        # features/step_definitions/steps.rb:5
       NOT MATCHED BY ANY STEPS
     /^this step passes$/            # features/step_definitions/steps.rb:1
       Given this step passes        # features/my_feature.feature:4
       Given this step passes        # features/my_feature.feature:11:7
     /^this step raises an error$/   # features/step_definitions/steps.rb:2
       NOT MATCHED BY ANY STEPS
+
+    Undefined Scenarios:
+    cucumber features/my_feature.feature:15 # Scenario:
 
     4 scenarios (3 skipped, 1 undefined)
     4 steps (3 skipped, 1 undefined)

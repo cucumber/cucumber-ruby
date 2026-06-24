@@ -11,13 +11,13 @@ Feature: Test Run Started Event
       """
       Feature: Foo
         Scenario:
-          Given a passing step
+          Given this step passes
       """
     And a file named "features/bar.feature" with:
       """
       Feature: Foo
         Scenario:
-          Given a passing step
+          Given this step passes
       """
     And a file named "features/support/events.rb" with:
       """
