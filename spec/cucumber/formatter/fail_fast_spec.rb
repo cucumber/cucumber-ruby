@@ -72,10 +72,10 @@ module Cucumber
           end
         end
 
-        it "doesn't set Cucumber.wants_to_quit" do
+        it 'sets Cucumber.wants_to_quit' do
           execute [@gherkin], [StandardStepActions.new], configuration.event_bus
 
-          expect(Cucumber.wants_to_quit).to be_falsey
+          expect(Cucumber.wants_to_quit).to be true
         end
       end
     end

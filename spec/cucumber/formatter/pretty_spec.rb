@@ -51,6 +51,11 @@ module Cucumber
                   Given there are bananas
             FEATURE
 
+            define_steps do
+              Given('a tree') {}
+              Given('there are bananas') {}
+            end
+
             it 'outputs the gherkin' do
               expect(@out.string).to include(self.class.feature_content)
             end
@@ -378,6 +383,10 @@ OUTPUT
               | dummy |
             FEATURE
 
+            define_steps do
+              Given('this step passes') {}
+            end
+
             it 'includes the tags in the output ' do
               expect(@out.string).to include <<~OUTPUT
                 @tag1
@@ -410,7 +419,7 @@ OUTPUT
             #comment4
             Scenario:
               #comment5
-              Given this step passes
+              Given this step passes:
               #comment6
               | dummy |
             #comment7
@@ -426,6 +435,12 @@ OUTPUT
                 #comment12
             FEATURE
 
+            define_steps do
+              Given('this step passes') {}
+              Given('this step passes:') do |table|
+              end
+            end
+
             it 'includes the all comments in the output' do
               expect(@out.string).to include <<~OUTPUT
                 #comment1
@@ -439,7 +454,7 @@ OUTPUT
                   #comment4
                   Scenario: 
                     #comment5
-                    Given this step passes
+                    Given this step passes:
                       #comment6
                       | dummy |
                 
@@ -482,6 +497,12 @@ OUTPUT
                 Given b
             FEATURE
 
+            define_steps do
+              Given('fb') {}
+              Given('ab') {}
+              Given('a') {}
+              Given('b') {}
+            end
             it 'ignores the rule keyword' do
               expect(@out.string).to include <<~OUTPUT
                 Feature: Some rules

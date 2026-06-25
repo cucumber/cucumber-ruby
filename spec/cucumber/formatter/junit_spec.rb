@@ -261,6 +261,11 @@ module Cucumber
           end
 
           describe 'scenario with skipped test in junit report' do
+            define_steps do
+              Given('a skipped scenario') { skip_this_scenario }
+              Given('a also skipped scenario') { skip_this_scenario }
+            end
+
             define_feature <<~FEATURE
               Feature: junit report with skipped test
 
@@ -268,9 +273,9 @@ module Cucumber
                   Given a <skip> scenario
 
                 Examples:
-                  | skip   |
-                  | undefined |
-                  | still undefined  |
+                  | skip         |
+                  | skipped      |
+                  | also skipped |
             FEATURE
 
             it { expect(@doc.to_s).to match(/skipped="2"/) }
