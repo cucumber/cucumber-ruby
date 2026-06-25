@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Changed
+- Updated `cucumber-compatibility-kit` to v26
 
 ## [11.1.1] - 2026-06-25
 ### Changed
@@ -35,8 +37,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Updated `cucumber-compatibility-kit` to v24
-- This has only been partially completed so far (With approx 20% of all events refactored)
-- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Should be no noticeable change)
+- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Approx 20% complete -> should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
 
 ## [11.0.0] - 2026-04-14
