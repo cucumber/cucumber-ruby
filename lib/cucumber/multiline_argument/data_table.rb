@@ -464,7 +464,7 @@ module Cucumber
       end
 
       def convert_columns!
-        @conversion_procs.each do |column_name, conversion_proc|
+        @conversion_procs.each_key do |column_name, _conversion_proc|
           verify_column(column_name)
         end
 

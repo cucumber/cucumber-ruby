@@ -46,7 +46,7 @@ RSpec.describe Cucumber::StepMatchSearch do
       let(:elongated_error_message) do
         <<~ERROR_MESSAGE
           Ambiguous match of "Three cute mice":
-  
+
           spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three (.*) mice/'
           spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
 
