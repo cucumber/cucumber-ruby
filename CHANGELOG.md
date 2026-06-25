@@ -9,14 +9,16 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [11.1.1] - 2026-06-25
+### Changed
+- Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
+
 ### Fixed
 - Fixed issue with `html-formatter` where attachments and envelopes were causing the entire message pool to be blank ([#1891](https://github.com/cucumber/cucumber-ruby/pull/1891)) [luke-hill](https://github.com/luke-hill)
 - Show failed step error details in the summary formatter output
 - Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
 - Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
-
-### Changed
-- Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
 
 ## [11.1.0] - 2026-06-02
 ### Added
@@ -271,7 +273,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.1...HEAD
+[11.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...v11.1.0
 [11.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.2.0...v11.0.0
 [10.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.1...v10.2.0
