@@ -93,12 +93,11 @@ module Cucumber
         if File.file?(file)
           media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
           file = File.read(file, mode: 'rb')
-          streamed_file = true
         end
         # We pass in the concept of whether the file is streamed to ensure that the envelope encoding is correct
-        super(file, media_type, filename, streamed_file)
+        super(file, media_type, filename)
       rescue StandardError
-        super(file, media_type, filename, streamed_file)
+        super(file, media_type, filename)
       end
 
       # Mark the matched step as pending.
@@ -155,8 +154,8 @@ module Cucumber
             runtime.ask(question, timeout_seconds)
           end
 
-          define_method(:attach) do |file, media_type, filename, streamed_file|
-            runtime.attach(file, media_type, filename, streamed_file)
+          define_method(:attach) do |file, media_type, filename|
+            runtime.attach(file, media_type, filename)
           end
 
           # Prints the list of modules that are included in the World
