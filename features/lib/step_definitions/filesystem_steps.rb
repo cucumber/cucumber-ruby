@@ -8,6 +8,10 @@ Given('a file named {string} with:') do |path, content|
   write_file(path, content)
 end
 
+Given('an image named {string}') do |name|
+  copy_image_named(name)
+end
+
 Given('an empty file named {string}') do |path|
   write_file(path, '')
 end

@@ -18,6 +18,12 @@ Then('the output should contain NDJSON with key {string} and value {string}') do
   expect(command_line.stdout).to match(/"#{key}": ?"#{value}"/)
 end
 
+Then('the output should contain NDJSON {string} message with key {string} and an encoded value') do |message_name, key|
+  message_contents = command_line.stdout(format: :messages).detect { |msg| msg.keys == [message_name] }[message_name]
+
+  expect(message_contents[key].length).to be > 50
+end
+
 Then('the output should contain NDJSON {string} message with key {string} and value {string}') do |message_name, key, value|
   message_contents = command_line.stdout(format: :messages).detect { |msg| msg.keys == [message_name] }[message_name]
 

@@ -63,7 +63,7 @@ module Cucumber
         it 'calls a method on the world when specified with a symbol' do
           expect(registry.current_world).to receive(:with_symbol)
 
-          dsl.Given(/With symbol/, :with_symbol)
+          dsl.Given('With symbol', :with_symbol)
 
           run_step 'With symbol'
         end
@@ -71,7 +71,7 @@ module Cucumber
         it 'calls a method on a specified object' do
           allow(registry.current_world).to receive(:target) { target }
 
-          dsl.Given(/With symbol on block/, :with_symbol, on: -> { target })
+          dsl.Given('With symbol on block', :with_symbol, on: -> { target })
 
           expect(target).to receive(:with_symbol)
 
@@ -81,7 +81,7 @@ module Cucumber
         it 'calls a method on a specified world attribute' do
           allow(registry.current_world).to receive(:target) { target }
 
-          dsl.Given(/With symbol on symbol/, :with_symbol, on: :target)
+          dsl.Given('With symbol on symbol', :with_symbol, on: :target)
 
           expect(target).to receive(:with_symbol)
 
@@ -102,17 +102,15 @@ module Cucumber
       end
 
       it 'raises UndefinedDynamicStep when an undefined step is parsed dynamically' do
-        dsl.Given(/Outside/) do
-          steps %(
-            Given Inside
-          )
+        dsl.Given('Outside') do
+          steps %(Given Inside)
         end
 
         expect { run_step 'Outside' }.to raise_error(Cucumber::UndefinedDynamicStep)
       end
 
       it 'raises UndefinedDynamicStep when an undefined step with doc string is parsed dynamically' do
-        dsl.Given(/Outside/) do
+        dsl.Given('Outside') do
           steps %(
             Given Inside
             """
@@ -125,7 +123,7 @@ module Cucumber
       end
 
       it 'raises UndefinedDynamicStep when an undefined step with data table is parsed dynamically' do
-        dsl.Given(/Outside/) do
+        dsl.Given('Outside') do
           steps %(
             Given Inside
              | a |

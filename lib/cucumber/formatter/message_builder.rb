@@ -1,22 +1,27 @@
 # frozen_string_literal: true
 
 require 'base64'
-require 'cucumber/formatter/backtrace_filter'
+require 'json'
 
+require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/query'
+
+require_relative 'message_handlers'
 
 module Cucumber
   module Formatter
     class MessageBuilder
       include Cucumber::Messages::Helpers::TimeConversion
       include Io
+      include MessageHandlers
+      include Console
 
       def initialize(config)
         @config = config
+        @ast_lookup = AstLookup.new(config)
         @repository = Cucumber::Repository.new
-        @query = Cucumber::Query.new(@repository)
 
-        @test_run_started_id = config.id_generator.new_id
+        @test_run_started_id = config.test_run_started_id
 
         # Fake Query objects
         @test_case_by_step_id = {}
@@ -27,15 +32,12 @@ module Cucumber
         @step_match_arguments_by_test_step_id = {}
 
         # Ensure all handlers for events occur after all ivars are instantiated
-        config.on_event :envelope, &method(:on_envelope)
 
         config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
-        config.on_event :gherkin_source_read, &method(:on_gherkin_source_read)
 
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
         config.on_event :step_activated, &method(:on_step_activated)
-        config.on_event :step_definition_registered, &method(:on_step_definition_registered)
 
         config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
@@ -45,58 +47,55 @@ module Cucumber
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
 
-        config.on_event :test_run_hook_started, &method(:on_test_run_hook_started)
-        config.on_event :test_run_hook_finished, &method(:on_test_run_hook_finished)
-
         config.on_event :test_step_created, &method(:on_test_step_created)
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
-        config.on_event :undefined_parameter_type, &method(:on_undefined_parameter_type)
+        config.on_event :attach_called, &method(:on_attach_called)
+        config.on_event :envelope, &method(:on_envelope)
       end
 
-      def attach(src, media_type, filename)
-        attachment_data = {
-          test_step_id: @current_test_step_id,
-          test_case_started_id: @current_test_case_started_id,
-          media_type: media_type,
-          file_name: filename,
-          timestamp: time_to_timestamp(Time.now)
-        }
+      def on_envelope(event)
+        store_current_test_run_hook_started_id(event)
+      end
 
-        if media_type&.start_with?('text/')
-          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
-          attachment_data[:body] = src
-        else
-          body = src.respond_to?(:read) ? src.read : src
+      def on_attach_called(event)
+        attachment_data =
+          if @current_test_run_hook_started_id.nil?
+            {
+              test_step_id: @current_test_step_id,
+              test_case_started_id: @current_test_case_started_id,
+              media_type: event.media_type,
+              file_name: event.filename,
+              timestamp: time_to_timestamp(Time.now)
+            }
+          else
+            {
+              test_run_hook_started_id: @current_test_run_hook_started_id,
+              media_type: event.media_type,
+              file_name: event.filename,
+              timestamp: time_to_timestamp(Time.now)
+            }
+          end
+
+        streamed_file = event.src.encoding == Encoding::BINARY
+
+        if streamed_file
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
-          attachment_data[:body] = Base64.strict_encode64(body)
+          attachment_data[:body] = Base64.strict_encode64(event.src)
+        else
+          attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::IDENTITY
+          attachment_data[:body] = event.src.is_a?(Hash) ? event.src.to_json : event.src
         end
 
         message = Cucumber::Messages::Envelope.new(attachment: Cucumber::Messages::Attachment.new(**attachment_data))
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       private
 
-      def on_envelope(event)
-        output_envelope(event.envelope)
-      end
-
       def on_gherkin_source_parsed(_event)
         # TODO: Handle GherkinSourceParsed
-      end
-
-      def on_gherkin_source_read(event)
-        message = Cucumber::Messages::Envelope.new(
-          source: Cucumber::Messages::Source.new(
-            uri: event.path,
-            data: event.body,
-            media_type: 'text/x.cucumber.gherkin+plain'
-          )
-        )
-
-        output_envelope(message)
       end
 
       def on_hook_test_step_created(event)
@@ -106,10 +105,6 @@ module Cucumber
       def on_step_activated(event)
         @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
         @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
-      end
-
-      def on_step_definition_registered(event)
-        output_envelope(event.step_definition.to_envelope)
       end
 
       def on_test_case_created(event)
@@ -129,12 +124,13 @@ module Cucumber
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_case_started(event)
         # For any new test_case_started events, we must ALWAYS generate a new id for a new run
         @current_test_case_started_id = @config.id_generator.new_id
+        @current_test_run_hook_started_id = nil
 
         find_all_test_case_started_by_test_case_id =
           @repository.test_case_started_by_id
@@ -153,7 +149,8 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
+        @repository.update(message)
       end
 
       def on_test_case_finished(event)
@@ -176,7 +173,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_started(*)
@@ -187,7 +184,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_run_finished(event)
@@ -199,46 +196,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
-      end
-
-      def on_test_run_hook_started(event)
-        @current_test_run_hook_started_id = @config.id_generator.new_id
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_started: Cucumber::Messages::TestRunHookStarted.new(
-            id: @current_test_run_hook_started_id,
-            hook_id: event.hook.id,
-            test_run_started_id: @test_run_started_id,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        output_envelope(message)
-      end
-
-      def on_test_run_hook_finished(event)
-        result = event.test_result
-        result_message = result.to_message
-
-        if result.failed?
-          result_message = Cucumber::Messages::TestStepResult.new(
-            status: result_message.status,
-            duration: result_message.duration,
-            message: create_error_message(result.exception),
-            exception: create_exception_object(result, result.exception)
-          )
-        end
-
-        message = Cucumber::Messages::Envelope.new(
-          test_run_hook_finished: Cucumber::Messages::TestRunHookFinished.new(
-            test_run_hook_started_id: @current_test_run_hook_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            result: result_message
-          )
-        )
-
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_step_created(event)
@@ -267,7 +225,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def on_test_step_finished(event)
@@ -283,7 +241,6 @@ module Cucumber
                      .max_by(&:attempt)
 
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-
         result_message = result.to_message
         if result.failed? || result.pending?
           message_element = result.failed? ? result.exception : result
@@ -296,6 +253,8 @@ module Cucumber
           )
         end
 
+        output_snippet_envelope(event)
+
         message = Cucumber::Messages::Envelope.new(
           test_step_finished: Cucumber::Messages::TestStepFinished.new(
             test_step_id: event.test_step.id,
@@ -305,7 +264,35 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
+      end
+
+      def output_snippet_envelope(event)
+        return unless event.result.undefined?
+
+        collect_snippet_data(event.test_step, @ast_lookup)
+        snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
+          snippet_text(step_keyword, step_name, multiline_arg)
+        end
+
+        message = generate_snippet_envelope(snippet_text_proc, event)
+        @config.event_bus.envelope(message)
+        # To ensure we don't redistribute the "same" snippets over and over again
+        snippets_input.clear
+      end
+
+      def generate_snippet_envelope(snippet_text_proc, event)
+        snippets_array = snippets_input.map do |data|
+          snippet_text_proc.call(data.actual_keyword, data.step.text, data.step.multiline_arg)
+        end.uniq
+
+        Cucumber::Messages::Envelope.new(
+          suggestion: Cucumber::Messages::Suggestion.new(
+            id: @config.id_generator.new_id,
+            pickle_step_id: @repository.test_step_by_id[event.test_step.id].pickle_step_id,
+            snippets: snippets_array.map { |code_snippet| Cucumber::Messages::Snippet.new(language: 'ruby', code: code_snippet) }
+          )
+        )
       end
 
       def on_undefined_parameter_type(event)
@@ -316,7 +303,7 @@ module Cucumber
           )
         )
 
-        output_envelope(message)
+        @config.event_bus.envelope(message)
       end
 
       def test_step_to_message(step)
