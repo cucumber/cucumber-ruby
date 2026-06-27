@@ -1,4 +1,3 @@
-# coding: utf-8
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../../lib")
