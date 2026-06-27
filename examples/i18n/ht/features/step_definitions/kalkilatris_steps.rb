@@ -1,3 +1,4 @@
+# coding: utf-8
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../../lib")
@@ -15,6 +16,6 @@ Lè('mwen peze {word}') do |op|
   @result = @kalk.send op
 end
 
-Lè('sa a rezilta a ta dwe {float} sou ekran an') do |rezilta|
+Lèsaa('rezilta a ta dwe {float} sou ekran an') do |rezilta|
   expect(@result).to eq(rezilta)
 end
