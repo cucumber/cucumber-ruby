@@ -15,6 +15,6 @@ Lè('mwen peze {word}') do |op|
   @result = @kalk.send op
 end
 
-Lè('sa a rezilta a ta dwe {float} sou ekran an') do |rezilta|
+Lèsaa('rezilta a ta dwe {float} sou ekran an') do |rezilta|
   expect(@result).to eq(rezilta)
 end
