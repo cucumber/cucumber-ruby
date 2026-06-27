@@ -51,14 +51,16 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        test_step, result = *event.attributes
+        test_step = event.test_step
+        result = event.result
         return if @failing_test_step
 
         @failing_test_step = test_step unless result.ok?
       end
 
       def on_test_case_finished(event)
-        test_case, result = *event.attributes
+        test_case = event.test_case
+        result = event.result
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         test_case_name = NameBuilder.new(test_case, @ast_lookup)
         scenario = test_case_name.scenario_name

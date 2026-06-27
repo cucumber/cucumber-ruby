@@ -9,7 +9,8 @@ module Cucumber
       def initialize(configuration)
         @previous_test_case = nil
         configuration.on_event :test_case_finished do |event|
-          test_case, result = *event.attributes
+          test_case = event.test_case
+          result = event.result
           if test_case != @previous_test_case
             @previous_test_case = event.test_case
             Cucumber.wants_to_quit = true unless result.ok?
