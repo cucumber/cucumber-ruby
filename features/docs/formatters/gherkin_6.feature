@@ -96,6 +96,6 @@ Feature: Gherkin 6 and old formatters
     Undefined Scenarios:
     cucumber features/my_feature.feature:15 # Scenario:
 
-    4 scenarios (3 skipped, 1 undefined)
-    4 steps (3 skipped, 1 undefined)
+    4 scenarios (1 undefined, 3 skipped)
+    4 steps (1 undefined, 3 skipped)
     """

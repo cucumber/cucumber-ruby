@@ -381,7 +381,7 @@ Feature: Background
     cucumber features/pending_background.feature:9
 
     2 scenarios (2 pending)
-    4 steps (2 skipped, 2 pending)
+    4 steps (2 pending, 2 skipped)
 
     """
 
