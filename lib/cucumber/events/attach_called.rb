@@ -5,7 +5,7 @@ require 'cucumber/core/events'
 module Cucumber
   module Events
     # Fired when attach is called in a step definition
-    class AttachCalled < Core::Event.new(:src, :media_type, :filename, :streamed_file)
+    class AttachCalled < Core::Event.new(:src, :media_type, :filename)
       # The attachment body
       attr_reader :src
 
@@ -14,9 +14,6 @@ module Cucumber
 
       # An optional filename
       attr_reader :filename
-
-      # Whether the file is streamed or not
-      attr_reader :streamed_file
     end
   end
 end

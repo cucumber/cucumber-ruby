@@ -10,13 +10,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 ### Changed
-- Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
+- Updated `cucumber-compatibility-kit` to v26
 - Refactor to internal error logic (No user facing changes)
-
-### Fixed
-- Show failed step error details in the summary formatter output
-- Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
-- Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
 
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby. 
@@ -25,6 +20,16 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
   logic and some old rspec helper files)
 - Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2)
+
+## [11.1.1] - 2026-06-25
+### Changed
+- Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
+
+### Fixed
+- Fixed issue with `html-formatter` where attachments and envelopes were causing the entire message pool to be blank ([#1891](https://github.com/cucumber/cucumber-ruby/pull/1891)) [luke-hill](https://github.com/luke-hill)
+- Show failed step error details in the summary formatter output
+- Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
+- Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
 
 ## [11.1.0] - 2026-06-02
 ### Added
@@ -41,8 +46,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Updated `cucumber-compatibility-kit` to v24
-- This has only been partially completed so far (With approx 20% of all events refactored)
-- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Should be no noticeable change)
+- Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Approx 20% complete -> should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
 
 ## [11.0.0] - 2026-04-14
@@ -279,7 +283,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.1...HEAD
+[11.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...v11.1.0
 [11.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.2.0...v11.0.0
 [10.2.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.1.1...v10.2.0

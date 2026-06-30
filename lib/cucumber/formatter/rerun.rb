@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'cucumber/formatter/io'
 require 'cucumber/query'
+
+require_relative 'io'
 
 module Cucumber
   module Formatter

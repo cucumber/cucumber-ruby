@@ -172,15 +172,14 @@ module Cucumber
     require 'cucumber/core/report/summary'
 
     def create_formatters
-      # Until all messages are generated at the source the message_builder
-      # is necessary
-      message_builder
-      # summary_report and global_hooks_summary_report is use to determine
-      # the exit code
+      # Define all formatters which are specified via cli options
+      formatters
+      # Define the MessageBuilder formatter - Required until all messages are generated at the source
+      #   Skip when a user formatter already inherits from MessageBuilder (e.g. HTML) to avoid sending every event twice.
+      message_builder unless formatters.any? { |f| f.is_a?(Formatter::MessageBuilder) }
+      # `summary_report` and `global_hooks_summary_report` are used to determine the exit code
       summary_report
       global_hooks_summary_report
-      # the formatters defined by the cli options
-      formatters
       fail_fast_report if @configuration.fail_fast?
       publish_banner_printer unless @configuration.publish_quiet?
     end

@@ -42,8 +42,8 @@ module Cucumber
       # be a path to a file, or if it's an image it may also be a Base64 encoded image.
       # The embedded data may or may not be ignored, depending on what kind of formatter(s) are active.
       #
-      def attach(src, media_type, filename, streamed_file)
-        @configuration.notify(:attach_called, src, media_type, filename, streamed_file)
+      def attach(src, media_type, filename)
+        @configuration.notify(:attach_called, src, media_type, filename)
         self
       end
 

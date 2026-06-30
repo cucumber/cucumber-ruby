@@ -6,11 +6,14 @@ require 'json'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/query'
 
+require_relative 'message_handlers'
+
 module Cucumber
   module Formatter
     class MessageBuilder
       include Cucumber::Messages::Helpers::TimeConversion
       include Io
+      include MessageHandlers
       include Console
 
       def initialize(config)
@@ -53,7 +56,7 @@ module Cucumber
       end
 
       def on_envelope(event)
-        @current_test_run_hook_started_id = event.envelope.test_run_hook_started.id if event.envelope.test_run_hook_started
+        store_current_test_run_hook_started_id(event)
       end
 
       def on_attach_called(event)
@@ -75,7 +78,9 @@ module Cucumber
             }
           end
 
-        if event.streamed_file
+        streamed_file = event.src.encoding == Encoding::BINARY
+
+        if streamed_file
           attachment_data[:content_encoding] = Cucumber::Messages::AttachmentContentEncoding::BASE64
           attachment_data[:body] = Base64.strict_encode64(event.src)
         else
