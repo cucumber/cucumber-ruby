@@ -273,7 +273,7 @@ module Cucumber
                   | still undefined |
             FEATURE
 
-            it {  expect(@doc.to_s).to include('failures="2"') }
+            it { expect(@doc.to_s).to include('failures="2"') }
           end
 
           describe 'with a regular data table scenario' do
