@@ -11,6 +11,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Changed
 - Updated `cucumber-compatibility-kit` to v26
+- Refactor to internal error logic (No user facing changes)
+
+### Removed
+- Removed the concept of `strict` from cucumber-ruby. 
+  - This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.
+  - All non-passing scenarios (Except flaky with retry), are now considered failures
+- Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
+  logic and some old rspec helper files)
+- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2)
 
 ## [11.1.1] - 2026-06-25
 ### Changed
@@ -29,7 +38,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
-([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+  ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
 - Simplify attachment handling in the `MessageBuilder` and `#attach` method
 
 ### Fixed

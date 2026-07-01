@@ -14,6 +14,13 @@ Feature: Choosing the language from the feature file header
         MISHUN: CUKES
           DEN KTHXBAI
       """
+    And a file named "features/step_definitions/step.rb" with:
+      """
+      ICANHAZ /^EMPTY BELLY$/ do
+      end
+      DEN /^KTHXBAI$/ do
+      end
+      """
     When I run `cucumber -i features/lolcat.feature -q`
     Then it should pass with:
       """
@@ -26,7 +33,7 @@ Feature: Choosing the language from the feature file header
         MISHUN: CUKES
           DEN KTHXBAI
 
-      1 scenario (1 undefined)
-      2 steps (2 undefined)
+      1 scenario (1 passed)
+      2 steps (2 passed)
 
       """

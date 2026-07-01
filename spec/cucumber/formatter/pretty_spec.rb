@@ -24,11 +24,11 @@ module Cucumber
           end
 
           describe 'with a scenario' do
-            define_feature <<-FEATURE
-          Feature: Banana party
-
-            Scenario: Monkey eats banana
-              Given there are bananas
+            define_feature <<~FEATURE
+              Feature: Banana party
+    
+                Scenario: Monkey eats banana
+                  Given there are bananas
             FEATURE
 
             it 'outputs the scenario name' do
@@ -51,8 +51,21 @@ module Cucumber
                   Given there are bananas
             FEATURE
 
+            define_steps do
+              Given('a tree') {}
+              Given('there are bananas') {}
+            end
+
             it 'outputs the gherkin' do
               expect(@out.string).to include(self.class.feature_content)
+            end
+
+            it 'outputs the feature name' do
+              expect(@out.string).to include('Feature: Banana party')
+            end
+
+            it 'outputs the background' do
+              expect(@out.string).to match(/Background:\s+Given a tree/)
             end
 
             it 'outputs the scenario name' do
@@ -378,6 +391,10 @@ OUTPUT
               | dummy |
             FEATURE
 
+            define_steps do
+              Given('this step passes') {}
+            end
+
             it 'includes the tags in the output ' do
               expect(@out.string).to include <<~OUTPUT
                 @tag1
@@ -410,23 +427,30 @@ OUTPUT
             #comment4
             Scenario:
               #comment5
-              Given this step passes
+              Given this data table passes
               #comment6
-              | dummy |
+              | data_table_heading |
+              | value1             |
             #comment7
             Scenario Outline:
               #comment8
-              Given this step passes
+              Given this <word> passes
               #comment9
               Examples:
                 #comment10
+                | word  |
                 | dummy |
                 #comment11
                 | dummy |
                 #comment12
             FEATURE
+            define_steps do
+              Given('this data table passes') { |_data_table| }
+              Given('this {word} passes') { |_word| }
+            end
 
             it 'includes the all comments in the output' do
+              # This scenario has a rogue space to the right of all the gherkin keywords
               expect(@out.string).to include <<~OUTPUT
                 #comment1
                 Feature: 
@@ -439,18 +463,20 @@ OUTPUT
                   #comment4
                   Scenario: 
                     #comment5
-                    Given this step passes
+                    Given this data table passes
                       #comment6
-                      | dummy |
+                      | data_table_heading |
+                      | value1             |
                 
                   #comment7
                   Scenario Outline: 
                     #comment8
-                    Given this step passes
+                    Given this <word> passes
                 
                     #comment9
                     Examples: 
                       #comment10
+                      | word  |
                       | dummy |
                       #comment11
                       | dummy |
@@ -460,41 +486,42 @@ OUTPUT
           end
 
           describe 'with the rule keyword' do
-            define_feature <<-FEATURE
-          Feature: Some rules
-
-            Background: FB
-              Given fb
-
-            Rule: A
-              The rule A description
-
-              Background: AB
-                Given ab
-
-              Example: Example A
-                Given a
-
-            Rule: B
-              The rule B description
-
-              Example: Example B
-                Given b
+            define_feature <<~FEATURE
+              Feature: Some rules
+    
+                Background: Named background
+                  Given passing
+    
+                Rule: A
+                  The rule A description
+    
+                  Background: Named rule background
+                    Given passing
+    
+                  Example: Example A
+                    Given passing
+    
+                Rule: B
+                  The rule B description
+    
+                  Example: Example B
+                    Given passing
             FEATURE
+            define_steps { Given('passing') {} }
 
             it 'ignores the rule keyword' do
               expect(@out.string).to include <<~OUTPUT
                 Feature: Some rules
                 
-                  Background: FB
-                    Given fb
-                    Given ab
+                  Background: Named background
+                    Given passing
+                    Given passing
                 
                   Example: Example A
-                    Given a
+                    Given passing
                 
                   Example: Example B
-                    Given b
+                    Given passing
               OUTPUT
             end
           end

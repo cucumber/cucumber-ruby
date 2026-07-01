@@ -24,6 +24,9 @@ Feature: Running multiple formatters
       """
       UUUUU
 
+      Undefined Scenarios:
+      cucumber features/test.feature:3
+
       1 scenario (1 undefined)
       5 steps (5 undefined)
 
@@ -34,10 +37,23 @@ Feature: Running multiple formatters
 
         Scenario: Implement me
           Given it snows in Sahara
+            Undefined step: "it snows in Sahara" (Cucumber::Core::Test::Result::Undefined)
+            features/test.feature:4:in `it snows in Sahara'
           Given it's 40 degrees in Norway
+            Undefined step: "it's 40 degrees in Norway" (Cucumber::Core::Test::Result::Undefined)
+            features/test.feature:5:in `it's 40 degrees in Norway'
           And it's 40 degrees in Norway
+            Undefined step: "it's 40 degrees in Norway" (Cucumber::Core::Test::Result::Undefined)
+            features/test.feature:6:in `it's 40 degrees in Norway'
           When I stop procrastinating
+            Undefined step: "I stop procrastinating" (Cucumber::Core::Test::Result::Undefined)
+            features/test.feature:7:in `I stop procrastinating'
           And there is world peace
+            Undefined step: "there is world peace" (Cucumber::Core::Test::Result::Undefined)
+            features/test.feature:8:in `there is world peace'
+
+      Undefined Scenarios:
+      cucumber features/test.feature:3
 
       1 scenario (1 undefined)
       5 steps (5 undefined)
