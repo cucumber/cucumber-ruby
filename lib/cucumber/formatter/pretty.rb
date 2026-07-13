@@ -33,8 +33,6 @@ module Cucumber
         @io = ensure_io(config.out_stream, config.error_stream)
         @config = config
         @options = config.to_hash
-        @snippets_input = []
-        @undefined_parameter_types = []
         @total_duration = 0
         @exceptions = []
         @gherkin_sources = {}
@@ -66,6 +64,7 @@ module Cucumber
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         config.on_event :undefined_parameter_type, &method(:collect_undefined_parameter_type_names)
+        config.on_event :attach_called, &method(:on_attach_called)
       end
 
       def on_gherkin_source_read(event)
@@ -73,8 +72,7 @@ module Cucumber
       end
 
       def on_step_activated(event)
-        test_step, step_match = *event.attributes
-        @step_matches[test_step.to_s] = step_match
+        @step_matches[event.test_step.to_s] = event.step_match
       end
 
       def on_test_case_started(event)
@@ -140,13 +138,13 @@ module Cucumber
         print_summary
       end
 
-      def attach(src, media_type, filename)
-        return unless media_type == 'text/x.cucumber.log+plain'
+      def on_attach_called(event)
+        return unless event.media_type == 'text/x.cucumber.log+plain'
 
-        if filename
-          @test_step_output.push("#{filename}: #{src}")
+        if event.filename
+          @test_step_output.push("#{event.filename}: #{event.src}")
         else
-          @test_step_output.push(src)
+          @test_step_output.push(event.src)
         end
       end
 

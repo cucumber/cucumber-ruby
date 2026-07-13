@@ -23,19 +23,14 @@ end
 task default: :cucumber
 
 def examples_disabled?(lang)
-  return make_warning("SKIPPING #{lang} (The examples are out of date - please help update them)") unless examples_working?(lang)
-
   make_warning("SKIPPING #{lang}: examples have been disabled for JRuby.") if jruby_disabled_examples?(lang)
 end
 
-def jruby_disabled_examples?(lang)
+def jruby_disabled_examples?(_lang)
   return unless RUBY_PLATFORM == 'java'
 
-  %w[ru uk uz].include?(lang)
-end
-
-def examples_working?(lang)
-  !%w[ar].index(lang)
+  # No longer any disabled examples for JRuby as of cucumber 11.1.0
+  nil
 end
 
 def make_warning(msg)

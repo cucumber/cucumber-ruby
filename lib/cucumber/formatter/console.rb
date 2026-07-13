@@ -116,11 +116,11 @@ module Cucumber
       def collect_snippet_data(test_step, ast_lookup)
         # collect snippet data for undefined steps
         keyword = ast_lookup.snippet_step_keyword(test_step)
-        @snippets_input << Console::SnippetData.new(keyword, test_step)
+        snippets_input << Console::SnippetData.new(keyword, test_step)
       end
 
       def collect_undefined_parameter_type_names(undefined_parameter_type)
-        @undefined_parameter_types << undefined_parameter_type.type_name
+        undefined_parameter_types << undefined_parameter_type.type_name
       end
 
       def print_snippets(options)
@@ -129,9 +129,9 @@ module Cucumber
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
           snippet_text(step_keyword, step_name, multiline_arg)
         end
-        do_print_snippets(snippet_text_proc) unless @snippets_input.empty?
+        do_print_snippets(snippet_text_proc) unless snippets_input.empty?
 
-        @undefined_parameter_types.map do |type_name|
+        undefined_parameter_types.map do |type_name|
           do_print_undefined_parameter_type_snippet(type_name)
         end
       end
@@ -169,15 +169,15 @@ module Cucumber
         end
       end
 
-      def attach(src, media_type, filename)
-        return unless media_type == 'text/x.cucumber.log+plain'
+      def on_attach_called(event)
+        return unless event.media_type == 'text/x.cucumber.log+plain'
         return unless @io
 
         @io.puts
-        if filename
-          @io.puts("#{filename}: #{format_string(src, :tag)}")
+        if event.filename
+          @io.puts("#{event.filename}: #{format_string(event.src, :tag)}")
         else
-          @io.puts(format_string(src, :tag))
+          @io.puts(format_string(event.src, :tag))
         end
 
         @io.flush
@@ -249,9 +249,17 @@ module Cucumber
 
       def snippet_text(step_keyword, step_name, multiline_arg)
         keyword = Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip
-        config.snippet_generators.map do |generator|
-          generator.call(keyword, step_name, multiline_arg, config.snippet_type)
+        @config.snippet_generators.map do |generator|
+          generator.call(keyword, step_name, multiline_arg, @config.snippet_type)
         end.join("\n")
+      end
+
+      def snippets_input
+        @snippets_input ||= []
+      end
+
+      def undefined_parameter_types
+        @undefined_parameter_types ||= []
       end
 
       class SnippetData

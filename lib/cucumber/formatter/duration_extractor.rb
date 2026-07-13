@@ -27,8 +27,6 @@ module Cucumber
       def duration(duration, *)
         duration.tap { |dur| @result_duration = dur.nanoseconds / 10**9.0 }
       end
-
-      def attach(*) end
     end
   end
 end
