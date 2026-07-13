@@ -38,11 +38,11 @@ Feature: Retry failing tests
 
   Scenario: Retry twice, so Fails-twice starts to pass too
     When I run `cucumber -q --retry 2 --format summary`
-    Then it should fail with:
+    Then it should pass with:
       """
       3 scenarios (2 flaky, 1 passed)
       """
-    And it should fail with:
+    And it should pass with:
       """
       Fails-once feature
         Fails-once ✗
