@@ -10,5 +10,5 @@ gemspec
 # gem 'cucumber-gherkin', path: '../gherkin/ruby'
 # gem 'cucumber-html-formatter', path: '../html-formatter/ruby'
 # gem 'cucumber-messages', path: '../messages/ruby'
-gem 'cucumber-query', git: 'https://github.com/cucumber/query.git', branch: 'mw-query-extraction-preview', glob: 'ruby/cucumber-query.gemspec'
+# gem 'cucumber-query', path: '../query/ruby'
 # gem 'cucumber-tag-expressions', path: '../tag-expressions/ruby'
