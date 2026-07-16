@@ -48,7 +48,7 @@ module Cucumber
       fire_install_plugin_hook
       create_formatters
 
-      receiver = Test::Runner.new(@configuration.event_bus, Cucumber::Formatter::BacktraceFilter, @configuration.retry_attempts)
+      receiver = Test::Runner.new(@configuration.event_bus, @configuration.id_generator, Cucumber::Formatter::BacktraceFilter, @configuration.retry_attempts)
       compile features, receiver, filters, @configuration.event_bus
       fire_after_all_hook unless dry_run?
       @configuration.notify :test_run_finished, !failure?
