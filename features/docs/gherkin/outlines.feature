@@ -65,9 +65,11 @@ Feature: Scenario outlines
 
       Failing Scenarios:
       cucumber features/outline_sample.feature:10
+      Undefined Scenarios:
+      cucumber features/outline_sample.feature:8
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
-      8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
+      8 steps (1 failed, 1 undefined, 2 skipped, 4 passed)
       """
 
   Scenario: Run scenario with filtering on the scenario outline name
@@ -95,9 +97,11 @@ Feature: Scenario outlines
 
       Failing Scenarios:
       cucumber features/outline_sample.feature:10
+      Undefined Scenarios:
+      cucumber features/outline_sample.feature:8
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
-      8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
+      8 steps (1 failed, 1 undefined, 2 skipped, 4 passed)
 
       """
 
@@ -140,8 +144,10 @@ Feature: Scenario outlines
 
       Failing Scenarios:
       cucumber features/outline_sample.feature:10
+      Undefined Scenarios:
+      cucumber features/outline_sample.feature:8
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
-      8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
+      8 steps (1 failed, 1 undefined, 2 skipped, 4 passed)
 
       """

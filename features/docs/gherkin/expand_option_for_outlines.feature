@@ -18,6 +18,15 @@ Feature: Scenario outlines --expand option
           | blue | blue  | right   |
           | red  | blue  | wrong   |
       """
+    And a file named "features/step_definitions/step.rb" with:
+      """
+      Given /^the secret code is (\w+)$/ do |code|
+      end
+      When /^I guess (\w+)$/ do |guess|
+      end
+      Given /^I am (\w+)$/ do |verdict|
+      end
+      """
     When I run `cucumber -i -q --expand`
     Then the stderr should not contain anything
     And it should pass with:
@@ -41,6 +50,6 @@ Feature: Scenario outlines --expand option
               When I guess blue
               Then I am wrong
 
-      2 scenarios (2 undefined)
-      6 steps (6 undefined)
+      2 scenarios (2 passed)
+      6 steps (6 passed)
       """

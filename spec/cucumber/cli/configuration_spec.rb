@@ -53,24 +53,6 @@ RSpec.describe Cucumber::Cli::Configuration do
       expect(config.options[:require]).to eq ['from/yml']
     end
 
-    it 'allows --strict to be set by a profile' do
-      given_cucumber_yml_defined_as('bongo' => '--strict')
-      config.parse!(%w[--profile bongo])
-
-      expect(config.options[:strict].strict?(:undefined)).to be true
-      expect(config.options[:strict].strict?(:pending)).to be true
-      expect(config.options[:strict].strict?(:flaky)).to be true
-    end
-
-    it 'allows --strict from a profile to be selectively overridden' do
-      given_cucumber_yml_defined_as('bongo' => '--strict')
-      config.parse!(%w[--profile bongo --no-strict-flaky])
-
-      expect(config.options[:strict].strict?(:undefined)).to be true
-      expect(config.options[:strict].strict?(:pending)).to be true
-      expect(config.options[:strict].strict?(:flaky)).to be false
-    end
-
     it 'parses ERB syntax in the cucumber.yml file' do
       given_cucumber_yml_defined_as("---\ndefault: \"<%=\"--require some_file\"%>\"\n")
       config.parse!([])

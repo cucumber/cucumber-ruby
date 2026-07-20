@@ -17,7 +17,9 @@ Feature: Formatter API methods
       """
       Feature: Test
         Scenario: Test
+          Given this step passes
       """
+    And the standard step definitions
     And a directory named "my/special"
     And a file named "features/support/custom_formatter.rb" with:
       """

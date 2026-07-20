@@ -106,7 +106,7 @@ Feature: Usage formatter
           Then I should get 9
       """
       When I run `cucumber -f stepdefs features/calculator.feature`
-      Then it should pass with:
+      Then it should fail with:
       """
       You can implement step definitions for undefined steps with these snippets:
 
