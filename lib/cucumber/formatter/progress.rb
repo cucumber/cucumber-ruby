@@ -20,8 +20,6 @@ module Cucumber
       def initialize(config)
         @config = config
         @io = ensure_io(config.out_stream, config.error_stream)
-        @snippets_input = []
-        @undefined_parameter_types = []
         @total_duration = 0
         @matches = {}
         @pending_step_matches = []
@@ -38,6 +36,7 @@ module Cucumber
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
         config.on_event :undefined_parameter_type, &method(:collect_undefined_parameter_type_names)
+        config.on_event :attach_called, &method(:on_attach_called)
       end
 
       def on_step_activated(event)

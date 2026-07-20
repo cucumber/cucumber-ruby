@@ -94,9 +94,10 @@ module Cucumber
           media_type = MiniMime.lookup_by_filename(file)&.content_type if media_type.nil?
           file = File.read(file, mode: 'rb')
         end
-        super
+        # We pass in the concept of whether the file is streamed to ensure that the envelope encoding is correct
+        super(file, media_type, filename)
       rescue StandardError
-        super
+        super(file, media_type, filename)
       end
 
       # Mark the matched step as pending.

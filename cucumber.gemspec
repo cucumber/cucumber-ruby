@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'base64', '~> 0.2'
   s.add_dependency 'builder', '~> 3.2'
   s.add_dependency 'cucumber-ci-environment', '> 9', '< 12'
-  s.add_dependency 'cucumber-core', '>= 16.2.0', '< 17'
+  s.add_dependency 'cucumber-core', '>= 18', '< 19'
   s.add_dependency 'cucumber-cucumber-expressions', '> 17', '< 20'
   s.add_dependency 'cucumber-html-formatter', '> 21', '< 24'
   s.add_dependency 'diff-lcs', '~> 1.5'
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_test', '~> 1.1'
   s.add_dependency 'sys-uname', '~> 1.5'
 
-  s.add_development_dependency 'cucumber-compatibility-kit', '~> 22.0'
+  s.add_development_dependency 'cucumber-compatibility-kit', '~> 26.0'
   # Only needed whilst we are testing the formatters. Can be removed once we remove tests for those
   s.add_development_dependency 'nokogiri', '~> 1.15'
   s.add_development_dependency 'rake', '~> 13.2'

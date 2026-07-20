@@ -21,7 +21,8 @@ module Cucumber
 
       def run_defined_feature
         define_steps
-        actual_runtime.visitor = Fanout.new([@formatter])
+        # Make sure that the MessageBuilder has been created
+        actual_runtime.send(:message_builder)
         receiver = Test::Runner.new(event_bus)
 
         event_bus.gherkin_source_read(gherkin_doc.uri, gherkin_doc.body)

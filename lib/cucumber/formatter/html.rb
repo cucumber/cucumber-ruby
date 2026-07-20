@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'cucumber/formatter/io'
 require 'cucumber/html_formatter'
-require 'cucumber/formatter/message_builder'
+
+require_relative 'message_builder'
 
 module Cucumber
   module Formatter
@@ -14,9 +14,11 @@ module Cucumber
         super(config)
       end
 
-      def output_envelope(envelope)
-        @repository.update(envelope)
+      def on_envelope(event)
+        super(event)
+        envelope = event.envelope
         @html_formatter.write_message(envelope)
+        # TODO: Move this conditional logic into the HTML formatter proper
         @html_formatter.write_post_message if envelope.test_run_finished
       end
     end

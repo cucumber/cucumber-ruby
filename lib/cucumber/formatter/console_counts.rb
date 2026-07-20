@@ -31,9 +31,11 @@ module Cucumber
       end
 
       def status_counts(summary)
-        counts = Core::Test::Result::TYPES.map { |status| [status, summary.total(status)] }
-        counts = counts.select { |_status, count| count.positive? }
-        counts = counts.map { |status, count| format_string("#{count} #{status}", status) }
+        counts =
+          Cucumber::Core::Test::Result::BooleanMethods::TYPES
+            .map { |status| [status, summary.total(status)] }
+            .select { |_status, count| count.positive? }
+            .map { |status, count| format_string("#{count} #{status}", status) }
         "(#{counts.join(', ')})" if counts.any?
       end
     end

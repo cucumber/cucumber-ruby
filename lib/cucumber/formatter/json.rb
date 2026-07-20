@@ -22,6 +22,7 @@ module Cucumber
         config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
+        config.on_event :attach_called, &method(:on_attach_called)
       end
 
       def on_test_case_started(event)
@@ -65,7 +66,8 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        test_step, result = *event.attributes
+        test_step = event.test_step
+        result = event.result
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         return if internal_hook?(test_step)
 
@@ -76,7 +78,8 @@ module Cucumber
       def on_test_case_finished(event)
         feature_elements << @test_case_hash if @in_background
 
-        _test_case, result = *event.attributes
+        _test_case = event.test_case
+        result = event.result
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end
@@ -85,18 +88,19 @@ module Cucumber
         @io.write(JSON.pretty_generate(@feature_hashes))
       end
 
-      def attach(src, mime_type, _filename)
-        if mime_type == 'text/x.cucumber.log+plain'
-          test_step_output << src
+      def on_attach_called(event)
+        if event.media_type == 'text/x.cucumber.log+plain'
+          test_step_output << event.src
           return
         end
-        if mime_type =~ /;base64$/
-          mime_type = mime_type[0..-8]
-          data = src
+        if event.media_type =~ /;base64$/
+          media_type = event.media_type[0..-8]
+          data = event.src
         else
-          data = encode64(src)
+          data = encode64(event.src)
+          media_type = event.media_type
         end
-        test_step_embeddings << { mime_type: mime_type, data: data }
+        test_step_embeddings << { mime_type: media_type, data: data }
       end
 
       private

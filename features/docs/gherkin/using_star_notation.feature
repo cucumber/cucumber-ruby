@@ -17,17 +17,22 @@ Feature: Using star notation instead of Given/When/Then
       """
     When I run `cucumber features/f.feature --publish-quiet`
     Then the stderr should not contain anything
-    And it should pass with:
+    And it should fail with:
       """
       Feature: Star-notation feature
 
         Scenario: S           # features/f.feature:2
           * I have some cukes # features/f.feature:3
+            Undefined step: "I have some cukes" (Cucumber::Core::Test::Result::Undefined)
+            features/f.feature:3
+
+      Undefined Scenarios:
+      cucumber features/f.feature:2 # Scenario: S
 
       1 scenario (1 undefined)
       1 step (1 undefined)
       """
-    And it should pass with:
+    And it should fail with:
       """
       You can implement step definitions for undefined steps with these snippets:
 

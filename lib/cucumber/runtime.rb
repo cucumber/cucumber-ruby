@@ -1,52 +1,26 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'cucumber/configuration'
-require 'cucumber/load_path'
-require 'cucumber/formatter/duration'
-require 'cucumber/file_specs'
-require 'cucumber/filters'
-require 'cucumber/formatter/fanout'
-require 'cucumber/gherkin/i18n'
-require 'cucumber/glue/registry_wrapper'
-require 'cucumber/step_match_search'
-require 'cucumber/messages'
-require 'cucumber/runtime/meta_message_builder'
 require 'sys/uname'
 
+require 'cucumber/core'
+require 'cucumber/messages'
+
+require_relative 'configuration'
+require_relative 'errors'
+require_relative 'file_specs'
+require_relative 'filters'
+require_relative 'load_path'
+require_relative 'step_match_search'
+
+require_relative 'formatter/duration'
+require_relative 'gherkin/i18n'
+require_relative 'glue/registry_wrapper'
+require_relative 'runtime/meta_message_builder'
+require_relative 'runtime/support_code'
+require_relative 'runtime/user_interface'
+
 module Cucumber
-  module FixRuby21Bug9285
-    def message
-      String(super).gsub('@ rb_sysopen ', '')
-    end
-  end
-
-  class FileException < RuntimeError
-    attr_reader :path
-
-    def initialize(original_exception, path)
-      @path = path
-      super(original_exception)
-    end
-  end
-
-  class FileNotFoundException < FileException
-  end
-
-  class FeatureFolderNotFoundException < RuntimeError
-    def initialize(path)
-      @path = path
-      super
-    end
-
-    def message
-      "No such file or directory - #{@path}"
-    end
-  end
-
-  require 'cucumber/core'
-  require 'cucumber/runtime/user_interface'
-  require 'cucumber/runtime/support_code'
   class Runtime
     attr_reader :results, :support_code, :configuration
 
@@ -72,15 +46,12 @@ module Cucumber
 
       load_step_definitions
       fire_install_plugin_hook
-      fire_before_all_hook unless dry_run?
-      # TODO: can we remove this state?
-      self.visitor = report
+      create_formatters
 
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters, @configuration.event_bus
-      @configuration.notify :test_run_finished, !failure?
-
       fire_after_all_hook unless dry_run?
+      @configuration.notify :test_run_finished, !failure?
     end
 
     def features_paths
@@ -113,7 +84,7 @@ module Cucumber
       if @configuration.wip?
         summary_report.test_cases.total_passed.positive?
       else
-        !summary_report.ok?(strict: @configuration.strict)
+        !summary_report.ok? || !global_hooks_summary_report.ok?
       end
     end
 
@@ -121,10 +92,6 @@ module Cucumber
 
     def fire_install_plugin_hook # :nodoc:
       @support_code.fire_hook(:install_plugin, @configuration, registry_wrapper)
-    end
-
-    def fire_before_all_hook # :nodoc:
-      @support_code.fire_hook(:before_all)
     end
 
     def fire_after_all_hook # :nodoc:
@@ -136,6 +103,22 @@ module Cucumber
       @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
         @configuration.notify :gherkin_source_read, path, source
+
+        # TODO: When core is v17+ switch the below code out to the following
+        # Cucumber::Core::Gherkin::Document.new(path, source).tap do |document|
+        #   @configuration.notify(:envelope, document.to_envelope)
+        # end
+        to_envelope =
+          Cucumber::Messages::Envelope.new(
+            source: Cucumber::Messages::Source.new(
+              uri: path,
+              data: source,
+              media_type: 'text/x.cucumber.gherkin+plain'
+            )
+          )
+
+        @configuration.notify(:envelope, to_envelope)
+
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
@@ -188,17 +171,29 @@ module Cucumber
     require 'cucumber/formatter/publish_banner_printer'
     require 'cucumber/core/report/summary'
 
-    def report
-      return @report if @report
+    def create_formatters
+      # Define all formatters which are specified via cli options
+      formatters
+      # Define the MessageBuilder formatter - Required until all messages are generated at the source
+      #   Skip when a user formatter already inherits from MessageBuilder (e.g. HTML) to avoid sending every event twice.
+      message_builder unless formatters.any? { |f| f.is_a?(Formatter::MessageBuilder) }
+      # `summary_report` and `global_hooks_summary_report` are used to determine the exit code
+      summary_report
+      global_hooks_summary_report
+      fail_fast_report if @configuration.fail_fast?
+      publish_banner_printer unless @configuration.publish_quiet?
+    end
 
-      reports = [summary_report] + formatters
-      reports << fail_fast_report if @configuration.fail_fast?
-      reports << publish_banner_printer unless @configuration.publish_quiet?
-      @report ||= Formatter::Fanout.new(reports)
+    def message_builder
+      @message_builder ||= Formatter::MessageBuilder.new(@configuration)
     end
 
     def summary_report
       @summary_report ||= Core::Report::Summary.new(@configuration.event_bus)
+    end
+
+    def global_hooks_summary_report
+      @global_hooks_summary_report ||= Formatter::GlobalHooksSummary.new(@configuration)
     end
 
     def fail_fast_report
@@ -256,6 +251,7 @@ module Cucumber
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
           filters << Filters::BroadcastTestRunStartedEvent.new(@configuration)
+          filters << Filters::FireBeforeAllHooks.new(@support_code)
           filters << Filters::Quit.new
         end
 

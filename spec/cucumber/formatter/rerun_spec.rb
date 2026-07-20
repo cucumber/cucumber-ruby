@@ -36,6 +36,7 @@ module Cucumber
           end
 
           described_class.new(config)
+          MessageBuilder.new(config)
           execute [gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
@@ -70,6 +71,7 @@ module Cucumber
           end
 
           described_class.new(config)
+          MessageBuilder.new(config)
           execute [foo, bar], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
@@ -88,6 +90,7 @@ module Cucumber
           end
 
           described_class.new(config)
+          MessageBuilder.new(config)
           execute [gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
           config.event_bus.test_run_finished
 
@@ -96,59 +99,39 @@ module Cucumber
       end
 
       context 'with a flaky scenario' do
-        context 'with option --no-strict-flaky' do
-          it 'prints nothing' do
-            gherkin = gherkin('foo.feature') do
-              feature do
-                scenario do
-                  step 'flaky'
-                end
+        it 'prints nothing' do
+          gherkin = gherkin('foo.feature') do
+            feature do
+              scenario do
+                step 'flaky'
               end
             end
-
-            described_class.new(config)
-            execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
-
-            config.event_bus.test_run_finished
-
-            expect(io.string).to eq('')
           end
+
+          described_class.new(config)
+          MessageBuilder.new(config)
+          execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
+
+          config.event_bus.test_run_finished
+
+          expect(io.string).to eq('')
         end
 
-        context 'with option --strict-flaky' do
-          let(:config) { Configuration.new(out_stream: io, strict: Core::Test::Result::StrictConfiguration.new([:flaky])) }
-
-          it 'prints the location of the flaky scenario' do
-            gherkin = gherkin('foo.feature') do
-              feature do
-                scenario do
-                  step 'flaky'
-                end
+        it 'does not include the same failing scenario more than once' do
+          gherkin = gherkin('foo.feature') do
+            feature do
+              scenario do
+                step 'failing'
               end
             end
-
-            described_class.new(config)
-            execute [gherkin], [FakeObjects::FlakyStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
-            config.event_bus.test_run_finished
-
-            expect(io.string).to eq('foo.feature:3')
           end
 
-          it 'does not include the same failing scenario more than once' do
-            gherkin = gherkin('foo.feature') do
-              feature do
-                scenario do
-                  step 'failing'
-                end
-              end
-            end
+          described_class.new(config)
+          MessageBuilder.new(config)
+          execute [gherkin, gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
+          config.event_bus.test_run_finished
 
-            described_class.new(config)
-            execute [gherkin, gherkin], [StandardStepActions.new, Filters::BroadcastTestRunStartedEvent.new(config), Filters::BroadcastTestCaseReadyEvent.new(config)], config.event_bus
-            config.event_bus.test_run_finished
-
-            expect(io.string).to eq('foo.feature:3')
-          end
+          expect(io.string).to eq('foo.feature:3')
         end
       end
     end

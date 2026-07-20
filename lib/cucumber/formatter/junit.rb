@@ -51,19 +51,17 @@ module Cucumber
       end
 
       def on_test_step_finished(event)
-        test_step, result = *event.attributes
         return if @failing_test_step
 
-        @failing_test_step = test_step unless result.ok?(strict: @config.strict)
+        @failing_test_step = event.test_step unless event.result.ok?
       end
 
       def on_test_case_finished(event)
-        test_case, result = *event.attributes
-        result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        test_case_name = NameBuilder.new(test_case, @ast_lookup)
+        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+        test_case_name = NameBuilder.new(event.test_case, @ast_lookup)
         scenario = test_case_name.scenario_name
         scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
-        output = create_output_string(test_case, scenario, result, test_case_name.row_name)
+        output = create_output_string(event.test_case, scenario, result, test_case_name.row_name)
         build_testcase(result, scenario_designation, output)
 
         Interceptor::Pipe.unwrap! :stdout
@@ -111,7 +109,7 @@ module Cucumber
         scenario_source = @ast_lookup.scenario_source(test_case)
         keyword = scenario_source.type == :Scenario ? scenario_source.scenario.keyword : scenario_source.scenario_outline.keyword
         output = "#{keyword}: #{scenario}\n\n"
-        return output if result.ok?(strict: @config.strict)
+        return output if result.ok?
 
         if scenario_source.type == :Scenario
           if @failing_test_step
@@ -140,7 +138,7 @@ module Cucumber
         testcase_attributes = get_testcase_attributes(classname, name, duration, filename)
 
         @current_feature_data[:builder].testcase(testcase_attributes) do
-          if !result.passed? && result.ok?(strict: @config.strict)
+          if !result.passed? && result.ok?
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
           elsif !result.passed?
