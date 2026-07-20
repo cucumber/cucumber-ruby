@@ -12,6 +12,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Updated `cucumber-compatibility-kit` to v26
 - Refactor to internal error logic (No user facing changes)
+- `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
+  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
 
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby. 
