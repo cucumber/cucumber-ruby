@@ -14,14 +14,16 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Refactor to internal error logic (No user facing changes)
 - `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
   and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
+- Updated `cucumber-expressions` to v20
+- Updated `cucumber-html-formatter` to v24
 
 ### Removed
-- Removed the concept of `strict` from cucumber-ruby. 
+- Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
   - This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.
   - All non-passing scenarios (Except flaky with retry), are now considered failures
 - Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
   logic and some old rspec helper files)
-- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2)
+- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2) ([luke-hill](https://github.com/luke-hill))
 
 ## [11.1.1] - 2026-06-25
 ### Changed
