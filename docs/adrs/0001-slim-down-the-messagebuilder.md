@@ -1,4 +1,4 @@
-# 1. Slim down the MessageBuilder
+# 1. Generate Messages at the source of the message data
 
 Date: 2026-07-24
 
@@ -8,23 +8,23 @@ accepted
 
 ## Context
 
-The MessageBuilder has its tentacles in everything. For example, the `Formatter::HTML` inherits from it, and needs a reasonable amount of the methods, but it's hard to see which ones. It's a big class that does way too much.
-
-When we introduce new formatters, we want them to work in a clean/easy way: just an `on_envelop` method, instead needing to listen to 10 different events.
+The several Messages are (still) generated centrally from Events by the MessageBuilder. The goal is that each Message are generated at the source of the message data (which often is where the correspondeing Event is generated).
 
 ## Decision
 
-Remove all the other event listener methods from `MessageBuilder` so that we could eventually remove it altogether.
+Generate each Messages at the source of the message data. When all the Messages are generated at the source of the message data the `MessageBuilder` could be remove it altogether.
+
+The next step is to convert all the Event users to use Messages instead. Many of the Event users are formatters, but there are also other Event users, for instance the Retry filter.
 
 In the end, we want to have only one event on the bus: `envelope`. Then we'll be able to change our event bus to just handle envelopes/messages.
 
 ## Consequences
 
-* each time we remove an event listener from MessageBuilder we need to simultaneously:
-  * add the translated/generated event of type `envelope` next to the source of the actual event. Note: this may not be a direct 1:1 relationship between message/event.
-  * remove the handler from `MessageBuilder` and ensure that any new formatter (these don't have to directly inherit) is checked and refactored.
+* each time we start to generate a Message at the message data source we need simulato simultaneously
+  * stop the MessageBuilder to generate it. Usually that also means that a handler can be removed from the MessageBuilder. Note: this may not be a direct 1:1 relationship between message/event.
+  * ensure that any Message user is checked. 
 
-When converting between messages and envelopes, there are three ways it could go:
+When converting between event and messages, there are three ways it could go:
 
 1. event <-> message
 2. events that don't have a corresponding message (e.g. `gherkin_source_read`, `test_case_ready`)
