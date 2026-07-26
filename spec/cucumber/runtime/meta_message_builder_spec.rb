@@ -34,7 +34,7 @@ RSpec.describe Cucumber::Runtime::MetaMessageBuilder do
     end
 
     it 'has an os version' do
-      expect(subject.os.version).to eq(Sys::Uname.uname.version)
+      expect(subject.os.version).to eq(Sys::Uname.version)
     end
 
     it 'has a cpu name' do
