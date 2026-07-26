@@ -10,6 +10,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ## [Unreleased]
 
+### Fixed
+- Make fetching the OS version work on Wine ([#1900](https://github.com/cucumber/cucumber-ruby/pull/1900) [mvz](https://github.com/mvz))
+
 ## [11.0.0] - 2026-04-14
 ### Added
 - Add timestamp to `Attachment` message
