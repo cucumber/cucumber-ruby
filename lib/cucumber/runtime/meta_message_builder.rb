@@ -70,7 +70,7 @@ module Cucumber
         def os
           Cucumber::Messages::Product.new(
             name: RbConfig::CONFIG['target_os'],
-            version: Sys::Uname.uname.version
+            version: Sys::Uname.version
           )
         end
 
