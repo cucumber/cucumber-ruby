@@ -23,8 +23,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   - All non-passing scenarios (Except flaky with retry), are now considered failures
 - Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
   logic and some old rspec helper files)
-- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2) ([luke-hill](https://github.com/luke-hill))
-
+- Removed handling of a Ruby 2.1 system error ([luke-hill](https://github.com/luke-hill))
+- Removed support for Ruby 3.1 and 3.2 (Minimum ruby is now 3.3) ([luke-hill](https://github.com/luke-hill))
+  
 ## [11.1.1] - 2026-06-25
 ### Changed
 - Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
