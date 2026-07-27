@@ -7,4 +7,5 @@ Karakteristik: Divizyon
     * mwen te antre 3 nan kalkilatris la 
     * mwen te antre 2 nan kalkilatris la 
     * mwen peze divize 
-    * sa a rezilta a ta dwe 1.5 sou ekran an
+    * rezilta a ta dwe 1.5 sou ekran an
+    

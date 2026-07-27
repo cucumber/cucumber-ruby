@@ -23,7 +23,6 @@ module Cucumber
       {
         autoload_code_paths: %w[features/support features/step_definitions],
         filters: [],
-        strict: Cucumber::Core::Test::Result::StrictConfiguration.new,
         require: [],
         dry_run: false,
         fail_fast: false,
@@ -112,10 +111,6 @@ module Cucumber
 
     def guess?
       @options[:guess]
-    end
-
-    def strict
-      @options[:strict]
     end
 
     def wip?

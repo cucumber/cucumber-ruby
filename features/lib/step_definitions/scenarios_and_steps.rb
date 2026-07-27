@@ -8,6 +8,7 @@ Given('the standard step definitions') do
       step_definition('/^this step raises an error$/', "raise 'error'"),
       step_definition('/^this step is pending$/', 'pending'),
       step_definition('/^this step fails$/', 'fail'),
+      step_definition('/^this step is skipped$/', 'skip_this_scenario'),
       step_definition('/^this step is a table step$/', '|t|')
     ].join("\n")
   )

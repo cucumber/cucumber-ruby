@@ -23,7 +23,6 @@ Feature: Dry Run
 
       1 scenario (1 skipped)
       1 step (1 skipped)
-
       """
 
   Scenario: With message formatter
@@ -39,35 +38,14 @@ Feature: Dry Run
     And output should be valid NDJSON
     And the output should contain NDJSON with key "status" and value "SKIPPED"
 
-  Scenario: In strict mode
-    Given a file named "features/test.feature" with:
-      """
-      Feature: test
-        Scenario:
-          Given this step fails
-      """
-    And the standard step definitions
-    When I run `cucumber --dry-run --strict --publish-quiet`
-    Then it should pass with exactly:
-      """
-      Feature: test
-
-        Scenario:               # features/test.feature:2
-          Given this step fails # features/step_definitions/steps.rb:4
-
-      1 scenario (1 skipped)
-      1 step (1 skipped)
-
-      """
-
-  Scenario: In strict mode with an undefined step
+  Scenario: With an undefined step
     Given a file named "features/test.feature" with:
       """
       Feature: test
         Scenario:
           Given this step is undefined
       """
-    When I run `cucumber --dry-run --strict`
+    When I run `cucumber --dry-run`
     Then it should fail with:
       """
       Feature: test
@@ -75,14 +53,19 @@ Feature: Dry Run
         Scenario:                      # features/test.feature:2
           Given this step is undefined # features/test.feature:3
             Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
-            features/test.feature:3:in `this step is undefined'
+            features/test.feature:3
 
-      Undefined Scenarios:
-      cucumber features/test.feature:2 # Scenario:
+Undefined Scenarios:
+cucumber features/test.feature:2 # Scenario:
 
       1 scenario (1 undefined)
       1 step (1 undefined)
 
+      You can implement step definitions for undefined steps with these snippets:
+
+      Given('this step is undefined') do
+        pending # Write code here that turns the phrase above into concrete actions
+      end
       """
 
   Scenario: With BeforeAll and AfterAll hooks
@@ -113,5 +96,4 @@ Feature: Dry Run
 
       1 scenario (1 skipped)
       1 step (1 skipped)
-
       """

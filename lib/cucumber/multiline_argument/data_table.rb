@@ -77,7 +77,7 @@ module Cucumber
 
       # This is a Hash being initialized with a default value of a Hash
       # DO NOT REFORMAT TO REMOVE {} - Ruby 3.4+ will interpret these as keywords and cucumber will not work
-      NULL_CONVERSIONS = Hash.new({ strict: false, proc: ->(cell_value) { cell_value } }).freeze
+      NULL_CONVERSIONS = Hash.new({ proc: ->(cell_value) { cell_value } }).freeze
 
       # @param data [Core::Test::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_column
@@ -265,9 +265,7 @@ module Cucumber
       # Returns a new Table with an additional column mapping.
       #
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
-      # and +conversion_proc+ performs the conversion for each cell in that column. If +strict+ is
-      # true, an error will be raised if the column named +column_name+ is not found. If +strict+
-      # is false, no error will be raised. Example:
+      # and +conversion_proc+ performs the conversion for each cell in that column.
       #
       #   Given /^an expense report for (.*) with the following posts:$/ do |table|
       #     posts_table = posts_table.map_column('amount') { |a| a.to_i }
@@ -276,9 +274,9 @@ module Cucumber
       #     end
       #   end
       #
-      def map_column(column_name, strict: true, &conversion_proc)
+      def map_column(column_name, &conversion_proc)
         conversion_procs = @conversion_procs.dup
-        conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
+        conversion_procs[column_name.to_s] = { proc: conversion_proc }
         self.class.new(Core::Test::DataTable.new(raw), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
 
@@ -467,7 +465,7 @@ module Cucumber
 
       def convert_columns!
         @conversion_procs.each do |column_name, conversion_proc|
-          verify_column(column_name) if conversion_proc[:strict]
+          verify_column(column_name)
         end
 
         cell_matrix.transpose.each do |col|

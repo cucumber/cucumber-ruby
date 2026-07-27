@@ -260,20 +260,20 @@ module Cucumber
             it { expect(@doc.to_s).not_to match(/type="skipped"/) }
           end
 
-          describe 'scenario with skipped test in junit report' do
+          describe 'scenario with undefined steps in junit report' do
             define_feature <<~FEATURE
-              Feature: junit report with skipped test
+              Feature: junit report with test featuring undefined steps
 
                 Scenario Outline: skip a test and junit report of the same
-                  Given a <skip> scenario
+                  Given a <type> step
 
                 Examples:
-                  | skip   |
-                  | undefined |
-                  | still undefined  |
+                  | type            |
+                  | undefined       |
+                  | still undefined |
             FEATURE
 
-            it { expect(@doc.to_s).to match(/skipped="2"/) }
+            it { expect(@doc.to_s).to include('failures="2"') }
           end
 
           describe 'with a regular data table scenario' do

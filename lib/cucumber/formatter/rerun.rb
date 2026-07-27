@@ -28,42 +28,20 @@ module Cucumber
       def finish_report
         @query.find_all_test_case_started.each do |test_case|
           status = @query.find_most_severe_test_step_result_by(test_case).status
-          # RULE: Don't log test cases without a pickle (Unsure what these could be?)
+
+          # RULE: Don't log test cases without a pickle (We cannot query their location data to log them)
           pickle = @query.find_pickle_by(test_case)
           next if pickle.nil?
 
-          # RULE: (Configuration specific)
-          #   -> If the test case has already been logged (And so we're retrying), we remove prior references of failures
-          if passing?(test_case) && !rerun_flaky_tests?
+          # RULE: Test cases with the worst result as Passing is not considered a failure (Don't log these)
+          if status == Cucumber::Messages::TestStepResultStatus::PASSED
+            # If the test case in question had already been logged as a failure (And we're retrying), remove the prior reference of failure
             uri_and_location_hash[pickle.uri].delete(pickle.location.line)
             next
           end
 
-          # RULE: (Configuration specific - to be amended once CCK conformance is finalised)
-          #   -> If the strict configuration permits the result - handle it accordingly
-          if status == 'UNDEFINED' && !@config.strict.strict?(:undefined)
-            Cucumber.deprecate(
-              'The strict configuration in cucumber is going away and moving towards a standardised set of behaviours',
-              '--strict=undefined',
-              '12.0.0'
-            )
-            next
-          end
-
-          if status == 'PENDING' && !@config.strict.strict?(:pending)
-            Cucumber.deprecate(
-              'The strict configuration in cucumber is going away and moving towards a standardised set of behaviours',
-              '--strict=pending',
-              '12.0.0'
-            )
-            next
-          end
-
-          # RULE: Passing test cases are not considered failures (Don't log these)
-          next if passing?(test_case)
-
-          # RULE: Skipped test cases are not considered failures (on their own, don't log these)
-          next if skipped?(test_case)
+          # RULE: Test cases with the worst result as Skipped/Pending/Undefined are not considered failures (don't log these)
+          next if non_rerunnable_status?(status)
 
           # RULE: Before logging a failure, ensure we are not on a retried test case (Don't log a retry multiple times)
           next if test_case.attempt > 1
@@ -86,18 +64,12 @@ module Cucumber
         @uri_and_location_hash ||= Hash.new { |hash, key| hash[key] = Set.new }
       end
 
-      def rerun_flaky_tests?
-        @config.strict.strict?(:flaky)
-      end
-
-      def passing?(test_case_started)
-        most_severe_test_step_result = @query.find_most_severe_test_step_result_by(test_case_started)
-        most_severe_test_step_result.status == Cucumber::Messages::TestStepResultStatus::PASSED
-      end
-
-      def skipped?(test_case_started)
-        most_severe_test_step_result = @query.find_most_severe_test_step_result_by(test_case_started)
-        most_severe_test_step_result.status == Cucumber::Messages::TestStepResultStatus::SKIPPED
+      def non_rerunnable_status?(status)
+        [
+          Cucumber::Messages::TestStepResultStatus::SKIPPED,
+          Cucumber::Messages::TestStepResultStatus::PENDING,
+          Cucumber::Messages::TestStepResultStatus::UNDEFINED
+        ].include?(status)
       end
     end
   end

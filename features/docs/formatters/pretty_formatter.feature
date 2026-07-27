@@ -15,7 +15,12 @@ Feature: Pretty output formatter
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on
     When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand `
-    Then it should pass
+    Then it should fail
+    And the output should contain:
+    """
+          Example: | bar |               # features/scenario_outline_with_undefined_steps.feature:8:3
+            Given this step is undefined # features/scenario_outline_with_undefined_steps.feature:8:4
+    """
 
   Scenario: when using a profile the output should include 'Using the default profile...'
     And a file named "cucumber.yml" with:
@@ -23,7 +28,7 @@ Feature: Pretty output formatter
       default: -r features
     """
     When I run `cucumber --profile default --format pretty`
-    Then it should pass
+    Then it should fail
     And the output should contain:
     """
     Using the default profile...

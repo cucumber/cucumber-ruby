@@ -27,19 +27,24 @@ Feature: Empty scenario
 
   Scenario: test status for empty scenario is `undefined`
     When I run `cucumber --quiet features/empty_scenario.feature`
-    Then it should pass with exactly:
+    Then it should fail with exactly:
     """
     Feature: minimal
 
       Background:
+          The test case has no steps (Cucumber::Core::Test::Result::Undefined)
+          features/empty_scenario.feature:6
 
+    Undefined Scenarios:
+    cucumber features/empty_scenario.feature:6
+ 
     1 scenario (1 undefined)
     0 steps
     """
 
   Scenario: reporting with the JSON formatter
     When I run `cucumber --quiet --format json features/empty_scenario.feature`
-    Then it should pass with JSON:
+    Then it should fail with JSON:
     """
     [
       {

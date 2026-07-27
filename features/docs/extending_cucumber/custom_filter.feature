@@ -24,6 +24,5 @@ Feature: Custom filter
         config.filters << MakeAnythingPass.new
       end
       """
-    When I run `cucumber --strict`
+    When I run `cucumber`
     Then it should pass
-

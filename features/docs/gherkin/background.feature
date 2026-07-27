@@ -360,12 +360,15 @@ Feature: Background
 
   Scenario: run a feature with a background that is pending
     When I run `cucumber -q features/pending_background.feature`
-    Then it should pass with exactly:
+    Then it should fail with exactly:
     """
     Feature: Pending background sample
 
       Background:
         Given this step is pending
+          TODO (Cucumber::Pending)
+          ./features/step_definitions/steps.rb:3
+          features/pending_background.feature:4
 
       Scenario: pending background
         Then I should have '10' cukes
@@ -373,8 +376,12 @@ Feature: Background
       Scenario: another pending background
         Then I should have '10' cukes
 
+    Pending Scenarios:
+    cucumber features/pending_background.feature:6
+    cucumber features/pending_background.feature:9
+
     2 scenarios (2 pending)
-    4 steps (2 skipped, 2 pending)
+    4 steps (2 pending, 2 skipped)
 
     """
 

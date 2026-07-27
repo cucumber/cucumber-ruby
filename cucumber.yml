@@ -1,5 +1,5 @@
 <%
-std_opts = "--format progress features -r features --strict --publish-quiet".dup
+std_opts = "--format progress features -r features --publish-quiet".dup
 std_opts << " --tags 'not @wip'"
 std_opts << " --tags 'not @wip-jruby'" if defined?(JRUBY_VERSION)
 

@@ -11,6 +11,19 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ## [Unreleased]
 ### Changed
 - Updated `cucumber-compatibility-kit` to v26
+- Refactor to internal error logic (No user facing changes)
+- `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
+  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
+- Updated `cucumber-expressions` to v20
+- Updated `cucumber-html-formatter` to v24
+
+### Removed
+- Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
+  - This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.
+  - All non-passing scenarios (Except flaky with retry), are now considered failures
+- Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
+  logic and some old rspec helper files)
+- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2) ([luke-hill](https://github.com/luke-hill))
 
 ## [11.1.1] - 2026-06-25
 ### Changed
@@ -29,14 +42,14 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
-([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+  ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
 - Simplify attachment handling in the `MessageBuilder` and `#attach` method
+- Updated `cucumber-compatibility-kit` to v24
 
 ### Fixed
 - When someone calls `#attach` with a hashified output (Instead of JSON); call `#to_json` before attaching as a stringified JSON response to avoid errors ([#1787](https://github.com/cucumber/cucumber-ruby/pull/1787) [luke-hill](https://github.com/luke-hill))
 - Altered the concept of how `BeforeAll` and `AfterAll` hooks would run. They now attempt to all run before continuing test execution ([#1857](https://github.com/cucumber/cucumber-ruby/pull/1857) [brasmusson](https://github.com/brasmusson))
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
-- Updated `cucumber-compatibility-kit` to v24
 - Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Approx 20% complete -> should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
 

@@ -24,14 +24,10 @@ Feature: Rerun formatter
       Feature: Mixed
 
         Scenario:
-          Given this step is undefined
-
-        Scenario:
-          Given this step is pending
+          Given this step is skipped
 
         Scenario:
           Given this step passes
-
       """
 
     When I run `cucumber --publish-quiet -f rerun`
@@ -48,14 +44,13 @@ Feature: Rerun formatter
           Given this step fails
 
         Scenario:
-          Given this step is undefined
-
-        Scenario:
           Given this step is pending
 
         Scenario:
-          Given this step passes
+          Given this step is skipped
 
+        Scenario:
+          Given this step passes
       """
     And a file named "features/all_good.feature" with:
       """
@@ -68,38 +63,6 @@ Feature: Rerun formatter
     When I run `cucumber --publish-quiet -f rerun --dry-run`
     Then it should pass with exactly:
       """
-      """
-
-  Scenario: Exit code is not zero, regular scenario
-    Given a file named "features/mixed.feature" with:
-      """
-      Feature: Mixed
-
-        Scenario:
-          Given this step fails
-
-        Scenario:
-          Given this step is undefined
-
-        Scenario:
-          Given this step is pending
-
-        Scenario:
-          Given this step passes
-
-      """
-    And a file named "features/all_good.feature" with:
-      """
-      Feature: All good
-
-        Scenario:
-          Given this step passes
-      """
-
-    When I run `cucumber --publish-quiet -f rerun --strict`
-    Then it should fail with exactly:
-      """
-      features/mixed.feature:3:6:9
       """
 
   Scenario: Exit code is not zero, scenario outlines
@@ -115,7 +78,6 @@ Feature: Rerun formatter
           | status |
           | passes |
           | fails  |
-
       """
     When I run `cucumber -f rerun`
     Then it should fail with:
@@ -179,7 +141,6 @@ Feature: Rerun formatter
           | status |
           | passes |
           | fails  |
-
       """
     When I run `cucumber --expand -f rerun`
     Then it should fail with:

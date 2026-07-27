@@ -27,8 +27,6 @@ module Cucumber
         @args = args
         @options.parse!(args)
         arrange_formats
-        raise("You can't use both --strict and --wip") if strict.strict? && wip?
-
         set_environment_variables
       end
 
@@ -42,10 +40,6 @@ module Cucumber
 
       def seed
         Integer(@options[:seed] || rand(0xFFFF))
-      end
-
-      def strict
-        @options[:strict]
       end
 
       def wip?

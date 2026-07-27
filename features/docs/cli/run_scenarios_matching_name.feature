@@ -9,17 +9,17 @@ Feature: Run feature elements matching a name with --name/-n
       """
       Feature: first feature
         Scenario: foo first
-          Given missing
+          Given this step passes
         Scenario: bar first
-          Given missing
+          Given this step passes
       """
     Given a file named "features/second.feature" with:
       """
       Feature: second
         Scenario: foo second
-          Given missing
+          Given this step passes
         Scenario: bar second
-          Given missing
+          Given this step passes
       """
     Given a file named "features/outline.feature" with:
       """
@@ -32,6 +32,7 @@ Feature: Run feature elements matching a name with --name/-n
             | a    |
             | b    |
       """
+    And the standard step definitions
 
   Scenario: Matching Scenario names
     When I run `cucumber -q --name foo`
@@ -40,20 +41,20 @@ Feature: Run feature elements matching a name with --name/-n
       Feature: first feature
 
         Scenario: foo first
-          Given missing
+          Given this step passes
 
       Feature: second
 
         Scenario: foo second
-          Given missing
+          Given this step passes
 
-      2 scenarios (2 undefined)
-      2 steps (2 undefined)
+      2 scenarios (2 passed)
+      2 steps (2 passed)
       """
 
   Scenario: Matching Scenario Outline names
     When I run `cucumber -q --name baz`
-    Then it should pass with:
+    Then it should fail with:
       """
       Feature: outline
 
@@ -64,6 +65,10 @@ Feature: Run feature elements matching a name with --name/-n
             | name |
             | a    |
             | b    |
+
+      Undefined Scenarios:
+      cucumber features/outline.feature:7
+      cucumber features/outline.feature:8
 
       2 scenarios (2 undefined)
       2 steps (2 undefined)

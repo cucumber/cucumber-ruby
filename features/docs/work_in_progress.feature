@@ -71,6 +71,11 @@ Feature: Cucumber --work-in-progress switch
         @undefined
         Scenario: Undefined
           Given this step is undefined
+            Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
+            features/wip.feature:8
+ 
+      Undefined Scenarios:
+      cucumber features/wip.feature:7
 
       1 scenario (1 undefined)
       1 step (1 undefined)
@@ -81,7 +86,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  Scenario: Pass with Undefined Scenarios
+  Scenario: Pass with Pending Scenarios
     When I run `cucumber -q -w -t @pending features/wip.feature`
     Then it should pass with:
       """
@@ -90,7 +95,13 @@ Feature: Cucumber --work-in-progress switch
         @pending
         Scenario: Pending
           Given this step is pending
-
+            TODO (Cucumber::Pending)
+            ./features/step_definitions/steps.rb:3
+            features/wip.feature:12
+ 
+      Pending Scenarios:
+      cucumber features/wip.feature:11
+ 
       1 scenario (1 pending)
       1 step (1 pending)
       """

@@ -15,7 +15,7 @@ Feature: Test Run Finished
       Feature: A feature
 
         Scenario: A passing scenario
-          Given this is a step
+          Given this step passes
       """
     And a file named "features/support/events.rb" with:
       """

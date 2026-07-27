@@ -108,5 +108,5 @@ Feature: Parameter Types
         expect(name).to eq(@name)
       end
       """
-    When I run `cucumber features/employees.feature --strict`
+    When I run `cucumber features/employees.feature`
     Then it should pass

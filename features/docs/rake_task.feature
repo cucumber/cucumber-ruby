@@ -29,12 +29,17 @@ Feature: Rake task
       end
       """
     When I run `rake cucumber`
-    Then it should pass with:
+    Then it should fail with:
       """
       Feature: Sample
 
         Scenario: Wanted
           Given I want to run this
+            Undefined step: "I want to run this" (Cucumber::Core::Test::Result::Undefined)
+            features/missing_step_definitions.feature:4
+ 
+      Undefined Scenarios:
+      cucumber -p foo features/missing_step_definitions.feature:3
 
       1 scenario (1 undefined)
       1 step (1 undefined)
@@ -50,15 +55,23 @@ Feature: Rake task
       end
       """
     When I run `rake cucumber`
-    Then it should pass with:
+    Then it should fail with:
       """
       Feature: Sample
 
         Scenario: Wanted
           Given I want to run this
+            Undefined step: "I want to run this" (Cucumber::Core::Test::Result::Undefined)
+            features/missing_step_definitions.feature:4
 
         Scenario: Unwanted
           Given I don't want this ran
+            Undefined step: "I don't want this ran" (Cucumber::Core::Test::Result::Undefined)
+            features/missing_step_definitions.feature:7
+
+      Undefined Scenarios:
+      cucumber features/missing_step_definitions.feature:3
+      cucumber features/missing_step_definitions.feature:6
 
       2 scenarios (2 undefined)
       2 steps (2 undefined)
@@ -79,13 +92,18 @@ Feature: Rake task
       end
       """
     When I run `rake cucumber`
-    Then it should pass with:
+    Then it should fail with:
       """
       Feature: Sample
 
         Scenario: Wanted
           Given I want to run this
-
+            Undefined step: "I want to run this" (Cucumber::Core::Test::Result::Undefined)
+            features/missing_step_definitions.feature:4
+ 
+      Undefined Scenarios:
+      cucumber -p bar features/missing_step_definitions.feature:3
+ 
       1 scenario (1 undefined)
       1 step (1 undefined)
       """
@@ -107,7 +125,11 @@ Feature: Rake task
       end
       """
     When I run `rake cucumber`
-    Then it should pass
+    Then it should fail with:
+      """
+      1 scenario (1 undefined)
+      1 step (1 undefined)
+      """
     And the output should not contain:
       """
         * features/support/dont_require_me.rb
@@ -130,7 +152,7 @@ Feature: Rake task
        end
        """
     When I run `rake cucumber`
-    Then it should pass with:
+    Then it should fail with:
        """
        Feature: The futures green
 

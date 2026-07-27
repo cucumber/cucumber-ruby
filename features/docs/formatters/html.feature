@@ -7,15 +7,15 @@ Feature: html formatter
       Feature: Some feature
 
         Scenario Outline: a scenario
-          Given a <status> step
+          Given this step <status>
 
         Examples:
           | status |
-          | passed |
-          | failed |
+          | passes |
+          | fails  |
       """
 
   Scenario: output html to stdout
     When I run `cucumber features/my_feature.feature --format html`
-    Then it should pass
+    Then it should fail
     And output should be html with title "Cucumber"

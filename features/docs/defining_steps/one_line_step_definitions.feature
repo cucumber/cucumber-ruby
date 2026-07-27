@@ -18,7 +18,7 @@ Feature: One line step definitions
       World(Driver)
 
       When /I do the action/, :do_action
-      Then /The action should be done/, :assert_done
+      Then /the action should be done/, :assert_done
       """
     And a file named "features/action.feature" with:
       """
@@ -39,7 +39,9 @@ Feature: One line step definitions
         end
 
         def assert_done
-          expect(@done).to be true
+          if not @done
+            raise "Error"
+          end
         end
       end
 
@@ -51,7 +53,7 @@ Feature: One line step definitions
       World(Driver)
 
       When /I do the action to the thing/, :do_action, :on => lambda { thing }
-      Then /The thing should be done/, :assert_done, :on => lambda { thing }
+      Then /the thing should be done/, :assert_done, :on => lambda { thing }
       """
     And a file named "features/action.feature" with:
       """

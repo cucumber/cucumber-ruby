@@ -15,9 +15,9 @@ module Cucumber
         @config.on_event(:test_case_finished) do |event|
           if event.test_case != @previous_test_case
             @previous_test_case = event.test_case
-            @issues[event.result.to_sym] << event.test_case unless event.result.ok?(strict: @config.strict)
+            @issues[event.result.to_sym] << event.test_case unless event.result.ok?
           elsif event.result.passed?
-            @issues[:flaky] << event.test_case unless Core::Test::Result::Flaky.ok?(strict: @config.strict.strict?(:flaky))
+            @issues[:flaky] << event.test_case unless Core::Test::Result::Flaky.ok?
             @issues[:failed].delete(event.test_case)
           end
         end
@@ -25,7 +25,7 @@ module Cucumber
       end
 
       def to_s
-        test_case_result = @issues.empty? ? [] : Core::Test::Result::TYPES.map { |type| scenario_listing(type, @issues[type]) }
+        test_case_result = @issues.empty? ? [] : Cucumber::Core::Test::Result::BooleanMethods::TYPES.map { |type| scenario_listing(type, @issues[type]) }
         global_hooks_result = @global_hooks_summary.ok? ? [] : @global_hooks_summary.exception_listing
         [test_case_result + global_hooks_result].flatten.join("\n")
       end
