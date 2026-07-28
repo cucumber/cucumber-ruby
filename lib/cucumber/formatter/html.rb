@@ -2,20 +2,22 @@
 
 require 'cucumber/html_formatter'
 
-require_relative 'message_builder'
+require_relative 'io'
 
 module Cucumber
   module Formatter
-    class HTML < MessageBuilder
+    class HTML
+      include Io
+
       def initialize(config)
+        @config = config
         @io = ensure_io(config.out_stream, config.error_stream)
         @html_formatter = Cucumber::HTMLFormatter::Formatter.new(@io)
         @html_formatter.write_pre_message
-        super(config)
+        config.on_event :envelope, &method(:on_envelope)
       end
 
       def on_envelope(event)
-        super(event)
         envelope = event.envelope
         @html_formatter.write_message(envelope)
         # TODO: Move this conditional logic into the HTML formatter proper
