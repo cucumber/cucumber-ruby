@@ -23,7 +23,8 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   - All non-passing scenarios (Except flaky with retry), are now considered failures
 - Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
   logic and some old rspec helper files)
-- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2) ([luke-hill](https://github.com/luke-hill))
+- Removed handling of a Ruby 2.1 system error ([luke-hill](https://github.com/luke-hill))
+- Removed support for Ruby 3.1 and 3.2 (Minimum ruby is now 3.3) ([luke-hill](https://github.com/luke-hill))
 
 ### Fixed
 - Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899)) [brasmusson](https://github.com/brasmusson)
@@ -55,6 +56,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Approx 20% complete -> should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
+
+### Fixed
+- Make fetching the OS version work on Wine ([#1900](https://github.com/cucumber/cucumber-ruby/pull/1900) [mvz](https://github.com/mvz))
 
 ## [11.0.0] - 2026-04-14
 ### Added

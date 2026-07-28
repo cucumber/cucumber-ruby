@@ -73,11 +73,8 @@ RSpec.describe Cucumber::Cli::Main do
       let(:runtime) { double('runtime').as_null_object }
 
       it 'dumps the thread backtrace to the error stream' do
-        kill_line = 0
-
         allow(runtime).to receive(:run!) do
           Process.kill(thread_dump_signal, Process.pid)
-          kill_line = __LINE__ - 1
         end
 
         allow(runtime).to receive(:failure?).and_return(false)
@@ -86,21 +83,11 @@ RSpec.describe Cucumber::Cli::Main do
 
         subject.execute!(runtime)
 
-        tid = (Thread.current.object_id ^ Process.pid).to_s(36)
+        pattern = /Thread TID.+trap_thread_dump_signal/
 
-        if defined?(JRUBY_VERSION)
-          pattern = /Thread TID-[0-9a-z]+ SIGPWR handler /
-
-          # JRuby runs signal handlers asynchronously on a dedicated thread
-          deadline = Time.now + 2
-          sleep 0.01 while stderr.string !~ pattern && Time.now < deadline
-        elsif defined?(TruffleRuby)
-          # TruffleRuby does not dump the actual Process.kill call, but rather the internal core/thread.rb call
-          pattern = /Thread TID-#{tid} <no name> <internal:core> core\/thread.rb:/
-        else
-          pattern = RUBY_VERSION >= '3.4' ? /'Process\.kill'/ : /`kill'/
-          pattern = /Thread TID-#{tid} <no name> #{__FILE__}:#{kill_line}:in #{pattern}/
-        end
+        # Process.kill can be asynchronous, wait for the signal to be delivered
+        deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2
+        sleep 0.01 while stderr.string !~ pattern && Process.clock_gettime(Process::CLOCK_MONOTONIC) < deadline
 
         expect(stderr.string).to match(pattern)
       end
