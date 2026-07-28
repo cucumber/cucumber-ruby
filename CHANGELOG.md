@@ -25,6 +25,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   logic and some old rspec helper files)
 - Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2) ([luke-hill](https://github.com/luke-hill))
 
+### Fixed
+- Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899)) [brasmusson](https://github.com/brasmusson)
+
 ## [11.1.1] - 2026-06-25
 ### Changed
 - Change to use events to pass the data from "log" and "attach" calls from the step definitions to the formatters. With this the last part of the ancient (pre event) formatter inteface has been removed. ([#1881](https://github.com/cucumber/cucumber-ruby/pull/1881) [brasmusson](https://github.com/brasmusson))
