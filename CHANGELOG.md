@@ -16,6 +16,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
 - Updated `cucumber-expressions` to v20
 - Updated `cucumber-html-formatter` to v24
+- Permit `multi_test` v2/v3 so we can begin to remove some legacy support
 
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
