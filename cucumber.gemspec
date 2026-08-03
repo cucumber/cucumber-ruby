@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'diff-lcs', '~> 1.5'
   s.add_dependency 'logger', '~> 1.6'
   s.add_dependency 'mini_mime', '~> 1.1'
-  s.add_dependency 'multi_test', '~> 1.1'
+  s.add_dependency 'multi_test', '> 1', '< 4'
   s.add_dependency 'sys-uname', '~> 1.5'
 
   s.add_development_dependency 'cucumber-compatibility-kit', '~> 26.0'
