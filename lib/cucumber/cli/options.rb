@@ -424,7 +424,7 @@ module Cucumber
       end
 
       def color(color)
-        Cucumber::Term::ANSIColor.coloring = color
+        Cucumber::Term::ANSIColor.coloring = (@options[:color] = color)
       end
 
       def initialize_project

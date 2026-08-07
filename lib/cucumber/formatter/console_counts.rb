@@ -8,6 +8,7 @@ module Cucumber
       include Console
 
       def initialize(config)
+        @config = config
         @summary = Core::Report::Summary.new(config.event_bus)
       end
 
