@@ -3,9 +3,9 @@
 require 'base64'
 require 'json'
 
-require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/query'
 
+require_relative 'backtrace_filter'
 require_relative 'message_handlers'
 
 module Cucumber
@@ -23,8 +23,7 @@ module Cucumber
 
         @test_run_started_id = config.test_run_started_id
 
-        # Fake Query objects
-        @test_case_by_step_id = {}
+        # Fake Query objects - used to build specific parts of the messages defined inside handlers
         @pickle_id_by_test_case_id = {}
         @pickle_id_step_by_test_step_id = {}
         @hook_id_by_test_step_id = {}
@@ -99,23 +98,30 @@ module Cucumber
       end
 
       def on_hook_test_step_created(event)
+        # Set iVar value for `hook_id`
         @hook_id_by_test_step_id[event.test_step.id] = event.hook.id
       end
 
       def on_step_activated(event)
+        # Add/Update iVar value for `step_definition_ids...`
         @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
+        # Add/Update iVar value for `step_match_arguments...`
         @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
       end
 
       def on_test_case_created(event)
+        # Set iVar value for `pickle_id`
         @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
       end
 
       def on_test_case_ready(event)
+        # Use iVar value for `pickle_id`
+        pickle_id = @pickle_id_by_test_case_id.fetch(event.test_case.id)
+
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
-            pickle_id: fake_query_pickle_id(event.test_case),
+            pickle_id: pickle_id,
             test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
             test_run_started_id: @test_run_started_id
           )
@@ -200,7 +206,9 @@ module Cucumber
       end
 
       def on_test_step_created(event)
+        # Set iVar value for `pickle_id_step_...`
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
+        # Set iVar value for `step_definition_ids...`
         @step_definition_ids_by_test_step_id[event.test_step.id] = []
       end
 
@@ -311,8 +319,10 @@ module Cucumber
 
         Cucumber::Messages::TestStep.new(
           id: step.id,
+          # Use iVar value for `pickle_id_step_...`
           pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
-          step_definition_ids: fake_query_step_definition_ids(step),
+          # Use iVar value for `step_definition_ids...`
+          step_definition_ids: @step_definition_ids_by_test_step_id.fetch(step.id),
           step_match_arguments_lists: step_match_arguments_lists(step)
         )
       end
@@ -320,6 +330,7 @@ module Cucumber
       def hook_step_to_message(step)
         Cucumber::Messages::TestStep.new(
           id: step.id,
+          # Use iVar value for `hook_id`
           hook_id: @hook_id_by_test_step_id[step.id]
         )
       end
@@ -334,7 +345,9 @@ module Cucumber
       end
 
       def step_match_arguments(step)
-        fake_query_step_match_arguments(step)&.map do |argument|
+        # Use iVar value for `step_match_arguments...`
+        step_matches = @step_match_arguments_by_test_step_id[step.id]
+        step_matches&.map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: parameter_type_name(argument)
@@ -369,22 +382,6 @@ module Cucumber
           message: message_element.message,
           stack_trace: message_element.backtrace.join("\n")
         )
-      end
-
-      def fake_query_hook_id(test_step)
-        @hook_id_by_test_step_id.fetch(test_step.id)
-      end
-
-      def fake_query_pickle_id(test_case)
-        @pickle_id_by_test_case_id.fetch(test_case.id)
-      end
-
-      def fake_query_step_definition_ids(test_step)
-        @step_definition_ids_by_test_step_id.fetch(test_step.id)
-      end
-
-      def fake_query_step_match_arguments(test_step)
-        @step_match_arguments_by_test_step_id.fetch(test_step.id, nil)
       end
     end
   end
