@@ -32,8 +32,6 @@ module Cucumber
 
         # Ensure all handlers for events occur after all ivars are instantiated
 
-        config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
-
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
         config.on_event :step_activated, &method(:on_step_activated)
@@ -92,10 +90,6 @@ module Cucumber
       end
 
       private
-
-      def on_gherkin_source_parsed(_event)
-        # TODO: Handle GherkinSourceParsed
-      end
 
       def on_hook_test_step_created(event)
         # Set iVar value for `hook_id`
