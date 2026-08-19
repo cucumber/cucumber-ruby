@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'base'
+require 'cucumber/core/event/base'
 
 module Cucumber
   module Events
-    class Envelope < Base
+    class Envelope < Core::Event::Base
       attr_reader :envelope
 
       def self.event_id

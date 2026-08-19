@@ -2,7 +2,7 @@
 
 module Cucumber
   module Events
-    class TestCaseReady < Base
+    class TestCaseReady < Core::Event::Base
       attr_reader :test_case
 
       def self.event_id

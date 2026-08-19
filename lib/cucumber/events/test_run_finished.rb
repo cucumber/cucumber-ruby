@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Event fired after all test cases have finished executing
-    class TestRunFinished < Base
+    class TestRunFinished < Core::Event::Base
       attr_reader :success
 
       def self.event_id
