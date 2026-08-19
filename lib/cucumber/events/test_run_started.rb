@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Cucumber
   module Events
     # Event fired once all test cases have been filtered before
     # the first one is executed.
-    class TestRunStarted < Base
+    class TestRunStarted < Core::Event::Base
       # @return [Array<Cucumber::Core::Test::Case>] the test cases to be executed
       attr_reader :test_cases
 

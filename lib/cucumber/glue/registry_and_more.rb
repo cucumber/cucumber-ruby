@@ -15,7 +15,6 @@ require 'cucumber/glue/world_factory'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
-require 'cucumber/events/base'
 require 'cucumber/events/step_definition_registered'
 
 require_relative 'multiple_world'
