@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Fired when attach is called in a step definition
-    class AttachCalled < Core::Event.new(:src, :media_type, :filename)
+    class AttachCalled < Core::Event::Base
       # The attachment body
       attr_reader :src
 

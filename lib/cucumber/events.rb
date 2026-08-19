@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'cucumber/core/event/base'
-Dir["#{File.dirname(__FILE__)}/events/*.rb"].map(&method(:require_relative))
+
+Dir[File.join(__dir__, 'events', '*.rb')].each do |file|
+  require_relative File.join('events', File.basename(file))
+end
 
 module Cucumber
   # Events tell you what's happening while Cucumber runs your features.
@@ -24,7 +27,7 @@ module Cucumber
     end
 
     def self.registry
-      Core::Events.build_registry(
+      Core::EventBus.build_registry(
         AttachCalled,
         GherkinSourceParsed,
         GherkinSourceRead,
