@@ -9,6 +9,10 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Added
+- Added new dependency on `cucumber-query` which is a new internal structure for all message based formatters to query the state
+of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [luke-hill](https://github.com/luke-hill) & [mattwynne](https://github.com/mattwynne)) 
+
 ### Changed
 - Updated `cucumber-compatibility-kit` to v26
 - Refactor to internal error logic (No user facing changes)
