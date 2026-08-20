@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'cucumber/core/events'
-
 module Cucumber
   module Events
-    class TestRunHookStarted < Base
+    class TestRunHookStarted < Core::Event::Base
       attr_reader :hook
 
       def self.event_id

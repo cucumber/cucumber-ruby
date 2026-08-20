@@ -2,7 +2,7 @@
 
 module Cucumber
   module Events
-    class UndefinedParameterType < Base
+    class UndefinedParameterType < Core::Event::Base
       attr_reader :type_name, :expression
 
       def self.event_id

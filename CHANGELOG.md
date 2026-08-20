@@ -14,10 +14,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Refactor to internal error logic (No user facing changes)
 - Refactor to internal `MessageBuilder` logic (No user facing changes)
 - `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
-  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
+  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842) [luke-hill](https://github.com/luke-hill))
 - Updated `cucumber-expressions` to v20
 - Updated `cucumber-html-formatter` to v24
 - Permit `multi_test` v2/v3 so we can begin to remove some legacy support
+- Updated `cucumber-core` to v19
+- All events now inherit from the new `Cucumber::Core::Event::Base` class ([luke-hill](https://github.com/luke-hill))
 
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
@@ -27,9 +29,10 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   logic and some old rspec helper files)
 - Removed handling of a Ruby 2.1 system error ([luke-hill](https://github.com/luke-hill))
 - Removed support for Ruby 3.1 and 3.2 (Minimum ruby is now 3.3) ([luke-hill](https://github.com/luke-hill))
+- Removed the duplicated "new" base class for events - use `Core::Event::Base` instead ([luke-hill](https://github.com/luke-hill))
 
 ### Fixed
-- Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899)) [brasmusson](https://github.com/brasmusson)
+- Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899) [brasmusson](https://github.com/brasmusson))
 
 ## [11.1.1] - 2026-06-25
 ### Changed

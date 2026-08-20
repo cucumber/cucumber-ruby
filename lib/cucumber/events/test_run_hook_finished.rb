@@ -2,7 +2,7 @@
 
 module Cucumber
   module Events
-    class TestRunHookFinished < Base
+    class TestRunHookFinished < Core::Event::Base
       attr_reader :hook, :test_result
 
       def self.event_id

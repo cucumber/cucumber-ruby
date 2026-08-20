@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Cucumber
   module Events
     # Event fired after each step definition has been registered
-    class StepDefinitionRegistered < Base
+    class StepDefinitionRegistered < Core::Event::Base
       # The step definition that was just registered.
       #   @return [RbSupport::RbStepDefinition]
       attr_reader :step_definition
