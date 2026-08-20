@@ -3,7 +3,7 @@
 module Cucumber
   module Events
     # Event fired when a Test::Case is created from a Pickle
-    class TestCaseCreated < Base
+    class TestCaseCreated < Core::Event::Base
       attr_reader :test_case, :pickle
 
       def self.event_id

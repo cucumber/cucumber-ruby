@@ -12,10 +12,15 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Changed
 - Updated `cucumber-compatibility-kit` to v26
 - Refactor to internal error logic (No user facing changes)
+- Refactor to internal `MessageBuilder` logic (No user facing changes)
 - `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
-  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842)) [luke-hill](https://github.com/luke-hill))
+  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842) [luke-hill](https://github.com/luke-hill))
 - Updated `cucumber-expressions` to v20
 - Updated `cucumber-html-formatter` to v24
+- Permit `multi_test` v2/v3 so we can begin to remove some legacy support
+- Updated `cucumber-core` to v19
+- All events now inherit from the new `Cucumber::Core::Event::Base` class ([luke-hill](https://github.com/luke-hill))
+- Updated the `MessageBuilder` to not create the messages now created by cucumber-ruby-core ([#1882](https://github.com/cucumber/cucumber-ruby/pull/1882) [brasmusson](https://github.com/brasmusson))
 
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
@@ -23,7 +28,12 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
   - All non-passing scenarios (Except flaky with retry), are now considered failures
 - Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
   logic and some old rspec helper files)
-- Removed handling of a Ruby 2.1 system error (Minimum Ruby is now 3.2) ([luke-hill](https://github.com/luke-hill))
+- Removed handling of a Ruby 2.1 system error ([luke-hill](https://github.com/luke-hill))
+- Removed support for Ruby 3.1 and 3.2 (Minimum ruby is now 3.3) ([luke-hill](https://github.com/luke-hill))
+- Removed the duplicated "new" base class for events - use `Core::Event::Base` instead ([luke-hill](https://github.com/luke-hill))
+
+### Fixed
+- Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899) [brasmusson](https://github.com/brasmusson))
 
 ## [11.1.1] - 2026-06-25
 ### Changed
@@ -52,6 +62,9 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Approx 20% complete -> should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
+
+### Fixed
+- Make fetching the OS version work on Wine ([#1900](https://github.com/cucumber/cucumber-ruby/pull/1900) [mvz](https://github.com/mvz))
 
 ## [11.0.0] - 2026-04-14
 ### Added

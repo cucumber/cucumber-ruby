@@ -3,9 +3,9 @@
 require 'base64'
 require 'json'
 
-require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/query'
 
+require_relative 'backtrace_filter'
 require_relative 'message_handlers'
 
 module Cucumber
@@ -23,8 +23,7 @@ module Cucumber
 
         @test_run_started_id = config.test_run_started_id
 
-        # Fake Query objects
-        @test_case_by_step_id = {}
+        # Fake Query objects - used to build specific parts of the messages defined inside handlers
         @pickle_id_by_test_case_id = {}
         @pickle_id_step_by_test_step_id = {}
         @hook_id_by_test_step_id = {}
@@ -33,22 +32,17 @@ module Cucumber
 
         # Ensure all handlers for events occur after all ivars are instantiated
 
-        config.on_event :gherkin_source_parsed, &method(:on_gherkin_source_parsed)
-
         config.on_event :hook_test_step_created, &method(:on_hook_test_step_created)
 
         config.on_event :step_activated, &method(:on_step_activated)
 
         config.on_event :test_case_created, &method(:on_test_case_created)
         config.on_event :test_case_ready, &method(:on_test_case_ready)
-        config.on_event :test_case_started, &method(:on_test_case_started)
-        config.on_event :test_case_finished, &method(:on_test_case_finished)
 
         config.on_event :test_run_started, &method(:on_test_run_started)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
 
         config.on_event :test_step_created, &method(:on_test_step_created)
-        config.on_event :test_step_started, &method(:on_test_step_started)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
 
         config.on_event :attach_called, &method(:on_attach_called)
@@ -57,6 +51,12 @@ module Cucumber
 
       def on_envelope(event)
         store_current_test_run_hook_started_id(event)
+        @current_test_step_id = event.envelope.test_step_started.test_step_id if event.envelope.test_step_started
+        return unless event.envelope.test_case_started
+
+        @current_test_case_started_id = event.envelope.test_case_started.id
+        @current_test_run_hook_started_id = nil
+        @repository.update(event.envelope)
       end
 
       def on_attach_called(event)
@@ -94,28 +94,31 @@ module Cucumber
 
       private
 
-      def on_gherkin_source_parsed(_event)
-        # TODO: Handle GherkinSourceParsed
-      end
-
       def on_hook_test_step_created(event)
+        # Set iVar value for `hook_id`
         @hook_id_by_test_step_id[event.test_step.id] = event.hook.id
       end
 
       def on_step_activated(event)
+        # Add/Update iVar value for `step_definition_ids...`
         @step_definition_ids_by_test_step_id[event.test_step.id] << event.step_match.step_definition.id
+        # Add/Update iVar value for `step_match_arguments...`
         @step_match_arguments_by_test_step_id[event.test_step.id] = event.step_match.step_arguments
       end
 
       def on_test_case_created(event)
+        # Set iVar value for `pickle_id`
         @pickle_id_by_test_case_id[event.test_case.id] = event.pickle.id
       end
 
       def on_test_case_ready(event)
+        # Use iVar value for `pickle_id`
+        pickle_id = @pickle_id_by_test_case_id.fetch(event.test_case.id)
+
         message = Cucumber::Messages::Envelope.new(
           test_case: Cucumber::Messages::TestCase.new(
             id: event.test_case.id,
-            pickle_id: fake_query_pickle_id(event.test_case),
+            pickle_id: pickle_id,
             test_steps: event.test_case.test_steps.map { |step| test_step_to_message(step) },
             test_run_started_id: @test_run_started_id
           )
@@ -123,55 +126,6 @@ module Cucumber
 
         # TODO: This may be a redundant update. But for now we're leaving this in whilst we're in the transitory phase
         @repository.update(message)
-
-        @config.event_bus.envelope(message)
-      end
-
-      def on_test_case_started(event)
-        # For any new test_case_started events, we must ALWAYS generate a new id for a new run
-        @current_test_case_started_id = @config.id_generator.new_id
-        @current_test_run_hook_started_id = nil
-
-        find_all_test_case_started_by_test_case_id =
-          @repository.test_case_started_by_id
-                     .values
-                     .select { |test_case_started| test_case_started.test_case_id == event.test_case.id }
-
-        # If no TestCaseStarted messages exist. We must be on attempt 1 (Hence the .to_i casting for a `nil` value)
-        attempts_previously_made = find_all_test_case_started_by_test_case_id.map(&:attempt).max.to_i
-
-        message = Cucumber::Messages::Envelope.new(
-          test_case_started: Cucumber::Messages::TestCaseStarted.new(
-            id: @current_test_case_started_id,
-            test_case_id: event.test_case.id,
-            timestamp: time_to_timestamp(Time.now),
-            attempt: attempts_previously_made + 1
-          )
-        )
-
-        @config.event_bus.envelope(message)
-        @repository.update(message)
-      end
-
-      def on_test_case_finished(event)
-        test_case_started_id =
-          @repository.test_case_started_by_id
-                     .values
-                     .detect { |test_case_started_message| test_case_started_message.test_case_id == event.test_case.id }
-                     .id
-
-        test_case_started_message = @repository.test_case_started_by_id[test_case_started_id]
-        max_attempts = @config.retry_attempts
-        retries_attempted = test_case_started_message.attempt - 1
-        will_be_retried = event.result.failed? && (retries_attempted < max_attempts)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_case_finished: Cucumber::Messages::TestCaseFinished.new(
-            test_case_started_id: test_case_started_id,
-            timestamp: time_to_timestamp(Time.now),
-            will_be_retried: will_be_retried
-          )
-        )
 
         @config.event_bus.envelope(message)
       end
@@ -200,71 +154,14 @@ module Cucumber
       end
 
       def on_test_step_created(event)
+        # Set iVar value for `pickle_id_step_...`
         @pickle_id_step_by_test_step_id[event.test_step.id] = event.pickle_step.id
+        # Set iVar value for `step_definition_ids...`
         @step_definition_ids_by_test_step_id[event.test_step.id] = []
       end
 
-      def on_test_step_started(event)
-        @current_test_step_id = event.test_step.id
-        find_test_case_by_step_id =
-          @repository.test_case_by_id
-                     .values
-                     .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
-
-        find_test_case_started_by_test_case =
-          @repository.test_case_started_by_id
-                     .values
-                     .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
-                     .max_by(&:attempt)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_step_started: Cucumber::Messages::TestStepStarted.new(
-            test_step_id: event.test_step.id,
-            test_case_started_id: find_test_case_started_by_test_case.id,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        @config.event_bus.envelope(message)
-      end
-
       def on_test_step_finished(event)
-        find_test_case_by_step_id =
-          @repository.test_case_by_id
-                     .values
-                     .detect { |test_case_message| test_case_message.test_steps.any? { |step_message| step_message.id == event.test_step.id } }
-
-        find_test_case_started_by_test_case =
-          @repository.test_case_started_by_id
-                     .values
-                     .select { |test_case_started_message| test_case_started_message.test_case_id == find_test_case_by_step_id.id }
-                     .max_by(&:attempt)
-
-        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
-        result_message = result.to_message
-        if result.failed? || result.pending?
-          message_element = result.failed? ? result.exception : result
-
-          result_message = Cucumber::Messages::TestStepResult.new(
-            status: result_message.status,
-            duration: result_message.duration,
-            message: create_error_message(message_element),
-            exception: create_exception_object(result, message_element)
-          )
-        end
-
         output_snippet_envelope(event)
-
-        message = Cucumber::Messages::Envelope.new(
-          test_step_finished: Cucumber::Messages::TestStepFinished.new(
-            test_step_id: event.test_step.id,
-            test_case_started_id: find_test_case_started_by_test_case.id,
-            test_step_result: result_message,
-            timestamp: time_to_timestamp(Time.now)
-          )
-        )
-
-        @config.event_bus.envelope(message)
       end
 
       def output_snippet_envelope(event)
@@ -311,8 +208,10 @@ module Cucumber
 
         Cucumber::Messages::TestStep.new(
           id: step.id,
+          # Use iVar value for `pickle_id_step_...`
           pickle_step_id: @pickle_id_step_by_test_step_id[step.id],
-          step_definition_ids: fake_query_step_definition_ids(step),
+          # Use iVar value for `step_definition_ids...`
+          step_definition_ids: @step_definition_ids_by_test_step_id.fetch(step.id),
           step_match_arguments_lists: step_match_arguments_lists(step)
         )
       end
@@ -320,6 +219,7 @@ module Cucumber
       def hook_step_to_message(step)
         Cucumber::Messages::TestStep.new(
           id: step.id,
+          # Use iVar value for `hook_id`
           hook_id: @hook_id_by_test_step_id[step.id]
         )
       end
@@ -334,7 +234,9 @@ module Cucumber
       end
 
       def step_match_arguments(step)
-        fake_query_step_match_arguments(step)&.map do |argument|
+        # Use iVar value for `step_match_arguments...`
+        step_matches = @step_match_arguments_by_test_step_id[step.id]
+        step_matches&.map do |argument|
           Cucumber::Messages::StepMatchArgument.new(
             group: argument_group_to_message(argument.group),
             parameter_type_name: parameter_type_name(argument)
@@ -369,22 +271,6 @@ module Cucumber
           message: message_element.message,
           stack_trace: message_element.backtrace.join("\n")
         )
-      end
-
-      def fake_query_hook_id(test_step)
-        @hook_id_by_test_step_id.fetch(test_step.id)
-      end
-
-      def fake_query_pickle_id(test_case)
-        @pickle_id_by_test_case_id.fetch(test_case.id)
-      end
-
-      def fake_query_step_definition_ids(test_step)
-        @step_definition_ids_by_test_step_id.fetch(test_step.id)
-      end
-
-      def fake_query_step_match_arguments(test_step)
-        @step_match_arguments_by_test_step_id.fetch(test_step.id, nil)
       end
     end
   end

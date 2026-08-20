@@ -19,3 +19,7 @@ Feature: html formatter
     When I run `cucumber features/my_feature.feature --format html`
     Then it should fail
     And output should be html with title "Cucumber"
+    And the output should contain:
+    """
+    Scenario Outline: a scenario
+    """
