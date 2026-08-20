@@ -20,15 +20,16 @@ Gem::Specification.new do |s|
     'funding_uri' => 'https://opencollective.com/cucumber'
   }
 
-  s.required_ruby_version = '>= 3.2'
+  s.required_ruby_version = '>= 3.3'
   s.required_rubygems_version = '>= 3.2.8'
 
   s.add_dependency 'base64', '~> 0.2'
   s.add_dependency 'builder', '~> 3.2'
   s.add_dependency 'cucumber-ci-environment', '> 9', '< 14'
-  s.add_dependency 'cucumber-core', '>= 19', '< 20'
+  s.add_dependency 'cucumber-core', '> 18', '< 20'
   s.add_dependency 'cucumber-cucumber-expressions', '> 17', '< 21'
   s.add_dependency 'cucumber-html-formatter', '> 21', '< 25'
+  s.add_dependency 'cucumber-query', '~> 16.1'
   s.add_dependency 'diff-lcs', '~> 1.5'
   s.add_dependency 'logger', '~> 1.6'
   s.add_dependency 'mini_mime', '~> 1.1'
