@@ -50,13 +50,13 @@ module Cucumber
       end
 
       def on_envelope(event)
+        @repository.update(event.envelope)
         store_current_test_run_hook_started_id(event)
         @current_test_step_id = event.envelope.test_step_started.test_step_id if event.envelope.test_step_started
         return unless event.envelope.test_case_started
 
         @current_test_case_started_id = event.envelope.test_case_started.id
         @current_test_run_hook_started_id = nil
-        @repository.update(event.envelope)
       end
 
       def on_attach_called(event)
