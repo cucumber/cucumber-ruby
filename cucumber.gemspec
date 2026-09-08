@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-cucumber-expressions', '> 17', '< 21'
   s.add_dependency 'cucumber-html-formatter', '> 21', '< 25'
   s.add_dependency 'cucumber-query', '~> 16.1'
-  s.add_dependency 'diff-lcs', '~> 1.5'
+  s.add_dependency 'diff-lcs', '>= 1.5', '< 3.0'
   s.add_dependency 'logger', '~> 1.6'
   s.add_dependency 'mini_mime', '~> 1.1'
   s.add_dependency 'multi_test', '> 1', '< 4'
