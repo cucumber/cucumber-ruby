@@ -91,7 +91,7 @@ module Cucumber
         def to_s
           header = generated_expressions.each_with_index.map do |expr, i|
             prefix = i.zero? ? '' : '# '
-            "#{prefix}#{code_keyword}('#{expr.source}') do#{parameters(expr)}"
+            "#{prefix}#{code_keyword}(#{quoted_expression_source(expr)}) do#{parameters(expr)}"
           end.join("\n")
 
           body = <<~DOC.chomp
@@ -106,6 +106,15 @@ module Cucumber
           parameter_names = expr.parameter_names
           multiline_argument.append_block_parameter_to(parameter_names)
           parameter_names.empty? ? '' : " |#{parameter_names.join(', ')}|"
+        end
+
+        def quoted_expression_source(expr)
+          source = expr.source
+
+          return "'#{source.gsub(/\\/) { |char| "\\#{char}" }}'" unless source.include?("'")
+
+          escaped_source = source.gsub(/["\\#]/) { |char| "\\#{char}" }
+          "\"#{escaped_source}\""
         end
 
         def self.description
