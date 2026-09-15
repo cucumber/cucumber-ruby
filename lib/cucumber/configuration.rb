@@ -6,6 +6,7 @@ require 'cucumber/events'
 require 'cucumber/messages'
 require 'cucumber/core/event_bus'
 require 'cucumber/core/test/result'
+require 'cucumber/retry_policy'
 require 'forwardable'
 require 'cucumber'
 
@@ -278,6 +279,10 @@ module Cucumber
 
     def id_generator
       @id_generator ||= Cucumber::Messages::Helpers::IdGenerator::UUID.new
+    end
+
+    def retry_policy
+      @retry_policy ||= RetryPolicy.new(retry_attempts, retry_total_tests)
     end
 
     def test_run_started_id
