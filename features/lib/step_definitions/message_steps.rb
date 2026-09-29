@@ -36,3 +36,27 @@ Then('the output should contain NDJSON {string} message with key {string} and bo
 
   expect(message_contents).to include(key => boolean)
 end
+
+Then('the messages report these attempts of the scenarios:') do |expected_attempts|
+  scenario_names = {}
+  pickle_ids = {}
+  attempts = []
+
+  command_line.stdout(format: :lines).each do |line|
+    case JSON.parse(line, symbolize_names: true)
+    in { pickle: { id:, name: } }
+      scenario_names[id] = name
+    in { testCase: { id:, pickleId: pickle_id } }
+      pickle_ids[id] = pickle_id
+    in { testCaseStarted: { id:, testCaseId: test_case_id, attempt: } }
+      attempts << { 'id' => id, 'scenario' => scenario_names.fetch(pickle_ids.fetch(test_case_id)), 'attempt' => attempt.to_s }
+    in { testCaseFinished: { testCaseStartedId: started_id, willBeRetried: will_be_retried } }
+      expect(started_id).to eq(attempts.last['id'])
+      attempts.last['willBeRetried'] = will_be_retried.to_s
+    else
+      nil
+    end
+  end
+
+  expect(attempts.map { |attempt| attempt.except('id') }).to eq(expected_attempts.hashes)
+end

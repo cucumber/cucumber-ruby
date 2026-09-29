@@ -26,6 +26,11 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 - All events now inherit from the new `Cucumber::Core::Event::Base` class ([luke-hill](https://github.com/luke-hill))
 - Updated the `MessageBuilder` to not create the messages now created by cucumber-ruby-core ([#1882](https://github.com/cucumber/cucumber-ruby/pull/1882) [brasmusson](https://github.com/brasmusson))
 
+### Fixed
+- The `testCaseFinished` message now states `willBeRetried` correctly when `--retry-total` stops further retries, or when
+`--retry` is used at all (it was off by one), so the HTML formatter no longer drops or duplicates scenarios
+([#1905](https://github.com/cucumber/cucumber-ruby/issues/1905) [Enceradeira](https://github.com/Enceradeira))
+
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
   - This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.

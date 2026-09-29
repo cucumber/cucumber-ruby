@@ -7,16 +7,11 @@ require 'cucumber/events'
 module Cucumber
   module Filters
     class Retry < Core::Filter.new(:configuration)
-      def initialize(*_args)
-        super
-        @total_permanently_failed = 0
-      end
-
       def test_case(test_case)
         configuration.on_event(:test_case_finished) do |event|
-          next unless retry_required?(test_case, event)
+          next unless event.test_case == test_case
+          next unless retry?(test_case, event.result)
 
-          test_case_counts[test_case] += 1
           test_case.describe_to(receiver)
         end
 
@@ -25,27 +20,17 @@ module Cucumber
 
       private
 
-      def retry_required?(test_case, event)
-        return false unless event.test_case == test_case
-
-        return false unless event.result.failed?
-
-        return false if @total_permanently_failed >= configuration.retry_total_tests
-
-        retry_required = test_case_counts[test_case] < configuration.retry_attempts
-        if retry_required
-          # retry test
+      def retry?(test_case, result)
+        if retry_policy.will_be_retried?(test_case, result)
+          retry_policy.record_retry(test_case)
           true
         else
-          # test failed after max. attempts
-          @total_permanently_failed += 1
+          retry_policy.record_permanent_failure if result.failed?
           false
         end
       end
 
-      def test_case_counts
-        @test_case_counts ||= Hash.new { |h, k| h[k] = 0 }
-      end
+      def retry_policy = configuration.retry_policy
     end
   end
 end
