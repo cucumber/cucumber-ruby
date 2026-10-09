@@ -84,3 +84,17 @@ Feature: Retry failing tests
       Solid
         Solid ✓
       """
+
+  Scenario: Report which attempts are retried, so a test report shows the final attempt of every scenario
+    Given a scenario "Fails-forever-1" that fails
+    And a scenario "Fails-forever-2" that fails
+    When I run `cucumber -q --retry 1 --retry-total 2 --format message`
+    Then the messages report these attempts of the scenarios:
+      | scenario        | attempt | willBeRetried |
+      | Fails-forever-1 | 1       | true          |
+      | Fails-forever-1 | 2       | false         |
+      | Fails-forever-2 | 1       | true          |
+      | Fails-forever-2 | 2       | false         |
+      | Fails-once      | 1       | false         |
+      | Fails-twice     | 1       | false         |
+      | Solid           | 1       | false         |
