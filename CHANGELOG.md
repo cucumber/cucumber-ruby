@@ -22,7 +22,7 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 - Updated `cucumber-expressions` to v20
 - Updated `cucumber-html-formatter` to v24
 - Permit `multi_test` v2/v3 so we can begin to remove some legacy support
-- Updated `cucumber-core` to v19
+- Updated `cucumber-core` to v20
 - All events now inherit from the new `Cucumber::Core::Event::Base` class ([luke-hill](https://github.com/luke-hill))
 - Updated the `MessageBuilder` to not create the messages now created by cucumber-ruby-core ([#1882](https://github.com/cucumber/cucumber-ruby/pull/1882) [brasmusson](https://github.com/brasmusson))
 
