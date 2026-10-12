@@ -30,6 +30,7 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 - The `testCaseFinished` message now states `willBeRetried` correctly when `--retry-total` stops further retries, or when
 `--retry` is used at all (it was off by one), so the HTML formatter no longer drops or duplicates scenarios
 ([#1905](https://github.com/cucumber/cucumber-ruby/issues/1905) [Enceradeira](https://github.com/Enceradeira))
+- Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899) [brasmusson](https://github.com/brasmusson))
 
 ### Removed
 - Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
@@ -40,9 +41,6 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 - Removed handling of a Ruby 2.1 system error ([luke-hill](https://github.com/luke-hill))
 - Removed support for Ruby 3.1 and 3.2 (Minimum ruby is now 3.3) ([luke-hill](https://github.com/luke-hill))
 - Removed the duplicated "new" base class for events - use `Core::Event::Base` instead ([luke-hill](https://github.com/luke-hill))
-
-### Fixed
-- Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899) [brasmusson](https://github.com/brasmusson))
 
 ## [11.1.1] - 2026-06-25
 ### Changed
@@ -71,8 +69,6 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 - Internal refactor to `MessageBuilder` class to send envelopes through event bus (Should be no noticeable change)
 - Internal refactor to emit direct message envelopes instead of building messages and then converting them to envelopes (Approx 20% complete -> should be no noticeable change)
 - Introduced new base events class which is slightly more intuitive and leans less on old ruby standards (Should be no noticeable change)
-
-### Fixed
 - Make fetching the OS version work on Wine ([#1900](https://github.com/cucumber/cucumber-ruby/pull/1900) [mvz](https://github.com/mvz))
 
 ## [11.0.0] - 2026-04-14
