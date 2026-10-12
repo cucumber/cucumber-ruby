@@ -9,16 +9,18 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [12.0.0] - 2026-10-12
 ### Added
 - Added new dependency on `cucumber-query` which is a new internal structure for all message based formatters to query the state
-of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [luke-hill](https://github.com/luke-hill) & [mattwynne](https://github.com/mattwynne)) 
+of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [luke-hill](https://github.com/luke-hill) & [mattwynne](https://github.com/mattwynne))
 
 ### Changed
 - Updated `cucumber-compatibility-kit` to v26
 - Refactor to internal error logic (No user facing changes)
 - Refactor to internal `MessageBuilder` logic (No user facing changes)
 - `Cucumber::Runtime#ask` which has not been actively supported is now deprecated (Should you wish to delay things
-  and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842) [luke-hill](https://github.com/luke-hill))
+and wait for input, either use a tool like `pry` or add a hard-coded `sleep`) ([#1842](https://github.com/cucumber/cucumber-ruby/pull/1842) [luke-hill](https://github.com/luke-hill))
 - Updated `cucumber-expressions` to v20
 - Updated `cucumber-html-formatter` to v24
 - Permit `multi_test` v2/v3 so we can begin to remove some legacy support
@@ -33,11 +35,11 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 - Updated the `html-formatter` to access message stream correctly ([#1899](https://github.com/cucumber/cucumber-ruby/pull/1899) [brasmusson](https://github.com/brasmusson))
 
 ### Removed
+- This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.
+- All non-passing scenarios (Except flaky with retry), are now considered failures
 - Removed the concept of `strict` from cucumber-ruby ([luke-hill](https://github.com/luke-hill))
-  - This was a long-standing feature that was used to determine if a test run should fail if there were any undefined, pending or flaky steps.
-  - All non-passing scenarios (Except flaky with retry), are now considered failures
 - Removed a bunch of RSpec support logic that was no longer used in the codebase (This includes some legacy pending
-  logic and some old rspec helper files)
+logic and some old rspec helper files)
 - Removed handling of a Ruby 2.1 system error ([luke-hill](https://github.com/luke-hill))
 - Removed support for Ruby 3.1 and 3.2 (Minimum ruby is now 3.3) ([luke-hill](https://github.com/luke-hill))
 - Removed the duplicated "new" base class for events - use `Core::Event::Base` instead ([luke-hill](https://github.com/luke-hill))
@@ -59,7 +61,7 @@ of the test run ([#1889](https://github.com/cucumber/cucumber-ruby/pull/1889) [l
 
 ### Changed
 - Heavy refactor to the internals for message building (Used in formatters - should be no noticeable change)
-  ([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
+([#1853](https://github.com/cucumber/cucumber-ruby/pull/1853) [luke-hill](https://github.com/luke-hill))
 - Simplify attachment handling in the `MessageBuilder` and `#attach` method
 - Updated `cucumber-compatibility-kit` to v24
 
@@ -305,7 +307,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v12.0.0...HEAD
+[12.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.1...v12.0.0
 [11.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...v11.1.0
 [11.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v10.2.0...v11.0.0
