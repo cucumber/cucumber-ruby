@@ -5,9 +5,11 @@ require 'rspec/mocks'
 World(RSpec::Mocks::ExampleMethods)
 
 Before do
-  RSpec::Mocks.setup(self)
+  RSpec::Mocks.setup
 end
 
 After do
+  RSpec::Mocks.verify
+ensure
   RSpec::Mocks.teardown
 end
