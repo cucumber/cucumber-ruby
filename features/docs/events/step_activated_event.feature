@@ -33,4 +33,3 @@ Feature: Step Activated Event
       The step: features/test.feature:3
       The step definition: features/step_definitions/steps.rb:1
       """
-

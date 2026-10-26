@@ -37,4 +37,3 @@ Feature: Test Run Started Event
       features/bar.feature:2
       features/foo.feature:2
       """
-

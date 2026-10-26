@@ -26,4 +26,3 @@ Feature: Step definition registered
       """
       The step definition: features/step_definitions/steps.rb:1
       """
-

@@ -50,4 +50,3 @@ Feature: Test Case Started Event
           Given this is a step
       after
       """
-
