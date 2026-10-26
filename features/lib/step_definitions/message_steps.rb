@@ -14,6 +14,10 @@ Then('the output should contain NDJSON with key {string}') do |key|
   expect(command_line.stdout(format: :messages)).to include(have_key(key))
 end
 
+Then('the output should not contain NDJSON with key {string}') do |key|
+  expect(command_line.stdout(format: :messages)).not_to include(have_key(key))
+end
+
 Then('the output should contain NDJSON with key {string} and value {string}') do |key, value|
   expect(command_line.stdout).to match(/"#{key}": ?"#{value}"/)
 end
