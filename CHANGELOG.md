@@ -9,6 +9,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+### Fixed
+- Fixed `cucumber/rspec/doubles` calling `RSpec::Mocks.setup` with an argument rspec-mocks 3 does not accept, and restored
+the verification of message expectations after each scenario
 
 ## [12.0.0] - 2026-10-12
 ### Added
