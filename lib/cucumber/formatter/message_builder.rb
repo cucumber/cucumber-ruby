@@ -165,7 +165,7 @@ module Cucumber
       end
 
       def output_snippet_envelope(event)
-        return unless event.result.undefined?
+        return unless event.result.undefined? && @config.to_hash[:snippets]
 
         collect_snippet_data(event.test_step, @ast_lookup)
         snippet_text_proc = lambda do |step_keyword, step_name, multiline_arg|
