@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'lib/cucumber/version'
+
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
-  s.version     = File.read(File.expand_path('VERSION', __dir__)).strip
+  s.version     = Cucumber::VERSION
   s.authors     = ['Aslak Hellesøy', 'Matt Wynne', 'Steve Tooke', 'Luke Hill']
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
@@ -48,7 +50,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0.22.0'
   s.add_development_dependency 'webrick', '~> 1.8'
 
-  s.files = Dir['README.md', 'LICENSE', 'VERSION', 'lib/**/*']
+  s.files = Dir['README.md', 'LICENSE', 'lib/**/*']
   s.executables      = ['cucumber']
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
