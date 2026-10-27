@@ -39,4 +39,3 @@ Feature: Gherkin Source Read Event
       Feature: Two
         This is the other feature
       """
-

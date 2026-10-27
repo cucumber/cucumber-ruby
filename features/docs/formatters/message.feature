@@ -68,3 +68,38 @@ Feature: Message output formatter
     Then output should be valid NDJSON
     And the output should contain NDJSON with key "testRunFinished"
     And the output should contain NDJSON "testRunFinished" message with key "success" and boolean value true
+
+  Rule: Snippets
+    Scenario: it produces NDJSON messages that contain snippets for undefined steps
+      Given a file named "features/undefined_steps.feature" with:
+        """
+        Feature: A feature with undefined steps
+
+          Scenario Outline: a scenario
+            Given a <status> step
+
+          Examples:
+            | status    |
+            | passed    |
+            | undefined |
+        """
+      When I run `cucumber features/undefined_steps.feature --format message`
+      Then output should be valid NDJSON
+      And the output should contain NDJSON with key "suggestion"
+
+    Scenario: it produces NDJSON messages that omit snippet messages when disabled
+      Given a file named "features/undefined_steps.feature" with:
+        """
+        Feature: A feature with undefined steps
+
+          Scenario Outline: a scenario
+            Given a <status> step
+
+          Examples:
+            | status    |
+            | passed    |
+            | undefined |
+        """
+      When I run `cucumber features/undefined_steps.feature --format message --no-snippets`
+      Then output should be valid NDJSON
+      And the output should not contain NDJSON with key "suggestion"

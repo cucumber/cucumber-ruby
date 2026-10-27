@@ -12,6 +12,7 @@ Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blo
 ### Fixed
 - Fixed `cucumber/rspec/doubles` calling `RSpec::Mocks.setup` with an argument rspec-mocks 3 does not accept, and restored
 the verification of message expectations after each scenario
+- Fixed the `MessageBuilder` formatter not respecting `--no-snippets` as a config option ([#1915](https://github.com/cucumber/cucumber-ruby/pull/1915) [luke-hill](https://github.com/luke-hill))
 
 ## [12.0.0] - 2026-10-12
 ### Added
