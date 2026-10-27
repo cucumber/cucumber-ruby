@@ -9,6 +9,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 Please visit [cucumber/CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) for more info on how to contribute to Cucumber.
 
 ## [Unreleased]
+
+## [12.0.1] - 2026-10-27
 ### Added
 - Moved the version definition to `lib/cucumber/version.rb` and updated the gemspec to use `Cucumber::VERSION`
 
@@ -314,7 +316,8 @@ can use the immutable versions instead: `DataTable#map_column` and
 ([#1590](https://github.com/cucumber/cucumber-ruby/pull/1590))
 - Removed support for Ruby 2.5 and JRuby 9.2.
 
-[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v12.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-ruby/compare/v12.0.1...HEAD
+[12.0.1]: https://github.com/cucumber/cucumber-ruby/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.1...v12.0.0
 [11.1.1]: https://github.com/cucumber/cucumber-ruby/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/cucumber/cucumber-ruby/compare/v11.0.0...v11.1.0
