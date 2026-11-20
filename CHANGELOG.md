@@ -62,6 +62,7 @@ logic and some old rspec helper files)
 - Show failed step error details in the summary formatter output
 - Fixed up JRuby examples which weren't running due to anglicisation issues (Pivoted to use English step definitions to help JRuby testing)
 - Fixed up Arabic example which had some incorrect logic for step definition matching (Due to RTL nature of the language)
+- Disable ANSI color by default for console formatter output written with `--out`.
 
 ## [11.1.0] - 2026-06-02
 ### Added

@@ -31,27 +31,31 @@ module Cucumber
       include Duration
 
       def format_step(keyword, step_match, status, source_indent)
-        comment = if source_indent
-                    c = indent("# #{step_match.location}", source_indent)
-                    format_string(c, :comment)
-                  else
-                    ''
-                  end
+        with_formatter_coloring do
+          comment = if source_indent
+                      c = indent("# #{step_match.location}", source_indent)
+                      format_string(c, :comment)
+                    else
+                      ''
+                    end
 
-        format = format_for(status, :param)
-        line = keyword + step_match.format_args(format) + comment
-        format_string(line, status)
+          format = format_for(status, :param)
+          line = keyword + step_match.format_args(format) + comment
+          format_string(line, status)
+        end
       end
 
       def format_string(input, status)
-        fmt = format_for(status)
-        input.to_s.split("\n").map do |line|
-          if fmt.instance_of?(Proc)
-            fmt.call(line)
-          else
-            fmt % line
-          end
-        end.join("\n")
+        with_formatter_coloring do
+          fmt = format_for(status)
+          input.to_s.split("\n").map do |line|
+            if fmt.instance_of?(Proc)
+              fmt.call(line)
+            else
+              fmt % line
+            end
+          end.join("\n")
+        end
       end
 
       def print_elements(elements, status, kind)
@@ -228,6 +232,35 @@ module Cucumber
       private
 
       FORMATS = Hash.new { |hash, format| hash[format] = method(format).to_proc }
+
+      def with_formatter_coloring
+        original_coloring = Cucumber::Term::ANSIColor.coloring?
+        Cucumber::Term::ANSIColor.coloring = formatter_coloring?
+        yield
+      ensure
+        Cucumber::Term::ANSIColor.coloring = original_coloring
+      end
+
+      def formatter_coloring?
+        options = if instance_variable_defined?(:@options) && @options
+                    @options
+                  elsif instance_variable_defined?(:@config) && @config.respond_to?(:to_hash)
+                    @config.to_hash
+                  else
+                    {}
+                  end
+        return options[:color] if options.key?(:color)
+
+        io = if instance_variable_defined?(:@io)
+               @io
+             elsif instance_variable_defined?(:@config) && @config.respond_to?(:out_stream)
+               @config.out_stream
+             end
+        return Cucumber::Term::ANSIColor.coloring? if io.nil?
+        return false unless io.respond_to?(:tty?)
+
+        io.tty?
+      end
 
       def format_for(*keys)
         key = keys.join('_').to_sym
